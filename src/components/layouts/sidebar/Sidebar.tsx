@@ -278,20 +278,46 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     setUserManuallyToggled(false);
   }, [pathname]);
 
-  // Pathname değiştiğinde aktif menü item'ını görünür alana scroll et
+  // Sayfa ilk yüklendiğinde aktif menü görünür alanda değilse scroll et
+  // Kullanıcı tıkladığında scroll yapmıyoruz - sadece ilk yüklemede
+  const initialScrollDone = useRef(false);
+
   useEffect(() => {
-    if (mounted && activeMenuRef.current) {
-      // Küçük bir gecikme ile scroll et (menü açılma animasyonu için)
-      const timeoutId = setTimeout(() => {
-        activeMenuRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
-      }, 100);
-      return () => clearTimeout(timeoutId);
+    // Sadece ilk mount'ta ve aktif menü görünür alanda değilse scroll et
+    if (mounted && activeMenuRef.current && !initialScrollDone.current) {
+      const element = activeMenuRef.current;
+      const scrollArea = element.closest('[data-mantine-scrollarea-viewport], .mantine-ScrollArea-viewport');
+
+      if (scrollArea) {
+        const scrollAreaRect = scrollArea.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+
+        // Element görünür alanda mı kontrol et
+        const isVisible =
+          elementRect.top >= scrollAreaRect.top &&
+          elementRect.bottom <= scrollAreaRect.bottom;
+
+        // Sadece görünür değilse scroll et
+        if (!isVisible) {
+          const timeoutId = setTimeout(() => {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest', // 'center' yerine 'nearest' - minimum scroll
+            });
+          }, 150);
+          initialScrollDone.current = true;
+          return () => clearTimeout(timeoutId);
+        }
+      }
+      initialScrollDone.current = true;
     }
     return undefined;
-  }, [pathname, mounted, openedMenu]);
+  }, [mounted]);
+
+  // Pathname değişince initial scroll flag'ini sıfırla (yeni sayfaya navigasyon için)
+  useEffect(() => {
+    initialScrollDone.current = false;
+  }, [pathname]);
 
   return (
     <aside
