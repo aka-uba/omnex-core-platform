@@ -129,7 +129,9 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
         : 'psql';
 
       // Use PGPASSWORD environment variable for password
-      const createDbCommand = `"${psqlPath}" -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "CREATE DATABASE ${dbName};"`;
+      // Database names with hyphens need double quotes in PostgreSQL
+      const escapedDbName = dbName.includes('-') ? `\\"${dbName}\\"` : dbName;
+      const createDbCommand = `"${psqlPath}" -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "CREATE DATABASE ${escapedDbName};"`;
 
       execSync(createDbCommand, {
         stdio: 'inherit',
@@ -285,7 +287,9 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       const dbPort = adminUrl.port || '5432';
 
       const psqlPath = `"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe"`;
-      const dropDbCommand = `${psqlPath} -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "DROP DATABASE IF EXISTS ${dbName};"`;
+      // Database names with hyphens need double quotes in PostgreSQL
+      const escapedDbName = dbName.includes('-') ? `\\"${dbName}\\"` : dbName;
+      const dropDbCommand = `${psqlPath} -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "DROP DATABASE IF EXISTS ${escapedDbName};"`;
       execSync(dropDbCommand, {
         stdio: 'inherit',
         env: { ...process.env, PGPASSWORD: dbPassword },
