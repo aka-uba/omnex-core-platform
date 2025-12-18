@@ -175,6 +175,23 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       throw error;
     }
 
+    // 4.5. Schema sync with db push (migration sonrası eksik kolonları ekle)
+    // Bu adım, migration'ların schema ile tam senkron olmadığı durumları düzeltir
+    try {
+      execSync(
+        `npx prisma db push --schema=prisma/tenant.schema.prisma --skip-generate --accept-data-loss`,
+        {
+          stdio: 'inherit',
+          cwd: process.cwd(),
+          env: { ...process.env, TENANT_DATABASE_URL: tenantDbUrl }
+        }
+      );
+      logger.info(`Schema sync completed for tenant DB: ${dbName}`, {}, 'tenant-service');
+    } catch (error) {
+      logger.warn(`Schema sync (db push) failed for tenant DB: ${dbName}`, { error }, 'tenant-service');
+      // Continue even if db push fails - migrations might be sufficient
+    }
+
     // 5. Seed işlemleri (default admin user, vb.)
     try {
       // Run tenant seed script
