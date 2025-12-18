@@ -123,20 +123,26 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       const dbHost = adminUrl.hostname;
       const dbPort = adminUrl.port || '5432';
 
-      // Create database using psql (Windows compatible)
-      const psqlPath = process.platform === 'win32'
+      // Create database using psql (Windows/Linux compatible)
+      const isWindows = process.platform === 'win32';
+      const psqlPath = isWindows
         ? 'C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe'
         : 'psql';
 
       // Use PGPASSWORD environment variable for password
       // Database names with hyphens need double quotes in PostgreSQL
-      const escapedDbName = dbName.includes('-') ? `\\"${dbName}\\"` : dbName;
-      const createDbCommand = `"${psqlPath}" -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "CREATE DATABASE ${escapedDbName};"`;
+      // Windows cmd.exe needs \" escape, Linux sh needs just quotes
+      const escapedDbName = dbName.includes('-')
+        ? (isWindows ? `\\"${dbName}\\"` : `"${dbName}"`)
+        : dbName;
+      const createDbCommand = isWindows
+        ? `"${psqlPath}" -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "CREATE DATABASE ${escapedDbName};"`
+        : `${psqlPath} -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c 'CREATE DATABASE ${escapedDbName};'`;
 
       execSync(createDbCommand, {
         stdio: 'inherit',
         env: { ...process.env, PGPASSWORD: dbPassword },
-        shell: process.platform === 'win32' ? 'cmd.exe' : '/bin/sh'
+        shell: isWindows ? 'cmd.exe' : '/bin/sh'
       });
     } catch (error: unknown) {
       // If database already exists, continue
@@ -286,14 +292,21 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       const dbHost = adminUrl.hostname;
       const dbPort = adminUrl.port || '5432';
 
-      const psqlPath = `"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe"`;
+      const isWindows = process.platform === 'win32';
+      const psqlPath = isWindows
+        ? 'C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe'
+        : 'psql';
       // Database names with hyphens need double quotes in PostgreSQL
-      const escapedDbName = dbName.includes('-') ? `\\"${dbName}\\"` : dbName;
-      const dropDbCommand = `${psqlPath} -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "DROP DATABASE IF EXISTS ${escapedDbName};"`;
+      const escapedDbName = dbName.includes('-')
+        ? (isWindows ? `\\"${dbName}\\"` : `"${dbName}"`)
+        : dbName;
+      const dropDbCommand = isWindows
+        ? `"${psqlPath}" -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c "DROP DATABASE IF EXISTS ${escapedDbName};"`
+        : `${psqlPath} -h ${dbHost} -p ${dbPort} -U ${dbUser} -d postgres -c 'DROP DATABASE IF EXISTS ${escapedDbName};'`;
       execSync(dropDbCommand, {
         stdio: 'inherit',
         env: { ...process.env, PGPASSWORD: dbPassword },
-        shell: process.platform === 'win32' ? 'powershell.exe' : '/bin/bash'
+        shell: isWindows ? 'cmd.exe' : '/bin/sh'
       });
     } catch (rollbackError) {
       logger.error('Rollback failed', rollbackError, 'tenant-service');
