@@ -1023,3 +1023,131 @@ button[data-loading="true"] .mantine-Button-inner,
 [data-mantine-color-scheme="dark"] .leaflet-popup-content .apartment-item:hover {
   background-color: #25262b !important;
 }
+
+/* ============================================
+   Leaflet Map Mobile Styles
+   ============================================ */
+
+/* Mobile: Popup genişlik ve boyut ayarları */
+@media (max-width: 768px) {
+  /* Popup content wrapper - mobilde daha küçük */
+  .leaflet-popup-content-wrapper {
+    max-width: 280px !important;
+    min-width: 200px !important;
+  }
+
+  .leaflet-popup-content {
+    max-width: 260px !important;
+    min-width: 180px !important;
+    margin: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Popup içindeki div'ler - PropertyMap için */
+  .leaflet-popup-content > div {
+    min-width: 180px !important;
+    max-width: 260px !important;
+  }
+
+  /* Close button - mobilde daha büyük ve görünür */
+  .leaflet-popup-close-button {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    padding: 2px 6px !important;
+    right: 4px !important;
+    top: 4px !important;
+    color: #666 !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 4px !important;
+    z-index: 10 !important;
+  }
+
+  .leaflet-popup-close-button:hover {
+    color: #333 !important;
+    background-color: rgba(255, 255, 255, 1) !important;
+  }
+
+  /* Dark mode close button */
+  [data-mantine-color-scheme="dark"] .leaflet-popup-close-button {
+    color: #c1c2c5 !important;
+    background-color: rgba(37, 38, 43, 0.9) !important;
+  }
+
+  [data-mantine-color-scheme="dark"] .leaflet-popup-close-button:hover {
+    color: #fff !important;
+    background-color: rgba(37, 38, 43, 1) !important;
+  }
+
+  /* Apartment list - mobilde daha az yükseklik */
+  .leaflet-popup-content div[style*="max-height: 150px"] {
+    max-height: 100px !important;
+  }
+
+  /* Map container z-index - sidebar'ın altında kalmalı */
+  .leaflet-container {
+    z-index: 1 !important;
+  }
+
+  /* Leaflet pane z-index'leri - popup'ın marker'ların üstünde açılması için */
+  .leaflet-map-pane {
+    z-index: 2 !important;
+  }
+
+  .leaflet-tile-pane {
+    z-index: 2 !important;
+  }
+
+  .leaflet-overlay-pane {
+    z-index: 4 !important;
+  }
+
+  .leaflet-shadow-pane {
+    z-index: 5 !important;
+  }
+
+  .leaflet-marker-pane {
+    z-index: 6 !important;
+  }
+
+  .leaflet-tooltip-pane {
+    z-index: 7 !important;
+  }
+
+  /* Popup pane - marker'ların üstünde olmalı */
+  .leaflet-popup-pane {
+    z-index: 8 !important;
+  }
+
+  .leaflet-popup {
+    z-index: 8 !important;
+  }
+
+  /* Leaflet controls z-index */
+  .leaflet-top,
+  .leaflet-bottom {
+    z-index: 10 !important;
+  }
+
+  .leaflet-control {
+    z-index: 10 !important;
+  }
+}
+
+/* Tablet için biraz daha geniş popup */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 320px !important;
+  }
+
+  .leaflet-popup-content {
+    max-width: 300px !important;
+  }
+
+  .leaflet-popup-close-button {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 20px !important;
+  }
+}
