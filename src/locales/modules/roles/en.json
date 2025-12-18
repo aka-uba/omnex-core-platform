@@ -1,0 +1,54 @@
+{
+  "title": "Roles Management",
+  "description": "Manage system-wide user roles and access levels.",
+  "create": {
+    "title": "Create New Role",
+    "description": "Create a new role and configure its permissions.",
+    "button": "Create Role"
+  },
+  "edit": {
+    "title": "Edit Role",
+    "description": "Update role information and permissions.",
+    "button": "Save Changes"
+  },
+  "view": {
+    "title": "Role Details",
+    "description": "View role information and assigned users."
+  },
+  "table": {
+    "roleName": "Role Name",
+    "description": "Description",
+    "usersAssigned": "Users Assigned",
+    "actions": "Actions",
+    "searchPlaceholder": "Search by role name...",
+    "allRoles": "All Roles",
+    "withUsers": "With Users"
+  },
+  "form": {
+    "name": "Role Name",
+    "namePlaceholder": "e.g., Content Manager",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter role description",
+    "permissions": "Permissions",
+    "selectPermissions": "Select permissions"
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "assignUsers": "Assign Users"
+  },
+  "validation": {
+    "nameRequired": "Role name is required",
+    "descriptionRequired": "Description is required"
+  },
+  "permissions": {
+    "clientCreate": "Create Client",
+    "clientEdit": "Edit Client",
+    "aiGenerate": "Generate AI Content"
+  }
+}
+
+
+
+

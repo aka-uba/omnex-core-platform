@@ -1,0 +1,84 @@
+{
+  "title": "İzin Yönetimi",
+  "description": "Sistem genelindeki kullanıcı izinlerini ve erişim seviyelerini yönetin.",
+  "create": {
+    "title": "Yeni İzin Oluştur",
+    "description": "Yeni bir izin oluşturun.",
+    "button": "İzin Oluştur"
+  },
+  "edit": {
+    "title": "İzin Düzenle",
+    "description": "İzin bilgilerini güncelleyin.",
+    "button": "Değişiklikleri Kaydet"
+  },
+  "view": {
+    "title": "İzin Detayları",
+    "description": "İzin bilgilerini görüntüleyin."
+  },
+  "table": {
+    "permissionKey": "İzin Anahtarı",
+    "name": "İsim",
+    "description": "Açıklama",
+    "category": "Kategori",
+    "module": "Modül",
+    "actions": "İşlemler",
+    "searchPlaceholder": "İsim veya anahtar ile ara...",
+    "categoryFilter": "Kategori",
+    "moduleFilter": "Modül",
+    "clearFilters": "Filtreleri Temizle"
+  },
+  "form": {
+    "permissionKey": "İzin Anahtarı",
+    "permissionKeyPlaceholder": "Örn: client.create",
+    "name": "İsim",
+    "namePlaceholder": "Örn: Create Client",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "İzin açıklamasını girin",
+    "category": "Kategori",
+    "categoryPlaceholder": "Kategori seçin",
+    "module": "Modül",
+    "modulePlaceholder": "Modül seçin",
+    "cancel": "İptal"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "validation": {
+    "keyRequired": "İzin anahtarı gereklidir",
+    "keyFormat": "İzin anahtarı formatı: module.action (örn: client.create)",
+    "nameRequired": "İsim gereklidir",
+    "descriptionRequired": "Açıklama gereklidir",
+    "categoryRequired": "Kategori gereklidir"
+  },
+  "categories": {
+    "clientManagement": "Müşteri Yönetimi",
+    "contentAI": "İçerik AI",
+    "scheduling": "Planlama",
+    "finance": "Finans",
+    "general": "Genel"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "notifications": {
+    "error": {
+      "permissionSaveFailed": "İzin kaydedilemedi",
+      "title": "Hata"
+    },
+    "success": {
+      "permissionCreated": "İzin başarıyla oluşturuldu",
+      "permissionUpdated": "İzin başarıyla güncellendi"
+    },
+    "validation": {
+      "requiredFields": "Zorunlu alanları doldurun",
+      "title": "Doğrulama Hatası"
+    }
+  }
+}

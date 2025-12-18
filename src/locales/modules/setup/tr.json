@@ -1,0 +1,119 @@
+{
+  "setup": {
+    "install": "Kurulumu yapın",
+    "databaseWizard": "Veritabanı Kurulum Sihirbazı"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Genel bakış ve istatistikler"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "titles": {
+    "bu": {
+      "sayfaya": {
+        "erisim": {
+          "izniniz": {
+            "yok": "Bu sayfaya erişim izniniz yok"
+          }
+        }
+      }
+    },
+    "erisim": {
+      "reddedildi": "Erişim reddedildi"
+    },
+    "sifirlama": {
+      "basarisiz": {
+        "errormessage": "Sıfırlama başarısız"
+      }
+    },
+    "tum": "Tümü",
+    "kurulum": {
+      "basariyla": {
+        "tamamlandi": {
+          "raporu": {
+            "indi": "Kurulum başarıyla tamamlandı, raporu indir"
+          }
+        }
+      }
+    },
+    "tum": {
+      "asamalar": {
+        "tamamlandi": "Tüm aşamalar tamamlandı"
+      }
+    }
+  },
+  "errors": {
+    "tum": "Tümü",
+    "erisim": {
+      "kontrolu": {
+        "basarisiz": "Erişim kontrolü başarısız"
+      },
+      "reddedildi": "Erişim reddedildi"
+    },
+    "description": "Açıklama",
+    "tenant": {
+      "veritabani": {
+        "semasi": {
+          "uygulandi": "Tenant veritabanı şeması uygulandı"
+        }
+      }
+    },
+    "core": {
+      "veritabani": {
+        "semasi": {
+          "uygulandi": "Core veritabanı şeması uygulandı"
+        }
+      }
+    }
+  },
+  "common": {
+    "tum": "Tümü",
+    "no": "Hayır",
+    "basariyla": "Başarıyla",
+    "yapilandirma": "Yapılandırma",
+    "adim": {
+      "step": {
+        "1": {
+          "basariyla": {
+            "tamamlandi": "Adım 1 başarıyla tamamlandı"
+          }
+        }
+      }
+    }
+  },
+  "messages": {
+    "adim": {
+      "step": {
+        "1": {
+          "basarisiz": {
+            "errormessage": "Adım 1 başarısız"
+          }
+        }
+      }
+    },
+    "her": {
+      "iki": {
+        "veritabani": {
+          "semasi": {
+            "uygulandi": "Her iki veritabanı şeması uygulandı"
+          },
+          "baglantisi": {
+            "basarili": "Her iki veritabanı bağlantısı başarılı"
+          }
+        }
+      }
+    },
+    "veritabanlari": {
+      "olusturuldudogrulandi": "Veritabanları oluşturuldu/doğrulandı"
+    }
+  }
+}

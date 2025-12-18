@@ -1,0 +1,49 @@
+.formContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  color: var(--text-primary);
+  padding: 0;
+}
+
+[data-mantine-color-scheme="dark"] .formContainer {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .tabs {
+  border-bottom-color: var(--border-color);
+}
+
+.tabsList {
+  padding: 0 var(--mantine-spacing-md);
+  border-bottom: none;
+}
+
+.actionBar {
+  padding: var(--mantine-spacing-md);
+  border-top: 1px solid var(--border-color);
+  position: sticky;
+  bottom: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: var(--bg-card);
+}
+
+[data-mantine-color-scheme="dark"] .actionBar {
+  background-color: var(--bg-card);
+  border-top-color: var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .tabsList {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
+

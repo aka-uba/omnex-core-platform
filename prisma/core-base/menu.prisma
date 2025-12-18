@@ -1,0 +1,342 @@
+// ============================================
+// WordPress-Style Menu Management System
+// ============================================
+
+model Menu {
+  id          String   @id @default(uuid())
+  name        String   // Menu name (e.g., "Main Menu", "Footer Menu")
+  slug        String   // URL-friendly identifier
+  description String?
+  locale      String   @default("tr") // Primary language
+  tenantId    String?  // null for global menus
+  companyId   String
+  createdBy   String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  items       MenuItem[]
+  assignments MenuLocationAssignment[]
+  
+  @@unique([slug, tenantId, locale])
+  @@index([tenantId])
+  @@index([slug])
+  @@index([isActive])
+  @@map("menus")
+}
+
+model MenuItem {
+  id          String   @id @default(uuid())
+  tenantId   String
+  companyId  String
+  menuId      String
+  parentId    String?  // For nested menus
+  
+  // Content (Multi-language support)
+  label       Json     // { tr: "Ana Sayfa", en: "Home", de: "Startseite", ar: "الصفحة الرئيسية" }
+  href        String
+  icon        String?
+  target      String?  // _blank, _self
+  cssClass    String?
+  description Json?    // Multi-language descriptions
+  
+  // Metadata
+  order       Int      @default(0)
+  visible     Boolean  @default(true)
+  moduleSlug  String?  // Associated module
+  menuGroup   String?  // "core", "admin", "user" - for visual grouping in UI
+  
+  // Permissions
+  requiredRole       String?  // Minimum role required
+  requiredPermission String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  menu        Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parent      MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children    MenuItem[] @relation("MenuItemChildren")
+  
+  @@index([tenantId, companyId])
+  @@index([menuId])
+  @@index([parentId])
+  @@index([order])
+  @@index([menuGroup])
+  @@index([visible])
+  @@map("menu_items")
+}
+
+model MenuLocation {
+  id          String   @id @default(uuid())
+  tenantId    String?  // nullable for global locations
+  companyId   String
+  name        String   // "sidebar", "top", "mobile", "footer", "footer-secondary"
+  label       Json     // { tr: "Kenar Menü", en: "Sidebar Menu" }
+  description String?
+  layoutType  String   // "sidebar", "top", "both"
+  maxDepth    Int      @default(3) // Maximum nesting level
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  assignments MenuLocationAssignment[]
+  
+  @@unique([name, tenantId])
+  @@index([tenantId, companyId])
+  @@index([layoutType])
+  @@map("menu_locations")
+}
+
+model MenuLocationAssignment {
+  id          String   @id @default(uuid())
+  locationId  String
+  menuId      String
+  tenantId    String?
+  companyId   String
+  
+  // Assignment scope (priority: user > role > branch > default)
+  assignmentType String  // "default", "role", "user", "branch"
+  assignmentId   String? // roleId, userId, or branchId
+  
+  priority    Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  location    MenuLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  menu        Menu         @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  
+  @@unique([locationId, assignmentType, assignmentId, tenantId])
+  @@index([locationId])
+  @@index([menuId])
+  @@index([assignmentType, assignmentId])
+  @@index([tenantId, companyId])
+  @@index([isActive])
+  @@map("menu_location_assignments")
+}
+
+model FooterCustomization {
+  id          String   @id @default(uuid())
+  tenantId    String   @unique
+  companyId   String
+  
+  // Company info
+  companyName      String?
+  companyNameMode  String  @default("dynamic") // "dynamic" or "custom"
+  logo             String? // Logo URL
+  description      Json?   // Multi-language
+  
+  // Contact info
+  address          Json?   // Multi-language
+  phone            String?
+  email            String?
+  
+  // Social links
+  socialLinks      Json?   // { facebook: "url", twitter: "url", linkedin: "url", instagram: "url" }
+  
+  // Layout
+  showCopyright    Boolean @default(true)
+  copyrightText    Json?   // Multi-language (backward compatibility - can be string or object)
+  
+  // Menus
+  primaryMenuId       String? // Main footer menu
+  
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([tenantId, companyId])
+  @@map("footer_customizations")
+}
+
+model LicenseNotification {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+  licenseId String // Core DB'den referans
+
+  type      String // 'expiring_soon', 'expired', 'payment_required'
+  message   String
+  actionUrl String?
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, companyId])
+  @@index([licenseId])
+  @@index([isRead])
+}
+
+model AccessControlConfiguration {
+  id       String @id @default(uuid())
+  tenantId String
+  companyId String
+
+  // Scope (priority: user > role > tenant)
+  userId String?
+  roleId String?
+
+  // Configuration type: 'module' | 'menu' | 'ui' | 'layout'
+  type String
+
+  // Configuration data (flexible JSON structure)
+  // Module: { "ai": { "enabled": true, "features": ["text", "code"] } }
+  // Menu: { "items": [{ "id": "dashboard", "visible": true, "order": 0 }] }
+  // UI: { "buttons": { "create": true, "edit": true }, "features": { "bulkActions": true } }
+  // Layout: { "sidebar": { "width": 280, "background": "brand" }, "contentArea": { "maxWidth": 1200 } }
+  config Json
+
+  isActive Boolean @default(true)
+
+  createdBy String
+  updatedBy String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, companyId, type])
+  @@index([userId])
+  @@index([roleId])
+  @@index([isActive])
+}
+
+model GeneralSettings {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  
+  // ============================================
+  // 1. Region and Time Settings
+  // ============================================
+  timezone            String   @default("Europe/Istanbul") // Timezone (UTC offset)
+  dateFormat          String   @default("DD/MM/YYYY") // DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD
+  timeFormat          String   @default("24") // "12" (AM/PM) or "24" (24-hour)
+  weekStart           String   @default("monday") // "monday" or "sunday"
+  currency            String   @default("TRY") // TRY, USD, EUR, GBP, etc.
+  defaultLanguage     String   @default("tr") // tr, en, de, ar
+  
+  // ============================================
+  // 2. Email (SMTP) Settings
+  // ============================================
+  smtpHost            String?
+  smtpPort            Int?     @default(587)
+  smtpEncryption      String?  @default("TLS") // TLS, SSL, None
+  smtpUsername        String?
+  smtpPassword        String?  // Encrypted password
+  smtpFromName        String?
+  smtpFromEmail       String?
+  smtpTimeout         Int?     @default(30000) // milliseconds
+  smtpRetryAttempts   Int?     @default(3)
+  smtpConnectionPool  Int?     @default(5)
+  smtpEnabled         Boolean  @default(false)
+  
+  // ============================================
+  // 3. Calendar Integration
+  // ============================================
+  calendarIntegrations Json?   // { google: { enabled, apiKey, calendarId, syncInterval }, outlook: {...}, icloud: {...}, yandex: {...} }
+  calendarDefaultView  String? @default("month") // month, week, day
+  calendarShowWeekends Boolean @default(true)
+  calendarShowHolidays Boolean @default(true)
+  
+  // ============================================
+  // 4. Security Settings
+  // ============================================
+  sessionTimeout          Int?     @default(30) // minutes
+  maxConcurrentSessions   Int?     @default(5)
+  rememberMeDuration      Int?     @default(30) // days
+  
+  // Password Policy
+  passwordMinLength       Int?     @default(8)
+  passwordRequireUppercase Boolean @default(true)
+  passwordRequireLowercase Boolean @default(true)
+  passwordRequireNumbers   Boolean @default(true)
+  passwordRequireSpecial   Boolean @default(false)
+  passwordExpirationDays   Int?     // null = no expiration
+  
+  // Two-Factor Authentication (2FA)
+  twoFactorEnabled        Boolean  @default(false)
+  twoFactorRequiredForAdmins Boolean @default(false)
+  twoFactorBackupCodes    Json?    // Array of backup codes
+  
+  // Login Security
+  maxLoginAttempts         Int?     @default(5)
+  lockoutDuration          Int?     @default(15) // minutes
+  ipWhitelist              Json?    // Array of IP addresses
+  
+  // API Security
+  apiRateLimit             Int?     @default(100) // requests per minute
+  apiKeyExpiration         Int?     // days, null = no expiration
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, companyId])
+  @@index([tenantId, companyId])
+  @@map("general_settings")
+}
+
+model NotificationSettings {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  userId      String?  // null for tenant/company level settings
+  
+  // ============================================
+  // 1. Email Notifications
+  // ============================================
+  emailEnabled            Boolean  @default(true)
+  emailSystemNotifications Boolean @default(true)
+  emailUserNotifications   Boolean @default(true)
+  emailModuleNotifications Json?   // { moduleSlug: { enabled: boolean, types: string[] } }
+  
+  // ============================================
+  // 2. Push Notifications
+  // ============================================
+  pushEnabled            Boolean  @default(true)
+  pushBrowserEnabled     Boolean  @default(true)
+  pushMobileEnabled      Boolean  @default(false)
+  pushSystemNotifications Boolean @default(true)
+  pushUserNotifications   Boolean @default(true)
+  pushModuleNotifications Json?   // { moduleSlug: { enabled: boolean, types: string[] } }
+  
+  // ============================================
+  // 3. SMS Notifications
+  // ============================================
+  smsEnabled            Boolean  @default(false)
+  smsProvider           String?  // "twilio", "nexmo", "custom"
+  smsApiKey             String?  // Encrypted API key
+  smsApiSecret          String?  // Encrypted API secret
+  smsFromNumber         String?
+  smsSystemNotifications Boolean @default(false)
+  smsUserNotifications   Boolean @default(false)
+  smsModuleNotifications Json?   // { moduleSlug: { enabled: boolean, types: string[] } }
+  
+  // ============================================
+  // 4. Notification Preferences
+  // ============================================
+  reminderTime          Int?     @default(15) // minutes before reminder
+  quietHoursStart       String?  // "HH:mm" format, e.g., "22:00"
+  quietHoursEnd         String?  // "HH:mm" format, e.g., "08:00"
+  notificationSound     Boolean  @default(true)
+  notificationSoundFile String?  // URL to sound file
+  
+  // ============================================
+  // 5. Module Notification Settings
+  // ============================================
+  moduleSettings        Json?    // { moduleSlug: { enabled: boolean, channels: { email: boolean, push: boolean, sms: boolean }, types: { typeName: { enabled: boolean, channels: {...} } } } }
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, companyId, userId])
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@map("notification_settings")
+}
+

@@ -1,0 +1,229 @@
+{
+  "title": "Sohbet",
+  "description": "Gerçek zamanlı sohbet ve mesajlaşma modülü",
+  "menu": {
+    "label": "Sohbet",
+    "items": {
+      "dashboard": "Sohbetler",
+      "rooms": "Sohbet Odaları",
+      "messages": "Doğrudan Mesajlar",
+      "groups": "Grup Sohbetleri"
+    }
+  },
+  "tabs": {
+    "details": "Detaylar",
+    "members": "Üyeler",
+    "files": "Dosyalar"
+  },
+  "details": {
+    "description": "Açıklama",
+    "type": "Tür",
+    "participants": "Katılımcılar"
+  },
+  "roomTypes": {
+    "direct": "Doğrudan Mesaj",
+    "group": "Grup Sohbeti",
+    "channel": "Kanal"
+  },
+  "rooms": {
+    "title": "Sohbet Odaları",
+    "description": "Sohbet odalarını yönetin ve katılın"
+  },
+  "actions": {
+    "newChat": "Yeni Sohbet",
+    "newGroup": "Yeni Grup",
+    "newGroupChat": "Yeni Grup Sohbeti",
+    "uploadFile": "Dosya Yükle",
+    "uploading": "Yükleniyor...",
+    "download": "İndir",
+    "downloadFile": "Dosyayı İndir",
+    "delete": "Sil",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "create": "Oluştur",
+    "select": "Seç",
+    "selectImage": "Resim Seç",
+    "uploadAvatar": "Avatar Yükle",
+    "changeAvatar": "Avatar değiştir",
+    "searchChats": "Sohbet ara...",
+    "noChats": "Henüz sohbet yok",
+    "loading": "Yükleniyor...",
+    "noFiles": "Henüz dosya yok",
+    "noParticipants": "Katılımcı yok",
+    "noUsersFound": "Kullanıcı bulunamadı",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "view": "Görüntüle",
+    "back": "Geri",
+    "change": "Change",
+    "saving": "Saving"
+  },
+  "forms": {
+    "groupName": "Grup Adı (Opsiyonel)",
+    "groupNamePlaceholder": "Grup adı girin...",
+    "selectUser": "Kullanıcı Seç"
+  },
+  "fileTypes": {
+    "wordDocument": "Word Belgesi",
+    "excelFile": "Excel Dosyası",
+    "cannotPreview": "Bu dosya türü tarayıcıda önizlenemez. Dosyayı indirip uygun uygulamada açabilirsiniz.",
+    "browserNotSupported": {
+      "video": "Tarayıcınız video oynatmayı desteklemiyor.",
+      "audio": "Tarayıcınız ses oynatmayı desteklemiyor."
+    }
+  },
+  "roomId": "Oda ID",
+  "titles": {
+    "avatar": {
+      "guncellenirken": {
+        "hata": {
+          "olustu": "Avatar güncellenirken hata oluştu"
+        }
+      },
+      "guncellendi": "Avatar güncellendi"
+    },
+    "success": "Başarılı",
+    "download": "İndir",
+    "onizle": "Önizle",
+    "tenant": {
+      "context": {
+        "bulunamadi": "Tenant context bulunamadı"
+      }
+    },
+    "mikrofon": {
+      "erisimi": {
+        "reddedildi": "Mikrofon erişimi reddedildi"
+      }
+    },
+    "ses": {
+      "kaydi": {
+        "yuklenirken": {
+          "hata": {
+            "olustu": "Ses kaydı yüklenirken hata oluştu"
+          }
+        },
+        "hazir": "Ses kaydı hazır"
+      },
+      "kaydini": {
+        "gondermek": {
+          "icin": {
+            "gonder": {
+              "butonu": "Ses kaydını göndermek için gönder butonu"
+            }
+          }
+        }
+      }
+    },
+    "filename": {
+      "yuklenirken": {
+        "hata": {
+          "olustu": "Dosya yüklenirken hata oluştu"
+        }
+      },
+      "basariyla": {
+        "yuklendi": "Dosya başarıyla yüklendi"
+      }
+    },
+    "dosya": {
+      "yuklendi": "Dosya yüklendi",
+      "indirilirken": {
+        "hata": {
+          "olustu": "Dosya indirilirken hata oluştu"
+        }
+      },
+      "silinirken": {
+        "hata": {
+          "olustu": "Dosya silinirken hata oluştu"
+        }
+      },
+      "basariyla": {
+        "silindi": "Dosya başarıyla silindi",
+        "yuklendi": "Dosya başarıyla yüklendi"
+      }
+    },
+    "mesaj": {
+      "gonderilirken": {
+        "hata": {
+          "olustu": "Mesaj gönderilirken hata oluştu"
+        }
+      }
+    },
+    "kullanici": {
+      "bilgisi": {
+        "bulunamadi": "Kullanıcı bilgisi bulunamadı"
+      }
+    },
+    "sohbet": {
+      "olusturulurken": {
+        "hata": {
+          "olustu": "Sohbet oluşturulurken hata oluştu"
+        }
+      },
+      "baslatildi": "Sohbet başlatıldı"
+    },
+    "bir": {
+      "kullanici": {
+        "secmelisiniz": "Bir kullanıcı seçmelisiniz"
+      }
+    },
+    "grup": {
+      "sohbeti": {
+        "olusturulurken": {
+          "hata": {
+            "olustu": "Grup sohbeti oluşturulurken hata oluştu"
+          }
+        },
+        "olusturuldu": "Grup sohbeti oluşturuldu"
+      }
+    },
+    "en": {
+      "az": {
+        "bir": {
+          "kullanici": {
+            "secmelisiniz": "En az bir kullanıcı seçmelisiniz"
+          }
+        }
+      }
+    }
+  },
+  "messages": {
+    "dosya": {
+      "gonderildi": {
+        "fileinfosmapf": {
+          "fnamejoin": "Dosya gönderildi"
+        }
+      }
+    },
+    "gonderildi": "Gönderildi"
+  },
+  "common": {
+    "bu": {
+      "dosyayi": {
+        "silmek": {
+          "istediginizden": {
+            "emin": {
+              "mi": "Bu dosyayı silmek istediğinizden emin misiniz?"
+            }
+          }
+        }
+      }
+    }
+  },
+  "table": {
+    "description": "Açıklama"
+  },
+  "errors": {
+    "videoLoadFailed": {
+      "title": "Video Yükleme Hatası",
+      "message": "Video yüklenirken bir hata oluştu. Dosya formatı desteklenmiyor olabilir veya dosya bozuk olabilir."
+    },
+    "audioLoadFailed": {
+      "title": "Ses Yükleme Hatası",
+      "message": "Ses yüklenirken bir hata oluştu. Dosya formatı desteklenmiyor olabilir veya dosya bozuk olabilir."
+    }
+  },
+  "chat": {
+    "messagePlaceholder": "Mesaj yazın...",
+    "title": "Sohbet"
+  }
+}

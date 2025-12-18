@@ -1,0 +1,19 @@
+{
+  "title": "Reports",
+  "description": "Create, view and export system and user reports module",
+  "menu": {
+    "label": "Reports",
+    "items": {
+      "all": "All Reports",
+      "create": "Create Report",
+      "templates": "Templates",
+      "scheduled": "Scheduled Reports",
+      "exports": "Export History"
+    }
+  }
+}
+
+
+
+
+

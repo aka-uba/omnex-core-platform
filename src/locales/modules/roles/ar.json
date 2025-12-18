@@ -1,0 +1,54 @@
+{
+  "title": "إدارة الأدوار",
+  "description": "إدارة أدوار المستخدمين ومستويات الوصول على مستوى النظام.",
+  "create": {
+    "title": "إنشاء دور جديد",
+    "description": "إنشاء دور جديد وتكوين صلاحياته.",
+    "button": "إنشاء دور"
+  },
+  "edit": {
+    "title": "تعديل الدور",
+    "description": "تحديث معلومات الدور والصلاحيات.",
+    "button": "حفظ التغييرات"
+  },
+  "view": {
+    "title": "تفاصيل الدور",
+    "description": "عرض معلومات الدور والمستخدمين المعينين."
+  },
+  "table": {
+    "roleName": "اسم الدور",
+    "description": "الوصف",
+    "usersAssigned": "المستخدمون المعينون",
+    "actions": "الإجراءات",
+    "searchPlaceholder": "البحث باسم الدور...",
+    "allRoles": "جميع الأدوار",
+    "withUsers": "مع المستخدمين"
+  },
+  "form": {
+    "name": "اسم الدور",
+    "namePlaceholder": "مثال: مدير المحتوى",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الدور",
+    "permissions": "الصلاحيات",
+    "selectPermissions": "اختر الصلاحيات"
+  },
+  "actions": {
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "assignUsers": "تعيين المستخدمين"
+  },
+  "validation": {
+    "nameRequired": "اسم الدور مطلوب",
+    "descriptionRequired": "الوصف مطلوب"
+  },
+  "permissions": {
+    "clientCreate": "إنشاء عميل",
+    "clientEdit": "تعديل عميل",
+    "aiGenerate": "إنشاء محتوى بالذكاء الاصطناعي"
+  }
+}
+
+
+
+

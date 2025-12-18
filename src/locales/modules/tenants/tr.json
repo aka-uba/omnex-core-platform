@@ -1,0 +1,173 @@
+{
+  "tenants": {
+    "title": "Tenant Yönetimi",
+    "subtitle": "Tüm tenantları görüntüleyin ve yönetin",
+    "createTenant": "Yeni Tenant Oluştur",
+    "tenantList": "Tenant Listesi",
+    "tenantDetails": "Tenant Detayları",
+    "wizard": {
+      "title": "Yeni Tenant Oluştur",
+      "step1": "Temel Bilgiler",
+      "step2": "Firma Bilgileri",
+      "step3": "Lokasyon",
+      "step4": "Özet",
+      "step5": "Oluşturuluyor",
+      "step6": "Tamamlandı",
+      "basicInfo": {
+        "tenantName": "Tenant Adı",
+        "tenantNamePlaceholder": "ACME Corporation",
+        "slug": "Slug",
+        "slugPlaceholder": "acme",
+        "slugDescription": "Veritabanı adlandırmasında kullanılır (küçük harf, rakam, tire)",
+        "subdomain": "Alt Alan Adı",
+        "subdomainPlaceholder": "acme",
+        "subdomainDescription": "Erişim URL'si: acme.onwindos.com",
+        "customDomain": "Özel Alan Adı (Opsiyonel)",
+        "customDomainPlaceholder": "https://acme.com"
+      },
+      "companyInfo": {
+        "companyName": "Firma Adı",
+        "companyNamePlaceholder": "ACME Corporation",
+        "logo": "Firma Logosu",
+        "logoPlaceholder": "Logo yükle",
+        "logoDescription": "Export dokümanlarında kullanılır (PDF, Excel, vb.)",
+        "favicon": "Favicon",
+        "faviconPlaceholder": "Favicon yükle",
+        "faviconDescription": "Tarayıcı sekmesinde gösterilen ikon (16x16 veya 32x32 px)",
+        "preview": "Önizleme:",
+        "address": "Adres",
+        "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
+        "phone": "Telefon",
+        "phonePlaceholder": "+90 212 345 6789",
+        "email": "E-posta",
+        "emailPlaceholder": "info@acme.com",
+        "website": "Website",
+        "websitePlaceholder": "https://acme.com",
+        "taxNumber": "Vergi Numarası",
+        "taxNumberPlaceholder": "123-456-789"
+      },
+      "location": {
+        "optional": "Opsiyonel Adım",
+        "optionalMessage": "Bu adımı atlayabilir ve lokasyonları daha sonra ekleyebilirsiniz.",
+        "skip": "Lokasyon Kurulumunu Atla",
+        "skipped": "Lokasyon Atlandı",
+        "skippedMessage": "Lokasyonları daha sonra Ayarlar sayfasından ekleyebilirsiniz.",
+        "addLocation": "İlk Lokasyon Ekle",
+        "locationName": "Lokasyon Adı",
+        "locationNamePlaceholder": "Merkez Ofis",
+        "locationType": "Lokasyon Tipi",
+        "locationTypePlaceholder": "Tip seçin",
+        "types": {
+          "firma": "Firma",
+          "lokasyon": "Lokasyon",
+          "isletme": "İşletme",
+          "koridor": "Koridor",
+          "oda": "Oda"
+        },
+        "address": "Adres",
+        "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
+        "city": "Şehir",
+        "cityPlaceholder": "İstanbul",
+        "country": "Ülke",
+        "countryPlaceholder": "Türkiye"
+      },
+      "review": {
+        "title": "Yapılandırmanızı Gözden Geçirin",
+        "subtitle": "Tenant oluşturmadan önce lütfen tüm bilgileri gözden geçirin.",
+        "basicInfo": "Temel Bilgiler",
+        "companyInfo": "Firma Bilgileri",
+        "initialLocation": "İlk Lokasyon",
+        "tenantName": "Tenant Adı:",
+        "slug": "Slug:",
+        "subdomain": "Alt Alan Adı:",
+        "customDomain": "Özel Alan Adı:",
+        "companyName": "Firma Adı:",
+        "logo": "Logo:",
+        "favicon": "Favicon:",
+        "uploaded": "Yüklendi",
+        "address": "Adres:",
+        "phone": "Telefon:",
+        "email": "E-posta:",
+        "website": "Website:",
+        "taxNumber": "Vergi Numarası:",
+        "name": "Ad:",
+        "type": "Tip:",
+        "skipped": "Atlandı - Daha sonra eklenebilir",
+        "notConfigured": "Lokasyon yapılandırılmadı"
+      },
+      "progress": {
+        "title": "Tenant Oluşturuluyor...",
+        "subtitle": "Lütfen tenant kurulumu tamamlanırken bekleyin. Bu bir dakika sürebilir.",
+        "steps": {
+          "database": "Veritabanı oluşturuluyor",
+          "databaseDesc": "PostgreSQL veritabanı kuruluyor",
+          "migrations": "Migration'lar çalıştırılıyor",
+          "migrationsDesc": "Veritabanı şeması uygulanıyor",
+          "storage": "Depolama oluşturuluyor",
+          "storageDesc": "Dosya dizinleri kuruluyor",
+          "seeding": "Veri ekleniyor",
+          "seedingDesc": "Varsayılan kullanıcılar ve roller oluşturuluyor",
+          "exportTemplate": "Export template oluşturuluyor",
+          "exportTemplateDesc": "Firma template'i kuruluyor",
+          "location": "Lokasyon oluşturuluyor",
+          "locationDesc": "İlk lokasyon kuruluyor"
+        }
+      },
+      "credentials": {
+        "title": "Tenant Başarıyla Oluşturuldu!",
+        "subtitle": "Tenant'ınız oluşturuldu ve kullanıma hazır.",
+        "accessUrl": "Erişim URL'si",
+        "superAdmin": "SuperAdmin Bilgileri",
+        "tenantAdmin": "Tenant Admin Bilgileri",
+        "defaultUser": "Varsayılan Kullanıcı Bilgileri",
+        "email": "E-posta:",
+        "username": "Kullanıcı Adı:",
+        "password": "Şifre:",
+        "copy": "Kopyala",
+        "copied": "Kopyalandı",
+        "openInNewTab": "Yeni sekmede aç",
+        "exportTemplate": "Export Template",
+        "exportTemplateCreated": "Varsayılan export template oluşturuldu, ID:",
+        "location": "İlk Lokasyon",
+        "locationCreated": "İlk lokasyon oluşturuldu, ID:",
+        "finish": "Firmalar Panosuna Git"
+      },
+      "buttons": {
+        "back": "Geri",
+        "next": "İleri",
+        "create": "Tenant Oluştur",
+        "finish": "Bitir"
+      }
+    },
+    "errors": {
+      "nameRequired": "Tenant adı gereklidir",
+      "slugRequired": "Slug gereklidir",
+      "slugInvalid": "Slug sadece küçük harf, rakam ve tire içerebilir",
+      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "urlInvalid": "Geçerli bir URL girin",
+      "createFailed": "Tenant oluşturulamadı",
+      "loadFailed": "Tenant yüklenemedi"
+    }
+  },
+  "title": "Tenant Yönetimi",
+  "description": "Multi-Tenant yönetim sistemi",
+  "menu": {
+    "label": "Tenantlar",
+    "items": {
+      "dashboard": "Dashboard",
+      "list": "Tenant Listesi",
+      "create": "Tenant Oluştur",
+      "settings": "Ayarlar"
+    }
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  }
+}

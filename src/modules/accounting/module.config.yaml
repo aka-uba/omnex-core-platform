@@ -1,0 +1,132 @@
+name: "Accounting"
+slug: "accounting"
+version: "1.0.0"
+description: "Comprehensive accounting module with subscription management, invoice generation, payment tracking, and expense management with approval workflows"
+icon: "CurrencyDollar"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.10"
+dependencies: []
+menu:
+  main:
+    label: "Accounting"
+    icon: "CurrencyDollar"
+    href: "/modules/accounting/dashboard"
+    order: 30
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/accounting/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Subscriptions"
+        path: "/modules/accounting/subscriptions"
+        icon: "Repeat"
+        order: 2
+      - title: "Invoices"
+        path: "/modules/accounting/invoices"
+        icon: "FileText"
+        order: 3
+      - title: "Payments"
+        path: "/modules/accounting/payments"
+        icon: "CreditCard"
+        order: 4
+      - title: "Expenses"
+        path: "/modules/accounting/expenses"
+        icon: "Receipt"
+        order: 5
+      - title: "Suppliers"
+        path: "/modules/accounting/suppliers"
+        icon: "BuildingStore"
+        order: 6
+      - title: "Reports"
+        path: "/modules/accounting/reports"
+        icon: "ChartBar"
+        order: 7
+settings:
+  - key: "enableNotifications"
+    label: "Enable Notifications"
+    description: "Send notifications for important accounting events"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "defaultCurrency"
+    label: "Default Currency"
+    description: "Default currency for invoices and payments"
+    type: "select"
+    defaultValue: "USD"
+    options:
+      - value: "USD"
+        label: "US Dollar"
+      - value: "EUR"
+        label: "Euro"
+      - value: "TRY"
+        label: "Turkish Lira"
+      - value: "GBP"
+        label: "British Pound"
+    category: "Payments"
+  - key: "invoiceAutoNumbering"
+    label: "Auto Invoice Numbering"
+    description: "Automatically generate invoice numbers"
+    type: "boolean"
+    defaultValue: true
+    category: "Invoices"
+  - key: "expenseApprovalRequired"
+    label: "Expense Approval Required"
+    description: "Require approval for all expenses"
+    type: "boolean"
+    defaultValue: true
+    category: "Expenses"
+  - key: "subscriptionAutoRenewal"
+    label: "Subscription Auto Renewal"
+    description: "Automatically renew subscriptions"
+    type: "boolean"
+    defaultValue: false
+    category: "Subscriptions"
+  - key: "taxRate"
+    label: "Default Tax Rate (%)"
+    description: "Default tax rate for invoices"
+    type: "number"
+    defaultValue: 20
+    min: 0
+    max: 100
+    category: "Invoices"
+  - key: "paymentReminderDays"
+    label: "Payment Reminder (Days)"
+    description: "Days before payment due date to send reminder"
+    type: "number"
+    defaultValue: 7
+    min: 1
+    max: 30
+    category: "Payments"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "accounting.subscription.create"
+    name: "Create Subscription"
+    description: "Allow creating new subscriptions"
+  - key: "accounting.subscription.update"
+    name: "Update Subscription"
+    description: "Allow updating subscriptions"
+  - key: "accounting.subscription.delete"
+    name: "Delete Subscription"
+    description: "Allow deleting subscriptions"
+  - key: "accounting.invoice.create"
+    name: "Create Invoice"
+    description: "Allow creating invoices"
+  - key: "accounting.invoice.update"
+    name: "Update Invoice"
+    description: "Allow updating invoices"
+  - key: "accounting.expense.create"
+    name: "Create Expense"
+    description: "Allow creating expenses"
+  - key: "accounting.expense.approve"
+    name: "Approve Expense"
+    description: "Allow approving expenses"
+  - key: "accounting.payment.create"
+    name: "Create Payment"
+    description: "Allow recording payments"

@@ -1,0 +1,23 @@
+.footer {
+  flex-shrink: 0;
+  min-height: 60px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  padding: 16px;
+  padding-inline-end: 50px; /* Sağ dış padding: 50px (RTL desteği için logical property) */
+  margin-top: auto;
+}
+
+[data-mantine-color-scheme="dark"] .footer {
+  border-top-color: var(--border-color) !important;
+  background-color: var(--bg-card) !important;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    min-height: 56px;
+    padding: 12px;
+    padding-inline-end: 50px; /* Sağ dış padding: 50px (mobile için de, RTL desteği için logical property) */
+  }
+}
+

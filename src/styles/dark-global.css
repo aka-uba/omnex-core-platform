@@ -1,0 +1,976 @@
+/**
+ * Dark Mode Global Styles
+ * Bu dosya tema özelleştirici tarafından değiştirilemez
+ * Google Chrome dark renkleriyle uyumlu
+ */
+
+/* Dark mode color scheme - globals.css ile uyumlu */
+[data-mantine-color-scheme="dark"] {
+  /* Background colors - Google Dark Theme (Gray Tones) */
+  --bg-primary-dark: #202124;
+  --bg-secondary-dark: #303134;
+  --bg-tertiary-dark: #3c4043;
+  --bg-card-dark: #303134;
+  --bg-surface-dark: #303134;
+  
+  /* Text colors - globals.css'teki dark mode renkleriyle uyumlu */
+  --text-primary-dark: #e8eaed;
+  --text-secondary-dark: #9aa0a6;
+  --text-tertiary-dark: #80868b;
+  
+  /* Border colors - globals.css'teki dark mode renkleriyle uyumlu */
+  --border-color-dark: #5f6368;
+  --border-hover-dark: #70757a;
+  
+  /* Shadow colors */
+  --shadow-sm-dark: rgba(0, 0, 0, 0.4);
+  --shadow-md-dark: rgba(0, 0, 0, 0.4);
+  --shadow-lg-dark: rgba(0, 0, 0, 0.5);
+  
+  /* Overlay colors */
+  --overlay-dark: rgba(0, 0, 0, 0.5);
+  --overlay-light-dark: rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode base styles */
+[data-mantine-color-scheme="dark"] body {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Paper-root {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Card-root {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode input styles */
+[data-mantine-color-scheme="dark"] input,
+[data-mantine-color-scheme="dark"] textarea,
+[data-mantine-color-scheme="dark"] select {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] input:focus,
+[data-mantine-color-scheme="dark"] textarea:focus,
+[data-mantine-color-scheme="dark"] select:focus {
+  border-color: var(--border-hover-dark);
+}
+
+/* Dark mode button styles */
+[data-mantine-color-scheme="dark"] .mantine-Button-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Button-root[data-variant="filled"] {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Button-root[data-variant="outline"] {
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode table styles */
+[data-mantine-color-scheme="dark"] table {
+  background-color: var(--bg-card-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] thead {
+  background-color: var(--bg-secondary-dark);
+}
+
+[data-mantine-color-scheme="dark"] tbody tr {
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] tbody tr:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode scrollbar */
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-track {
+  background: var(--bg-secondary-dark);
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary-dark);
+  border-radius: 4px;
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover-dark);
+}
+
+/* Dark mode prefers-color-scheme support */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mantine-color-scheme="light"]) {
+    /* Auto mode için dark renkler - Google Dark Theme (Gray Tones) */
+    --bg-primary-dark: #202124;
+    --bg-secondary-dark: #303134;
+    --bg-tertiary-dark: #3c4043;
+    --bg-card-dark: #303134;
+    --text-primary-dark: #e8eaed;
+    --text-secondary-dark: #9aa0a6;
+    --border-color-dark: #5f6368;
+  }
+}
+
+/* Dark mode - Tema özelleştirici tarafından değiştirilemez */
+[data-mantine-color-scheme="dark"] * {
+  /* Bu stiller tema özelleştirici tarafından override edilemez */
+  --dark-mode-protected: true;
+}
+
+/* Dark mode - Genel HTML elementleri */
+[data-mantine-color-scheme="dark"] html {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] body {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Genel container ve wrapper'lar */
+[data-mantine-color-scheme="dark"] div,
+[data-mantine-color-scheme="dark"] section,
+[data-mantine-color-scheme="dark"] article,
+[data-mantine-color-scheme="dark"] aside,
+[data-mantine-color-scheme="dark"] main {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Link'ler */
+[data-mantine-color-scheme="dark"] a {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] a:hover {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Heading'ler */
+[data-mantine-color-scheme="dark"] h1,
+[data-mantine-color-scheme="dark"] h2,
+[data-mantine-color-scheme="dark"] h3,
+[data-mantine-color-scheme="dark"] h4,
+[data-mantine-color-scheme="dark"] h5,
+[data-mantine-color-scheme="dark"] h6 {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Paragraph ve text */
+[data-mantine-color-scheme="dark"] p,
+[data-mantine-color-scheme="dark"] span,
+[data-mantine-color-scheme="dark"] label {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Code ve pre */
+[data-mantine-color-scheme="dark"] code,
+[data-mantine-color-scheme="dark"] pre {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Blockquote */
+[data-mantine-color-scheme="dark"] blockquote {
+  border-left-color: var(--border-color-dark);
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - HR */
+[data-mantine-color-scheme="dark"] hr {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Menu */
+[data-mantine-color-scheme="dark"] .mantine-Menu-dropdown {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-item {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-item:hover {
+  background-color: var(--bg-tertiary-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-item[data-disabled] {
+  color: var(--text-tertiary-dark);
+  opacity: 0.5;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-label {
+  color: var(--text-secondary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-divider {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Popover */
+[data-mantine-color-scheme="dark"] .mantine-Popover-dropdown {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Tooltip */
+[data-mantine-color-scheme="dark"] .mantine-Tooltip-tooltip {
+  background-color: var(--bg-tertiary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Notification */
+[data-mantine-color-scheme="dark"] .mantine-Notification-root {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-title {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-description {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine ActionIcon */
+[data-mantine-color-scheme="dark"] .mantine-ActionIcon-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-ActionIcon-root:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode - Mantine Avatar */
+[data-mantine-color-scheme="dark"] .mantine-Avatar-root {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Group */
+[data-mantine-color-scheme="dark"] .mantine-Group-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Stack */
+[data-mantine-color-scheme="dark"] .mantine-Stack-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Center */
+[data-mantine-color-scheme="dark"] .mantine-Center-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Flex */
+[data-mantine-color-scheme="dark"] .mantine-Flex-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Grid */
+[data-mantine-color-scheme="dark"] .mantine-Grid-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine SimpleGrid */
+[data-mantine-color-scheme="dark"] .mantine-SimpleGrid-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Title */
+[data-mantine-color-scheme="dark"] .mantine-Title-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Text */
+[data-mantine-color-scheme="dark"] .mantine-Text-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Anchor */
+[data-mantine-color-scheme="dark"] .mantine-Anchor-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Anchor-root:hover {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine List */
+[data-mantine-color-scheme="dark"] .mantine-List-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-List-item {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine ThemeIcon */
+[data-mantine-color-scheme="dark"] .mantine-ThemeIcon-root {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Progress */
+[data-mantine-color-scheme="dark"] .mantine-Progress-root {
+  background-color: var(--bg-secondary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Progress-bar {
+  background-color: var(--border-hover-dark);
+}
+
+/* Dark mode - Mantine Ring */
+[data-mantine-color-scheme="dark"] .mantine-Ring-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Skeleton */
+[data-mantine-color-scheme="dark"] .mantine-Skeleton-root {
+  background-color: var(--bg-secondary-dark);
+}
+
+/* Dark mode - Mantine Spotlight */
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-root {
+  background-color: var(--bg-card-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-action {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-action:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode - Mantine Drawer */
+[data-mantine-color-scheme="dark"] .mantine-Drawer-content {
+  background-color: var(--bg-card-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Drawer-header {
+  background-color: var(--bg-card-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Drawer-title {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Drawer-body {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Accordion */
+[data-mantine-color-scheme="dark"] .mantine-Accordion-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Accordion-item {
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Accordion-control {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Accordion-control:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Accordion-panel {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Alert */
+[data-mantine-color-scheme="dark"] .mantine-Alert-root {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Alert-title {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Alert-message {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine Breadcrumbs */
+[data-mantine-color-scheme="dark"] .mantine-Breadcrumbs-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Breadcrumbs-separator {
+  color: var(--text-tertiary-dark);
+}
+
+/* Dark mode - Mantine Timeline */
+[data-mantine-color-scheme="dark"] .mantine-Timeline-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Timeline-item {
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Timeline-itemTitle {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Timeline-itemBody {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine Stepper */
+[data-mantine-color-scheme="dark"] .mantine-Stepper-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Stepper-step {
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Stepper-stepLabel {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Stepper-stepDescription {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine Pagination */
+[data-mantine-color-scheme="dark"] .mantine-Pagination-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Pagination-control {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Pagination-control:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Pagination-control[data-active] {
+  background-color: var(--border-hover-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Rating */
+[data-mantine-color-scheme="dark"] .mantine-Rating-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Slider */
+[data-mantine-color-scheme="dark"] .mantine-Slider-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Slider-track {
+  background-color: var(--bg-secondary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Slider-bar {
+  background-color: var(--border-hover-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Slider-thumb {
+  background-color: var(--border-hover-dark);
+  border-color: var(--bg-card-dark);
+}
+
+/* Dark mode - Mantine Switch */
+[data-mantine-color-scheme="dark"] .mantine-Switch-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Switch-track {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Switch-thumb {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Switch-input:checked + .mantine-Switch-track {
+  background-color: var(--border-hover-dark);
+}
+
+/* Dark mode - Mantine Checkbox */
+[data-mantine-color-scheme="dark"] .mantine-Checkbox-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Checkbox-input {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Checkbox-input:checked {
+  background-color: var(--border-hover-dark);
+  border-color: var(--border-hover-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Checkbox-label {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Radio */
+[data-mantine-color-scheme="dark"] .mantine-Radio-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Radio-input {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Radio-input:checked {
+  background-color: var(--border-hover-dark);
+  border-color: var(--border-hover-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Radio-label {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine SegmentedControl */
+[data-mantine-color-scheme="dark"] .mantine-SegmentedControl-root {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-SegmentedControl-control {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-SegmentedControl-control:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-SegmentedControl-control[data-active] {
+  background-color: var(--bg-card-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine FileButton */
+[data-mantine-color-scheme="dark"] .mantine-FileButton-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine ColorInput */
+[data-mantine-color-scheme="dark"] .mantine-ColorInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Dark mode - Mantine ColorPicker */
+[data-mantine-color-scheme="dark"] .mantine-ColorPicker-root {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine JsonInput */
+[data-mantine-color-scheme="dark"] .mantine-JsonInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  font-family: monospace;
+}
+
+/* Dark mode - Mantine PasswordInput */
+[data-mantine-color-scheme="dark"] .mantine-PasswordInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Dark mode - Mantine PinInput */
+[data-mantine-color-scheme="dark"] .mantine-PinInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Dark mode - Mantine NativeSelect */
+[data-mantine-color-scheme="dark"] .mantine-NativeSelect-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Dark mode - Mantine Combobox */
+[data-mantine-color-scheme="dark"] .mantine-Combobox-dropdown {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Combobox-option {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Combobox-option:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Combobox-option[data-selected] {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode - Mantine Autocomplete */
+[data-mantine-color-scheme="dark"] .mantine-Autocomplete-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Autocomplete-dropdown {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine TagsInput */
+[data-mantine-color-scheme="dark"] .mantine-TagsInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-TagsInput-tag {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine FileInput */
+[data-mantine-color-scheme="dark"] .mantine-FileInput-input {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Dark mode - Mantine Image */
+[data-mantine-color-scheme="dark"] .mantine-Image-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine BackgroundImage */
+[data-mantine-color-scheme="dark"] .mantine-BackgroundImage-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine ColorSwatch */
+[data-mantine-color-scheme="dark"] .mantine-ColorSwatch-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Indicator */
+[data-mantine-color-scheme="dark"] .mantine-Indicator-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Loader */
+[data-mantine-color-scheme="dark"] .mantine-Loader-root {
+  color: var(--border-hover-dark);
+}
+
+/* Dark mode - Mantine Overlay */
+[data-mantine-color-scheme="dark"] .mantine-Overlay-root {
+  background-color: var(--overlay-dark);
+}
+
+/* Dark mode - Mantine LoadingOverlay */
+[data-mantine-color-scheme="dark"] .mantine-LoadingOverlay-root {
+  background-color: var(--overlay-dark);
+}
+
+/* Dark mode - Mantine Transition */
+[data-mantine-color-scheme="dark"] .mantine-Transition-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Affix */
+[data-mantine-color-scheme="dark"] .mantine-Affix-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine AppShell */
+[data-mantine-color-scheme="dark"] .mantine-AppShell-root {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-AppShell-header {
+  background-color: var(--bg-card-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-AppShell-navbar {
+  background-color: var(--bg-card-dark);
+  border-right-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-AppShell-aside {
+  background-color: var(--bg-card-dark);
+  border-left-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-AppShell-footer {
+  background-color: var(--bg-card-dark);
+  border-top-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-AppShell-main {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine NavLink */
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-NavLink-root[data-active] {
+  background-color: var(--bg-tertiary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Breadcrumbs */
+[data-mantine-color-scheme="dark"] .mantine-Breadcrumbs-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Breadcrumbs-breadcrumb {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Breadcrumbs-breadcrumb:hover {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine Burger */
+[data-mantine-color-scheme="dark"] .mantine-Burger-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Code */
+[data-mantine-color-scheme="dark"] .mantine-Code-root {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Highlight */
+[data-mantine-color-scheme="dark"] .mantine-Highlight-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Highlight-mark {
+  background-color: rgba(112, 117, 122, 0.3);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Kbd */
+[data-mantine-color-scheme="dark"] .mantine-Kbd-root {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Mark */
+[data-mantine-color-scheme="dark"] .mantine-Mark-root {
+  background-color: rgba(112, 117, 122, 0.3);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Spoiler */
+[data-mantine-color-scheme="dark"] .mantine-Spoiler-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spoiler-control {
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine TypographyStylesProvider */
+[data-mantine-color-scheme="dark"] .mantine-TypographyStylesProvider-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Blockquote */
+[data-mantine-color-scheme="dark"] .mantine-Blockquote-root {
+  border-left-color: var(--border-color-dark);
+  color: var(--text-secondary-dark);
+}
+
+/* Dark mode - Mantine CopyButton */
+[data-mantine-color-scheme="dark"] .mantine-CopyButton-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine CloseButton */
+[data-mantine-color-scheme="dark"] .mantine-CloseButton-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-CloseButton-root:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode - Mantine UnstyledButton */
+[data-mantine-color-scheme="dark"] .mantine-UnstyledButton-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Collapse */
+[data-mantine-color-scheme="dark"] .mantine-Collapse-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Fade */
+[data-mantine-color-scheme="dark"] .mantine-Fade-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Scale */
+[data-mantine-color-scheme="dark"] .mantine-Scale-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Slide */
+[data-mantine-color-scheme="dark"] .mantine-Slide-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Spotlight */
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-root {
+  background-color: var(--bg-card-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-search {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-action {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-action:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Spotlight-action[data-selected] {
+  background-color: var(--bg-tertiary-dark);
+}
+
+/* Dark mode - Mantine Carousel */
+[data-mantine-color-scheme="dark"] .mantine-Carousel-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Carousel-control {
+  background-color: var(--bg-card-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Carousel-control:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Carousel-indicator {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-color-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Carousel-indicator[data-active] {
+  background-color: var(--border-hover-dark);
+}
+
+/* Dark mode - Mantine Image */
+[data-mantine-color-scheme="dark"] .mantine-Image-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine BackgroundImage */
+[data-mantine-color-scheme="dark"] .mantine-BackgroundImage-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine ColorSwatch */
+[data-mantine-color-scheme="dark"] .mantine-ColorSwatch-root {
+  border-color: var(--border-color-dark);
+}
+
+/* Dark mode - Mantine Indicator */
+[data-mantine-color-scheme="dark"] .mantine-Indicator-root {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Indicator-label {
+  background-color: var(--bg-tertiary-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Loader */
+[data-mantine-color-scheme="dark"] .mantine-Loader-root {
+  color: var(--border-hover-dark);
+}
+
+/* Dark mode - Mantine Overlay */
+[data-mantine-color-scheme="dark"] .mantine-Overlay-root {
+  background-color: var(--overlay-dark);
+}
+
+/* Dark mode - Mantine LoadingOverlay */
+[data-mantine-color-scheme="dark"] .mantine-LoadingOverlay-root {
+  background-color: var(--overlay-dark);
+}
+
+/* Dark mode - Mantine Transition */
+[data-mantine-color-scheme="dark"] .mantine-Transition-root {
+  color: var(--text-primary-dark);
+}
+
+/* Dark mode - Mantine Affix */
+[data-mantine-color-scheme="dark"] .mantine-Affix-root {
+  color: var(--text-primary-dark);
+}
+

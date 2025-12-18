@@ -1,0 +1,139 @@
+// ============================================
+// Human Resources Module
+// ============================================
+
+model Employee {
+  id        String @id @default(uuid())
+  userId    String @unique // User tablosuna referans
+  tenantId  String
+  companyId String
+
+  // İş bilgileri
+  employeeNumber String
+  department     String
+  position       String
+  hireDate       DateTime
+  managerId      String? // User ID
+
+  // Maaş bilgileri
+  salary      Decimal? @db.Decimal(10, 2)
+  salaryGroup String?
+  currency    String   @default("TRY")
+
+  // Çalışma şekli
+  workType String // 'full_time', 'part_time', 'contract'
+
+  // Metadata
+  metadata Json?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user         User       @relation("EmployeeUser", fields: [userId], references: [id], onDelete: Cascade)
+  manager      Employee?  @relation("EmployeeManager", fields: [managerId], references: [id], onDelete: SetNull)
+  subordinates Employee[] @relation("EmployeeManager")
+  leaves       Leave[]
+  payrolls     Payroll[]
+
+  @@index([tenantId, companyId])
+  @@index([department])
+  @@index([managerId])
+  @@index([employeeNumber])
+  @@index([isActive])
+}
+
+model Leave {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  employeeId String
+
+  type      String // 'annual', 'sick', 'unpaid', 'maternity'
+  startDate DateTime
+  endDate   DateTime
+  days      Int
+
+  // Durum
+  status     String    @default("pending") // 'pending', 'approved', 'rejected'
+  approvedBy String? // User ID
+  approvedAt DateTime?
+
+  // Metadata
+  reason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([employeeId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model Payroll {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  employeeId String
+
+  // Dönem
+  period  String // 'YYYY-MM' formatında
+  payDate DateTime
+
+  // Maaş bilgileri
+  grossSalary Decimal @db.Decimal(10, 2)
+  deductions  Decimal @default(0) @db.Decimal(10, 2)
+  netSalary   Decimal @db.Decimal(10, 2)
+
+  // Kesintiler detayı
+  taxDeduction    Decimal? @db.Decimal(10, 2)
+  sgkDeduction    Decimal? @db.Decimal(10, 2)
+  otherDeductions Decimal? @db.Decimal(10, 2)
+
+  // Ödemeler
+  bonuses  Decimal @default(0) @db.Decimal(10, 2)
+  overtime Decimal @default(0) @db.Decimal(10, 2)
+
+  // Durum
+  status String @default("draft") // 'draft', 'approved', 'paid'
+
+  // Metadata
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([employeeId])
+  @@index([period])
+  @@index([status])
+  @@index([payDate])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

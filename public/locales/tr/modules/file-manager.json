@@ -1,0 +1,256 @@
+{
+    "title": "Dosya Yöneticisi",
+    "description": "Dosyalarınızı yönetin ve düzenleyin",
+    "menu": {
+        "label": "Dosya Yöneticisi",
+        "items": {
+            "dashboard": "Dashboard",
+            "files": "Dosyalar",
+            "folders": "Klasörler"
+        }
+    },
+    "breadcrumbs": {
+        "home": "Ana Sayfa"
+    },
+    "toolbar": {
+        "search": "Dosya ara...",
+        "searchPlaceholder": "İsim veya etikete göre ara...",
+        "newFolder": "Yeni Klasör",
+        "upload": "Yükle",
+        "delete": "Sil",
+        "download": "İndir",
+        "fileType": "Dosya Türü",
+        "dateRange": "Tarih Aralığı",
+        "tags": "Etiketler",
+        "sortBy": "Sırala",
+        "allTypes": "Tüm Türler",
+        "allTags": "Tüm Etiketler",
+        "selectDateRange": "Tarih Aralığı Seç",
+        "dateRangePlaceholder": "Başlangıç - Bitiş",
+        "startDate": "Başlangıç Tarihi",
+        "startDatePlaceholder": "Başlangıç tarihi seçin",
+        "endDate": "Bitiş Tarihi",
+        "endDatePlaceholder": "Bitiş tarihi seçin",
+        "apply": "Uygula",
+        "clear": "Temizle",
+        "close": "Kapat",
+        "cancel": "İptal",
+        "downloadSelected": "Seçilenleri İndir",
+        "deleteSelected": "Seçilenleri Sil",
+        "shareServer": "Web Sunucu",
+        "webServer": "Web Sunucu",
+        "selectTags": "Etiket Seç",
+        "refresh": "Yenile",
+        "types": {
+            "image": "Görsel",
+            "pdf": "PDF",
+            "document": "Belge",
+            "video": "Video",
+            "archive": "Arşiv"
+        },
+        "sortOptions": {
+            "newest": "En Yeni",
+            "oldest": "En Eski",
+            "nameAsc": "İsim (A-Z)",
+            "nameDesc": "İsim (Z-A)",
+            "sizeAsc": "Boyut (Küçük-Büyük)",
+            "sizeDesc": "Boyut (Büyük-Küçük)"
+        }
+    },
+    "table": {
+        "name": "Ad",
+        "size": "Boyut",
+        "type": "Tür",
+        "modified": "Değiştirilme",
+        "permissions": "İzinler",
+        "actions": "İşlemler"
+    },
+    "permissions": {
+        "canRead": "Okuma izni var",
+        "canWrite": "Yazma izni var",
+        "noRead": "Okuma izni yok",
+        "noWrite": "Yazma izni yok"
+    },
+    "type": {
+        "folder": "Klasör",
+        "file": "Dosya"
+    },
+    "actions": {
+        "open": "Aç",
+        "openFile": "Dosyayı Aç",
+        "rename": "Yeniden Adlandır",
+        "delete": "Sil",
+        "download": "İndir",
+        "downloading": "İndiriliyor",
+        "files": "dosya",
+        "move": "Taşı",
+        "share": "Paylaş",
+        "properties": "Özellikler"
+    },
+    "share": {
+        "success": "Başarılı",
+        "copied": "Paylaşım bağlantısı panoya kopyalandı",
+        "error": "Hata",
+        "failed": "Paylaşım başarısız oldu",
+        "sharing": "Paylaşılıyor",
+        "modalTitle": "Öğe Paylaş",
+        "shareLinkFor": "Paylaşım bağlantısı",
+        "copy": "Kopyala",
+        "note": "Not: Bu bağlantıya erişmek için kimlik doğrulama gereklidir."
+    },
+    "newFolder": {
+        "title": "Yeni Klasör Oluştur",
+        "create": "Oluştur",
+        "success": "Başarılı",
+        "created": "Klasör başarıyla oluşturuldu",
+        "selectParent": "Dizin Seç",
+        "selectParentPlaceholder": "Klasörü oluşturmak istediğiniz dizini seçin",
+        "rootFolder": "Ana Dizin (Kök)"
+    },
+    "upload": {
+        "title": "Yeni Dosya Ekle",
+        "dragDrop": "Dosyaları buraya sürükleyin",
+        "clickToSelect": "veya bilgisayarınızdan dosya seçmek için tıklayın",
+        "browseFiles": "Dosya Seç",
+        "maxSize": "Maksimum dosya boyutu: 50MB",
+        "files": "Dosyalar",
+        "button": "Dosya Yükle",
+        "success": "Başarılı",
+        "filesUploaded": "Dosyalar başarıyla yüklendi",
+        "fileDetails": "Dosya Detayları",
+        "fileDetailsDesc": "Dosya hakkında temel bilgileri sağlayın",
+        "fileName": "Dosya Adı",
+        "fileNamePlaceholder": "Dosya adını girin",
+        "category": "Kategori",
+        "categoryPlaceholder": "Bir kategori seçin",
+        "categories": {
+            "design": "Tasarım Varlığı",
+            "contract": "Sözleşme",
+            "invoice": "Fatura",
+            "report": "Rapor"
+        },
+        "description": "Açıklama",
+        "descriptionPlaceholder": "Dosya için kısa bir açıklama ekleyin...",
+        "tags": "Etiketler",
+        "tagPlaceholder": "Etiket ekle...",
+        "accessAssociation": "Erişim ve İlişkilendirme",
+        "accessAssociationDesc": "Kimlerin görüntüleyebileceğini ve bu dosyanın neyle ilişkili olduğunu kontrol edin",
+        "accessLevel": "Erişim Seviyesi",
+        "private": "Özel",
+        "public": "Herkese Açık",
+        "associateProject": "Proje ile İlişkilendir",
+        "associateProjectPlaceholder": "Bir proje seçin (isteğe bağlı)"
+    },
+    "rename": {
+        "title": "Yeniden Adlandır",
+        "button": "Yeniden Adlandır",
+        "success": "Başarılı",
+        "renamed": "Başarıyla yeniden adlandırıldı"
+    },
+    "delete": {
+        "title": "Silme Onayı",
+        "confirm": "'{name}' dosyasını silmek istediğinizden emin misiniz?",
+        "cannotUndo": "Bu işlem geri alınamaz.",
+        "button": "Sil",
+        "success": "Başarılı",
+        "deleted": "Başarıyla silindi"
+    },
+    "form": {
+        "folderName": "Klasör Adı",
+        "folderNamePlaceholder": "Klasör adını girin",
+        "folderNameRequired": "Klasör adı gereklidir",
+        "invalidFolderName": "Geçersiz klasör adı",
+        "newName": "Yeni Ad",
+        "newNamePlaceholder": "Yeni adı girin",
+        "nameRequired": "Ad gereklidir",
+        "cancel": "İptal"
+    },
+    "empty": {
+        "noFiles": "Henüz dosya yok",
+        "noResults": "Sonuç bulunamadı"
+    },
+    "error": {
+        "title": "Hata",
+        "createFolder": "Klasör oluşturulamadı",
+        "rename": "Yeniden adlandırılamadı",
+        "delete": "Silinemedi",
+        "upload": "Yüklenemedi"
+    },
+    "preview": {
+        "videoPreview": "Video Önizleme",
+        "pdfPreview": "PDF dosyası önizlenemiyor. İndirmek için indir butonunu kullanın.",
+        "officePreview": "Office dosyası önizlenemiyor. İndirmek için indir butonunu kullanın.",
+        "textPreview": "Metin dosyası içeriği burada görüntülenecek...",
+        "noPreview": "Bu dosya türü için önizleme mevcut değil."
+    },
+    "shareServer": {
+        "title": "Paylaşım Sunucusu",
+        "selectFolder": "Klasör Seç",
+        "selectFolderPlaceholder": "Paylaşmak istediğiniz klasörü seçin",
+        "rootFolder": "Ana Dizin",
+        "start": "Sunucuyu Başlat",
+        "stop": "Sunucuyu Durdur",
+        "running": "Çalışıyor",
+        "shareUrl": "Paylaşım URL'si",
+        "shareUrlDescription": "Ağınızdaki diğer cihazlarla bu URL'yi paylaşarak dosyalara erişebilirler",
+        "copy": "Kopyala",
+        "copied": "Kopyalandı",
+        "urlCopied": "URL panoya kopyalandı",
+        "copyFailed": "URL kopyalanamadı",
+        "serverStarted": "Sunucu Başlatıldı",
+        "serverStartedMessage": "Dosya paylaşım sunucusu şimdi çalışıyor",
+        "serverStopped": "Sunucu Durduruldu",
+        "serverStoppedMessage": "Dosya paylaşım sunucusu durduruldu",
+        "error": "Hata",
+        "startFailed": "Sunucu başlatılamadı",
+        "stopFailed": "Sunucu durdurulamadı",
+        "expiresInHours": "Otomatik Kapanma Süresi (Saat)",
+        "expiresInHoursDescription": "Sunucu bu süre sonunda otomatik olarak kapanır. Minimum: 0.5 saat, Maksimum: 24 saat"
+    },
+    "messages": {
+        "success": "Başarılı",
+        "error": "Hata",
+        "folderCreated": "Klasör oluşturuldu",
+        "itemRenamed": "Öğe yeniden adlandırıldı",
+        "itemDeleted": "Öğe silindi",
+        "itemMoved": "Öğe taşındı",
+        "itemCopied": "Öğe kopyalandı",
+        "fileUploaded": "Dosya yüklendi",
+        "uploading": "Yükleniyor...",
+        "failedToLoadTree": "Dizin ağacı yüklenemedi",
+        "failedToLoadFiles": "Dosyalar yüklenemedi"
+    },
+    "dashboard": {
+        "title": "Dosya Yöneticisi",
+        "description": "Kiracılar ve modüller arasında dosyaları yönetin",
+        "tenant": "Kiracı",
+        "module": "Modül",
+        "folders": "Dizin Ağacı",
+        "files": "Dosyalar",
+        "noFiles": "Bu dizinde dosya yok",
+        "allTenants": "Tüm Kiracılar (Süper Admin)",
+        "allModules": "Tüm Modüller",
+        "modules": {
+            "accounting": "Muhasebe",
+            "hr": "İnsan Kaynakları",
+            "maintenance": "Bakım",
+            "production": "Üretim",
+            "realEstate": "Gayrimenkul",
+            "documents": "Belgeler"
+        }
+    },
+    "copy": {
+        "title": "Kopyala",
+        "modalTitle": "Öğe Kopyala",
+        "selectDestination": "Hedef seçin",
+        "loadingFolders": "Klasörler yükleniyor...",
+        "button": "Kopyala"
+    },
+    "move": {
+        "title": "Taşı",
+        "modalTitle": "Öğe Taşı",
+        "selectDestination": "Hedef seçin",
+        "loadingFolders": "Klasörler yükleniyor...",
+        "button": "Taşı"
+    }
+}

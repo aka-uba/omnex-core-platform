@@ -1,0 +1,113 @@
+{
+  "title": "AI Stüdyo",
+  "description": "Gelişmiş yapay zeka modelleri kullanarak içerik oluşturun",
+  "menu": {
+    "label": "AI Studio",
+    "items": {
+      "dashboard": "Dashboard",
+      "text": "Metin Oluşturucu",
+      "image": "Görsel Oluşturucu",
+      "code": "Kod Oluşturucu",
+      "audio": "Ses Oluşturucu",
+      "video": "Video Oluşturucu",
+      "history": "Geçmiş"
+    }
+  },
+  "page": {
+    "title": "AI Uygulaması",
+    "description": "İçerik oluşturmaya başlamak için bir oluşturucu seçin.",
+    "textGenerator": {
+      "title": "Metin Oluşturucu",
+      "description": "Makale, blog yazısı ve sosyal medya başlıkları oluşturun."
+    },
+    "codeGenerator": {
+      "title": "Kod Oluşturucu",
+      "description": "Kod parçacıkları, fonksiyonlar ve bileşenler oluşturun."
+    },
+    "imageGenerator": {
+      "title": "Görsel Oluşturucu",
+      "description": "Metin istemlerinden çarpıcı görseller oluşturun."
+    },
+    "voiceGenerator": {
+      "title": "Ses Oluşturucu",
+      "description": "Metni gerçekçi konuşmaya dönüştürün."
+    },
+    "videoGenerator": {
+      "title": "Video Oluşturucu",
+      "description": "Metin veya görsellerden video oluşturun.",
+      "badge": "Beta"
+    }
+  },
+  "textGenerator": "Metin Oluşturucu",
+  "imageGenerator": "Görsel Oluşturucu",
+  "codeGenerator": "Kod Oluşturucu",
+  "audioGenerator": "Ses Oluşturucu",
+  "videoGenerator": "Video Oluşturucu",
+  "model": "Model",
+  "selectModel": "Bir model seçin",
+  "typeMessage": "Bir mesaj yazın...",
+  "send": "Gönder",
+  "attach": "Ekle",
+  "voiceInput": "Sesli Giriş",
+  "imageSettings": {
+    "aspectRatio": "En Boy Oranı",
+    "style": "Stil",
+    "selectStyle": "Stil seçin",
+    "resolution": "Çözünürlük",
+    "selectResolution": "Çözünürlük seçin",
+    "quality": "Kalite",
+    "numberOfImages": "Görsel Sayısı"
+  },
+  "imagePromptPlaceholder": "Oluşturmak istediğiniz görseli tarif edin...",
+  "codePromptPlaceholder": "Oluşturmak istediğiniz kodu tarif edin...",
+  "audioPromptPlaceholder": "Oluşturmak istediğiniz sesi tarif edin...",
+  "videoPromptPlaceholder": "Oluşturmak istediğiniz videoyu tarif edin...",
+  "instructions": "Talimatlar",
+  "codeGeneratorInstructions": "İhtiyacınız olan işlevselliği tarif edin. Girdi/çıktı formatları, kullanılacak kütüphaneler ve kısıtlamalar hakkında spesifik olun.",
+  "voice": "Ses",
+  "selectVoice": "Bir ses seçin",
+  "noAudioGenerated": "Henüz ses oluşturulmadı",
+  "videoSettings": {
+    "aspectRatio": "En Boy Oranı",
+    "style": "Stil",
+    "selectStyle": "Stil seçin",
+    "resolution": "Çözünürlük",
+    "selectResolution": "Çözünürlük seçin",
+    "duration": "Süre",
+    "motion": "Hareket"
+  },
+  "noVideoGenerated": "Henüz video oluşturulmadı",
+  "copied": "Kopyalandı!",
+  "copy": "Kopyala",
+  "download": "İndir",
+  "history": {
+    "title": "Geçmiş",
+    "description": "AI oluşturma geçmişinizi görüntüleyin",
+    "generationHistory": "Oluşturma Geçmişi",
+    "viewHistory": "AI oluşturma geçmişinizi görüntüleyin"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "aiStudio": "AI Stüdyo",
+  "attachFile": "Dosya Ekle",
+  "clearChat": "Sohbeti Temizle",
+  "settings": {
+    "title": "AI Modül Ayarları",
+    "description": "AI modülünün varsayılan ayarlarını yapılandırın",
+    "saved": "Ayarlar Kaydedildi",
+    "savedMessage": "AI modül ayarları başarıyla kaydedildi.",
+    "saveFailed": "Kaydetme Başarısız",
+    "saveFailedMessage": "Ayarlar kaydedilemedi"
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "title": "Takvim",
+  "description": "Etkinlikleri ve kayıtları görüntüleyin",
+  "dashboard": {
+    "title": "Takvim",
+    "description": "Etkinlikleri görüntüleyin, yönetin ve takip edin"
+  },
+  "appointments": {
+    "title": "Randevular",
+    "description": "Randevularınızı görüntüleyin, yönetin ve takip edin",
+    "table": {
+      "title": "Başlık",
+      "client": "Müşteri",
+      "date": "Tarih",
+      "time": "Saat",
+      "duration": "Süre",
+      "status": "Durum",
+      "actions": "İşlemler"
+    },
+    "status": {
+      "pending": "Bekliyor",
+      "confirmed": "Onaylandı",
+      "cancelled": "İptal Edildi",
+      "completed": "Tamamlandı"
+    },
+    "empty": "Henüz randevu bulunmuyor",
+    "createNew": "Yeni Randevu Oluştur",
+    "delete": {
+      "title": "Randevu Sil",
+      "confirm": "Bu randevuyu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    },
+    "form": {
+      "createTitle": "Yeni Randevu Oluştur",
+      "editTitle": "Randevu Düzenle",
+      "viewTitle": "Randevu Detayları",
+      "title": "Başlık",
+      "titlePlaceholder": "Randevu başlığını girin",
+      "titleRequired": "Başlık gereklidir",
+      "client": "Müşteri",
+      "clientPlaceholder": "Müşteri adını girin",
+      "date": "Tarih",
+      "dateRequired": "Tarih gereklidir",
+      "time": "Saat",
+      "timePlaceholder": "Saat seçin",
+      "duration": "Süre (dakika)",
+      "durationPlaceholder": "Süre girin",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Randevu açıklamasını girin",
+      "status": "Durum",
+      "reminder": "Hatırlatma",
+      "reminderPlaceholder": "Hatırlatma zamanı seçin",
+      "reminderNone": "Hatırlatma yok",
+      "reminder5min": "5 dakika önce",
+      "reminder15min": "15 dakika önce",
+      "reminder30min": "30 dakika önce",
+      "reminder1hour": "1 saat önce",
+      "reminder2hours": "2 saat önce",
+      "reminder1day": "1 gün önce"
+    }
+  },
+  "menu": {
+    "label": "Takvim",
+    "items": {
+      "dashboard": "Takvim",
+      "events": "Etkinlikler",
+      "appointments": "Randevular"
+    }
+  },
+  "events": {
+    "title": "Etkinlikler",
+    "description": "Tüm etkinliklerinizi görüntüleyin, yönetin ve düzenleyin",
+    "table": {
+      "title": "Başlık",
+      "client": "Müşteri",
+      "date": "Tarih",
+      "status": "Durum",
+      "color": "Renk",
+      "actions": "İşlemler"
+    },
+    "filters": {
+      "status": "Durum",
+      "dateRange": "Tarih Aralığı",
+      "client": "Müşteri"
+    },
+    "sync": {
+      "title": "Takvim Entegrasyonu",
+      "description": "Online takvim servislerinizle senkronize edin",
+      "google": "Google Calendar",
+      "outlook": "Microsoft Outlook",
+      "icloud": "Apple iCloud",
+      "yandex": "Yandex Calendar",
+      "syncNow": "Şimdi Senkronize Et",
+      "lastSync": "Son Senkronizasyon",
+      "never": "Henüz senkronize edilmedi",
+      "enabled": "Etkin",
+      "disabled": "Devre Dışı",
+      "configure": "Ayarlara Git"
+    }
+  },
+  "actions": {
+    "createEvent": "Yeni Etkinlik",
+    "createAppointment": "Yeni Randevu",
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri",
+    "refresh": "Yenile"
+  },
+  "toolbar": {
+    "today": "Bugün",
+    "month": "Ay",
+    "week": "Hafta",
+    "day": "Gün",
+    "addEvent": "Etkinlik Ekle",
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "event": "Etkinlik",
+    "events": "Etkinlik"
+  },
+  "summary": {
+    "title": "Bu Ay Özeti",
+    "totalEvents": "Toplam Etkinlik",
+    "totalRegistrations": "Toplam Kayıt",
+    "upcomingEvents": "Yaklaşan Etkinlikler"
+  },
+  "calendar": {
+    "registrations": "Kayıt",
+    "more": "daha..."
+  },
+  "form": {
+    "createEvent": "Yeni Etkinlik Oluştur",
+    "editEvent": "Etkinlik Düzenle",
+    "viewEvent": "Etkinlik Görüntüle",
+    "title": "Başlık",
+    "titlePlaceholder": "Etkinlik başlığını girin",
+    "titleRequired": "Başlık gereklidir",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Etkinlik açıklamasını girin",
+    "client": "Müşteri",
+    "clientPlaceholder": "Müşteri adını girin",
+    "date": "Tarih",
+    "dateRequired": "Tarih gereklidir",
+    "time": "Saat",
+    "timePlaceholder": "Saat seçin",
+    "status": "Durum",
+    "statusDraft": "Taslak",
+    "statusScheduled": "Planlandı",
+    "statusPublished": "Yayınlandı",
+    "statusNeedsRevision": "Revizyon Gerekli",
+    "color": "Renk",
+    "colorYellow": "Sarı",
+    "colorGreen": "Yeşil",
+    "colorRed": "Kırmızı",
+    "colorBlue": "Mavi",
+    "colorPurple": "Mor",
+    "colorSlate": "Gri",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "cancel": "İptal",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "save": "Kaydet"
+  },
+  "messages": {
+    "createSuccess": "Etkinlik başarıyla oluşturuldu",
+    "updateSuccess": "Etkinlik başarıyla güncellendi",
+    "deleteSuccess": "Etkinlik başarıyla silindi",
+    "deleteConfirm": "Bu etkinliği silmek istediğinizden emin misiniz?",
+    "exportError": "Export işlemi başarısız oldu",
+    "exportSuccess": "Export işlemi başarıyla tamamlandı",
+    "noEvents": "Etkinlik bulunamadı",
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu"
+  },
+  "export": {
+    "filename": "etkinlikler"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "notifications": {
+    "error": {
+      "title": "Başlık"
+    },
+    "success": {
+      "title": "Başlık"
+    }
+  }
+}

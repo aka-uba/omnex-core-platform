@@ -1,0 +1,66 @@
+// ============================================
+// Chat Module
+// ============================================
+
+model ChatRoom {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  name String?
+  type String  @default("direct") // 'direct', 'group', 'channel'
+
+  // Katılımcılar
+  participants String[] // User IDs
+
+  // Metadata
+  description String?
+  avatarUrl   String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  messages ChatMessage[]
+
+  @@index([tenantId, companyId])
+  @@index([participants])
+}
+
+model ChatMessage {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+  roomId    String
+  senderId  String
+
+  content String
+  type    String @default("text") // 'text', 'file', 'image', 'system'
+
+  // Dosya (eğer varsa)
+  fileId   String? // Merkezi Dosya Yönetimi'nden
+  fileName String?
+  fileSize Int?
+  fileType String?
+
+  // Durum
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  // Metadata
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  room ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([roomId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+

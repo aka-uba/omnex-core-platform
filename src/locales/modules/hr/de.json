@@ -1,0 +1,230 @@
+{
+  "title": "Personalwesen",
+  "description": "Mitarbeiterverwaltung, Urlaubsverfolgung und Lohnabrechnungssystem",
+  "employees": {
+    "title": "Mitarbeiter",
+    "description": "Mitarbeiterverwaltung",
+    "create": "Neuer Mitarbeiter",
+    "createDescription": "Neuen Mitarbeiterdatensatz erstellen",
+    "edit": "Mitarbeiter bearbeiten",
+    "editDescription": "Mitarbeiterinformationen aktualisieren",
+    "detail": "Mitarbeiterdetails",
+    "detailDescription": "Mitarbeiterdetails anzeigen",
+    "notFound": "Mitarbeiter nicht gefunden",
+    "workTypes": {
+      "full_time": "Vollzeit",
+      "part_time": "Teilzeit",
+      "contract": "Vertrag"
+    },
+    "table": {
+      "employeeNumber": "Mitarbeiternummer",
+      "name": "Name",
+      "email": "E-Mail",
+      "department": "Abteilung",
+      "position": "Position",
+      "workType": "Arbeitsart",
+      "hireDate": "Einstellungsdatum",
+      "salary": "Gehalt",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "user": "Benutzer",
+      "userPlaceholder": "Benutzer auswählen",
+      "employeeNumber": "Mitarbeiternummer",
+      "employeeNumberPlaceholder": "Mitarbeiternummer eingeben",
+      "department": "Abteilung",
+      "departmentPlaceholder": "Abteilung eingeben",
+      "position": "Position",
+      "positionPlaceholder": "Position eingeben",
+      "hireDate": "Einstellungsdatum",
+      "hireDatePlaceholder": "Einstellungsdatum auswählen",
+      "manager": "Manager",
+      "managerPlaceholder": "Manager auswählen",
+      "workType": "Arbeitsart",
+      "workTypePlaceholder": "Arbeitsart auswählen",
+      "salary": "Gehalt",
+      "salaryPlaceholder": "Gehalt eingeben",
+      "salaryGroup": "Gehaltsgruppe",
+      "salaryGroupPlaceholder": "Gehaltsgruppe eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung auswählen",
+      "isActive": "Aktiv"
+    },
+    "filter": {
+      "department": "Abteilung",
+      "workType": "Arbeitsart",
+      "status": "Status"
+    },
+    "createSuccess": "Mitarbeiter erfolgreich erstellt",
+    "updateSuccess": "Mitarbeiter erfolgreich aktualisiert",
+    "exportSuccess": "Mitarbeiter erfolgreich exportiert",
+    "exportError": "Beim Exportieren der Mitarbeiter ist ein Fehler aufgetreten",
+    "exportDescription": "Mitarbeiterbericht",
+    "delete": {
+      "confirm": "Möchten Sie diesen Mitarbeiter wirklich löschen?",
+      "success": "Mitarbeiter erfolgreich gelöscht",
+      "error": "Beim Löschen des Mitarbeiters ist ein Fehler aufgetreten"
+    }
+  },
+  "leaves": {
+    "title": "Urlaube",
+    "description": "Mitarbeiterurlaubsverwaltung",
+    "create": "Neuer Urlaub",
+    "createDescription": "Neuen Urlaubsdatensatz erstellen",
+    "edit": "Urlaub bearbeiten",
+    "editDescription": "Urlaubsinformationen aktualisieren",
+    "detail": "Urlaubsdetails",
+    "detailDescription": "Urlaubsdetails anzeigen",
+    "notFound": "Urlaub nicht gefunden",
+    "types": {
+      "annual": "Jahresurlaub",
+      "sick": "Krankheitsurlaub",
+      "unpaid": "Unbezahlter Urlaub",
+      "maternity": "Mutterschaftsurlaub"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt"
+    },
+    "table": {
+      "employee": "Mitarbeiter",
+      "type": "Typ",
+      "startDate": "Startdatum",
+      "endDate": "Enddatum",
+      "days": "Tage",
+      "status": "Status",
+      "reason": "Grund",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "employee": "Mitarbeiter",
+      "employeePlaceholder": "Mitarbeiter auswählen",
+      "type": "Typ",
+      "typePlaceholder": "Typ auswählen",
+      "startDate": "Startdatum",
+      "startDatePlaceholder": "Startdatum auswählen",
+      "endDate": "Enddatum",
+      "endDatePlaceholder": "Enddatum auswählen",
+      "endDateAfterStart": "Enddatum muss nach Startdatum liegen",
+      "days": "Tage",
+      "daysPlaceholder": "Tage eingeben",
+      "reason": "Grund",
+      "reasonPlaceholder": "Grund eingeben",
+      "status": "Status",
+      "statusPlaceholder": "Status auswählen",
+      "approvedAt": "Genehmigt am"
+    },
+    "filter": {
+      "employee": "Mitarbeiter",
+      "type": "Typ",
+      "status": "Status"
+    },
+    "createSuccess": "Urlaub erfolgreich erstellt",
+    "updateSuccess": "Urlaub erfolgreich aktualisiert",
+    "exportSuccess": "Urlaube erfolgreich exportiert",
+    "exportError": "Beim Exportieren der Urlaube ist ein Fehler aufgetreten",
+    "exportDescription": "Urlaubsbericht",
+    "delete": {
+      "confirm": "Möchten Sie diesen Urlaub wirklich löschen?",
+      "success": "Urlaub erfolgreich gelöscht",
+      "error": "Beim Löschen des Urlaubs ist ein Fehler aufgetreten"
+    }
+  },
+  "payrolls": {
+    "title": "Lohnabrechnungen",
+    "description": "Mitarbeiterlohnabrechnungsverwaltung",
+    "create": "Neue Lohnabrechnung",
+    "createDescription": "Neuen Lohnabrechnungsdatensatz erstellen",
+    "edit": "Lohnabrechnung bearbeiten",
+    "editDescription": "Lohnabrechnungsinformationen aktualisieren",
+    "detail": "Lohnabrechnungsdetails",
+    "detailDescription": "Lohnabrechnungsdetails anzeigen",
+    "notFound": "Lohnabrechnung nicht gefunden",
+    "status": {
+      "draft": "Entwurf",
+      "approved": "Genehmigt",
+      "paid": "Bezahlt"
+    },
+    "table": {
+      "employee": "Mitarbeiter",
+      "period": "Zeitraum",
+      "payDate": "Zahlungsdatum",
+      "grossSalary": "Bruttogehalt",
+      "deductions": "Abzüge",
+      "netSalary": "Nettogehalt",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "employee": "Mitarbeiter",
+      "employeePlaceholder": "Mitarbeiter auswählen",
+      "period": "Zeitraum",
+      "periodPlaceholder": "Zeitraum auswählen",
+      "payDate": "Zahlungsdatum",
+      "payDatePlaceholder": "Zahlungsdatum auswählen",
+      "grossSalary": "Bruttogehalt",
+      "grossSalaryPlaceholder": "Bruttogehalt eingeben",
+      "deductions": "Abzüge",
+      "deductionsPlaceholder": "Abzüge eingeben",
+      "netSalary": "Nettogehalt",
+      "netSalaryPlaceholder": "Nettogehalt",
+      "taxDeduction": "Steuerabzug",
+      "taxDeductionPlaceholder": "Steuerabzug eingeben",
+      "sgkDeduction": "SGK-Abzug",
+      "sgkDeductionPlaceholder": "SGK-Abzug eingeben",
+      "otherDeductions": "Andere Abzüge",
+      "otherDeductionsPlaceholder": "Andere Abzüge eingeben",
+      "bonuses": "Boni",
+      "bonusesPlaceholder": "Boni eingeben",
+      "overtime": "Überstunden",
+      "overtimePlaceholder": "Überstunden eingeben",
+      "status": "Status",
+      "statusPlaceholder": "Status auswählen",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben"
+    },
+    "filter": {
+      "employee": "Mitarbeiter",
+      "period": "Zeitraum",
+      "status": "Status"
+    },
+    "createSuccess": "Lohnabrechnung erfolgreich erstellt",
+    "updateSuccess": "Lohnabrechnung erfolgreich aktualisiert",
+    "exportSuccess": "Lohnabrechnungen erfolgreich exportiert",
+    "exportError": "Beim Exportieren der Lohnabrechnungen ist ein Fehler aufgetreten",
+    "exportDescription": "Lohnabrechnungsbericht",
+    "delete": {
+      "confirm": "Möchten Sie diese Lohnabrechnung wirklich löschen?",
+      "success": "Lohnabrechnung erfolgreich gelöscht",
+      "error": "Beim Löschen der Lohnabrechnung ist ein Fehler aufgetreten"
+    }
+  },
+  "search": {
+    "placeholder": "Suchen..."
+  },
+  "export": {
+    "title": "Exportieren",
+    "excel": "Nach Excel exportieren",
+    "pdf": "Nach PDF exportieren",
+    "csv": "Nach CSV exportieren"
+  },
+  "messages": {
+    "createSuccess": "Erfolgreich erstellt",
+    "createError": "Beim Erstellen ist ein Fehler aufgetreten",
+    "updateSuccess": "Erfolgreich aktualisiert",
+    "updateError": "Beim Aktualisieren ist ein Fehler aufgetreten",
+    "success": "Erfolg",
+    "error": "Fehler"
+  },
+  "pagination": {
+    "showing": "Anzeigen",
+    "of": "von"
+  }
+}
+
+
+
+
+
+

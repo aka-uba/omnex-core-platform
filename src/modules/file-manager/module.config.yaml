@@ -1,0 +1,63 @@
+name: "Dosya Yöneticisi"
+slug: "file-manager"
+version: "1.0.0"
+description: "Gelişmiş dosya ve klasör yönetimi - Upload, organize, share ve manage files"
+icon: "Folder"
+author: "Omnex"
+category: "utility"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "File Manager"
+    icon: "Folder"
+    href: "/modules/file-manager/dashboard"
+    order: 50
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dosya Yöneticisi"
+        path: "/modules/file-manager/dashboard"
+        icon: "Dashboard"
+        order: 1
+settings:
+  - key: "maxUploadSize"
+    label: "Max Upload Size (MB)"
+    description: "Maximum file upload size in megabytes"
+    type: "number"
+    defaultValue: 100
+    min: 1
+    max: 1000
+    category: "Files"
+  - key: "allowedFileTypes"
+    label: "Allowed File Types"
+    description: "Comma-separated list of allowed file extensions"
+    type: "text"
+    defaultValue: "pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,gif,zip,rar"
+    category: "Files"
+  - key: "enableSharing"
+    label: "Enable File Sharing"
+    description: "Allow users to share files with others"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "enableVersioning"
+    label: "Enable Versioning"
+    description: "Keep file version history"
+    type: "boolean"
+    defaultValue: true
+    category: "Files"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "file-manager.upload"
+    name: "Upload Files"
+    description: "Allow uploading files"
+  - key: "file-manager.delete"
+    name: "Delete Files"
+    description: "Allow deleting files"
+  - key: "file-manager.share"
+    name: "Share Files"
+    description: "Allow sharing files"

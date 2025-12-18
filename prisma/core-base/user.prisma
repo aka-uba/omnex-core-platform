@@ -1,0 +1,66 @@
+// ============================================
+// User Management
+// ============================================
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  username String? @unique
+  email    String  @unique
+  password String? // Hashed password
+  role     String  @default("ClientUser") // SuperAdmin, AgencyUser, ClientUser
+  status   String  @default("pending") // active, inactive, pending
+
+  // Personal Information
+  phone          String?
+  profilePicture String?
+  department     String?
+  position       String?
+  employeeId     String?
+  hireDate       DateTime?
+
+  // Contact Information
+  address          String?
+  city             String?
+  country          String?
+  postalCode       String?
+  emergencyContact String?
+  emergencyPhone   String?
+
+  // Documents
+  passportUrl    String?
+  idCardUrl      String?
+  contractUrl    String?
+  cvUrl          String?
+  otherDocuments Json? // Array of document URLs
+
+  // Preferences
+  defaultLanguage String? @default("tr")
+  defaultTheme    String? @default("auto")
+  defaultLayout   String? @default("sidebar")
+
+  // Timestamps
+  lastActive DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Relations
+  companies             Company[]        @relation("CompanyUsers")
+  userPreferences       UserPreferences?
+  userPermissions       UserPermission[]
+  aiGenerations         AIGeneration[]
+  aiHistory             AIHistory[]
+  sentNotifications     Notification[]   @relation("NotificationSender")
+  receivedNotifications Notification[]   @relation("NotificationRecipient")
+  reports               Report[]
+  auditLogs             AuditLog[]
+  employee              Employee?        @relation("EmployeeUser")
+  bulkOperations        BulkOperation[]
+  calendarEvents        CalendarEvent[]  @relation("CalendarEventUser")
+
+  @@index([email])
+  @@index([username])
+  @@index([role])
+  @@index([status])
+}
+

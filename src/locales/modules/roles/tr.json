@@ -1,0 +1,73 @@
+{
+  "title": "Rol Yönetimi",
+  "description": "Sistem genelindeki kullanıcı rolleri ve erişim seviyelerini yönetin.",
+  "create": {
+    "title": "Yeni Rol Oluştur",
+    "description": "Yeni bir rol oluşturun ve izinlerini yapılandırın.",
+    "button": "Rol Oluştur"
+  },
+  "edit": {
+    "title": "Rol Düzenle",
+    "description": "Rol bilgilerini ve izinlerini güncelleyin.",
+    "button": "Değişiklikleri Kaydet"
+  },
+  "view": {
+    "title": "Rol Detayları",
+    "description": "Rol bilgilerini ve atanan kullanıcıları görüntüleyin."
+  },
+  "table": {
+    "roleName": "Rol Adı",
+    "description": "Açıklama",
+    "usersAssigned": "Atanan Kullanıcılar",
+    "actions": "İşlemler",
+    "searchPlaceholder": "Rol adı ile ara...",
+    "allRoles": "Tüm Roller",
+    "withUsers": "Kullanıcılı Roller"
+  },
+  "form": {
+    "name": "Rol Adı",
+    "namePlaceholder": "Örn: Content Manager",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Rolün açıklamasını girin",
+    "permissions": "İzinler",
+    "selectPermissions": "İzinleri seçin",
+    "cancel": "İptal"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "assignUsers": "Kullanıcı Ata",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "validation": {
+    "nameRequired": "Rol adı gereklidir",
+    "descriptionRequired": "Açıklama gereklidir"
+  },
+  "permissions": {
+    "clientCreate": "Müşteri Oluştur",
+    "clientEdit": "Müşteri Düzenle",
+    "aiGenerate": "AI İçerik Oluştur"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "notifications": {
+    "error": {
+      "roleSaveFailed": "Rol kaydedilemedi",
+      "title": "Hata"
+    },
+    "success": {
+      "roleCreated": "Rol başarıyla oluşturuldu",
+      "roleUpdated": "Rol başarıyla güncellendi"
+    },
+    "validation": {
+      "requiredFields": "Zorunlu alanları doldurun",
+      "title": "Doğrulama Hatası"
+    }
+  }
+}

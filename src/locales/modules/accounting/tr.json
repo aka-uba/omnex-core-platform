@@ -1,0 +1,430 @@
+{
+  "title": "Muhasebe",
+  "description": "Kapsamlı muhasebe modülü",
+  "menu": {
+    "label": "Muhasebe",
+    "items": {
+      "dashboard": "Dashboard",
+      "subscriptions": "Abonelikler",
+      "invoices": "Faturalar",
+      "payments": "Ödemeler",
+      "expenses": "Giderler",
+      "reports": "Raporlar"
+    }
+  },
+  "dashboard": {
+    "title": "Muhasebe Dashboard",
+    "description": "Muhasebe ve finansal yönetiminize genel bakış",
+    "totalRevenue": "Toplam Gelir",
+    "activeSubscriptions": "Aktif Abonelikler",
+    "pendingInvoices": "Bekleyen Faturalar",
+    "outstandingPayments": "Bekleyen Ödemeler",
+    "totalExpenses": "Toplam Giderler",
+    "netProfit": "Net Kar",
+    "recentActivity": "Son Aktiviteler",
+    "noActivity": "Son aktivite yok",
+    "dateFrom": "Başlangıç Tarihi",
+    "dateTo": "Bitiş Tarihi",
+    "revenueByMonth": "Aylık Gelir",
+    "revenue": "Gelir",
+    "expenses": "Giderler",
+    "profit": "Kar",
+    "expensesByCategory": "Kategoriye Göre Giderler"
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "Muhasebe raporları ve analitikler",
+    "reportType": "Rapor Tipi",
+    "financial": "Finansal Rapor",
+    "subscriptions": "Abonelik Raporu",
+    "invoices": "Fatura Raporu",
+    "expenses": "Gider Raporu",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "exportExcel": "Excel'e Aktar",
+    "exportPDF": "PDF'e Aktar",
+    "totalRevenue": "Toplam Gelir",
+    "totalExpenses": "Toplam Gider",
+    "netProfit": "Net Kar",
+    "completedPayments": "Tamamlanan Ödemeler",
+    "financialDescription": "Finansal Rapor",
+    "subscriptionsDescription": "Abonelik raporu burada görüntülenecek",
+    "invoicesDescription": "Fatura raporu burada görüntülenecek",
+    "expensesDescription": "Gider raporu burada görüntülenecek",
+    "metric": "Metrik",
+    "value": "Değer"
+  },
+  "invoices": {
+    "title": "Faturalar",
+    "description": "Faturalarınızı yönetin ve takip edin",
+    "empty": {
+      "noInvoices": "Fatura bulunamadı"
+    },
+    "table": {
+      "invoiceNumber": "Fatura Numarası",
+      "invoiceDate": "Fatura Tarihi",
+      "dueDate": "Vade Tarihi",
+      "totalAmount": "Toplam Tutar",
+      "status": "Durum",
+      "paidDate": "Ödeme Tarihi",
+      "customer": "Müşteri"
+    },
+    "filter": {
+      "subscription": "Abonelik",
+      "status": "Durum"
+    },
+    "form": {
+      "invoiceNumber": "Fatura Numarası",
+      "invoiceNumberPlaceholder": "Fatura numarasını girin",
+      "subscription": "Abonelik",
+      "subscriptionPlaceholder": "Abonelik seçin (opsiyonel)",
+      "invoiceDate": "Fatura Tarihi",
+      "invoiceDatePlaceholder": "Fatura tarihi seçin",
+      "dueDate": "Vade Tarihi",
+      "dueDatePlaceholder": "Vade tarihi seçin",
+      "subtotal": "Ara Toplam",
+      "subtotalPlaceholder": "Ara toplam girin",
+      "taxRate": "Vergi Oranı (%)",
+      "taxRatePlaceholder": "Vergi oranını girin",
+      "totalAmount": "Toplam Tutar",
+      "totalAmountPlaceholder": "Toplam tutar",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "isActive": "Aktif",
+      "isActiveDescription": "Bu fatura aktif mi?",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Açıklama girin (opsiyonel)",
+      "taxAmount": "Vergi Tutarı"
+    },
+    "status": {
+      "draft": "Taslak",
+      "sent": "Gönderildi",
+      "paid": "Ödendi",
+      "overdue": "Vadesi Geçmiş",
+      "cancelled": "İptal Edildi",
+      "pending": "Beklemede"
+    },
+    "createSuccess": "Fatura başarıyla oluşturuldu",
+    "updateSuccess": "Fatura başarıyla güncellendi",
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası"
+  },
+  "expenses": {
+    "title": "Giderler",
+    "description": "Giderlerinizi takip edin ve yönetin",
+    "table": {
+      "name": "Ad",
+      "category": "Kategori",
+      "type": "Tip",
+      "amount": "Tutar",
+      "expenseDate": "Gider Tarihi",
+      "status": "Durum"
+    },
+    "filter": {
+      "location": "Konum",
+      "subscription": "Abonelik",
+      "category": "Kategori",
+      "type": "Tip",
+      "status": "Durum"
+    },
+    "form": {
+      "name": "Gider Adı",
+      "namePlaceholder": "Gider adını girin",
+      "expenseNumber": "Gider Numarası",
+      "expenseNumberPlaceholder": "Gider numarasını girin",
+      "category": "Kategori",
+      "categoryPlaceholder": "Kategori girin",
+      "type": "Gider Tipi",
+      "typePlaceholder": "Gider tipi seçin",
+      "amount": "Tutar",
+      "amountPlaceholder": "Tutar girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "expenseDate": "Gider Tarihi",
+      "expenseDatePlaceholder": "Gider tarihi seçin",
+      "location": "Konum",
+      "locationPlaceholder": "Konum seçin (opsiyonel)",
+      "subscription": "Abonelik",
+      "subscriptionPlaceholder": "Abonelik seçin (opsiyonel)",
+      "vendor": "Satıcı",
+      "vendorPlaceholder": "Satıcı girin (opsiyonel)",
+      "receiptUrl": "Makbuz URL",
+      "receiptUrlPlaceholder": "Makbuz URL girin (opsiyonel)",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Açıklama girin (opsiyonel)",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "isActive": "Aktif",
+      "isActiveDescription": "Bu gider aktif mi?"
+    },
+    "types": {
+      "operational": "Operasyonel",
+      "subscription": "Abonelik",
+      "maintenance": "Bakım",
+      "rent": "Kira",
+      "utility": "Fatura",
+      "other": "Diğer"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "rejected": "Reddedildi",
+      "paid": "Ödendi"
+    },
+    "createSuccess": "Gider başarıyla oluşturuldu",
+    "updateSuccess": "Gider başarıyla güncellendi",
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası"
+  },
+  "payments": {
+    "title": "Ödemeler",
+    "description": "Ödeme kayıtlarını ve işlemlerini yönetin",
+    "table": {
+      "paymentNumber": "Ödeme Numarası",
+      "amount": "Tutar",
+      "paymentDate": "Ödeme Tarihi",
+      "paymentMethod": "Ödeme Yöntemi",
+      "status": "Durum",
+      "reference": "Referans"
+    },
+    "filter": {
+      "invoice": "Fatura",
+      "subscription": "Abonelik",
+      "status": "Durum",
+      "paymentMethod": "Ödeme Yöntemi"
+    },
+    "form": {
+      "paymentNumber": "Ödeme Numarası",
+      "paymentNumberPlaceholder": "Ödeme numarasını girin",
+      "invoice": "Fatura",
+      "invoicePlaceholder": "Fatura seçin (opsiyonel)",
+      "subscription": "Abonelik",
+      "subscriptionPlaceholder": "Abonelik seçin (opsiyonel)",
+      "amount": "Tutar",
+      "amountPlaceholder": "Tutar girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "paymentDate": "Ödeme Tarihi",
+      "paymentDatePlaceholder": "Ödeme tarihi seçin",
+      "paymentMethod": "Ödeme Yöntemi",
+      "paymentMethodPlaceholder": "Ödeme yöntemi seçin",
+      "paymentReference": "Ödeme Referansı",
+      "paymentReferencePlaceholder": "Ödeme referansı girin (opsiyonel)",
+      "reference": "Referans",
+      "referencePlaceholder": "Referans girin (opsiyonel)",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin (opsiyonel)",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Açıklama girin (opsiyonel)",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin"
+    },
+    "methods": {
+      "cash": "Nakit",
+      "bank_transfer": "Banka Transferi",
+      "card": "Kart",
+      "check": "Çek",
+      "other": "Diğer"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "completed": "Tamamlandı",
+      "failed": "Başarısız",
+      "cancelled": "İptal Edildi"
+    },
+    "createSuccess": "Ödeme başarıyla oluşturuldu",
+    "updateSuccess": "Ödeme başarıyla güncellendi",
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası",
+    "create": "Oluştur"
+  },
+  "subscriptions": {
+    "title": "Abonelikler",
+    "description": "Abonelik planlarını ve faturalama döngülerini yönetin",
+    "table": {
+      "name": "Ad",
+      "type": "Tip",
+      "status": "Durum",
+      "basePrice": "Temel Fiyat",
+      "billingCycle": "Faturalama Döngüsü",
+      "startDate": "Başlangıç Tarihi",
+      "endDate": "Bitiş Tarihi"
+    },
+    "filter": {
+      "type": "Tip",
+      "status": "Durum"
+    },
+    "form": {
+      "name": "Abonelik Adı",
+      "namePlaceholder": "Abonelik adını girin",
+      "type": "Tip",
+      "typePlaceholder": "Abonelik tipi seçin",
+      "basePrice": "Temel Fiyat",
+      "basePricePlaceholder": "Temel fiyat girin",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Açıklama girin (opsiyonel)",
+      "amount": "Tutar",
+      "amountPlaceholder": "Tutar girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "billingCycle": "Faturalama Döngüsü",
+      "billingCyclePlaceholder": "Faturalama döngüsü seçin",
+      "startDate": "Başlangıç Tarihi",
+      "startDatePlaceholder": "Başlangıç tarihi seçin",
+      "endDate": "Bitiş Tarihi",
+      "endDatePlaceholder": "Bitiş tarihi seçin (opsiyonel)",
+      "commissionRate": "Komisyon Oranı",
+      "commissionRatePlaceholder": "Komisyon oranını girin",
+      "commissionType": "Komisyon Tipi",
+      "commissionTypePlaceholder": "Komisyon tipi seçin",
+      "terms": "Şartlar",
+      "termsPlaceholder": "Şartlar girin (opsiyonel)",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "isActive": "Aktif",
+      "isActiveDescription": "Bu abonelik aktif mi?"
+    },
+    "types": {
+      "rental": "Kiralama",
+      "subscription": "Abonelik",
+      "commission": "Komisyon"
+    },
+    "billingCycle": {
+      "monthly": "Aylık",
+      "quarterly": "Üç Aylık",
+      "yearly": "Yıllık",
+      "one_time": "Tek Seferlik"
+    },
+    "status": {
+      "active": "Aktif",
+      "suspended": "Askıya Alındı",
+      "inactive": "Pasif",
+      "cancelled": "İptal Edildi",
+      "expired": "Süresi Dolmuş"
+    },
+    "commissionType": {
+      "percentage": "Yüzde",
+      "fixed": "Sabit"
+    },
+    "createSuccess": "Abonelik başarıyla oluşturuldu",
+    "updateSuccess": "Abonelik başarıyla güncellendi",
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası"
+  },
+  "form": {
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "edit": "Düzenle",
+    "mustBeNonNegative": "negatif olamaz",
+    "mustBePositive": "pozitif olmalıdır",
+    "createdAt": "Oluşturulma Tarihi",
+    "updatedAt": "Güncellenme Tarihi",
+    "cancel": "İptal"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "common": {
+    "notFound": "Bulunamadı",
+    "errorLoading": "Yüklenirken hata oluştu",
+    "back": "Geri",
+    "loading": "Yükleniyor...",
+    "noData": "Veri bulunamadı",
+    "required": "Gerekli"
+  },
+  "actions": {
+    "newInvoice": "Yeni Fatura",
+    "newExpense": "Yeni Gider",
+    "newSubscription": "Yeni Abonelik",
+    "newPayment": "Yeni Ödeme",
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "templates": {
+    "edit": {
+      "invoice": {
+        "title": "Fatura Düzenle",
+        "description": "Fatura bilgilerini güncelle"
+      },
+      "expense": {
+        "title": "Gider Düzenle",
+        "description": "Gider bilgilerini güncelle"
+      },
+      "subscription": {
+        "title": "Abonelik Düzenle",
+        "description": "Abonelik bilgilerini güncelle"
+      }
+    },
+    "create": {
+      "invoice": {
+        "title": "Fatura Oluştur",
+        "description": "Yeni fatura ekle"
+      },
+      "expense": {
+        "title": "Gider Oluştur",
+        "description": "Yeni gider ekle"
+      },
+      "subscription": {
+        "title": "Abonelik Oluştur",
+        "description": "Yeni abonelik ekle"
+      }
+    }
+  },
+  "messages": {
+    "createSuccess": "Başarıyla oluşturuldu",
+    "createError": "Oluşturulurken bir hata oluştu",
+    "updateSuccess": "Başarıyla güncellendi",
+    "updateError": "Güncellenirken bir hata oluştu",
+    "success": "Başarılı",
+    "error": "Hata"
+  },
+  "search": {
+    "placeholder": "Ara..."
+  },
+  "filter": {
+    "all": "Tümü",
+    "status": "Status"
+  },
+  "table": {
+    "actions": "İşlemler"
+  },
+  "export": {
+    "title": "Dışa Aktar"
+  },
+  "pagination": {
+    "showing": "Gösteriliyor",
+    "of": "toplam"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "loading": "Yükleniyor..."
+}

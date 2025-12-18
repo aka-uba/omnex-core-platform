@@ -1,0 +1,75 @@
+name: "License Service"
+slug: "license"
+version: "1.0.0"
+description: "Comprehensive license and subscription management system - Create license packages, assign licenses to tenants, track license expiration dates, manage renewals, monitor usage, and send automated expiration notifications"
+icon: "ShieldCheck"
+author: "Omnex Platform"
+category: "system"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "License"
+    icon: "ShieldCheck"
+    href: "/modules/license/packages"
+    order: 95
+    permissions: ["SuperAdmin"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/license/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "License Packages"
+        path: "/modules/license/packages"
+        icon: "Package"
+        order: 2
+      - title: "Tenant Licenses"
+        path: "/modules/license/tenants"
+        icon: "Users"
+        order: 3
+      - title: "My License"
+        path: "/modules/license/my-license"
+        icon: "ShieldCheck"
+        order: 4
+settings:
+  - key: "enableExpirationNotifications"
+    label: "Enable Expiration Notifications"
+    description: "Send notifications before license expiration"
+    type: "boolean"
+    defaultValue: true
+    category: "Notifications"
+  - key: "notificationDaysBefore"
+    label: "Notification Days Before"
+    description: "Days before expiration to send notification"
+    type: "number"
+    defaultValue: 30
+    min: 1
+    max: 365
+    category: "Notifications"
+  - key: "autoRenewal"
+    label: "Auto Renewal"
+    description: "Automatically renew licenses"
+    type: "boolean"
+    defaultValue: false
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "license.view"
+    name: "View Licenses"
+    description: "View license packages and tenant licenses"
+  - key: "license.manage"
+    name: "Manage Licenses"
+    description: "Create, update, and delete license packages"
+  - key: "license.admin"
+    name: "Admin Licenses"
+    description: "Full access to license management (super admin only)"
+features:
+  - License package management
+  - Tenant license assignment
+  - Payment tracking
+  - License expiration notifications
+  - License renewal management

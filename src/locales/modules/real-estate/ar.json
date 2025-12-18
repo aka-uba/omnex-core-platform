@@ -1,0 +1,576 @@
+{
+  "title": "إدارة العقارات",
+  "description": "وحدة إدارة عقارات شاملة",
+  "menu": {
+    "label": "العقارات",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "properties": "العقارات",
+      "apartments": "الشقق",
+      "tenants": "المستأجرون",
+      "contracts": "العقود",
+      "payments": "المدفوعات",
+      "appointments": "المواعيد",
+      "email": "حملات البريد الإلكتروني",
+      "reports": "التقارير",
+      "staff": "الموظفون"
+    }
+  },
+  "dashboard": {
+    "title": "لوحة تحكم إدارة العقارات",
+    "description": "نظرة عامة على إدارة العقارات الخاصة بك",
+    "totalRevenue": "إجمالي الإيرادات",
+    "recentActivity": "النشاط الأخير",
+    "noActivity": "لا يوجد نشاط حديث"
+  },
+  "properties": {
+    "title": "العقارات",
+    "description": "إدارة العقارات",
+    "create": {
+      "title": "عقار جديد",
+      "description": "إنشاء عقار جديد"
+    },
+    "edit": {
+      "title": "تعديل العقار",
+      "description": "تعديل معلومات العقار"
+    },
+    "detail": {
+      "title": "تفاصيل العقار",
+      "description": "عرض تفاصيل العقار"
+    }
+  },
+  "apartments": {
+    "title": "الشقق",
+    "description": "إدارة الشقق",
+    "create": {
+      "title": "شقة جديدة",
+      "description": "إنشاء شقة جديدة"
+    },
+    "edit": {
+      "title": "تعديل الشقة",
+      "description": "تعديل معلومات الشقة"
+    },
+    "detail": {
+      "title": "تفاصيل الشقة",
+      "description": "عرض تفاصيل الشقة"
+    },
+    "details": "التفاصيل",
+    "floor": "الطابق",
+    "block": "البلوك",
+    "area": "المساحة",
+    "roomCount": "عدد الغرف",
+    "rooms": "غرف",
+    "rentPrice": "سعر الإيجار",
+    "salePrice": "سعر البيع",
+    "deliveryDate": "تاريخ التسليم",
+    "status": {
+      "empty": "فارغ",
+      "rented": "مؤجر",
+      "sold": "مباع",
+      "maintenance": "صيانة"
+    }
+  },
+  "tenants": {
+    "title": "المستأجرون",
+    "description": "إدارة المستأجرين ومعلوماتهم",
+    "create": {
+      "title": "مستأجر جديد",
+      "description": "إضافة مستأجر جديد"
+    },
+    "edit": {
+      "title": "تعديل المستأجر",
+      "description": "تعديل معلومات المستأجر"
+    },
+    "detail": {
+      "title": "تفاصيل المستأجر",
+      "description": "عرض تفاصيل المستأجر والتحليلات"
+    }
+  },
+  "contracts": {
+    "title": "العقود",
+    "description": "إدارة عقود الإيجار",
+    "create": {
+      "title": "عقد جديد",
+      "description": "إنشاء عقد إيجار جديد"
+    },
+    "edit": {
+      "title": "تعديل العقد",
+      "description": "تعديل معلومات العقد"
+    },
+    "tracking": {
+      "title": "تتبع العقود",
+      "description": "تتبع تجديدات العقود وتواريخ انتهاء الصلاحية"
+    },
+    "templates": {
+      "title": "قوالب العقود",
+      "description": "إدارة قوالب العقود",
+      "create": {
+        "title": "قالب عقد جديد",
+        "description": "إنشاء قالب عقد جديد"
+      },
+      "edit": {
+        "title": "تعديل قالب العقد",
+        "description": "تعديل قالب العقد"
+      }
+    }
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "description": "إدارة مدفوعات الإيجار والمعاملات",
+    "create": {
+      "title": "إنشاء دفعة",
+      "description": "تسجيل دفعة جديدة"
+    },
+    "edit": {
+      "title": "تعديل الدفعة",
+      "description": "تعديل معلومات الدفعة"
+    },
+    "list": "القائمة",
+    "analytics": "التحليلات",
+    "types": {
+      "rent": "الإيجار",
+      "deposit": "الوديعة",
+      "fee": "الرسوم",
+      "maintenance": "الصيانة",
+      "utility": "المرافق"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "paid": "مدفوع",
+      "overdue": "متأخر",
+      "cancelled": "ملغي"
+    },
+    "methods": {
+      "cash": "نقد",
+      "bankTransfer": "تحويل بنكي",
+      "card": "بطاقة",
+      "check": "شيك"
+    },
+    "markedAsPaid": "تم وضع علامة على الدفعة كمدفوعة",
+    "markAsPaidError": "فشل وضع علامة على الدفعة كمدفوعة"
+  },
+  "appointments": {
+    "title": "المواعيد",
+    "create": "موعد جديد",
+    "edit": "تعديل الموعد",
+    "types": {
+      "viewing": "معاينة",
+      "delivery": "تسليم",
+      "maintenance": "صيانة",
+      "inspection": "فحص",
+      "meeting": "اجتماع"
+    },
+    "status": {
+      "scheduled": "مجدول",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "no_show": "لم يحضر"
+    },
+    "markedAsCompleted": "تم وضع علامة على الموعد كمكتمل",
+    "markAsCompletedError": "فشل وضع علامة على الموعد كمكتمل",
+    "followUpForm": "نموذج متابعة الموعد",
+    "followUpDescription": "املأ التفاصيل بعد اكتمال الموعد",
+    "rating": "التقييم",
+    "forViewing": "للمعاينة",
+    "interestLevel": "مستوى الاهتمام",
+    "interestLevels": {
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "resultNotes": "ملاحظات النتيجة",
+    "enterResultNotes": "أدخل ملاحظات النتيجة...",
+    "outcome": "النتيجة",
+    "enterOutcome": "أدخل النتيجة...",
+    "nextAction": "الإجراء التالي",
+    "enterNextAction": "أدخل الإجراء التالي...",
+    "followUpSaved": "تم حفظ معلومات المتابعة بنجاح",
+    "details": "التفاصيل",
+    "followUp": "المتابعة",
+    "minutes": "دقائق",
+    "result": "النتيجة"
+  },
+  "types": {
+    "apartment": "شقة",
+    "complex": "مجمع",
+    "building": "مبنى"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "empty": "فارغ",
+    "rented": "مؤجر",
+    "sold": "مباع",
+    "maintenance": "صيانة",
+    "pending": "قيد الانتظار",
+    "paid": "مدفوع",
+    "overdue": "متأخر",
+    "cancelled": "ملغي",
+    "scheduled": "مجدول",
+    "completed": "مكتمل",
+    "no_show": "لم يحضر",
+    "urgent": "عاجل",
+    "upcoming": "قادم",
+    "default": "افتراضي"
+  },
+  "actions": {
+    "viewDetails": "عرض التفاصيل",
+    "back": "رجوع",
+    "create": "إنشاء جديد",
+    "update": "تحديث",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "table": {
+    "daysUntil": "الأيام المتبقية",
+    "endDate": "تاريخ الانتهاء",
+    "contract": "العقد",
+    "amount": "المبلغ",
+    "title": "العنوان",
+    "startDate": "تاريخ البدء"
+  },
+  "form": {
+    "documents": "المستندات",
+    "noDocuments": "لم يتم تحميل أي مستندات",
+    "uploadDocuments": "تحميل المستندات",
+    "uploadDocumentsHint": "انقر أو اسحب الملفات هنا (PDF، الصور، مستندات Word)",
+    "moveInDate": "تاريخ الانتقال",
+    "moveOutDate": "تاريخ المغادرة",
+    "amount": "المبلغ",
+    "dueDate": "تاريخ الاستحقاق",
+    "paidDate": "تاريخ الدفع",
+    "required": "هذا الحقل مطلوب",
+    "amountRequired": "يجب أن يكون المبلغ أكبر من 0",
+    "selectApartment": "اختر الشقة",
+    "selectContract": "اختر العقد",
+    "selectDate": "اختر التاريخ",
+    "selectPaymentMethod": "اختر طريقة الدفع",
+    "enterAmount": "أدخل المبلغ",
+    "enterReceiptNumber": "أدخل رقم الإيصال",
+    "enterNotes": "أدخل الملاحظات",
+    "extraCharges": "رسوم إضافية",
+    "addExtraCharge": "إضافة رسوم إضافية",
+    "chargeName": "اسم الرسوم",
+    "totalAmount": "المبلغ الإجمالي",
+    "isAutoGenerated": "تم إنشاؤه تلقائياً",
+    "reminderSent": "تم إرسال التذكير",
+    "endDateAfterStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
+    "enterTitle": "أدخل العنوان",
+    "enterDescription": "أدخل الوصف",
+    "startTime": "وقت البدء (س:د)",
+    "endTime": "وقت الانتهاء (س:د)",
+    "enterDuration": "أدخل المدة",
+    "durationAutoCalculated": "يتم حسابه تلقائياً من تواريخ البدء والانتهاء",
+    "enterLocation": "أدخل الموقع",
+    "externalParticipants": "المشاركون الخارجيون",
+    "addParticipant": "إضافة مشارك",
+    "name": "الاسم",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "followUpRequired": "متابعة مطلوبة",
+    "selectTime": "اختر الوقت",
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل العنوان",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل الوصف",
+    "scheduledDate": "التاريخ المجدول",
+    "selectDateTime": "اختر التاريخ والوقت",
+    "startDate": "تاريخ البدء (اختياري)",
+    "endDate": "تاريخ الانتهاء (اختياري)",
+    "assignedStaff": "الموظف المكلف (اختياري)",
+    "selectStaff": "اختر الموظف",
+    "performedByStaff": "تم بواسطة الموظف (اختياري)",
+    "back": "رجوع",
+    "apartment": "الشقة",
+    "type": "النوع",
+    "selectType": "اختر النوع",
+    "status": "الحالة",
+    "selectStatus": "اختر الحالة"
+  },
+  "search": {
+    "placeholder": "بحث..."
+  },
+  "filter": {
+    "all": "الكل",
+    "type": "النوع",
+    "status": "الحالة",
+    "property": "العقار",
+    "active": "نشط"
+  },
+  "messages": {
+    "fileUploaded": "تم تحميل الملف بنجاح",
+    "fileUploadError": "خطأ في تحميل الملف",
+    "fileDeleted": "تم حذف الملف بنجاح",
+    "fileDeleteError": "خطأ في حذف الملف",
+    "uploadAfterCreate": "سيتم تحميل الملفات بعد إنشاء العقد",
+    "info": "معلومات",
+    "success": "نجح",
+    "error": "خطأ",
+    "noContracts": "لم يتم العثور على عقود",
+    "noPayments": "لم يتم العثور على مدفوعات"
+  },
+  "delete": {
+    "confirm": "هل أنت متأكد من الحذف؟",
+    "success": "تم الحذف بنجاح"
+  },
+  "pagination": {
+    "showing": "عرض: {{from}}-{{to}} / {{total}}"
+  },
+  "renewal": {
+    "title": "العقود التي تحتاج إلى تجديد",
+    "autoRenew": "تجديد الكل تلقائياً",
+    "noContracts": "لا توجد عقود تحتاج إلى تجديد في الوقت الحالي",
+    "info": "عقد(عقود) تحتاج إلى تجديد في الأيام",
+    "days": "القادمة"
+  },
+  "email": {
+    "templates": {
+      "title": "قوالب البريد الإلكتروني",
+      "description": "إدارة قوالب البريد الإلكتروني",
+      "create": {
+        "title": "إنشاء قالب بريد إلكتروني",
+        "description": "إنشاء قالب بريد إلكتروني جديد"
+      },
+      "edit": {
+        "title": "تعديل قالب البريد الإلكتروني",
+        "description": "تعديل قالب البريد الإلكتروني"
+      }
+    },
+    "campaigns": {
+      "title": "حملات البريد الإلكتروني",
+      "description": "إدارة حملات البريد الإلكتروني"
+    },
+    "send": {
+      "title": "إرسال بريد إلكتروني",
+      "description": "إرسال بريد إلكتروني للمستأجرين"
+    }
+  },
+  "map": {
+    "title": "الخريطة",
+    "mapboxTokenMissing": "رمز وصول Mapbox مفقود. يرجى تعيين NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN في متغيرات البيئة الخاصة بك.",
+    "totalProperties": "إجمالي العقارات",
+    "totalApartments": "إجمالي الشقق",
+    "rented": "مؤجر",
+    "empty": "فارغ"
+  },
+  "reports": {
+    "title": "التقارير",
+    "description": "إنشاء وعرض التقارير"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "description": "إعدادات الوحدة"
+  },
+  "staff": {
+    "create": {
+      "title": "موظف جديد",
+      "description": "إضافة موظف جديد"
+    },
+    "edit": {
+      "title": "تعديل الموظف",
+      "description": "تعديل معلومات الموظف"
+    },
+    "detail": {
+      "title": "تفاصيل الموظف",
+      "description": "عرض تفاصيل الموظف"
+    },
+    "performance": {
+      "title": "الأداء",
+      "description": "عرض مقاييس أداء الموظفين"
+    },
+    "types": {
+      "internal": "داخلي",
+      "external": "خارجي"
+    },
+    "roles": {
+      "manager": "مدير",
+      "agent": "وكيل",
+      "maintenance": "صيانة",
+      "administrator": "مسؤول"
+    },
+    "delete": {
+      "confirm": "هل أنت متأكد من رغبتك في حذف هذا الموظف؟",
+      "success": "تم حذف الموظف بنجاح",
+      "error": "فشل حذف الموظف"
+    },
+    "title": "الموظفون",
+    "description": "إدارة أعضاء الموظفين"
+  },
+  "maintenance": {
+    "title": "الصيانة",
+    "description": "إدارة طلبات الصيانة",
+    "create": {
+      "title": "طلب صيانة جديد",
+      "description": "إنشاء طلب صيانة",
+      "success": "تم إنشاء سجل الصيانة بنجاح",
+      "error": "فشل حفظ سجل الصيانة"
+    },
+    "edit": {
+      "title": "تعديل طلب الصيانة",
+      "description": "تعديل طلب الصيانة"
+    },
+    "detail": {
+      "title": "تفاصيل الصيانة",
+      "description": "عرض تفاصيل طلب الصيانة"
+    },
+    "types": {
+      "preventive": "وقائي",
+      "corrective": "تصحيحي",
+      "emergency": "طوارئ"
+    },
+    "status": {
+      "scheduled": "مجدول",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "update": {
+      "success": "تم تحديث سجل الصيانة بنجاح",
+      "error": "فشل تحديث سجل الصيانة"
+    }
+  },
+  "bulkOperations": {
+    "create": {
+      "title": "عملية مجمعة جديدة",
+      "description": "إنشاء عملية مجمعة جديدة"
+    },
+    "title": "العمليات المجمعة",
+    "description": "تنفيذ العمليات المجمعة"
+  },
+  "agreementReports": {
+    "create": {
+      "title": "تقرير اتفاقية جديد",
+      "description": "إنشاء تقرير اتفاقية جديد"
+    },
+    "edit": {
+      "title": "تعديل تقرير الاتفاقية",
+      "description": "تعديل تقرير الاتفاقية"
+    },
+    "detail": {
+      "title": "تفاصيل تقرير الاتفاقية",
+      "description": "عرض تفاصيل تقرير الاتفاقية"
+    },
+    "title": "تقارير الاتفاقيات",
+    "description": "عرض وإدارة تقارير الاتفاقيات"
+  },
+  "tracking": {
+    "title": "تتبع العقود",
+    "totalActive": "إجمالي النشط",
+    "upcomingRenewals": "التجديدات القادمة",
+    "expired": "منتهي الصلاحية",
+    "autoRenewal": "التجديد التلقائي",
+    "active": "نشط",
+    "urgent": "عاجل",
+    "upcoming": "قادم",
+    "noUpcomingRenewals": "لا توجد تجديدات قادمة",
+    "noActiveContracts": "لا توجد عقود نشطة",
+    "noExpiredContracts": "لا توجد عقود منتهية الصلاحية"
+  },
+  "common": {
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "qrCode": {
+    "title": "رمز QR للشقة",
+    "description": "امسح رمز QR هذا لعرض تفاصيل الشقة",
+    "generating": "جاري إنشاء رمز QR...",
+    "generateError": "فشل إنشاء رمز QR",
+    "download": "تحميل",
+    "downloadSuccess": "تم تنزيل رمز QR بنجاح"
+  },
+  "analytics": {
+    "title": "تحليلات المستأجر",
+    "overallScore": "النقاط الإجمالية",
+    "paymentScore": "نقاط الدفع",
+    "contactScore": "نقاط الاتصال",
+    "maintenanceScore": "نقاط الصيانة",
+    "paymentHistory": "سجل الدفع",
+    "contractHistory": "سجل العقود",
+    "appointmentHistory": "سجل المواعيد",
+    "maintenanceHistory": "سجل الصيانة",
+    "totalPayments": "إجمالي المدفوعات",
+    "totalContracts": "إجمالي العقود",
+    "paid": "مدفوع",
+    "pending": "قيد الانتظار",
+    "overdue": "متأخر",
+    "active": "نشط",
+    "expired": "منتهي الصلاحية",
+    "terminated": "منتهي",
+    "recalculate": "إعادة الحساب",
+    "recalculated": "تم إعادة حساب التحليلات بنجاح",
+    "recalculateError": "فشل إعادة حساب التحليلات",
+    "loadError": "فشل تحميل التحليلات",
+    "excellent": "ممتاز",
+    "good": "جيد",
+    "fair": "متوسط",
+    "poor": "ضعيف",
+    "onTimeRate": "{{rate}}% في الوقت المحدد",
+    "appointments": "{{total}} موعد",
+    "maintenanceRecords": "{{total}} سجل"
+  },
+  "form": {
+    "name": "الاسم",
+    "namePlaceholder": "أدخل اسم العقار",
+    "type": "النوع",
+    "typePlaceholder": "اختر النوع",
+    "code": "الكود",
+    "codePlaceholder": "كود اختياري",
+    "country": "البلد",
+    "countryPlaceholder": "البلد",
+    "address": "العنوان",
+    "addressPlaceholder": "أدخل العنوان",
+    "city": "المدينة",
+    "cityPlaceholder": "أدخل المدينة",
+    "district": "المنطقة",
+    "districtPlaceholder": "أدخل المنطقة",
+    "neighborhood": "الحي",
+    "neighborhoodPlaceholder": "أدخل الحي",
+    "street": "الشارع",
+    "streetPlaceholder": "أدخل الشارع",
+    "buildingNo": "رقم المبنى",
+    "buildingNoPlaceholder": "أدخل رقم المبنى",
+    "postalCode": "الرمز البريدي",
+    "postalCodePlaceholder": "أدخل الرمز البريدي",
+    "latitude": "خط العرض",
+    "latitudePlaceholder": "أدخل خط العرض",
+    "longitude": "خط الطول",
+    "longitudePlaceholder": "أدخل خط الطول",
+    "monthlyFee": "الرسوم الشهرية",
+    "monthlyFeePlaceholder": "أدخل الرسوم الشهرية",
+    "paymentDay": "يوم الدفع",
+    "paymentDayPlaceholder": "أدخل يوم الدفع (1-31)",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل الوصف"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "update": "تحديث",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "types": {
+    "apartment": "شقة",
+    "complex": "مجمع",
+    "building": "مبنى"
+  },
+  "messages": {
+    "success": "نجح",
+    "error": "خطأ",
+    "createError": "حدث خطأ",
+    "createSuccess": "تم الإنشاء بنجاح",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateError": "خطأ في التحديث"
+  },
+  "table": {
+    "name": "الاسم",
+    "type": "النوع",
+    "address": "العنوان",
+    "city": "المدينة",
+    "actions": "الإجراءات"
+  }
+}

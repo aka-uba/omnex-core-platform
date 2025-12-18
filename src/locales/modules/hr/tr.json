@@ -1,0 +1,279 @@
+{
+  "title": "İnsan Kaynakları",
+  "description": "Personel yönetimi, izin takibi ve bordro sistemi",
+  "menu": {
+    "label": "İnsan Kaynakları",
+    "items": {
+      "dashboard": "Dashboard",
+      "employees": "Personeller",
+      "leaves": "İzinler",
+      "payrolls": "Bordrolar",
+      "reports": "Raporlar"
+    }
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "İK analitik ve raporları görüntüleyin"
+  },
+  "employees": {
+    "title": "Personeller",
+    "description": "Personel yönetimi",
+    "create": "Yeni Personel",
+    "createDescription": "Yeni personel kaydı oluşturun",
+    "edit": "Personel Düzenle",
+    "editDescription": "Personel bilgilerini güncelleyin",
+    "detail": "Personel Detayı",
+    "detailDescription": "Personel detaylarını görüntüleyin",
+    "notFound": "Personel bulunamadı",
+    "workTypes": {
+      "full_time": "Tam Zamanlı",
+      "part_time": "Yarı Zamanlı",
+      "contract": "Sözleşmeli"
+    },
+    "table": {
+      "employeeNumber": "Personel No",
+      "name": "Ad",
+      "email": "E-posta",
+      "department": "Departman",
+      "position": "Pozisyon",
+      "workType": "Çalışma Şekli",
+      "hireDate": "İşe Giriş Tarihi",
+      "salary": "Maaş",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "user": "Kullanıcı",
+      "userPlaceholder": "Kullanıcı seçin",
+      "employeeNumber": "Personel Numarası",
+      "employeeNumberPlaceholder": "Personel numarası girin",
+      "department": "Departman",
+      "departmentPlaceholder": "Departman girin",
+      "position": "Pozisyon",
+      "positionPlaceholder": "Pozisyon girin",
+      "hireDate": "İşe Giriş Tarihi",
+      "hireDatePlaceholder": "İşe giriş tarihi seçin",
+      "manager": "Yönetici",
+      "managerPlaceholder": "Yönetici seçin",
+      "workType": "Çalışma Şekli",
+      "workTypePlaceholder": "Çalışma şekli seçin",
+      "salary": "Maaş",
+      "salaryPlaceholder": "Maaş girin",
+      "salaryGroup": "Maaş Grubu",
+      "salaryGroupPlaceholder": "Maaş grubu girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "isActive": "Aktif",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "filter": {
+      "department": "Departman",
+      "workType": "Çalışma Şekli",
+      "status": "Durum"
+    },
+    "createSuccess": "Personel başarıyla oluşturuldu",
+    "updateSuccess": "Personel başarıyla güncellendi",
+    "exportSuccess": "Personeller başarıyla dışa aktarıldı",
+    "exportError": "Personeller dışa aktarılırken bir hata oluştu",
+    "exportDescription": "Personeller Raporu",
+    "delete": {
+      "confirm": "Bu personeli silmek istediğinize emin misiniz?",
+      "success": "Personel başarıyla silindi",
+      "error": "Personel silinirken bir hata oluştu"
+    }
+  },
+  "leaves": {
+    "title": "İzinler",
+    "description": "Personel izin yönetimi",
+    "create": "Yeni İzin",
+    "createDescription": "Yeni izin kaydı oluşturun",
+    "edit": "İzin Düzenle",
+    "editDescription": "İzin bilgilerini güncelleyin",
+    "detail": "İzin Detayı",
+    "detailDescription": "İzin detaylarını görüntüleyin",
+    "notFound": "İzin bulunamadı",
+    "types": {
+      "annual": "Yıllık İzin",
+      "sick": "Hastalık İzni",
+      "unpaid": "Ücretsiz İzin",
+      "maternity": "Doğum İzni"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "rejected": "Reddedildi"
+    },
+    "table": {
+      "employee": "Personel",
+      "type": "Tip",
+      "startDate": "Başlangıç Tarihi",
+      "endDate": "Bitiş Tarihi",
+      "days": "Gün",
+      "status": "Durum",
+      "reason": "Sebep",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "employee": "Personel",
+      "employeePlaceholder": "Personel seçin",
+      "type": "Tip",
+      "typePlaceholder": "Tip seçin",
+      "startDate": "Başlangıç Tarihi",
+      "startDatePlaceholder": "Başlangıç tarihi seçin",
+      "endDate": "Bitiş Tarihi",
+      "endDatePlaceholder": "Bitiş tarihi seçin",
+      "endDateAfterStart": "Bitiş tarihi başlangıç tarihinden sonra olmalıdır",
+      "days": "Gün",
+      "daysPlaceholder": "Gün sayısı girin",
+      "reason": "Sebep",
+      "reasonPlaceholder": "Sebep girin",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "approvedAt": "Onaylanma Tarihi"
+    },
+    "filter": {
+      "employee": "Personel",
+      "type": "Tip",
+      "status": "Durum"
+    },
+    "createSuccess": "İzin başarıyla oluşturuldu",
+    "updateSuccess": "İzin başarıyla güncellendi",
+    "exportSuccess": "İzinler başarıyla dışa aktarıldı",
+    "exportError": "İzinler dışa aktarılırken bir hata oluştu",
+    "exportDescription": "İzinler Raporu",
+    "delete": {
+      "confirm": "Bu izni silmek istediğinize emin misiniz?",
+      "success": "İzin başarıyla silindi",
+      "error": "İzin silinirken bir hata oluştu"
+    },
+    "empty": {
+      "noLeaves": "İzin kaydı bulunamadı"
+    }
+  },
+  "payrolls": {
+    "title": "Bordrolar",
+    "description": "Personel bordro yönetimi",
+    "create": "Yeni Bordro",
+    "createDescription": "Yeni bordro kaydı oluşturun",
+    "edit": "Bordro Düzenle",
+    "editDescription": "Bordro bilgilerini güncelleyin",
+    "detail": "Bordro Detayı",
+    "detailDescription": "Bordro detaylarını görüntüleyin",
+    "notFound": "Bordro bulunamadı",
+    "status": {
+      "draft": "Taslak",
+      "approved": "Onaylandı",
+      "paid": "Ödendi"
+    },
+    "table": {
+      "employee": "Personel",
+      "period": "Dönem",
+      "payDate": "Ödeme Tarihi",
+      "grossSalary": "Brüt Maaş",
+      "deductions": "Kesintiler",
+      "netSalary": "Net Maaş",
+      "status": "Durum",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "employee": "Personel",
+      "employeePlaceholder": "Personel seçin",
+      "period": "Dönem",
+      "periodPlaceholder": "Dönem seçin",
+      "payDate": "Ödeme Tarihi",
+      "payDatePlaceholder": "Ödeme tarihi seçin",
+      "grossSalary": "Brüt Maaş",
+      "grossSalaryPlaceholder": "Brüt maaş girin",
+      "deductions": "Kesintiler",
+      "deductionsPlaceholder": "Kesintiler girin",
+      "netSalary": "Net Maaş",
+      "netSalaryPlaceholder": "Net maaş",
+      "taxDeduction": "Vergi Kesintisi",
+      "taxDeductionPlaceholder": "Vergi kesintisi girin",
+      "sgkDeduction": "SGK Kesintisi",
+      "sgkDeductionPlaceholder": "SGK kesintisi girin",
+      "otherDeductions": "Diğer Kesintiler",
+      "otherDeductionsPlaceholder": "Diğer kesintiler girin",
+      "bonuses": "Primler",
+      "bonusesPlaceholder": "Primler girin",
+      "overtime": "Mesai",
+      "overtimePlaceholder": "Mesai girin",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin"
+    },
+    "filter": {
+      "employee": "Personel",
+      "period": "Dönem",
+      "status": "Durum"
+    },
+    "createSuccess": "Bordro başarıyla oluşturuldu",
+    "updateSuccess": "Bordro başarıyla güncellendi",
+    "exportSuccess": "Bordrolar başarıyla dışa aktarıldı",
+    "exportError": "Bordrolar dışa aktarılırken bir hata oluştu",
+    "exportDescription": "Bordrolar Raporu",
+    "delete": {
+      "confirm": "Bu bordroyu silmek istediğinize emin misiniz?",
+      "success": "Bordro başarıyla silindi",
+      "error": "Bordro silinirken bir hata oluştu"
+    }
+  },
+  "search": {
+    "placeholder": "Ara..."
+  },
+  "export": {
+    "title": "Dışa Aktar"
+  },
+  "messages": {
+    "createSuccess": "Başarıyla oluşturuldu",
+    "createError": "Oluşturulurken bir hata oluştu",
+    "updateSuccess": "Başarıyla güncellendi",
+    "updateError": "Güncellenirken bir hata oluştu",
+    "success": "Başarılı",
+    "error": "Hata"
+  },
+  "pagination": {
+    "showing": "Gösteriliyor",
+    "of": "toplam"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "newEmployee": "Yeni Personel",
+    "newLeave": "Yeni İzin",
+    "newPayroll": "Yeni Bordro",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "filter": {
+    "all": "Tümü"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "common": {
+    "back": "Geri",
+    "edit": "Düzenle",
+    "errorLoading": "Yüklenirken hata oluştu",
+    "noData": "Veri bulunamadı",
+    "required": "Gerekli"
+  },
+  "form": {
+    "cancel": "İptal",
+    "create": "Oluştur",
+    "createdAt": "Oluşturulma Tarihi",
+    "save": "Kaydet",
+    "updatedAt": "Güncellenme Tarihi"
+  },
+  "loading": "Yükleniyor...",
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  }
+}

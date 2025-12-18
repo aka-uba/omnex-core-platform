@@ -1,0 +1,5 @@
+CORE_DATABASE_URL="postgresql://postgres@localhost:5432/omnex_core?schema=public"
+
+TENANT_DATABASE_URL="postgresql://postgres@localhost:5432/tenant_db?schema=public"
+
+PG_ADMIN_URL="postgresql://postgres@localhost:5432/postgres"

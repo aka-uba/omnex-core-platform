@@ -1,0 +1,13 @@
+{
+  "title": "Modül Yönetimi",
+  "description": "Sistem modüllerini yönetin, yükleyin ve yapılandırın",
+  "upload": {
+    "title": "Yeni Modül Yükle",
+    "description": "Yeni bir modül yüklemek için .zip dosyasını seçin"
+  },
+  "listing": {
+    "title": "Modüller",
+    "description": "Yüklü ve aktif modüllerin listesi"
+  }
+}
+

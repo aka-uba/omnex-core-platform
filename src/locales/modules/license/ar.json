@@ -1,0 +1,188 @@
+{
+  "title": "خدمة الترخيص",
+  "description": "نظام إدارة حزم الترخيص وتتبع تراخيص المستأجرين",
+  "packages": {
+    "title": "حزم الترخيص",
+    "description": "إدارة حزم الترخيص",
+    "create": "حزمة جديدة",
+    "createDescription": "إنشاء حزمة ترخيص جديدة",
+    "edit": "تعديل الحزمة",
+    "editDescription": "تحديث معلومات حزمة الترخيص",
+    "detail": "تفاصيل الحزمة",
+    "notFound": "لم يتم العثور على الحزمة",
+    "table": {
+      "name": "اسم الحزمة",
+      "description": "الوصف",
+      "modules": "الوحدات",
+      "basePrice": "السعر",
+      "currency": "العملة",
+      "billingCycle": "دورة الفوترة",
+      "maxUsers": "الحد الأقصى للمستخدمين",
+      "maxStorage": "الحد الأقصى للتخزين (جيجابايت)",
+      "isActive": "نشط",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "name": "اسم الحزمة",
+      "namePlaceholder": "أدخل اسم الحزمة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف الحزمة",
+      "modules": "الوحدات",
+      "modulesPlaceholder": "اختر الوحدات",
+      "basePrice": "السعر",
+      "basePricePlaceholder": "أدخل السعر",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "billingCycle": "دورة الفوترة",
+      "billingCyclePlaceholder": "اختر دورة الفوترة",
+      "maxUsers": "الحد الأقصى للمستخدمين",
+      "maxUsersPlaceholder": "الحد الأقصى لعدد المستخدمين",
+      "maxStorage": "الحد الأقصى للتخزين (جيجابايت)",
+      "maxStoragePlaceholder": "الحد الأقصى للتخزين (جيجابايت)",
+      "isActive": "نشط"
+    },
+    "billingCycles": {
+      "monthly": "شهري",
+      "quarterly": "ربع سنوي",
+      "yearly": "سنوي"
+    },
+    "createSuccess": "تم إنشاء الحزمة بنجاح",
+    "updateSuccess": "تم تحديث الحزمة بنجاح",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذه الحزمة؟",
+      "success": "تم حذف الحزمة بنجاح",
+      "error": "حدث خطأ أثناء حذف الحزمة"
+    }
+  },
+  "tenantLicenses": {
+    "title": "تراخيص المستأجرين",
+    "description": "إدارة تراخيص المستأجرين",
+    "create": "ترخيص جديد",
+    "createDescription": "إنشاء ترخيص مستأجر جديد",
+    "edit": "تعديل الترخيص",
+    "editDescription": "تحديث معلومات الترخيص",
+    "detail": "تفاصيل الترخيص",
+    "notFound": "لم يتم العثور على الترخيص",
+    "table": {
+      "tenant": "المستأجر",
+      "package": "الحزمة",
+      "startDate": "البداية",
+      "endDate": "النهاية",
+      "status": "الحالة",
+      "paymentStatus": "حالة الدفع",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "tenant": "المستأجر",
+      "tenantPlaceholder": "اختر المستأجر",
+      "package": "الحزمة",
+      "packagePlaceholder": "اختر الحزمة",
+      "startDate": "تاريخ البدء",
+      "startDatePlaceholder": "اختر تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "endDatePlaceholder": "اختر تاريخ الانتهاء",
+      "renewalDate": "تاريخ التجديد",
+      "renewalDatePlaceholder": "اختر تاريخ التجديد",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "paymentStatus": "حالة الدفع",
+      "paymentStatusPlaceholder": "اختر حالة الدفع",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل الملاحظات"
+    },
+    "status": {
+      "active": "نشط",
+      "expired": "منتهي الصلاحية",
+      "suspended": "معلق",
+      "cancelled": "ملغي"
+    },
+    "paymentStatus": {
+      "pending": "قيد الانتظار",
+      "paid": "مدفوع",
+      "failed": "فشل"
+    },
+    "createSuccess": "تم إنشاء الترخيص بنجاح",
+    "updateSuccess": "تم تحديث الترخيص بنجاح",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذا الترخيص؟",
+      "success": "تم حذف الترخيص بنجاح",
+      "error": "حدث خطأ أثناء حذف الترخيص"
+    }
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "description": "إدارة مدفوعات الترخيص",
+    "create": "دفعة جديدة",
+    "createDescription": "إنشاء سجل دفعة جديد",
+    "notFound": "لم يتم العثور على الدفعة",
+    "table": {
+      "amount": "المبلغ",
+      "currency": "العملة",
+      "paymentMethod": "طريقة الدفع",
+      "paymentDate": "تاريخ الدفع",
+      "status": "الحالة",
+      "approvedBy": "تمت الموافقة من قبل",
+      "approvedAt": "تمت الموافقة في",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "amount": "المبلغ",
+      "amountPlaceholder": "أدخل المبلغ",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "paymentMethod": "طريقة الدفع",
+      "paymentMethodPlaceholder": "اختر طريقة الدفع",
+      "paymentDate": "تاريخ الدفع",
+      "paymentDatePlaceholder": "اختر تاريخ الدفع",
+      "receiptUrl": "رابط الإيصال",
+      "receiptUrlPlaceholder": "أدخل رابط الإيصال",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل الملاحظات"
+    },
+    "paymentMethods": {
+      "bank_transfer": "تحويل بنكي",
+      "credit_card": "بطاقة ائتمان",
+      "other": "أخرى"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض"
+    },
+    "createSuccess": "تم إنشاء الدفعة بنجاح",
+    "updateSuccess": "تم تحديث الدفعة بنجاح",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذه الدفعة؟",
+      "success": "تم حذف الدفعة بنجاح",
+      "error": "حدث خطأ أثناء حذف الدفعة"
+    }
+  },
+  "myLicense": {
+    "title": "ترخيصي",
+    "description": "عرض معلومات الترخيص الحالية",
+    "noLicense": "ليس لديك ترخيص نشط",
+    "package": "الحزمة",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "renewalDate": "تاريخ التجديد",
+    "status": "الحالة",
+    "paymentStatus": "حالة الدفع",
+    "modules": "الوحدات",
+    "features": "الميزات",
+    "paymentHistory": "سجل المدفوعات"
+  },
+  "messages": {
+    "createSuccess": "تم الإنشاء بنجاح",
+    "createError": "حدث خطأ أثناء الإنشاء",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث",
+    "success": "نجح",
+    "error": "خطأ"
+  }
+}
+
+
+
+
+
+

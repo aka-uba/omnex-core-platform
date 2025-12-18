@@ -1,0 +1,44 @@
+// ============================================
+// Entity Meta (Speculative Fields)
+// ============================================
+// 
+// Use this table for "speculative fields" - fields that might be needed
+// in the future but aren't part of the core schema yet.
+// 
+// Example usage:
+// - Experimental features
+// - A/B testing data
+// - Module-specific custom fields
+// - Future-proofing without schema bloat
+
+model EntityMeta {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  entityType String // e.g., "Property", "Invoice", "Employee"
+  entityId   String // ID of the entity
+  key        String // Field name
+  value      Json   // Field value (flexible JSON)
+
+  @@unique([tenantId, entityType, entityId, key])
+  @@index([tenantId, entityType, entityId])
+  @@index([tenantId, companyId])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

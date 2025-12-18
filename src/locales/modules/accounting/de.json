@@ -1,0 +1,33 @@
+{
+  "title": "Buchhaltung",
+  "description": "Umfassendes Buchhaltungsmodul",
+  "menu": {
+    "label": "Buchhaltung",
+    "items": {
+      "dashboard": "Dashboard",
+      "subscriptions": "Abonnements",
+      "invoices": "Rechnungen",
+      "payments": "Zahlungen",
+      "expenses": "Ausgaben",
+      "reports": "Berichte"
+    }
+  },
+  "dashboard": {
+    "title": "Buchhaltungs-Dashboard",
+    "description": "Überblick über Ihre Buchhaltung und Finanzverwaltung",
+    "totalRevenue": "Gesamtumsatz",
+    "activeSubscriptions": "Aktive Abonnements",
+    "pendingInvoices": "Ausstehende Rechnungen",
+    "outstandingPayments": "Ausstehende Zahlungen",
+    "totalExpenses": "Gesamtausgaben",
+    "netProfit": "Nettogewinn",
+    "recentActivity": "Letzte Aktivitäten",
+    "noActivity": "Keine letzten Aktivitäten"
+  },
+  "reports": {
+    "title": "Berichte",
+    "description": "Buchhaltungsberichte und Analysen"
+  }
+}
+
+

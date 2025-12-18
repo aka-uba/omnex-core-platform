@@ -1,0 +1,122 @@
+{
+  "title": "الإعدادات",
+  "description": "إدارة إعدادات النظام والشركة",
+  "menu": {
+    "label": "الإعدادات",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "general": "عام",
+      "company": "الشركة",
+      "modules": "الوحدات",
+      "users": "المستخدمون"
+    }
+  },
+  "addCompany": {
+    "title": "إضافة شركة جديدة",
+    "description": "أكمل الخطوات التالية لإضافة شركتك"
+  },
+  "moduleSettings": {
+    "tabs": {
+      "summary": "الملخص",
+      "settings": "الإعدادات",
+      "menu": "القائمة"
+    },
+    "summary": {
+      "title": "ملخص الوحدة",
+      "version": "الإصدار",
+      "lastUpdated": "آخر تحديث",
+      "category": "الفئة",
+      "author": "المؤلف",
+      "whatYouCanDo": "ما يمكنك فعله",
+      "changeLog": "سجل التغييرات",
+      "versionHistory": "سجل الإصدارات",
+      "current": "الحالي",
+      "changes": "التغييرات",
+      "features": {
+        "title": "توفر هذه الوحدة الميزات التالية:",
+        "realEstate": {
+          "properties": "إدارة العقارات والشقق بمعلومات تفصيلية",
+          "tenants": "تتبع المستأجرين والعقود",
+          "payments": "تتبع الدفع والتقارير المالية",
+          "appointments": "جدولة وإدارة مواعيد العقارات",
+          "email": "إنشاء وإرسال حملات البريد الإلكتروني للمستأجرين",
+          "reports": "إنشاء تقارير وتحليلات شاملة",
+          "staff": "إدارة الموظفين والأداء"
+        }
+      }
+    },
+    "settings": {
+      "title": "إعدادات الوحدة",
+      "resetToDefault": "العودة إلى الافتراضي",
+      "saveChanges": "حفظ التغييرات",
+      "noSettings": "لا توجد إعدادات لهذه الوحدة",
+      "setting": "إعداد",
+      "settings_plural": "إعدادات",
+      "categories": {
+        "general": "عام",
+        "email": "البريد الإلكتروني",
+        "payments": "المدفوعات",
+        "contracts": "العقود",
+        "maintenance": "الصيانة",
+        "appearance": "المظهر",
+        "files": "الملفات",
+        "appointments": "المواعيد",
+        "properties": "العقارات"
+      },
+      "controls": {
+        "enabled": "مفعّل",
+        "disabled": "معطل"
+      },
+      "notifications": {
+        "saved": "نجح",
+        "savedMessage": "تم حفظ الإعدادات بنجاح",
+        "error": "خطأ",
+        "errorMessage": "فشل حفظ الإعدادات"
+      }
+    },
+    "menu": {
+      "title": "تكوين القائمة",
+      "description": "اسحب وأفلت لإعادة ترتيب عناصر القائمة. انقر على العناصر لتكوينها.",
+      "addMenuItem": "إضافة عنصر القائمة",
+      "saveMenu": "حفظ القائمة",
+      "resetToDefault": "العودة إلى الافتراضي",
+      "itemConfig": {
+        "title": "العنوان",
+        "icon": "الأيقونة",
+        "path": "المسار",
+        "openIn": "فتح في",
+        "sameTab": "نفس التبويب",
+        "newTab": "تبويب جديد"
+      },
+      "tooltips": {
+        "decreaseIndent": "تقليل المسافة البادئة",
+        "atRootLevel": "في المستوى الجذر",
+        "increaseIndent": "زيادة المسافة البادئة",
+        "maxIndentLevel": "الحد الأقصى لمستوى المسافة البادئة",
+        "hide": "إخفاء",
+        "show": "عرض",
+        "delete": "حذف",
+        "dragHandle": "سحب"
+      },
+      "notifications": {
+        "saved": "نجح",
+        "savedMessage": "تم حفظ تكوين القائمة بنجاح",
+        "reset": "نجح",
+        "resetMessage": "تمت إعادة القائمة إلى الإعدادات الافتراضية",
+        "error": "خطأ",
+        "errorMessage": "فشل حفظ القائمة"
+      }
+    },
+    "icon": {
+      "upload": "تحميل أيقونة",
+      "change": "تغيير الأيقونة",
+      "uploading": "جاري التحميل...",
+      "uploadSuccess": "تم تحميل الأيقونة بنجاح",
+      "uploadError": "فشل تحميل الأيقونة",
+      "maxSize": "الحد الأقصى لحجم الملف: 2 ميجابايت",
+      "allowedTypes": "التنسيقات المسموحة: PNG, JPG, SVG, WebP"
+    }
+  }
+}
+
+

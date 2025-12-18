@@ -1,0 +1,76 @@
+{
+  "title": "Produktion und Produkte",
+  "description": "Umfassendes Produktions- und Produktverwaltungsmodul",
+  "menu": {
+    "label": "Produktion",
+    "items": {
+      "dashboard": "Dashboard",
+      "products": "Produkte",
+      "bom": "Stückliste",
+      "orders": "Produktionsaufträge",
+      "stock": "Lagerbestand",
+      "reports": "Berichte"
+    }
+  },
+  "dashboard": {
+    "title": "Produktions-Dashboard",
+    "description": "Überblick über Produktionsaktivitäten und Analysen"
+  },
+  "products": {
+    "title": "Produkte",
+    "description": "Verwalten Sie Ihre Produkte und Bestände"
+  },
+  "bom": {
+    "title": "Stückliste",
+    "description": "Verwalten Sie Produktmateriallisten"
+  },
+  "orders": {
+    "title": "Produktionsaufträge",
+    "description": "Verwalten Sie Produktionsaufträge und Zeitpläne"
+  },
+  "stock": {
+    "title": "Bestandsverwaltung",
+    "description": "Verfolgen und verwalten Sie Lagerbestände"
+  },
+  "reports": {
+    "title": "Berichte",
+    "description": "Produktionsberichte und Analysen anzeigen"
+  },
+  "steps": {
+    "form": {
+      "stepNumber": "Schrittnummer",
+      "stepNumberMinError": "muss mindestens 1 sein",
+      "status": "Status",
+      "name": "Name",
+      "description": "Beschreibung",
+      "plannedStart": "Geplanter Start",
+      "plannedEnd": "Geplantes Ende",
+      "assignedTo": "Zugewiesen an (Benutzer-ID)",
+      "laborHours": "Arbeitsstunden",
+      "actualStart": "Tatsächlicher Start",
+      "actualEnd": "Tatsächliches Ende",
+      "notes": "Notizen"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "in_progress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Abgebrochen"
+    },
+    "create": {
+      "success": "Produktionsschritt erfolgreich erstellt"
+    },
+    "update": {
+      "success": "Produktionsschritt erfolgreich aktualisiert"
+    },
+    "save": {
+      "error": "Produktionsschritt konnte nicht gespeichert werden"
+    }
+  },
+  "messages": {
+    "success": "Erfolg",
+    "error": "Fehler"
+  }
+}
+
+

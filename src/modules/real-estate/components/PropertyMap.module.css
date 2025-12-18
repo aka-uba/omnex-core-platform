@@ -1,0 +1,70 @@
+/* Pulsing animation for markers */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Leaflet marker styles */
+:global(.leaflet-marker-icon) {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Mapbox marker wrapper */
+.mapbox-marker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapbox-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  opacity: 0;
+  animation: pulse-ring 2s ease-out infinite;
+  pointer-events: none;
+}
+
+.mapbox-marker-icon {
+  position: relative;
+  z-index: 2;
+  animation: pulse 2s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+
+.mapbox-marker-icon:hover {
+  transform: scale(1.2);
+  animation-duration: 1s;
+}
+
+.mapbox-marker-wrapper:hover .mapbox-pulse-ring {
+  animation-duration: 1s;
+}

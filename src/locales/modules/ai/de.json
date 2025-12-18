@@ -1,0 +1,75 @@
+{
+    "title": "AI Studio",
+    "description": "Erstellen Sie Inhalte mit fortgeschrittenen KI-Modellen",
+    "page": {
+        "title": "KI-Anwendung",
+        "description": "Wählen Sie einen Generator aus, um mit der Erstellung von Inhalten zu beginnen.",
+        "textGenerator": {
+            "title": "Textgenerator",
+            "description": "Generieren Sie Artikel, Blog-Beiträge und Social-Media-Beschriftungen."
+        },
+        "codeGenerator": {
+            "title": "Codegenerator",
+            "description": "Generieren Sie Code-Snippets, Funktionen und Komponenten."
+        },
+        "imageGenerator": {
+            "title": "Bildgenerator",
+            "description": "Erstellen Sie atemberaubende Bilder aus Textaufforderungen."
+        },
+        "voiceGenerator": {
+            "title": "Sprachgenerator",
+            "description": "Konvertieren Sie Text in lebensechte Sprache."
+        },
+        "videoGenerator": {
+            "title": "Videogenerator",
+            "description": "Generieren Sie Videos aus Text oder Bildern.",
+            "badge": "Beta"
+        }
+    },
+    "textGenerator": "Textgenerator",
+    "imageGenerator": "Bildgenerator",
+    "codeGenerator": "Codegenerator",
+    "audioGenerator": "Audiogenerator",
+    "videoGenerator": "Videogenerator",
+    "model": "Modell",
+    "selectModel": "Wählen Sie ein Modell",
+    "typeMessage": "Geben Sie eine Nachricht ein...",
+    "send": "Senden",
+    "attach": "Anhängen",
+    "voiceInput": "Spracheingabe",
+    "imageSettings": {
+        "aspectRatio": "Seitenverhältnis",
+        "style": "Stil",
+        "selectStyle": "Stil auswählen",
+        "resolution": "Auflösung",
+        "selectResolution": "Auflösung auswählen",
+        "quality": "Qualität",
+        "numberOfImages": "Anzahl der Bilder"
+    },
+    "imagePromptPlaceholder": "Beschreiben Sie das Bild, das Sie erstellen möchten...",
+    "codePromptPlaceholder": "Beschreiben Sie den Code, den Sie erstellen möchten...",
+    "audioPromptPlaceholder": "Beschreiben Sie das Audio, das Sie erstellen möchten...",
+    "videoPromptPlaceholder": "Beschreiben Sie das Video, das Sie erstellen möchten...",
+    "instructions": "Anweisungen",
+    "codeGeneratorInstructions": "Beschreiben Sie die Funktionalität, die Sie benötigen. Seien Sie spezifisch zu Eingabe-/Ausgabeformaten, zu verwendenden Bibliotheken und Einschränkungen.",
+    "voice": "Stimme",
+    "selectVoice": "Wählen Sie eine Stimme",
+    "noAudioGenerated": "Noch kein Audio generiert",
+    "videoSettings": {
+        "aspectRatio": "Seitenverhältnis",
+        "style": "Stil",
+        "selectStyle": "Stil auswählen",
+        "resolution": "Auflösung",
+        "selectResolution": "Auflösung auswählen",
+        "duration": "Dauer",
+        "motion": "Bewegung"
+    },
+    "noVideoGenerated": "Noch kein Video generiert",
+    "copied": "Kopiert!",
+    "copy": "Kopieren",
+    "download": "Herunterladen"
+}
+
+
+
+

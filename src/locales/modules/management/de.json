@@ -1,0 +1,61 @@
+{
+  "title": "Modulverwaltung",
+  "description": "Verwalten, hochladen und konfigurieren Sie Systemmodule",
+  "upload": {
+    "title": "Neues Modul hochladen",
+    "description": "Wählen Sie eine .zip-Datei aus, um ein neues Modul hochzuladen"
+  },
+  "listing": {
+    "title": "Module",
+    "description": "Liste der installierten und aktiven Module",
+    "searchPlaceholder": "Module nach Namen suchen...",
+    "statusAll": "Status: Alle",
+    "categoryAll": "Kategorie: Alle",
+    "all": "Alle",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "installed": "Installiert",
+    "noModulesFound": "Keine Module gefunden",
+    "uploadFirstModule": "Laden Sie Ihr erstes Modul hoch, um zu beginnen.",
+    "uploadModule": "Modul hochladen"
+  },
+  "card": {
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "installed": "Installiert",
+      "error": "Fehler"
+    },
+    "switch": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "tooltips": {
+      "configure": "Konfigurieren",
+      "uninstall": "Deinstallieren"
+    },
+    "category": "Kategorie:",
+    "noDescription": "Keine Beschreibung für dieses Modul verfügbar.",
+    "moduleHasErrors": "Modul hat Fehler"
+  },
+  "notifications": {
+    "moduleActivated": "Modul aktiviert",
+    "moduleActivatedSuccess": "{{name}} wurde erfolgreich aktiviert.",
+    "moduleDeactivated": "Modul deaktiviert",
+    "moduleDeactivatedSuccess": "{{name}} wurde deaktiviert.",
+    "activationFailed": "Aktivierung fehlgeschlagen",
+    "deactivationFailed": "Deaktivierung fehlgeschlagen",
+    "activationFailedMessage": "Modul konnte nicht aktiviert werden",
+    "deactivationFailedMessage": "Modul konnte nicht deaktiviert werden",
+    "uninstallModule": "Modul deinstallieren",
+    "uninstallConfirm": "Sind Sie sicher, dass Sie \"{{name}}\" deinstallieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "moduleUninstalled": "Modul deinstalliert",
+    "moduleUninstalledSuccess": "{{name}} wurde deinstalliert.",
+    "uninstallFailed": "Deinstallation fehlgeschlagen",
+    "uninstallFailedMessage": "Modul konnte nicht deinstalliert werden"
+  }
+}
+
+
+
+

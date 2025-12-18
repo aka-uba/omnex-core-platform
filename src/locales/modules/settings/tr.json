@@ -1,0 +1,115 @@
+{
+  "title": "Ayarlar",
+  "description": "Sistem ve firma ayarlarını yönetin",
+  "addCompany": {
+    "title": "Yeni Firma Ekle",
+    "description": "Firmanızı eklemek için aşağıdaki adımları tamamlayın"
+  },
+  "moduleSettings": {
+    "tabs": {
+      "summary": "Özet",
+      "settings": "Ayarlar",
+      "menu": "Menü"
+    },
+    "summary": {
+      "title": "Modül Özeti",
+      "version": "Sürüm",
+      "lastUpdated": "Son Güncelleme",
+      "category": "Kategori",
+      "author": "Yazar",
+      "whatYouCanDo": "Neler Yapılabilir",
+      "changeLog": "Değişiklik Geçmişi",
+      "versionHistory": "Sürüm Geçmişi",
+      "current": "Güncel",
+      "changes": "Değişiklikler",
+      "features": {
+        "title": "Bu modül aşağıdaki özellikleri sağlar:",
+        "realEstate": {
+          "properties": "Detaylı bilgilerle mülk ve daire yönetimi",
+          "tenants": "Kiracı ve sözleşme takibi",
+          "payments": "Ödeme izleme ve mali raporlar",
+          "appointments": "Mülk randevularını planlama ve yönetme",
+          "email": "Kiracılara e-posta kampanyaları oluşturma ve gönderme",
+          "reports": "Kapsamlı raporlar ve analizler oluşturma",
+          "staff": "Personel ve performans yönetimi"
+        }
+      }
+    },
+    "settings": {
+      "title": "Modül Ayarları",
+      "resetToDefault": "Varsayılana Dön",
+      "saveChanges": "Değişiklikleri Kaydet",
+      "noSettings": "Bu modül için ayar bulunmamaktadır",
+      "setting": "ayar",
+      "settings_plural": "ayar",
+      "categories": {
+        "general": "Genel",
+        "email": "E-posta",
+        "payments": "Ödemeler",
+        "contracts": "Sözleşmeler",
+        "maintenance": "Bakım",
+        "appearance": "Görünüm",
+        "files": "Dosyalar",
+        "appointments": "Randevular",
+        "properties": "Mülkler"
+      },
+      "controls": {
+        "enabled": "Etkin",
+        "disabled": "Devre Dışı"
+      },
+      "notifications": {
+        "saved": "Başarılı",
+        "savedMessage": "Ayarlar başarıyla kaydedildi",
+        "error": "Hata",
+        "errorMessage": "Ayarlar kaydedilemedi"
+      }
+    },
+    "menu": {
+      "title": "Menü Yapılandırması",
+      "description": "Menü öğelerini yeniden sıralamak için sürükleyip bırakın. Yapılandırmak için öğelere tıklayın.",
+      "addMenuItem": "Menü Öğesi Ekle",
+      "saveMenu": "Menüyü Kaydet",
+      "resetToDefault": "Varsayılana Dön",
+      "itemConfig": {
+        "title": "Başlık",
+        "icon": "İkon",
+        "path": "Yol",
+        "openIn": "Açılış Şekli",
+        "sameTab": "Aynı Sekme",
+        "newTab": "Yeni Sekme"
+      },
+      "tooltips": {
+        "decreaseIndent": "Girintiyi Azalt",
+        "atRootLevel": "Kök seviyede",
+        "increaseIndent": "Girintiyi Artır",
+        "maxIndentLevel": "Maksimum girinti seviyesi",
+        "hide": "Gizle",
+        "show": "Göster",
+        "delete": "Sil",
+        "dragHandle": "Sürükle"
+      },
+      "notifications": {
+        "saved": "Başarılı",
+        "savedMessage": "Menü yapılandırması başarıyla kaydedildi",
+        "reset": "Başarılı",
+        "resetMessage": "Menü varsayılan ayarlara döndürüldü",
+        "error": "Hata",
+        "errorMessage": "Menü kaydedilemedi"
+      }
+    },
+    "icon": {
+      "upload": "İkon Yükle",
+      "change": "İkonu Değiştir",
+      "uploading": "Yükleniyor...",
+      "uploadSuccess": "İkon başarıyla yüklendi",
+      "uploadError": "İkon yüklenemedi",
+      "maxSize": "Maksimum dosya boyutu: 2MB",
+      "allowedTypes": "İzin verilen formatlar: PNG, JPG, SVG, WebP"
+    }
+  }
+}
+
+
+
+
+

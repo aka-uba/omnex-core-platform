@@ -1,0 +1,33 @@
+{
+  "title": "Accounting",
+  "description": "Comprehensive accounting module",
+  "menu": {
+    "label": "Accounting",
+    "items": {
+      "dashboard": "Dashboard",
+      "subscriptions": "Subscriptions",
+      "invoices": "Invoices",
+      "payments": "Payments",
+      "expenses": "Expenses",
+      "reports": "Reports"
+    }
+  },
+  "dashboard": {
+    "title": "Accounting Dashboard",
+    "description": "Overview of your accounting and financial management",
+    "totalRevenue": "Total Revenue",
+    "activeSubscriptions": "Active Subscriptions",
+    "pendingInvoices": "Pending Invoices",
+    "outstandingPayments": "Outstanding Payments",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Accounting reports and analytics"
+  }
+}
+
+

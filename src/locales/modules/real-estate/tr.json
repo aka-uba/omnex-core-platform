@@ -1,0 +1,1612 @@
+{
+  "title": "Emlak Yönetimi",
+  "description": "Kapsamlı emlak yönetim modülü",
+  "menu": {
+    "label": "Emlak",
+    "items": {
+      "dashboard": "Genel Bakış",
+      "map": "Harita",
+      "payments": "Ödemeler",
+      "tenants": "Kiracılar",
+      "apartments": "Daireler",
+      "staff": "Personel",
+      "properties": "Gayrimenkuller",
+      "agreementReports": "Anlaşma Raporları",
+      "agreement-reports": "Anlaşma Raporları",
+      "appointments": "Randevular",
+      "contracts": "Sözleşmeler",
+      "maintenance": "Bakım",
+      "contractTemplates": "Sözleşme Şablonları",
+      "contract-templates": "Sözleşme Şablonları",
+      "bulkOperations": "Toplu İşlemler",
+      "bulk-operations": "Toplu İşlemler",
+      "email": "E-posta Kampanyaları",
+      "sendEmail": "E-posta Gönder",
+      "send": "E-posta Gönder",
+      "campaigns": "Kampanyalar",
+      "reports": "Raporlar",
+      "settings": "Ayarlar"
+    }
+  },
+  "dashboard": {
+    "title": "Emlak Yönetimi Genel Bakış",
+    "description": "Emlak yönetiminize genel bakış",
+    "totalRevenue": "Toplam Gelir",
+    "recentActivity": "Son Aktiviteler",
+    "noActivity": "Son aktivite yok",
+    "active": "Aktif",
+    "occupied": "Dolu",
+    "upcoming": "Yaklaşan",
+    "open": "Açık",
+    "revenueTrend": "Gelir Trendi",
+    "revenue": "Gelir",
+    "net": "Net",
+    "paymentStatus": "Ödeme Durumu",
+    "contractStatus": "Sözleşme Durumu",
+    "paymentTypes": "Ödeme Türleri",
+    "count": "Adet",
+    "upcomingPayments": "Yaklaşan Ödemeler",
+    "expiringContracts": "Süresi Dolacak Sözleşmeler",
+    "viewAll": "Tümünü Gör",
+    "noUpcomingPayments": "Yaklaşan ödeme yok",
+    "noExpiringContracts": "Süresi dolacak sözleşme yok",
+    "days": "gün",
+    "today": "Bugün",
+    "yesterday": "Dün"
+  },
+  "properties": {
+    "title": "Gayrimenkuller",
+    "description": "Gayrimenkullerinizi yönetin",
+    "create": {
+      "title": "Yeni Gayrimenkul",
+      "description": "Yeni bir gayrimenkul oluşturun"
+    },
+    "edit": {
+      "title": "Gayrimenkul Düzenle",
+      "description": "Gayrimenkul bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Gayrimenkul Detayları",
+      "description": "Gayrimenkul detaylarını görüntüleyin"
+    },
+    "fields": {
+      "propertyNumber": "Taşınmaz Numarası",
+      "constructionYear": "Yapım Yılı",
+      "lastRenovationDate": "Son Yenileme Tarihi",
+      "landArea": "Arsa Alanı (m²)",
+      "floorCount": "Kat Sayısı",
+      "livingArea": "Yaşam Alanı (m²)",
+      "purchaseDate": "Satın Alma Tarihi",
+      "purchasePrice": "Satın Alma Fiyatı",
+      "isPaidOff": "Ödendi",
+      "financingStartDate": "Finansman Başlangıç Tarihi",
+      "financingEndDate": "Finansman Bitiş Tarihi",
+      "monthlyFinancingRate": "Aylık Finansman Taksiti",
+      "numberOfInstallments": "Taksit Sayısı",
+      "financingPaymentDay": "Finansman Taksit Günü",
+      "type": "Tip"
+    },
+    "sections": {
+      "masterData": "Ana Veriler",
+      "address": "Adres Bilgileri",
+      "purchaseInfo": "Satın Alma Bilgileri",
+      "financing": "Finansman Bilgileri"
+    },
+    "delete": {
+      "title": "Gayrimenkul Sil",
+      "confirm": "Bu gayrimenkulü silmek istediğinize emin misiniz?",
+      "success": "Gayrimenkul başarıyla silindi",
+      "error": "Gayrimenkul silinirken hata oluştu"
+    },
+    "details": "Detaylar"
+  },
+  "apartments": {
+    "title": "Daireler",
+    "description": "Daire ve üniteleri yönetin",
+    "create": {
+      "title": "Yeni Daire",
+      "description": "Yeni bir daire oluşturun"
+    },
+    "edit": {
+      "title": "Daire Düzenle",
+      "description": "Daire bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Daire Detayları",
+      "description": "Daire detaylarını görüntüleyin"
+    },
+    "details": "Detaylar",
+    "floor": "Kat",
+    "block": "Blok",
+    "area": "Alan",
+    "roomCount": "Oda Sayısı",
+    "rooms": "oda",
+    "rentPrice": "Kira Fiyatı",
+    "salePrice": "Satış Fiyatı",
+    "deliveryDate": "Teslim Tarihi",
+    "currentTenant": "Mevcut Kiracı",
+    "currentRent": "Güncel Kira",
+    "nextPaymentDate": "Ödeme Tekrar Zamanı",
+    "managedBy": "Yöneten Personel",
+    "propertyManager": "Gayrimenkul Yöneticisi",
+    "status": {
+      "empty": "Boş",
+      "rented": "Dolu",
+      "sold": "Satıldı",
+      "maintenance": "Bakımda"
+    },
+    "fields": {
+      "apartmentType": "Daire Tipi",
+      "bedroomCount": "Yatak Odası Sayısı",
+      "basementSize": "Kiler Boyutu (m²)",
+      "lastRenovationDate": "Son Yenileme Tarihi",
+      "internetSpeed": "İnternet Hızı",
+      "heatingSystems": "Isıtma Sistemleri",
+      "coldRent": "Net Kira",
+      "additionalCosts": "Ek Giderler",
+      "heatingCosts": "Isıtma Giderleri",
+      "deposit": "Depozito",
+      "usageRights": "Kullanım Hakları",
+      "area": "Alan (m²)",
+      "roomCount": "Oda Sayısı",
+      "bathroomCount": "Banyo Sayısı",
+      "floor": "Kat",
+      "block": "Blok",
+      "balcony": "Balkon",
+      "livingRoom": "Salon",
+      "description": "Açıklama"
+    },
+    "sections": {
+      "basicInfo": "Temel Bilgiler",
+      "roomsAndAreas": "Odalar ve Alanlar",
+      "heatingAndInternet": "Isıtma ve İnternet",
+      "monthlyCosts": "Aylık Maliyetler",
+      "usageRights": "Kullanım Hakları"
+    },
+    "heatingSystem": {
+      "primary": "Birincil Sistem",
+      "secondary": "İkincil Sistem",
+      "system1": "Isıtma Sistemi 1",
+      "system2": "Isıtma Sistemi 2",
+      "system3": "Isıtma Sistemi 3",
+      "system4": "Isıtma Sistemi 4"
+    },
+    "usageRight": {
+      "name": "Hak Adı",
+      "selected": "Seçili"
+    },
+    "delete": {
+      "title": "Daire Sil",
+      "confirm": "Bu daireyi silmek istediğinize emin misiniz?",
+      "success": "Daire başarıyla silindi",
+      "error": "Daire silinirken hata oluştu"
+    },
+    "images": "Resimler",
+    "contactForDetails": "Detaylar için iletişime geçin"
+  },
+  "tenants": {
+    "title": "Kiracılar",
+    "description": "Kiracıları ve bilgilerini yönetin",
+    "create": {
+      "title": "Yeni Kiracı",
+      "description": "Yeni kiracı ekleyin"
+    },
+    "edit": {
+      "title": "Kiracı Düzenle",
+      "description": "Kiracı bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Kiracı Detayları",
+      "description": "Kiracı detaylarını ve analizlerini görüntüleyin"
+    },
+    "fields": {
+      "tenantType": "Kiracı Tipi",
+      "companyName": "Şirket Adı",
+      "salutation": "Hitap",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "birthDate": "Doğum Tarihi",
+      "birthPlace": "Doğum Yeri",
+      "street": "Cadde/Sokak",
+      "houseNumber": "Bina Numarası",
+      "postalCode": "Posta Kodu",
+      "city": "Şehir",
+      "phone": "Sabit Hat",
+      "mobile": "Cep Telefonu",
+      "email": "E-posta",
+      "nationality": "Vatandaşlık",
+      "taxNumber": "Vergi Numarası"
+    },
+    "types": {
+      "person": "Kişi",
+      "company": "Şirket"
+    },
+    "salutations": {
+      "mr": "Bay",
+      "mrs": "Bayan",
+      "ms": "Bayan",
+      "dr": "Dr."
+    },
+    "sections": {
+      "typeInfo": "Tip Bilgisi",
+      "personalInfo": "Kişisel Bilgiler",
+      "addressInfo": "Adres Bilgileri",
+      "contactInfo": "İletişim Bilgileri",
+      "additionalInfo": "Ek Bilgiler"
+    },
+    "delete": {
+      "title": "Kiracı Sil",
+      "confirm": "Bu kiracıyı silmek istediğinize emin misiniz?",
+      "success": "Kiracı başarıyla silindi",
+      "error": "Kiracı silinirken hata oluştu"
+    }
+  },
+  "contracts": {
+    "title": "Sözleşmeler",
+    "description": "Kira sözleşmelerini yönetin",
+    "create": {
+      "title": "Yeni Sözleşme",
+      "description": "Yeni kira sözleşmesi oluşturun"
+    },
+    "edit": {
+      "title": "Sözleşme Düzenle",
+      "description": "Sözleşme bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Sözleşme Detayları",
+      "description": "Sözleşme detaylarını görüntüleyin"
+    },
+    "status": {
+      "draft": "Taslak",
+      "active": "Aktif",
+      "expired": "Süresi Dolmuş",
+      "terminated": "Feshedilmiş"
+    },
+    "tracking": {
+      "title": "Sözleşme Takibi",
+      "description": "Sözleşme yenilemeleri ve süre bitimlerini takip edin"
+    },
+    "templates": {
+      "title": "Sözleşme Şablonları",
+      "description": "Sözleşme şablonlarını yönetin",
+      "detail": {
+        "title": "Sözleşme Şablonu Detayları",
+        "description": "Sözleşme şablonu detaylarını görüntüleyin"
+      },
+      "create": {
+        "title": "Yeni Sözleşme Şablonu",
+        "description": "Yeni sözleşme şablonu oluşturun"
+      },
+      "edit": {
+        "title": "Sözleşme Şablonu Düzenle",
+        "description": "Sözleşme şablonunu düzenleyin"
+      },
+      "delete": {
+        "title": "Sözleşme Şablonu Sil",
+        "confirm": "Bu sözleşme şablonunu silmek istediğinize emin misiniz?",
+        "success": "Sözleşme şablonu başarıyla silindi",
+        "error": "Sözleşme şablonu silinirken hata oluştu"
+      }
+    },
+    "delete": {
+      "title": "Sözleşme Sil",
+      "confirm": "Bu sözleşmeyi silmek istediğinize emin misiniz?",
+      "success": "Sözleşme başarıyla silindi",
+      "error": "Sözleşme silinirken hata oluştu"
+    }
+  },
+  "payments": {
+    "title": "Ödemeler",
+    "description": "Kira ödemelerini ve işlemleri yönetin",
+    "create": {
+      "title": "Yeni Ödeme",
+      "description": "Yeni ödeme kaydedin"
+    },
+    "edit": {
+      "title": "Ödeme Düzenle",
+      "description": "Ödeme bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Ödeme Detayları",
+      "description": "Ödeme detaylarını görüntüleyin",
+      "paymentInfo": "Ödeme Bilgileri",
+      "type": "Tür",
+      "status": "Durum",
+      "amount": "Tutar",
+      "extraCharges": "Ek Ücretler",
+      "totalAmount": "Toplam Tutar",
+      "currency": "Para Birimi",
+      "dueDate": "Vade Tarihi",
+      "paidDate": "Ödeme Tarihi",
+      "paymentMethod": "Ödeme Yöntemi",
+      "receiptNumber": "Makbuz Numarası",
+      "relatedInfo": "İlişkili Bilgiler",
+      "apartment": "Daire",
+      "property": "Gayrimenkul",
+      "contract": "Sözleşme",
+      "notes": "Notlar",
+      "systemInfo": "Sistem Bilgileri",
+      "createdAt": "Oluşturulma Tarihi",
+      "updatedAt": "Güncellenme Tarihi",
+      "reminderSent": "Hatırlatma Gönderildi"
+    },
+    "autoGenerated": "Otomatik Oluşturuldu",
+    "list": "Liste",
+    "analytics": "Analitikler",
+    "types": {
+      "rent": "Kira",
+      "deposit": "Depozito",
+      "fee": "Ücret",
+      "maintenance": "Bakım",
+      "utility": "Fatura"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "paid": "Ödendi",
+      "overdue": "Vadesi Geçmiş",
+      "cancelled": "İptal Edildi"
+    },
+    "methods": {
+      "cash": "Nakit",
+      "bankTransfer": "Banka Transferi",
+      "card": "Kart",
+      "check": "Çek",
+      "autoDebit": "Otomatik Ödeme"
+    },
+    "markedAsPaid": "Ödeme ödendi olarak işaretlendi",
+    "markAsPaidError": "Ödeme işaretlenirken hata oluştu",
+    "exportDescription": "Emlak Ödemeler Raporu",
+    "exportSuccess": "Ödemeler başarıyla dışa aktarıldı",
+    "exportError": "Ödemeler dışa aktarılırken hata oluştu",
+    "delete": {
+      "title": "Ödemeyi Sil",
+      "confirm": "Bu ödemeyi silmek istediğinize emin misiniz?",
+      "success": "Ödeme başarıyla silindi",
+      "error": "Ödeme silinirken hata oluştu"
+    }
+  },
+  "appointments": {
+    "title": "Randevular",
+    "description": "Randevuları ve görücüleri yönetin",
+    "create": "Yeni Randevu",
+    "edit": "Randevu Düzenle",
+    "createPage": {
+      "title": "Yeni Randevu",
+      "description": "Yeni randevu oluşturun"
+    },
+    "editPage": {
+      "title": "Randevu Düzenle",
+      "description": "Randevu bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Randevu Detayları",
+      "description": "Randevu detaylarını görüntüleyin"
+    },
+    "types": {
+      "viewing": "Görücü",
+      "delivery": "Teslimat",
+      "maintenance": "Bakım",
+      "inspection": "İnceleme",
+      "meeting": "Toplantı"
+    },
+    "status": {
+      "scheduled": "Planlandı",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal Edildi",
+      "no_show": "Gelmedi"
+    },
+    "delete": {
+      "title": "Randevu Sil",
+      "confirm": "Bu randevuyu silmek istediğinize emin misiniz?",
+      "success": "Randevu başarıyla silindi",
+      "error": "Randevu silinirken hata oluştu"
+    },
+    "markedAsCompleted": "Randevu tamamlandı olarak işaretlendi",
+    "markAsCompletedError": "Randevu işaretlenirken hata oluştu",
+    "followUpForm": "Randevu Takip Formu",
+    "followUpDescription": "Randevu tamamlandıktan sonra detayları doldurun",
+    "rating": "Değerlendirme",
+    "forViewing": "görücü için",
+    "interestLevel": "İlgi Seviyesi",
+    "interestLevels": {
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "resultNotes": "Sonuç Notları",
+    "enterResultNotes": "Sonuç notlarını girin...",
+    "outcome": "Sonuç",
+    "enterOutcome": "Sonucu girin...",
+    "nextAction": "Sonraki Aksiyon",
+    "enterNextAction": "Sonraki aksiyonu girin...",
+    "followUpSaved": "Takip bilgileri başarıyla kaydedildi",
+    "details": "Detaylar",
+    "followUp": "Takip",
+    "minutes": "dakika",
+    "result": "Sonuç",
+    "markAsCompleted": "Tamamlandı Olarak İşaretle"
+  },
+  "email": {
+    "title": "E-posta",
+    "edit": "E-posta Şablonu Düzenle",
+    "update": {
+      "success": "E-posta şablonu başarıyla güncellendi"
+    },
+    "create": {
+      "title": "E-posta Şablonu Oluştur",
+      "success": "E-posta şablonu başarıyla oluşturuldu"
+    },
+    "save": {
+      "error": "E-posta şablonu kaydedilirken bir hata oluştu"
+    },
+    "delete": {
+      "title": "E-posta Şablonu Sil",
+      "confirm": "Bu e-posta şablonunu silmek istediğinize emin misiniz?",
+      "success": "E-posta şablonu başarıyla silindi",
+      "error": "E-posta şablonu silinirken hata oluştu"
+    },
+    "categories": {
+      "promotion": "Promosyon",
+      "announcement": "Duyuru",
+      "reminder": "Hatırlatma",
+      "welcome": "Hoş Geldiniz",
+      "agreement": "Anlaşma"
+    },
+    "templates": {
+      "title": "E-posta Şablonları",
+      "description": "E-posta şablonlarını yönetin",
+      "create": {
+        "title": "E-posta Şablonu Oluştur",
+        "description": "Yeni e-posta şablonu oluşturun"
+      },
+      "edit": {
+        "title": "E-posta Şablonu Düzenle",
+        "description": "E-posta şablonunu düzenleyin"
+      }
+    },
+    "campaigns": {
+      "title": "E-posta Kampanyaları",
+      "description": "E-posta kampanyalarını yönetin",
+      "listTab": "Kampanyalar",
+      "analyticsTab": "Analitikler",
+      "detail": {
+        "title": "Kampanya Detayları",
+        "description": "E-posta kampanyası detaylarını görüntüleyin",
+        "createdAt": "Oluşturulma",
+        "recipients": "Alıcılar"
+      }
+    },
+    "campaign": {
+      "delete": {
+        "title": "E-posta Kampanyası Sil",
+        "confirm": "Bu e-posta kampanyasını silmek istediğinize emin misiniz?",
+        "success": "E-posta kampanyası başarıyla silindi",
+        "error": "E-posta kampanyası silinirken hata oluştu"
+      },
+      "status": {
+        "draft": "Taslak",
+        "scheduled": "Planlandı",
+        "sending": "Gönderiliyor",
+        "sent": "Gönderildi",
+        "failed": "Başarısız"
+      }
+    },
+    "wizard": {
+      "step1": {
+        "title": "Alıcılar",
+        "description": "Alıcıları seçin",
+        "manualEmail": "E-posta Ekle",
+        "emailPlaceholder": "E-posta adresi girin",
+        "selectTenants": "Kiracıları Seç",
+        "tenantPlaceholder": "Kiracıları arayın ve seçin",
+        "selectApartments": "Daireleri Seç (Kiracıları Al)",
+        "apartmentPlaceholder": "Daireleri arayın ve seçin",
+        "selectedRecipients": "Seçilen Alıcılar",
+        "noRecipients": "Alıcı seçilmedi. Devam etmek için alıcı ekleyin."
+      },
+      "step2": {
+        "title": "Şablon",
+        "description": "Şablon seçin",
+        "noTemplates": "Şablon bulunamadı. Önce bir şablon oluşturun.",
+        "selectedTemplate": "Seçilen Şablon"
+      },
+      "step3": {
+        "title": "Daire",
+        "description": "Daire bağla (opsiyonel)",
+        "selectedApartment": "Seçilen Daire",
+        "autoFillVariables": "Şablon Değişkenlerini Otomatik Doldur",
+        "availableVariables": "Mevcut Değişkenler",
+        "variablesHint": "Bu değişkenler şablonda otomatik olarak doldurulacaktır:",
+        "skipMessage": "Bu adımı atlayabilirsiniz. Daire bağlama opsiyoneldir."
+      },
+      "step4": {
+        "title": "İçerik",
+        "description": "İçeriği düzenle",
+        "availableVariables": "Mevcut Değişkenler",
+        "clickToAdd": "Değişkeni içeriğe eklemek için tıklayın",
+        "currentVariables": "Mevcut Değişken Değerleri"
+      },
+      "step5": {
+        "title": "Önizleme",
+        "description": "Önizleme ve test",
+        "desktop": "Masaüstü",
+        "mobile": "Mobil",
+        "emailPreview": "E-posta Önizlemesi",
+        "sendTest": "Test E-postası Gönder",
+        "testEmailPlaceholder": "E-posta adresinizi girin",
+        "sendTestButton": "Test Gönder",
+        "testHint": "Nasıl görüneceğini görmek için kendinize bir test e-postası gönderin",
+        "summary": "E-posta Özeti",
+        "recipients": "Alıcılar",
+        "template": "Şablon",
+        "apartment": "Daire",
+        "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
+        "testSent": "Test e-postası başarıyla gönderildi",
+        "testError": "Test e-postası gönderilirken hata oluştu",
+        "noRecipients": "Alıcı seçilmedi. Lütfen geri dönün ve alıcı ekleyin.",
+        "noTemplate": "Şablon seçilmedi. Lütfen geri dönün ve bir şablon seçin."
+      },
+      "step6": {
+        "title": "Gönder",
+        "description": "Onayla ve gönder",
+        "sendNow": "Şimdi Gönder",
+        "sendNowDescription": "E-postayı hemen gönder",
+        "schedule": "Gönderim Zamanını Planla",
+        "schedulePlaceholder": "Tarih ve saat seçin",
+        "summary": "E-posta Özeti",
+        "recipients": "Alıcılar",
+        "template": "Şablon",
+        "apartment": "Daire",
+        "tracking": "Takip ve Analitikler",
+        "trackingDescription": "E-posta açılmaları ve tıklamaları otomatik olarak takip edilecektir",
+        "openTracking": "Açılma Takibi",
+        "clickTracking": "Tıklama Takibi",
+        "confirmTitle": "Göndermeye Hazır",
+        "confirmNow": "Bu e-posta tüm alıcılara hemen gönderilecektir.",
+        "confirmScheduled": "Bu e-posta tüm alıcılara belirtilen tarih ve saatte gönderilecektir.",
+        "sent": "E-posta başarıyla gönderildi",
+        "scheduled": "E-posta başarıyla planlandı",
+        "sendError": "E-posta gönderilirken hata oluştu"
+      },
+      "send": "Gönder"
+    },
+    "analytics": {
+      "totalCampaigns": "Toplam Kampanyalar",
+      "openRate": "Açılma Oranı",
+      "clickRate": "Tıklama Oranı",
+      "totalRecipients": "Toplam Alıcılar",
+      "monthlyTrend": "Aylık Trend",
+      "sent": "Gönderildi",
+      "opened": "Açıldı",
+      "clicked": "Tıklandı",
+      "statusBreakdown": "Durum Dağılımı",
+      "topTemplates": "En İyi Şablonlar",
+      "recentCampaigns": "Son Kampanyalar",
+      "noTemplates": "Şablon bulunamadı",
+      "noCampaigns": "Kampanya bulunamadı",
+      "noData": "Analitik verisi bulunamadı",
+      "noDataDescription": "Henüz e-posta kampanyası oluşturulmamış veya gönderilmemiş. Kampanya oluşturup gönderdikten sonra burada analitik verileri görüntüleyebilirsiniz."
+    },
+    "send": {
+      "title": "E-posta Gönder",
+      "description": "Kiracılara e-posta gönderin",
+      "success": "E-posta başarıyla gönderildi",
+      "error": "E-posta gönderilirken hata oluştu"
+    },
+    "description": "E-posta şablonlarını ve kampanyalarını yönetin",
+      "status": {
+      "default": "Varsayılan",
+      "active": "Aktif",
+      "inactive": "Pasif"
+    }
+  },
+  "map": {
+    "title": "Harita",
+    "description": "Gayrimenkullerinizi haritada görüntüleyin",
+    "mapboxTokenMissing": "Mapbox Token Gerekli",
+    "mapboxTokenMissingDescription": "Mapbox sağlayıcısı seçildi ancak erişim token'ı eksik. Lütfen modül ayarlarından yapılandırın veya ücretsiz OpenStreetMap kullanın.",
+    "goToSettings": "Ayarlara Git",
+    "totalProperties": "Toplam Bina",
+    "totalApartments": "Toplam Daire",
+    "rented": "Dolu",
+    "empty": "Boş",
+    "geocodingInProgress": "Gayrimenkullerin koordinatları bulunuyor..."
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "Rapor oluşturun ve görüntüleyin",
+    "tabs": {
+      "overview": "Genel Bakış",
+      "agreement": "Anlaşma Raporları",
+      "financial": "Finansal Raporlar",
+      "property": "Gayrimenkul Raporları",
+      "tenant": "Kiracı Raporları"
+    },
+    "stats": {
+      "totalProperties": "Toplam Gayrimenkul",
+      "totalApartments": "Toplam Daire",
+      "totalTenants": "Toplam Kiracı",
+      "activeContracts": "Aktif Sözleşmeler",
+      "totalPayments": "Toplam Ödemeler",
+      "totalAppointments": "Toplam Randevular"
+    },
+    "quickActions": "Hızlı İşlemler",
+    "exportSummary": "Özet Dışa Aktar",
+    "viewAgreementReports": "Anlaşma Raporlarını Görüntüle",
+    "viewPayments": "Ödemeleri Görüntüle",
+    "financial": {
+      "title": "Finansal Raporlar",
+      "description": "Ödemeler, gelir ve giderleri içeren kapsamlı finansal raporlar oluşturun."
+    },
+    "property": {
+      "title": "Gayrimenkul Raporları",
+      "description": "Doluluk oranları ve durum bilgilerini içeren gayrimenkul ve daire raporları oluşturun."
+    },
+    "tenant": {
+      "title": "Kiracı Raporları",
+      "description": "Analitikler, ödeme geçmişi ve sözleşme bilgilerini içeren kiracı raporları oluşturun."
+    },
+    "exportSuccess": "Rapor başarıyla dışa aktarıldı",
+    "exportError": "Rapor dışa aktarılırken hata oluştu",
+    "exportDescription": "Emlak Raporu",
+    "viewPaymentDetails": "Ödeme Detaylarını Görüntüle",
+    "viewProperties": "Gayrimenkulleri Görüntüle",
+    "viewTenants": "Kiracıları Görüntüle",
+    "types": {
+      "summary": "Özet Rapor",
+      "financial": "Finansal Rapor",
+      "property": "Gayrimenkul Raporu",
+      "tenant": "Kiracı Raporu"
+    },
+    "column": {
+      "date": "Tarih",
+      "type": "Tip",
+      "details": "Detaylar"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "description": "Modül ayarları"
+  },
+  "staff": {
+    "title": "Personel",
+    "description": "Personel üyelerini yönetin",
+    "create": {
+      "title": "Yeni Personel Üyesi",
+      "description": "Yeni personel üyesi ekleyin",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "edit": {
+      "title": "Personel Üyesi Düzenle",
+      "description": "Personel üyesi bilgilerini düzenleyin"
+    },
+    "detail": {
+      "title": "Personel Detayları",
+      "description": "Personel üyesi detaylarını görüntüleyin",
+      "createdAt": "Oluşturulma"
+    },
+    "performance": {
+      "title": "Performans",
+      "description": "Personel performans metriklerini görüntüleyin",
+      "detailedMetrics": "Detaylı Metrikler",
+      "totalPaid": "Toplam Ödenen",
+      "completed": "tamamlandı"
+    },
+    "analytics": {
+      "paymentAmountTrend": "Ödeme Tutarı Trendi",
+      "maintenanceTrend": "Bakım Trendi"
+    },
+    "types": {
+      "internal": "Dahili",
+      "external": "Harici"
+    },
+    "roles": {
+      "manager": "Yönetici",
+      "agent": "Acenta",
+      "accountant": "Muhasebeci",
+      "maintenance": "Bakım",
+      "observer": "Gözlemci",
+      "administrator": "Yönetici"
+    },
+    "delete": {
+      "title": "Personel Sil",
+      "confirm": "Bu personel üyesini silmek istediğinize emin misiniz?",
+      "success": "Personel üyesi başarıyla silindi",
+      "error": "Personel üyesi silinirken hata oluştu"
+    },
+    "profileImage": {
+      "uploadSuccess": "Profil resmi başarıyla yüklendi",
+      "uploadError": "Profil resmi yüklenirken hata oluştu"
+    },
+    "uploadProfileImage": "Profil Resmi Yükle",
+    "setProfileImage": "Profil Resmini Değiştir",
+    "uploadProfileImageHint": "Profil resmi yükleyin. Önerilen boyut: 400x400px. Maksimum dosya boyutu: 5MB.",
+    "form": {
+      "profileImage": "Profil Resmi",
+      "uploadProfileImage": "Profil Resmi Yükle",
+      "setProfileImage": "Profil Resmini Değiştir",
+      "uploadProfileImageHint": "Profil resmi yükleyin. Önerilen boyut: 400x400px. Maksimum dosya boyutu: 5MB.",
+      "profileImageUploadSuccess": "Profil resmi başarıyla yüklendi",
+      "profileImageUploadError": "Profil resmi yüklenirken hata oluştu",
+      "staffType": "Personel Tipi",
+      "staffTypePlaceholder": "Personel tipi seçin",
+      "user": "Sistem Kullanıcısı",
+      "userPlaceholder": "Sistem kullanıcısı seçin",
+      "internalStaffHint": "Sistemden bir kullanıcı seçin. Bu kullanıcı emlak modülüne erişim sağlayacaktır.",
+      "name": "Ad",
+      "namePlaceholder": "Ad girin",
+      "nameAutoFill": "Ad kullanıcı verilerinden otomatik doldurulacaktır",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta girin",
+      "phone": "Telefon",
+      "phonePlaceholder": "Telefon girin",
+      "role": "Rol",
+      "rolePlaceholder": "Rol seçin",
+      "properties": "Gayrimenkuller",
+      "propertiesPlaceholder": "Gayrimenkuller seçin",
+      "apartments": "Daireler",
+      "apartmentsPlaceholder": "Daireler seçin",
+      "apartmentsHint": "Atanan birim sayısı otomatik olarak hesaplanacaktır",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin"
+    },
+    "update": {
+      "success": "Başarılı"
+    }
+  },
+  "maintenance": {
+    "title": "Bakım",
+    "description": "Bakım taleplerini yönetin",
+    "create": {
+      "title": "Yeni Bakım Talebi",
+      "description": "Bakım talebi oluşturun",
+      "success": "Bakım kaydı başarıyla oluşturuldu",
+      "error": "Bakım kaydı kaydedilirken hata oluştu"
+    },
+    "edit": {
+      "title": "Bakım Talebi Düzenle",
+      "description": "Bakım talebini düzenleyin"
+    },
+    "detail": {
+      "title": "Bakım Detayları",
+      "description": "Bakım talebi detaylarını görüntüleyin"
+    },
+    "types": {
+      "preventive": "Önleyici",
+      "corrective": "Düzeltici",
+      "emergency": "Acil"
+    },
+    "status": {
+      "scheduled": "Planlandı",
+      "in_progress": "Devam Ediyor",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal Edildi"
+    },
+    "update": {
+      "success": "Bakım kaydı başarıyla güncellendi",
+      "error": "Bakım kaydı güncellenirken hata oluştu"
+    },
+    "delete": {
+      "title": "Bakım Kaydı Sil",
+      "confirm": "Bu bakım kaydını silmek istediğinize emin misiniz?",
+      "success": "Bakım kaydı başarıyla silindi",
+      "error": "Bakım kaydı silinirken hata oluştu"
+    }
+  },
+  "bulkOperations": {
+    "title": "Toplu İşlemler",
+    "description": "Toplu işlemler gerçekleştirin",
+    "empty": "İşlem bulunamadı",
+    "create": {
+      "title": "Yeni Toplu İşlem",
+      "description": "Yeni toplu işlem oluşturun",
+      "button": "Toplu İşlem Oluştur",
+      "success": "Toplu işlem başarıyla oluşturuldu",
+      "error": "Toplu işlem oluşturulurken hata oluştu"
+    },
+    "execute": {
+      "success": "Toplu işlem başarıyla çalıştırıldı"
+    },
+    "delete": {
+      "title": "Toplu İşlem Sil",
+      "confirm": "Bu toplu işlemi silmek istediğinize emin misiniz?",
+      "success": "Toplu işlem başarıyla silindi",
+      "error": "Toplu işlem silinirken hata oluştu"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "processing": "İşleniyor",
+      "completed": "Tamamlandı",
+      "failed": "Başarısız",
+      "cancelled": "İptal Edildi"
+    },
+    "types": {
+      "rent_increase": "Kira Artışı",
+      "fee_update": "Ücret Güncelleme",
+      "custom": "Özel"
+    },
+    "filter": {
+      "type": "Tipe Göre Filtrele",
+      "status": "Duruma Göre Filtrele"
+    },
+    "table": {
+      "title": "Başlık",
+      "type": "Tip",
+      "status": "Durum",
+      "affected": "Etkilenen",
+      "success": "Başarılı",
+      "failed": "Başarısız",
+      "createdAt": "Oluşturulma Tarihi"
+    },
+    "type": "İşlem Tipi",
+    "selectType": "İşlem tipi seçin",
+    "titlePlaceholder": "İşlem başlığını girin",
+    "descriptionPlaceholder": "İşlem açıklamasını girin",
+    "rentIncrease": {
+      "apartments": "Daireler (Opsiyonel - Tümü için boş bırakın)",
+      "selectApartments": "Daireleri seçin veya tümü için boş bırakın",
+      "contracts": "Sözleşmeler (Opsiyonel - Tümü için boş bırakın)",
+      "selectContracts": "Sözleşmeleri seçin veya tümü için boş bırakın",
+      "increaseType": "Artış Tipi",
+      "selectType": "Tip seçin",
+      "percentage": "Yüzde (%)",
+      "fixed": "Sabit Tutar",
+      "percentageValue": "Yüzde (%)",
+      "fixedValue": "Sabit Tutar",
+      "enterValue": "Değer girin",
+      "effectiveDate": "Geçerlilik Tarihi",
+      "selectDate": "Tarih seçin",
+      "notifyTenants": "Kiracıları Bildir",
+      "createNewPayments": "Yeni Ödemeler Oluştur"
+    },
+    "feeUpdate": {
+      "apartments": "Daireler (Opsiyonel - Tümü için boş bırakın)",
+      "selectApartments": "Daireleri seçin veya tümü için boş bırakın",
+      "feeType": "Ücret Tipi",
+      "selectType": "Tip seçin",
+      "selectFeeType": "Ücret tipi seçin",
+      "maintenance": "Bakım Ücreti",
+      "utility": "Fatura Ücreti",
+      "other": "Diğer Ücret",
+      "newAmount": "Yeni Tutar",
+      "amount": "Tutar",
+      "enterAmount": "Tutar girin",
+      "effectiveDate": "Geçerlilik Tarihi",
+      "selectDate": "Tarih seçin",
+      "notifyTenants": "Kiracıları Bildir"
+    }
+  },
+  "agreementReports": {
+    "title": "Anlaşma Raporları",
+    "description": "Anlaşma raporlarını görüntüleyin ve yönetin",
+    "create": {
+      "title": "Yeni Anlaşma Raporu",
+      "description": "Yeni anlaşma raporu oluşturun"
+    },
+    "edit": {
+      "title": "Anlaşma Raporu Düzenle",
+      "description": "Anlaşma raporunu düzenleyin"
+    },
+    "detail": {
+      "title": "Anlaşma Raporu Detayları",
+      "description": "Anlaşma raporu detaylarını görüntüleyin",
+      "createdAt": "Oluşturulma"
+    },
+    "agreementReport": {
+      "detail": {
+        "title": "Anlaşma Raporu",
+        "description": "Anlaşma raporu detaylarını görüntüleyin",
+        "createdAt": "Oluşturulma"
+      },
+      "types": {
+        "boss": "Patron",
+        "owner": "Sahip",
+        "tenant": "Kiracı",
+        "internal": "Dahili"
+      },
+      "status": {
+        "draft": "Taslak",
+        "sent": "Gönderildi",
+        "viewed": "Görüntülendi"
+      },
+      "agreementStatus": {
+        "pre_agreement": "Ön Anlaşma",
+        "signed": "İmzalı",
+        "delivery_scheduled": "Teslimat Planlandı",
+        "deposit_received": "Depozito Alındı"
+      },
+      "recipient": {
+        "email": "E-posta adresi girin",
+        "name": "Ad girin (opsiyonel)"
+      },
+      "selectApartmentFirst": "Lütfen önce bir daire seçin",
+      "tenantAdded": "Kiracı alıcı olarak eklendi",
+      "recipientExists": "Alıcı zaten eklenmiş",
+      "noRecipients": "Alıcı eklenmedi. Eklemek için \"Alıcı Ekle\" butonuna tıklayın.",
+      "selectTenants": "Kiracıları Seç",
+      "create": {
+        "success": "Anlaşma raporu başarıyla oluşturuldu",
+        "error": "Anlaşma raporu oluşturulurken bir hata oluştu"
+      },
+      "update": {
+        "success": "Anlaşma raporu başarıyla güncellendi",
+        "error": "Anlaşma raporu güncellenirken bir hata oluştu"
+      },
+      "delete": {
+        "title": "Anlaşma Raporu Sil",
+        "confirm": "Bu anlaşma raporunu silmek istediğinizden emin misiniz?",
+        "success": "Anlaşma raporu başarıyla silindi",
+        "error": "Anlaşma raporu silinirken bir hata oluştu"
+      }
+    }
+  },
+  "types": {
+    "apartment": "Daire",
+    "complex": "Kompleks",
+    "building": "Bina",
+    "rental": "Kira",
+    "sale": "Satış",
+    "lease": "Kiralama",
+    "general": "Genel",
+    "cash": "Nakit",
+    "bankTransfer": "Banka Transferi",
+    "autoDebit": "Otomatik Ödeme"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "empty": "Boş",
+    "rented": "Kiralık",
+    "sold": "Satılık",
+    "maintenance": "Bakımda",
+    "pending": "Beklemede",
+    "paid": "Ödendi",
+    "overdue": "Vadesi Geçmiş",
+    "cancelled": "İptal Edildi",
+    "scheduled": "Planlandı",
+    "completed": "Tamamlandı",
+    "no_show": "Gelmedi",
+    "urgent": "Acil",
+    "upcoming": "Yaklaşan",
+    "default": "Varsayılan",
+    "draft": "Taslak",
+    "expired": "Süresi Dolmuş",
+    "terminated": "Feshedilmiş"
+  },
+  "actions": {
+    "title": "İşlemler",
+    "create": "Yeni Oluştur",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "viewDetails": "Detayları Görüntüle",
+    "back": "Geri",
+    "export": "Dışa Aktar",
+    "add": "Ekle",
+    "addSelected": "Seçilenleri Ekle",
+    "addTenantsFromApartments": "Dairelerden Kiracı Ekle",
+    "next": "İleri",
+    "refresh": "Yenile",
+    "retry": "Tekrar Dene",
+    "previous": "Önceki",
+    "preview": "Önizleme",
+    "clear": "Temizle",
+    "execute": "Çalıştır",
+    "remove": "Kaldır"
+  },
+  "table": {
+    "name": "Ad",
+    "type": "Tip",
+    "propertyNumber": "Taşınmaz No",
+    "address": "Adres",
+    "city": "Şehir",
+    "district": "İlçe",
+    "units": "Birim Sayısı",
+    "status": "Durum",
+    "preview": "Önizleme",
+    "actions": "İşlemler",
+    "unitNumber": "Daire No",
+    "property": "Gayrimenkul",
+    "area": "Alan",
+    "rooms": "Oda Sayısı",
+    "active": "Aktif",
+    "contractNumber": "Sözleşme No",
+    "apartment": "Daire",
+    "endDate": "Bitiş Tarihi",
+    "daysUntil": "Kalan Gün",
+    "role": "Rol",
+    "assignedUnits": "Atanan Birimler",
+    "collectionRate": "Tahsilat Oranı",
+    "category": "Kategori",
+    "description": "Açıklama",
+    "agreementStatus": "Anlaşma Durumu",
+    "rentAmount": "Kira Tutarı",
+    "sentAt": "Gönderilme Tarihi",
+    "scheduledDate": "Planlanan Tarih",
+    "estimatedCost": "Tahmini Maliyet",
+    "tenantNumber": "Kiracı No",
+    "userId": "Kullanıcı ID",
+    "contactId": "İletişim ID",
+    "moveInDate": "Taşınma Tarihi",
+    "tenant": "Kiracı",
+    "startDate": "Başlangıç Tarihi",
+    "amount": "Tutar",
+    "dueDate": "Vade Tarihi",
+    "paidDate": "Ödeme Tarihi",
+    "contract": "Sözleşme",
+    "subject": "Konu",
+    "recipients": "Alıcılar",
+    "sent": "Gönderilen",
+    "opened": "Açılan",
+    "clicked": "Tıklanan",
+    "template": "Şablon",
+    "openRate": "Açılma Oranı",
+    "clickRate": "Tıklanma Oranı",
+    "maintenanceCompletion": "Bakım Tamamlanma",
+    "noRecipients": "Alıcı bulunamadı",
+    "email": "E-posta",
+    "fullName": "Ad Soyad",
+    "phone": "Telefon",
+    "noPayments": "Ödeme bulunamadı",
+    "noAgreementReportTemplates": "Anlaşma raporu şablonu bulunamadı",
+    "noEmailTemplates": "E-posta şablonu bulunamadı",
+    "noEmailCampaigns": "E-posta kampanyası bulunamadı",
+    "noContractTemplates": "Sözleşme şablonu bulunamadı",
+    "noAppointments": "Randevu bulunamadı",
+    "noContracts": "Sözleşme bulunamadı",
+    "noMaintenanceRecords": "Bakım kaydı bulunamadı",
+    "noAgreementReports": "Anlaşma raporu bulunamadı",
+    "noProperties": "Gayrimenkul bulunamadı",
+    "noStaff": "Personel bulunamadı",
+    "noApartments": "Daire bulunamadı",
+    "noTenants": "Kiracı bulunamadı",
+    "moveOutDate": "Çıkış Tarihi",
+    "emptyApartments": "Boş Daireler",
+    "averageVacancyDays": "Ortalama Boşluk Günleri",
+    "customerSatisfaction": "Müşteri Memnuniyeti",
+    "totalContracts": "Toplam Sözleşmeler",
+    "totalMaintenance": "Toplam Bakım Kayıtları",
+    "scheduledAt": "Planlanan Tarih",
+    "notes": "Notlar",
+    "title": "Başlık",
+    "isDefault": "Varsayılan Olarak Ayarla",
+    "notDefault": "Varsayılan Değil",
+    "contentHint": "Dinamik değerler için {{değişkenAdı}} kullanın (örn: {{contractNumber}}, {{tenantName}}, {{rentAmount}})",
+    "premium": "Premium"
+  },
+  "form": {
+    "files": "dosya",
+    "recipients": "Alıcılar",
+    "attachments": "Ekler",
+    "deliveryDate": "Teslim Tarihi",
+    "contractDate": "Sözleşme Tarihi",
+    "specialTerms": "Özel Şartlar",
+    "nextSteps": "Sonraki Adımlar",
+    "agreementStatus": "Anlaşma Durumu",
+    "selectAgreementStatus": "Anlaşma durumu seçin",
+    "selectAppointment": "Randevu seçin",
+    "rentAmount": "Kira Tutarı",
+    "rentAmountPlaceholder": "Kira tutarını girin",
+    "deposit": "Depozito",
+    "depositPlaceholder": "Depozito girin",
+    "specialTermsPlaceholder": "Özel şartları girin",
+    "nextStepsPlaceholder": "Sonraki adımları girin",
+    "endDateAfterStart": "Bitiş tarihi başlangıç tarihinden sonra olmalıdır",
+    "enterTitle": "Başlık girin",
+    "enterDescription": "Açıklama girin",
+    "startTime": "Başlangıç Saati (HH:mm)",
+    "endTime": "Bitiş Saati (HH:mm)",
+    "enterDuration": "Süre girin",
+    "durationAutoCalculated": "Başlangıç ve bitiş tarihlerinden otomatik hesaplanır",
+    "enterLocation": "Konum girin",
+    "externalParticipants": "Dış Katılımcılar",
+    "addParticipant": "Katılımcı Ekle",
+    "name": "Ad",
+    "namePlaceholder": "Şablon adını girin",
+    "phone": "Sabit Hat",
+    "email": "E-posta",
+    "followUpRequired": "Takip Gerekli",
+    "selectTime": "Saat seçin",
+    "apartment": "Daire",
+    "selectApartment": "Daire seçin",
+    "type": "Tip",
+    "typePlaceholder": "Tip seçin",
+    "selectType": "Tip seçin",
+    "status": "Durum",
+    "statusPlaceholder": "Durum seçin",
+    "selectStatus": "Durum seçin",
+    "code": "Kod",
+    "codePlaceholder": "Kod girin (opsiyonel)",
+    "address": "Adres",
+    "addressPlaceholder": "Adres girin",
+    "city": "Şehir",
+    "cityPlaceholder": "Şehir adını girin",
+    "district": "İlçe",
+    "districtPlaceholder": "İlçe girin",
+    "neighborhood": "Mahalle",
+    "neighborhoodPlaceholder": "Mahalle girin",
+    "street": "Cadde/Sokak",
+    "streetPlaceholder": "Cadde/Sokak adını girin",
+    "buildingNo": "Bina No",
+    "buildingNoPlaceholder": "Bina numarasını girin",
+    "postalCode": "Posta Kodu",
+    "postalCodePlaceholder": "Posta kodunu girin",
+    "country": "Ülke",
+    "countryPlaceholder": "Ülke seçin",
+    "latitude": "Enlem",
+    "latitudePlaceholder": "Enlem girin",
+    "longitude": "Boylam",
+    "longitudePlaceholder": "Boylam girin",
+    "monthlyFee": "Aylık Aidat",
+    "monthlyFeePlaceholder": "Aylık aidat girin",
+    "paymentDay": "Ödeme Günü",
+    "paymentDayPlaceholder": "Ödeme gününü seçin (1-31)",
+    "title": "Başlık",
+    "titlePlaceholder": "Başlık girin",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Açıklama girin",
+    "scheduledDate": "Planlanan Tarih",
+    "selectDateTime": "Tarih ve saat seçin",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "assignedStaff": "Atanan Personel (Opsiyonel)",
+    "selectStaff": "Personel seçin",
+    "performedByStaff": "Yapan Personel (Opsiyonel)",
+    "back": "Geri",
+    "tenantNumber": "Kiracı Numarası",
+    "tenantNumberPlaceholder": "Kiracı numarasını girin",
+    "tenantType": "Kiracı Tipi",
+    "tenantTypePlaceholder": "Kiracı tipi seçin",
+    "tenantTypePerson": "Kişi",
+    "tenantTypeCompany": "Şirket",
+    "companyName": "Şirket Adı",
+    "companyNamePlaceholder": "Şirket adını girin",
+    "userId": "Kullanıcı ID",
+    "userIdPlaceholder": "Kullanıcı ID girin (opsiyonel)",
+    "contactId": "İletişim ID",
+    "contactIdPlaceholder": "İletişim ID girin (opsiyonel)",
+    "salutation": "Hitap",
+    "salutationPlaceholder": "Hitap seçin",
+    "salutationMr": "Bay",
+    "salutationMrs": "Bayan",
+    "firstName": "Ad",
+    "firstNamePlaceholder": "Adı girin",
+    "lastName": "Soyad",
+    "lastNamePlaceholder": "Soyadı girin",
+    "birthDate": "Doğum Tarihi",
+    "birthDatePlaceholder": "Doğum tarihi seçin",
+    "birthPlace": "Doğum Yeri",
+    "birthPlacePlaceholder": "Doğum yerini girin",
+    "houseNumber": "Bina Numarası",
+    "houseNumberPlaceholder": "Bina numarasını girin",
+    "phonePlaceholder": "Sabit hat numarasını girin",
+    "mobile": "Cep Telefonu",
+    "mobilePlaceholder": "Cep telefonu numarasını girin",
+    "emailPlaceholder": "E-posta adresini girin",
+    "invalidEmail": "Geçersiz e-posta adresi",
+    "nationality": "Vatandaşlık",
+    "nationalityPlaceholder": "Vatandaşlık bilgisini girin",
+    "taxNumber": "Vergi Numarası",
+    "taxNumberPlaceholder": "Vergi numarasını girin",
+    "moveInDate": "Taşınma Tarihi",
+    "moveInDatePlaceholder": "Taşınma tarihi seçin",
+    "moveOutDate": "Çıkış Tarihi",
+    "moveOutDatePlaceholder": "Çıkış tarihi seçin",
+    "notes": "Notlar",
+    "notesPlaceholder": "Notlar girin",
+    "sections": {
+      "basic": "Temel Bilgiler",
+      "personal": "Kişisel Bilgiler",
+      "address": "Adres Bilgileri",
+      "contact": "İletişim Bilgileri",
+      "notes": "Notlar"
+    },
+    "tenant": "Kiracı",
+    "tenantPlaceholder": "Kiracı seçin",
+    "template": "Şablon",
+    "templatePlaceholder": "Şablon seçin (opsiyonel)",
+    "contractNumber": "Sözleşme Numarası",
+    "contractNumberPlaceholder": "Sözleşme numarasını girin",
+    "renewalDate": "Yenileme Tarihi",
+    "renewalDatePlaceholder": "Yenileme tarihi seçin",
+    "currency": "Para Birimi",
+    "currencyPlaceholder": "Para birimi girin",
+    "paymentType": "Ödeme Tipi",
+    "paymentTypePlaceholder": "Ödeme tipi seçin",
+    "autoRenewal": "Otomatik Yenileme",
+    "renewalNoticeDays": "Yenileme Bildirim Günleri",
+    "renewalNoticeDaysPlaceholder": "Yenileme bildirim günlerini girin",
+    "increaseRate": "Artış Oranı",
+    "increaseRatePlaceholder": "Artış oranını girin (0-1)",
+    "terms": "Şartlar",
+    "termsPlaceholder": "Sözleşme şartlarını girin",
+    "mustBePositive": "pozitif olmalıdır",
+    "mustBeNonNegative": "negatif olamaz",
+    "startDatePlaceholder": "Başlangıç tarihi seçin",
+    "endDatePlaceholder": "Bitiş tarihi seçin",
+    "contract": "Sözleşme (Opsiyonel)",
+    "none": "Yok",
+    "receiptNumber": "Makbuz Numarası (Opsiyonel)",
+    "paymentMethod": "Ödeme Yöntemi (Opsiyonel)",
+    "duration": "Süre (dakika)",
+    "location": "Konum (Opsiyonel)",
+    "followUpDate": "Takip Tarihi",
+    "followUpNotes": "Takip Notları (Opsiyonel)",
+    "subject": "E-posta Konusu",
+    "subjectPlaceholder": "E-posta konusunu girin",
+    "subjectHint": "Dinamik değerler için {{değişkenAdı}} kullanın",
+    "htmlContent": "HTML İçerik",
+    "htmlContentPlaceholder": "HTML içerik girin",
+    "htmlContentHint": "Dinamik değerler için {{değişkenAdı}} kullanın",
+    "textContent": "Metin İçerik",
+    "textContentPlaceholder": "Metin içerik girin (opsiyonel)",
+    "textContentHint": "E-posta istemcileri HTML'i desteklemiyorsa bu metin gösterilir",
+    "property": "Gayrimenkul",
+    "propertyPlaceholder": "Gayrimenkul seçin",
+    "selectProperty": "Gayrimenkul seçin",
+    "unitNumber": "Daire Numarası",
+    "unitNumberPlaceholder": "Daire numarasını girin",
+    "floor": "Kat",
+    "floorPlaceholder": "Kat girin",
+    "block": "Blok",
+    "blockPlaceholder": "Blok girin",
+    "area": "Alan",
+    "areaPlaceholder": "Alan girin",
+    "roomCount": "Oda Sayısı",
+    "roomCountPlaceholder": "Oda sayısını girin",
+    "bathroomCount": "Banyo Sayısı",
+    "bathroomCountPlaceholder": "Banyo sayısını girin",
+    "livingRoom": "Salon",
+    "balcony": "Balkon",
+    "rentPrice": "Kira Fiyatı",
+    "rentPricePlaceholder": "Kira fiyatını girin",
+    "salePrice": "Satış Fiyatı",
+    "salePricePlaceholder": "Satış fiyatını girin",
+    "documents": "Belgeler",
+    "uploadDocuments": "Belgeleri Yükle",
+    "uploadDocumentsHint": "Dosyaları buraya tıklayın veya sürükleyin (PDF, Resimler, Word belgeleri)",
+    "images": "Resimler",
+    "uploadImages": "Resimleri Yükle",
+    "uploadImagesHint": "Resimleri buraya tıklayın veya sürükleyin (JPG, PNG, WEBP)",
+    "imageUploadSuccess": "Resim Yüklendi",
+    "imageUploadSuccessMessage": "Resim başarıyla yüklendi",
+    "imageUploadError": "Resim Yükleme Hatası",
+    "invalidImageType": "Sadece resim dosyalarına izin verilir (PNG, JPG, WEBP)",
+    "coverImage": "Kapak Resmi",
+    "selectCoverImage": "Kapak Resmi Seç",
+    "coverImageHint": "Liste görünümünde gösterilecek ana resim",
+    "imageGallery": "Resim Galerisi",
+    "noImages": "Henüz resim eklenmemiş",
+    "setAsCover": "Kapak Resmi Yap",
+    "removeImage": "Resmi Kaldır",
+    "imagePreview": "Resim Önizleme",
+    "required": "Gerekli",
+    "amountRequired": "Tutar 0'dan büyük olmalıdır",
+    "amount": "Tutar",
+    "enterAmount": "Tutar girin",
+    "dueDate": "Vade Tarihi",
+    "paidDate": "Ödeme Tarihi",
+    "selectContract": "Sözleşme seçin",
+    "selectPaymentMethod": "Ödeme yöntemi seçin",
+    "enterReceiptNumber": "Makbuz numarasını girin",
+    "extraCharges": "Ek Ücretler",
+    "addExtraCharge": "Ek Ücret Ekle",
+    "chargeName": "Ücret adı",
+    "totalAmount": "Toplam Tutar",
+    "createdAt": "Oluşturulma Tarihi",
+    "enterNotes": "Notlar girin",
+    "isAutoGenerated": "Otomatik Oluşturuldu",
+    "reminderSent": "Hatırlatma Gönderildi",
+    "selectDate": "Tarih seçin",
+    "selectTemplate": "Şablon seçin",
+    "appointment": "Randevu",
+    "automaticAttachments": "Otomatik Ekler",
+    "automaticAttachmentsHint": "Aşağıdaki dosyalar bu rapora otomatik olarak eklenecektir:",
+    "staffType": "Personel Tipi",
+    "selectStaffType": "Personel tipi seçin",
+    "user": "Sistem Kullanıcısı",
+    "selectUser": "Sistem kullanıcısı seçin",
+    "internalStaffHint": "Sistemden bir kullanıcı seçin. Bu kullanıcı emlak modülüne erişim sağlayacaktır.",
+    "nameAutoFill": "İsim kullanıcı verilerinden otomatik doldurulacaktır",
+    "selectRole": "Rol seçin",
+    "properties": "Gayrimenkuller",
+    "selectProperties": "Gayrimenkuller seçin",
+    "apartments": "Daireler",
+    "selectApartments": "Daireler seçin",
+    "apartmentsHint": "Atanan birim sayısı otomatik hesaplanacaktır",
+    "selectTenants": "Kiracıları Seç",
+    "selectTenantsPlaceholder": "Kiracıları arayın ve seçin",
+    "categoryPlaceholder": "Kategori seçin",
+    "category": "Kategori",
+    "isDefault": "Varsayılan Olarak Ayarla",
+    "isDefaultDescription": "Bu şablon bu kategori için varsayılan olarak kullanılacaktır",
+    "notDefault": "Varsayılan Değil",
+    "content": "Şablon İçeriği",
+    "contentPlaceholder": "Şablon içeriğini girin (HTML desteklenir, dinamik değerler için {{değişken}} kullanın)",
+    "contentHint": "Dinamik değerler için {{değişkenAdı}} kullanın (örn: {{contractNumber}}, {{tenantName}}, {{rentAmount}})",
+    "premium": "Premium",
+    "isActiveDescription": "Sadece aktif şablonlar kampanyalarda kullanılabilir",
+    "propertyNumber": "Taşınmaz Numarası",
+    "propertyNumberPlaceholder": "Taşınmaz numarasını girin",
+    "totalUnits": "Toplam Daire Sayısı",
+    "totalUnitsPlaceholder": "Toplam daire sayısını girin",
+    "constructionYear": "Yapım Yılı",
+    "constructionYearPlaceholder": "Yapım yılını girin",
+    "lastRenovationDate": "Son Yenileme Tarihi",
+    "lastRenovationDatePlaceholder": "Son yenileme tarihini seçin",
+    "landArea": "Arsa Alanı (m²)",
+    "landAreaPlaceholder": "Arsa alanını girin",
+    "floorCount": "Kat Sayısı",
+    "floorCountPlaceholder": "Kat sayısını girin",
+    "livingArea": "Yaşam Alanı (m²)",
+    "livingAreaPlaceholder": "Yaşam alanını girin",
+    "purchaseDate": "Satın Alma Tarihi",
+    "purchaseDatePlaceholder": "Satın alma tarihini seçin",
+    "purchasePrice": "Satın Alma Fiyatı",
+    "purchasePricePlaceholder": "Satın alma fiyatını girin",
+    "isPaidOff": "Ödendi",
+    "financingStartDate": "Finansman Başlangıç Tarihi",
+    "financingStartDatePlaceholder": "Finansman başlangıç tarihini seçin",
+    "financingEndDate": "Finansman Bitiş Tarihi",
+    "financingEndDatePlaceholder": "Finansman bitiş tarihini seçin",
+    "monthlyFinancingRate": "Aylık Finansman Taksiti",
+    "monthlyFinancingRatePlaceholder": "Aylık finansman taksitini girin",
+    "numberOfInstallments": "Taksit Sayısı",
+    "numberOfInstallmentsPlaceholder": "Taksit sayısını girin",
+    "financingPaymentDay": "Finansman Taksit Günü",
+    "financingPaymentDayPlaceholder": "Finansman taksit gününü seçin (1-31)",
+    "apartmentType": "Daire Tipi",
+    "apartmentTypePlaceholder": "Daire tipini seçin",
+    "bedroomCount": "Yatak Odası Sayısı",
+    "bedroomCountPlaceholder": "Yatak odası sayısını girin",
+    "basementSize": "Kiler Boyutu (m²)",
+    "basementSizePlaceholder": "Kiler boyutunu girin",
+    "internetSpeed": "İnternet Hızı",
+    "internetSpeedPlaceholder": "İnternet hızını seçin",
+    "coldRent": "Net Kira",
+    "coldRentPlaceholder": "Net kira tutarını girin",
+    "heatingCosts": "Isıtma Giderleri",
+    "heatingCostsPlaceholder": "Isıtma giderlerini girin",
+    "additionalCosts": "Ek Giderler",
+    "additionalCostsPlaceholder": "Ek giderleri girin",
+    "contractDocuments": "Sözleşme Belgeleri",
+    "apartmentDocuments": "Daire Belgeleri",
+    "estimatedCost": "Tahmini Maliyet",
+    "role": "Rol",
+    "estimatedCostPlaceholder": "Tahmini maliyet girin",
+    "actualCost": "Gerçek Maliyet",
+    "actualCostPlaceholder": "Gerçek maliyet girin",
+    "isActive": "Aktif",
+    "apartmentPlaceholder": "Daire seçin",
+    "noDocuments": "Belge bulunamadı",
+    "select": "Seç",
+    "selectCategory": "Kategori seçin",
+    "cancel": "İptal"
+  },
+  "validation": {
+    "required": "Gerekli"
+  },
+  "search": {
+    "placeholder": "Ara..."
+  },
+  "loading": "Yükleniyor...",
+  "all": "Tümü",
+  "filter": {
+    "all": "Tümü",
+    "category": "Kategori",
+    "type": "Tip",
+    "status": "Durum",
+    "property": "Gayrimenkul",
+    "active": "Aktif",
+    "tenant": "Kiracı",
+    "contract": "Sözleşme",
+    "role": "Rol",
+    "apartment": "Daire",
+    "agreementStatus": "Anlaşma Durumu"
+  },
+  "messages": {
+    "noContracts": "Sözleşme bulunamadı",
+    "noPayments": "Ödeme bulunamadı",
+    "success": "Başarılı",
+    "error": "Hata",
+    "createSuccess": "Başarıyla oluşturuldu",
+    "updateSuccess": "Başarıyla güncellendi",
+    "createError": "Oluşturulurken bir hata oluştu",
+    "fileDeleted": "Dosya başarıyla silindi",
+    "fileDeleteError": "Dosya silinirken bir hata oluştu",
+    "fileUploadError": "Dosya yüklenirken bir hata oluştu",
+    "info": "Bilgi",
+    "uploadAfterCreate": "Dosyalar sözleşme oluşturulduktan sonra yüklenecektir",
+    "fileUploaded": "Dosya başarıyla yüklendi",
+    "renewSuccess": "Sözleşme başarıyla yenilendi",
+    "renewError": "Sözleşme yenileme hatası",
+    "autoRenewSuccess": "Sözleşmeler otomatik olarak yenilendi",
+    "autoRenewError": "Otomatik yenileme hatası"
+  },
+  "delete": {
+    "confirm": "Silmek istediğinize emin misiniz?",
+    "success": "Başarıyla silindi",
+    "error": "Hata",
+    "title": "Başlık"
+  },
+  "agreementReportTemplate": {
+    "delete": {
+      "title": "Anlaşma Raporu Şablonu Sil",
+      "confirm": "Bu anlaşma raporu şablonunu silmek istediğinize emin misiniz?",
+      "success": "Anlaşma raporu şablonu başarıyla silindi",
+      "error": "Anlaşma raporu şablonu silinirken hata oluştu"
+    },
+    "update": {
+      "success": "Başarılı"
+    },
+    "create": {
+      "success": "Başarılı",
+      "error": "Hata",
+      "title": "Başlık"
+    },
+    "edit": {
+      "title": "Başlık"
+    }
+  },
+  "pagination": {
+    "showing": "Gösteriliyor: {{from}}-{{to}} / {{total}}"
+  },
+  "renewal": {
+    "title": "Yenilenecek Sözleşmeler",
+    "autoRenew": "Tümünü Otomatik Yenile",
+    "noContracts": "Şu anda yenilenecek sözleşme yok",
+    "info": "sözleşme önümüzdeki",
+    "days": "gün içinde yenilenmesi gerekiyor"
+  },
+  "analytics": {
+    "dateFrom": "Başlangıç Tarihi",
+    "dateTo": "Bitiş Tarihi",
+    "title": "Kiracı Analitikleri",
+    "overallScore": "Genel Puan",
+    "paymentScore": "Ödeme Puanı",
+    "contactScore": "İletişim Puanı",
+    "maintenanceScore": "Bakım Puanı",
+    "paymentHistory": "Ödeme Geçmişi",
+    "contractHistory": "Sözleşme Geçmişi",
+    "appointmentHistory": "Randevu Geçmişi",
+    "maintenanceHistory": "Bakım Geçmişi",
+    "totalPayments": "Toplam Ödemeler",
+    "totalAmount": "Toplam Tutar",
+    "paidAmount": "Ödenen Tutar",
+    "collectionRate": "Tahsilat Oranı",
+    "statusBreakdown": "Durum Dağılımı",
+    "monthlyTrend": "Aylık Trend",
+    "typeBreakdown": "Tip Dağılımı",
+    "upcomingPayments": "Yaklaşan Ödemeler (Sonraki 30 Gün)",
+    "overduePayments": "Vadesi Geçmiş Ödemeler",
+    "total": "Toplam",
+    "paid": "Ödendi",
+    "pending": "Beklemede",
+    "overdue": "Vadesi Geçmiş",
+    "amount": "Tutar",
+    "daysUntilDue": "Vadeye Kalan Gün",
+    "daysOverdue": "Vadesi Geçen Gün",
+    "days": "gün",
+    "noUpcomingPayments": "Yaklaşan ödeme yok",
+    "noOverduePayments": "Vadesi geçmiş ödeme yok",
+    "totalContracts": "Toplam Sözleşmeler",
+    "active": "Aktif",
+    "expired": "Süresi Dolmuş",
+    "terminated": "Feshedilmiş",
+    "recalculate": "Yeniden Hesapla",
+    "recalculated": "Analitikler başarıyla yeniden hesaplandı",
+    "recalculateError": "Analitikler yeniden hesaplanırken hata oluştu",
+    "loadError": "Analitikler yüklenirken hata oluştu",
+    "excellent": "Mükemmel",
+    "good": "İyi",
+    "fair": "Orta",
+    "poor": "Zayıf",
+    "onTimeRate": "%{{rate}} zamanında ödeme",
+    "appointments": "{{total}} randevu",
+    "maintenanceRecords": "{{total}} bakım kaydı",
+    "paymentAmountTrend": "Ödeme Tutarı Trendi",
+    "maintenanceTrend": "Bakım Trendi"
+  },
+  "tracking": {
+    "title": "Sözleşme Takibi",
+    "totalActive": "Toplam Aktif",
+    "upcomingRenewals": "Yaklaşan Yenilemeler",
+    "expired": "Süresi Dolmuş",
+    "autoRenewal": "Otomatik Yenileme",
+    "active": "Aktif",
+    "urgent": "Acil",
+    "upcoming": "Yaklaşan",
+    "noUpcomingRenewals": "Yaklaşan yenileme yok",
+    "noActiveContracts": "Aktif sözleşme yok",
+    "noExpiredContracts": "Süresi dolmuş sözleşme yok"
+  },
+  "common": {
+    "yes": "Evet",
+    "no": "Hayır",
+    "errorLoading": "Yükleme hatası",
+    "noData": "Veri yok",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "days": "gün",
+    "default": "Varsayılan",
+    "loading": "Yükleniyor...",
+    "back": "Geri",
+    "cancel": "İptal",
+    "createdAt": "Oluşturulma Tarihi",
+    "delete": "Sil",
+    "notApplicable": "Geçerli Değil",
+    "notFound": "Bulunamadı",
+    "refresh": "Yenile",
+    "required": "Gerekli",
+    "updatedAt": "Güncellenme Tarihi"
+  },
+  "qrCode": {
+    "title": "Daire QR Kodu",
+    "description": "Bu QR kodu tarayarak daire detaylarını görüntüleyebilirsiniz",
+    "generating": "QR kodu oluşturuluyor...",
+    "generateError": "QR kodu oluşturulamadı",
+    "download": "İndir",
+    "downloadSuccess": "QR kodu başarıyla indirildi"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "contractTemplates": {
+    "title": "Sözleşme Şablonları"
+  },
+  "agreementReport": {
+    "types": {
+      "boss": "Patron",
+      "owner": "Sahip",
+      "tenant": "Kiracı",
+      "internal": "Dahili"
+    },
+    "title": "Anlaşma Raporu",
+    "detail": {
+      "title": "Anlaşma Raporu Detayı"
+    }
+  },
+  "agreementReportTemplates": {
+    "title": "Anlaşma Raporu Şablonları"
+  },
+  "HH:mm": "HH:mm",
+  "buttons": {
+    "edit": "Düzenle",
+    "view": "Görüntüle"
+  },
+  "calendar": "Takvim",
+  "leaflet": "Harita",
+  "link": "Bağlantı",
+  "list": "Liste",
+  "style": "Stil",
+  "templateId": "Şablon ID",
+  "emailTemplates": {
+    "title": "E-posta Şablonları",
+    "detail": {
+      "title": "E-posta Şablonu Detayları",
+      "description": "E-posta şablonu detaylarını görüntüleyin",
+      "info": "Şablon Bilgileri",
+      "name": "Şablon Adı",
+      "category": "Kategori",
+      "subject": "E-posta Konusu",
+      "variables": "Değişkenler",
+      "preview": "HTML Önizleme",
+      "textContent": "Metin İçerik",
+      "systemInfo": "Sistem Bilgileri",
+      "createdAt": "Oluşturulma Tarihi",
+      "updatedAt": "Güncellenme Tarihi"
+    },
+    "default": "Varsayılan",
+    "categories": {
+      "promotion": "Promosyon",
+      "announcement": "Duyuru",
+      "reminder": "Hatırlatma",
+      "welcome": "Hoş Geldiniz",
+      "agreement": "Anlaşma"
+    }
+  }
+}

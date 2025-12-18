@@ -1,0 +1,165 @@
+{
+  "title": "Mieterverwaltung",
+  "description": "Multi-Tenant-Verwaltung",
+  "menu": {
+    "label": "Mieter",
+    "items": {
+      "dashboard": "Dashboard",
+      "list": "Mieterliste",
+      "create": "Mieter erstellen",
+      "settings": "Einstellungen"
+    }
+  },
+  "tenants": {
+    "title": "Mieterverwaltung",
+    "subtitle": "Alle Mieter anzeigen und verwalten",
+    "createTenant": "Neuen Mieter erstellen",
+    "tenantList": "Mieterliste",
+    "tenantDetails": "Mieterdetails",
+    "wizard": {
+      "title": "Neuen Mieter erstellen",
+      "step1": "Grundlegende Informationen",
+      "step2": "Firmeninformationen",
+      "step3": "Standort",
+      "step4": "Zusammenfassung",
+      "step5": "Wird erstellt",
+      "step6": "Abgeschlossen",
+      "basicInfo": {
+        "tenantName": "Mietername",
+        "tenantNamePlaceholder": "ACME Corporation",
+        "slug": "Slug",
+        "slugPlaceholder": "acme",
+        "slugDescription": "Wird bei der Datenbankbenennung verwendet (Kleinbuchstaben, Zahlen, Bindestrich)",
+        "subdomain": "Subdomain",
+        "subdomainPlaceholder": "acme",
+        "subdomainDescription": "Zugriffs-URL: acme.onwindos.com",
+        "customDomain": "Benutzerdefinierte Domain (Optional)",
+        "customDomainPlaceholder": "https://acme.com"
+      },
+      "companyInfo": {
+        "companyName": "Firmenname",
+        "companyNamePlaceholder": "ACME Corporation",
+        "logo": "Firmenlogo",
+        "logoPlaceholder": "Logo hochladen",
+        "logoDescription": "Wird in exportierten Dokumenten verwendet (PDF, Excel usw.)",
+        "favicon": "Favicon",
+        "faviconPlaceholder": "Favicon hochladen",
+        "faviconDescription": "Im Browser-Tab angezeigtes Symbol (16x16 oder 32x32 px)",
+        "preview": "Vorschau:",
+        "address": "Adresse",
+        "addressPlaceholder": "123 Hauptstraße, Stadt, Land",
+        "phone": "Telefon",
+        "phonePlaceholder": "+90 212 345 6789",
+        "email": "E-Mail",
+        "emailPlaceholder": "info@acme.com",
+        "website": "Website",
+        "websitePlaceholder": "https://acme.com",
+        "taxNumber": "Steuernummer",
+        "taxNumberPlaceholder": "123-456-789"
+      },
+      "location": {
+        "optional": "Optionaler Schritt",
+        "optionalMessage": "Sie können diesen Schritt überspringen und Standorte später hinzufügen.",
+        "skip": "Standorteinrichtung überspringen",
+        "skipped": "Standort übersprungen",
+        "skippedMessage": "Sie können Standorte später auf der Einstellungsseite hinzufügen.",
+        "addLocation": "Ersten Standort hinzufügen",
+        "locationName": "Standortname",
+        "locationNamePlaceholder": "Hauptbüro",
+        "locationType": "Standorttyp",
+        "locationTypePlaceholder": "Typ auswählen",
+        "types": {
+          "firma": "Firma",
+          "lokasyon": "Standort",
+          "isletme": "Betrieb",
+          "koridor": "Korridor",
+          "oda": "Raum"
+        },
+        "address": "Adresse",
+        "addressPlaceholder": "123 Hauptstraße, Stadt, Land",
+        "city": "Stadt",
+        "cityPlaceholder": "Istanbul",
+        "country": "Land",
+        "countryPlaceholder": "Türkei"
+      },
+      "review": {
+        "title": "Überprüfen Sie Ihre Konfiguration",
+        "subtitle": "Bitte überprüfen Sie alle Informationen, bevor Sie den Mieter erstellen.",
+        "basicInfo": "Grundlegende Informationen",
+        "companyInfo": "Firmeninformationen",
+        "initialLocation": "Anfangsstandort",
+        "tenantName": "Mietername:",
+        "slug": "Slug:",
+        "subdomain": "Subdomain:",
+        "customDomain": "Benutzerdefinierte Domain:",
+        "companyName": "Firmenname:",
+        "logo": "Logo:",
+        "favicon": "Favicon:",
+        "uploaded": "Hochgeladen",
+        "address": "Adresse:",
+        "phone": "Telefon:",
+        "email": "E-Mail:",
+        "website": "Website:",
+        "taxNumber": "Steuernummer:",
+        "name": "Name:",
+        "type": "Typ:",
+        "skipped": "Übersprungen - Kann später hinzugefügt werden",
+        "notConfigured": "Standort nicht konfiguriert"
+      },
+      "progress": {
+        "title": "Mieter wird erstellt...",
+        "subtitle": "Bitte warten Sie, während die Mietereinrichtung abgeschlossen wird. Dies kann eine Minute dauern.",
+        "steps": {
+          "database": "Datenbank wird erstellt",
+          "databaseDesc": "PostgreSQL-Datenbank wird eingerichtet",
+          "migrations": "Migrationen werden ausgeführt",
+          "migrationsDesc": "Datenbankschema wird angewendet",
+          "storage": "Speicher wird erstellt",
+          "storageDesc": "Dateiverzeichnisse werden eingerichtet",
+          "seeding": "Daten werden hinzugefügt",
+          "seedingDesc": "Standardbenutzer und -rollen werden erstellt",
+          "exportTemplate": "Export-Vorlage wird erstellt",
+          "exportTemplateDesc": "Firmenvorlage wird eingerichtet",
+          "location": "Standort wird erstellt",
+          "locationDesc": "Erster Standort wird eingerichtet"
+        }
+      },
+      "credentials": {
+        "title": "Mieter erfolgreich erstellt!",
+        "subtitle": "Ihr Mieter wurde erstellt und ist einsatzbereit.",
+        "accessUrl": "Zugriffs-URL",
+        "superAdmin": "SuperAdmin-Informationen",
+        "tenantAdmin": "Mieter-Admin-Informationen",
+        "defaultUser": "Standardbenutzer-Informationen",
+        "email": "E-Mail:",
+        "username": "Benutzername:",
+        "password": "Passwort:",
+        "copy": "Kopieren",
+        "copied": "Kopiert",
+        "openInNewTab": "In neuem Tab öffnen",
+        "exportTemplate": "Export-Vorlage",
+        "exportTemplateCreated": "Standard-Export-Vorlage erstellt, ID:",
+        "location": "Erster Standort",
+        "locationCreated": "Erster Standort erstellt, ID:",
+        "finish": "Zum Firmen-Dashboard gehen"
+      },
+      "buttons": {
+        "back": "Zurück",
+        "next": "Weiter",
+        "create": "Mieter erstellen",
+        "finish": "Fertigstellen"
+      }
+    },
+    "errors": {
+      "nameRequired": "Mietername ist erforderlich",
+      "slugRequired": "Slug ist erforderlich",
+      "slugInvalid": "Slug kann nur Kleinbuchstaben, Zahlen und Bindestriche enthalten",
+      "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein",
+      "urlInvalid": "Geben Sie eine gültige URL ein",
+      "createFailed": "Mieter konnte nicht erstellt werden",
+      "loadFailed": "Mieter konnte nicht geladen werden"
+    }
+  }
+}
+
+

@@ -1,0 +1,63 @@
+{
+  "title": "Module Management",
+  "description": "Manage, upload and configure system modules",
+  "upload": {
+    "title": "Upload New Module",
+    "description": "Select a .zip file to upload a new module"
+  },
+  "listing": {
+    "title": "Modules",
+    "description": "List of installed and active modules",
+    "searchPlaceholder": "Search modules by name...",
+    "statusAll": "Status: All",
+    "categoryAll": "Category: All",
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "installed": "Installed",
+    "noModulesFound": "No Modules Found",
+    "uploadFirstModule": "Upload your first module to get started.",
+    "uploadModule": "Upload Module"
+  },
+  "card": {
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "installed": "Installed",
+      "error": "Error"
+    },
+    "switch": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "tooltips": {
+      "configure": "Configure",
+      "uninstall": "Uninstall"
+    },
+    "category": "Category:",
+    "noDescription": "No description available for this module.",
+    "moduleHasErrors": "Module has errors"
+  },
+  "notifications": {
+    "moduleActivated": "Module Activated",
+    "moduleActivatedSuccess": "{{name}} has been activated successfully.",
+    "moduleDeactivated": "Module Deactivated",
+    "moduleDeactivatedSuccess": "{{name}} has been deactivated.",
+    "activationFailed": "Activation Failed",
+    "deactivationFailed": "Deactivation Failed",
+    "activationFailedMessage": "Failed to activate module",
+    "deactivationFailedMessage": "Failed to deactivate module",
+    "uninstallModule": "Uninstall Module",
+    "uninstallConfirm": "Are you sure you want to uninstall \"{{name}}\"? This action cannot be undone.",
+    "moduleUninstalled": "Module Uninstalled",
+    "moduleUninstalledSuccess": "{{name}} has been uninstalled.",
+    "uninstallFailed": "Uninstall Failed",
+    "uninstallFailedMessage": "Failed to uninstall module"
+  }
+}
+
+
+
+
+
+

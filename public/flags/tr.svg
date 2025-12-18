@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="14">
+  <rect width="3" height="2" fill="#E30A17"/>
+  <!-- Hilal (ay) -->
+  <circle cx="1" cy="1" r="0.4" fill="#FFFFFF"/>
+  <circle cx="1.15" cy="0.85" r="0.4" fill="#E30A17"/>
+  <!-- Yıldız -->
+  <path d="M 1.75 0.5 L 1.8 0.65 L 1.95 0.7 L 1.85 0.8 L 1.9 0.95 L 1.75 0.85 L 1.6 0.95 L 1.65 0.8 L 1.55 0.7 L 1.7 0.65 Z" fill="#FFFFFF"/>
+</svg>

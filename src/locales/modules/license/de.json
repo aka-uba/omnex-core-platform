@@ -1,0 +1,188 @@
+{
+  "title": "Lizenzdienst",
+  "description": "Lizenzpaketverwaltung und Tenant-Lizenzverfolgungssystem",
+  "packages": {
+    "title": "Lizenzpakete",
+    "description": "Lizenzpakete verwalten",
+    "create": "Neues Paket",
+    "createDescription": "Neues Lizenzpaket erstellen",
+    "edit": "Paket bearbeiten",
+    "editDescription": "Lizenzpaketinformationen aktualisieren",
+    "detail": "Paketdetails",
+    "notFound": "Paket nicht gefunden",
+    "table": {
+      "name": "Paketname",
+      "description": "Beschreibung",
+      "modules": "Module",
+      "basePrice": "Preis",
+      "currency": "Währung",
+      "billingCycle": "Abrechnungszyklus",
+      "maxUsers": "Max Benutzer",
+      "maxStorage": "Max Speicher (GB)",
+      "isActive": "Aktiv",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "name": "Paketname",
+      "namePlaceholder": "Paketname eingeben",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Paketbeschreibung eingeben",
+      "modules": "Module",
+      "modulesPlaceholder": "Module auswählen",
+      "basePrice": "Preis",
+      "basePricePlaceholder": "Preis eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung auswählen",
+      "billingCycle": "Abrechnungszyklus",
+      "billingCyclePlaceholder": "Abrechnungszyklus auswählen",
+      "maxUsers": "Max Benutzer",
+      "maxUsersPlaceholder": "Maximale Anzahl von Benutzern",
+      "maxStorage": "Max Speicher (GB)",
+      "maxStoragePlaceholder": "Maximaler Speicher (GB)",
+      "isActive": "Aktiv"
+    },
+    "billingCycles": {
+      "monthly": "Monatlich",
+      "quarterly": "Vierteljährlich",
+      "yearly": "Jährlich"
+    },
+    "createSuccess": "Paket erfolgreich erstellt",
+    "updateSuccess": "Paket erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Möchten Sie dieses Paket wirklich löschen?",
+      "success": "Paket erfolgreich gelöscht",
+      "error": "Beim Löschen des Pakets ist ein Fehler aufgetreten"
+    }
+  },
+  "tenantLicenses": {
+    "title": "Tenant-Lizenzen",
+    "description": "Tenant-Lizenzen verwalten",
+    "create": "Neue Lizenz",
+    "createDescription": "Neue Tenant-Lizenz erstellen",
+    "edit": "Lizenz bearbeiten",
+    "editDescription": "Lizenzinformationen aktualisieren",
+    "detail": "Lizenzdetails",
+    "notFound": "Lizenz nicht gefunden",
+    "table": {
+      "tenant": "Tenant",
+      "package": "Paket",
+      "startDate": "Start",
+      "endDate": "Ende",
+      "status": "Status",
+      "paymentStatus": "Zahlungsstatus",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "tenant": "Tenant",
+      "tenantPlaceholder": "Tenant auswählen",
+      "package": "Paket",
+      "packagePlaceholder": "Paket auswählen",
+      "startDate": "Startdatum",
+      "startDatePlaceholder": "Startdatum auswählen",
+      "endDate": "Enddatum",
+      "endDatePlaceholder": "Enddatum auswählen",
+      "renewalDate": "Erneuerungsdatum",
+      "renewalDatePlaceholder": "Erneuerungsdatum auswählen",
+      "status": "Status",
+      "statusPlaceholder": "Status auswählen",
+      "paymentStatus": "Zahlungsstatus",
+      "paymentStatusPlaceholder": "Zahlungsstatus auswählen",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben"
+    },
+    "status": {
+      "active": "Aktiv",
+      "expired": "Abgelaufen",
+      "suspended": "Ausgesetzt",
+      "cancelled": "Storniert"
+    },
+    "paymentStatus": {
+      "pending": "Ausstehend",
+      "paid": "Bezahlt",
+      "failed": "Fehlgeschlagen"
+    },
+    "createSuccess": "Lizenz erfolgreich erstellt",
+    "updateSuccess": "Lizenz erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Möchten Sie diese Lizenz wirklich löschen?",
+      "success": "Lizenz erfolgreich gelöscht",
+      "error": "Beim Löschen der Lizenz ist ein Fehler aufgetreten"
+    }
+  },
+  "payments": {
+    "title": "Zahlungen",
+    "description": "Lizenzzahlungen verwalten",
+    "create": "Neue Zahlung",
+    "createDescription": "Neuen Zahlungsdatensatz erstellen",
+    "notFound": "Zahlung nicht gefunden",
+    "table": {
+      "amount": "Betrag",
+      "currency": "Währung",
+      "paymentMethod": "Zahlungsmethode",
+      "paymentDate": "Zahlungsdatum",
+      "status": "Status",
+      "approvedBy": "Genehmigt von",
+      "approvedAt": "Genehmigt am",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "amount": "Betrag",
+      "amountPlaceholder": "Betrag eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung auswählen",
+      "paymentMethod": "Zahlungsmethode",
+      "paymentMethodPlaceholder": "Zahlungsmethode auswählen",
+      "paymentDate": "Zahlungsdatum",
+      "paymentDatePlaceholder": "Zahlungsdatum auswählen",
+      "receiptUrl": "Beleg-URL",
+      "receiptUrlPlaceholder": "Beleg-URL eingeben",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben"
+    },
+    "paymentMethods": {
+      "bank_transfer": "Banküberweisung",
+      "credit_card": "Kreditkarte",
+      "other": "Andere"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt"
+    },
+    "createSuccess": "Zahlung erfolgreich erstellt",
+    "updateSuccess": "Zahlung erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Möchten Sie diese Zahlung wirklich löschen?",
+      "success": "Zahlung erfolgreich gelöscht",
+      "error": "Beim Löschen der Zahlung ist ein Fehler aufgetreten"
+    }
+  },
+  "myLicense": {
+    "title": "Meine Lizenz",
+    "description": "Ihre aktuelle Lizenzinformationen anzeigen",
+    "noLicense": "Sie haben keine aktive Lizenz",
+    "package": "Paket",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "renewalDate": "Erneuerungsdatum",
+    "status": "Status",
+    "paymentStatus": "Zahlungsstatus",
+    "modules": "Module",
+    "features": "Funktionen",
+    "paymentHistory": "Zahlungshistorie"
+  },
+  "messages": {
+    "createSuccess": "Erfolgreich erstellt",
+    "createError": "Beim Erstellen ist ein Fehler aufgetreten",
+    "updateSuccess": "Erfolgreich aktualisiert",
+    "updateError": "Beim Aktualisieren ist ein Fehler aufgetreten",
+    "success": "Erfolg",
+    "error": "Fehler"
+  }
+}
+
+
+
+
+
+

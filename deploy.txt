@@ -1,0 +1,162 @@
+Şimdi “DigitalOcean droplet hazır, SSH ile bağlandın” varsayımıyla; senin Prisma + Next.js (App Router) + multi-tenant yapına birebir uygun, prod seviyesinde bir checklist + akış vereceğim.
+
+Ama bunu WHM’den gelen biri için net, sırayla ve geri dönüşü mümkün şekilde anlatacağım.
+
+🎯 HEDEF RESİM (NE KURUYORUZ?)
+1 DigitalOcean Droplet (Ubuntu)
+│
+├─ Nginx (Reverse Proxy + SSL)
+├─ Node.js (Next.js App Router)
+├─ PM2 (Process Manager)
+├─ PostgreSQL (Prisma için)
+├─ (Opsiyonel) Redis
+│
+├─ Proje-1 (Next.js + Prisma)
+├─ Proje-2 (ileride)
+│
+└─ GitHub (manuel + otomatik deploy)
+
+1️⃣ DROPLET’E GİRİŞ (TEK SEFERLİK)
+ssh root@SUNUCU_IP
+
+
+Bundan sonra panel yok, her şey terminal.
+
+2️⃣ SİSTEMİ HAZIRLA (ZORUNLU)
+apt update && apt upgrade -y
+apt install -y git curl build-essential
+
+3️⃣ NODE.JS (Next.js için)
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs
+node -v
+npm -v
+
+4️⃣ POSTGRESQL (PRISMA’YA UYGUN)
+apt install -y postgresql postgresql-contrib
+
+🔹 DB & User
+sudo -u postgres psql
+
+CREATE DATABASE omnex;
+CREATE USER omnex_user WITH PASSWORD 'STRONG_PASSWORD';
+ALTER DATABASE omnex OWNER TO omnex_user;
+GRANT ALL PRIVILEGES ON DATABASE omnex TO omnex_user;
+
+
+✅ Prisma için tam uyumlu
+
+5️⃣ PRISMA İÇİN ENV (KRİTİK)
+
+Proje dizininde:
+
+DATABASE_URL="postgresql://omnex_user:STRONG_PASSWORD@localhost:5432/omnex"
+NODE_ENV=production
+
+
+❗ localhost burada doğru, çünkü DB aynı sunucuda
+
+6️⃣ PROJEYİ SUNUCUYA AL (2 YÖNTEM VAR)
+🅰️ MANUEL (İLK KURULUM / DEBUG)
+cd /var/www
+git clone https://github.com/username/omnex.git
+cd omnex
+npm install
+npm run build
+
+Prisma:
+npx prisma generate
+npx prisma migrate deploy
+npm run seed
+
+🅱️ GITHUB ÜZERİNDEN OTOMATİK (ÖNERİLEN)
+🔹 Sunucuya SSH key ekle
+ssh-keygen -t ed25519
+cat ~/.ssh/id_ed25519.pub
+
+
+GitHub → Repo → Deploy Keys → ekle
+
+🔹 deploy.sh (SUNUCUDA)
+#!/bin/bash
+set -e
+
+cd /var/www/omnex
+
+git pull origin main
+
+npm ci --production
+
+npx prisma migrate deploy
+npx prisma generate
+
+npm run build
+
+pm2 restart omnex || pm2 start npm --name omnex -- start
+
+chmod +x deploy.sh
+
+7️⃣ PM2 (SUNUCUYI KAPATSAN BİLE AYAKTA)
+npm install -g pm2
+pm2 start npm --name omnex -- start
+pm2 save
+pm2 startup
+
+8️⃣ NGİN X (DOMAIN YÖNLENDİRME)
+apt install -y nginx
+
+
+/etc/nginx/sites-available/omnex:
+
+server {
+  server_name app.domain.com;
+
+  location / {
+    proxy_pass http://localhost:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+  }
+}
+
+ln -s /etc/nginx/sites-available/omnex /etc/nginx/sites-enabled/
+nginx -t
+systemctl reload nginx
+
+9️⃣ SSL (ÜCRETSİZ)
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d app.domain.com
+
+🔁 10️⃣ GITHUB ACTIONS (OTOMATİK DEPLOY)
+
+.github/workflows/deploy.yml
+
+name: Deploy Omnex
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/omnex
+            ./deploy.sh
+
+1️⃣1️⃣ “HEM MANUEL HEM GITHUB KULLANABİLİR MİYİM?”
+✅ EVET – HİÇBİR ÇAKIŞMA YOK
+Senaryo	Ne Yaparsın
+Debug	SSH → manuel run
+Prod	git push
+Acil hotfix	SSH → deploy.sh
+DB kontrol	psql

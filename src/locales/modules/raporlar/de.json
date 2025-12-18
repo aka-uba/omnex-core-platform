@@ -1,0 +1,16 @@
+{
+  "title": "Berichte",
+  "description": "Modul zum Erstellen, Anzeigen und Exportieren von System- und Benutzerberichten",
+  "menu": {
+    "label": "Berichte",
+    "items": {
+      "all": "Alle Berichte",
+      "create": "Bericht erstellen",
+      "templates": "Vorlagen",
+      "scheduled": "Geplante Berichte",
+      "exports": "Export-Verlauf"
+    }
+  }
+}
+
+

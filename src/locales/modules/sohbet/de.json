@@ -1,0 +1,15 @@
+{
+  "title": "Chat",
+  "description": "Echtzeit-Chat- und Messaging-Modul",
+  "menu": {
+    "label": "Chat",
+    "items": {
+      "dashboard": "Dashboard",
+      "rooms": "Chaträume",
+      "messages": "Direktnachrichten",
+      "groups": "Gruppenchats"
+    }
+  }
+}
+
+

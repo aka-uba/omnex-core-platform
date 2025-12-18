@@ -1,0 +1,60 @@
+name: "Notifications"
+slug: "notifications"
+version: "1.0.0"
+description: "System-wide notifications management - Create, manage and track all notifications"
+icon: "Bell"
+author: "Omnex Team"
+category: "system"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "Notifications"
+    icon: "Bell"
+    href: "/modules/notifications/dashboard"
+    order: 90
+    permissions: ["SuperAdmin", "AgencyUser"]
+    items:
+      - title: "Tüm Bildirimler"
+        path: "/modules/notifications/dashboard"
+        icon: "Bell"
+        order: 1
+settings:
+  - key: "enableEmailNotifications"
+    label: "Enable Email Notifications"
+    description: "Send notifications via email"
+    type: "boolean"
+    defaultValue: true
+    category: "Email"
+  - key: "enablePushNotifications"
+    label: "Enable Push Notifications"
+    description: "Send browser push notifications"
+    type: "boolean"
+    defaultValue: true
+    category: "Push"
+  - key: "enableSMSNotifications"
+    label: "Enable SMS Notifications"
+    description: "Send notifications via SMS"
+    type: "boolean"
+    defaultValue: false
+    category: "SMS"
+  - key: "retentionDays"
+    label: "Notification Retention (Days)"
+    description: "Number of days to keep notifications"
+    type: "number"
+    defaultValue: 30
+    min: 1
+    max: 365
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "notifications.create"
+    name: "Create Notification"
+    description: "Allow creating notifications"
+  - key: "notifications.delete"
+    name: "Delete Notification"
+    description: "Allow deleting notifications"

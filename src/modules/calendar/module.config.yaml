@@ -1,0 +1,70 @@
+name: "Calendar"
+slug: "calendar"
+version: "1.0.0"
+description: "Event calendar and scheduling management - Create, manage and track events"
+icon: "Calendar"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "Calendar"
+    icon: "Calendar"
+    href: "/modules/calendar/dashboard"
+    order: 40
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Takvim"
+        path: "/modules/calendar/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Events"
+        path: "/modules/calendar/events"
+        icon: "Calendar"
+        order: 2
+settings:
+  - key: "enableNotifications"
+    label: "Enable Notifications"
+    description: "Send notifications for upcoming events"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "defaultView"
+    label: "Default View"
+    description: "Default calendar view"
+    type: "select"
+    defaultValue: "month"
+    options:
+      - value: "month"
+        label: "Month"
+      - value: "week"
+        label: "Week"
+      - value: "day"
+        label: "Day"
+      - value: "agenda"
+        label: "Agenda"
+    category: "Display"
+  - key: "reminderMinutesBefore"
+    label: "Reminder Minutes Before"
+    description: "Minutes before event to send reminder"
+    type: "number"
+    defaultValue: 15
+    min: 0
+    max: 1440
+    category: "Notifications"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "calendar.event.create"
+    name: "Create Event"
+    description: "Allow creating events"
+  - key: "calendar.event.update"
+    name: "Update Event"
+    description: "Allow updating events"
+  - key: "calendar.event.delete"
+    name: "Delete Event"
+    description: "Allow deleting events"

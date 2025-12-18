@@ -1,0 +1,83 @@
+name: "Raporlar Modülü"
+slug: "raporlar"
+version: "1.0.0"
+description: "Sistem ve kullanıcı raporlarını oluşturma, görüntüleme ve export etme modülü"
+icon: "ChartBar"
+author: "Omnex"
+category: "analytics"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "Raporlar"
+    icon: "ChartBar"
+    href: "/modules/raporlar"
+    order: 40
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Tüm Raporlar"
+        path: "/modules/raporlar"
+        icon: "ChartBar"
+        order: 0
+      - title: "menu.items.create"
+        path: "/modules/reports/create"
+        icon: "Plus"
+        order: 1
+      - title: "menu.items.scheduled"
+        path: "/modules/raporlar/scheduled"
+        icon: "Clock"
+        order: 2
+      - title: "menu.items.exports"
+        path: "/modules/raporlar/exports"
+        icon: "FileExport"
+        order: 3
+      - title: "Export Şablonları"
+        path: "/settings/export-templates"
+        icon: "FileText"
+        order: 4
+settings:
+  - key: "enableAutoExport"
+    label: "Enable Auto Export"
+    description: "Automatically export scheduled reports"
+    type: "boolean"
+    defaultValue: true
+    category: "Export"
+  - key: "defaultFormat"
+    label: "Default Export Format"
+    description: "Default format for exports"
+    type: "select"
+    defaultValue: "pdf"
+    options:
+      - value: "pdf"
+        label: "PDF"
+      - value: "excel"
+        label: "Excel"
+      - value: "csv"
+        label: "CSV"
+    category: "Export"
+  - key: "maxExportSize"
+    label: "Max Export Size (MB)"
+    description: "Maximum size for exported files"
+    type: "number"
+    defaultValue: 50
+    min: 1
+    max: 500
+    category: "Export"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "raporlar.create"
+    name: "Create Report"
+    description: "Allow creating reports"
+  - key: "raporlar.view"
+    name: "View Report"
+    description: "Allow viewing reports"
+  - key: "raporlar.export"
+    name: "Export Report"
+    description: "Allow exporting reports"
+  - key: "raporlar.delete"
+    name: "Delete Report"
+    description: "Allow deleting reports"

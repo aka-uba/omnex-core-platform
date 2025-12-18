@@ -1,0 +1,134 @@
+{
+  "title": "Export Şablonları",
+  "description": "Export belgeleri için özel başlık ve alt bilgi şablonları oluşturun ve yönetin",
+  "create": "Yeni Şablon",
+  "search": "Şablon ara...",
+  "refresh": "Yenile",
+  "filterType": "Tip Filtrele",
+  "filterScope": "Kapsam Filtrele",
+  "filterAll": "Tümü",
+  "error": "Hata",
+  "loadError": "Şablonlar yüklenirken bir hata oluştu",
+  "noTemplates": "Şablon bulunamadı",
+  "confirmDelete": "Bu şablonu silmek istediğinize emin misiniz?",
+  "delete": {
+    "title": "Şablonu Sil",
+    "confirm": "Sil"
+  },
+  "types": {
+    "header": "Başlık",
+    "footer": "Alt Bilgi",
+    "full": "Tam"
+  },
+  "scope": {
+    "global": "Global",
+    "company": "Firma",
+    "location": "Lokasyon"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "actions": {
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "setDefault": "Varsayılan olarak ayarla",
+    "preview": "Önizleme",
+    "export": "Dışa Aktar",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "table": {
+    "name": "Şablon Adı",
+    "type": "Tip",
+    "scope": "Kapsam",
+    "description": "Açıklama",
+    "title": "Başlık",
+    "status": "Durum",
+    "createdAt": "Oluşturulma",
+    "actions": "İşlemler"
+  },
+  "seed": {
+    "title": "Hazır Şablonları Yükle",
+    "confirm": "Yükle"
+  },
+  "seedConfirm": "20 hazır şablon oluşturulacak. Devam etmek istiyor musunuz?",
+  "notifications": {
+    "success": "Başarılı",
+    "error": "Hata",
+    "deleted": "Şablon başarıyla silindi",
+    "defaultUpdated": "Varsayılan şablon güncellendi",
+    "defaultError": "Varsayılan şablon ayarlanırken bir hata oluştu",
+    "deleteError": "Şablon silinirken bir hata oluştu",
+    "submitError": "Şablon kaydedilirken bir hata oluştu",
+    "seeded": "{{count}} şablon başarıyla oluşturuldu",
+    "seedError": "Şablonlar oluşturulurken bir hata oluştu",
+    "exported": "Şablon başarıyla dışa aktarıldı",
+    "exportError": "Şablon dışa aktarılırken bir hata oluştu"
+  },
+  "validation": {
+    "nameRequired": "Şablon adı gereklidir",
+    "typeRequired": "Tip gereklidir"
+  },
+  "form": {
+    "basicInfo": "Temel Bilgiler",
+    "name": "Şablon Adı",
+    "namePlaceholder": "Firma Başlık Şablonu",
+    "type": "Şablon Tipi",
+    "typePlaceholder": "Tip seçin",
+    "company": "Firma",
+    "companyPlaceholder": "Firma seçin (opsiyonel)",
+    "location": "Lokasyon",
+    "locationPlaceholder": "Lokasyon seçin (opsiyonel)",
+    "isDefault": "Varsayılan Olarak Ayarla",
+    "isDefaultDesc": "Bu şablonu varsayılan olarak kullan",
+    "isActive": "Aktif",
+    "isActiveDesc": "Şablon aktif ve kullanılabilir",
+    "logos": "Logolar",
+    "addLogo": "Logo Ekle",
+    "logo": "Logo",
+    "logoFile": "Logo Dosyası",
+    "logoFilePlaceholder": "Logo yükle",
+    "noLogos": "Henüz logo eklenmedi",
+    "headers": "Başlıklar",
+    "addHeader": "Başlık Ekle",
+    "header": "Başlık",
+    "headerText": "Başlık Metni",
+    "headerTextPlaceholder": "Başlık metnini girin",
+    "noHeaders": "Henüz başlık eklenmedi",
+    "footers": "Alt Bilgiler",
+    "addFooter": "Alt Bilgi Ekle",
+    "footer": "Alt Bilgi",
+    "footerText": "Alt Bilgi Metni",
+    "footerTextPlaceholder": "Alt bilgi metnini girin",
+    "noFooters": "Henüz alt bilgi eklenmedi",
+    "contactInfo": "İletişim Bilgileri",
+    "address": "Adres",
+    "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
+    "phone": "Telefon",
+    "email": "E-posta",
+    "website": "Web Sitesi",
+    "taxNumber": "Vergi Numarası",
+    "position": "Pozisyon",
+    "positionLeft": "Sol",
+    "positionCenter": "Orta",
+    "positionRight": "Sağ",
+    "cancel": "İptal",
+    "create": "Şablon Oluştur",
+    "update": "Şablonu Güncelle"
+  },
+  "navigation": {
+    "dashboard": "Panel",
+    "settings": "Ayarlar"
+  },
+  "edit": {
+    "title": "Başlık",
+    "description": "Açıklama"
+  },
+  "export": "Dışa Aktar",
+  "exportComingSoon": "{{format}} formatında dışa aktarma yakında eklenecek"
+}

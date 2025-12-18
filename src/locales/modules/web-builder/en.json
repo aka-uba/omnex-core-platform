@@ -1,0 +1,29 @@
+{
+  "title": "Web Builder",
+  "description": "Drag & drop website builder module",
+  "menu": {
+    "label": "Web Builder",
+    "items": {
+      "dashboard": "Dashboard",
+      "websites": "Websites",
+      "pages": "Pages",
+      "templates": "Templates",
+      "themes": "Themes",
+      "components": "Components",
+      "forms": "Forms",
+      "media": "Media Library",
+      "assets": "Assets",
+      "analytics": "Analytics",
+      "settings": "Settings"
+    }
+  },
+  "dashboard": {
+    "title": "Web Builder Dashboard",
+    "description": "Overview of your website building",
+    "totalPages": "Total Pages",
+    "templates": "Templates",
+    "mediaFiles": "Media Files",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity"
+  }
+}

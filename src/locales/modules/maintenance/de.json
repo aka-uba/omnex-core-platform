@@ -1,0 +1,117 @@
+{
+  "title": "Wartungsverwaltung",
+  "description": "Wartungsaufzeichnungen für Geräte verwalten",
+  "create": "Neue Wartungsaufzeichnung",
+  "createDescription": "Neue Wartungsaufzeichnung erstellen",
+  "edit": "Wartungsaufzeichnung bearbeiten",
+  "editDescription": "Wartungsaufzeichnungsinformationen aktualisieren",
+  "detail": "Wartungsaufzeichnung Detail",
+  "detailDescription": "Wartungsaufzeichnungsdetails anzeigen",
+  "notFound": "Wartungsaufzeichnung nicht gefunden",
+  "types": {
+    "preventive": "Präventiv",
+    "corrective": "Korrektiv",
+    "emergency": "Notfall"
+  },
+  "status": {
+    "scheduled": "Geplant",
+    "in_progress": "In Bearbeitung",
+    "completed": "Abgeschlossen",
+    "cancelled": "Abgebrochen"
+  },
+  "table": {
+    "title": "Titel",
+    "type": "Typ",
+    "status": "Status",
+    "location": "Standort",
+    "equipment": "Gerät",
+    "scheduledDate": "Geplantes Datum",
+    "estimatedCost": "Geschätzte Kosten",
+    "actualCost": "Tatsächliche Kosten",
+    "actions": "Aktionen"
+  },
+  "form": {
+    "location": "Standort",
+    "locationPlaceholder": "Standort auswählen",
+    "equipment": "Gerät",
+    "equipmentPlaceholder": "Gerät auswählen",
+    "type": "Typ",
+    "typePlaceholder": "Typ auswählen",
+    "title": "Titel",
+    "titlePlaceholder": "Wartungstitel eingeben",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Wartungsbeschreibung eingeben",
+    "scheduledDate": "Geplantes Datum",
+    "scheduledDatePlaceholder": "Geplantes Datum auswählen",
+    "startDate": "Startdatum",
+    "startDatePlaceholder": "Startdatum auswählen",
+    "endDate": "Enddatum",
+    "endDatePlaceholder": "Enddatum auswählen",
+    "estimatedCost": "Geschätzte Kosten",
+    "estimatedCostPlaceholder": "Geschätzte Kosten eingeben",
+    "actualCost": "Tatsächliche Kosten",
+    "actualCostPlaceholder": "Tatsächliche Kosten eingeben",
+    "notes": "Notizen",
+    "notesPlaceholder": "Notizen eingeben",
+    "documents": "Dokumente",
+    "status": "Status",
+    "statusPlaceholder": "Status auswählen",
+    "isActive": "Aktiv"
+  },
+  "filter": {
+    "type": "Typ",
+    "status": "Status",
+    "location": "Standort"
+  },
+  "search": {
+    "placeholder": "Wartungsaufzeichnungen suchen..."
+  },
+  "delete": {
+    "confirm": "Möchten Sie diese Wartungsaufzeichnung wirklich löschen?",
+    "success": "Wartungsaufzeichnung erfolgreich gelöscht",
+    "error": "Beim Löschen der Wartungsaufzeichnung ist ein Fehler aufgetreten"
+  },
+  "messages": {
+    "createSuccess": "Wartungsaufzeichnung erfolgreich erstellt",
+    "createError": "Beim Erstellen der Wartungsaufzeichnung ist ein Fehler aufgetreten",
+    "updateSuccess": "Wartungsaufzeichnung erfolgreich aktualisiert",
+    "updateError": "Beim Aktualisieren der Wartungsaufzeichnung ist ein Fehler aufgetreten",
+    "success": "Erfolg",
+    "error": "Fehler"
+  },
+  "export": {
+    "title": "Exportieren",
+    "excel": "Nach Excel exportieren",
+    "pdf": "Nach PDF exportieren",
+    "csv": "Nach CSV exportieren"
+  },
+  "exportSuccess": "Wartungsaufzeichnungen erfolgreich exportiert",
+  "exportError": "Beim Exportieren der Wartungsaufzeichnungen ist ein Fehler aufgetreten",
+  "exportDescription": "Wartungsaufzeichnungen Bericht",
+  "pagination": {
+    "showing": "Anzeigen",
+    "of": "von"
+  },
+  "dashboard": {
+    "title": "Wartungs-Dashboard",
+    "description": "Übersicht über Wartungsaktivitäten und Analysen",
+    "dateFrom": "Von Datum",
+    "dateTo": "Bis Datum",
+    "totalRecords": "Gesamtaufzeichnungen",
+    "completed": "Abgeschlossen",
+    "totalCost": "Gesamtkosten",
+    "scheduled": "Geplant",
+    "maintenanceTrend": "Wartungstrend",
+    "byType": "Nach Typ",
+    "upcomingMaintenance": "Anstehende Wartungen",
+    "overdueMaintenance": "Überfällige Wartungen",
+    "daysOverdue": "Tage überfällig",
+    "noUpcoming": "Keine anstehenden Wartungen",
+    "noOverdue": "Keine überfälligen Wartungen"
+  },
+  "calendar": {
+    "title": "Wartungskalender",
+    "description": "Wartungsaufzeichnungen in Kalenderansicht anzeigen"
+  }
+}
+

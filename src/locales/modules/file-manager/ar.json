@@ -1,0 +1,188 @@
+{
+    "title": "مدير الملفات",
+    "description": "إدارة وتنظيم ملفاتك",
+    "breadcrumbs": {
+        "home": "الصفحة الرئيسية"
+    },
+    "toolbar": {
+        "search": "البحث في الملفات...",
+        "searchPlaceholder": "البحث بالاسم أو العلامة...",
+        "newFolder": "مجلد جديد",
+        "upload": "رفع",
+        "delete": "حذف",
+        "download": "تحميل",
+        "fileType": "نوع الملف",
+        "dateRange": "نطاق التاريخ",
+        "tags": "العلامات",
+        "sortBy": "ترتيب حسب",
+        "allTypes": "جميع الأنواع",
+        "allTags": "جميع العلامات",
+        "selectDateRange": "اختر نطاق التاريخ",
+        "dateRangePlaceholder": "البداية - النهاية",
+        "startDate": "تاريخ البداية",
+        "startDatePlaceholder": "اختر تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "endDatePlaceholder": "اختر تاريخ النهاية",
+        "apply": "تطبيق",
+        "clear": "مسح",
+        "close": "إغلاق",
+        "cancel": "إلغاء",
+        "downloadSelected": "تحميل المحدد",
+        "deleteSelected": "حذف المحدد",
+        "shareServer": "خادم الويب",
+        "webServer": "خادم الويب",
+        "selectTags": "اختر العلامات",
+        "types": {
+            "image": "صورة",
+            "pdf": "PDF",
+            "document": "مستند",
+            "video": "فيديو",
+            "archive": "أرشيف"
+        },
+        "sortOptions": {
+            "newest": "الأحدث",
+            "oldest": "الأقدم",
+            "nameAsc": "الاسم (أ-ي)",
+            "nameDesc": "الاسم (ي-أ)",
+            "sizeAsc": "الحجم (صغير-كبير)",
+            "sizeDesc": "الحجم (كبير-صغير)"
+        }
+    },
+    "table": {
+        "name": "الاسم",
+        "size": "الحجم",
+        "type": "النوع",
+        "modified": "تم التعديل",
+        "actions": "الإجراءات"
+    },
+    "type": {
+        "folder": "مجلد",
+        "file": "ملف"
+    },
+    "actions": {
+        "open": "فتح",
+        "openFile": "فتح الملف",
+        "rename": "إعادة تسمية",
+        "delete": "حذف",
+        "download": "تحميل",
+        "move": "نقل",
+        "share": "مشاركة",
+        "properties": "الخصائص"
+    },
+    "share": {
+        "success": "نجاح",
+        "copied": "تم نسخ رابط المشاركة إلى الحافظة",
+        "error": "خطأ",
+        "failed": "فشلت المشاركة"
+    },
+    "newFolder": {
+        "title": "إنشاء مجلد جديد",
+        "create": "إنشاء",
+        "success": "نجاح",
+        "created": "تم إنشاء المجلد بنجاح",
+        "selectParent": "اختر الدليل",
+        "selectParentPlaceholder": "اختر الدليل الذي تريد إنشاء المجلد فيه",
+        "rootFolder": "الدليل الجذري"
+    },
+    "upload": {
+        "title": "رفع ملف جديد",
+        "dragDrop": "اسحب وأفلت الملفات هنا",
+        "clickToSelect": "أو انقر لتحديد الملفات من جهاز الكمبيوتر",
+        "browseFiles": "تصفح الملفات",
+        "maxSize": "الحد الأقصى لحجم الملف: 50 ميجابايت",
+        "files": "الملفات",
+        "button": "رفع الملف",
+        "success": "نجاح",
+        "filesUploaded": "تم رفع الملفات بنجاح",
+        "fileDetails": "تفاصيل الملف",
+        "fileDetailsDesc": "قدم معلومات أساسية عن الملف",
+        "fileName": "اسم الملف",
+        "fileNamePlaceholder": "أدخل اسم الملف",
+        "category": "الفئة",
+        "categoryPlaceholder": "اختر فئة",
+        "categories": {
+            "design": "أصل التصميم",
+            "contract": "عقد",
+            "invoice": "فاتورة",
+            "report": "تقرير"
+        },
+        "description": "الوصف",
+        "descriptionPlaceholder": "أضف وصفاً موجزاً للملف...",
+        "tags": "العلامات",
+        "tagPlaceholder": "أضف علامة...",
+        "accessAssociation": "الوصول والارتباط",
+        "accessAssociationDesc": "تحكم في من يمكنه المشاهدة وما يرتبط بهذا الملف",
+        "accessLevel": "مستوى الوصول",
+        "private": "خاص",
+        "public": "عام",
+        "associateProject": "ربط بالمشروع",
+        "associateProjectPlaceholder": "اختر مشروعاً (اختياري)"
+    },
+    "rename": {
+        "title": "إعادة تسمية",
+        "button": "إعادة تسمية",
+        "success": "نجاح",
+        "renamed": "تمت إعادة التسمية بنجاح"
+    },
+    "delete": {
+        "title": "تأكيد الحذف",
+        "confirm": "هل أنت متأكد أنك تريد حذف '{name}'؟",
+        "button": "حذف",
+        "success": "نجاح",
+        "deleted": "تم الحذف بنجاح"
+    },
+    "form": {
+        "folderName": "اسم المجلد",
+        "folderNamePlaceholder": "أدخل اسم المجلد",
+        "folderNameRequired": "اسم المجلد مطلوب",
+        "invalidFolderName": "اسم مجلد غير صالح",
+        "newName": "الاسم الجديد",
+        "newNamePlaceholder": "أدخل الاسم الجديد",
+        "nameRequired": "الاسم مطلوب",
+        "cancel": "إلغاء"
+    },
+    "empty": {
+        "noFiles": "لا توجد ملفات بعد",
+        "noResults": "لم يتم العثور على نتائج"
+    },
+    "error": {
+        "title": "خطأ",
+        "createFolder": "فشل إنشاء المجلد",
+        "rename": "فشلت إعادة التسمية",
+        "delete": "فشل الحذف",
+        "upload": "فشل الرفع"
+    },
+    "preview": {
+        "videoPreview": "معاينة الفيديو",
+        "pdfPreview": "لا يمكن معاينة ملف PDF. استخدم زر التحميل للتحميل.",
+        "officePreview": "لا يمكن معاينة ملف Office. استخدم زر التحميل للتحميل.",
+        "textPreview": "سيتم عرض محتوى ملف النص هنا...",
+        "noPreview": "المعاينة غير متاحة لهذا النوع من الملفات."
+    },
+    "shareServer": {
+        "title": "خادم المشاركة",
+        "selectFolder": "اختر المجلد",
+        "selectFolderPlaceholder": "اختر المجلد للمشاركة",
+        "rootFolder": "الدليل الجذري",
+        "start": "بدء الخادم",
+        "stop": "إيقاف الخادم",
+        "running": "قيد التشغيل",
+        "shareUrl": "رابط المشاركة",
+        "shareUrlDescription": "شارك هذا الرابط مع الآخرين في شبكتك للوصول إلى الملفات",
+        "copy": "نسخ",
+        "copied": "تم النسخ",
+        "urlCopied": "تم نسخ الرابط إلى الحافظة",
+        "copyFailed": "فشل نسخ الرابط",
+        "serverStarted": "تم بدء الخادم",
+        "serverStartedMessage": "خادم مشاركة الملفات يعمل الآن",
+        "serverStopped": "تم إيقاف الخادم",
+        "serverStoppedMessage": "تم إيقاف خادم مشاركة الملفات",
+        "error": "خطأ",
+        "startFailed": "فشل بدء الخادم",
+        "stopFailed": "فشل إيقاف الخادم"
+    }
+}
+
+
+
+

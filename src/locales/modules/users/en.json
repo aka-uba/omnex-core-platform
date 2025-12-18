@@ -1,0 +1,128 @@
+{
+  "title": "User Management",
+  "description": "Manage all users, roles, and permissions within the agency.",
+  "create": {
+    "title": "Create New User",
+    "description": "Fill in the details below to add a new user to the system.",
+    "button": "Create User"
+  },
+  "edit": {
+    "title": "Edit User",
+    "description": "Update user information.",
+    "button": "Save Changes"
+  },
+  "profile": {
+    "title": "User Profile",
+    "description": "View and edit your profile information."
+  },
+  "table": {
+    "user": "User",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "lastActive": "Last Active",
+    "actions": "Actions",
+    "searchPlaceholder": "Search by name or email...",
+    "filters": "Filters",
+    "rowsPerPage": "Rows per page:",
+    "showing": "results"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending"
+  },
+  "tabs": {
+    "personal": "Personal Information",
+    "work": "Work Information",
+    "contact": "Contact",
+    "documents": "Documents",
+    "cv": "CV",
+    "preferences": "Preferences"
+  },
+  "form": {
+    "personal": {
+      "profilePicture": "Profile Picture",
+      "profilePictureDescription": "Upload a profile picture for the new user.",
+      "userDetails": "User Details",
+      "userDetailsDescription": "Provide the user's name, email, and role.",
+      "credentials": "Credentials",
+      "credentialsDescription": "Set a secure password for the new user.",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "role": "Role",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "work": {
+      "title": "Work Information",
+      "description": "Enter work-related information",
+      "department": "Department",
+      "departmentPlaceholder": "Select department",
+      "position": "Position",
+      "positionPlaceholder": "Senior Developer",
+      "employeeId": "Employee ID",
+      "employeeIdPlaceholder": "EMP001",
+      "hireDate": "Hire Date",
+      "hireDatePlaceholder": "Select date",
+      "manager": "Manager",
+      "managerPlaceholder": "Manager name",
+      "assignAgency": "Assign to Agency/Company",
+      "assignAgencyPlaceholder": "Select agencies"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "description": "Enter contact information",
+      "address": "Address",
+      "addressPlaceholder": "Street address",
+      "city": "City",
+      "cityPlaceholder": "City",
+      "country": "Country",
+      "countryPlaceholder": "Country",
+      "postalCode": "Postal Code",
+      "postalCodePlaceholder": "12345",
+      "emergencyContact": "Emergency Contact",
+      "emergencyContactPlaceholder": "Emergency contact name",
+      "emergencyPhone": "Emergency Phone",
+      "emergencyPhonePlaceholder": "+90 555 123 4567"
+    },
+    "documents": {
+      "title": "Documents",
+      "description": "Upload required documents",
+      "passport": "Passport Copy",
+      "idCard": "ID Card",
+      "contract": "Contract",
+      "otherDocuments": "Other Documents"
+    },
+    "cv": {
+      "title": "CV",
+      "uploadCv": "Upload CV",
+      "cvDescription": "Upload the user's CV."
+    },
+    "preferences": {
+      "title": "System Preferences",
+      "defaultLanguage": "Default Language",
+      "defaultTheme": "Default Theme",
+      "defaultLayout": "Default Dashboard Layout"
+    }
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "resetPassword": "Reset Password"
+  },
+  "validation": {
+    "fullNameRequired": "Full name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match"
+  }
+}
+

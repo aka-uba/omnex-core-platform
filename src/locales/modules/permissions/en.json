@@ -1,0 +1,65 @@
+{
+  "title": "Permissions Management",
+  "description": "Manage system-wide user permissions and access levels.",
+  "create": {
+    "title": "Create New Permission",
+    "description": "Create a new permission.",
+    "button": "Create Permission"
+  },
+  "edit": {
+    "title": "Edit Permission",
+    "description": "Update permission information.",
+    "button": "Save Changes"
+  },
+  "view": {
+    "title": "Permission Details",
+    "description": "View permission information."
+  },
+  "table": {
+    "permissionKey": "Permission Key",
+    "name": "Name",
+    "description": "Description",
+    "category": "Category",
+    "module": "Module",
+    "actions": "Actions",
+    "searchPlaceholder": "Search by name or key...",
+    "categoryFilter": "Category",
+    "moduleFilter": "Module",
+    "clearFilters": "Clear Filters"
+  },
+  "form": {
+    "permissionKey": "Permission Key",
+    "permissionKeyPlaceholder": "e.g., client.create",
+    "name": "Name",
+    "namePlaceholder": "e.g., Create Client",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter permission description",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "module": "Module",
+    "modulePlaceholder": "Select module"
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "validation": {
+    "keyRequired": "Permission key is required",
+    "keyFormat": "Permission key format: module.action (e.g., client.create)",
+    "nameRequired": "Name is required",
+    "descriptionRequired": "Description is required",
+    "categoryRequired": "Category is required"
+  },
+  "categories": {
+    "clientManagement": "Client Management",
+    "contentAI": "Content AI",
+    "scheduling": "Scheduling",
+    "finance": "Finance",
+    "general": "General"
+  }
+}
+
+
+
+

@@ -1,0 +1,28 @@
+.centralPageHeader {
+  /* PC: alt padding 32px, sağ padding 10px (varsayılan) */
+  padding-bottom: 32px;
+  padding-right: 10px;
+}
+
+/* Tablet: alt padding 24px, sağ padding 0 */
+@media (max-width: 1024px) {
+  .centralPageHeader {
+    padding-bottom: 24px;
+    padding-right: 0;
+  }
+}
+
+/* Mobil: alt padding 15px, sağ padding 0 */
+@media (max-width: 768px) {
+  .centralPageHeader {
+    padding-bottom: 15px;
+    padding-right: 0;
+  }
+}
+
+
+
+
+
+
+

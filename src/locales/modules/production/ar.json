@@ -1,0 +1,76 @@
+{
+  "title": "الإنتاج والمنتجات",
+  "description": "وحدة شاملة لإدارة الإنتاج والمنتجات",
+  "menu": {
+    "label": "الإنتاج",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "products": "المنتجات",
+      "bom": "قائمة المواد",
+      "orders": "أوامر الإنتاج",
+      "stock": "المخزون",
+      "reports": "التقارير"
+    }
+  },
+  "dashboard": {
+    "title": "لوحة تحكم الإنتاج",
+    "description": "نظرة عامة على أنشطة الإنتاج والتحليلات"
+  },
+  "products": {
+    "title": "المنتجات",
+    "description": "إدارة المنتجات والمخزون الخاص بك"
+  },
+  "bom": {
+    "title": "قائمة المواد",
+    "description": "إدارة قوائم مواد المنتجات"
+  },
+  "orders": {
+    "title": "أوامر الإنتاج",
+    "description": "إدارة أوامر وجداول الإنتاج"
+  },
+  "stock": {
+    "title": "إدارة المخزون",
+    "description": "تتبع وإدارة مستويات المخزون"
+  },
+  "reports": {
+    "title": "التقارير",
+    "description": "عرض تقارير وتحليلات الإنتاج"
+  },
+  "steps": {
+    "form": {
+      "stepNumber": "رقم الخطوة",
+      "stepNumberMinError": "يجب أن يكون على الأقل 1",
+      "status": "الحالة",
+      "name": "الاسم",
+      "description": "الوصف",
+      "plannedStart": "البداية المخططة",
+      "plannedEnd": "النهاية المخططة",
+      "assignedTo": "مخصص لـ (معرف المستخدم)",
+      "laborHours": "ساعات العمل",
+      "actualStart": "البداية الفعلية",
+      "actualEnd": "النهاية الفعلية",
+      "notes": "ملاحظات"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "create": {
+      "success": "تم إنشاء خطوة الإنتاج بنجاح"
+    },
+    "update": {
+      "success": "تم تحديث خطوة الإنتاج بنجاح"
+    },
+    "save": {
+      "error": "فشل حفظ خطوة الإنتاج"
+    }
+  },
+  "messages": {
+    "success": "نجح",
+    "error": "خطأ"
+  }
+}
+
+

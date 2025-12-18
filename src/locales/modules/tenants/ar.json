@@ -1,0 +1,165 @@
+{
+  "title": "إدارة المستأجرين",
+  "description": "إدارة المستأجرين متعددين",
+  "menu": {
+    "label": "المستأجرون",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "list": "قائمة المستأجرين",
+      "create": "إنشاء مستأجر",
+      "settings": "الإعدادات"
+    }
+  },
+  "tenants": {
+    "title": "إدارة المستأجرين",
+    "subtitle": "عرض وإدارة جميع المستأجرين",
+    "createTenant": "إنشاء مستأجر جديد",
+    "tenantList": "قائمة المستأجرين",
+    "tenantDetails": "تفاصيل المستأجر",
+    "wizard": {
+      "title": "إنشاء مستأجر جديد",
+      "step1": "المعلومات الأساسية",
+      "step2": "معلومات الشركة",
+      "step3": "الموقع",
+      "step4": "الملخص",
+      "step5": "جاري الإنشاء",
+      "step6": "اكتمل",
+      "basicInfo": {
+        "tenantName": "اسم المستأجر",
+        "tenantNamePlaceholder": "شركة ACME",
+        "slug": "الاسم المختصر",
+        "slugPlaceholder": "acme",
+        "slugDescription": "يستخدم في تسمية قاعدة البيانات (أحرف صغيرة، أرقام، شرطة)",
+        "subdomain": "النطاق الفرعي",
+        "subdomainPlaceholder": "acme",
+        "subdomainDescription": "عنوان URL للوصول: acme.onwindos.com",
+        "customDomain": "نطاق مخصص (اختياري)",
+        "customDomainPlaceholder": "https://acme.com"
+      },
+      "companyInfo": {
+        "companyName": "اسم الشركة",
+        "companyNamePlaceholder": "شركة ACME",
+        "logo": "شعار الشركة",
+        "logoPlaceholder": "تحميل الشعار",
+        "logoDescription": "يستخدم في المستندات المصدرة (PDF، Excel، إلخ)",
+        "favicon": "أيقونة المفضلة",
+        "faviconPlaceholder": "تحميل أيقونة المفضلة",
+        "faviconDescription": "الرمز المعروض في علامة تبويب المتصفح (16x16 أو 32x32 بكسل)",
+        "preview": "معاينة:",
+        "address": "العنوان",
+        "addressPlaceholder": "123 الشارع الرئيسي، المدينة، البلد",
+        "phone": "الهاتف",
+        "phonePlaceholder": "+90 212 345 6789",
+        "email": "البريد الإلكتروني",
+        "emailPlaceholder": "info@acme.com",
+        "website": "الموقع الإلكتروني",
+        "websitePlaceholder": "https://acme.com",
+        "taxNumber": "الرقم الضريبي",
+        "taxNumberPlaceholder": "123-456-789"
+      },
+      "location": {
+        "optional": "خطوة اختيارية",
+        "optionalMessage": "يمكنك تخطي هذه الخطوة وإضافة المواقع لاحقًا.",
+        "skip": "تخطي إعداد الموقع",
+        "skipped": "تم تخطي الموقع",
+        "skippedMessage": "يمكنك إضافة المواقع لاحقًا من صفحة الإعدادات.",
+        "addLocation": "إضافة الموقع الأول",
+        "locationName": "اسم الموقع",
+        "locationNamePlaceholder": "المكتب الرئيسي",
+        "locationType": "نوع الموقع",
+        "locationTypePlaceholder": "اختر النوع",
+        "types": {
+          "firma": "شركة",
+          "lokasyon": "موقع",
+          "isletme": "عملية",
+          "koridor": "ممر",
+          "oda": "غرفة"
+        },
+        "address": "العنوان",
+        "addressPlaceholder": "123 الشارع الرئيسي، المدينة، البلد",
+        "city": "المدينة",
+        "cityPlaceholder": "إسطنبول",
+        "country": "البلد",
+        "countryPlaceholder": "تركيا"
+      },
+      "review": {
+        "title": "مراجعة التكوين الخاص بك",
+        "subtitle": "يرجى مراجعة جميع المعلومات قبل إنشاء المستأجر.",
+        "basicInfo": "المعلومات الأساسية",
+        "companyInfo": "معلومات الشركة",
+        "initialLocation": "الموقع الأولي",
+        "tenantName": "اسم المستأجر:",
+        "slug": "الاسم المختصر:",
+        "subdomain": "النطاق الفرعي:",
+        "customDomain": "نطاق مخصص:",
+        "companyName": "اسم الشركة:",
+        "logo": "الشعار:",
+        "favicon": "أيقونة المفضلة:",
+        "uploaded": "تم التحميل",
+        "address": "العنوان:",
+        "phone": "الهاتف:",
+        "email": "البريد الإلكتروني:",
+        "website": "الموقع الإلكتروني:",
+        "taxNumber": "الرقم الضريبي:",
+        "name": "الاسم:",
+        "type": "النوع:",
+        "skipped": "تم التخطي - يمكن إضافته لاحقًا",
+        "notConfigured": "الموقع غير مكون"
+      },
+      "progress": {
+        "title": "جاري إنشاء المستأجر...",
+        "subtitle": "يرجى الانتظار حتى يكتمل إعداد المستأجر. قد يستغرق هذا دقيقة.",
+        "steps": {
+          "database": "جاري إنشاء قاعدة البيانات",
+          "databaseDesc": "جاري إعداد قاعدة بيانات PostgreSQL",
+          "migrations": "جاري تشغيل الترحيلات",
+          "migrationsDesc": "جاري تطبيق مخطط قاعدة البيانات",
+          "storage": "جاري إنشاء التخزين",
+          "storageDesc": "جاري إعداد أدلة الملفات",
+          "seeding": "جاري إضافة البيانات",
+          "seedingDesc": "جاري إنشاء المستخدمين والأدوار الافتراضية",
+          "exportTemplate": "جاري إنشاء قالب التصدير",
+          "exportTemplateDesc": "جاري إعداد قالب الشركة",
+          "location": "جاري إنشاء الموقع",
+          "locationDesc": "جاري إعداد الموقع الأول"
+        }
+      },
+      "credentials": {
+        "title": "تم إنشاء المستأجر بنجاح!",
+        "subtitle": "تم إنشاء المستأجر الخاص بك وهو جاهز للاستخدام.",
+        "accessUrl": "عنوان URL للوصول",
+        "superAdmin": "معلومات المسؤول الفائق",
+        "tenantAdmin": "معلومات مسؤول المستأجر",
+        "defaultUser": "معلومات المستخدم الافتراضي",
+        "email": "البريد الإلكتروني:",
+        "username": "اسم المستخدم:",
+        "password": "كلمة المرور:",
+        "copy": "نسخ",
+        "copied": "تم النسخ",
+        "openInNewTab": "فتح في علامة تبويب جديدة",
+        "exportTemplate": "قالب التصدير",
+        "exportTemplateCreated": "تم إنشاء قالب التصدير الافتراضي، المعرف:",
+        "location": "الموقع الأول",
+        "locationCreated": "تم إنشاء الموقع الأول، المعرف:",
+        "finish": "الانتقال إلى لوحة تحكم الشركات"
+      },
+      "buttons": {
+        "back": "السابق",
+        "next": "التالي",
+        "create": "إنشاء مستأجر",
+        "finish": "إنهاء"
+      }
+    },
+    "errors": {
+      "nameRequired": "اسم المستأجر مطلوب",
+      "slugRequired": "الاسم المختصر مطلوب",
+      "slugInvalid": "يمكن أن يحتوي الاسم المختصر على أحرف صغيرة وأرقام وشرطات فقط",
+      "emailInvalid": "أدخل عنوان بريد إلكتروني صالح",
+      "urlInvalid": "أدخل عنوان URL صالح",
+      "createFailed": "فشل إنشاء المستأجر",
+      "loadFailed": "فشل تحميل المستأجر"
+    }
+  }
+}
+
+

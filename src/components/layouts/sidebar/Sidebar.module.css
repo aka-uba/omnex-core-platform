@@ -1,0 +1,522 @@
+/* Sidebar.module.css - Sidebar Component Specific Styles v2 */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  /* width inline style'dan geliyor */
+  padding: 1rem;
+  transition: width 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* Light mode - custom background için anlık arka plan değişimi */
+.sidebar:not([data-mantine-color-scheme="dark"]) {
+  /* backgroundColor inline style'dan geliyor, transition yok */
+}
+
+/* Light mode - custom background için dinamik border */
+.sidebar:not([data-mantine-color-scheme="dark"]) {
+  border-right-color: var(--sidebar-border-color, var(--border-color));
+}
+
+[dir="rtl"] .sidebar {
+  left: auto;
+  right: 0;
+  border-right: none;
+  border-left: 1px solid var(--border-color);
+}
+
+/* Light mode - custom background için RTL dinamik border */
+[dir="rtl"] .sidebar:not([data-mantine-color-scheme="dark"]) {
+  border-left-color: var(--sidebar-border-color, var(--border-color));
+}
+
+.sidebar.collapsed {
+  width: 4rem;
+  padding: 1rem 0.5rem;
+  overflow: visible;
+}
+
+[data-mantine-color-scheme="dark"] .sidebar {
+  background-color: #303134 !important; /* Chrome dark mode tarzı: üst kısım (--bg-card-dark) - otomatik renk hesaplamasını override et */
+  border-right-color: var(--border-color-dark) !important;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için anlık arka plan değişimi */
+.sidebar:not([data-mantine-color-scheme="dark"]) .logoSection {
+  /* backgroundColor inline style'dan geliyor, transition yok */
+}
+
+.sidebar.collapsed .logoSection {
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için dinamik renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .logoIcon {
+  background-color: var(--sidebar-logo-icon-bg, rgba(0, 0, 0, 0.1));
+  color: var(--sidebar-icon-color, var(--text-primary));
+}
+
+[data-mantine-color-scheme="dark"] .logoIcon {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+
+.sidebar.collapsed .logoText {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.logoTitle {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için dinamik renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .logoTitle {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+.logoSubtitle {
+  color: var(--text-secondary);
+  opacity: 0.8;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için dinamik renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .logoSubtitle {
+  color: var(--sidebar-text-color, var(--text-secondary));
+}
+
+.collapseButton {
+  position: absolute;
+  top: 1rem;
+  right: 0.5rem;
+  z-index: 1000;
+}
+
+[dir="rtl"] .collapseButton {
+  right: auto;
+  left: 0.5rem;
+}
+
+.sidebar.collapsed .collapseButton {
+  position: absolute;
+  top: auto;
+  bottom: 1rem;
+  right: 0.5rem;
+  left: auto;
+}
+
+[dir="rtl"] .sidebar.collapsed .collapseButton {
+  right: auto;
+  left: 0.5rem;
+}
+
+.collapseIcon {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için dinamik renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .collapseIcon {
+  background-color: var(--sidebar-action-button-bg, var(--bg-surface));
+  color: var(--sidebar-icon-color, var(--text-primary));
+}
+
+/* Light mode - custom background için ActionIcon hover */
+.sidebar:not([data-mantine-color-scheme="dark"]) .collapseIcon:hover {
+  background-color: var(--sidebar-hover-bg, rgba(0, 0, 0, 0.05));
+}
+
+/* Light mode - custom background için ActionIcon içindeki icon rengi */
+.sidebar:not([data-mantine-color-scheme="dark"]) .collapseIcon :global(.mantine-ActionIcon-icon),
+.sidebar:not([data-mantine-color-scheme="dark"]) .collapseIcon :global(svg) {
+  color: var(--sidebar-icon-color, var(--text-primary));
+}
+
+.navScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  background-color: var(--bg-card);
+  /* transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Light mode - custom background için dinamik arka plan */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea {
+  background-color: var(--sidebar-bg-color, var(--bg-card)) !important;
+}
+
+/* Mantine ScrollArea viewport arka planı */
+.navScrollArea :global(.mantine-ScrollArea-viewport) {
+  background-color: inherit;
+}
+
+/* Light mode - custom background için Mantine ScrollArea viewport */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-viewport) {
+  background-color: var(--sidebar-bg-color, var(--bg-card)) !important;
+}
+
+/* Light mode - custom background için scrollbar renkleri */
+/* Webkit scrollbar (Chrome, Safari, Edge) */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar-thumb {
+  background-color: var(--sidebar-border-color, rgba(0, 0, 0, 0.2));
+  border-radius: 4px;
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--sidebar-border-color, rgba(0, 0, 0, 0.3));
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Collapsed durumunda scrollbar'ı incelt */
+.sidebar.collapsed:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar.collapsed:not([data-mantine-color-scheme="dark"]) .navScrollArea::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+}
+
+/* Mantine ScrollArea scrollbar */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-thumb) {
+  background-color: var(--sidebar-border-color, rgba(0, 0, 0, 0.2));
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-thumb:hover) {
+  background-color: var(--sidebar-border-color, rgba(0, 0, 0, 0.3));
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-scrollbar) {
+  background-color: transparent;
+}
+
+/* Collapsed durumunda Mantine ScrollArea scrollbar'ı incelt */
+.sidebar.collapsed:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-scrollbar) {
+  width: 4px !important;
+}
+
+.sidebar.collapsed:not([data-mantine-color-scheme="dark"]) .navScrollArea :global(.mantine-ScrollArea-thumb) {
+  width: 4px !important;
+  min-width: 4px !important;
+}
+
+[data-mantine-color-scheme="dark"] .navScrollArea {
+  background-color: #303134 !important; /* Üst kısımla aynı renk (--bg-card-dark) - otomatik renk hesaplamasını override et */
+}
+
+[data-mantine-color-scheme="dark"] .navScrollArea :global(.mantine-ScrollArea-viewport) {
+  background-color: #303134 !important; /* Üst kısımla aynı renk (--bg-card-dark) - otomatik renk hesaplamasını override et */
+}
+
+.sidebar.collapsed .navScrollArea {
+  padding-right: 0.25rem;
+  margin-right: -0.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-bottom: 1rem;
+  background-color: transparent;
+}
+
+/* Light mode - custom background için dinamik arka plan */
+.sidebar:not([data-mantine-color-scheme="dark"]) .nav {
+  background-color: transparent;
+}
+
+.navLink {
+  border-radius: 0.5rem;
+  /* transition kaldırıldı - anlık renk değişimi için (hover için transition bırakılmadı) */
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+/* Light mode - custom background için dinamik renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+.navLink:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Light mode - custom background için dinamik hover */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink:hover {
+  background-color: var(--sidebar-hover-bg, rgba(0, 0, 0, 0.05));
+}
+
+[data-mantine-color-scheme="dark"] .navLink:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+.navLink[data-active="true"] {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode - custom background için dinamik active */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink[data-active="true"] {
+  background-color: var(--sidebar-active-bg, rgba(0, 0, 0, 0.1));
+}
+
+[data-mantine-color-scheme="dark"] .navLink[data-active="true"] {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+/* Dark mode - NavLink icon ve text renkleri */
+[data-mantine-color-scheme="dark"] .navLink {
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-section),
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-section svg),
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-label) {
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink:hover :global(.mantine-NavLink-section),
+[data-mantine-color-scheme="dark"] .navLink:hover :global(.mantine-NavLink-section svg),
+[data-mantine-color-scheme="dark"] .navLink:hover :global(.mantine-NavLink-label) {
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink[data-active="true"] :global(.mantine-NavLink-section),
+[data-mantine-color-scheme="dark"] .navLink[data-active="true"] :global(.mantine-NavLink-section svg),
+[data-mantine-color-scheme="dark"] .navLink[data-active="true"] :global(.mantine-NavLink-label) {
+  color: var(--text-primary-dark) !important;
+}
+
+/* Dark mode - collapseIcon */
+[data-mantine-color-scheme="dark"] .collapseIcon {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .collapseIcon:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-mantine-color-scheme="dark"] .collapseIcon :global(.mantine-ActionIcon-icon),
+[data-mantine-color-scheme="dark"] .collapseIcon :global(svg) {
+  color: var(--text-primary-dark) !important;
+}
+
+/* Dark mode - logoTitle ve logoSubtitle */
+[data-mantine-color-scheme="dark"] .logoTitle {
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .logoSubtitle {
+  color: var(--text-secondary-dark) !important;
+}
+
+.sidebar.collapsed .navLink {
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  max-width: 2.5rem;
+  margin: 0 auto 0.5rem auto;
+  display: flex;
+  border-radius: 0.5rem;
+}
+
+/* Collapsed durumunda NavLink içeriğini ortala */
+.sidebar.collapsed .navLink :global(.mantine-NavLink-body) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Collapsed durumunda leftSection (icon) ortala */
+.sidebar.collapsed .navLink :global(.mantine-NavLink-section[data-position="left"]),
+.sidebar.collapsed .navLink :global(.mantine-NavLink-section) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: auto !important;
+}
+
+/* Collapsed durumunda icon'u ortala */
+.sidebar.collapsed .navLink :global(.mantine-NavLink-section svg),
+.sidebar.collapsed .navLink :global(.mantine-NavLink-section *) {
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.sidebar.collapsed .navLink :global(.mantine-NavLink-label) {
+  display: none;
+}
+
+/* Collapsed durumunda children'ı gizle */
+.sidebar.collapsed .navLink :global(.mantine-NavLink-children) {
+  display: none !important;
+}
+
+/* Nested submenu styles */
+.navLink :global(.mantine-NavLink-children) {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Child NavLink items spacing */
+.navLink :global(.mantine-NavLink-children) .navLink {
+  margin-bottom: 0.25rem;
+}
+
+.navLink :global(.mantine-NavLink-children) .navLink:last-child {
+  margin-bottom: 0;
+}
+
+/* Light mode - custom background için nested NavLink renkler */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink:hover {
+  background-color: var(--sidebar-hover-bg, rgba(0, 0, 0, 0.05));
+}
+
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink[data-active="true"] {
+  background-color: var(--sidebar-active-bg, rgba(0, 0, 0, 0.1));
+}
+
+/* Light mode - custom background için nested NavLink icon ve text */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-section),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-section svg),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-label) {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+/* Light mode - custom background için NavLink içindeki icon rengi */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-section),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-section svg),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-section *) {
+  color: var(--sidebar-icon-color, var(--text-primary));
+}
+
+/* Light mode - custom background için NavLink label text rengi */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-label),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink :global(.mantine-NavLink-label *) {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+/* Light mode - custom background için NavLink active durumunda icon ve text */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink[data-active="true"] :global(.mantine-NavLink-section),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink[data-active="true"] :global(.mantine-NavLink-section svg),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink[data-active="true"] :global(.mantine-NavLink-label) {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+/* Light mode - custom background için NavLink hover durumunda icon ve text */
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink:hover :global(.mantine-NavLink-section),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink:hover :global(.mantine-NavLink-section svg),
+.sidebar:not([data-mantine-color-scheme="dark"]) .navLink:hover :global(.mantine-NavLink-label) {
+  color: var(--sidebar-text-color, var(--text-primary));
+}
+
+/* Dark mode - nested NavLink'ler */
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink {
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink[data-active="true"] {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-section),
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-section svg),
+[data-mantine-color-scheme="dark"] .navLink :global(.mantine-NavLink-children) .navLink :global(.mantine-NavLink-label) {
+  color: var(--text-primary-dark) !important;
+}
+

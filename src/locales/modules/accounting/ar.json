@@ -1,0 +1,33 @@
+{
+  "title": "المحاسبة",
+  "description": "وحدة محاسبة شاملة",
+  "menu": {
+    "label": "المحاسبة",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "subscriptions": "الاشتراكات",
+      "invoices": "الفواتير",
+      "payments": "المدفوعات",
+      "expenses": "المصروفات",
+      "reports": "التقارير"
+    }
+  },
+  "dashboard": {
+    "title": "لوحة تحكم المحاسبة",
+    "description": "نظرة عامة على الإدارة المحاسبية والمالية",
+    "totalRevenue": "إجمالي الإيرادات",
+    "activeSubscriptions": "الاشتراكات النشطة",
+    "pendingInvoices": "الفواتير المعلقة",
+    "outstandingPayments": "المدفوعات المعلقة",
+    "totalExpenses": "إجمالي المصروفات",
+    "netProfit": "صافي الربح",
+    "recentActivity": "النشاط الأخير",
+    "noActivity": "لا يوجد نشاط حديث"
+  },
+  "reports": {
+    "title": "التقارير",
+    "description": "تقارير المحاسبة والتحليلات"
+  }
+}
+
+

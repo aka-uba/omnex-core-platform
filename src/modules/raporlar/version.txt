@@ -1,0 +1,16 @@
+## Raporlar Module - Version History
+
+### Version 1.0.0 (2025-01-28)
+- ✅ Initial release
+- ✅ Report creation and management
+- ✅ Report templates
+- ✅ Scheduled reports
+- ✅ Export functionality (PDF, Excel, CSV)
+- ✅ Export history
+- ✅ Report sharing
+
+
+
+
+
+

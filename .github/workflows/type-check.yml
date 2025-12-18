@@ -1,0 +1,49 @@
+name: Type Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  type-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run type check
+        run: npm run typecheck
+      
+      - name: Analyze type errors
+        if: failure()
+        run: npm run type:analyze
+        continue-on-error: true
+      
+      - name: Upload type error report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: type-errors-report
+          path: type-errors-report.md
+          if-no-files-found: ignore
+
+
+
+
+
+
+
+
+

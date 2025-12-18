@@ -1,0 +1,256 @@
+{
+    "title": "File Manager",
+    "description": "Manage and organize your files",
+    "menu": {
+        "label": "File Manager",
+        "items": {
+            "dashboard": "Dashboard",
+            "files": "Files",
+            "folders": "Folders"
+        }
+    },
+    "breadcrumbs": {
+        "home": "Home"
+    },
+    "toolbar": {
+        "search": "Search files...",
+        "searchPlaceholder": "Search by name or tag...",
+        "newFolder": "New Folder",
+        "upload": "Upload",
+        "delete": "Delete",
+        "download": "Download",
+        "fileType": "File Type",
+        "dateRange": "Date Range",
+        "tags": "Tags",
+        "sortBy": "Sort By",
+        "allTypes": "All Types",
+        "allTags": "All Tags",
+        "selectDateRange": "Select Date Range",
+        "dateRangePlaceholder": "Start - End",
+        "startDate": "Start Date",
+        "startDatePlaceholder": "Select start date",
+        "endDate": "End Date",
+        "endDatePlaceholder": "Select end date",
+        "apply": "Apply",
+        "clear": "Clear",
+        "close": "Close",
+        "cancel": "Cancel",
+        "downloadSelected": "Download Selected",
+        "deleteSelected": "Delete Selected",
+        "shareServer": "Web Server",
+        "webServer": "Web Server",
+        "selectTags": "Select Tags",
+        "refresh": "Refresh",
+        "types": {
+            "image": "Image",
+            "pdf": "PDF",
+            "document": "Document",
+            "video": "Video",
+            "archive": "Archive"
+        },
+        "sortOptions": {
+            "newest": "Newest",
+            "oldest": "Oldest",
+            "nameAsc": "Name (A-Z)",
+            "nameDesc": "Name (Z-A)",
+            "sizeAsc": "Size (Small-Large)",
+            "sizeDesc": "Size (Large-Small)"
+        }
+    },
+    "table": {
+        "name": "Name",
+        "size": "Size",
+        "type": "Type",
+        "modified": "Modified",
+        "permissions": "Permissions",
+        "actions": "Actions"
+    },
+    "permissions": {
+        "canRead": "Read permission granted",
+        "canWrite": "Write permission granted",
+        "noRead": "No read permission",
+        "noWrite": "No write permission"
+    },
+    "type": {
+        "folder": "Folder",
+        "file": "File"
+    },
+    "actions": {
+        "open": "Open",
+        "openFile": "Open File",
+        "rename": "Rename",
+        "delete": "Delete",
+        "download": "Download",
+        "downloading": "Downloading",
+        "files": "files",
+        "move": "Move",
+        "share": "Share",
+        "properties": "Properties"
+    },
+    "share": {
+        "success": "Success",
+        "copied": "Share link copied to clipboard",
+        "error": "Error",
+        "failed": "Share failed",
+        "sharing": "Sharing",
+        "modalTitle": "Share Item",
+        "shareLinkFor": "Share link for",
+        "copy": "Copy",
+        "note": "Note: This link requires authentication to access."
+    },
+    "newFolder": {
+        "title": "Create New Folder",
+        "create": "Create",
+        "success": "Success",
+        "created": "Folder created successfully",
+        "selectParent": "Select Directory",
+        "selectParentPlaceholder": "Select the directory where you want to create the folder",
+        "rootFolder": "Root Directory"
+    },
+    "upload": {
+        "title": "Upload New File",
+        "dragDrop": "Drag & drop files here",
+        "clickToSelect": "or click to select files from your computer",
+        "browseFiles": "Browse Files",
+        "maxSize": "Maximum file size: 50MB",
+        "files": "Files",
+        "button": "Upload File",
+        "success": "Success",
+        "filesUploaded": "Files uploaded successfully",
+        "fileDetails": "File Details",
+        "fileDetailsDesc": "Provide essential information about the file",
+        "fileName": "File Name",
+        "fileNamePlaceholder": "Enter file name",
+        "category": "Category",
+        "categoryPlaceholder": "Select a category",
+        "categories": {
+            "design": "Design Asset",
+            "contract": "Contract",
+            "invoice": "Invoice",
+            "report": "Report"
+        },
+        "description": "Description",
+        "descriptionPlaceholder": "Add a brief description for the file...",
+        "tags": "Tags",
+        "tagPlaceholder": "Add a tag...",
+        "accessAssociation": "Access & Association",
+        "accessAssociationDesc": "Control who can view and what this file is related to",
+        "accessLevel": "Access Level",
+        "private": "Private",
+        "public": "Public",
+        "associateProject": "Associate with Project",
+        "associateProjectPlaceholder": "Select a project (optional)"
+    },
+    "rename": {
+        "title": "Rename",
+        "button": "Rename",
+        "success": "Success",
+        "renamed": "Renamed successfully"
+    },
+    "delete": {
+        "title": "Confirm Delete",
+        "confirm": "Are you sure you want to delete '{name}'?",
+        "cannotUndo": "This action cannot be undone.",
+        "button": "Delete",
+        "success": "Success",
+        "deleted": "Deleted successfully"
+    },
+    "form": {
+        "folderName": "Folder Name",
+        "folderNamePlaceholder": "Enter folder name",
+        "folderNameRequired": "Folder name is required",
+        "invalidFolderName": "Invalid folder name",
+        "newName": "New Name",
+        "newNamePlaceholder": "Enter new name",
+        "nameRequired": "Name is required",
+        "cancel": "Cancel"
+    },
+    "empty": {
+        "noFiles": "No files yet",
+        "noResults": "No results found"
+    },
+    "error": {
+        "title": "Error",
+        "createFolder": "Failed to create folder",
+        "rename": "Failed to rename",
+        "delete": "Failed to delete",
+        "upload": "Failed to upload"
+    },
+    "preview": {
+        "videoPreview": "Video Preview",
+        "pdfPreview": "PDF file cannot be previewed. Use the download button to download.",
+        "officePreview": "Office file cannot be previewed. Use the download button to download.",
+        "textPreview": "Text file content will be displayed here...",
+        "noPreview": "Preview not available for this file type."
+    },
+    "shareServer": {
+        "title": "Share Server",
+        "selectFolder": "Select Folder",
+        "selectFolderPlaceholder": "Select the folder to share",
+        "rootFolder": "Root Directory",
+        "start": "Start Server",
+        "stop": "Stop Server",
+        "running": "Running",
+        "shareUrl": "Share URL",
+        "shareUrlDescription": "Share this URL with others on your network to access files",
+        "copy": "Copy",
+        "copied": "Copied",
+        "urlCopied": "URL copied to clipboard",
+        "copyFailed": "Failed to copy URL",
+        "serverStarted": "Server Started",
+        "serverStartedMessage": "File sharing server is now running",
+        "serverStopped": "Server Stopped",
+        "serverStoppedMessage": "File sharing server has been stopped",
+        "error": "Error",
+        "startFailed": "Failed to start server",
+        "stopFailed": "Failed to stop server",
+        "expiresInHours": "Auto-Stop Timer (Hours)",
+        "expiresInHoursDescription": "Server will automatically stop after this duration. Min: 0.5 hours, Max: 24 hours"
+    },
+    "messages": {
+        "success": "Success",
+        "error": "Error",
+        "folderCreated": "Folder created",
+        "itemRenamed": "Item renamed",
+        "itemDeleted": "Item deleted",
+        "itemMoved": "Item moved",
+        "itemCopied": "Item copied",
+        "fileUploaded": "File uploaded",
+        "uploading": "Uploading...",
+        "failedToLoadTree": "Failed to load directory tree",
+        "failedToLoadFiles": "Failed to load files"
+    },
+    "dashboard": {
+        "title": "File Manager",
+        "description": "Manage files across tenants and modules",
+        "tenant": "Tenant",
+        "module": "Module",
+        "folders": "Directory Tree",
+        "files": "Files",
+        "noFiles": "No files in this directory",
+        "allTenants": "All Tenants (SuperAdmin)",
+        "allModules": "All Modules",
+        "modules": {
+            "accounting": "Accounting",
+            "hr": "HR",
+            "maintenance": "Maintenance",
+            "production": "Production",
+            "realEstate": "Real Estate",
+            "documents": "Documents"
+        }
+    },
+    "copy": {
+        "title": "Copy",
+        "modalTitle": "Copy Item",
+        "selectDestination": "Select destination for",
+        "loadingFolders": "Loading folders...",
+        "button": "Copy"
+    },
+    "move": {
+        "title": "Move",
+        "modalTitle": "Move Item",
+        "selectDestination": "Select destination for",
+        "loadingFolders": "Loading folders...",
+        "button": "Move"
+    }
+}

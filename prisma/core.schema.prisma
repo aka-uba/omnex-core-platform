@@ -1,0 +1,428 @@
+// Core Database Schema
+// Platform yönetimi, tenant metadata, agency bilgileri için
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/core-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("CORE_DATABASE_URL")
+}
+
+// ============================================
+// Tenant Management
+// ============================================
+
+model Tenant {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  subdomain    String?  @unique
+  customDomain String?  @unique
+  dbName       String // Current database name (e.g., tenant_acme_2025)
+  currentDb    String // Active year database name
+  allDatabases String[] // Array of all database names (for yearly rotation)
+  agencyId     String?
+  status       String   @default("active") // active, inactive, setup_failed, suspended
+  setupFailed  Boolean  @default(false)
+  metadata     Json? // Additional tenant metadata
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  agency        Agency?          @relation(fields: [agencyId], references: [id], onDelete: SetNull)
+  tenantModules TenantModule[]
+  backups       BackupMetadata[]
+  licenses      TenantLicense[]
+  schemaVersion SchemaVersion?
+
+  @@index([slug])
+  @@index([subdomain])
+  @@index([customDomain])
+  @@index([agencyId])
+  @@index([status])
+}
+
+// ============================================
+// Agency (Tenant Owner)
+// ============================================
+
+model Agency {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?  @unique
+  phone     String?
+  address   String?
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenants Tenant[]
+
+  @@index([name])
+  @@index([email])
+}
+
+// ============================================
+// Module System (Platform Geneli)
+// ============================================
+
+model Module {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  version     String
+  description String?
+  icon        String?
+  author      String?
+  path        String? // Directory path
+  status      String    @default("installed") // installed, active, inactive, error
+  metadata    Json? // Additional metadata (JSON)
+  settings    Json? // Module settings (JSON)
+  installedAt DateTime?
+  activatedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  modulePermissions ModulePermission[]
+  tenantModules     TenantModule[]
+
+  @@index([slug])
+  @@index([status])
+}
+
+model ModulePermission {
+  id        String   @id @default(uuid())
+  moduleId  String
+  role      String // SuperAdmin, AgencyUser, ClientUser
+  canAccess Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, role])
+  @@index([moduleId])
+  @@index([role])
+}
+
+// ============================================
+// Tenant Module Toggles
+// ============================================
+
+model TenantModule {
+  id        String   @id @default(uuid())
+  tenantId  String
+  moduleId  String
+  enabled   Boolean  @default(true)
+  settings  Json? // Tenant-specific module settings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, moduleId])
+  @@index([tenantId])
+  @@index([moduleId])
+  @@index([enabled])
+}
+
+// ============================================
+// Audit Logging
+// ============================================
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  userId       String?
+  tenantSlug   String?
+  action       String // LOGIN, LOGOUT, CREATE, UPDATE, DELETE, BACKUP, RESTORE, etc.
+  module       String // auth, users, tenants, backup, etc.
+  resource     String? // Resource type (user, tenant, backup, etc.)
+  resourceId   String? // ID of affected resource
+  details      Json? // Additional details
+  ipAddress    String?
+  userAgent    String?
+  status       String // SUCCESS, FAILURE, ERROR
+  errorMessage String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([tenantSlug])
+  @@index([action])
+  @@index([module])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ============================================
+// Backup Management
+// ============================================
+
+model BackupMetadata {
+  id           String    @id @default(cuid())
+  tenantId     String
+  tenantSlug   String
+  fileName     String
+  filePath     String
+  fileSize     BigInt // Bytes
+  compressed   Boolean   @default(true)
+  encrypted    Boolean   @default(false)
+  status       String // PENDING, IN_PROGRESS, COMPLETED, FAILED
+  type         String // MANUAL, SCHEDULED, AUTO
+  createdBy    String?
+  createdAt    DateTime  @default(now())
+  completedAt  DateTime?
+  errorMessage String?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([tenantSlug])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ============================================
+// System Monitoring
+// ============================================
+
+model SystemMetric {
+  id         String   @id @default(cuid())
+  metricType String // CPU, MEMORY, DISK, DB_CONNECTIONS, RESPONSE_TIME, ERROR_RATE
+  value      Float
+  unit       String // percent, bytes, ms, count
+  metadata   Json?
+  timestamp  DateTime @default(now())
+
+  @@index([metricType])
+  @@index([timestamp])
+}
+
+// ============================================
+// License Service
+// ============================================
+
+// Lisans Türleri (Trial, Standard, Premium, Enterprise vs.)
+model LicenseType {
+  id          String  @id @default(uuid())
+  name        String  @unique // trial, standard, premium, enterprise
+  displayName String // Görünen isim (çoklu dil için JSON olabilir)
+  description String?
+  color       String? // Badge rengi için
+  icon        String? // İkon adı
+
+  // Kısıtlamalar
+  maxUsers    Int?  // Maksimum kullanıcı sayısı (null = sınırsız)
+  maxStorage  Int?  // GB cinsinden maksimum depolama
+  maxCompanies Int? // Firma limiti (multi-tenant için)
+
+  // Özellikler
+  features      String[] // Özellik listesi: ['api_access', 'priority_support', 'custom_domain']
+  restrictions  Json?    // Ek kısıtlamalar: {"api_rate_limit": 1000, "export_limit": 100}
+
+  // Varsayılan süreler
+  defaultDurationDays Int @default(365) // Yıllık için 365, aylık için 30 vs.
+  trialDays           Int @default(0)   // Ücretsiz deneme süresi
+
+  // Sıralama ve durum
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+  isDefault Boolean @default(false) // Yeni tenant'lar için varsayılan mı?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  packages LicensePackage[]
+
+  @@index([name])
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+// Lisans Paketleri (Fiyatlandırma planları)
+model LicensePackage {
+  id String @id @default(uuid())
+
+  // Temel bilgiler
+  name        String
+  description String?
+  typeId      String? // Lisans türü referansı
+
+  // Modül listesi
+  modules String[] // Module slugs
+
+  // Fiyatlandırma
+  basePrice    Decimal @default(0)
+  currency     String  @default("TRY")
+  billingCycle String  @default("monthly") // 'monthly', 'quarterly', 'yearly', 'one_time', 'custom'
+
+  // İndirimler
+  discountPercent Decimal? // Yıllık ödemede %20 indirim gibi
+  discountAmount  Decimal? // Sabit indirim tutarı
+
+  // Özellikler (LicenseType'dan override edebilir)
+  maxUsers   Int?
+  maxStorage Int? // GB cinsinden
+  features   Json?
+
+  // Durum
+  isActive   Boolean @default(true)
+  isFeatured Boolean @default(false) // Öne çıkan paket mi?
+  sortOrder  Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  type          LicenseType?    @relation(fields: [typeId], references: [id], onDelete: SetNull)
+  subscriptions TenantLicense[]
+
+  @@index([typeId])
+  @@index([isActive])
+  @@index([billingCycle])
+  @@index([sortOrder])
+}
+
+// Tenant Lisansları (Atamalar)
+model TenantLicense {
+  id        String @id @default(uuid())
+  tenantId  String
+  packageId String
+
+  // Lisans kodu (Benzersiz aktivasyon kodu)
+  licenseKey String? @unique
+
+  // Tarihler
+  startDate   DateTime
+  endDate     DateTime
+  renewalDate DateTime?
+  trialEndDate DateTime? // Deneme süresi bitişi
+
+  // Durum
+  status String @default("active") // 'trial', 'active', 'expired', 'suspended', 'cancelled'
+
+  // Ödeme
+  paymentStatus   String    @default("pending") // 'pending', 'paid', 'failed', 'refunded'
+  lastPaymentDate DateTime?
+  nextPaymentDate DateTime?
+  totalPaid       Decimal   @default(0) // Toplam ödenen tutar
+
+  // Kullanım istatistikleri
+  currentUsers    Int @default(0)
+  currentStorage  Int @default(0) // GB
+
+  // Otomatik yenileme
+  autoRenew Boolean @default(true)
+
+  // Metadata
+  notes      String?
+  metadata   Json? // Ek bilgiler: aktivasyon detayları, özel anlaşmalar vs.
+  createdBy  String? // Oluşturan kullanıcı
+  assignedBy String? // Atayan SuperAdmin
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  package  LicensePackage   @relation(fields: [packageId], references: [id], onDelete: Restrict)
+  payments LicensePayment[]
+  usageLogs LicenseUsageLog[]
+
+  @@index([tenantId])
+  @@index([packageId])
+  @@index([licenseKey])
+  @@index([status])
+  @@index([endDate])
+  @@index([paymentStatus])
+}
+
+// Lisans Ödemeleri
+model LicensePayment {
+  id        String @id @default(uuid())
+  licenseId String
+
+  // Ödeme detayları
+  amount        Decimal
+  currency      String  @default("TRY")
+  paymentMethod String  @default("bank_transfer") // 'bank_transfer', 'credit_card', 'cash', 'other'
+
+  // Fatura bilgileri
+  invoiceNumber String?
+  invoiceUrl    String?
+
+  // Durum
+  status     String    @default("pending") // 'pending', 'approved', 'rejected', 'refunded'
+  approvedBy String? // SuperAdmin ID
+  approvedAt DateTime?
+  rejectedBy String?
+  rejectedAt DateTime?
+  rejectionReason String?
+
+  // Tarih
+  paymentDate DateTime
+  dueDate     DateTime? // Son ödeme tarihi
+
+  // Metadata
+  receiptUrl  String?
+  notes       String?
+  transactionId String? // Banka/Ödeme sistemi işlem ID'si
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  license TenantLicense @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  @@index([licenseId])
+  @@index([status])
+  @@index([paymentDate])
+  @@index([dueDate])
+  @@index([invoiceNumber])
+}
+
+// Lisans Kullanım Logları (İstatistik için)
+model LicenseUsageLog {
+  id        String @id @default(uuid())
+  licenseId String
+
+  // Kullanım metrikleri
+  metricType  String // 'users', 'storage', 'api_calls', 'logins'
+  metricValue Int
+
+  // Detaylar
+  details   Json?
+  recordedAt DateTime @default(now())
+
+  // Relations
+  license TenantLicense @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  @@index([licenseId])
+  @@index([metricType])
+  @@index([recordedAt])
+}
+
+// ============================================
+// Schema Version Registry
+// ============================================
+
+model SchemaVersion {
+  id        String   @id @default(uuid())
+  tenantId  String   @unique
+  version   String   // v1.4.2 format (SemVer)
+  appliedAt DateTime @default(now())
+  metadata  Json?    // Migration history, applied modules
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([version])
+}

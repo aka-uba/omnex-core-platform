@@ -1,0 +1,61 @@
+.tableContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+}
+
+[data-mantine-color-scheme="dark"] .tableContainer {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.toolbar {
+  padding-bottom: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .toolbar {
+  border-bottom-color: var(--border-color);
+}
+
+.searchInput {
+  flex: 1;
+  max-width: 400px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+/* Table Header Dark Mode */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-thead) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-color);
+}
+
+/* Table Row Dark Mode */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-tr:hover) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-td) {
+  border-top-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.pagination {
+  border-top: 1px solid var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .pagination {
+  border-top-color: var(--border-color);
+}
+

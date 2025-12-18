@@ -1,0 +1,244 @@
+{
+  "title": "Lisans Servisi",
+  "description": "Lisans paket yönetimi ve tenant lisans takip sistemi",
+  "menu": {
+    "label": "Lisans",
+    "items": {
+      "dashboard": "Dashboard",
+      "packages": "Lisans Paketleri",
+      "tenants": "Tenant Lisansları",
+      "my-license": "Lisansım"
+    }
+  },
+  "myLicensePage": {
+    "title": "Lisansım",
+    "description": "Lisans bilgilerinizi görüntüleyin"
+  },
+  "packages": {
+    "title": "Lisans Paketleri",
+    "description": "Lisans paketlerini yönetin",
+    "create": "Yeni Paket",
+    "createDescription": "Yeni lisans paketi oluşturun",
+    "edit": "Paket Düzenle",
+    "editDescription": "Lisans paket bilgilerini güncelleyin",
+    "detail": "Paket Detayı",
+    "notFound": "Paket bulunamadı",
+    "table": {
+      "name": "Paket Adı",
+      "description": "Açıklama",
+      "modules": "Modüller",
+      "basePrice": "Fiyat",
+      "currency": "Para Birimi",
+      "billingCycle": "Faturalama Döngüsü",
+      "maxUsers": "Max Kullanıcı",
+      "maxStorage": "Max Depolama (GB)",
+      "isActive": "Aktif",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "name": "Paket Adı",
+      "namePlaceholder": "Paket adı girin",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Paket açıklaması girin",
+      "modules": "Modüller",
+      "modulesPlaceholder": "Modül seçin",
+      "basePrice": "Fiyat",
+      "basePricePlaceholder": "Fiyat girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "billingCycle": "Faturalama Döngüsü",
+      "billingCyclePlaceholder": "Faturalama döngüsü seçin",
+      "maxUsers": "Max Kullanıcı",
+      "maxUsersPlaceholder": "Maksimum kullanıcı sayısı",
+      "maxStorage": "Max Depolama (GB)",
+      "maxStoragePlaceholder": "Maksimum depolama (GB)",
+      "isActive": "Aktif"
+    },
+    "billingCycles": {
+      "monthly": "Aylık",
+      "quarterly": "Üç Aylık",
+      "yearly": "Yıllık"
+    },
+    "createSuccess": "Paket başarıyla oluşturuldu",
+    "updateSuccess": "Paket başarıyla güncellendi",
+    "createError": "Paket oluşturulurken bir hata oluştu",
+    "updateError": "Paket güncellenirken bir hata oluştu",
+    "delete": {
+      "confirm": "Bu paketi silmek istediğinize emin misiniz?",
+      "success": "Paket başarıyla silindi",
+      "error": "Paket silinirken bir hata oluştu"
+    }
+  },
+  "tenantLicenses": {
+    "title": "Tenant Lisansları",
+    "description": "Tenant lisanslarını yönetin",
+    "create": "Yeni Lisans",
+    "createDescription": "Yeni tenant lisansı oluşturun",
+    "edit": "Lisans Düzenle",
+    "editDescription": "Lisans bilgilerini güncelleyin",
+    "detail": "Lisans Detayı",
+    "notFound": "Lisans bulunamadı",
+    "table": {
+      "tenant": "Tenant",
+      "package": "Paket",
+      "startDate": "Başlangıç",
+      "endDate": "Bitiş",
+      "status": "Durum",
+      "paymentStatus": "Ödeme Durumu",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "tenant": "Tenant",
+      "tenantPlaceholder": "Tenant seçin",
+      "package": "Paket",
+      "packagePlaceholder": "Paket seçin",
+      "startDate": "Başlangıç Tarihi",
+      "startDatePlaceholder": "Başlangıç tarihi seçin",
+      "endDate": "Bitiş Tarihi",
+      "endDatePlaceholder": "Bitiş tarihi seçin",
+      "renewalDate": "Yenileme Tarihi",
+      "renewalDatePlaceholder": "Yenileme tarihi seçin",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "paymentStatus": "Ödeme Durumu",
+      "paymentStatusPlaceholder": "Ödeme durumu seçin",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin"
+    },
+    "status": {
+      "active": "Aktif",
+      "expired": "Süresi Dolmuş",
+      "suspended": "Askıya Alınmış",
+      "cancelled": "İptal Edilmiş"
+    },
+    "paymentStatus": {
+      "pending": "Beklemede",
+      "paid": "Ödendi",
+      "failed": "Başarısız"
+    },
+    "createSuccess": "Lisans başarıyla oluşturuldu",
+    "updateSuccess": "Lisans başarıyla güncellendi",
+    "delete": {
+      "confirm": "Bu lisansı silmek istediğinize emin misiniz?",
+      "success": "Lisans başarıyla silindi",
+      "error": "Lisans silinirken bir hata oluştu"
+    },
+    "updateError": "Lisans güncellenirken bir hata oluştu",
+    "createError": "Lisans oluşturulurken bir hata oluştu"
+  },
+  "payments": {
+    "title": "Ödemeler",
+    "description": "Lisans ödemelerini yönetin",
+    "create": "Yeni Ödeme",
+    "createDescription": "Yeni ödeme kaydı oluşturun",
+    "notFound": "Ödeme bulunamadı",
+    "table": {
+      "amount": "Tutar",
+      "currency": "Para Birimi",
+      "paymentMethod": "Ödeme Yöntemi",
+      "paymentDate": "Ödeme Tarihi",
+      "status": "Durum",
+      "approvedBy": "Onaylayan",
+      "approvedAt": "Onaylanma Tarihi",
+      "actions": "İşlemler"
+    },
+    "form": {
+      "amount": "Tutar",
+      "amountPlaceholder": "Tutar girin",
+      "currency": "Para Birimi",
+      "currencyPlaceholder": "Para birimi seçin",
+      "paymentMethod": "Ödeme Yöntemi",
+      "paymentMethodPlaceholder": "Ödeme yöntemi seçin",
+      "paymentDate": "Ödeme Tarihi",
+      "paymentDatePlaceholder": "Ödeme tarihi seçin",
+      "receiptUrl": "Makbuz URL",
+      "receiptUrlPlaceholder": "Makbuz URL'i girin",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin"
+    },
+    "paymentMethods": {
+      "bank_transfer": "Banka Havalesi",
+      "credit_card": "Kredi Kartı",
+      "other": "Diğer"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "rejected": "Reddedildi"
+    },
+    "createSuccess": "Ödeme başarıyla oluşturuldu",
+    "updateSuccess": "Ödeme başarıyla güncellendi",
+    "delete": {
+      "confirm": "Bu ödemeyi silmek istediğinize emin misiniz?",
+      "success": "Ödeme başarıyla silindi",
+      "error": "Ödeme silinirken bir hata oluştu"
+    }
+  },
+  "myLicense": {
+    "title": "Lisansım",
+    "description": "Mevcut lisans bilgilerinizi görüntüleyin",
+    "noLicense": "Aktif lisansınız bulunmamaktadır",
+    "notFound": "Lisans Bulunamadı",
+    "package": "Paket",
+    "startDate": "Başlangıç Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "renewalDate": "Yenileme Tarihi",
+    "status": "Durum",
+    "paymentStatus": "Ödeme Durumu",
+    "modules": "Modüller",
+    "features": "Özellikler",
+    "paymentHistory": "Ödeme Geçmişi",
+    "history": {
+      "title": "Lisans Geçmişi",
+      "description": "Lisans ödeme geçmişinizi görüntüleyin",
+      "loadError": "Lisans geçmişi yüklenirken bir hata oluştu"
+    }
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "active": "Aktif",
+    "back": "Geri",
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "inactive": "Pasif",
+    "modules": "Modules",
+    "of": "toplam",
+    "required": "Gerekli",
+    "search": "Ara",
+    "showing": "Gösteriliyor",
+    "update": "Güncelle"
+  },
+  "messages": {
+    "createSuccess": "Başarıyla oluşturuldu",
+    "createError": "Oluşturulurken bir hata oluştu",
+    "updateSuccess": "Başarıyla güncellendi",
+    "updateError": "Güncellenirken bir hata oluştu",
+    "success": "Başarılı",
+    "error": "Hata"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "newLicense": "Yeni Lisans",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "search": {
+    "placeholder": "Ara..."
+  },
+  "pagination": {
+    "showing": "Gösteriliyor",
+    "of": "toplam"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "form": {
+    "cancel": "İptal"
+  }
+}

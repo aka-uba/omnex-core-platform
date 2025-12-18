@@ -1,0 +1,61 @@
+{
+  "title": "إدارة الوحدات",
+  "description": "إدارة وتحميل وتكوين وحدات النظام",
+  "upload": {
+    "title": "تحميل وحدة جديدة",
+    "description": "حدد ملف .zip لتحميل وحدة جديدة"
+  },
+  "listing": {
+    "title": "الوحدات",
+    "description": "قائمة الوحدات المثبتة والنشطة",
+    "searchPlaceholder": "البحث عن الوحدات بالاسم...",
+    "statusAll": "الحالة: الكل",
+    "categoryAll": "الفئة: الكل",
+    "all": "الكل",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "installed": "مثبت",
+    "noModulesFound": "لم يتم العثور على وحدات",
+    "uploadFirstModule": "قم بتحميل الوحدة الأولى للبدء.",
+    "uploadModule": "تحميل وحدة"
+  },
+  "card": {
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "installed": "مثبت",
+      "error": "خطأ"
+    },
+    "switch": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "tooltips": {
+      "configure": "تكوين",
+      "uninstall": "إلغاء التثبيت"
+    },
+    "category": "الفئة:",
+    "noDescription": "لا يوجد وصف متاح لهذه الوحدة.",
+    "moduleHasErrors": "الوحدة بها أخطاء"
+  },
+  "notifications": {
+    "moduleActivated": "تم تفعيل الوحدة",
+    "moduleActivatedSuccess": "تم تفعيل {{name}} بنجاح.",
+    "moduleDeactivated": "تم إلغاء تفعيل الوحدة",
+    "moduleDeactivatedSuccess": "تم إلغاء تفعيل {{name}}.",
+    "activationFailed": "فشل التفعيل",
+    "deactivationFailed": "فشل إلغاء التفعيل",
+    "activationFailedMessage": "فشل تفعيل الوحدة",
+    "deactivationFailedMessage": "فشل إلغاء تفعيل الوحدة",
+    "uninstallModule": "إلغاء تثبيت الوحدة",
+    "uninstallConfirm": "هل أنت متأكد أنك تريد إلغاء تثبيت \"{{name}}\"? لا يمكن التراجع عن هذا الإجراء.",
+    "moduleUninstalled": "تم إلغاء تثبيت الوحدة",
+    "moduleUninstalledSuccess": "تم إلغاء تثبيت {{name}}.",
+    "uninstallFailed": "فشل إلغاء التثبيت",
+    "uninstallFailedMessage": "فشل إلغاء تثبيت الوحدة"
+  }
+}
+
+
+
+

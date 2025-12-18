@@ -1,0 +1,49 @@
+// ============================================
+// AI System
+// ============================================
+
+model AIGeneration {
+  id            String   @id @default(uuid())
+  tenantId      String
+  userId        String
+  companyId     String?
+  generatorType String // text, code, image, voice, video
+  prompt        String   @db.Text
+  output        String?  @db.Text // text/url/json
+  settings      Json? // Generation settings
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([companyId])
+  @@index([generatorType])
+  @@index([createdAt])
+}
+
+model AIHistory {
+  id            String   @id @default(uuid())
+  tenantId      String
+  userId        String
+  companyId     String?
+  generatorType String // text, code, image, voice, video
+  prompt        String   @db.Text
+  outputUrl     String?
+  metadata      Json? // Additional metadata
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([companyId])
+  @@index([generatorType])
+  @@index([createdAt])
+}
+

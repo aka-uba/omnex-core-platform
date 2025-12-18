@@ -1,0 +1,33 @@
+{
+    "title": "لوحة التحكم",
+    "description": "نظرة عامة وإحصائيات",
+    "kpi": {
+        "totalActiveClients": "إجمالي العملاء النشطين",
+        "monthlyRecurringRevenue": "الإيرادات الشهرية المتكررة",
+        "newLeadsThisMonth": "عملاء محتملون جدد هذا الشهر",
+        "activeProjects": "المشاريع النشطة",
+        "changeThisMonth": "التغيير هذا الشهر",
+        "change": "التغيير"
+    },
+    "contentPerformance": {
+        "title": "أداء المحتوى",
+        "subtitle": "آخر 30 يوماً"
+    },
+    "upcomingPosts": {
+        "title": "المنشورات القادمة",
+        "viewAll": "عرض الكل"
+    },
+    "financeOverview": {
+        "title": "نظرة عامة على المالية",
+        "revenue": "الإيرادات",
+        "expenses": "المصروفات",
+        "profit": "الربح"
+    },
+    "recentActivity": {
+        "title": "الأنشطة الأخيرة"
+    }
+}
+
+
+
+

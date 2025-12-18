@@ -1,0 +1,42 @@
+{
+  "title": "Dashboard",
+  "description": "Genel bakış ve istatistikler",
+  "kpi": {
+    "totalActiveClients": "Toplam Aktif Müşteri",
+    "monthlyRecurringRevenue": "Aylık Tekrarlayan Gelir",
+    "newLeadsThisMonth": "Bu Ay Yeni Potansiyel Müşteri",
+    "activeProjects": "Aktif Projeler",
+    "changeThisMonth": "Bu Ay Değişim",
+    "change": "Değişim"
+  },
+  "contentPerformance": {
+    "title": "İçerik Performansı",
+    "subtitle": "Son 30 gün"
+  },
+  "upcomingPosts": {
+    "title": "Yaklaşan Gönderiler",
+    "viewAll": "Tümünü Görüntüle"
+  },
+  "financeOverview": {
+    "title": "Finansal Genel Bakış",
+    "revenue": "Gelir",
+    "expenses": "Giderler",
+    "profit": "Kar"
+  },
+  "recentActivity": {
+    "title": "Son Aktiviteler"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  }
+}

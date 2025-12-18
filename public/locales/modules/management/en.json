@@ -1,0 +1,13 @@
+{
+  "title": "Module Management",
+  "description": "Manage, upload and configure system modules",
+  "upload": {
+    "title": "Upload New Module",
+    "description": "Select a .zip file to upload a new module"
+  },
+  "listing": {
+    "title": "Modules",
+    "description": "List of installed and active modules"
+  }
+}
+

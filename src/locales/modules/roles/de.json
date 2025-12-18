@@ -1,0 +1,54 @@
+{
+  "title": "Rollenverwaltung",
+  "description": "Verwalten Sie systemweite Benutzerrollen und Zugriffsebenen.",
+  "create": {
+    "title": "Neue Rolle erstellen",
+    "description": "Erstellen Sie eine neue Rolle und konfigurieren Sie deren Berechtigungen.",
+    "button": "Rolle erstellen"
+  },
+  "edit": {
+    "title": "Rolle bearbeiten",
+    "description": "Aktualisieren Sie Rolleninformationen und Berechtigungen.",
+    "button": "Änderungen speichern"
+  },
+  "view": {
+    "title": "Rolldetails",
+    "description": "Zeigen Sie Rolleninformationen und zugewiesene Benutzer an."
+  },
+  "table": {
+    "roleName": "Rollenname",
+    "description": "Beschreibung",
+    "usersAssigned": "Zugewiesene Benutzer",
+    "actions": "Aktionen",
+    "searchPlaceholder": "Nach Rollennamen suchen...",
+    "allRoles": "Alle Rollen",
+    "withUsers": "Mit Benutzern"
+  },
+  "form": {
+    "name": "Rollenname",
+    "namePlaceholder": "z.B. Content Manager",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Geben Sie die Rollenbeschreibung ein",
+    "permissions": "Berechtigungen",
+    "selectPermissions": "Berechtigungen auswählen"
+  },
+  "actions": {
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "assignUsers": "Benutzer zuweisen"
+  },
+  "validation": {
+    "nameRequired": "Rollenname ist erforderlich",
+    "descriptionRequired": "Beschreibung ist erforderlich"
+  },
+  "permissions": {
+    "clientCreate": "Kunde erstellen",
+    "clientEdit": "Kunde bearbeiten",
+    "aiGenerate": "KI-Inhalt generieren"
+  }
+}
+
+
+
+

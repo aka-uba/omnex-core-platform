@@ -1,0 +1,224 @@
+name: Real Estate
+slug: real-estate
+version: 1.0.0
+description: Comprehensive real estate management module with property, apartment, tenant, contract, payment, appointment, and email automation features
+icon: BuildingCommunity
+author: Omnex Team
+category: business
+minCoreVersion: 1.0.10
+dependencies:
+  - slug: calendar
+    version: 1.0.0
+    required: true
+  - slug: notifications
+    version: 1.0.0
+    required: true
+menu:
+  main:
+    label: Real Estate
+    icon: Building
+    href: /modules/real-estate/dashboard
+    order: 10
+    permissions:
+      - SuperAdmin
+      - AgencyUser
+      - ClientUser
+    items:
+      - title: Dashboard
+        path: /modules/real-estate/dashboard
+        icon: Dashboard
+        order: 1
+      - title: Map
+        path: /modules/real-estate/map
+        icon: MapPin
+        order: 2
+      - title: Payments
+        path: /modules/real-estate/payments
+        icon: CurrencyDollar
+        order: 3
+      - title: Tenants
+        path: /modules/real-estate/tenants
+        icon: Users
+        order: 4
+      - title: Apartments
+        path: /modules/real-estate/apartments
+        icon: Home
+        order: 5
+      - title: Staff
+        path: /modules/real-estate/staff
+        icon: UserCheck
+        order: 6
+      - title: Properties
+        path: /modules/real-estate/properties
+        icon: Building
+        order: 7
+      - title: Agreement Reports
+        path: /modules/real-estate/agreement-reports
+        icon: FileReport
+        order: 8
+      - title: Appointments
+        path: /modules/real-estate/appointments
+        icon: Calendar
+        order: 9
+      - title: Contracts
+        path: /modules/real-estate/contracts
+        icon: FileText
+        order: 10
+      - title: Maintenance
+        path: /modules/real-estate/maintenance
+        icon: Tool
+        order: 11
+      - title: Contract Templates
+        path: /modules/real-estate/contract-templates
+        icon: File
+        order: 12
+      - title: Bulk Operations
+        path: /modules/real-estate/bulk-operations
+        icon: Layers
+        order: 13
+      - title: Email Campaigns
+        path: /modules/real-estate/email
+        icon: Mail
+        order: 14
+      - title: Send Email
+        path: /modules/real-estate/email/send
+        icon: Send
+        order: 15
+      - title: Reports
+        path: /modules/real-estate/reports
+        icon: Report
+        order: 16
+settings:
+  - key: enableNotifications
+    label: Enable Notifications
+    description: Send notifications for important events
+    type: boolean
+    defaultValue: true
+    category: General
+  - key: enableEmailCampaigns
+    label: Enable Email Campaigns
+    description: Allow sending email campaigns to tenants
+    type: boolean
+    defaultValue: true
+    category: Email
+  - key: defaultCurrency
+    label: Default Currency
+    description: Default currency for payments
+    type: select
+    defaultValue: USD
+    options:
+      - value: USD
+        label: US Dollar
+      - value: EUR
+        label: Euro
+      - value: TRY
+        label: Turkish Lira
+      - value: GBP
+        label: British Pound
+    category: Payments
+  - key: paymentReminderDays
+    label: Payment Reminder (Days)
+    description: Days before payment due date to send reminder
+    type: number
+    defaultValue: 7
+    min: 1
+    max: 30
+    category: Payments
+  - key: contractAutoRenewal
+    label: Contract Auto Renewal
+    description: Automatically renew contracts
+    type: boolean
+    defaultValue: false
+    category: Contracts
+  - key: maintenanceRequestsEnabled
+    label: Maintenance Requests
+    description: Enable maintenance request system
+    type: boolean
+    defaultValue: true
+    category: Maintenance
+  - key: primaryColor
+    label: Primary Color
+    description: Primary theme color for module
+    type: color
+    defaultValue: '#228BE6'
+    category: Appearance
+  - key: maxUploadSize
+    label: Max Upload Size (MB)
+    description: Maximum file upload size in megabytes
+    type: number
+    defaultValue: 10
+    min: 1
+    max: 100
+    category: Files
+  - key: appointmentDuration
+    label: Default Appointment Duration (Minutes)
+    description: Default duration for property viewing appointments
+    type: number
+    defaultValue: 30
+    min: 15
+    max: 120
+    category: Appointments
+  - key: enableMapView
+    label: Enable Map View
+    description: Show properties on map view
+    type: boolean
+    defaultValue: true
+    category: Properties
+  - key: mapProvider
+    label: Map Provider
+    description: Choose map provider (OpenStreetMap is free, Mapbox requires token)
+    type: select
+    defaultValue: openstreetmap
+    options:
+      - value: openstreetmap
+        label: OpenStreetMap (Free)
+      - value: mapbox
+        label: Mapbox (Requires Token)
+    category: Map
+  - key: mapboxAccessToken
+    label: Mapbox Access Token
+    description: Mapbox access token (required if using Mapbox provider). Get free token from https://account.mapbox.com/
+    type: text
+    defaultValue: ''
+    category: Map
+permissions:
+  - key: real-estate.property.create
+    name: Create Property
+    description: Allows user to create new properties
+    category: Property Management
+  - key: real-estate.property.edit
+    name: Edit Property
+    description: Allows user to edit properties
+    category: Property Management
+  - key: real-estate.property.delete
+    name: Delete Property
+    description: Allows user to delete properties
+    category: Property Management
+  - key: real-estate.apartment.create
+    name: Create Apartment
+    description: Allows user to create new apartments
+    category: Apartment Management
+  - key: real-estate.apartment.edit
+    name: Edit Apartment
+    description: Allows user to edit apartments
+    category: Apartment Management
+  - key: real-estate.contract.create
+    name: Create Contract
+    description: Allows user to create contracts
+    category: Contract Management
+  - key: real-estate.payment.create
+    name: Create Payment
+    description: Allows user to create payments
+    category: Payment Management
+  - key: real-estate.appointment.create
+    name: Create Appointment
+    description: Allows user to create appointments
+    category: Appointment Management
+  - key: real-estate.email.send
+    name: Send Email
+    description: Allows user to send email campaigns
+    category: Email Management
+  - key: real-estate.report.view
+    name: View Reports
+    description: Allows user to view reports
+    category: Reporting

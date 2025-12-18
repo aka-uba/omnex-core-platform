@@ -1,0 +1,163 @@
+// ============================================
+// Permission System
+// ============================================
+
+model PermissionDefinition {
+  id             String   @id @default(uuid())
+  tenantId       String
+  companyId      String
+  permissionKey  String   @unique // Format: "module.action"
+  permissionName String
+  description    String?
+  category       String?
+  module         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  userPermissions UserPermission[]
+
+  @@index([tenantId, companyId])
+  @@index([permissionKey])
+  @@index([category])
+  @@index([module])
+}
+
+model UserPermission {
+  id            String    @id @default(uuid())
+  tenantId      String
+  companyId     String
+  userId        String
+  permissionKey String
+  granted       Boolean   @default(false)
+  grantedBy     String?
+  grantedAt     DateTime?
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  user       User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission PermissionDefinition @relation(fields: [permissionKey], references: [permissionKey], onDelete: Cascade)
+
+  @@unique([userId, permissionKey])
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@index([permissionKey])
+  @@index([granted])
+}
+
+model PagePermission {
+  id                  String   @id @default(uuid())
+  tenantId            String
+  companyId           String
+  pageRoute           String   @unique
+  pageName            String
+  description         String?
+  requiredRole        String? // SuperAdmin, AgencyUser, ClientUser
+  requiredPermissions String[] // Array of permission keys
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([tenantId, companyId])
+  @@index([pageRoute])
+  @@index([requiredRole])
+}
+
+// ============================================
+// Role System
+// ============================================
+
+model Role {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  name        String   @unique
+  description String?
+  permissions String[] // Array of permission keys
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  layoutConfig RoleLayoutConfig?
+
+  @@index([tenantId, companyId])
+  @@index([name])
+}
+
+// ============================================
+// Layout Configuration Models (v2)
+// ============================================
+
+model RoleLayoutConfig {
+  id         String   @id @default(uuid())
+  tenantId   String
+  companyId  String
+  role       String   @unique // Role name
+  layoutType String   @default("sidebar")
+  config     Json? // Layout yapılandırması
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  roleRef Role @relation(fields: [role], references: [name], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([role])
+}
+
+model CompanyLayoutConfig {
+  id         String   @id @default(uuid())
+  tenantId   String
+  companyId  String   @unique
+  layoutType String   @default("sidebar")
+  config     Json? // Layout yapılandırması
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+}
+
+// ============================================
+// User Preferences
+// ============================================
+
+model UserPreferences {
+  id                String  @id @default(uuid())
+  tenantId          String
+  companyId         String
+  userId            String  @unique
+  layoutType        String  @default("SidebarLayout") // SidebarLayout, TopLayout
+  themeMode         String  @default("Auto") // Light, Dark, Auto
+  direction         String  @default("LTR") // LTR, RTL
+  locale            String  @default("tr")
+  sidebarBackground String? // Color or preset name
+  sidebarCollapsed  Boolean @default(false)
+  sidebarWidth      Int?    @default(260) // px
+  footerVisible     Boolean @default(true)
+  topBarScroll      String? // fixed, hidden, hidden-on-hover
+  menuColor         String? // light, dark
+  customCss         String?
+  preferences       Json? // Additional preferences (JSON)
+
+  // Yeni layout ayarları (v2)
+  layoutConfig      Json? // Tüm layout yapılandırması
+  sidebarConfig     Json? // Sidebar özelleştirmeleri
+  topConfig         Json? // Top layout özelleştirmeleri
+  mobileConfig      Json? // Mobil özelleştirmeleri
+  contentAreaConfig Json? // İçerik alanı ayarları
+  layoutSource      String? // "role" | "user" | "company" | "default"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([userId])
+}
+

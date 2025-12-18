@@ -1,0 +1,18 @@
+{
+  "title": "Chat",
+  "description": "Real-time chat and messaging module",
+  "menu": {
+    "label": "Chat",
+    "items": {
+      "dashboard": "Dashboard",
+      "rooms": "Chat Rooms",
+      "messages": "Direct Messages",
+      "groups": "Group Chats"
+    }
+  }
+}
+
+
+
+
+

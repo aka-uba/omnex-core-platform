@@ -1,0 +1,138 @@
+// ============================================
+// Maintenance Module
+// ============================================
+
+model Equipment {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String
+  locationId String?
+
+  name         String
+  code         String?
+  category     String // 'makine', 'elektronik', 'arac', etc.
+  type         String
+  brand        String?
+  model        String?
+  serialNumber String?
+
+  // Özellikler (dinamik)
+  attributes Json?
+
+  // Durum
+  status String @default("active") // 'active', 'maintenance', 'inactive'
+
+  // Metadata
+  description   String?
+  purchaseDate  DateTime?
+  warrantyUntil DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  location           Location?           @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  maintenanceRecords MaintenanceRecord[]
+
+  @@index([tenantId, companyId])
+  @@index([locationId])
+  @@index([category])
+  @@index([status])
+  @@index([isActive])
+}
+
+model EquipmentTemplate {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String?
+
+  name     String
+  category String
+  type     String
+
+  // Template özellikleri
+  attributes      Json // EquipmentAttribute[]
+  defaultValues   Json?
+  requiredFields  String[]
+  validationRules Json?
+
+  // İzin verilen lokasyon tipleri
+  allowedLocationTypes String[]
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, companyId])
+  @@index([category])
+  @@index([isActive])
+}
+
+model MaintenanceRecord {
+  id          String @id @default(uuid())
+  tenantId    String
+  companyId   String
+  locationId  String
+  equipmentId String
+
+  // Bakım bilgileri
+  type        String // 'preventive', 'corrective', 'emergency'
+  title       String
+  description String?
+
+  // Durum
+  status String @default("scheduled") // 'scheduled', 'in_progress', 'completed', 'cancelled'
+
+  // Tarihler
+  scheduledDate DateTime
+  startDate     DateTime?
+  endDate       DateTime?
+
+  // Personel
+  assignedTo  String? // User ID
+  performedBy String? // User ID
+
+  // Maliyet
+  estimatedCost Decimal?
+  actualCost    Decimal?
+
+  // Metadata
+  notes     String?
+  documents String[] // Merkezi Dosya Yönetimi'nden
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  location  Location  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([locationId])
+  @@index([equipmentId])
+  @@index([status])
+  @@index([scheduledDate])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

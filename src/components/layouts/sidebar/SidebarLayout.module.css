@@ -1,0 +1,318 @@
+/* SidebarLayout.module.css - Sidebar Layout Specific Styles v2 */
+
+.sidebarLayout {
+  position: relative;
+  display: block; /* Sidebar fixed olduğu için flex'e gerek yok */
+  min-height: 100vh;
+  width: 100%;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem;
+  padding-inline: 1.5rem;
+  background: linear-gradient(90deg, rgba(250, 250, 250, 0.95) 0%, rgba(245, 245, 245, 0.95) 25%, rgba(250, 250, 250, 0.95) 50%, rgba(245, 245, 245, 0.95) 75%, rgba(240, 240, 240, 0.95) 100%); /* Çok açık gri yayılmalı buz görünümü - sağdan sola */
+  background-size: 300% 100%;
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  animation: waveGradient 12s ease-in-out infinite;
+}
+
+@keyframes waveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+[data-mantine-color-scheme="dark"] .header {
+  background: rgba(48, 49, 52, 0.75) !important; /* --bg-card (#303134) ile uyumlu - Google Dark Theme - otomatik renk hesaplamasını override et */
+  background-size: auto !important; /* Gradient'i kaldır */
+  animation: none !important; /* Animasyonu kaldır */
+  border-bottom-color: var(--border-dark) !important;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-inline-start 0.3s ease;
+}
+
+.main {
+  flex: 1;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+[data-mantine-color-scheme="dark"] .main {
+  background-color: var(--bg-primary-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* RTL support for header - flexbox direction automatically handles this */
+[dir="rtl"] .header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .headerRight {
+  justify-content: flex-start;
+}
+
+
+.expandSidebarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: color 0.3s ease, transform 0.15s ease;
+}
+
+[data-mantine-color-scheme="dark"] .expandSidebarButton {
+  color: var(--text-primary-dark) !important;
+}
+
+.expandSidebarButton:hover {
+  transform: translateY(-1px);
+}
+
+.expandSidebarIcon {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.headerTitle {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: color 0.3s ease;
+}
+
+[data-mantine-color-scheme="dark"] .headerTitle {
+  color: var(--text-primary-dark) !important;
+}
+
+.headerRight {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* LanguageSelector içindeki bayrak resmi için özel stil */
+.headerRight :global(.languageSelectorButton) {
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.headerRight :global(.languageSelectorButton) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  aspect-ratio: 3/2;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .searchInput {
+    display: none;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  inset-inline-start: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+[data-mantine-color-scheme="dark"] .searchIcon {
+  color: var(--text-secondary-dark) !important;
+}
+
+.searchInputField {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  resize: none;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  outline: none;
+  border: 1px solid var(--border-color);
+  background-color: transparent; /* Açık modda arka plan rengi yok */
+  height: 2.5rem;
+  padding-inline-start: 2.5rem;
+  padding-inline-end: 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+[data-mantine-color-scheme="dark"] .searchInputField {
+  background-color: var(--bg-card-dark) !important;
+  color: var(--text-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+}
+
+/* Dark mode - global dark stilleri kullan */
+[data-mantine-color-scheme="dark"] .searchInputField::placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+[data-mantine-color-scheme="dark"] .searchInputField::-webkit-input-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+[data-mantine-color-scheme="dark"] .searchInputField::-moz-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+[data-mantine-color-scheme="dark"] .searchInputField:-ms-input-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+.searchInputField:focus {
+  outline: none;
+}
+
+/* Merkezi icon stili - tüm headerRight içindeki button ve ActionIcon'lar için */
+.headerRight button,
+.headerRight :global([data-mantine-component="ActionIcon"]),
+.headerRight :global(.mantine-Menu-target) button {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.headerRight button:hover,
+.headerRight :global([data-mantine-component="ActionIcon"]):hover,
+.headerRight :global(.mantine-Menu-target):hover button {
+  background-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon elementleri */
+.headerRight button svg,
+.headerRight :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-icon),
+.headerRight :global([data-mantine-component="ActionIcon"]) svg,
+.headerRight :global(.mantine-Menu-target) button svg {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+/* Dark mode - kutu şekli kaldırıldı */
+[data-mantine-color-scheme="dark"] .headerRight button,
+[data-mantine-color-scheme="dark"] .headerRight :global([data-mantine-component="ActionIcon"]),
+[data-mantine-color-scheme="dark"] .headerRight :global(.mantine-Menu-target) button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .headerRight button:hover,
+[data-mantine-color-scheme="dark"] .headerRight :global([data-mantine-component="ActionIcon"]):hover,
+[data-mantine-color-scheme="dark"] .headerRight :global(.mantine-Menu-target):hover button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-mantine-color-scheme="dark"] .headerRight button svg,
+[data-mantine-color-scheme="dark"] .headerRight :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-icon),
+[data-mantine-color-scheme="dark"] .headerRight :global([data-mantine-component="ActionIcon"]) svg,
+[data-mantine-color-scheme="dark"] .headerRight :global(.mantine-Menu-target) button svg {
+  color: var(--text-primary-dark) !important;
+}
+
+/* ActionIcon root override */
+.headerRight :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-root) {
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Eski class'lar için backward compatibility (actionButton, layoutSwitchButton) */
+.actionButton,
+.layoutSwitchButton {
+  /* Merkezi stil zaten uygulanıyor */
+}
+
+.actionButtonIcon,
+.layoutSwitchIcon {
+  /* Icon stilleri zaten uygulanıyor */
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+

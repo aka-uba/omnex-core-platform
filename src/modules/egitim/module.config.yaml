@@ -1,0 +1,54 @@
+name: "Eğitim"
+slug: "egitim"
+version: "1.0.0"
+description: "Comprehensive training and education management system - Create and manage courses, track student progress, manage instructors, generate certificates, schedule training sessions, and monitor educational performance"
+icon: "School"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies: []
+menu:
+  main:
+    label: "Eğitim"
+    icon: "School"
+    href: "/modules/egitim/dashboard"
+    order: 55
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/egitim/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Kurslar"
+        path: "/modules/egitim/courses"
+        icon: "Book"
+        order: 2
+      - title: "Öğrenciler"
+        path: "/modules/egitim/students"
+        icon: "Users"
+        order: 3
+      - title: "Eğitmenler"
+        path: "/modules/egitim/instructors"
+        icon: "UserCheck"
+        order: 4
+settings:
+  - key: "enableCertificates"
+    label: "Enable Certificates"
+    description: "Enable certificate generation"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "egitim:read"
+    description: "View training data"
+  - key: "egitim:write"
+    description: "Create and edit training data"
+  - key: "egitim:manage"
+    description: "Manage training system"

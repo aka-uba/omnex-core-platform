@@ -1,0 +1,76 @@
+{
+  "title": "Production & Product",
+  "description": "Comprehensive production and product management module",
+  "menu": {
+    "label": "Production",
+    "items": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "bom": "BOM",
+      "orders": "Production Orders",
+      "stock": "Stock",
+      "reports": "Reports"
+    }
+  },
+  "dashboard": {
+    "title": "Production Dashboard",
+    "description": "Overview of production activities and analytics"
+  },
+  "products": {
+    "title": "Products",
+    "description": "Manage your products and inventory"
+  },
+  "bom": {
+    "title": "Bill of Materials",
+    "description": "Manage product bill of materials"
+  },
+  "orders": {
+    "title": "Production Orders",
+    "description": "Manage production orders and schedules"
+  },
+  "stock": {
+    "title": "Stock Management",
+    "description": "Track and manage stock levels"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "View production reports and analytics"
+  },
+  "steps": {
+    "form": {
+      "stepNumber": "Step Number",
+      "stepNumberMinError": "must be at least 1",
+      "status": "Status",
+      "name": "Name",
+      "description": "Description",
+      "plannedStart": "Planned Start",
+      "plannedEnd": "Planned End",
+      "assignedTo": "Assigned To (User ID)",
+      "laborHours": "Labor Hours",
+      "actualStart": "Actual Start",
+      "actualEnd": "Actual End",
+      "notes": "Notes"
+    },
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "create": {
+      "success": "Production step created successfully"
+    },
+    "update": {
+      "success": "Production step updated successfully"
+    },
+    "save": {
+      "error": "Failed to save production step"
+    }
+  },
+  "messages": {
+    "success": "Success",
+    "error": "Error"
+  }
+}
+
+

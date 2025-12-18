@@ -1,0 +1,236 @@
+{
+  "title": "Human Resources",
+  "description": "Employee management, leave tracking, and payroll system",
+  "menu": {
+    "label": "Human Resources",
+    "items": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "leaves": "Leaves",
+      "payrolls": "Payrolls",
+      "reports": "Reports"
+    }
+  },
+  "employees": {
+    "title": "Employees",
+    "description": "Employee management",
+    "create": "New Employee",
+    "createDescription": "Create a new employee record",
+    "edit": "Edit Employee",
+    "editDescription": "Update employee information",
+    "detail": "Employee Detail",
+    "detailDescription": "View employee details",
+    "notFound": "Employee not found",
+    "workTypes": {
+      "full_time": "Full Time",
+      "part_time": "Part Time",
+      "contract": "Contract"
+    },
+    "table": {
+      "employeeNumber": "Employee Number",
+      "name": "Name",
+      "email": "Email",
+      "department": "Department",
+      "position": "Position",
+      "workType": "Work Type",
+      "hireDate": "Hire Date",
+      "salary": "Salary",
+      "actions": "Actions"
+    },
+    "form": {
+      "user": "User",
+      "userPlaceholder": "Select user",
+      "employeeNumber": "Employee Number",
+      "employeeNumberPlaceholder": "Enter employee number",
+      "department": "Department",
+      "departmentPlaceholder": "Enter department",
+      "position": "Position",
+      "positionPlaceholder": "Enter position",
+      "hireDate": "Hire Date",
+      "hireDatePlaceholder": "Select hire date",
+      "manager": "Manager",
+      "managerPlaceholder": "Select manager",
+      "workType": "Work Type",
+      "workTypePlaceholder": "Select work type",
+      "salary": "Salary",
+      "salaryPlaceholder": "Enter salary",
+      "salaryGroup": "Salary Group",
+      "salaryGroupPlaceholder": "Enter salary group",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "isActive": "Active"
+    },
+    "filter": {
+      "department": "Department",
+      "workType": "Work Type",
+      "status": "Status"
+    },
+    "createSuccess": "Employee created successfully",
+    "updateSuccess": "Employee updated successfully",
+    "exportSuccess": "Employees exported successfully",
+    "exportError": "An error occurred while exporting employees",
+    "exportDescription": "Employees Report",
+    "delete": {
+      "confirm": "Are you sure you want to delete this employee?",
+      "success": "Employee deleted successfully",
+      "error": "An error occurred while deleting the employee"
+    }
+  },
+  "leaves": {
+    "title": "Leaves",
+    "description": "Employee leave management",
+    "create": "New Leave",
+    "createDescription": "Create a new leave record",
+    "edit": "Edit Leave",
+    "editDescription": "Update leave information",
+    "detail": "Leave Detail",
+    "detailDescription": "View leave details",
+    "notFound": "Leave not found",
+    "types": {
+      "annual": "Annual Leave",
+      "sick": "Sick Leave",
+      "unpaid": "Unpaid Leave",
+      "maternity": "Maternity Leave"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "table": {
+      "employee": "Employee",
+      "type": "Type",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "days": "Days",
+      "status": "Status",
+      "reason": "Reason",
+      "actions": "Actions"
+    },
+    "form": {
+      "employee": "Employee",
+      "employeePlaceholder": "Select employee",
+      "type": "Type",
+      "typePlaceholder": "Select type",
+      "startDate": "Start Date",
+      "startDatePlaceholder": "Select start date",
+      "endDate": "End Date",
+      "endDatePlaceholder": "Select end date",
+      "endDateAfterStart": "End date must be after start date",
+      "days": "Days",
+      "daysPlaceholder": "Enter days",
+      "reason": "Reason",
+      "reasonPlaceholder": "Enter reason",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "approvedAt": "Approved At"
+    },
+    "filter": {
+      "employee": "Employee",
+      "type": "Type",
+      "status": "Status"
+    },
+    "createSuccess": "Leave created successfully",
+    "updateSuccess": "Leave updated successfully",
+    "exportSuccess": "Leaves exported successfully",
+    "exportError": "An error occurred while exporting leaves",
+    "exportDescription": "Leaves Report",
+    "delete": {
+      "confirm": "Are you sure you want to delete this leave?",
+      "success": "Leave deleted successfully",
+      "error": "An error occurred while deleting the leave"
+    }
+  },
+  "payrolls": {
+    "title": "Payrolls",
+    "description": "Employee payroll management",
+    "create": "New Payroll",
+    "createDescription": "Create a new payroll record",
+    "edit": "Edit Payroll",
+    "editDescription": "Update payroll information",
+    "detail": "Payroll Detail",
+    "detailDescription": "View payroll details",
+    "notFound": "Payroll not found",
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved",
+      "paid": "Paid"
+    },
+    "table": {
+      "employee": "Employee",
+      "period": "Period",
+      "payDate": "Pay Date",
+      "grossSalary": "Gross Salary",
+      "deductions": "Deductions",
+      "netSalary": "Net Salary",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "employee": "Employee",
+      "employeePlaceholder": "Select employee",
+      "period": "Period",
+      "periodPlaceholder": "Select period",
+      "payDate": "Pay Date",
+      "payDatePlaceholder": "Select pay date",
+      "grossSalary": "Gross Salary",
+      "grossSalaryPlaceholder": "Enter gross salary",
+      "deductions": "Deductions",
+      "deductionsPlaceholder": "Enter deductions",
+      "netSalary": "Net Salary",
+      "netSalaryPlaceholder": "Net salary",
+      "taxDeduction": "Tax Deduction",
+      "taxDeductionPlaceholder": "Enter tax deduction",
+      "sgkDeduction": "SGK Deduction",
+      "sgkDeductionPlaceholder": "Enter SGK deduction",
+      "otherDeductions": "Other Deductions",
+      "otherDeductionsPlaceholder": "Enter other deductions",
+      "bonuses": "Bonuses",
+      "bonusesPlaceholder": "Enter bonuses",
+      "overtime": "Overtime",
+      "overtimePlaceholder": "Enter overtime",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes"
+    },
+    "filter": {
+      "employee": "Employee",
+      "period": "Period",
+      "status": "Status"
+    },
+    "createSuccess": "Payroll created successfully",
+    "updateSuccess": "Payroll updated successfully",
+    "exportSuccess": "Payrolls exported successfully",
+    "exportError": "An error occurred while exporting payrolls",
+    "exportDescription": "Payrolls Report",
+    "delete": {
+      "confirm": "Are you sure you want to delete this payroll?",
+      "success": "Payroll deleted successfully",
+      "error": "An error occurred while deleting the payroll"
+    }
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "export": {
+    "title": "Export",
+    "excel": "Export to Excel",
+    "pdf": "Export to PDF",
+    "csv": "Export to CSV"
+  },
+  "messages": {
+    "createSuccess": "Created successfully",
+    "createError": "An error occurred while creating",
+    "updateSuccess": "Updated successfully",
+    "updateError": "An error occurred while updating",
+    "success": "Success",
+    "error": "Error"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of"
+  }
+}
+
+

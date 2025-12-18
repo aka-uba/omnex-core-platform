@@ -1,0 +1,96 @@
+// ============================================
+// Notification System
+// ============================================
+
+model Notification {
+  id          String    @id @default(uuid())
+  tenantId    String
+  companyId   String
+  title       String
+  message     String    @db.Text
+  type        String    @default("info") // info, warning, error, success, task, alert
+  priority    String    @default("medium") // low, medium, high, urgent
+  senderId    String?
+  recipientId String?
+  locationId  String?
+  isRead      Boolean   @default(false)
+  readAt      DateTime?
+  isGlobal    Boolean   @default(false)
+  expiresAt   DateTime?
+  data        Json? // Additional data
+  actionUrl   String?
+  actionText  String?
+  module      String?
+  archivedAt  DateTime?
+  status      String? // Computed: read, unread, archived
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  sender      User?        @relation("NotificationSender", fields: [senderId], references: [id], onDelete: SetNull)
+  recipient   User?        @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: SetNull)
+  attachments Attachment[]
+
+  @@index([tenantId, companyId])
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([isRead])
+  @@index([status])
+  @@index([isGlobal])
+  @@index([type])
+  @@index([module])
+  @@index([archivedAt])
+  @@index([createdAt])
+}
+
+model Attachment {
+  id             String   @id @default(uuid())
+  tenantId       String
+  notificationId String
+  url            String
+  filename       String
+  contentType    String?
+  size           Int? // File size in bytes
+  companyId      String?
+  createdAt      DateTime @default(now())
+
+  // Relations
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([notificationId])
+  @@index([companyId])
+}
+
+// ============================================
+// Report System
+// ============================================
+
+model Report {
+  id            String    @id @default(uuid())
+  tenantId      String
+  companyId     String
+  userId        String
+  name          String
+  reportType    String
+  description   String?
+  dateRange     Json? // { start: Date, end: Date }
+  filters       Json? // Additional filters
+  visualization String? // table, bar, line, pie, area
+  status        String    @default("pending") // pending, completed, failed, generating
+  outputUrl     String?
+  errorMessage  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  completedAt   DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@index([reportType])
+  @@index([status])
+  @@index([createdAt])
+}
+

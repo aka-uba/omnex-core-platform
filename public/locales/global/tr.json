@@ -1,0 +1,21 @@
+{
+    "buttons": {
+        "save": "Kaydet",
+        "cancel": "İptal",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        "create": "Oluştur",
+        "upload": "Yükle"
+    },
+    "navigation": {
+        "dashboard": "Panel",
+        "settings": "Ayarlar",
+        "modules": "Modüller"
+    },
+    "common": {
+        "loading": "Yükleniyor...",
+        "error": "Hata oluştu"
+    },
+    "calendar": "Takvim",
+    "list": "Liste"
+}

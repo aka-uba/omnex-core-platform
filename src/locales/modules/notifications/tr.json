@@ -1,0 +1,123 @@
+{
+  "title": "Bildirimler",
+  "description": "Sistem genelindeki bildirimleri ve uyarıları yönetin",
+  "dashboard": {
+    "title": "Tüm Bildirimler",
+    "description": "Tüm bildirimlerinizi görüntüleyin, yönetin ve takip edin"
+  },
+  "menu": {
+    "label": "Bildirimler",
+    "items": {
+      "dashboard": "Tüm Bildirimler",
+      "list": "Tüm Bildirimler",
+      "templates": "Şablonlar"
+    }
+  },
+  "actions": {
+    "view": "Detayları Görüntüle",
+    "quick_view": "Hızlı Görüntüle",
+    "edit": "Düzenle",
+    "archive": "Arşivle",
+    "unarchive": "Arşivden Çıkar",
+    "delete": "Sil",
+    "save": "Bildirimi Kaydet",
+    "cancel": "İptal",
+    "mark_read": "Okundu İşaretle",
+    "mark_unread": "Okunmadı İşaretle",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "back": "Geri"
+  },
+  "create": "Bildirim Oluştur",
+  "edit": "Bildirim Düzenle",
+  "status": {
+    "read": "Okundu",
+    "unread": "Okunmadı",
+    "global": "Global",
+    "archived": "Arşivlendi",
+    "success": "Başarılı",
+    "error": "Hata",
+    "created_success": "Bildirim başarıyla oluşturuldu",
+    "create_error": "Bildirim oluşturulamadı",
+    "updated_success": "Bildirim başarıyla güncellendi",
+    "update_error": "Bildirim güncellenemedi",
+    "no_notifications": "Bildirim yok"
+  },
+  "priority": {
+    "low": "Düşük",
+    "medium": "Orta",
+    "high": "Yüksek",
+    "urgent": "Acil"
+  },
+  "type": {
+    "info": "Bilgi",
+    "warning": "Uyarı",
+    "error": "Hata",
+    "success": "Başarılı",
+    "task": "Görev",
+    "alert": "Alarm"
+  },
+  "fields": {
+    "title": "Başlık",
+    "message": "Mesaj",
+    "type": "Tür",
+    "priority": "Öncelik",
+    "user": "Kullanıcı",
+    "module": "Modül",
+    "status": "Durum",
+    "data": "Veri (JSON)",
+    "expires_at": "Son Geçerlilik",
+    "is_global": "Global Bildirim",
+    "location": "Konum",
+    "action_url": "İşlem URL",
+    "action_text": "İşlem Metni",
+    "attachments": "Ekler",
+    "sender": "Gönderen",
+    "recipient": "Alıcı",
+    "created_at": "Oluşturulma",
+    "read_at": "Okunma Tarihi",
+    "archived_at": "Arşivlenme Tarihi",
+    "search": "Ara...",
+    "actions": "İşlemler"
+  },
+  "validation": {
+    "required": "Bu alan zorunludur",
+    "user_required": "Global olmayan bildirimler için kullanıcı gereklidir",
+    "action_required": "Görevler için işlem detayları gereklidir",
+    "confirm_delete": "Bu bildirimi silmek istediğinizden emin misiniz?",
+    "confirm_archive": "Bu bildirimi arşivlemek istediğinizden emin misiniz?",
+    "not_found": "Bildirim bulunamadı"
+  },
+  "filters": "Filtreler",
+  "toast": {
+    "success": "Başarılı",
+    "error": "Hata",
+    "warning": "Uyarı",
+    "info": "Bilgi"
+  },
+  "modal": {
+    "confirm": "Onayla",
+    "cancel": "İptal",
+    "delete_title": "Bildirimi Sil",
+    "archive_title": "Bildirimi Arşivle"
+  },
+  "placeholders": {
+    "loading_users": "Kullanıcılar yükleniyor...",
+    "select_sender": "Gönderen seçin",
+    "select_recipient": "Alıcı seçin",
+    "pick_date": "Tarih seçin",
+    "select_location": "Konum seçin",
+    "upload_files": "Dosya yükle"
+  },
+  "task_details": {
+    "title": "Görev Detayları"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "view": "Görüntüle",
+  "bell": {
+    "ariaLabel": "Bildirimler"
+  },
+  "close": "Bildirimi kapat"
+}

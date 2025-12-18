@@ -1,0 +1,64 @@
+name: "Randevu"
+slug: "randevu"
+version: "1.0.0"
+description: "Advanced appointment and calendar management system - Schedule appointments, manage calendars, send automated reminders, track appointment history, and integrate with notification systems for seamless appointment coordination"
+icon: "CalendarEvent"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies:
+  - slug: "calendar"
+    version: ">=1.0.0"
+    optional: true
+  - slug: "notifications"
+    version: ">=1.0.0"
+    optional: false
+menu:
+  main:
+    label: "Randevu"
+    icon: "CalendarEvent"
+    href: "/modules/randevu/dashboard"
+    order: 65
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/randevu/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Randevular"
+        path: "/modules/randevu/appointments"
+        icon: "Calendar"
+        order: 2
+      - title: "Takvim"
+        path: "/modules/randevu/calendar"
+        icon: "CalendarMonth"
+        order: 3
+settings:
+  - key: "enableReminders"
+    label: "Enable Reminders"
+    description: "Send appointment reminders"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "reminderMinutes"
+    label: "Reminder Time (minutes)"
+    description: "Minutes before appointment to send reminder"
+    type: "number"
+    defaultValue: 30
+    min: 5
+    max: 1440
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "randevu:read"
+    description: "View appointments"
+  - key: "randevu:write"
+    description: "Create and edit appointments"
+  - key: "randevu:delete"
+    description: "Delete appointments"

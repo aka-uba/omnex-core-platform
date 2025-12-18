@@ -1,0 +1,65 @@
+{
+  "title": "إدارة الصلاحيات",
+  "description": "إدارة صلاحيات المستخدمين ومستويات الوصول على مستوى النظام.",
+  "create": {
+    "title": "إنشاء صلاحية جديدة",
+    "description": "إنشاء صلاحية جديدة.",
+    "button": "إنشاء صلاحية"
+  },
+  "edit": {
+    "title": "تعديل الصلاحية",
+    "description": "تحديث معلومات الصلاحية.",
+    "button": "حفظ التغييرات"
+  },
+  "view": {
+    "title": "تفاصيل الصلاحية",
+    "description": "عرض معلومات الصلاحية."
+  },
+  "table": {
+    "permissionKey": "مفتاح الصلاحية",
+    "name": "الاسم",
+    "description": "الوصف",
+    "category": "الفئة",
+    "module": "الوحدة",
+    "actions": "الإجراءات",
+    "searchPlaceholder": "البحث بالاسم أو المفتاح...",
+    "categoryFilter": "الفئة",
+    "moduleFilter": "الوحدة",
+    "clearFilters": "مسح المرشحات"
+  },
+  "form": {
+    "permissionKey": "مفتاح الصلاحية",
+    "permissionKeyPlaceholder": "مثال: client.create",
+    "name": "الاسم",
+    "namePlaceholder": "مثال: إنشاء عميل",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الصلاحية",
+    "category": "الفئة",
+    "categoryPlaceholder": "اختر الفئة",
+    "module": "الوحدة",
+    "modulePlaceholder": "اختر الوحدة"
+  },
+  "actions": {
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "validation": {
+    "keyRequired": "مفتاح الصلاحية مطلوب",
+    "keyFormat": "تنسيق مفتاح الصلاحية: module.action (مثال: client.create)",
+    "nameRequired": "الاسم مطلوب",
+    "descriptionRequired": "الوصف مطلوب",
+    "categoryRequired": "الفئة مطلوبة"
+  },
+  "categories": {
+    "clientManagement": "إدارة العملاء",
+    "contentAI": "محتوى الذكاء الاصطناعي",
+    "scheduling": "الجدولة",
+    "finance": "المالية",
+    "general": "عام"
+  }
+}
+
+
+
+

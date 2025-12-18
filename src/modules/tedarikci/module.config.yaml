@@ -1,0 +1,54 @@
+name: "Tedarikçi"
+slug: "tedarikci"
+version: "1.0.0"
+description: "Comprehensive supplier and vendor management system - Manage supplier relationships, track purchase orders, monitor payment schedules, evaluate supplier performance, and automate procurement processes"
+icon: "Truck"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "inactive"
+dependencies: []
+menu:
+  main:
+    label: "Tedarikçi"
+    icon: "Truck"
+    href: "/modules/tedarikci/dashboard"
+    order: 70
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/tedarikci/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Tedarikçiler"
+        path: "/modules/tedarikci/suppliers"
+        icon: "BuildingStore"
+        order: 2
+      - title: "Siparişler"
+        path: "/modules/tedarikci/orders"
+        icon: "ShoppingCart"
+        order: 3
+      - title: "Ödemeler"
+        path: "/modules/tedarikci/payments"
+        icon: "CreditCard"
+        order: 4
+settings:
+  - key: "enableAutoOrdering"
+    label: "Enable Auto Ordering"
+    description: "Automatically create orders when stock is low"
+    type: "boolean"
+    defaultValue: false
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "tedarikci:read"
+    description: "View supplier data"
+  - key: "tedarikci:write"
+    description: "Create and edit supplier data"
+  - key: "tedarikci:delete"
+    description: "Delete supplier data"

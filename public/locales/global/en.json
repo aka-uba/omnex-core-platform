@@ -1,0 +1,19 @@
+{
+    "buttons": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "upload": "Upload"
+    },
+    "navigation": {
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "modules": "Modules"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred"
+    }
+}

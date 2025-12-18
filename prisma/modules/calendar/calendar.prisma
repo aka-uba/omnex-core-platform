@@ -1,0 +1,59 @@
+// ============================================
+// Calendar Module
+// ============================================
+
+model CalendarEvent {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // Temel bilgiler
+  title       String
+  description String? @db.Text
+  date        DateTime
+
+  // İlişkili bilgiler
+  client     String? // Müşteri adı veya ID
+  status     String   @default("scheduled") // 'draft', 'scheduled', 'published', 'needs-revision', 'cancelled'
+  color      String?  @default("blue") // 'yellow', 'green', 'red', 'blue', 'purple', 'slate'
+  locationId String? // Real Estate modülündeki Location ID (string olarak, relation yok)
+
+  // Kullanıcı ilişkisi (cross-cutting concern)
+  userId String? // Event creator/owner
+
+  // Modül ilişkisi
+  module String? // İlişkili modül (e.g., 'real-estate', 'maintenance', 'hr')
+
+  // Metadata
+  metadata Json? // Ek veriler
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User? @relation("CalendarEventUser", fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@index([locationId])
+  @@index([date])
+  @@index([status])
+  @@index([module])
+  @@index([createdAt])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

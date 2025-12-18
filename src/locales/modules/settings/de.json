@@ -1,0 +1,122 @@
+{
+  "title": "Einstellungen",
+  "description": "System- und Firmeneinstellungen verwalten",
+  "menu": {
+    "label": "Einstellungen",
+    "items": {
+      "dashboard": "Dashboard",
+      "general": "Allgemein",
+      "company": "Firma",
+      "modules": "Module",
+      "users": "Benutzer"
+    }
+  },
+  "addCompany": {
+    "title": "Neue Firma hinzufügen",
+    "description": "Vervollständigen Sie die folgenden Schritte, um Ihre Firma hinzuzufügen"
+  },
+  "moduleSettings": {
+    "tabs": {
+      "summary": "Zusammenfassung",
+      "settings": "Einstellungen",
+      "menu": "Menü"
+    },
+    "summary": {
+      "title": "Modulzusammenfassung",
+      "version": "Version",
+      "lastUpdated": "Zuletzt aktualisiert",
+      "category": "Kategorie",
+      "author": "Autor",
+      "whatYouCanDo": "Was Sie tun können",
+      "changeLog": "Änderungsprotokoll",
+      "versionHistory": "Versionsverlauf",
+      "current": "Aktuell",
+      "changes": "Änderungen",
+      "features": {
+        "title": "Dieses Modul bietet die folgenden Funktionen:",
+        "realEstate": {
+          "properties": "Immobilien- und Wohnungsverwaltung mit detaillierten Informationen",
+          "tenants": "Mieter- und Vertragsverfolgung",
+          "payments": "Zahlungsverfolgung und Finanzberichte",
+          "appointments": "Immobilientermine planen und verwalten",
+          "email": "E-Mail-Kampagnen für Mieter erstellen und versenden",
+          "reports": "Umfassende Berichte und Analysen erstellen",
+          "staff": "Personal- und Leistungsmanagement"
+        }
+      }
+    },
+    "settings": {
+      "title": "Moduleinstellungen",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "saveChanges": "Änderungen speichern",
+      "noSettings": "Für dieses Modul gibt es keine Einstellungen",
+      "setting": "Einstellung",
+      "settings_plural": "Einstellungen",
+      "categories": {
+        "general": "Allgemein",
+        "email": "E-Mail",
+        "payments": "Zahlungen",
+        "contracts": "Verträge",
+        "maintenance": "Wartung",
+        "appearance": "Aussehen",
+        "files": "Dateien",
+        "appointments": "Termine",
+        "properties": "Immobilien"
+      },
+      "controls": {
+        "enabled": "Aktiviert",
+        "disabled": "Deaktiviert"
+      },
+      "notifications": {
+        "saved": "Erfolgreich",
+        "savedMessage": "Einstellungen erfolgreich gespeichert",
+        "error": "Fehler",
+        "errorMessage": "Einstellungen konnten nicht gespeichert werden"
+      }
+    },
+    "menu": {
+      "title": "Menükonfiguration",
+      "description": "Ziehen und ablegen, um Menüelemente neu anzuordnen. Auf Elemente klicken, um sie zu konfigurieren.",
+      "addMenuItem": "Menüelement hinzufügen",
+      "saveMenu": "Menü speichern",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "itemConfig": {
+        "title": "Titel",
+        "icon": "Symbol",
+        "path": "Pfad",
+        "openIn": "Öffnen in",
+        "sameTab": "Gleicher Tab",
+        "newTab": "Neuer Tab"
+      },
+      "tooltips": {
+        "decreaseIndent": "Einzug verringern",
+        "atRootLevel": "Auf Root-Ebene",
+        "increaseIndent": "Einzug erhöhen",
+        "maxIndentLevel": "Maximale Einzugsebene",
+        "hide": "Ausblenden",
+        "show": "Anzeigen",
+        "delete": "Löschen",
+        "dragHandle": "Ziehen"
+      },
+      "notifications": {
+        "saved": "Erfolgreich",
+        "savedMessage": "Menükonfiguration erfolgreich gespeichert",
+        "reset": "Erfolgreich",
+        "resetMessage": "Menü auf Standardeinstellungen zurückgesetzt",
+        "error": "Fehler",
+        "errorMessage": "Menü konnte nicht gespeichert werden"
+      }
+    },
+    "icon": {
+      "upload": "Symbol hochladen",
+      "change": "Symbol ändern",
+      "uploading": "Wird hochgeladen...",
+      "uploadSuccess": "Symbol erfolgreich hochgeladen",
+      "uploadError": "Symbol konnte nicht hochgeladen werden",
+      "maxSize": "Maximale Dateigröße: 2MB",
+      "allowedTypes": "Erlaubte Formate: PNG, JPG, SVG, WebP"
+    }
+  }
+}
+
+

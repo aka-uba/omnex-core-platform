@@ -1,0 +1,40 @@
+'use client';
+
+import { Container } from '@mantine/core';
+import { IconClipboardList } from '@tabler/icons-react';
+import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
+import { ProductionOrderForm } from '@/modules/production/components/ProductionOrderForm';
+import { useParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
+
+export function EditOrderPageClient({ locale, orderId }: { locale: string; orderId: string }) {
+  const params = useParams();
+  const currentLocale = (params?.locale as string) || locale;
+  const { t } = useTranslation('modules/production');
+
+  return (
+    <Container size="xl" pt="xl">
+      <CentralPageHeader
+        title={t('templates.edit.order.title')}
+        description={t('templates.edit.order.description')}
+        namespace="modules/production"
+        icon={<IconClipboardList size={32} />}
+        breadcrumbs={[
+          { label: 'navigation.dashboard', href: `/${currentLocale}/dashboard`, namespace: 'global' },
+          { label: 'menu.label', href: `/${currentLocale}/modules/production`, namespace: 'modules/production' },
+          { label: 'orders.title', href: `/${currentLocale}/modules/production/orders`, namespace: 'modules/production' },
+          { label: t('form.edit'), namespace: 'modules/production' },
+        ]}
+      />
+      <ProductionOrderForm locale={currentLocale} orderId={orderId} />
+    </Container>
+  );
+}
+
+
+
+
+
+
+
+

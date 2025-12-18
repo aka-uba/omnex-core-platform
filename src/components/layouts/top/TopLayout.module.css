@@ -1,0 +1,105 @@
+.topLayout {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  /* transition kaldırıldı - anlık renk değişimi için */
+  min-height: 0;
+  overflow-y: auto;
+}
+
+[data-mantine-color-scheme="dark"] .main {
+  background-color: var(--bg-primary-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+/* Search Bar - Header altında (mobil ve tablet için) */
+.searchBar {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  animation: slideDown 0.2s ease-out;
+}
+
+[data-mantine-color-scheme="dark"] .searchBar {
+  background-color: var(--bg-card-dark);
+  border-bottom-color: var(--border-color-dark);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.searchInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-mantine-color-scheme="dark"] .searchIcon {
+  color: var(--text-secondary-dark);
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px 0 44px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--primary-color, #228be6);
+  background-color: var(--bg-card);
+}
+
+[data-mantine-color-scheme="dark"] .searchInput {
+  background-color: var(--bg-surface-dark);
+  border-color: var(--border-color-dark);
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .searchInput:focus {
+  background-color: var(--bg-card-dark);
+  border-color: var(--primary-color-dark, #4dabf7);
+}
+
+.searchInput::placeholder {
+  color: var(--text-secondary);
+}
+
+[data-mantine-color-scheme="dark"] .searchInput::placeholder {
+  color: var(--text-secondary-dark);
+}
+

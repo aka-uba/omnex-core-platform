@@ -1,0 +1,28 @@
+.contentArea {
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100%;
+}
+
+[data-mantine-color-scheme="dark"] .contentArea {
+  background-color: var(--bg-primary-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+/* ContentArea içindeki Mantine Container'ların max-width'ini sıfırla */
+/* Çünkü genişlik kontrolü ContentArea'da yapılıyor */
+.contentArea :global(.mantine-Container-root) {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentArea {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+

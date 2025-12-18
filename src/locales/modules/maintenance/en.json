@@ -1,0 +1,126 @@
+{
+  "title": "Maintenance Management",
+  "description": "Manage equipment maintenance records",
+  "menu": {
+    "label": "Maintenance",
+    "items": {
+      "dashboard": "Dashboard",
+      "records": "Records",
+      "calendar": "Calendar",
+      "reports": "Reports"
+    }
+  },
+  "create": "New Maintenance Record",
+  "createDescription": "Create a new maintenance record",
+  "edit": "Edit Maintenance Record",
+  "editDescription": "Update maintenance record information",
+  "detail": "Maintenance Record Detail",
+  "detailDescription": "View maintenance record details",
+  "notFound": "Maintenance record not found",
+  "types": {
+    "preventive": "Preventive",
+    "corrective": "Corrective",
+    "emergency": "Emergency"
+  },
+  "status": {
+    "scheduled": "Scheduled",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "table": {
+    "title": "Title",
+    "type": "Type",
+    "status": "Status",
+    "location": "Location",
+    "equipment": "Equipment",
+    "scheduledDate": "Scheduled Date",
+    "estimatedCost": "Estimated Cost",
+    "actualCost": "Actual Cost",
+    "actions": "Actions"
+  },
+  "form": {
+    "location": "Location",
+    "locationPlaceholder": "Select location",
+    "equipment": "Equipment",
+    "equipmentPlaceholder": "Select equipment",
+    "type": "Type",
+    "typePlaceholder": "Select type",
+    "title": "Title",
+    "titlePlaceholder": "Enter maintenance title",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter maintenance description",
+    "scheduledDate": "Scheduled Date",
+    "scheduledDatePlaceholder": "Select scheduled date",
+    "startDate": "Start Date",
+    "startDatePlaceholder": "Select start date",
+    "endDate": "End Date",
+    "endDatePlaceholder": "Select end date",
+    "estimatedCost": "Estimated Cost",
+    "estimatedCostPlaceholder": "Enter estimated cost",
+    "actualCost": "Actual Cost",
+    "actualCostPlaceholder": "Enter actual cost",
+    "notes": "Notes",
+    "notesPlaceholder": "Enter notes",
+    "documents": "Documents",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "isActive": "Active"
+  },
+  "filter": {
+    "type": "Type",
+    "status": "Status",
+    "location": "Location"
+  },
+  "search": {
+    "placeholder": "Search maintenance records..."
+  },
+  "delete": {
+    "confirm": "Are you sure you want to delete this maintenance record?",
+    "success": "Maintenance record deleted successfully",
+    "error": "An error occurred while deleting the maintenance record"
+  },
+  "messages": {
+    "createSuccess": "Maintenance record created successfully",
+    "createError": "An error occurred while creating the maintenance record",
+    "updateSuccess": "Maintenance record updated successfully",
+    "updateError": "An error occurred while updating the maintenance record",
+    "success": "Success",
+    "error": "Error"
+  },
+  "export": {
+    "title": "Export",
+    "excel": "Export to Excel",
+    "pdf": "Export to PDF",
+    "csv": "Export to CSV"
+  },
+  "exportSuccess": "Maintenance records exported successfully",
+  "exportError": "An error occurred while exporting maintenance records",
+  "exportDescription": "Maintenance Records Report",
+  "pagination": {
+    "showing": "Showing",
+    "of": "of"
+  },
+  "dashboard": {
+    "title": "Maintenance Dashboard",
+    "description": "Overview of maintenance activities and analytics",
+    "dateFrom": "From Date",
+    "dateTo": "To Date",
+    "totalRecords": "Total Records",
+    "completed": "Completed",
+    "totalCost": "Total Cost",
+    "scheduled": "Scheduled",
+    "maintenanceTrend": "Maintenance Trend",
+    "byType": "By Type",
+    "upcomingMaintenance": "Upcoming Maintenance",
+    "overdueMaintenance": "Overdue Maintenance",
+    "daysOverdue": "Days Overdue",
+    "noUpcoming": "No upcoming maintenance",
+    "noOverdue": "No overdue maintenance"
+  },
+  "calendar": {
+    "title": "Maintenance Calendar",
+    "description": "View maintenance records in calendar view"
+  }
+}
+

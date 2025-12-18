@@ -1,0 +1,87 @@
+{
+  "title": "Web Oluşturucu",
+  "description": "Sürükle-bırak web sitesi oluşturucu modülü",
+  "menu": {
+    "label": "Web Oluşturucu",
+    "items": {
+      "dashboard": "Dashboard",
+      "websites": "Web Siteleri",
+      "pages": "Sayfalar",
+      "templates": "Şablonlar",
+      "themes": "Temalar",
+      "components": "Bileşenler",
+      "forms": "Formlar",
+      "media": "Medya Kütüphanesi",
+      "assets": "Medya & Varlıklar",
+      "analytics": "Analitik",
+      "settings": "Ayarlar"
+    }
+  },
+  "dashboard": {
+    "title": "Web Oluşturucu Dashboard",
+    "description": "Web sitesi oluşturma işlemlerinize genel bakış",
+    "totalPages": "Toplam Sayfa",
+    "templates": "Şablonlar",
+    "mediaFiles": "Medya Dosyaları",
+    "recentActivity": "Son Aktiviteler",
+    "noActivity": "Son aktivite yok"
+  },
+  "templates": {
+    "title": "Şablonlar",
+    "description": "Web sitesi şablonlarını görüntüleyin ve kullanın"
+  },
+  "pages": {
+    "title": "Sayfalar",
+    "description": "Web sitesi sayfalarınızı yönetin",
+    "newPage": "Yeni Sayfa"
+  },
+  "media": {
+    "title": "Medya Kütüphanesi",
+    "description": "Medya dosyalarınızı yönetin"
+  },
+  "components": {
+    "title": "Bileşenler",
+    "description": "Yeniden kullanılabilir bileşenleri yönetin"
+  },
+  "analytics": {
+    "title": "Analitik",
+    "description": "Web sitesi performansı ve ziyaretçi analizleri"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "seo": {
+    "title": "SEO Ayarları",
+    "description": "Arama motorları için sayfa optimizasyonu",
+    "metaTitle": "Meta Başlık",
+    "metaTitlePlaceholder": "Sayfa başlığı (50-60 karakter önerilir)",
+    "metaTitleWarning": "Başlık 60 karakterden uzun. Arama motorlarında kesilebilir.",
+    "metaDescription": "Meta Açıklama",
+    "metaDescriptionPlaceholder": "Sayfa açıklaması (150-160 karakter önerilir)",
+    "metaDescriptionWarning": "Açıklama 160 karakterden uzun. Arama motorlarında kesilebilir.",
+    "metaKeywords": "Meta Anahtar Kelimeler",
+    "metaKeywordsPlaceholder": "Anahtar kelimeler ekleyin (Enter ile)",
+    "metaKeywordsDescription": "Sayfa ile ilgili anahtar kelimeler (maksimum 10)",
+    "tipsTitle": "SEO İpuçları",
+    "tips": {
+      "tip1": "Başlık ve açıklama sayfa içeriğini yansıtmalı",
+      "tip2": "Anahtar kelimeler doğal ve ilgili olmalı",
+      "tip3": "Her sayfa için benzersiz SEO içeriği kullanın",
+      "tip4": "Arama motoru sonuçlarında nasıl görüneceğini önizleyin"
+    },
+    "saveButton": "SEO Ayarlarını Kaydet"
+  },
+  "preview": {
+    "title": "Sayfa Önizleme"
+  },
+  "widgetConfig": {
+    "placeholder": "Değer girin"
+  }
+}

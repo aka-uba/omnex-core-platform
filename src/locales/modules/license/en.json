@@ -1,0 +1,193 @@
+{
+  "title": "License Service",
+  "description": "License package management and tenant license tracking system",
+  "menu": {
+    "label": "License",
+    "items": {
+      "dashboard": "Dashboard",
+      "packages": "License Packages",
+      "tenants": "Tenant Licenses",
+      "my-license": "My License"
+    }
+  },
+  "packages": {
+    "title": "License Packages",
+    "description": "Manage license packages",
+    "create": "New Package",
+    "createDescription": "Create a new license package",
+    "edit": "Edit Package",
+    "editDescription": "Update license package information",
+    "detail": "Package Detail",
+    "notFound": "Package not found",
+    "table": {
+      "name": "Package Name",
+      "description": "Description",
+      "modules": "Modules",
+      "basePrice": "Price",
+      "currency": "Currency",
+      "billingCycle": "Billing Cycle",
+      "maxUsers": "Max Users",
+      "maxStorage": "Max Storage (GB)",
+      "isActive": "Active",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Package Name",
+      "namePlaceholder": "Enter package name",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter package description",
+      "modules": "Modules",
+      "modulesPlaceholder": "Select modules",
+      "basePrice": "Price",
+      "basePricePlaceholder": "Enter price",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "billingCycle": "Billing Cycle",
+      "billingCyclePlaceholder": "Select billing cycle",
+      "maxUsers": "Max Users",
+      "maxUsersPlaceholder": "Maximum number of users",
+      "maxStorage": "Max Storage (GB)",
+      "maxStoragePlaceholder": "Maximum storage (GB)",
+      "isActive": "Active"
+    },
+    "billingCycles": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "createSuccess": "Package created successfully",
+    "updateSuccess": "Package updated successfully",
+    "delete": {
+      "confirm": "Are you sure you want to delete this package?",
+      "success": "Package deleted successfully",
+      "error": "An error occurred while deleting the package"
+    }
+  },
+  "tenantLicenses": {
+    "title": "Tenant Licenses",
+    "description": "Manage tenant licenses",
+    "create": "New License",
+    "createDescription": "Create a new tenant license",
+    "edit": "Edit License",
+    "editDescription": "Update license information",
+    "detail": "License Detail",
+    "notFound": "License not found",
+    "table": {
+      "tenant": "Tenant",
+      "package": "Package",
+      "startDate": "Start",
+      "endDate": "End",
+      "status": "Status",
+      "paymentStatus": "Payment Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "tenant": "Tenant",
+      "tenantPlaceholder": "Select tenant",
+      "package": "Package",
+      "packagePlaceholder": "Select package",
+      "startDate": "Start Date",
+      "startDatePlaceholder": "Select start date",
+      "endDate": "End Date",
+      "endDatePlaceholder": "Select end date",
+      "renewalDate": "Renewal Date",
+      "renewalDatePlaceholder": "Select renewal date",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "paymentStatus": "Payment Status",
+      "paymentStatusPlaceholder": "Select payment status",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes"
+    },
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "suspended": "Suspended",
+      "cancelled": "Cancelled"
+    },
+    "paymentStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "failed": "Failed"
+    },
+    "createSuccess": "License created successfully",
+    "updateSuccess": "License updated successfully",
+    "delete": {
+      "confirm": "Are you sure you want to delete this license?",
+      "success": "License deleted successfully",
+      "error": "An error occurred while deleting the license"
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "description": "Manage license payments",
+    "create": "New Payment",
+    "createDescription": "Create a new payment record",
+    "notFound": "Payment not found",
+    "table": {
+      "amount": "Amount",
+      "currency": "Currency",
+      "paymentMethod": "Payment Method",
+      "paymentDate": "Payment Date",
+      "status": "Status",
+      "approvedBy": "Approved By",
+      "approvedAt": "Approved At",
+      "actions": "Actions"
+    },
+    "form": {
+      "amount": "Amount",
+      "amountPlaceholder": "Enter amount",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "paymentMethod": "Payment Method",
+      "paymentMethodPlaceholder": "Select payment method",
+      "paymentDate": "Payment Date",
+      "paymentDatePlaceholder": "Select payment date",
+      "receiptUrl": "Receipt URL",
+      "receiptUrlPlaceholder": "Enter receipt URL",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes"
+    },
+    "paymentMethods": {
+      "bank_transfer": "Bank Transfer",
+      "credit_card": "Credit Card",
+      "other": "Other"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "createSuccess": "Payment created successfully",
+    "updateSuccess": "Payment updated successfully",
+    "delete": {
+      "confirm": "Are you sure you want to delete this payment?",
+      "success": "Payment deleted successfully",
+      "error": "An error occurred while deleting the payment"
+    }
+  },
+  "myLicense": {
+    "title": "My License",
+    "description": "View your current license information",
+    "noLicense": "You do not have an active license",
+    "package": "Package",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "renewalDate": "Renewal Date",
+    "status": "Status",
+    "paymentStatus": "Payment Status",
+    "modules": "Modules",
+    "features": "Features",
+    "paymentHistory": "Payment History"
+  },
+  "messages": {
+    "createSuccess": "Created successfully",
+    "createError": "An error occurred while creating",
+    "updateSuccess": "Updated successfully",
+    "updateError": "An error occurred while updating",
+    "success": "Success",
+    "error": "Error"
+  }
+}
+
+

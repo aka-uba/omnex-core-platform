@@ -1,0 +1,101 @@
+name: "Production & Product"
+slug: "production"
+version: "1.0.0"
+description: "Comprehensive production and product management module with product management, BOM (Bill of Materials), production orders, and stock movement tracking"
+icon: "Factory"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.10"
+dependencies: []
+menu:
+  main:
+    label: "Production"
+    icon: "Factory"
+    href: "/modules/production/dashboard"
+    order: 20
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/production/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Products"
+        path: "/modules/production/products"
+        icon: "Package"
+        order: 2
+      - title: "BOM"
+        path: "/modules/production/bom"
+        icon: "List"
+        order: 3
+      - title: "Production Orders"
+        path: "/modules/production/orders"
+        icon: "ClipboardList"
+        order: 4
+      - title: "Stock"
+        path: "/modules/production/stock"
+        icon: "Warehouse"
+        order: 5
+      - title: "Reports"
+        path: "/modules/production/reports"
+        icon: "ChartBar"
+        order: 6
+settings:
+  - key: "enableNotifications"
+    label: "Enable Notifications"
+    description: "Send notifications for production events"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "autoStockUpdate"
+    label: "Auto Stock Update"
+    description: "Automatically update stock after production"
+    type: "boolean"
+    defaultValue: true
+    category: "Stock"
+  - key: "defaultUnit"
+    label: "Default Unit"
+    description: "Default unit of measurement"
+    type: "select"
+    defaultValue: "pcs"
+    options:
+      - value: "pcs"
+        label: "Pieces"
+      - value: "kg"
+        label: "Kilograms"
+      - value: "m"
+        label: "Meters"
+      - value: "l"
+        label: "Liters"
+    category: "Products"
+  - key: "lowStockThreshold"
+    label: "Low Stock Threshold"
+    description: "Alert when stock falls below this amount"
+    type: "number"
+    defaultValue: 10
+    min: 0
+    category: "Stock"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "production.product.create"
+    name: "Create Product"
+    description: "Allow creating new products"
+  - key: "production.product.update"
+    name: "Update Product"
+    description: "Allow updating products"
+  - key: "production.product.delete"
+    name: "Delete Product"
+    description: "Allow deleting products"
+  - key: "production.order.create"
+    name: "Create Production Order"
+    description: "Allow creating production orders"
+  - key: "production.order.update"
+    name: "Update Production Order"
+    description: "Allow updating production orders"
+  - key: "production.stock.manage"
+    name: "Manage Stock"
+    description: "Allow managing stock movements"

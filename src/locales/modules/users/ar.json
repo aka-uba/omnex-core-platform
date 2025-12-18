@@ -1,0 +1,128 @@
+{
+  "title": "إدارة المستخدمين",
+  "description": "إدارة جميع المستخدمين والأدوار والصلاحيات داخل الوكالة.",
+  "create": {
+    "title": "إنشاء مستخدم جديد",
+    "description": "املأ التفاصيل أدناه لإضافة مستخدم جديد إلى النظام.",
+    "button": "إنشاء مستخدم"
+  },
+  "edit": {
+    "title": "تعديل المستخدم",
+    "description": "تحديث معلومات المستخدم.",
+    "button": "حفظ التغييرات"
+  },
+  "profile": {
+    "title": "ملف المستخدم",
+    "description": "عرض وتعديل معلومات ملفك الشخصي."
+  },
+  "table": {
+    "user": "المستخدم",
+    "email": "البريد الإلكتروني",
+    "role": "الدور",
+    "status": "الحالة",
+    "lastActive": "آخر نشاط",
+    "actions": "الإجراءات",
+    "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني...",
+    "filters": "المرشحات",
+    "rowsPerPage": "الصفوف في الصفحة:",
+    "showing": "النتائج"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "قيد الانتظار"
+  },
+  "tabs": {
+    "personal": "المعلومات الشخصية",
+    "work": "معلومات العمل",
+    "contact": "جهة الاتصال",
+    "documents": "المستندات",
+    "cv": "السيرة الذاتية",
+    "preferences": "التفضيلات"
+  },
+  "form": {
+    "personal": {
+      "profilePicture": "صورة الملف الشخصي",
+      "profilePictureDescription": "قم بتحميل صورة ملف شخصي للمستخدم الجديد.",
+      "userDetails": "تفاصيل المستخدم",
+      "userDetailsDescription": "قدم اسم المستخدم والبريد الإلكتروني والدور.",
+      "credentials": "بيانات الاعتماد",
+      "credentialsDescription": "قم بتعيين كلمة مرور آمنة للمستخدم الجديد.",
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "أحمد محمد",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "phone": "الهاتف",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور"
+    },
+    "work": {
+      "title": "معلومات العمل",
+      "description": "أدخل معلومات العمل",
+      "department": "القسم",
+      "departmentPlaceholder": "اختر القسم",
+      "position": "المنصب",
+      "positionPlaceholder": "مطور أول",
+      "employeeId": "معرف الموظف",
+      "employeeIdPlaceholder": "موظف001",
+      "hireDate": "تاريخ التوظيف",
+      "hireDatePlaceholder": "اختر التاريخ",
+      "manager": "المدير",
+      "managerPlaceholder": "اسم المدير",
+      "assignAgency": "تعيين للوكالة/الشركة",
+      "assignAgencyPlaceholder": "اختر الوكالات"
+    },
+    "contact": {
+      "title": "معلومات الاتصال",
+      "description": "أدخل معلومات الاتصال",
+      "address": "العنوان",
+      "addressPlaceholder": "عنوان الشارع",
+      "city": "المدينة",
+      "cityPlaceholder": "المدينة",
+      "country": "البلد",
+      "countryPlaceholder": "البلد",
+      "postalCode": "الرمز البريدي",
+      "postalCodePlaceholder": "12345",
+      "emergencyContact": "جهة اتصال الطوارئ",
+      "emergencyContactPlaceholder": "اسم جهة اتصال الطوارئ",
+      "emergencyPhone": "هاتف الطوارئ",
+      "emergencyPhonePlaceholder": "+90 555 123 4567"
+    },
+    "documents": {
+      "title": "المستندات",
+      "description": "قم بتحميل المستندات المطلوبة",
+      "passport": "نسخة جواز السفر",
+      "idCard": "بطاقة الهوية",
+      "contract": "العقد",
+      "otherDocuments": "مستندات أخرى"
+    },
+    "cv": {
+      "title": "السيرة الذاتية",
+      "uploadCv": "تحميل السيرة الذاتية",
+      "cvDescription": "قم بتحميل السيرة الذاتية للمستخدم."
+    },
+    "preferences": {
+      "title": "تفضيلات النظام",
+      "defaultLanguage": "اللغة الافتراضية",
+      "defaultTheme": "المظهر الافتراضي",
+      "defaultLayout": "تخطيط لوحة التحكم الافتراضي"
+    }
+  },
+  "actions": {
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل",
+    "resetPassword": "إعادة تعيين كلمة المرور"
+  },
+  "validation": {
+    "fullNameRequired": "الاسم الكامل مطلوب",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "passwordMismatch": "كلمات المرور غير متطابقة"
+  }
+}
+

@@ -1,0 +1,65 @@
+name: "Vardiya"
+slug: "vardiya"
+version: "1.0.0"
+description: "Comprehensive shift and work schedule management system - Create shift schedules, track employee attendance, manage work hours, and monitor shift coverage with automated scheduling and attendance tracking"
+icon: "Clock"
+author: "Omnex Team"
+category: "operations"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies:
+  - slug: "hr"
+    version: ">=1.0.0"
+    optional: true
+menu:
+  main:
+    label: "Vardiya"
+    icon: "Clock"
+    href: "/modules/vardiya/dashboard"
+    order: 80
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/vardiya/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Vardiyalar"
+        path: "/modules/vardiya/shifts"
+        icon: "Clock"
+        order: 2
+      - title: "Çalışma Planı"
+        path: "/modules/vardiya/schedule"
+        icon: "Calendar"
+        order: 3
+      - title: "Mesai Takibi"
+        path: "/modules/vardiya/attendance"
+        icon: "UserCheck"
+        order: 4
+settings:
+  - key: "enableAutoScheduling"
+    label: "Enable Auto Scheduling"
+    description: "Automatically create shift schedules"
+    type: "boolean"
+    defaultValue: false
+    category: "General"
+  - key: "shiftDuration"
+    label: "Default Shift Duration (hours)"
+    description: "Default duration for shifts"
+    type: "number"
+    defaultValue: 8
+    min: 1
+    max: 24
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "vardiya:read"
+    description: "View shift data"
+  - key: "vardiya:write"
+    description: "Create and edit shift data"
+  - key: "vardiya:delete"
+    description: "Delete shift data"

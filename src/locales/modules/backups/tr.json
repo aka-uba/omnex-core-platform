@@ -1,0 +1,27 @@
+{
+  "title": "Yedekleme Yönetimi",
+  "description": "Veritabanı yedeklerini yönetin ve geri yükleyin",
+  "backups": {
+    "restore": "Geri Yükle",
+    "delete": "Yedeği Sil",
+    "restoreDatabase": "Veritabanını Geri Yükle"
+  },
+  "system": {
+    "title": "Sistem Durumu",
+    "description": "Gerçek zamanlı sunucu ve veritabanı metrikleri"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Genel bakış ve istatistikler"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  }
+}

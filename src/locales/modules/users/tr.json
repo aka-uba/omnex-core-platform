@@ -1,0 +1,164 @@
+{
+  "title": "Kullanıcı Yönetimi",
+  "description": "Ajans içindeki tüm kullanıcıları, rolleri ve izinleri yönetin.",
+  "create": {
+    "title": "Yeni Kullanıcı Oluştur",
+    "description": "Aşağıdaki detayları doldurarak sisteme yeni bir kullanıcı ekleyin.",
+    "button": "Kullanıcı Oluştur"
+  },
+  "edit": {
+    "title": "Kullanıcı Düzenle",
+    "description": "Kullanıcı bilgilerini güncelleyin.",
+    "button": "Değişiklikleri Kaydet"
+  },
+  "profile": {
+    "title": "Kullanıcı Profili",
+    "description": "Profil bilgilerinizi görüntüleyin ve düzenleyin."
+  },
+  "table": {
+    "user": "Kullanıcı",
+    "email": "E-posta",
+    "role": "Rol",
+    "status": "Durum",
+    "lastActive": "Son Aktif",
+    "actions": "İşlemler",
+    "searchPlaceholder": "İsim veya e-posta ile ara...",
+    "filters": "Filtreler",
+    "rowsPerPage": "Sayfa başına:",
+    "showing": "kayıt gösteriliyor",
+    "noUsers": "Kullanıcı bulunamadı"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "pending": "Beklemede"
+  },
+  "tabs": {
+    "personal": "Kişisel Bilgiler",
+    "work": "İş Bilgileri",
+    "contact": "İletişim",
+    "documents": "Belgeler",
+    "cv": "CV",
+    "preferences": "Tercihler"
+  },
+  "form": {
+    "personal": {
+      "profilePicture": "Profil Resmi",
+      "profilePictureDescription": "Yeni kullanıcı için bir profil resmi yükleyin.",
+      "userDetails": "Kullanıcı Detayları",
+      "userDetailsDescription": "Kullanıcının adı, e-posta ve rolünü girin.",
+      "credentials": "Kimlik Bilgileri",
+      "credentialsDescription": "Yeni kullanıcı için güvenli bir şifre belirleyin.",
+      "fullName": "Ad Soyad",
+      "fullNamePlaceholder": "Ahmet Yılmaz",
+      "email": "E-posta",
+      "role": "Rol",
+      "phone": "Telefon",
+      "password": "Şifre",
+      "confirmPassword": "Şifreyi Onayla"
+    },
+    "work": {
+      "title": "İş Bilgileri",
+      "description": "İş ile ilgili bilgileri girin",
+      "department": "Departman",
+      "departmentPlaceholder": "Departman seçin",
+      "position": "Pozisyon",
+      "positionPlaceholder": "Kıdemli Geliştirici",
+      "employeeId": "Çalışan ID",
+      "employeeIdPlaceholder": "ÇAL001",
+      "hireDate": "İşe Başlama Tarihi",
+      "hireDatePlaceholder": "Tarih seçin",
+      "manager": "Yönetici",
+      "managerPlaceholder": "Yönetici adı",
+      "assignAgency": "Ajans/Şirket Ata",
+      "assignAgencyPlaceholder": "Ajansları seçin",
+      "role": "Rol"
+    },
+    "contact": {
+      "title": "İletişim Bilgileri",
+      "description": "İletişim bilgilerini girin",
+      "address": "Adres",
+      "addressPlaceholder": "Sokak adresi",
+      "city": "Şehir",
+      "cityPlaceholder": "Şehir",
+      "country": "Ülke",
+      "countryPlaceholder": "Ülke",
+      "postalCode": "Posta Kodu",
+      "postalCodePlaceholder": "12345",
+      "emergencyContact": "Acil Durum İletişimi",
+      "emergencyContactPlaceholder": "Acil durum iletişim adı",
+      "emergencyPhone": "Acil Durum Telefonu",
+      "emergencyPhonePlaceholder": "+90 555 123 4567"
+    },
+    "documents": {
+      "title": "Belgeler",
+      "description": "Gerekli belgeleri yükleyin",
+      "passport": "Pasaport Kopyası",
+      "idCard": "Kimlik Kartı",
+      "contract": "Sözleşme",
+      "otherDocuments": "Diğer Belgeler"
+    },
+    "cv": {
+      "title": "CV",
+      "uploadCv": "CV Yükle",
+      "cvDescription": "Kullanıcının CV'sini yükleyin."
+    },
+    "preferences": {
+      "title": "Sistem Tercihleri",
+      "defaultLanguage": "Varsayılan Dil",
+      "defaultTheme": "Varsayılan Tema",
+      "defaultLayout": "Varsayılan Dashboard Düzeni"
+    },
+    "cancel": "İptal",
+    "upload": "Yükle"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "activate": "Aktifleştir",
+    "deactivate": "Pasifleştir",
+    "resetPassword": "Şifreyi Sıfırla",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "validation": {
+    "fullNameRequired": "Ad soyad gereklidir",
+    "emailRequired": "E-posta gereklidir",
+    "emailInvalid": "Geçerli bir e-posta adresi girin",
+    "passwordRequired": "Şifre gereklidir",
+    "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
+    "passwordMismatch": "Şifreler eşleşmiyor"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "common": {
+    "errorLoading": "Yüklenirken hata oluştu"
+  },
+  "export": {
+    "report": "Rapor"
+  },
+  "notifications": {
+    "error": {
+      "title": "Hata",
+      "userCreateFailed": "Kullanıcı oluşturulamadı",
+      "userUpdateFailed": "Kullanıcı güncellenemedi"
+    },
+    "success": {
+      "userCreated": "Kullanıcı başarıyla oluşturuldu",
+      "userUpdated": "Kullanıcı başarıyla güncellendi"
+    },
+    "validation": {
+      "invalidEmail": "Geçersiz e-posta adresi",
+      "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "requiredFields": "Zorunlu alanları doldurun",
+      "title": "Doğrulama Hatası"
+    }
+  },
+  "userUpdated": "Kullanıcı güncellendi"
+}

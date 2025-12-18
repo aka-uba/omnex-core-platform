@@ -1,0 +1,224 @@
+// ============================================
+// Accounting Module
+// ============================================
+
+model Subscription {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // Abonelik bilgileri
+  name   String
+  type   String // 'rental', 'subscription', 'commission'
+  status String @default("active") // 'active', 'suspended', 'cancelled'
+
+  // Müşteri/Tedarikçi
+  customerId String? // Müşteri ID
+  supplierId String? // Tedarikçi ID
+
+  // Tarihler
+  startDate   DateTime
+  endDate     DateTime?
+  renewalDate DateTime?
+
+  // Fiyatlandırma
+  basePrice    Decimal @db.Decimal(10, 2)
+  currency     String  @default("TRY")
+  billingCycle String // 'monthly', 'quarterly', 'yearly', 'one_time'
+
+  // Komisyon (eğer varsa)
+  commissionRate Decimal? @db.Decimal(5, 2)
+  commissionType String? // 'percentage', 'fixed'
+
+  // Personel atama
+  assignedUserId String? // Personel ID
+
+  // Metadata
+  description String?
+  terms       String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  invoices Invoice[]
+  payments AccountingPayment[]
+  expenses Expense[]
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, type])
+  @@index([customerId])
+  @@index([supplierId])
+  @@index([assignedUserId])
+  @@index([status])
+  @@index([type])
+}
+
+model Invoice {
+  id             String  @id @default(uuid())
+  tenantId       String
+  companyId      String
+  subscriptionId String?
+
+  // Fatura bilgileri
+  invoiceNumber String
+  invoiceDate   DateTime
+  dueDate       DateTime
+
+  // Müşteri/Tedarikçi
+  customerId String? // Müşteri ID
+  supplierId String? // Tedarikçi ID
+
+  // Tutar bilgileri
+  subtotal    Decimal  @db.Decimal(10, 2)
+  taxRate     Decimal? @db.Decimal(5, 2)
+  taxAmount   Decimal? @db.Decimal(10, 2)
+  totalAmount Decimal  @db.Decimal(10, 2)
+  currency    String   @default("TRY")
+
+  // Durum
+  status   String    @default("draft") // 'draft', 'sent', 'paid', 'overdue', 'cancelled'
+  paidDate DateTime?
+
+  // Ödeme bilgileri
+  paymentMethod String?
+  paymentNotes  String?
+
+  // Metadata
+  description String?
+  items       Json? // InvoiceItem[]
+  documents   String[] // Merkezi Dosya Yönetimi'nden
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subscription Subscription?       @relation(fields: [subscriptionId], references: [id])
+  payments     AccountingPayment[]
+
+  @@unique([tenantId, invoiceNumber])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, dueDate])
+  @@index([subscriptionId])
+  @@index([customerId])
+  @@index([supplierId])
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([invoiceDate])
+}
+
+model AccountingPayment {
+  id             String  @id @default(uuid())
+  tenantId       String
+  companyId      String
+  subscriptionId String?
+  invoiceId      String?
+
+  // Ödeme bilgileri
+  amount      Decimal  @db.Decimal(10, 2)
+  currency    String   @default("TRY")
+  paymentDate DateTime
+
+  // Ödeme yöntemi
+  paymentMethod    String // 'cash', 'bank_transfer', 'card', 'check', 'other'
+  paymentReference String? // Referans numarası
+
+  // Durum
+  status String @default("completed") // 'pending', 'completed', 'failed', 'cancelled'
+
+  // Metadata
+  notes      String?
+  receiptUrl String? // Merkezi Dosya Yönetimi'nden
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  invoice      Invoice?      @relation(fields: [invoiceId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, paymentDate])
+  @@index([subscriptionId])
+  @@index([invoiceId])
+  @@index([status])
+  @@index([paymentDate])
+}
+
+model Expense {
+  id             String  @id @default(uuid())
+  tenantId       String
+  companyId      String
+  locationId     String?
+  subscriptionId String?
+
+  // Gider bilgileri
+  name     String
+  category String
+  type     String // 'operational', 'subscription', 'maintenance', 'rent', 'utility', 'other'
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("TRY")
+
+  // Tarih
+  expenseDate DateTime
+
+  // Personel atama
+  assignedUserId String?
+
+  // Onay
+  status     String    @default("pending") // 'pending', 'approved', 'rejected'
+  approvedBy String?
+  approvedAt DateTime?
+
+  // Metadata
+  description String?
+  receiptUrl  String? // Merkezi Dosya Yönetimi'nden
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, expenseDate])
+  @@index([tenantId, companyId, category])
+  @@index([subscriptionId])
+  @@index([locationId])
+  @@index([assignedUserId])
+  @@index([category])
+  @@index([type])
+  @@index([expenseDate])
+  @@index([status])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+name: "Ürün"
+slug: "urun"
+version: "1.0.0"
+description: "Complete product catalog and inventory management system - Manage product catalogs, track stock levels, monitor inventory movements, set low stock alerts, and handle product categories with comprehensive inventory tracking"
+icon: "Package"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies: []
+menu:
+  main:
+    label: "Ürün"
+    icon: "Package"
+    href: "/modules/urun/dashboard"
+    order: 75
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/urun/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Ürünler"
+        path: "/modules/urun/products"
+        icon: "Package"
+        order: 2
+      - title: "Kategoriler"
+        path: "/modules/urun/categories"
+        icon: "Category"
+        order: 3
+      - title: "Stok"
+        path: "/modules/urun/inventory"
+        icon: "BoxSeam"
+        order: 4
+settings:
+  - key: "enableInventoryTracking"
+    label: "Enable Inventory Tracking"
+    description: "Track product inventory levels"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "lowStockThreshold"
+    label: "Low Stock Threshold"
+    description: "Alert when stock falls below this level"
+    type: "number"
+    defaultValue: 10
+    min: 0
+    max: 1000
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "urun:read"
+    description: "View product data"
+  - key: "urun:write"
+    description: "Create and edit product data"
+  - key: "urun:delete"
+    description: "Delete product data"

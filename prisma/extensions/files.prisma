@@ -1,0 +1,241 @@
+// ============================================
+// Core File Management System (FAZ 0.1)
+// ============================================
+
+model CoreFile {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String
+  module     String // 'accounting', 'notifications', 'hr', 'maintenance', etc.
+  entityType String? // 'invoice', 'contract', 'maintenance-report', etc.
+  entityId   String? // İlişkili entity ID
+
+  // Dosya bilgileri
+  filename     String
+  originalName String
+  path         String // Relative path: "accounting/invoices/2024/01/"
+  fullPath     String // Full path: "tenants/{tenantId}/module-files/accounting/invoices/..."
+  size         Int
+  mimeType     String
+  extension    String
+
+  // Metadata
+  title       String?
+  description String?
+  tags        String[] // Array of tag strings
+  category    String?
+
+  // Versiyon kontrolü
+  version           Int     @default(1)
+  isLatest          Boolean @default(true)
+  previousVersionId String?
+
+  // Erişim kontrolü
+  permissions Json // FilePermissions: { read: string[], write: string[], delete: string[], share: string[], isPublic: boolean }
+  createdBy   String
+  updatedBy   String
+
+  // Audit
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  accessedAt DateTime?
+
+  // Relations
+  shares          FileShare[]
+  versions        CoreFile[]  @relation("FileVersions")
+  previousVersion CoreFile?   @relation("FileVersions", fields: [previousVersionId], references: [id])
+
+  @@index([tenantId, companyId, module])
+  @@index([module, entityType, entityId])
+  @@index([createdBy])
+  @@index([isLatest])
+}
+
+model FileShare {
+  id            String    @id @default(uuid())
+  tenantId      String
+  companyId     String
+  fileId        String
+  sharedBy      String
+  sharedWith    String // user/role ID veya 'public'
+  permission    String // 'view' | 'download' | 'edit'
+  expiresAt     DateTime?
+  accessCode    String? // Güvenli paylaşım için
+  downloadCount Int       @default(0)
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  file CoreFile @relation(fields: [fileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([fileId])
+  @@index([sharedWith])
+  @@index([expiresAt])
+}
+
+// ============================================
+// Dynamic Form Builder System (FAZ 0.5)
+// ============================================
+
+model FormConfig {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  module     String
+  entityType String
+  name       String
+
+  // Form alanları
+  fields Json // FormField[]
+
+  // Versiyon kontrolü
+  version Int @default(1)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, companyId, module, entityType])
+  @@index([module, entityType])
+  @@index([isActive])
+}
+
+// ============================================
+// Export Template System (FAZ 0.3)
+// ============================================
+
+model ExportTemplate {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String?
+  locationId String?
+  name       String
+  type       String // 'header' | 'footer' | 'full' | 'email' | 'sms' | 'push'
+  category   String? // 'export' | 'notification' - export için export, bildirimler için notification
+  description String? // Template açıklaması
+
+  // Template içeriği
+  logoUrl      String?
+  title        String?
+  subtitle     String?
+  address      String?
+  phone        String?
+  email        String?
+  website      String?
+  taxNumber    String?
+  customFields Json? // Additional custom fields
+
+  // Düzen ayarları
+  layout Json? // CSS-like layout config: { header: {...}, footer: {...}, body: {...} }
+  styles Json? // Styling options: { colors: {...}, fonts: {...}, spacing: {...} }
+  design Json? // Template design structure (HTML-like structure for rendering)
+  
+  // Preview ve versiyonlama
+  previewImage String? // Preview görseli URL
+  version      Int     @default(1) // Template versiyonu
+  isPublished  Boolean @default(true) // Yayınlanmış mı?
+
+  // Import/Export metadata
+  exportedAt   DateTime? // Son export tarihi
+  importedAt   DateTime? // Son import tarihi
+  sourceTemplateId String? // Import edildiyse kaynak template ID
+
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, companyId])
+  @@index([type])
+  @@index([category])
+  @@index([isDefault])
+  @@index([isActive])
+  @@index([isPublished])
+}
+
+// ============================================
+// Notification Template System (FAZ 0.4)
+// ============================================
+
+model NotificationTemplate {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String?
+  locationId String?
+  
+  // Template bilgileri
+  name        String
+  channel     String // 'email' | 'sms' | 'push' | 'whatsapp' | 'telegram'
+  category    String? // 'system' | 'user' | 'task' | 'urgent' | 'custom'
+  notificationType String? // Bildirim tipi: 'task_assignment', 'urgent_alert', 'system_update', vb.
+  description String?
+  
+  // Email özel alanlar
+  emailSubject      String? // Email konu başlığı
+  emailPlainText    String? // Düz metin içerik
+  emailHtmlTemplate String? // HTML template içeriği
+  emailTemplateStyle String? // 'corporate' | 'visionary' | 'elegant' | 'modern'
+  
+  // Email imza alanı
+  emailSignatureEnabled Boolean @default(true)
+  emailSignatureUserInfo Boolean @default(true) // Kullanıcı bilgileri göster
+  emailSignatureUserAvatar Boolean @default(true) // Kullanıcı avatarı göster
+  emailSignatureCompanyLogo Boolean @default(true) // Firma logosu göster
+  emailSignatureCompanyInfo Boolean @default(true) // Firma bilgileri göster
+  
+  // SMS özel alanlar
+  smsSubject String? // SMS konu başlığı (bazı provider'lar destekler)
+  smsContent String? // SMS içeriği
+  
+  // WhatsApp/Telegram özel alanlar
+  socialImageUrl String? // Resim URL'i
+  socialImageDescription String? // Resim açıklaması
+  socialContent String? // Mesaj içeriği
+  
+  // Push notification özel alanlar
+  pushTitle String? // Push başlık
+  pushBody  String? // Push içerik
+  pushIcon  String? // Push ikon URL'i
+  pushImage String? // Push görsel URL'i
+  
+  // Varsayılan mesaj alanları (Email için)
+  defaultMessagePrefix String? // İlk metin
+  defaultMessageSuffix String? // Son metin
+  
+  // Template içeriği (JSON formatında dinamik değişkenler)
+  templateVariables Json? // Kullanılabilir değişkenler: {{userName}}, {{companyName}}, vb.
+  templateContent  Json? // Template içeriği yapısı
+  
+  // Dinamik değişkenler
+  variables Json? // { userName: "Kullanıcı Adı", companyLogo: "Logo URL", companyInfo: {...} }
+  
+  // Tasarım ayarları
+  designStyle String? // 'corporate' | 'visionary' | 'elegant' | 'modern' | 'minimal'
+  layout      Json? // Layout ayarları
+  styles      Json? // Stil ayarları (renkler, fontlar, vb.)
+  
+  // Durum
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+  isPublished Boolean @default(true)
+  
+  // Versiyonlama
+  version Int @default(1)
+  
+  // Metadata
+  previewImage String? // Önizleme görseli
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([tenantId, companyId])
+  @@index([channel])
+  @@index([category])
+  @@index([notificationType])
+  @@index([isDefault])
+  @@index([isActive])
+  @@map("notification_templates")
+}
+

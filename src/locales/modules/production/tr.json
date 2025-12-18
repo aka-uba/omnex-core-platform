@@ -1,0 +1,428 @@
+{
+  "title": "Üretim ve Ürün",
+  "description": "Kapsamlı üretim ve ürün yönetim modülü",
+  "menu": {
+    "label": "Üretim",
+    "items": {
+      "dashboard": "Dashboard",
+      "products": "Ürünler",
+      "bom": "Malzeme Listesi",
+      "orders": "Üretim Emirleri",
+      "stock": "Stok",
+      "reports": "Raporlar"
+    }
+  },
+  "dashboard": {
+    "title": "Üretim Dashboard",
+    "description": "Üretim faaliyetleri ve analizlerine genel bakış",
+    "dateFrom": "Başlangıç Tarihi",
+    "dateTo": "Bitiş Tarihi",
+    "totalProducts": "Toplam Ürün",
+    "totalOrders": "Toplam Sipariş",
+    "activeOrders": "Aktif Siparişler",
+    "stockValue": "Stok Değeri",
+    "ordersByMonth": "Aylık Siparişler",
+    "total": "Toplam",
+    "completed": "Tamamlanan",
+    "ordersByStatus": "Duruma Göre Siparişler",
+    "lowStockAlert": "Düşük Stok Uyarısı",
+    "lowStockCount": "Düşük Stok Sayısı"
+  },
+  "products": {
+    "title": "Ürünler",
+    "description": "Ürünlerinizi ve envanterinizi yönetin",
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası",
+    "create": "Oluştur"
+  },
+  "bom": {
+    "title": "Malzeme Listesi",
+    "description": "Ürün malzeme listelerini yönetin",
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "add": "Ekle",
+    "empty": "Malzeme listesi boş",
+    "order": "Sıra",
+    "product": "Ürün",
+    "component": "Bileşen",
+    "quantity": "Miktar",
+    "unit": "Birim",
+    "wasteRate": "Fire Oranı",
+    "edit": "Düzenle",
+    "form": {
+      "productId": "Ürün",
+      "quantity": "Miktar",
+      "unit": "Birim",
+      "componentId": "Bileşen",
+      "wasteRate": "Fire Oranı",
+      "order": "Sıra"
+    },
+    "update": {
+      "success": "Başarılı"
+    },
+    "create": {
+      "success": "Başarılı"
+    },
+    "save": {
+      "error": "Hata"
+    },
+    "selectProduct": "Ürün Seç",
+    "selectProductPlaceholder": "Bir ürün seçin",
+    "selectProductFirst": "Önce bir ürün seçin"
+  },
+  "orders": {
+    "form": {
+      "orderNumber": "Sipariş Numarası",
+      "orderNumberPlaceholder": "Sipariş numarasını girin",
+      "location": "Konum",
+      "locationPlaceholder": "Konum seçin",
+      "product": "Ürün",
+      "productPlaceholder": "Ürün seçin",
+      "quantity": "Miktar",
+      "quantityPlaceholder": "Miktar girin",
+      "unit": "Birim",
+      "unitPlaceholder": "Birim seçin",
+      "status": "Durum",
+      "statusPlaceholder": "Durum seçin",
+      "priority": "Öncelik",
+      "priorityPlaceholder": "Öncelik seçin",
+      "plannedStartDate": "Planlanan Başlangıç Tarihi",
+      "plannedStartDatePlaceholder": "Planlanan başlangıç tarihi seçin",
+      "plannedEndDate": "Planlanan Bitiş Tarihi",
+      "plannedEndDatePlaceholder": "Planlanan bitiş tarihi seçin",
+      "estimatedCost": "Tahmini Maliyet",
+      "estimatedCostPlaceholder": "Tahmini maliyet girin (opsiyonel)",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin (opsiyonel)",
+      "isActive": "Aktif",
+      "isActiveDescription": "Bu üretim emri aktif mi?",
+      "mustBePositive": "pozitif olmalıdır"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "in_progress": "Devam Ediyor",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal Edildi"
+    },
+    "priority": {
+      "low": "Düşük",
+      "normal": "Normal",
+      "high": "Yüksek",
+      "urgent": "Acil"
+    },
+    "createSuccess": "Üretim emri başarıyla oluşturuldu",
+    "updateSuccess": "Üretim emri başarıyla güncellendi",
+    "title": "Üretim Emirleri",
+    "description": "Üretim emirlerini ve programlarını yönetin",
+    "table": {
+      "orderNumber": "Emir No",
+      "product": "Ürün",
+      "quantity": "Miktar",
+      "status": "Durum",
+      "priority": "Öncelik",
+      "plannedStart": "Planlanan Başlangıç",
+      "plannedEnd": "Planlanan Bitiş",
+      "actualStart": "Gerçek Başlangıç",
+      "actualEnd": "Gerçek Bitiş",
+      "actions": "İşlemler"
+    },
+    "empty": {
+      "noOrders": "Üretim emri bulunamadı"
+    },
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası",
+    "filter": {
+      "product": "Ürün",
+      "location": "Konum",
+      "status": "Durum",
+      "priority": "Öncelik"
+    },
+    "create": "Oluştur"
+  },
+  "stock": {
+    "form": {
+      "product": "Ürün",
+      "productPlaceholder": "Ürün seçin",
+      "location": "Konum",
+      "locationPlaceholder": "Konum seçin (opsiyonel)",
+      "type": "Hareket Tipi",
+      "typePlaceholder": "Hareket tipi seçin",
+      "quantity": "Miktar",
+      "quantityPlaceholder": "Miktar girin",
+      "unit": "Birim",
+      "unitPlaceholder": "Birim seçin",
+      "referenceType": "Referans Tipi",
+      "referenceTypePlaceholder": "Referans tipi seçin (opsiyonel)",
+      "referenceId": "Referans ID",
+      "referenceIdPlaceholder": "Referans ID girin (opsiyonel)",
+      "movementDate": "Hareket Tarihi",
+      "movementDatePlaceholder": "Hareket tarihi seçin",
+      "notes": "Notlar",
+      "notesPlaceholder": "Notlar girin (opsiyonel)",
+      "none": "Yok",
+      "mustBePositive": "pozitif olmalıdır"
+    },
+    "types": {
+      "in": "Giriş",
+      "out": "Çıkış",
+      "transfer": "Transfer",
+      "adjustment": "Düzeltme"
+    },
+    "referenceTypes": {
+      "production": "Üretim",
+      "sale": "Satış",
+      "purchase": "Satın Alma",
+      "maintenance": "Bakım"
+    },
+    "createSuccess": "Stok hareketi başarıyla oluşturuldu",
+    "title": "Stok Yönetimi",
+    "description": "Stok seviyelerini takip edin ve yönetin",
+    "menu": {
+      "label": "Stok"
+    },
+    "table": {
+      "product": "Ürün",
+      "type": "Tip",
+      "quantity": "Miktar",
+      "unit": "Birim",
+      "movementDate": "Hareket Tarihi",
+      "referenceType": "Referans Tipi",
+      "notes": "Notlar"
+    },
+    "exportDescription": "Dışa Aktarma Açıklaması",
+    "exportSuccess": "Dışa Aktarma Başarılı",
+    "exportError": "Dışa Aktarma Hatası",
+    "filter": {
+      "product": "Ürün",
+      "location": "Konum",
+      "type": "Tip"
+    },
+    "create": "Oluştur"
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "Üretim raporlarını ve analizleri görüntüleyin"
+  },
+  "steps": {
+    "form": {
+      "stepNumber": "Adım Numarası",
+      "stepNumberMinError": "en az 1 olmalıdır",
+      "status": "Durum",
+      "name": "Ad",
+      "description": "Açıklama",
+      "plannedStart": "Planlanan Başlangıç",
+      "plannedEnd": "Planlanan Bitiş",
+      "assignedTo": "Atanan (Kullanıcı ID)",
+      "assignedToPlaceholder": "Kullanıcı ID girin",
+      "laborHours": "İşçilik Saati",
+      "actualStart": "Gerçek Başlangıç",
+      "actualEnd": "Gerçek Bitiş",
+      "notes": "Notlar"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "in_progress": "Devam Ediyor",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal Edildi"
+    },
+    "create": {
+      "success": "Üretim adımı başarıyla oluşturuldu"
+    },
+    "update": {
+      "success": "Üretim adımı başarıyla güncellendi"
+    },
+    "save": {
+      "error": "Üretim adımı kaydedilemedi"
+    },
+    "delete": {
+      "confirm": "Onayla",
+      "success": "Başarılı",
+      "error": "Hata"
+    },
+    "title": "Üretim Adımları",
+    "filter": {
+      "status": "Durum",
+      "all": "Tümü"
+    },
+    "add": "Adım Ekle",
+    "empty": "Üretim adımı bulunamadı",
+    "stepNumber": "Adım No",
+    "name": "Ad",
+    "plannedStart": "Planlanan Başlangıç",
+    "plannedEnd": "Planlanan Bitiş",
+    "assignedTo": "Atanan",
+    "laborHours": "İşçilik Saati",
+    "edit": "Düzenle"
+  },
+  "form": {
+    "name": "Ürün Adı",
+    "namePlaceholder": "Ürün adını girin",
+    "code": "Ürün Kodu",
+    "codePlaceholder": "Ürün kodunu girin",
+    "sku": "SKU",
+    "skuPlaceholder": "SKU girin (opsiyonel)",
+    "barcode": "Barkod",
+    "barcodePlaceholder": "Barkod girin (opsiyonel)",
+    "category": "Kategori",
+    "categoryPlaceholder": "Kategori girin",
+    "type": "Ürün Tipi",
+    "typePlaceholder": "Ürün tipi seçin",
+    "location": "Konum",
+    "locationPlaceholder": "Konum seçin (opsiyonel)",
+    "unit": "Birim",
+    "unitPlaceholder": "Birim seçin",
+    "stockQuantity": "Stok Miktarı",
+    "stockQuantityPlaceholder": "Stok miktarını girin",
+    "minStockLevel": "Min Stok Seviyesi",
+    "minStockLevelPlaceholder": "Min stok seviyesini girin (opsiyonel)",
+    "maxStockLevel": "Max Stok Seviyesi",
+    "maxStockLevelPlaceholder": "Max stok seviyesini girin (opsiyonel)",
+    "costPrice": "Maliyet Fiyatı",
+    "costPricePlaceholder": "Maliyet fiyatını girin (opsiyonel)",
+    "sellingPrice": "Satış Fiyatı",
+    "sellingPricePlaceholder": "Satış fiyatını girin (opsiyonel)",
+    "currency": "Para Birimi",
+    "currencyPlaceholder": "Para birimi seçin",
+    "isProducible": "Üretilebilir",
+    "isProducibleDescription": "Bu ürün üretilebilir mi?",
+    "productionTime": "Üretim Süresi (saat)",
+    "productionTimePlaceholder": "Üretim süresini girin (opsiyonel)",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Açıklama girin (opsiyonel)",
+    "isActive": "Aktif",
+    "isActiveDescription": "Bu ürün aktif mi?",
+    "mustBeNonNegative": "negatif olamaz",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "edit": "Düzenle",
+    "createdAt": "Oluşturulma Tarihi",
+    "updatedAt": "Güncellenme Tarihi",
+    "cancel": "İptal",
+    "save": "Kaydet"
+  },
+  "units": {
+    "adet": "Adet",
+    "kg": "Kilogram",
+    "lt": "Litre",
+    "m2": "Metrekare",
+    "m3": "Metreküp",
+    "paket": "Paket",
+    "kutu": "Kutu",
+    "palet": "Palet"
+  },
+  "types": {
+    "hammadde": "Hammadde",
+    "yarı_mamul": "Yarı Mamul",
+    "mamul": "Mamul"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "common": {
+    "notFound": "Bulunamadı",
+    "errorLoading": "Yüklenirken hata oluştu",
+    "actions": "İşlemler",
+    "back": "Geri",
+    "cancel": "İptal",
+    "create": "Oluştur",
+    "loading": "Yükleniyor...",
+    "noData": "Veri bulunamadı",
+    "required": "Gerekli",
+    "save": "Kaydet"
+  },
+  "tabs": {
+    "details": "Detaylar",
+    "bom": "Malzeme Listesi",
+    "steps": "Üretim Adımları"
+  },
+  "templates": {
+    "edit": {
+      "product": {
+        "title": "Ürün Düzenle",
+        "description": "Ürün bilgilerini güncelle"
+      },
+      "order": {
+        "title": "Üretim Emri Düzenle",
+        "description": "Üretim emri bilgilerini güncelle"
+      }
+    },
+    "create": {
+      "product": {
+        "title": "Ürün Oluştur",
+        "description": "Üretim sisteminize yeni ürün ekleyin"
+      },
+      "order": {
+        "title": "Üretim Emri Oluştur",
+        "description": "Yeni üretim emri ekle"
+      }
+    }
+  },
+  "actions": {
+    "newProduct": "Yeni Ürün",
+    "newOrder": "Yeni Üretim Emri",
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "messages": {
+    "success": "Başarılı",
+    "error": "Hata",
+    "createSuccess": "Ürün başarıyla oluşturuldu",
+    "updateSuccess": "Ürün başarıyla güncellendi",
+    "createError": "Ürün oluşturulurken bir hata oluştu"
+  },
+  "filter": {
+    "all": "Tümü",
+    "location": "Konum",
+    "category": "Kategori",
+    "type": "Tip",
+    "status": "Durum"
+  },
+  "export": {
+    "title": "Başlık"
+  },
+  "pagination": {
+    "showing": "Gösteriliyor",
+    "of": "toplam"
+  },
+  "delete": {
+    "confirm": "Onayla",
+    "success": "Başarılı",
+    "error": "Hata"
+  },
+  "table": {
+    "code": "Kod",
+    "name": "Ad",
+    "category": "Kategori",
+    "type": "Tip",
+    "stockQuantity": "Stok Miktarı",
+    "unit": "Birim",
+    "costPrice": "Maliyet Fiyatı",
+    "sellingPrice": "Satış Fiyatı",
+    "status": "Durum",
+    "actions": "İşlemler"
+  },
+  "search": {
+    "placeholder": "Ara..."
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "loading": "Yükleniyor..."
+}

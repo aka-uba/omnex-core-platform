@@ -1,0 +1,153 @@
+{
+  "title": "Bakım Yönetimi",
+  "description": "Ekipman bakım kayıtlarını yönetin",
+  "menu": {
+    "label": "Bakım",
+    "items": {
+      "dashboard": "Dashboard",
+      "records": "Kayıtlar",
+      "calendar": "Takvim",
+      "reports": "Raporlar"
+    }
+  },
+  "reports": {
+    "title": "Raporlar",
+    "description": "Bakım analitikleri ve raporları görüntüleyin"
+  },
+  "create": "Yeni Bakım Kaydı",
+  "createDescription": "Yeni bakım kaydı oluşturun",
+  "edit": "Bakım Kaydı Düzenle",
+  "editDescription": "Bakım kaydı bilgilerini güncelleyin",
+  "detail": "Bakım Kaydı Detayı",
+  "detailDescription": "Bakım kaydı detaylarını görüntüleyin",
+  "notFound": "Bakım kaydı bulunamadı",
+  "types": {
+    "preventive": "Önleyici",
+    "corrective": "Düzeltici",
+    "emergency": "Acil"
+  },
+  "status": {
+    "scheduled": "Planlandı",
+    "in_progress": "Devam Ediyor",
+    "completed": "Tamamlandı",
+    "cancelled": "İptal Edildi",
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "table": {
+    "title": "Başlık",
+    "type": "Tip",
+    "status": "Durum",
+    "location": "Lokasyon",
+    "equipment": "Ekipman",
+    "scheduledDate": "Planlanan Tarih",
+    "estimatedCost": "Tahmini Maliyet",
+    "actualCost": "Gerçek Maliyet",
+    "actions": "İşlemler"
+  },
+  "form": {
+    "location": "Lokasyon",
+    "locationPlaceholder": "Lokasyon seçin",
+    "equipment": "Ekipman",
+    "equipmentPlaceholder": "Ekipman seçin",
+    "type": "Tip",
+    "typePlaceholder": "Tip seçin",
+    "title": "Başlık",
+    "titlePlaceholder": "Bakım başlığı girin",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Bakım açıklaması girin",
+    "scheduledDate": "Planlanan Tarih",
+    "scheduledDatePlaceholder": "Planlanan tarih seçin",
+    "startDate": "Başlangıç Tarihi",
+    "startDatePlaceholder": "Başlangıç tarihi seçin",
+    "endDate": "Bitiş Tarihi",
+    "endDatePlaceholder": "Bitiş tarihi seçin",
+    "estimatedCost": "Tahmini Maliyet",
+    "estimatedCostPlaceholder": "Tahmini maliyet girin",
+    "actualCost": "Gerçek Maliyet",
+    "actualCostPlaceholder": "Gerçek maliyet girin",
+    "notes": "Notlar",
+    "notesPlaceholder": "Notlar girin",
+    "documents": "Dokümanlar",
+    "status": "Durum",
+    "statusPlaceholder": "Durum seçin",
+    "isActive": "Aktif",
+    "documentsDescription": "Bakım ile ilgili dokümanları yükleyin",
+    "cancel": "İptal",
+    "create": "Oluştur",
+    "createdAt": "Oluşturulma Tarihi",
+    "save": "Kaydet",
+    "updatedAt": "Güncellenme Tarihi"
+  },
+  "filter": {
+    "type": "Tip",
+    "status": "Durum",
+    "location": "Lokasyon",
+    "all": "Tümü"
+  },
+  "search": {
+    "placeholder": "Bakım kayıtlarında ara..."
+  },
+  "delete": {
+    "confirm": "Bu bakım kaydını silmek istediğinize emin misiniz?",
+    "success": "Bakım kaydı başarıyla silindi",
+    "error": "Bakım kaydı silinirken bir hata oluştu"
+  },
+  "messages": {
+    "createSuccess": "Bakım kaydı başarıyla oluşturuldu",
+    "createError": "Bakım kaydı oluşturulurken bir hata oluştu",
+    "updateSuccess": "Bakım kaydı başarıyla güncellendi",
+    "updateError": "Bakım kaydı güncellenirken bir hata oluştu",
+    "success": "Başarılı",
+    "error": "Hata"
+  },
+  "export": {
+    "title": "Dışa Aktar"
+  },
+  "exportSuccess": "Bakım kayıtları başarıyla dışa aktarıldı",
+  "exportError": "Bakım kayıtları dışa aktarılırken bir hata oluştu",
+  "exportDescription": "Bakım Kayıtları Raporu",
+  "pagination": {
+    "showing": "Gösteriliyor",
+    "of": "toplam"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "newRecord": "Yeni Bakım Kaydı",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "dashboard": {
+    "title": "Bakım Dashboard",
+    "description": "Bakım aktiviteleri ve analitiklerine genel bakış",
+    "dateFrom": "Başlangıç Tarihi",
+    "dateTo": "Bitiş Tarihi",
+    "totalRecords": "Toplam Kayıt",
+    "completed": "Tamamlanan",
+    "totalCost": "Toplam Maliyet",
+    "scheduled": "Planlanan",
+    "maintenanceTrend": "Bakım Trendi",
+    "byType": "Tipe Göre",
+    "upcomingMaintenance": "Yaklaşan Bakımlar",
+    "overdueMaintenance": "Geciken Bakımlar",
+    "daysOverdue": "Gecikme Günü",
+    "noUpcoming": "Yaklaşan bakım yok",
+    "noOverdue": "Geciken bakım yok"
+  },
+  "calendar": {
+    "title": "Bakım Takvimi",
+    "description": "Bakım kayıtlarını takvim görünümünde görüntüleyin"
+  },
+  "common": {
+    "back": "Geri",
+    "edit": "Düzenle",
+    "errorLoading": "Yüklenirken hata oluştu",
+    "noData": "Veri bulunamadı",
+    "required": "Gerekli"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "title": "Kalender",
+  "description": "Ereignisse und Registrierungen anzeigen",
+  "actions": {
+    "createEvent": "Neues Ereignis"
+  },
+  "toolbar": {
+    "today": "Heute",
+    "month": "Monat",
+    "week": "Woche",
+    "day": "Tag",
+    "addEvent": "Ereignis hinzufügen",
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "event": "Ereignis",
+    "events": "Ereignisse"
+  },
+  "summary": {
+    "title": "Zusammenfassung dieses Monats",
+    "totalEvents": "Gesamte Ereignisse",
+    "totalRegistrations": "Gesamte Registrierungen",
+    "upcomingEvents": "Bevorstehende Ereignisse"
+  },
+  "calendar": {
+    "registrations": "Registrierungen",
+    "more": "mehr..."
+  },
+  "form": {
+    "createEvent": "Neues Ereignis erstellen",
+    "editEvent": "Ereignis bearbeiten",
+    "viewEvent": "Ereignis anzeigen",
+    "title": "Titel",
+    "titlePlaceholder": "Ereignistitel eingeben",
+    "titleRequired": "Titel ist erforderlich",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Ereignisbeschreibung eingeben",
+    "client": "Kunde",
+    "clientPlaceholder": "Kundenname eingeben",
+    "date": "Datum",
+    "dateRequired": "Datum ist erforderlich",
+    "time": "Uhrzeit",
+    "timePlaceholder": "Uhrzeit auswählen",
+    "status": "Status",
+    "statusDraft": "Entwurf",
+    "statusScheduled": "Geplant",
+    "statusPublished": "Veröffentlicht",
+    "statusNeedsRevision": "Überarbeitung erforderlich",
+    "color": "Farbe",
+    "colorYellow": "Gelb",
+    "colorGreen": "Grün",
+    "colorRed": "Rot",
+    "colorBlue": "Blau",
+    "colorPurple": "Lila",
+    "colorSlate": "Grau",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "close": "Schließen"
+  }
+}
+
+
+
+

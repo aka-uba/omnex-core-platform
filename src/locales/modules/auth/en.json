@@ -1,0 +1,57 @@
+{
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Sign in to your account",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "submit": "Sign In",
+    "noAccount": "Don't have an account?",
+    "register": "Sign Up",
+    "or": "or",
+    "errors": {
+      "invalidCredentials": "Invalid username or password",
+      "accountPending": "Your account is pending approval. Please wait for administrator approval.",
+      "accountInactive": "Your account is not active. Please contact administrator.",
+      "required": "Please fill in all fields"
+    }
+  },
+  "register": {
+    "title": "Sign Up",
+    "subtitle": "Create a new account",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "usernameHint": "Only letters, numbers and underscore allowed",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "passwordHint": "Must contain at least one uppercase, one lowercase and one number",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "submit": "Sign Up",
+    "hasAccount": "Already have an account?",
+    "login": "Sign In",
+    "success": {
+      "title": "Registration Successful!",
+      "message": "Your account is pending approval. You will be able to sign in after approval.",
+      "redirecting": "Redirecting to login page..."
+    },
+    "errors": {
+      "usernameExists": "This username is already taken",
+      "emailExists": "This email address is already registered",
+      "passwordMismatch": "Passwords do not match",
+      "required": "Please fill in all fields"
+    }
+  }
+}
+
+
+
+
+

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="14">
+  <rect width="3" height="2" fill="#006C35"/>
+  <rect width="3" height="0.67" y="0" fill="#000000"/>
+  <rect width="3" height="0.67" y="1.33" fill="#FFFFFF"/>
+  <text x="1.5" y="1.2" font-size="0.6" fill="#FFFFFF" font-weight="bold" text-anchor="middle" font-family="Arial, sans-serif">ش</text>
+</svg>

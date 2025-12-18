@@ -1,0 +1,166 @@
+{
+  "title": "Modül Yönetimi",
+  "description": "Sistem modüllerini yönetin, yükleyin ve yapılandırın",
+  "upload": {
+    "title": "Yeni Modül Yükle",
+    "description": "Yeni bir modül yüklemek için .zip dosyasını seçin",
+    "dropzone": {
+      "dragDrop": "Modül .zip dosyasını buraya sürükleyip bırakın",
+      "clickToSelect": "veya dosya seçmek için tıklayın",
+      "acceptedFormat": "Kabul edilen format: .zip. Maksimum boyut: 50MB.",
+      "selected": "Seçilen"
+    },
+    "form": {
+      "moduleName": "Modül Adı",
+      "moduleNamePlaceholder": "Yüklemeden sonra otomatik doldurulacak",
+      "version": "Sürüm",
+      "versionPlaceholder": "örn: 1.0.0",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Modül açıklaması yüklemeden sonra burada görünecek."
+    },
+    "manifest": {
+      "title": "Modül Manifest (`module.json`)",
+      "description1": "Modülünüzün `.zip` dosyası kök dizininde bir `module.json` dosyası içermelidir. Bu manifest dosyası modülünüz hakkında temel bilgileri sağlar.",
+      "description2": "Sistem bu dosyayı otomatik olarak ayrıştırarak modül adı, sürüm ve açıklama alanlarını doldurur."
+    },
+    "errors": {
+      "onlyZip": "Sadece .zip dosyaları kabul edilir",
+      "fileSize": "Dosya boyutu 50MB'dan küçük olmalıdır",
+      "selectFile": "Lütfen bir modül dosyası seçin",
+      "readManifest": "Arşivden module.json okunamadı",
+      "error": "Hata"
+    },
+    "buttons": {
+      "cancel": "İptal",
+      "uploadInstall": "Yükle ve Kur"
+    },
+    "notifications": {
+      "installed": "Modül Kuruldu",
+      "installedSuccess": "{{name}} başarıyla kuruldu.",
+      "installationFailed": "Kurulum Başarısız",
+      "installationFailedMessage": "Modül kurulamadı"
+    }
+  },
+  "listing": {
+    "title": "Modüller",
+    "description": "Yüklü ve aktif modüllerin listesi",
+    "searchPlaceholder": "Modül adına göre ara...",
+    "statusAll": "Durum: Tümü",
+    "categoryAll": "Kategori: Tümü",
+    "all": "Tümü",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "installed": "Yüklü",
+    "noModulesFound": "Modül Bulunamadı",
+    "uploadFirstModule": "Başlamak için ilk modülünüzü yükleyin.",
+    "uploadModule": "Modül Yükle"
+  },
+  "card": {
+    "status": {
+      "active": "Aktif",
+      "inactive": "Pasif",
+      "installed": "Yüklü",
+      "error": "Hata"
+    },
+    "switch": {
+      "active": "Aktif",
+      "inactive": "Pasif"
+    },
+    "tooltips": {
+      "configure": "Yapılandır",
+      "uninstall": "Kaldır",
+      "settings": "Modül Ayarları"
+    },
+    "category": "Kategori:",
+    "noDescription": "Bu modül için açıklama mevcut değil.",
+    "moduleHasErrors": "Modülde hatalar var"
+  },
+  "notifications": {
+    "moduleActivated": "Modül Aktifleştirildi",
+    "moduleActivatedSuccess": "{{name}} başarıyla aktifleştirildi.",
+    "moduleDeactivated": "Modül Pasifleştirildi",
+    "moduleDeactivatedSuccess": "{{name}} pasifleştirildi.",
+    "activationFailed": "Aktifleştirme Başarısız",
+    "deactivationFailed": "Pasifleştirme Başarısız",
+    "activationFailedMessage": "Modül aktifleştirilemedi",
+    "deactivationFailedMessage": "Modül pasifleştirilemedi",
+    "uninstallModule": "Modülü Kaldır",
+    "uninstallConfirm": "\"{{name}}\" modülünü kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "moduleUninstalled": "Modül Kaldırıldı",
+    "moduleUninstalledSuccess": "{{name}} kaldırıldı.",
+    "uninstallFailed": "Kaldırma Başarısız",
+    "uninstallFailedMessage": "Modül kaldırılamadı"
+  },
+  "names": {
+    "hr": "İnsan Kaynakları",
+    "accounting": "Muhasebe",
+    "real-estate": "Emlak Yönetimi",
+    "production": "Üretim",
+    "maintenance": "Bakım",
+    "web-builder": "Web Oluşturucu",
+    "file-manager": "Dosya Yöneticisi",
+    "notifications": "Bildirimler",
+    "calendar": "Takvim",
+    "ai": "Yapay Zeka",
+    "license": "Lisans",
+    "raporlar": "Raporlar",
+    "locations": "Konumlar",
+    "sohbet": "Sohbet",
+    "vardiya": "Vardiya",
+    "urun": "Ürün",
+    "tedarikci": "Tedarikçi",
+    "randevu": "Randevu",
+    "musteri": "Müşteri",
+    "egitim": "Eğitim",
+    "belgeler-ve-imza": "Belgeler ve İmza",
+    "module-management": "Modül Yönetimi",
+    "dashboard": "Dashboard"
+  },
+  "descriptions": {
+    "hr": "Kapsamlı insan kaynakları yönetim sistemi. Çalışan bilgileri, departman yönetimi, izin ve devamsızlık takibi, bordro hesaplama, performans değerlendirme, eğitim yönetimi ve işe alım süreçlerini tek bir platformda yönetin. Otomatik izin onay akışları, bordro entegrasyonu ve detaylı raporlama özellikleri ile iş süreçlerinizi optimize edin.",
+    "accounting": "Profesyonel muhasebe ve finans yönetim modülü. Abonelik yönetimi, otomatik fatura oluşturma, ödeme takibi, gider yönetimi, vergi hesaplama, mali raporlama ve onay iş akışları ile finansal süreçlerinizi tam kontrol altında tutun. Çoklu para birimi desteği, ödeme hatırlatıcıları ve detaylı finansal analiz araçları ile işletmenizin finansal sağlığını izleyin.",
+    "real-estate": "Kapsamlı emlak ve gayrimenkul yönetim platformu. Mülk, daire ve birim yönetimi, kiracı bilgileri ve iletişim takibi, sözleşme yönetimi ve otomatik yenileme, ödeme takibi ve tahsilat, randevu ve görüntüleme planlama, e-posta kampanyaları ve otomasyon, bakım talep yönetimi ve raporlama özellikleri ile emlak portföyünüzü profesyonelce yönetin.",
+    "production": "Endüstriyel üretim ve ürün yönetim sistemi. Ürün kataloğu ve envanter yönetimi, BOM (Malzeme Listesi) oluşturma ve yönetimi, üretim siparişleri ve planlama, stok hareket takibi, kalite kontrol süreçleri, üretim maliyet analizi ve performans raporlama ile üretim süreçlerinizi verimli bir şekilde yönetin. Gerçek zamanlı stok takibi ve otomatik uyarı sistemi ile stok seviyelerinizi optimize edin.",
+    "maintenance": "Kapsamlı bakım ve ekipman yönetim modülü. Ekipman envanteri ve bilgi yönetimi, planlı bakım programları ve hatırlatıcılar, acil bakım talepleri ve iş emri yönetimi, bakım maliyet takibi ve bütçe yönetimi, ekipman geçmişi ve performans analizi, bakım ekibi yönetimi ve atama, detaylı bakım raporları ve analitik araçlar ile ekipmanlarınızın ömrünü uzatın ve bakım maliyetlerinizi düşürün.",
+    "web-builder": "Gelişmiş sürükle-bırak web sitesi oluşturucu modülü. Görsel düzenleyici, hazır şablonlar, özel bileşenler, form oluşturucu, medya kütüphanesi ve kapsamlı analitik entegrasyonu kullanarak kod yazmadan güzel, duyarlı web siteleri oluşturun.",
+    "file-manager": "Gelişmiş dosya ve belge yönetim sistemi. Güvenli dosya yükleme ve depolama, klasör organizasyonu ve hiyerarşik yapı, dosya paylaşımı ve izin yönetimi, versiyon kontrolü ve geçmiş takibi, dosya arama ve filtreleme, toplu işlemler, çoklu format desteği (PDF, Office, görseller, videolar), dosya önizleme ve indirme yönetimi ile tüm dijital varlıklarınızı organize edin ve güvenle saklayın.",
+    "notifications": "Merkezi bildirim yönetim platformu. E-posta, SMS, push bildirimleri ve in-app bildirimler gönderin. Bildirim şablonları oluşturun, zamanlanmış bildirimler planlayın, bildirim geçmişi ve teslimat durumu takibi, kullanıcı gruplarına özel bildirimler, çoklu kanal desteği, bildirim istatistikleri ve analitik, otomatik bildirim kuralları ve entegrasyonlar ile kullanıcılarınızla etkili iletişim kurun.",
+    "calendar": "Kapsamlı takvim ve etkinlik yönetim sistemi. Etkinlik oluşturma ve planlama, randevu yönetimi, takvim görünümleri (aylık, haftalık, günlük, ajanda), tekrarlayan etkinlikler, hatırlatıcılar ve bildirimler, katılımcı yönetimi ve onay süreçleri, kaynak rezervasyonu, takvim paylaşımı ve senkronizasyon, etkinlik kategorileri ve etiketler, arama ve filtreleme özellikleri ile zamanınızı verimli yönetin.",
+    "ai": "Yapay zeka destekli içerik üretim ve otomasyon modülü. Metin üretimi ve düzenleme, görsel oluşturma ve düzenleme, ses sentezi ve işleme, video üretimi ve düzenleme, kod üretimi ve optimizasyon, çoklu dil desteği, içerik şablonları, AI asistanı ve chatbot entegrasyonu, içerik analizi ve optimizasyon önerileri ile yaratıcı süreçlerinizi hızlandırın ve içerik üretim maliyetlerinizi düşürün.",
+    "license": "Kapsamlı lisans ve abonelik yönetim sistemi. Lisans paketleri oluşturun, kiracılara lisans atayın, lisans sona erme tarihlerini takip edin, yenilemeleri yönetin, kullanımı izleyin ve otomatik sona erme bildirimleri gönderin.",
+    "raporlar": "Güçlü raporlama ve analitik modülü. Özelleştirilebilir rapor şablonları, veri görselleştirme ve grafikler, zamanlanmış raporlar ve otomatik e-posta gönderimi, çoklu format desteği (PDF, Excel, CSV), filtreleme ve gruplama seçenekleri, dashboard'lar ve özet görünümler, veri dışa aktarma ve paylaşım, rapor geçmişi ve versiyon kontrolü ile iş kararlarınızı veriye dayalı alın ve performansınızı sürekli izleyin.",
+    "locations": "Konum ve coğrafi veri yönetim modülü. Konum bilgileri ve adres yönetimi, hiyerarşik konum yapıları (ülke, şehir, bölge, mahalle), coğrafi koordinat yönetimi ve harita entegrasyonu, konum bazlı arama ve filtreleme, konum istatistikleri ve analitik, çoklu dil desteği, konum grupları ve etiketler, konum bazlı raporlama ve görselleştirme ile tüm lokasyon verilerinizi merkezi olarak yönetin ve analiz edin.",
+    "sohbet": "Gerçek zamanlı mesajlaşma ve iletişim platformu. Anlık mesajlaşma ve sohbet odaları, grup sohbetleri ve kanallar, dosya ve medya paylaşımı, mesaj geçmişi ve arama, kullanıcı durumu ve çevrimiçi/çevrimdışı gösterimi, bildirimler ve hatırlatıcılar, mesaj şifreleme ve güvenlik, özel mesajlar ve direkt mesajlaşma, emoji ve reaksiyon desteği, mesaj arşivleme ve yedekleme ile ekip içi iletişiminizi güçlendirin ve işbirliğini artırın.",
+    "vardiya": "Kapsamlı vardiya ve mesai yönetim sistemi. Vardiya programları oluşturun, çalışan devamsızlığını takip edin, çalışma saatlerini yönetin, otomatik planlama ve devamsızlık takibi ile vardiya kapsamını izleyin.",
+    "urun": "Tam kapsamlı ürün kataloğu ve envanter yönetim sistemi. Ürün kataloglarını yönetin, stok seviyelerini takip edin, envanter hareketlerini izleyin, düşük stok uyarıları ayarlayın ve kapsamlı envanter takibi ile ürün kategorilerini yönetin.",
+    "tedarikci": "Kapsamlı tedarikçi ve satıcı yönetim sistemi. Tedarikçi ilişkilerini yönetin, satın alma siparişlerini takip edin, ödeme planlarını izleyin, tedarikçi performansını değerlendirin ve tedarik süreçlerini otomatikleştirin.",
+    "randevu": "Gelişmiş randevu ve takvim yönetim sistemi. Randevuları planlayın, takvimleri yönetin, otomatik hatırlatıcılar gönderin, randevu geçmişini takip edin ve sorunsuz randevu koordinasyonu için bildirim sistemleriyle entegre edin.",
+    "musteri": "Tam kapsamlı Müşteri İlişkileri Yönetimi (CRM) sistemi. Müşteri iletişimlerini yönetin, satış fırsatlarını takip edin, müşteri etkileşimlerini izleyin, potansiyel müşterileri yönetin ve kapsamlı CRM özellikleri ile müşteri ilişkilerini analiz edin.",
+    "egitim": "Kapsamlı eğitim ve öğrenim yönetim sistemi. Kurslar oluşturun ve yönetin, öğrenci ilerlemesini takip edin, eğitmenleri yönetin, sertifikalar oluşturun, eğitim oturumlarını planlayın ve eğitim performansını izleyin.",
+    "belgeler-ve-imza": "Gelişmiş belge yönetimi ve dijital imza sistemi. Belgeleri yönetin, dijital imzalar oluşturun, belge versiyonlarını takip edin, belgeleri imza için gönderin ve tüm belge işlemleri için tam denetim izi tutun.",
+    "module-management": "Tam modül yaşam döngüsü yönetim sistemi. Bağımlılık doğrulama, sürüm kontrolü, ayar yönetimi ve modül sağlık izleme ile platform modüllerini kurun, etkinleştirin, yapılandırın ve yönetin.",
+    "dashboard": "Ana dashboard - KPI istatistikleri, içerik performansı, finans özeti ve aktivite zaman çizelgesi ile kapsamlı iş zekası ve analitik görünümleri."
+  },
+  "categories": {
+    "business": "İş",
+    "utility": "Yardımcı",
+    "system": "Sistem",
+    "core": "Çekirdek",
+    "ai": "Yapay Zeka",
+    "analytics": "Analitik",
+    "communication": "İletişim"
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  }
+}

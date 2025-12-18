@@ -1,0 +1,490 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useMantineColorScheme } from '@mantine/core';
+
+// Mock Data - Tasarımdaki verilerle eşleştirildi
+const CONTACTS = [
+    { id: 1, name: 'Eleanor Pena', role: 'UX/UI Designer', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCLxeBVxY1j_wagNTYggXTt5YkAQZjCkqfiZC6_2DUr52N9jr92WF6PIYk5rohXzBmbG4aW4bLhTYSL4d6l6nF9mh4TVBXrXOZ4eeC0htfRyw21Di51otiso-2zmXvcTh297iyOXAcY16h5cg3najwHyCofhFJHTLvx6ZSyvtvt5UgmL5wyLPLQrQYuaYnb00L-BZ9YO2kJIWLH-RHdCD3XBUf8nQKM2VuP_W0RzE2IXmMMCWMsiXuS21TqPrjznOFWNK9ROplE8K8', status: 'online', lastMessage: 'Sounds good, I\'ll review...', time: '10:42 AM', unread: 2 },
+    { id: 2, name: 'Marketing Team', role: 'Group', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCgdnANsgYY4-sbnpquuCmyxVFwdk4Uhje7EAAIykV6b-H3f60DxOvJCCxxFFP99QcwVq_5eWi5QL-GqceyoH1SlrgrguipNr_a7qHCK1hjgfdfBWcoImP76neOA8OEO_1sxLLIy5jK2l41Q6cbuB6XdRhHaSLuZywpnczEzQE31FaBwYiq3BRoOTpU-ZWtH-uvxNkGgRuVUsSJLF7FwH0AZrAbckNvTAOR3G6vIu3o5ZnTI6VkZ_oEWXsUHljzgKMKx2zhpL2xzaY', status: 'offline', lastMessage: 'Can you send over the final assets?', time: 'Yesterday', unread: 0 },
+    { id: 3, name: 'Devin Robertson', role: 'Developer', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDexv20l9-cc1dYwYDd_nhcuzYCbwPjeDqP6sxwdFz8JeD6oy23MqdhKIi0MLwVh7lItfkb6fNJTSXr_4iNras-IytIgHlGaCLEt9pBMf16zHypUtvQo05XVIljGrqbkfkhdAbYNfr7Rf9pUrY-x7rFo6lX66m8zp3yA39JHvHRjKPNMKZyqGJm68plJblPIUuBnflbxJ8dGB--kzi9AhAj8y46oh4t3sUx5YvevNaJHewx4LNnScVHU7DJerf_YgYsEuf1SJoSX2g', status: 'offline', lastMessage: 'Let\'s sync up tomorrow morning.', time: 'Yesterday', unread: 0 },
+    { id: 4, name: 'Sarah Lee', role: 'Product Manager', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB88Bcf3caaiQxVX96tP3MGB8fs5Jv6T2Qux2GW2hOkNjYR-ToZIUQDIJ4L_ibTHMfuMEsJG2N7wO-OHdVwJ9j56k7h1Ib1iPpAlh9CYWR1h28v9KBjTvvJ9EomsuegxbROO32_a644SGz-7Pb-ELAoBX0yxrZzUupvcuqfKyJmi-yI9nR3PFi7NqIgxbAkfos01UdI-H5zAh-whGozib9tE-1jHIMzSKxqZi6-djVdDouOsSMshiW9gMj-NYHdN1OMlPDd39_ew_o', status: 'online', lastMessage: 'Great, thanks for the update!', time: 'Mon', unread: 1 },
+];
+
+const MESSAGES = [
+    { id: 1, senderId: 1, text: 'Hey, have you had a chance to look at the latest designs I sent over? I\'m eager to get your feedback.', time: '10:40 AM', type: 'text' },
+    { id: 2, senderId: 0, text: 'Hi Eleanor! Yes, just finished reviewing them. They look fantastic! I have a couple of minor suggestions.', time: '10:41 AM', type: 'text' },
+    { id: 3, senderId: 1, text: 'Sounds good, I\'ll review the latest mockups and get back to you with my thoughts by EOD.', time: '10:42 AM', type: 'text' },
+];
+
+const MEMBERS = [
+    { id: 1, name: 'Eleanor Pena', role: 'UX/UI Designer', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCLxeBVxY1j_wagNTYggXTt5YkAQZjCkqfiZC6_2DUr52N9jr92WF6PIYk5rohXzBmbG4aW4bLhTYSL4d6l6nF9mh4TVBXrXOZ4eeC0htfRyw21Di51otiso-2zmXvcTh297iyOXAcY16h5cg3najwHyCofhFJHTLvx6ZSyvtvt5UgmL5wyLPLQrQYuaYnb00L-BZ9YO2kJIWLH-RHdCD3XBUf8nQKM2VuP_W0RzE2IXmMMCWMsiXuS21TqPrjznOFWNK9ROplE8K8', status: 'online' },
+    { id: 2, name: 'John Doe', role: 'Developer', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDexv20l9-cc1dYwYDd_nhcuzYCbwPjeDqP6sxwdFz8JeD6oy23MqdhKIi0MLwVh7lItfkb6fNJTSXr_4iNras-IytIgHlGaCLEt9pBMf16zHypUtvQo05XVIljGrqbkfkhdAbYNfr7Rf9pUrY-x7rFo6lX66m8zp3yA39JHvHRjKPNMKZyqGJm68plJblPIUuBnflbxJ8dGB--kzi9AhAj8y46oh4t3sUx5YvevNaJHewx4LNnScVHU7DJerf_YgYsEuf1SJoSX2g', status: 'offline' },
+    { id: 3, name: 'Sarah Lee', role: 'Product Manager', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB88Bcf3caaiQxVX96tP3MGB8fs5Jv6T2Qux2GW2hOkNjYR-ToZIUQDIJ4L_ibTHMfuMEsJG2N7wO-OHdVwJ9j56k7h1Ib1iPpAlh9CYWR1h28v9KBjTvvJ9EomsuegxbROO32_a644SGz-7Pb-ELAoBX0yxrZzUupvcuqfKyJmi-yI9nR3PFi7NqIgxbAkfos01UdI-H5zAh-whGozib9tE-1jHIMzSKxqZi6-djVdDouOsSMshiW9gMj-NYHdN1OMlPDd39_ew_o', status: 'online' },
+];
+
+const SHARED_FILES = [
+    { id: 1, name: 'design_mockup_v3.png', size: '1.2 MB', type: 'image', icon: 'image' },
+    { id: 2, name: 'project_brief.pdf', size: '450 KB', type: 'document', icon: 'description' },
+    { id: 3, name: 'presentation.pptx', size: '2.8 MB', type: 'document', icon: 'slideshow' },
+    { id: 4, name: 'wireframes.fig', size: '5.1 MB', type: 'design', icon: 'design_services' },
+];
+
+export function ChatModule() {
+    const [activeChat, setActiveChat] = useState(CONTACTS[0]);
+    const [messages, setMessages] = useState(MESSAGES);
+    const [messageInput, setMessageInput] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const { colorScheme } = useMantineColorScheme();
+    const [showRightSidebar, setShowRightSidebar] = useState(false);
+
+    // Interactive features state
+    const [activeTab, setActiveTab] = useState<'details' | 'members' | 'files'>('details');
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordingDuration, setRecordingDuration] = useState(0);
+    const [showCallModal, setShowCallModal] = useState<'video' | 'audio' | null>(null);
+    const fileInputRef = useState<HTMLInputElement | null>(null)[0];
+
+    // Update sidebar visibility based on theme
+    useEffect(() => {
+        const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        setShowRightSidebar(isDark);
+    }, [colorScheme]);
+
+    const handleSendMessage = () => {
+        if (!messageInput.trim() && selectedFiles.length === 0) return;
+        const newMessage = {
+            id: Date.now(),
+            senderId: 0, // Me
+            text: messageInput,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            type: 'text',
+            files: selectedFiles.length > 0 ? selectedFiles.map(f => f.name) : undefined
+        };
+        setMessages([...messages, newMessage]);
+        setMessageInput('');
+        setSelectedFiles([]);
+    };
+
+    // File upload handler
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setSelectedFiles(Array.from(e.target.files));
+        }
+    };
+
+    // Emoji picker handler
+    const handleEmojiSelect = (emoji: string) => {
+        setMessageInput(messageInput + emoji);
+        setShowEmojiPicker(false);
+    };
+
+    // Voice recording handlers
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            setIsRecording(true);
+            setRecordingDuration(0);
+            // Simulate recording duration
+            const interval = setInterval(() => {
+                setRecordingDuration(prev => prev + 1);
+            }, 1000);
+            // Store interval for cleanup
+            (window as any).recordingInterval = interval;
+        } catch (error) {
+            alert('Microphone access denied');
+        }
+    };
+
+    const stopRecording = () => {
+        setIsRecording(false);
+        clearInterval((window as any).recordingInterval);
+        // Add voice message
+        const newMessage = {
+            id: Date.now(),
+            senderId: 0,
+            text: `Voice message (${recordingDuration}s)`,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            type: 'voice'
+        };
+        setMessages([...messages, newMessage]);
+        setRecordingDuration(0);
+    };
+
+    const cancelRecording = () => {
+        setIsRecording(false);
+        clearInterval((window as any).recordingInterval);
+        setRecordingDuration(0);
+    };
+
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <div id="chat-root" className="flex h-full w-full bg-background-light dark:bg-background-dark font-display text-text-primary-light dark:text-text-primary-dark">
+            {/* Conversation List */}
+            <div 
+                id="chat-list-panel" 
+                className={`flex h-full flex-col border-r border-border-light dark:border-border-dark bg-surface-light ${showRightSidebar ? 'w-[360px]' : 'w-full max-w-sm'}`}
+            >
+                <div className="p-4 border-b border-border-light dark:border-border-dark">
+                    <h1 className="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">Chats</h1>
+                    <div className="mt-4">
+                        <label className="flex flex-col min-w-40 h-11 w-full">
+                            <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
+                                <div className="text-text-secondary-light dark:text-text-secondary-dark flex bg-background-light dark:bg-background-dark items-center justify-center pl-3 rounded-l-lg border-r-0">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>search</span>
+                                </div>
+                                <input
+                                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary-light dark:text-text-primary-dark focus:outline-0 focus:ring-0 border-none bg-background-light dark:bg-background-dark focus:border-none h-full placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal"
+                                    placeholder="Search chats..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div className="flex-1 overflow-y-auto">
+                    {/* Active Chat Item */}
+                    {CONTACTS.map(contact => (
+                        <div
+                            key={contact.id}
+                            className={`flex gap-4 px-4 py-3 justify-between cursor-pointer transition-colors ${activeChat.id === contact.id
+                                ? 'bg-primary/10 dark:bg-primary/20 border-l-2 border-primary'
+                                : 'hover:bg-black/5 dark:hover:bg-white/5'
+                                }`}
+                            onClick={() => setActiveChat(contact)}
+                        >
+                            <div className="flex items-start gap-3">
+                                <div className="relative">
+                                    <div
+                                        className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12"
+                                        data-alt={`Avatar of ${contact.name}`}
+                                        style={{ backgroundImage: `url("${contact.avatar}")` }}
+                                    />
+                                    {contact.status === 'online' && (
+                                        <div className="absolute bottom-0 right-0 size-3.5 rounded-full bg-green-500 border-2 border-background-light dark:border-background-dark"></div>
+                                    )}
+                                    {contact.status === 'offline' && (
+                                        <div className="absolute bottom-0 right-0 size-3.5 rounded-full bg-gray-400 border-2 border-background-light dark:border-background-dark"></div>
+                                    )}
+                                </div>
+                                <div className="flex flex-1 flex-col justify-center">
+                                    <p className="text-sm font-semibold text-text-primary-light dark:text-text-primary-dark">{contact.name}</p>
+                                    {activeChat.id === contact.id ? (
+                                        <p className="text-sm font-medium text-primary">{contact.lastMessage}</p>
+                                    ) : (
+                                        <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal truncate max-w-[180px]">{contact.lastMessage}</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="shrink-0 flex flex-col items-end gap-1">
+                                <p className="text-text-secondary-light dark:text-text-secondary-dark text-xs font-normal">{contact.time}</p>
+                                {contact.unread > 0 && (
+                                    <div className="flex size-5 items-center justify-center rounded-full bg-primary text-white text-xs font-bold">{contact.unread}</div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Main Chat Window */}
+            <div id="chat-main-area" className="flex flex-1 flex-col h-full bg-background-light dark:bg-background-dark">
+                {/* Chat Header */}
+                <div className="flex items-center justify-between p-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark">
+                    <div className="flex items-center gap-3">
+                        <div className="relative">
+                            <div
+                                className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                                data-alt={`Avatar of ${activeChat.name}`}
+                                style={{ backgroundImage: `url("${activeChat.avatar}")` }}
+                            />
+                            {activeChat.status === 'online' && (
+                                <div className="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-surface-light dark:border-surface-dark"></div>
+                            )}
+                        </div>
+                        <div>
+                            <h2 className="font-semibold text-base text-text-primary-light dark:text-text-primary-dark">Eleanor Pena</h2>
+                            <p className="text-xs text-green-500">Active now</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => setShowCallModal('video')} className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5">
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>videocam</span>
+                        </button>
+                        <button onClick={() => setShowCallModal('audio')} className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5">
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>call</span>
+                        </button>
+                        <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5">
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>search</span>
+                        </button>
+                        <button
+                            className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                            onClick={() => setShowRightSidebar(!showRightSidebar)}
+                        >
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>more_vert</span>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Message Area */}
+                <div className="flex-1 overflow-y-auto p-6">
+                    <div className="flex flex-col gap-4">
+                        {/* Date Separator */}
+                        <div className="flex items-center gap-2 my-4">
+                            <hr className="flex-grow border-t border-border-light dark:border-border-dark" />
+                            <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark font-medium">Today</span>
+                            <hr className="flex-grow border-t border-border-light dark:border-border-dark" />
+                        </div>
+
+                        {/* Messages */}
+                        {messages.map(msg => (
+                            <div
+                                key={msg.id}
+                                className={`flex items-end gap-3 max-w-xl ${msg.senderId === 0 ? 'self-end' : ''}`}
+                            >
+                                {msg.senderId !== 0 && (
+                                    <div
+                                        className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 shrink-0"
+                                        data-alt={`Avatar of ${activeChat.name}`}
+                                        style={{ backgroundImage: `url("${activeChat.avatar}")` }}
+                                    />
+                                )}
+                                <div className={`flex flex-col gap-1 ${msg.senderId === 0 ? 'items-end' : ''}`}>
+                                    <div
+                                        className={`p-3 rounded-xl ${msg.senderId === 0
+                                            ? 'rounded-br-sm bg-primary text-white'
+                                            : 'rounded-bl-sm bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark'
+                                            }`}
+                                    >
+                                        <p className="text-sm">{msg.text}</p>
+                                    </div>
+                                    <span className="text-xs text-text-secondary-light dark:text-text-secondary-dark px-2">{msg.time}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Message Input */}
+                <div className="p-4 border-t border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark">
+                    {/* Selected Files Preview */}
+                    {selectedFiles.length > 0 && (
+                        <div className="mb-2 flex flex-wrap gap-2">
+                            {selectedFiles.map((file, idx) => (
+                                <div key={idx} className="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-lg">
+                                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px' }}>description</span>
+                                    <span className="text-xs text-text-primary-light dark:text-text-primary-dark">{file.name}</span>
+                                    <button onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== idx))} className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary">
+                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>close</span>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Emoji Picker */}
+                    {showEmojiPicker && (
+                        <div className="mb-2 p-3 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+                            <div className="grid grid-cols-8 gap-2">
+                                {['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🥳', '😏', '😒', '😞'].map(emoji => (
+                                    <button key={emoji} onClick={() => handleEmojiSelect(emoji)} className="text-2xl hover:bg-primary/10 p-1 rounded">{emoji}</button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Recording Indicator */}
+                    {isRecording && (
+                        <div className="mb-2 flex items-center gap-3 bg-red-500/10 px-4 py-2 rounded-lg">
+                            <div className="flex items-center gap-2">
+                                <div className="size-3 bg-red-500 rounded-full animate-pulse"></div>
+                                <span className="text-sm font-medium text-red-500">Recording {recordingDuration}s</span>
+                            </div>
+                            <div className="flex gap-2 ml-auto">
+                                <button onClick={stopRecording} className="px-3 py-1 bg-primary text-white rounded-lg text-sm hover:bg-primary/90">Send</button>
+                                <button onClick={cancelRecording} className="px-3 py-1 bg-gray-500 text-white rounded-lg text-sm hover:bg-gray-600">Cancel</button>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex items-center gap-2 bg-background-light dark:bg-background-dark p-2 rounded-lg">
+                        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 shrink-0">
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>add_reaction</span>
+                        </button>
+                        <input type="file" multiple onChange={handleFileSelect} className="hidden" id="file-upload" />
+                        <button onClick={() => document.getElementById('file-upload')?.click()} className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 shrink-0">
+                            <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>attach_file</span>
+                        </button>
+                        {!isRecording ? (
+                            <>
+                                <textarea
+                                    className="form-textarea w-full resize-none border-none bg-transparent focus:ring-0 text-sm placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark text-text-primary-light dark:text-text-primary-dark"
+                                    placeholder="Type a message..."
+                                    rows={1}
+                                    value={messageInput}
+                                    onChange={(e) => setMessageInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleSendMessage();
+                                        }
+                                    }}
+                                />
+                                <button onClick={startRecording} className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 shrink-0">
+                                    <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark" style={{ fontSize: '24px' }}>mic</span>
+                                </button>
+                                <button
+                                    className="p-2 rounded-lg shrink-0 bg-primary text-white hover:bg-primary/90"
+                                    onClick={handleSendMessage}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>send</span>
+                                </button>
+                            </>
+                        ) : null}
+                    </div>
+                </div>
+            </div>
+
+            {/* Conversation Details (Right Sidebar) */}
+            {showRightSidebar && (
+                <div className="w-[320px] h-full border-l border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex flex-col">
+                    <div className="flex flex-col items-center p-6 border-b border-border-light dark:border-border-dark">
+                        <div
+                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20"
+                            data-alt={`Avatar of ${activeChat.name}`}
+                            style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBrdK73YIqzJzij5-bg7p15zH04gCLxs-0xiC4F9qUeTQ8XN8SxSQ6nsAFuEvE7yza24t9pPYfTWTGgwaFl2a97iL7guggT7-0jUx_lejpzKaL9vAuC7zrhZ874RNAilpcC3gv7D5YhvVSs8_EkuSc33N7y4n43uGtGF55ZYqP3e6LtoFv18QDKfhAQw4VWRtVdv4rbGRdT-pp6PI1_lhuwzDhI9HwcXyVPytzMAc3BWglYnVwfhZuGEEGiojn3o-HVefxz3O2qm1k")` }}
+                        />
+                        <h3 className="text-lg font-semibold mt-4 text-text-primary-light dark:text-text-primary-dark">Eleanor Pena</h3>
+                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">UX/UI Designer</p>
+                    </div>
+                    <div className="flex-1 p-4 overflow-y-auto">
+                        <div className="flex justify-around border-b border-border-light dark:border-border-dark">
+                            <button
+                                onClick={() => setActiveTab('details')}
+                                className={`py-2 px-4 text-sm font-medium border-b-2 ${activeTab === 'details' ? 'border-primary text-primary' : 'border-transparent text-text-secondary-light dark:text-text-secondary-dark hover:text-primary'}`}
+                            >
+                                Details
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('members')}
+                                className={`py-2 px-4 text-sm font-medium border-b-2 ${activeTab === 'members' ? 'border-primary text-primary' : 'border-transparent text-text-secondary-light dark:text-text-secondary-dark hover:text-primary'}`}
+                            >
+                                Members
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('files')}
+                                className={`py-2 px-4 text-sm font-medium border-b-2 ${activeTab === 'files' ? 'border-primary text-primary' : 'border-transparent text-text-secondary-light dark:text-text-secondary-dark hover:text-primary'}`}
+                            >
+                                Files
+                            </button>
+                        </div>
+
+                        {/* Details Tab */}
+                        {activeTab === 'details' && (
+                            <div className="py-4 space-y-4">
+                                <div>
+                                    <h4 className="text-xs uppercase text-text-secondary-light dark:text-text-secondary-dark font-bold tracking-wider">Email</h4>
+                                    <p className="text-sm mt-1 text-text-primary-light dark:text-text-primary-dark">eleanor.pena@example.com</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-xs uppercase text-text-secondary-light dark:text-text-secondary-dark font-bold tracking-wider">Phone</h4>
+                                    <p className="text-sm mt-1 text-text-primary-light dark:text-text-primary-dark">(555) 123-4567</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-xs uppercase text-text-secondary-light dark:text-text-secondary-dark font-bold tracking-wider">Location</h4>
+                                    <p className="text-sm mt-1 text-text-primary-light dark:text-text-primary-dark">San Francisco, CA</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Members Tab */}
+                        {activeTab === 'members' && (
+                            <div className="py-4 space-y-3">
+                                {MEMBERS.map(member => (
+                                    <div key={member.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
+                                        <div className="relative">
+                                            <div
+                                                className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                                                style={{ backgroundImage: `url("${member.avatar}")` }}
+                                            />
+                                            {member.status === 'online' && (
+                                                <div className="absolute bottom-0 right-0 size-2.5 rounded-full bg-green-500 border-2 border-surface-light dark:border-surface-dark"></div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">{member.name}</p>
+                                            <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">{member.role}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Files Tab */}
+                        {activeTab === 'files' && (
+                            <div className="py-4 space-y-2">
+                                {SHARED_FILES.map(file => (
+                                    <div key={file.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
+                                        <div className="size-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-primary">{file.icon}</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">{file.name}</p>
+                                            <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">{file.size}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Call Modal */}
+            {showCallModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCallModal(null)}>
+                    <div className="bg-surface-light dark:bg-surface-dark rounded-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">
+                                {showCallModal === 'video' ? 'Video Call' : 'Voice Call'}
+                            </h3>
+                            <button onClick={() => setShowCallModal(null)} className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded">
+                                <span className="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark">close</span>
+                            </button>
+                        </div>
+                        <div className="text-center py-8">
+                            <div className="mb-4">
+                                <div
+                                    className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20 mx-auto"
+                                    style={{ backgroundImage: `url("${activeChat.avatar}")` }}
+                                />
+                            </div>
+                            <p className="text-lg font-medium text-text-primary-light dark:text-text-primary-dark mb-2">{activeChat.name}</p>
+                            <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-6">Calling...</p>
+                            <div className="flex gap-4 justify-center">
+                                <button className="p-4 bg-red-500 text-white rounded-full hover:bg-red-600">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>call_end</span>
+                                </button>
+                                <button className="p-4 bg-green-500 text-white rounded-full hover:bg-green-600">
+                                    <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>call</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}

@@ -1,0 +1,3 @@
+Version: 1.0.9
+Date: 2025-12-02
+Notes: Modül yapısı optimize edildi - Chat ve Sohbet modülleri birleştirildi (sohbet modülü korundu, chat kaldırıldı), duplicate Türkçe modül klasörleri temizlendi (insan-kaynaklari, muhasebe, uretim, bakim kaldırıldı), tüm modüller için YAML konfigürasyonları tamamlandı (30→25 modül), İngilizce isimlendirme standardı uygulandı, modül organizasyonu iyileştirildi.

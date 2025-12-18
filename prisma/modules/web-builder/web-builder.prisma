@@ -1,0 +1,272 @@
+// ============================================
+// Web Builder Module
+// ============================================
+
+model Website {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  name      String
+  domain    String?  @unique
+  status    String   @default("draft") // draft, published, archived
+  themeId   String?
+  favicon   String?
+  settings  Json? // Global settings (SEO, analytics, etc.)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  company Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  pages   Page[]
+  theme   Theme?         @relation(fields: [themeId], references: [id])
+  assets  WebsiteAsset[]
+  forms   Form[]
+
+  @@index([tenantId, companyId])
+  @@index([domain])
+}
+
+model Page {
+  id          String  @id @default(uuid())
+  tenantId    String
+  companyId   String
+  websiteId   String
+  title       String
+  slug        String
+  description String?
+  status      String  @default("draft") // draft, published, archived
+  isHome      Boolean @default(false)
+  settings    Json? // SEO, social share, etc.
+
+  // SEO fields
+  metaTitle       String?
+  metaDescription String?
+  metaKeywords    String[] // SEO keywords array
+
+  // Publishing
+  publishedAt DateTime?
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  website  Website       @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  sections PageSection[]
+
+  @@unique([websiteId, slug])
+  @@index([tenantId, companyId])
+  @@index([websiteId])
+  @@index([status])
+  @@index([publishedAt])
+}
+
+model PageSection {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  pageId    String
+  type      String // header, footer, hero, features, etc.
+  order     Int
+  settings  Json? // Background, padding, etc.
+  content   Json? // Specific content for the section
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  page     Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  elements PageElement[]
+
+  @@index([tenantId, companyId])
+  @@index([pageId])
+}
+
+model PageElement {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  sectionId String
+  type      String // text, image, button, video, etc.
+  order     Int
+  content   Json? // Text content, image URL, etc.
+  settings  Json? // Styles, animation, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  section PageSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([sectionId])
+}
+
+model Theme {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  name        String
+  description String?
+  config      Json // Colors, typography, spacing, etc.
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  websites Website[]
+
+  @@index([tenantId, companyId])
+  @@index([name])
+}
+
+model Template {
+  id          String   @id @default(uuid())
+  tenantId    String? // Tenant-specific templates (null for system templates)
+  companyId   String
+  name        String
+  description String?
+  thumbnail   String?
+  category    String?
+  structure   Json // Full page/website structure
+  isSystem    Boolean  @default(false)
+  isPublic    Boolean  @default(false) // Public templates available to all tenants
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([category])
+  @@index([isPublic])
+  @@index([isActive])
+}
+
+model Form {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  websiteId String
+  name      String
+  fields    Json // Array of field definitions
+  settings  Json? // Email notifications, success message, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  website     Website          @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  submissions FormSubmission[]
+
+  @@index([tenantId, companyId])
+  @@index([websiteId])
+}
+
+model FormSubmission {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  formId    String
+  data      Json // Submitted data
+  metadata  Json? // IP, user agent, etc.
+  status    String   @default("new") // new, read, spam
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([formId])
+}
+
+model WebsiteAsset {
+  id        String   @id @default(uuid())
+  tenantId  String
+  companyId String
+  websiteId String
+  name      String
+  url       String
+  type      String // image, video, document
+  size      Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([websiteId])
+}
+
+model BrandKit {
+  id           String   @id @default(uuid())
+  tenantId     String
+  companyId    String   @unique
+  logoUrl      String?
+  colorPalette Json? // { primary: "#...", secondary: "#...", etc. }
+  fontFamily   String?
+  toneOfVoice  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+}
+
+model Asset {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  url         String
+  tags        String[] // Array of tag strings
+  name        String?
+  description String?
+  fileType    String?
+  fileSize    Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+}
+
+model Content {
+  id            String    @id @default(uuid())
+  tenantId      String
+  companyId     String
+  status        String // draft, scheduled, published, archived
+  caption       String?
+  mediaUrl      String?
+  scheduledDate DateTime?
+  publishedDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([status])
+  @@index([scheduledDate])
+}
+
+model Finance {
+  id          String   @id @default(uuid())
+  tenantId    String
+  companyId   String
+  amount      Decimal  @db.Decimal(10, 2)
+  type        String // income, expense, etc.
+  description String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([type])
+  @@index([date])
+}
+

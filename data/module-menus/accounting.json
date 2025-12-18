@@ -1,0 +1,60 @@
+{
+  "main": {
+    "items": [
+      {
+        "title": "Dashboard",
+        "icon": "Dashboard",
+        "path": "/modules/accounting/dashboard",
+        "order": 1,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Invoices",
+        "icon": "FileText",
+        "path": "/modules/accounting/invoices",
+        "order": 2,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Subscriptions",
+        "icon": "Repeat",
+        "path": "/modules/accounting/subscriptions",
+        "order": 3,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Payments",
+        "icon": "CreditCard",
+        "path": "/modules/accounting/payments",
+        "order": 4,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Expenses",
+        "icon": "Receipt",
+        "path": "/modules/accounting/expenses",
+        "order": 5,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Reports",
+        "icon": "ChartBar",
+        "path": "/modules/accounting/reports",
+        "order": 6,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      }
+    ]
+  }
+}

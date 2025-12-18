@@ -1,0 +1,117 @@
+{
+  "title": "إدارة الصيانة",
+  "description": "إدارة سجلات صيانة المعدات",
+  "create": "سجل صيانة جديد",
+  "createDescription": "إنشاء سجل صيانة جديد",
+  "edit": "تعديل سجل الصيانة",
+  "editDescription": "تحديث معلومات سجل الصيانة",
+  "detail": "تفاصيل سجل الصيانة",
+  "detailDescription": "عرض تفاصيل سجل الصيانة",
+  "notFound": "لم يتم العثور على سجل الصيانة",
+  "types": {
+    "preventive": "وقائي",
+    "corrective": "تصحيحي",
+    "emergency": "طوارئ"
+  },
+  "status": {
+    "scheduled": "مجدول",
+    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغي"
+  },
+  "table": {
+    "title": "العنوان",
+    "type": "النوع",
+    "status": "الحالة",
+    "location": "الموقع",
+    "equipment": "المعدات",
+    "scheduledDate": "التاريخ المجدول",
+    "estimatedCost": "التكلفة المقدرة",
+    "actualCost": "التكلفة الفعلية",
+    "actions": "الإجراءات"
+  },
+  "form": {
+    "location": "الموقع",
+    "locationPlaceholder": "اختر الموقع",
+    "equipment": "المعدات",
+    "equipmentPlaceholder": "اختر المعدات",
+    "type": "النوع",
+    "typePlaceholder": "اختر النوع",
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل عنوان الصيانة",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الصيانة",
+    "scheduledDate": "التاريخ المجدول",
+    "scheduledDatePlaceholder": "اختر التاريخ المجدول",
+    "startDate": "تاريخ البدء",
+    "startDatePlaceholder": "اختر تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "endDatePlaceholder": "اختر تاريخ الانتهاء",
+    "estimatedCost": "التكلفة المقدرة",
+    "estimatedCostPlaceholder": "أدخل التكلفة المقدرة",
+    "actualCost": "التكلفة الفعلية",
+    "actualCostPlaceholder": "أدخل التكلفة الفعلية",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "أدخل الملاحظات",
+    "documents": "المستندات",
+    "status": "الحالة",
+    "statusPlaceholder": "اختر الحالة",
+    "isActive": "نشط"
+  },
+  "filter": {
+    "type": "النوع",
+    "status": "الحالة",
+    "location": "الموقع"
+  },
+  "search": {
+    "placeholder": "البحث في سجلات الصيانة..."
+  },
+  "delete": {
+    "confirm": "هل أنت متأكد من حذف سجل الصيانة هذا؟",
+    "success": "تم حذف سجل الصيانة بنجاح",
+    "error": "حدث خطأ أثناء حذف سجل الصيانة"
+  },
+  "messages": {
+    "createSuccess": "تم إنشاء سجل الصيانة بنجاح",
+    "createError": "حدث خطأ أثناء إنشاء سجل الصيانة",
+    "updateSuccess": "تم تحديث سجل الصيانة بنجاح",
+    "updateError": "حدث خطأ أثناء تحديث سجل الصيانة",
+    "success": "نجح",
+    "error": "خطأ"
+  },
+  "export": {
+    "title": "تصدير",
+    "excel": "تصدير إلى Excel",
+    "pdf": "تصدير إلى PDF",
+    "csv": "تصدير إلى CSV"
+  },
+  "exportSuccess": "تم تصدير سجلات الصيانة بنجاح",
+  "exportError": "حدث خطأ أثناء تصدير سجلات الصيانة",
+  "exportDescription": "تقرير سجلات الصيانة",
+  "pagination": {
+    "showing": "عرض",
+    "of": "من"
+  },
+  "dashboard": {
+    "title": "لوحة تحكم الصيانة",
+    "description": "نظرة عامة على أنشطة الصيانة والتحليلات",
+    "dateFrom": "من تاريخ",
+    "dateTo": "إلى تاريخ",
+    "totalRecords": "إجمالي السجلات",
+    "completed": "مكتمل",
+    "totalCost": "التكلفة الإجمالية",
+    "scheduled": "مجدول",
+    "maintenanceTrend": "اتجاه الصيانة",
+    "byType": "حسب النوع",
+    "upcomingMaintenance": "الصيانة القادمة",
+    "overdueMaintenance": "الصيانة المتأخرة",
+    "daysOverdue": "أيام التأخير",
+    "noUpcoming": "لا توجد صيانة قادمة",
+    "noOverdue": "لا توجد صيانة متأخرة"
+  },
+  "calendar": {
+    "title": "تقويم الصيانة",
+    "description": "عرض سجلات الصيانة في عرض التقويم"
+  }
+}
+

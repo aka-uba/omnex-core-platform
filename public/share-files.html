@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Share - Omnex</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4c6ef5;
+            --primary-hover: #364fc7;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --success-color: #51cf66;
+            --danger-color: #ff6b6b;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1b1e;
+            --bg-secondary: #25262b;
+            --bg-card: #25262b;
+            --text-primary: #c1c2c5;
+            --text-secondary: #909296;
+            --border-color: #373a40;
+            --hover-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .wifi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--success-color);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .toolbar {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+        }
+
+        .toolbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-color);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-btn:hover:not(.active) {
+            background: var(--hover-bg);
+        }
+
+        .files-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .file-list {
+            display: none;
+        }
+
+        .file-list.active {
+            display: block;
+        }
+
+        .file-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .file-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-color);
+        }
+
+        .file-item.grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .file-item.list-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .file-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-icon svg {
+            width: 48px;
+            height: 48px;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .list-table th,
+        .list-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .list-table th {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .list-table tr:hover {
+            background: var(--hover-bg);
+        }
+
+        .list-table .file-icon-cell {
+            width: 48px;
+        }
+
+        .list-table .file-name-cell {
+            min-width: 200px;
+        }
+
+        .list-table .file-size-cell {
+            width: 120px;
+        }
+
+        .list-table .file-date-cell {
+            width: 180px;
+        }
+
+        .list-table .file-actions-cell {
+            width: 100px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .toolbar-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-chip {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    Paylaşılan Dosyalar
+                </h1>
+                <div class="wifi-badge" id="serverStatusBadge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+                    </svg>
+                    <span id="serverStatusText">Kontrol ediliyor...</span>
+                </div>
+            </div>
+            <p>Yerel ağınız üzerinden güvenli dosya paylaşımı. Aynı ağa bağlı cihazlar bu dosyalara erişebilir.</p>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Dosyalarda ara...">
+            </div>
+            <div class="toolbar-controls">
+                <button class="filter-chip" id="fileTypeFilter">
+                    <span>Dosya Türü</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <button class="filter-chip" id="sortFilter">
+                    <span>Sırala: Yeni</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div style="flex: 1;"></div>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridView" data-view="grid" title="Kutu görünümü">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </button>
+                    <button class="view-btn" id="listView" data-view="list" title="Liste görünümü">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="files-container">
+            <div id="fileList" class="file-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        console.log('[File Share] Script started');
+        console.log('[File Share] Window location:', window.location);
+        console.log('[File Share] Document ready state:', document.readyState);
+        console.log('[File Share] Current URL:', window.location.href);
+
+        // Check if served from share server (has injected variables)
+        const isServedFromShareServer = window.SHARE_SERVER_RUNNING === true;
+        console.log('[File Share] Served from share server:', isServedFromShareServer);
+
+        // API_BASE should point to Next.js server (port 3000), not the share server (port 1234)
+        // Try to get Next.js URL from environment or use default
+        const getNextJsUrl = () => {
+            // Check if NEXT_JS_URL is set in a meta tag or script variable
+            const metaTag = document.querySelector('meta[name="next-js-url"]');
+            if (metaTag) {
+                return metaTag.getAttribute('content');
+            }
+            // Try to get from window variable (set by server)
+            if (window.NEXT_JS_URL) {
+                return window.NEXT_JS_URL;
+            }
+            // Default: use same host but port 3000
+            const hostname = window.location.hostname;
+            return `http://${hostname}:3000`;
+        };
+
+        // Get share server URL for health checks
+        const getShareServerUrl = () => {
+            const hostname = window.location.hostname;
+            const port = window.SHARE_SERVER_PORT || 1234;
+            return `http://${hostname}:${port}`;
+        };
+
+        const API_BASE = getNextJsUrl();
+        const SHARE_SERVER_URL = getShareServerUrl();
+        console.log('[File Share] API_BASE:', API_BASE);
+        console.log('[File Share] SHARE_SERVER_URL:', SHARE_SERVER_URL);
+
+        let allFiles = [];
+        let currentView = 'grid';
+        let filteredFiles = [];
+        let serverRunning = isServedFromShareServer; // If served from share server, it's definitely running
+        
+        // Get file icon based on extension
+        function getFileIcon(extension, type) {
+            if (type === 'folder') {
+                return '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>';
+            }
+            const icons = {
+                'pdf': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+                'doc': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+                'docx': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+                'xls': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+                'xlsx': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+                'jpg': '<path d="M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19M8.5,13.5L11,16.5L14.5,12L19,18H5L8.5,13.5Z"/>',
+                'jpeg': '<path d="M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19M8.5,13.5L11,16.5L14.5,12L19,18H5L8.5,13.5Z"/>',
+                'png': '<path d="M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19M8.5,13.5L11,16.5L14.5,12L19,18H5L8.5,13.5Z"/>',
+                'mp4': '<path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z"/>',
+                'txt': '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>',
+            };
+            return icons[extension?.toLowerCase()] || '<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>';
+        }
+
+        function formatFileSize(bytes) {
+            if (!bytes) return 'Unknown';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Unknown';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('tr-TR') + ' ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function renderFiles(files) {
+            const fileList = document.getElementById('fileList');
+            if (!fileList) return;
+
+            if (files.length === 0) {
+                fileList.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9,11H15L13,13H11L9,11M7,18A2,2 0 0,0 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20A2,2 0 0,0 7,18M17,18A2,2 0 0,0 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20A2,2 0 0,0 17,18Z"/>
+                        </svg>
+                        <p>Dosya bulunamadı</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (currentView === 'grid') {
+                fileList.className = 'file-grid';
+                fileList.innerHTML = files.map(file => {
+                    const extension = file.name.split('.').pop();
+                    const iconPath = getFileIcon(extension, file.type);
+                    const downloadUrl = `${API_BASE}/api/file-manager/share/download/${file.id}`;
+                    
+                    return `
+                        <div class="file-item grid-item" data-name="${file.name.toLowerCase()}">
+                            <div class="file-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    ${iconPath}
+                                </svg>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">${file.name}</div>
+                                ${file.type === 'file' ? `
+                                    <div class="file-meta">
+                                        <span>${formatFileSize(file.size)}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            ${file.type === 'file' ? `
+                                <div class="file-actions" style="margin-top: 0.5rem;">
+                                    <button class="btn btn-primary" onclick="downloadFile('${file.id}', '${file.name}')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        İndir
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                fileList.className = 'file-list active';
+                fileList.innerHTML = `
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th class="file-icon-cell"></th>
+                                <th class="file-name-cell">İsim</th>
+                                <th class="file-size-cell">Boyut</th>
+                                <th class="file-date-cell">Değiştirilme</th>
+                                <th class="file-actions-cell"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${files.map(file => {
+                                const extension = file.name.split('.').pop();
+                                const iconPath = getFileIcon(extension, file.type);
+                                const downloadUrl = `${API_BASE}/api/file-manager/share/download/${file.id}`;
+                                
+                                return `
+                                    <tr>
+                                        <td class="file-icon-cell">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: var(--primary-color);">
+                                                ${iconPath}
+                                            </svg>
+                                        </td>
+                                        <td class="file-name-cell">
+                                            <div class="file-name">${file.name}</div>
+                                        </td>
+                                        <td class="file-size-cell">${file.type === 'file' ? formatFileSize(file.size) : '-'}</td>
+                                        <td class="file-date-cell">${formatDate(file.modifiedAt)}</td>
+                                        <td class="file-actions-cell">
+                                            ${file.type === 'file' ? `
+                                                <button class="btn btn-primary" onclick="downloadFile('${file.id}', '${file.name}')" style="padding: 0.375rem 0.75rem; font-size: 0.8125rem;">
+                                                    İndir
+                                                </button>
+                                            ` : '-'}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+        }
+
+        async function checkServerStatus() {
+            // If we're served from share server, it's running
+            if (isServedFromShareServer) {
+                console.log('[File Share] Served from share server, assuming running');
+                serverRunning = true;
+                updateServerStatusBadge(true);
+                return true;
+            }
+
+            // Try multiple methods to check server status
+            try {
+                // Method 1: Try share server health endpoint directly
+                try {
+                    const healthResponse = await fetch(`${SHARE_SERVER_URL}/health`, {
+                        method: 'GET',
+                        mode: 'cors',
+                        cache: 'no-cache',
+                    });
+                    if (healthResponse.ok) {
+                        const healthData = await healthResponse.json();
+                        if (healthData.isRunning) {
+                            console.log('[File Share] Share server health check passed');
+                            serverRunning = true;
+                            updateServerStatusBadge(true);
+                            return true;
+                        }
+                    }
+                } catch (healthError) {
+                    console.log('[File Share] Share server health check failed, trying Next.js API');
+                }
+
+                // Method 2: Try Next.js API status endpoint
+                const response = await fetch(`${API_BASE}/api/file-manager/share/status`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (response.ok) {
+                    const status = await response.json();
+                    serverRunning = status.isRunning;
+                    updateServerStatusBadge(status.isRunning);
+                    return status.isRunning;
+                }
+                serverRunning = false;
+                updateServerStatusBadge(false);
+                return false;
+            } catch (error) {
+                console.error('[File Share] Error checking server status:', error);
+                serverRunning = false;
+                updateServerStatusBadge(false);
+                return false;
+            }
+        }
+
+        function updateServerStatusBadge(isRunning) {
+            const badge = document.getElementById('serverStatusBadge');
+            const text = document.getElementById('serverStatusText');
+            if (badge && text) {
+                if (isRunning) {
+                    badge.style.background = 'var(--success-color)';
+                    text.textContent = 'Aktif';
+                } else {
+                    badge.style.background = 'var(--danger-color)';
+                    text.textContent = 'Kapalı';
+                }
+            }
+        }
+
+        async function loadFiles() {
+            const fileListElement = document.getElementById('fileList');
+            if (!fileListElement) return;
+
+            // Check server status first
+            const isServerRunning = await checkServerStatus();
+
+            if (!isServerRunning) {
+                fileListElement.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1; padding: 4rem 2rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 80px; height: 80px; margin-bottom: 1.5rem; color: var(--danger-color);">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+                            <line x1="2" y1="2" x2="22" y2="22" stroke-width="3"/>
+                        </svg>
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Sunucu Çalışmıyor</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                            Dosya paylaşım sunucusu şu anda aktif değil. Dosyalara erişmek için sunucunun başlatılması gerekiyor.
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                            Lütfen dosya yöneticisinden "Web Sunucu" butonuna tıklayarak sunucuyu başlatın.
+                        </p>
+                        <button onclick="retryConnection()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                            Tekrar Dene
+                        </button>
+                    </div>
+                `;
+                // Hide toolbar when server is not running
+                const toolbar = document.querySelector('.toolbar');
+                if (toolbar) {
+                    toolbar.style.display = 'none';
+                }
+                return;
+            }
+
+            // Show toolbar when server is running
+            const toolbar = document.querySelector('.toolbar');
+            if (toolbar) {
+                toolbar.style.display = 'block';
+            }
+
+            fileListElement.innerHTML = '<div class="loading" style="grid-column: 1 / -1;"><div class="spinner"></div><p>Dosyalar yükleniyor...</p></div>';
+
+            try {
+                // If served from share server, use the local proxy endpoint to avoid CORS
+                // Share server has /api/files which proxies to Next.js
+                const apiUrl = isServedFromShareServer
+                    ? `${SHARE_SERVER_URL}/api/files`  // Use share server's proxy
+                    : `${API_BASE}/api/file-manager/share/files`;  // Direct to Next.js
+
+                console.log('[File Share] Fetching files from:', apiUrl);
+
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    allFiles = data.files || [];
+                    filteredFiles = allFiles;
+                    console.log('[File Share] Loaded files:', allFiles.length);
+                    renderFiles(filteredFiles);
+                } else {
+                    throw new Error('Failed to load files: ' + response.status);
+                }
+            } catch (error) {
+                console.error('[File Share] Error loading files:', error);
+                fileListElement.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p>Dosyalar yüklenirken bir hata oluştu</p>
+                        <button onclick="retryConnection()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                            Tekrar Dene
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Retry connection function
+        function retryConnection() {
+            console.log('[File Share] Retrying connection...');
+            loadFiles();
+        }
+        window.retryConnection = retryConnection;
+
+        // View toggle
+        document.getElementById('gridView')?.addEventListener('click', () => {
+            currentView = 'grid';
+            document.getElementById('gridView')?.classList.add('active');
+            document.getElementById('listView')?.classList.remove('active');
+            renderFiles(filteredFiles);
+        });
+
+        document.getElementById('listView')?.addEventListener('click', () => {
+            currentView = 'list';
+            document.getElementById('listView')?.classList.add('active');
+            document.getElementById('gridView')?.classList.remove('active');
+            renderFiles(filteredFiles);
+        });
+
+        // Download file function
+        async function downloadFile(fileId, fileName) {
+            try {
+                // Check server status before download
+                const isServerRunning = await checkServerStatus();
+                if (!isServerRunning) {
+                    alert('Sunucu çalışmıyor. Dosya indirilemez.');
+                    return;
+                }
+
+                console.log('[File Share] Downloading file:', fileId, fileName);
+                const response = await fetch(`${API_BASE}/api/file-manager/share/download/${fileId}`);
+                
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ error: 'Download failed' }));
+                    throw new Error(error.error || 'Download failed');
+                }
+                
+                // Check if response is JSON (error) or actual file
+                const contentType = response.headers.get('content-type') || '';
+                if (contentType.includes('application/json')) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Download failed');
+                }
+                
+                // Get file as blob
+                const blob = await response.blob();
+                
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                console.log('[File Share] File downloaded successfully');
+            } catch (error) {
+                console.error('[File Share] Download error:', error);
+                alert('Dosya indirilemedi: ' + (error.message || 'Bilinmeyen hata'));
+            }
+        }
+
+        // Make downloadFile available globally
+        window.downloadFile = downloadFile;
+
+        // Search
+        document.getElementById('searchInput')?.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            filteredFiles = allFiles.filter(file => 
+                file.name.toLowerCase().includes(query)
+            );
+            renderFiles(filteredFiles);
+        });
+
+        // Load files on page load - check server status first
+        async function initializePage() {
+            console.log('[File Share] Initializing page...');
+
+            // If served from share server, we know it's running
+            if (isServedFromShareServer) {
+                console.log('[File Share] Page served from share server, loading files directly');
+                updateServerStatusBadge(true);
+                loadFiles();
+                return;
+            }
+
+            // Otherwise, check server status
+            const isRunning = await checkServerStatus();
+            if (!isRunning) {
+                // Server is not running, loadFiles will show error message
+                loadFiles();
+                return;
+            }
+            // Server is running, load files
+            loadFiles();
+        }
+
+        // Periodically check server status (every 5 seconds)
+        setInterval(async () => {
+            if (!isServedFromShareServer) {
+                await checkServerStatus();
+            }
+        }, 5000);
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+    </script>
+</body>
+</html>

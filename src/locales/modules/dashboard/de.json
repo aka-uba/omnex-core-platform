@@ -1,0 +1,33 @@
+{
+    "title": "Dashboard",
+    "description": "Übersicht und Statistiken",
+    "kpi": {
+        "totalActiveClients": "Gesamte aktive Kunden",
+        "monthlyRecurringRevenue": "Monatliches wiederkehrendes Einkommen",
+        "newLeadsThisMonth": "Neue Leads diesen Monat",
+        "activeProjects": "Aktive Projekte",
+        "changeThisMonth": "Änderung diesen Monat",
+        "change": "Änderung"
+    },
+    "contentPerformance": {
+        "title": "Content-Leistung",
+        "subtitle": "Letzte 30 Tage"
+    },
+    "upcomingPosts": {
+        "title": "Bevorstehende Beiträge",
+        "viewAll": "Alle anzeigen"
+    },
+    "financeOverview": {
+        "title": "Finanzübersicht",
+        "revenue": "Einnahmen",
+        "expenses": "Ausgaben",
+        "profit": "Gewinn"
+    },
+    "recentActivity": {
+        "title": "Letzte Aktivitäten"
+    }
+}
+
+
+
+

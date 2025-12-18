@@ -1,0 +1,53 @@
+name: "Belgeler ve İmza"
+slug: "belgeler-ve-imza"
+version: "1.0.0"
+description: "Advanced document management and digital signature system - Manage documents, create digital signatures, track document versions, send documents for signature, and maintain complete audit trails for all document operations"
+icon: "FileSignature"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies:
+  - slug: "file-manager"
+    version: ">=1.0.0"
+    optional: false
+menu:
+  main:
+    label: "Belgeler ve İmza"
+    icon: "FileSignature"
+    href: "/modules/belgeler-ve-imza/dashboard"
+    order: 50
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/belgeler-ve-imza/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Belgeler"
+        path: "/modules/belgeler-ve-imza/documents"
+        icon: "File"
+        order: 2
+      - title: "İmzalar"
+        path: "/modules/belgeler-ve-imza/signatures"
+        icon: "Signature"
+        order: 3
+settings:
+  - key: "enableDigitalSignature"
+    label: "Enable Digital Signature"
+    description: "Enable digital signature functionality"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "belgeler:read"
+    description: "View documents"
+  - key: "belgeler:write"
+    description: "Create and edit documents"
+  - key: "belgeler:sign"
+    description: "Sign documents"

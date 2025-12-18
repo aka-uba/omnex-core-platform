@@ -1,0 +1,809 @@
+// ============================================
+// Real Estate Module
+// ============================================
+
+model Location {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String
+  parentId  String? // Hiyerarşi için
+
+  name        String
+  type        String // 'firma', 'lokasyon', 'isletme', 'koridor', 'oda'
+  code        String?
+  description String?
+
+  // Adres bilgileri
+  address    String?
+  city       String?
+  country    String?
+  postalCode String?
+
+  // Konum bilgileri (Harita için)
+  latitude  Decimal? @db.Decimal(10, 8)
+  longitude Decimal? @db.Decimal(11, 8)
+
+  // Metadata
+  metadata Json?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  parent             Location?           @relation("LocationHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children           Location[]          @relation("LocationHierarchy")
+  equipment          Equipment[]
+  products           Product[]
+  productionOrders   ProductionOrder[]
+  maintenanceRecords MaintenanceRecord[]
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, type])
+  @@index([parentId])
+  @@index([type])
+  @@index([isActive])
+  @@index([latitude, longitude])
+}
+
+model Property {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // Temel bilgiler
+  name String // Apartman/Kompleks adı
+  type String // 'apartment', 'complex', 'building'
+  code String? // Özel kod
+
+  // Adres bilgileri (Anschrift)
+  address      String
+  city         String
+  district     String? // İlçe
+  neighborhood String? // Mahalle
+  street       String? // Sokak / Straße
+  buildingNo   String? // Bina no / Hausnummer
+  postalCode   String? // Postleitzahl
+  country      String  @default("TR")
+  propertyNumber String? // Steinr. (Taşınmaz Numarası)
+
+  // Konum bilgileri (Harita için)
+  latitude  Decimal? @db.Decimal(10, 8)
+  longitude Decimal? @db.Decimal(11, 8)
+
+  // Yönetim bilgileri
+  totalUnits    Int     @default(0) // Toplam daire sayısı / Anzahl Wohneinheiten
+  managerId     String? // Yönetici personel ID
+  managerUserId String? // Yönetici kullanıcı ID (sistem içi)
+
+  // Aidat yönetimi
+  monthlyFee Decimal? @db.Decimal(10, 2) // Aylık aidat
+  paymentDay Int? // Ödeme günü (1-31)
+
+  // Master Data (Stammdaten)
+  constructionYear   Int?      // Baujahr (Yapım Yılı)
+  lastRenovationDate DateTime? // Letzte durchgeführte Renovierung (Son Yenileme Tarihi)
+  landArea           Decimal?  @db.Decimal(10, 2) // Grundstücksfläche m² (Arsa Alanı)
+  floorCount         Int? // Anzahl Etagen (Kat Sayısı)
+  livingArea         Decimal?  @db.Decimal(10, 2) // Wohnfläche m² (Yaşam Alanı)
+
+  // Purchase Information (Erwerbsinformationen)
+  purchaseDate  DateTime? // Kaufdatum (Satın Alma Tarihi)
+  purchasePrice Decimal?  @db.Decimal(12, 2) // Kaufpreis (Satın Alma Fiyatı)
+  isPaidOff     Boolean   @default(false) // Abbezahlt (Ödendi)
+
+  // Financing (Finanzierung)
+  financingStartDate   DateTime? // Startdatum der Finanzierung (Finansman Başlangıç Tarihi)
+  financingEndDate     DateTime? // Enddatum der Finanzierung (Finansman Bitiş Tarihi)
+  monthlyFinancingRate Decimal?  @db.Decimal(10, 2) // Monatliche Finanzierungsrate (Aylık Finansman Taksiti)
+  numberOfInstallments Int? // Anzahl der Raten (Taksit Sayısı)
+  financingPaymentDay  Int? // Tag der Abbuchung (Finansman Taksit Günü 1-31)
+
+  // Metadata
+  description String?
+  images      String[] // Merkezi Dosya Yönetimi'nden
+  coverImage  String? // Kapak resmi
+  documents   String[] // Merkezi Dosya Yönetimi'nden
+  metadata    Json? // Ek bilgiler
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartments Apartment[]
+  staff      PropertyStaff[]
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, city])
+  @@index([city, district])
+  @@index([latitude, longitude])
+}
+
+model Apartment {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  propertyId String
+
+  // Temel bilgiler
+  unitNumber String // Daire no (örn: "A-101")
+  floor      Int? // Kat
+  block      String? // Blok
+
+  // Özellikler
+  area          Decimal @db.Decimal(10, 2) // Metrekare / Wohnfläche m²
+  roomCount     Int // Oda sayısı (3+1 için 3) / Anzahl Zimmer
+  livingRoom    Boolean @default(true) // Salon var mı
+  bathroomCount Int     @default(1) // Banyo sayısı / Badezimmer
+  balcony       Boolean @default(false) // Balkon var mı
+
+  // Type and Additional Rooms
+  apartmentType String? // Wohnungstyp (Daire Tipi)
+  bedroomCount  Int?    @default(0) // Schlafzimmer (Yatak Odası Sayısı)
+  basementSize  Decimal? @db.Decimal(8, 2) // Kellergröße (Kiler Boyutu)
+
+  // Renovation and Internet
+  lastRenovationDate DateTime? // Datum letzter Renovierung (Son Yenileme Tarihi)
+  internetSpeed      String? // Internetgeschwindigkeit (İnternet Hızı)
+
+  // Heating Systems (Heizungssysteme) - up to 4 systems
+  heatingSystems Json? // Array of heating system objects
+
+  // Monthly Costs (Monatliche Kosten)
+  coldRent        Decimal? @db.Decimal(10, 2) // Kaltmiete (Net Kira)
+  additionalCosts Decimal? @db.Decimal(10, 2) // Nebenkosten (Ek/Yan Giderler)
+  heatingCosts    Decimal? @db.Decimal(10, 2) // Heizkosten (Isıtma Giderleri)
+  deposit         Decimal? @db.Decimal(10, 2) // Kaution (Depozito)
+
+  // Usage Rights (Nutzungsrechte für die Mieteinheit)
+  usageRights Json? // Array of usage rights objects
+
+  // Mülkiyet bilgisi
+  ownerId       String? // Sahip ID (Contact/User)
+  ownerType     String? // 'person', 'company', 'state', 'foundation'
+  ownershipType String? // 'full', 'shared', 'leasehold'
+
+  // Durum
+  status       String    @default("empty") // 'empty', 'rented', 'sold', 'maintenance'
+  deliveryDate DateTime? // Teslim tarihi
+
+  // Finansal
+  rentPrice Decimal? @db.Decimal(10, 2) // Kira bedeli
+  salePrice Decimal? @db.Decimal(10, 2) // Satış fiyatı
+
+  // Demirbaş listesi
+  inventory Json? // InventoryItem[]
+
+  // Dijital anahtar
+  keys Json? // KeyInfo[]
+
+  // Metadata
+  description String?
+  images      String[] // Merkezi Dosya Yönetimi'nden
+  coverImage  String? // Kapak resmi
+  documents   String[] // Merkezi Dosya Yönetimi'nden
+  metadata    Json? // Ek bilgiler
+
+  // QR Kod
+  qrCode String? // QR kod string
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  property         Property                      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  contracts        Contract[]
+  appointments     Appointment[]
+  payments         Payment[]
+  maintenance      RealEstateMaintenanceRecord[]
+  agreementReports AgreementReport[]
+
+  @@unique([propertyId, unitNumber])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([propertyId])
+  @@index([propertyId, status])
+  @@index([status])
+  @@index([unitNumber])
+}
+
+model Tenant {
+  id        String @id @default(uuid())
+  tenantId  String // Tenant ID (multi-tenant)
+  companyId String
+
+  // Kişi bilgileri (Merkezi Contact/User servisinden)
+  userId    String? // Sistem kullanıcısı ID (opsiyonel)
+  contactId String? // Merkezi Contact ID
+
+  // Kiracı özel bilgileri
+  tenantNumber String? // Kiracı numarası / Mieter Number
+  moveInDate   DateTime? // Taşınma tarihi / Einzugsdatum
+  moveOutDate  DateTime? // Çıkış tarihi / Auszugsdatum
+
+  // Type (Mietertyp)
+  tenantType  String? // 'person' or 'company'
+  companyName String? // Unternehmensname (Optional - for company type)
+
+  // Personal Information (for person type)
+  salutation String? // Anrede: 'Herr' or 'Frau'
+  firstName  String? // Vorname (Ad)
+  lastName   String? // Nachname (Soyad)
+  birthDate  DateTime? // Geburtsdatum (Doğum Tarihi)
+  birthPlace String? // Geburtsort (Doğum Yeri)
+
+  // Address (Anschrift)
+  street      String? // Straße (Cadde/Sokak)
+  houseNumber String? // Hausnummer (Bina Numarası)
+  postalCode  String? // Postleitzahl (Posta Kodu)
+  city        String? // Stadt (Şehir)
+
+  // Contact Information
+  phone  String? // Festnetz Telefonnummer (Sabit Hat)
+  mobile String? // Mobile Telefonnummer (Cep Telefonu)
+  email  String? // E-Mail-Adresse
+
+  // Additional Information
+  nationality String? // Staatsangehörigkeit (Vatandaşlık)
+  taxNumber   String? // Steuernummer (Vergi Numarası)
+
+  // Analitik profiller
+  paymentScore     Decimal? @default(100) @db.Decimal(5, 2) // Ödeme düzeni puanı (0-100)
+  contactScore     Decimal? @default(100) @db.Decimal(5, 2) // İletişim puanı (0-100)
+  maintenanceScore Decimal? @default(100) @db.Decimal(5, 2) // Bakım puanı (0-100)
+  overallScore     Decimal? @default(100) @db.Decimal(5, 2) // Genel puan
+
+  // Notlar ve analiz
+  notes    String?
+  analysis Json? // Analiz notları
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  contracts    Contract[]
+  payments     Payment[]
+  appointments Appointment[]
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, isActive])
+  @@index([userId])
+  @@index([contactId])
+}
+
+model Contract {
+  id             String  @id @default(uuid())
+  tenantId       String
+  companyId      String
+  apartmentId    String
+  tenantRecordId String // Tenant model ID
+  templateId     String? // ContractTemplate ID (opsiyonel)
+
+  // Sözleşme bilgileri
+  contractNumber String // Sözleşme numarası
+  type           String // 'rental', 'sale', 'lease'
+
+  // Tarihler
+  startDate   DateTime
+  endDate     DateTime?
+  renewalDate DateTime? // Yenileme tarihi
+
+  // Finansal
+  rentAmount Decimal  @db.Decimal(10, 2) // Kira bedeli
+  deposit    Decimal? @db.Decimal(10, 2) // Depozito
+  currency   String   @default("TRY")
+
+  // Ödeme bilgileri
+  paymentType String? // 'cash', 'bank_transfer', 'auto_debit'
+  paymentDay  Int? // Ödeme günü (1-31)
+
+  // Otomasyon
+  autoRenewal       Boolean  @default(false)
+  renewalNoticeDays Int?     @default(30) // Yenileme bildirimi (gün önceden)
+  increaseRate      Decimal? @db.Decimal(5, 4) // Zam oranı (0.15 = %15)
+
+  // Durum
+  status String @default("active") // 'draft', 'active', 'expired', 'terminated'
+
+  // Evraklar
+  documents String[] // Merkezi Dosya Yönetimi'nden (sözleşme, kimlik, vb.)
+
+  // Metadata
+  terms String? // Özel şartlar
+  notes String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartment        Apartment         @relation(fields: [apartmentId], references: [id])
+  tenantRecord     Tenant            @relation(fields: [tenantRecordId], references: [id])
+  template         ContractTemplate? @relation(fields: [templateId], references: [id])
+  payments         Payment[]
+  agreementReports AgreementReport[]
+
+  @@unique([tenantId, contractNumber])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([apartmentId])
+  @@index([apartmentId, status])
+  @@index([tenantRecordId])
+  @@index([templateId])
+  @@index([status])
+  @@index([startDate, endDate])
+}
+
+model Payment {
+  id             String  @id @default(uuid())
+  tenantId       String  // Multi-tenant firma ID (core tenant)
+  companyId      String
+  apartmentId    String
+  contractId     String?
+  tenantRecordId String? // Kiracı kişi ID (RETenant) - opsiyonel
+
+  // Ödeme bilgileri
+  type     String // 'rent', 'deposit', 'fee', 'maintenance', 'utility'
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("TRY")
+
+  // Tarihler
+  dueDate  DateTime // Vade tarihi
+  paidDate DateTime? // Ödeme tarihi
+
+  // Durum
+  status String @default("pending") // 'pending', 'paid', 'overdue', 'cancelled'
+
+  // Ek giderler
+  extraCharges Json? // ExtraCharge[] (aidat, elektrik, su, vb.)
+  totalAmount  Decimal @db.Decimal(10, 2) // Toplam tutar (rent + extraCharges)
+
+  // Ödeme detayları
+  paymentMethod String? // 'cash', 'bank_transfer', 'card', 'check'
+  receiptNumber String? // Makbuz numarası
+  notes         String?
+
+  // Otomasyon
+  isAutoGenerated Boolean @default(false) // Otomatik oluşturuldu mu
+  reminderSent    Boolean @default(false) // Hatırlatma gönderildi mi
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartment    Apartment @relation(fields: [apartmentId], references: [id])
+  contract     Contract? @relation(fields: [contractId], references: [id])
+  tenantRecord Tenant?   @relation(fields: [tenantRecordId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, dueDate])
+  @@index([tenantId, status, dueDate])
+  @@index([apartmentId])
+  @@index([apartmentId, status])
+  @@index([contractId])
+  @@index([tenantRecordId])
+  @@index([status])
+  @@index([dueDate])
+  @@index([paidDate])
+}
+
+model Appointment {
+  id             String  @id @default(uuid())
+  tenantId       String  // Multi-tenant firma ID (core tenant)
+  companyId      String
+  apartmentId    String?
+  tenantRecordId String? // Kiracı kişi ID (RETenant) - opsiyonel
+
+  // Randevu bilgileri
+  type        String // 'viewing', 'delivery', 'maintenance', 'inspection', 'meeting'
+  title       String
+  description String?
+
+  // Tarih ve saat
+  startDate DateTime
+  endDate   DateTime
+  duration  Int? // Dakika cinsinden
+
+  // Katılımcılar
+  staffIds             String[] // Personel ID'leri (sistem içi veya modül içi)
+  externalParticipants Json? // Dış katılımcılar (isim, telefon, email)
+
+  // Durum
+  status String @default("scheduled") // 'scheduled', 'completed', 'cancelled', 'no_show'
+
+  // Takip
+  followUpRequired Boolean   @default(false)
+  followUpDate     DateTime?
+  followUpNotes    String?
+
+  // Sonuç (randevu sonrası)
+  result        Json? // AppointmentResult
+  rating        Int? // 1-5 yıldız (görücü için)
+  interestLevel String? // 'high', 'medium', 'low'
+
+  // Metadata
+  location String? // Randevu yeri
+  notes    String?
+
+  // Calendar entegrasyonu
+  calendarEventId String? // Merkezi Calendar event ID
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartment        Apartment?        @relation(fields: [apartmentId], references: [id])
+  tenantRecord     Tenant?           @relation(fields: [tenantRecordId], references: [id])
+  agreementReports AgreementReport[]
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, startDate])
+  @@index([apartmentId])
+  @@index([tenantRecordId])
+  @@index([type])
+  @@index([startDate])
+  @@index([status])
+}
+
+model RealEstateStaff {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // Personel bilgileri
+  userId String? // Sistem kullanıcısı ID (sistem içi personel)
+  name   String // Modül içi personel için isim
+  email  String?
+  phone  String?
+
+  // Personel tipi
+  staffType String // 'internal' (sistem kullanıcısı) | 'external' (modül içi)
+
+  // Rol ve yetkiler
+  role        String // 'manager', 'agent', 'accountant', 'maintenance', 'observer'
+  permissions Json? // Özel izinler
+
+  // Atama
+  propertyIds  String[] // Sorumlu olduğu property'ler
+  apartmentIds String[] // Sorumlu olduğu daireler
+
+  // Performans metrikleri
+  assignedUnits        Int      @default(0) // Sorumlu olduğu daire sayısı
+  collectionRate       Decimal? @db.Decimal(5, 2) // Tahsilat oranı (%)
+  averageVacancyDays   Decimal? @db.Decimal(10, 2) // Ortalama boş kalma süresi (gün)
+  customerSatisfaction Decimal? @db.Decimal(5, 2) // Müşteri memnuniyeti (0-100)
+
+  // Metadata
+  notes String?
+  profileImage String? // Profil resmi (Merkezi Dosya Yönetimi'nden)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  properties PropertyStaff[]
+
+  @@unique([tenantId, userId])
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@index([staffType])
+  @@index([role])
+}
+
+model PropertyStaff {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  propertyId String
+  staffId    String
+
+  // Atama bilgileri
+  role      String? // Bu property'deki rolü
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  property Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  staff    RealEstateStaff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, staffId])
+  @@index([tenantId, companyId])
+  @@index([propertyId])
+  @@index([staffId])
+}
+
+model RealEstateMaintenanceRecord {
+  id          String @id @default(uuid())
+  tenantId    String
+  companyId   String
+  apartmentId String
+
+  // Bakım bilgileri
+  type        String // 'preventive', 'corrective', 'emergency'
+  title       String
+  description String?
+
+  // Durum
+  status String @default("scheduled") // 'scheduled', 'in_progress', 'completed', 'cancelled'
+
+  // Tarihler
+  scheduledDate DateTime
+  startDate     DateTime?
+  endDate       DateTime?
+
+  // Personel
+  assignedStaffId    String? // RealEstateStaff ID
+  performedByStaffId String? // RealEstateStaff ID
+
+  // Maliyet
+  estimatedCost Decimal? @db.Decimal(10, 2)
+  actualCost    Decimal? @db.Decimal(10, 2)
+
+  // Dokümanlar
+  documents String[] // Merkezi Dosya Yönetimi'nden
+  photos    String[] // Merkezi Dosya Yönetimi'nden
+
+  // Metadata
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartment Apartment @relation(fields: [apartmentId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, scheduledDate])
+  @@index([apartmentId])
+  @@index([status])
+  @@index([scheduledDate])
+}
+
+model BulkOperation {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+  createdBy String // User ID
+
+  // İşlem bilgileri
+  type        String // 'rent_increase', 'fee_update', 'status_update', 'contract_renewal', 'payment_generate', 'custom'
+  title       String
+  description String?
+
+  // Sonuçlar
+  affectedCount Int    @default(0)
+  successCount  Int    @default(0)
+  failedCount   Int    @default(0)
+  status        String @default("pending") // 'pending', 'processing', 'completed', 'failed', 'cancelled'
+
+  // Parametreler ve sonuçlar
+  parameters Json // Operation-specific parameters
+  results    Json? // Operation results
+
+  // Tarihler
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdByUser User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([type])
+  @@index([status])
+  @@index([createdBy])
+  @@index([createdAt])
+}
+
+model ContractTemplate {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String?
+
+  // Şablon bilgileri
+  name        String
+  description String?
+  type        String // 'rental', 'sale', 'lease', 'general'
+  category    String? // 'standard', 'premium', 'custom'
+
+  // İçerik
+  content String // HTML/PDF template içeriği (template variables ile)
+
+  // Dinamik alanlar
+  variables Json? // TemplateVariable[] - Kullanılabilir değişkenler
+
+  // Metadata
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  contracts Contract[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId, companyId])
+  @@index([type])
+  @@index([category])
+  @@index([isDefault])
+  @@index([isActive])
+}
+
+model EmailTemplate {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String?
+
+  // Şablon bilgileri
+  name     String
+  category String // 'promotion', 'announcement', 'reminder', 'welcome', 'agreement'
+  subject  String // E-posta konusu
+
+  // İçerik
+  htmlContent String // HTML içerik (template variables ile)
+  textContent String? // Plain text alternatifi
+
+  // Dinamik alanlar
+  variables Json? // TemplateVariable[]
+
+  // Metadata
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  campaigns EmailCampaign[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId, companyId])
+  @@index([category])
+}
+
+model EmailCampaign {
+  id          String  @id @default(uuid())
+  tenantId    String
+  companyId   String
+  templateId  String
+  apartmentId String? // İlişkili daire
+
+  // Kampanya bilgileri
+  name String
+
+  // Alıcılar
+  recipients     Json // Recipient[]
+  recipientCount Int  @default(0)
+
+  // İçerik özelleştirme
+  customContent Json? // Özelleştirilmiş içerik
+
+  // Zamanlama
+  scheduledAt DateTime?
+  sentAt      DateTime?
+
+  // Durum
+  status String @default("draft") // 'draft', 'scheduled', 'sending', 'sent', 'failed'
+
+  // Analitik
+  sentCount       Int @default(0)
+  openedCount     Int @default(0)
+  clickedCount    Int @default(0)
+  conversionCount Int @default(0)
+
+  // Metadata
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  template EmailTemplate @relation(fields: [templateId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([templateId])
+  @@index([apartmentId])
+  @@index([status])
+}
+
+model AgreementReport {
+  id            String  @id @default(uuid())
+  tenantId      String
+  companyId     String
+  appointmentId String? // İlişkili randevu
+
+  // Rapor bilgileri
+  type        String // 'boss', 'owner', 'tenant', 'internal'
+  apartmentId String
+  contractId  String?
+
+  // Anlaşma detayları
+  agreementStatus String // 'pre_agreement', 'signed', 'delivery_scheduled', 'deposit_received'
+  rentAmount      Decimal?  @db.Decimal(10, 2)
+  deposit         Decimal?  @db.Decimal(10, 2)
+  deliveryDate    DateTime?
+  contractDate    DateTime?
+
+  // Özel şartlar
+  specialTerms String?
+  nextSteps    String?
+
+  // Alıcılar
+  recipients Json // Recipient[]
+
+  // Ek dosyalar
+  attachments String[] // Merkezi Dosya Yönetimi'nden
+
+  // Durum
+  status String    @default("draft") // 'draft', 'sent', 'viewed'
+  sentAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  apartment  Apartment   @relation(fields: [apartmentId], references: [id])
+  contract   Contract?   @relation(fields: [contractId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([appointmentId])
+  @@index([apartmentId])
+  @@index([type])
+}
+
+model AgreementReportTemplate {
+  id        String  @id @default(uuid())
+  tenantId  String
+  companyId String?
+
+  // Şablon bilgileri
+  name        String
+  category    String // 'boss', 'owner', 'tenant', 'internal'
+  description String?
+
+  // İçerik
+  content String // HTML/PDF template içeriği
+
+  // Dinamik alanlar
+  variables Json? // TemplateVariable[]
+
+  // Metadata
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, name])
+  @@index([tenantId, companyId])
+  @@index([category])
+  @@index([isDefault])
+  @@index([isActive])
+}
+

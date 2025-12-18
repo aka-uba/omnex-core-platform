@@ -1,0 +1,28 @@
+// ============================================
+// Audit Log / Activity Timeline
+// ============================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  tenantId  String
+  companyId String
+  userId    String? // User ID (nullable for system actions)
+  action    String // create, update, delete, login, logout, export, import, etc.
+  entity    String // User, Notification, Report, Company, Module, Settings, etc.
+  entityId  String? // ID of the affected entity
+  metadata  Json? // Additional context: { oldValue, newValue, ip, userAgent, etc. }
+  ipAddress String? // IP address
+  userAgent String? // Browser/client info
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, companyId])
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([entityId])
+  @@index([createdAt])
+}
+

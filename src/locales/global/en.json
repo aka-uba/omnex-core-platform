@@ -1,0 +1,374 @@
+{
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "upload": "Upload",
+    "view": "View",
+    "refresh": "Refresh",
+    "back": "Back"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "view": "View",
+    "back": "Back",
+    "export": "Export",
+    "preview": "Preview",
+    "setDefault": "Set as Default",
+    "success": "Success",
+    "error": "Error",
+    "title": "Actions",
+    "archive": "Archive"
+  },
+  "calendar": "Calendar",
+  "list": "List",
+  "form": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "upload": "Upload",
+    "submit": "Submit",
+    "reset": "Reset",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "modules": "Modules",
+    "corePages": "Core Pages",
+    "superadmin": "Super Admin"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "noData": "No data found",
+    "noResults": "No results found",
+    "errorLoading": "Error loading",
+    "required": "is required",
+    "notFound": "Not found",
+    "comingSoon": "Coming Soon",
+    "edit": "Edit",
+    "back": "Back",
+    "save": "Save",
+    "create": "Create",
+    "cancel": "Cancel",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "active": "Active",
+    "inactive": "Inactive",
+    "modules": "modules",
+    "search": "Search",
+    "showing": "Showing",
+    "of": "of"
+  },
+  "export": {
+    "report": "Report",
+    "pdf": "Download as PDF",
+    "excel": "Download as Excel",
+    "csv": "Download as CSV",
+    "word": "Download as Word",
+    "html": "Download as HTML",
+    "print": "Print",
+    "title": "Export",
+    "exporting": "Exporting...",
+    "success": "Successfully exported",
+    "error": "Error during export",
+    "noData": "No data to export",
+    "selectFormat": "Select format",
+    "downloadReady": "Download ready"
+  },
+  "table": {
+    "search": {
+      "placeholder": "Search...",
+      "label": "Search"
+    },
+    "filter": {
+      "title": "Filters",
+      "button": "Filters",
+      "clear": "Clear Filters",
+      "apply": "Apply Filters",
+      "active": "Active Filters",
+      "all": "All",
+      "searchPlaceholder": "Search {{label}}...",
+      "selectPlaceholder": "Select {{label}}...",
+      "numberPlaceholder": "Enter {{label}}...",
+      "noOptions": "No filter options available.",
+      "dateRange": {
+        "start": "Start",
+        "end": "End",
+        "startPlaceholder": "Start date",
+        "endPlaceholder": "End date"
+      }
+    },
+    "columnSettings": {
+      "title": "Column Settings",
+      "reset": "Reset",
+      "reorder": "Reorder Columns",
+      "toggle": "Column Visibility",
+      "resetToDefaults": "Reset to Defaults",
+      "show": "Show",
+      "hide": "Hide",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "badges": {
+        "sortable": "Sortable",
+        "searchable": "Searchable",
+        "filterable": "Filterable"
+      },
+      "tip": {
+        "title": "Tip",
+        "description": "Drag columns or use up/down buttons to reorder, click the eye icon to toggle visibility."
+      }
+    },
+    "pagination": {
+      "recordsPerPage": "Per page:",
+      "showing": "records showing",
+      "of": "/",
+      "page": "Page",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "export": {
+      "providerRequired": "ExportProvider required",
+      "all": "All",
+      "currentPage": "Current Page",
+      "selected": "Selected"
+    },
+    "empty": {
+      "message": "No data found",
+      "noResults": "No results found"
+    },
+    "actions": "Actions"
+  },
+  "notifications": {
+    "success": {
+      "title": "Success",
+      "saved": "Successfully saved"
+    },
+    "error": {
+      "title": "Error",
+      "generic": "An error occurred"
+    }
+  },
+  "modal": {
+    "confirm": {
+      "title": "Confirm",
+      "message": "Are you sure?",
+      "yes": "Yes",
+      "no": "No",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "delete": {
+      "title": "Delete",
+      "message": "Are you sure you want to delete this item? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "alert": {
+      "ok": "OK",
+      "cancel": "Cancel"
+    }
+  },
+  "licenses": {
+    "dashboard": {
+      "title": "License Dashboard",
+      "description": "License management overview and statistics",
+      "stats": {
+        "licenseTypes": "License Types",
+        "licensePackages": "License Packages",
+        "activeLicenses": "Active Licenses",
+        "pendingPayments": "Pending Payments"
+      },
+      "distribution": {
+        "title": "License Status Distribution",
+        "total": "Total",
+        "active": "Active",
+        "trial": "Trial",
+        "expired": "Expired"
+      },
+      "expiringSoon": {
+        "title": "Expiring Soon",
+        "count": "{{count}} licenses",
+        "noExpiring": "No licenses expiring soon"
+      },
+      "recentLicenses": {
+        "title": "Recent Licenses",
+        "columns": {
+          "company": "Company",
+          "package": "Package",
+          "status": "Status",
+          "endDate": "End Date",
+          "payment": "Payment"
+        },
+        "noLicenses": "No licenses yet"
+      }
+    },
+    "packages": {
+      "title": "License Packages",
+      "description": "Manage pricing packages",
+      "newPackage": "New Package",
+      "columns": {
+        "package": "Package",
+        "type": "Type",
+        "price": "Price",
+        "cycle": "Cycle",
+        "modules": "Modules",
+        "subscriptions": "Subscriptions",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "noPackages": "No license packages created yet",
+      "deleteTitle": "Delete License Package",
+      "deleteConfirm": "Are you sure you want to delete the {{name}} package?",
+      "cannotDelete": "There are active licenses linked to this package",
+      "discount": "{{percent}}% discount",
+      "billingCycles": {
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "yearly": "Yearly",
+        "one_time": "One-time",
+        "custom": "Custom"
+      }
+    },
+    "types": {
+      "title": "License Types",
+      "description": "Manage license types (Trial, Standard, Premium, Enterprise)",
+      "newType": "New Type",
+      "columns": {
+        "type": "Type",
+        "description": "Description",
+        "limits": "Limits",
+        "duration": "Duration",
+        "packageCount": "Package Count",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "noTypes": "No license types created yet",
+      "deleteTitle": "Delete License Type",
+      "deleteConfirm": "Are you sure you want to delete the {{name}} license type?",
+      "cannotDelete": "There are packages linked to this type, delete them first",
+      "limits": {
+        "users": "Users",
+        "storage": "Storage",
+        "unlimited": "∞"
+      },
+      "duration": {
+        "days": "{{days}} days",
+        "trial": "Trial: {{days}} days"
+      },
+      "packagesCount": "{{count}} packages"
+    },
+    "tenants": {
+      "title": "Tenant Licenses",
+      "description": "Manage licenses assigned to tenants",
+      "assignLicense": "Assign License",
+      "searchPlaceholder": "Search company or package...",
+      "filterStatus": "Filter by status",
+      "columns": {
+        "company": "Company",
+        "package": "Package",
+        "status": "Status",
+        "payment": "Payment",
+        "usage": "Usage",
+        "endDate": "End Date",
+        "actions": "Actions"
+      },
+      "noLicenses": "No licenses assigned yet",
+      "noFilterResults": "No licenses match the filter",
+      "deleteTitle": "Delete License",
+      "deleteConfirm": "Are you sure you want to delete the license for {{name}}? This action cannot be undone and all payment records will be deleted.",
+      "daysRemaining": "{{days}} days remaining",
+      "expired": "Expired",
+      "usageLabel": "{{current}}/{{max}} users",
+      "menu": {
+        "details": "Details",
+        "edit": "Edit",
+        "payments": "Payments",
+        "delete": "Delete"
+      }
+    },
+    "payments": {
+      "title": "Payment Tracking",
+      "description": "Track and approve license payments",
+      "searchPlaceholder": "Search company, invoice or transaction ID...",
+      "tabs": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "all": "All"
+      },
+      "columns": {
+        "company": "Company",
+        "package": "Package",
+        "amount": "Amount",
+        "method": "Method",
+        "invoice": "Invoice",
+        "date": "Date",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "noPayments": "No payments in this category",
+      "noFilterResults": "No payments match the filter",
+      "dueDate": "Due: {{date}}",
+      "approveTitle": "Approve Payment",
+      "approveConfirm": "Are you sure you want to approve the {{amount}} payment from {{company}}?",
+      "rejectTitle": "Reject Payment",
+      "rejectConfirm": "Are you sure you want to reject the payment from {{company}}?",
+      "rejectReason": "Rejection Reason",
+      "rejectReasonPlaceholder": "Why was the payment rejected?",
+      "menu": {
+        "approve": "Approve",
+        "reject": "Reject",
+        "viewReceipt": "View Receipt",
+        "viewInvoice": "View Invoice"
+      },
+      "methods": {
+        "bank_transfer": "Bank Transfer",
+        "credit_card": "Credit Card",
+        "cash": "Cash",
+        "other": "Other"
+      }
+    },
+    "status": {
+      "trial": "Trial",
+      "active": "Active",
+      "expired": "Expired",
+      "suspended": "Suspended",
+      "cancelled": "Cancelled"
+    },
+    "paymentStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "notifications": {
+      "statusUpdated": "Status updated",
+      "deleted": "Deleted",
+      "deleteFailed": "Delete failed",
+      "approved": "Payment approved",
+      "approveFailed": "Approval failed",
+      "rejected": "Payment rejected",
+      "rejectFailed": "Rejection failed"
+    }
+  }
+}
+
+

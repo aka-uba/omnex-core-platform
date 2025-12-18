@@ -1,0 +1,216 @@
+// ============================================
+// Production Module
+// ============================================
+
+model Product {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String
+  locationId String? // Üretim lokasyonu
+
+  // Temel bilgiler
+  name     String
+  code     String
+  sku      String?
+  barcode  String?
+  category String
+  type     String // 'hammadde', 'yarı_mamul', 'mamul'
+
+  // Stok bilgileri
+  stockQuantity Decimal  @default(0) @db.Decimal(10, 2)
+  minStockLevel Decimal? @db.Decimal(10, 2)
+  maxStockLevel Decimal? @db.Decimal(10, 2)
+  unit          String // 'adet', 'kg', 'lt', etc.
+
+  // Maliyet bilgileri
+  costPrice    Decimal? @db.Decimal(10, 2)
+  sellingPrice Decimal? @db.Decimal(10, 2)
+  currency     String   @default("TRY")
+
+  // Üretim bilgileri
+  isProducible   Boolean @default(false)
+  productionTime Int? // Dakika cinsinden
+
+  // Metadata
+  description    String?
+  specifications Json?
+  images         String[] // Merkezi Dosya Yönetimi'nden
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  location         Location?         @relation(fields: [locationId], references: [id])
+  bomItems         BOMItem[]         @relation("ProductBOM")
+  bomProducts      BOMItem[]         @relation("BOMProduct")
+  productionOrders ProductionOrder[]
+  stockMovements   StockMovement[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, category])
+  @@index([tenantId, companyId, type])
+  @@index([locationId])
+  @@index([category])
+  @@index([type])
+  @@index([code])
+}
+
+model BOMItem {
+  id          String  @id @default(uuid())
+  tenantId    String
+  companyId   String
+  bomId       String // BOM (Bill of Materials) ID
+  productId   String // Ürün
+  componentId String? // Bileşen ürün (eğer varsa)
+
+  quantity  Decimal @db.Decimal(10, 2)
+  unit      String
+  wasteRate Decimal @default(0) @db.Decimal(5, 2) // Fire oranı
+
+  // Sıralama
+  order Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  product   Product  @relation("ProductBOM", fields: [productId], references: [id])
+  component Product? @relation("BOMProduct", fields: [componentId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([bomId])
+  @@index([productId])
+  @@index([componentId])
+}
+
+model ProductionOrder {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  locationId String
+
+  orderNumber String
+  productId   String
+  quantity    Decimal @db.Decimal(10, 2)
+  unit        String
+
+  // Durum: 'pending', 'in_progress', 'completed', 'cancelled'
+  status String @default("pending")
+
+  // Tarihler
+  plannedStartDate DateTime?
+  plannedEndDate   DateTime?
+  actualStartDate  DateTime?
+  actualEndDate    DateTime?
+
+  // Maliyet
+  estimatedCost Decimal? @db.Decimal(10, 2)
+  actualCost    Decimal? @db.Decimal(10, 2)
+
+  // Metadata
+  notes    String?
+  // Priority: 'low', 'normal', 'high', 'urgent'
+  priority String  @default("normal")
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  location        Location         @relation(fields: [locationId], references: [id])
+  product         Product          @relation(fields: [productId], references: [id])
+  productionSteps ProductionStep[]
+
+  @@unique([tenantId, orderNumber])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([tenantId, companyId, isActive])
+  @@index([tenantId, companyId, priority])
+  @@index([locationId])
+  @@index([productId])
+  @@index([status])
+  @@index([orderNumber])
+}
+
+model ProductionStep {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+  orderId   String
+
+  stepNumber  Int
+  name        String
+  description String?
+
+  // Durum: 'pending', 'in_progress', 'completed', 'cancelled'
+  status String @default("pending")
+
+  // Tarihler
+  plannedStart DateTime?
+  plannedEnd   DateTime?
+  actualStart  DateTime?
+  actualEnd    DateTime?
+
+  // İşçilik
+  assignedTo String? // User ID
+  laborHours Decimal? @db.Decimal(10, 2)
+
+  // Metadata
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  order ProductionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, status])
+  @@index([orderId])
+  @@index([orderId, status])
+  @@index([assignedTo])
+  @@index([status])
+}
+
+model StockMovement {
+  id         String  @id @default(uuid())
+  tenantId   String
+  companyId  String
+  locationId String?
+  productId  String
+
+  type     String // 'in', 'out', 'transfer', 'adjustment'
+  quantity Decimal @db.Decimal(10, 2)
+  unit     String
+
+  // Referans
+  referenceType String? // 'production', 'sale', 'purchase', 'maintenance'
+  referenceId   String?
+
+  // Tarih
+  movementDate DateTime @default(now())
+
+  // Metadata
+  notes String?
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, type])
+  @@index([tenantId, companyId, movementDate])
+  @@index([productId])
+  @@index([productId, type])
+  @@index([locationId])
+  @@index([type])
+  @@index([movementDate])
+  @@index([referenceType, referenceId])
+}
+

@@ -1,0 +1,115 @@
+{
+  "title": "Settings",
+  "description": "Manage system and company settings",
+  "addCompany": {
+    "title": "Add New Company",
+    "description": "Complete the following steps to add your company"
+  },
+  "moduleSettings": {
+    "tabs": {
+      "summary": "Summary",
+      "settings": "Settings",
+      "menu": "Menu"
+    },
+    "summary": {
+      "title": "Module Summary",
+      "version": "Version",
+      "lastUpdated": "Last Updated",
+      "category": "Category",
+      "author": "Author",
+      "whatYouCanDo": "What You Can Do",
+      "changeLog": "Change Log",
+      "versionHistory": "Version History",
+      "current": "Current",
+      "changes": "Changes",
+      "features": {
+        "title": "This module provides the following capabilities:",
+        "realEstate": {
+          "properties": "Manage properties and apartments with detailed information",
+          "tenants": "Track tenants and their contracts",
+          "payments": "Monitor payments and generate financial reports",
+          "appointments": "Schedule and manage property appointments",
+          "email": "Create and send email campaigns to tenants",
+          "reports": "Generate comprehensive reports and analytics",
+          "staff": "Manage staff and their performance"
+        }
+      }
+    },
+    "settings": {
+      "title": "Module Settings",
+      "resetToDefault": "Reset to Default",
+      "saveChanges": "Save Changes",
+      "noSettings": "No settings available for this module",
+      "setting": "setting",
+      "settings_plural": "settings",
+      "categories": {
+        "general": "General",
+        "email": "Email",
+        "payments": "Payments",
+        "contracts": "Contracts",
+        "maintenance": "Maintenance",
+        "appearance": "Appearance",
+        "files": "Files",
+        "appointments": "Appointments",
+        "properties": "Properties"
+      },
+      "controls": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "notifications": {
+        "saved": "Success",
+        "savedMessage": "Settings saved successfully",
+        "error": "Error",
+        "errorMessage": "Failed to save settings"
+      }
+    },
+    "menu": {
+      "title": "Menu Configuration",
+      "description": "Drag and drop to reorder menu items. Click on items to configure.",
+      "addMenuItem": "Add Menu Item",
+      "saveMenu": "Save Menu",
+      "resetToDefault": "Reset to Default",
+      "itemConfig": {
+        "title": "Title",
+        "icon": "Icon",
+        "path": "Path",
+        "openIn": "Open In",
+        "sameTab": "Same Tab",
+        "newTab": "New Tab"
+      },
+      "tooltips": {
+        "decreaseIndent": "Decrease Indent",
+        "atRootLevel": "At root level",
+        "increaseIndent": "Increase Indent",
+        "maxIndentLevel": "Max indent level",
+        "hide": "Hide",
+        "show": "Show",
+        "delete": "Delete",
+        "dragHandle": "Drag to reorder"
+      },
+      "notifications": {
+        "saved": "Success",
+        "savedMessage": "Menu configuration saved successfully",
+        "reset": "Success",
+        "resetMessage": "Menu reset to default",
+        "error": "Error",
+        "errorMessage": "Failed to save menu"
+      }
+    },
+    "icon": {
+      "upload": "Upload Icon",
+      "change": "Change Icon",
+      "uploading": "Uploading...",
+      "uploadSuccess": "Icon uploaded successfully",
+      "uploadError": "Failed to upload icon",
+      "maxSize": "Maximum file size: 2MB",
+      "allowedTypes": "Allowed formats: PNG, JPG, SVG, WebP"
+    }
+  }
+}
+
+
+
+
+

@@ -1,0 +1,576 @@
+{
+  "title": "Immobilienverwaltung",
+  "description": "Umfassendes Immobilienverwaltungsmodul",
+  "menu": {
+    "label": "Immobilien",
+    "items": {
+      "dashboard": "Dashboard",
+      "properties": "Immobilien",
+      "apartments": "Wohnungen",
+      "tenants": "Mieter",
+      "contracts": "Verträge",
+      "payments": "Zahlungen",
+      "appointments": "Termine",
+      "email": "E-Mail-Kampagnen",
+      "reports": "Berichte",
+      "staff": "Personal"
+    }
+  },
+  "dashboard": {
+    "title": "Immobilienverwaltung Dashboard",
+    "description": "Überblick über Ihre Immobilienverwaltung",
+    "totalRevenue": "Gesamtumsatz",
+    "recentActivity": "Letzte Aktivitäten",
+    "noActivity": "Keine letzten Aktivitäten"
+  },
+  "properties": {
+    "title": "Immobilien",
+    "description": "Immobilienverwaltung",
+    "create": {
+      "title": "Neue Immobilie",
+      "description": "Erstellen Sie eine neue Immobilie"
+    },
+    "edit": {
+      "title": "Immobilie bearbeiten",
+      "description": "Immobilieninformationen bearbeiten"
+    },
+    "detail": {
+      "title": "Immobiliendetails",
+      "description": "Immobiliendetails anzeigen"
+    }
+  },
+  "apartments": {
+    "title": "Wohnungen",
+    "description": "Wohnungsverwaltung",
+    "create": {
+      "title": "Neue Wohnung",
+      "description": "Erstellen Sie eine neue Wohnung"
+    },
+    "edit": {
+      "title": "Wohnung bearbeiten",
+      "description": "Wohnungsinformationen bearbeiten"
+    },
+    "detail": {
+      "title": "Wohnungsdetails",
+      "description": "Wohnungsdetails anzeigen"
+    },
+    "details": "Details",
+    "floor": "Etage",
+    "block": "Block",
+    "area": "Fläche",
+    "roomCount": "Zimmeranzahl",
+    "rooms": "Zimmer",
+    "rentPrice": "Mietpreis",
+    "salePrice": "Verkaufspreis",
+    "deliveryDate": "Lieferdatum",
+    "status": {
+      "empty": "Leer",
+      "rented": "Vermietet",
+      "sold": "Verkauft",
+      "maintenance": "Wartung"
+    }
+  },
+  "tenants": {
+    "title": "Mieter",
+    "description": "Mieter und ihre Informationen verwalten",
+    "create": {
+      "title": "Neuer Mieter",
+      "description": "Einen neuen Mieter hinzufügen"
+    },
+    "edit": {
+      "title": "Mieter bearbeiten",
+      "description": "Mieterinformationen bearbeiten"
+    },
+    "detail": {
+      "title": "Mieterdetails",
+      "description": "Mieterdetails und Analysen anzeigen"
+    }
+  },
+  "contracts": {
+    "title": "Verträge",
+    "description": "Mietverträge verwalten",
+    "create": {
+      "title": "Neuer Vertrag",
+      "description": "Einen neuen Mietvertrag erstellen"
+    },
+    "edit": {
+      "title": "Vertrag bearbeiten",
+      "description": "Vertragsinformationen bearbeiten"
+    },
+    "tracking": {
+      "title": "Vertragsverfolgung",
+      "description": "Vertragsverlängerungen und Ablaufdaten verfolgen"
+    },
+    "templates": {
+      "title": "Vertragsvorlagen",
+      "description": "Vertragsvorlagen verwalten",
+      "create": {
+        "title": "Neue Vertragsvorlage",
+        "description": "Erstellen Sie eine neue Vertragsvorlage"
+      },
+      "edit": {
+        "title": "Vertragsvorlage bearbeiten",
+        "description": "Vertragsvorlage bearbeiten"
+      }
+    }
+  },
+  "payments": {
+    "title": "Zahlungen",
+    "description": "Mietzahlungen und Transaktionen verwalten",
+    "create": {
+      "title": "Zahlung erstellen",
+      "description": "Eine neue Zahlung erfassen"
+    },
+    "edit": {
+      "title": "Zahlung bearbeiten",
+      "description": "Zahlungsinformationen bearbeiten"
+    },
+    "list": "Liste",
+    "analytics": "Analysen",
+    "types": {
+      "rent": "Miete",
+      "deposit": "Kaution",
+      "fee": "Gebühr",
+      "maintenance": "Wartung",
+      "utility": "Nebenkosten"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "paid": "Bezahlt",
+      "overdue": "Überfällig",
+      "cancelled": "Storniert"
+    },
+    "methods": {
+      "cash": "Bargeld",
+      "bankTransfer": "Banküberweisung",
+      "card": "Karte",
+      "check": "Scheck"
+    },
+    "markedAsPaid": "Zahlung als bezahlt markiert",
+    "markAsPaidError": "Fehler beim Markieren der Zahlung als bezahlt"
+  },
+  "appointments": {
+    "title": "Termine",
+    "create": "Neuer Termin",
+    "edit": "Termin bearbeiten",
+    "types": {
+      "viewing": "Besichtigung",
+      "delivery": "Lieferung",
+      "maintenance": "Wartung",
+      "inspection": "Inspektion",
+      "meeting": "Besprechung"
+    },
+    "status": {
+      "scheduled": "Geplant",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert",
+      "no_show": "Nicht erschienen"
+    },
+    "markedAsCompleted": "Termin als abgeschlossen markiert",
+    "markAsCompletedError": "Fehler beim Markieren des Termins als abgeschlossen",
+    "followUpForm": "Termin-Nachverfolgungsformular",
+    "followUpDescription": "Füllen Sie die Details aus, nachdem der Termin abgeschlossen ist",
+    "rating": "Bewertung",
+    "forViewing": "für Besichtigung",
+    "interestLevel": "Interessensniveau",
+    "interestLevels": {
+      "high": "Hoch",
+      "medium": "Mittel",
+      "low": "Niedrig"
+    },
+    "resultNotes": "Ergebnisnotizen",
+    "enterResultNotes": "Ergebnisnotizen eingeben...",
+    "outcome": "Ergebnis",
+    "enterOutcome": "Ergebnis eingeben...",
+    "nextAction": "Nächste Aktion",
+    "enterNextAction": "Nächste Aktion eingeben...",
+    "followUpSaved": "Nachverfolgungsinformationen erfolgreich gespeichert",
+    "details": "Details",
+    "followUp": "Nachverfolgung",
+    "minutes": "Minuten",
+    "result": "Ergebnis"
+  },
+  "types": {
+    "apartment": "Wohnung",
+    "complex": "Komplex",
+    "building": "Gebäude"
+  },
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "empty": "Leer",
+    "rented": "Vermietet",
+    "sold": "Verkauft",
+    "maintenance": "Wartung",
+    "pending": "Ausstehend",
+    "paid": "Bezahlt",
+    "overdue": "Überfällig",
+    "cancelled": "Storniert",
+    "scheduled": "Geplant",
+    "completed": "Abgeschlossen",
+    "no_show": "Nicht erschienen",
+    "urgent": "Dringend",
+    "upcoming": "Bevorstehend",
+    "default": "Standard"
+  },
+  "actions": {
+    "viewDetails": "Details anzeigen",
+    "back": "Zurück",
+    "create": "Neu erstellen",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "table": {
+    "daysUntil": "Tage bis",
+    "endDate": "Enddatum",
+    "contract": "Vertrag",
+    "amount": "Betrag",
+    "title": "Titel",
+    "startDate": "Startdatum"
+  },
+  "form": {
+    "documents": "Dokumente",
+    "noDocuments": "Keine Dokumente hochgeladen",
+    "uploadDocuments": "Dokumente hochladen",
+    "uploadDocumentsHint": "Dateien hier klicken oder ziehen (PDF, Bilder, Word-Dokumente)",
+    "moveInDate": "Einzugsdatum",
+    "moveOutDate": "Auszugsdatum",
+    "amount": "Betrag",
+    "dueDate": "Fälligkeitsdatum",
+    "paidDate": "Zahlungsdatum",
+    "required": "Dieses Feld ist erforderlich",
+    "amountRequired": "Betrag muss größer als 0 sein",
+    "selectApartment": "Wohnung auswählen",
+    "selectContract": "Vertrag auswählen",
+    "selectDate": "Datum auswählen",
+    "selectPaymentMethod": "Zahlungsmethode auswählen",
+    "enterAmount": "Betrag eingeben",
+    "enterReceiptNumber": "Quittungsnummer eingeben",
+    "enterNotes": "Notizen eingeben",
+    "extraCharges": "Zusatzkosten",
+    "addExtraCharge": "Zusatzkosten hinzufügen",
+    "chargeName": "Kostenname",
+    "totalAmount": "Gesamtbetrag",
+    "isAutoGenerated": "Automatisch generiert",
+    "reminderSent": "Erinnerung gesendet",
+    "endDateAfterStart": "Enddatum muss nach Startdatum liegen",
+    "enterTitle": "Titel eingeben",
+    "enterDescription": "Beschreibung eingeben",
+    "startTime": "Startzeit (HH:mm)",
+    "endTime": "Endzeit (HH:mm)",
+    "enterDuration": "Dauer eingeben",
+    "durationAutoCalculated": "Automatisch aus Start- und Enddatum berechnet",
+    "enterLocation": "Standort eingeben",
+    "externalParticipants": "Externe Teilnehmer",
+    "addParticipant": "Teilnehmer hinzufügen",
+    "name": "Name",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "followUpRequired": "Nachverfolgung erforderlich",
+    "selectTime": "Zeit auswählen",
+    "title": "Titel",
+    "titlePlaceholder": "Titel eingeben",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung eingeben",
+    "scheduledDate": "Geplantes Datum",
+    "selectDateTime": "Datum und Uhrzeit auswählen",
+    "startDate": "Startdatum (Optional)",
+    "endDate": "Enddatum (Optional)",
+    "assignedStaff": "Zugewiesenes Personal (Optional)",
+    "selectStaff": "Personal auswählen",
+    "performedByStaff": "Durchgeführt von Personal (Optional)",
+    "back": "Zurück",
+    "apartment": "Wohnung",
+    "type": "Typ",
+    "selectType": "Typ auswählen",
+    "status": "Status",
+    "selectStatus": "Status auswählen"
+  },
+  "search": {
+    "placeholder": "Suchen..."
+  },
+  "filter": {
+    "all": "Alle",
+    "type": "Typ",
+    "status": "Status",
+    "property": "Immobilie",
+    "active": "Aktiv"
+  },
+  "messages": {
+    "fileUploaded": "Datei erfolgreich hochgeladen",
+    "fileUploadError": "Fehler beim Hochladen der Datei",
+    "fileDeleted": "Datei erfolgreich gelöscht",
+    "fileDeleteError": "Fehler beim Löschen der Datei",
+    "uploadAfterCreate": "Dateien werden nach der Vertragserstellung hochgeladen",
+    "info": "Info",
+    "success": "Erfolg",
+    "error": "Fehler",
+    "noContracts": "Keine Verträge gefunden",
+    "noPayments": "Keine Zahlungen gefunden"
+  },
+  "delete": {
+    "confirm": "Möchten Sie wirklich löschen?",
+    "success": "Erfolgreich gelöscht"
+  },
+  "pagination": {
+    "showing": "Anzeigen: {{from}}-{{to}} / {{total}}"
+  },
+  "renewal": {
+    "title": "Zu erneuernde Verträge",
+    "autoRenew": "Alle automatisch erneuern",
+    "noContracts": "Derzeit müssen keine Verträge erneuert werden",
+    "info": "Vertrag(e) müssen in den nächsten",
+    "days": "Tagen erneuert werden"
+  },
+  "email": {
+    "templates": {
+      "title": "E-Mail-Vorlagen",
+      "description": "E-Mail-Vorlagen verwalten",
+      "create": {
+        "title": "E-Mail-Vorlage erstellen",
+        "description": "Erstellen Sie eine neue E-Mail-Vorlage"
+      },
+      "edit": {
+        "title": "E-Mail-Vorlage bearbeiten",
+        "description": "E-Mail-Vorlage bearbeiten"
+      }
+    },
+    "campaigns": {
+      "title": "E-Mail-Kampagnen",
+      "description": "E-Mail-Kampagnen verwalten"
+    },
+    "send": {
+      "title": "E-Mail senden",
+      "description": "E-Mail an Mieter senden"
+    }
+  },
+  "map": {
+    "title": "Karte",
+    "mapboxTokenMissing": "Mapbox-Zugriffstoken fehlt. Bitte setzen Sie NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in Ihren Umgebungsvariablen.",
+    "totalProperties": "Gesamt Immobilien",
+    "totalApartments": "Gesamt Wohnungen",
+    "rented": "Vermietet",
+    "empty": "Leer"
+  },
+  "reports": {
+    "title": "Berichte",
+    "description": "Berichte erstellen und anzeigen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Moduleinstellungen"
+  },
+  "staff": {
+    "create": {
+      "title": "Neues Personalmitglied",
+      "description": "Neues Personalmitglied hinzufügen"
+    },
+    "edit": {
+      "title": "Personalmitglied bearbeiten",
+      "description": "Personalmitglied-Informationen bearbeiten"
+    },
+    "detail": {
+      "title": "Personaldetails",
+      "description": "Personaldetails anzeigen"
+    },
+    "performance": {
+      "title": "Leistung",
+      "description": "Personal-Leistungsmetriken anzeigen"
+    },
+    "types": {
+      "internal": "Intern",
+      "external": "Extern"
+    },
+    "roles": {
+      "manager": "Manager",
+      "agent": "Makler",
+      "maintenance": "Wartung",
+      "administrator": "Administrator"
+    },
+    "delete": {
+      "confirm": "Möchten Sie dieses Personalmitglied wirklich löschen?",
+      "success": "Personalmitglied erfolgreich gelöscht",
+      "error": "Fehler beim Löschen des Personalmitglieds"
+    },
+    "title": "Personal",
+    "description": "Mitarbeiter verwalten"
+  },
+  "maintenance": {
+    "title": "Wartung",
+    "description": "Wartungsanfragen verwalten",
+    "create": {
+      "title": "Neue Wartungsanfrage",
+      "description": "Wartungsanfrage erstellen",
+      "success": "Wartungsdatensatz erfolgreich erstellt",
+      "error": "Fehler beim Speichern des Wartungsdatensatzes"
+    },
+    "edit": {
+      "title": "Wartungsanfrage bearbeiten",
+      "description": "Wartungsanfrage bearbeiten"
+    },
+    "detail": {
+      "title": "Wartungsdetails",
+      "description": "Wartungsanfrage-Details anzeigen"
+    },
+    "types": {
+      "preventive": "Präventiv",
+      "corrective": "Korrektiv",
+      "emergency": "Notfall"
+    },
+    "status": {
+      "scheduled": "Geplant",
+      "in_progress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
+    },
+    "update": {
+      "success": "Wartungsdatensatz erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren des Wartungsdatensatzes"
+    }
+  },
+  "bulkOperations": {
+    "create": {
+      "title": "Neue Massenoperation",
+      "description": "Neue Massenoperation erstellen"
+    },
+    "title": "Massenoperationen",
+    "description": "Massenoperationen durchführen"
+  },
+  "agreementReports": {
+    "create": {
+      "title": "Neuer Vereinbarungsbericht",
+      "description": "Neuen Vereinbarungsbericht erstellen"
+    },
+    "edit": {
+      "title": "Vereinbarungsbericht bearbeiten",
+      "description": "Vereinbarungsbericht bearbeiten"
+    },
+    "detail": {
+      "title": "Vereinbarungsbericht-Details",
+      "description": "Vereinbarungsbericht-Details anzeigen"
+    },
+    "title": "Vereinbarungsberichte",
+    "description": "Vereinbarungsberichte anzeigen und verwalten"
+  },
+  "tracking": {
+    "title": "Vertragsverfolgung",
+    "totalActive": "Gesamt aktiv",
+    "upcomingRenewals": "Bevorstehende Verlängerungen",
+    "expired": "Abgelaufen",
+    "autoRenewal": "Automatische Verlängerung",
+    "active": "Aktiv",
+    "urgent": "Dringend",
+    "upcoming": "Bevorstehend",
+    "noUpcomingRenewals": "Keine bevorstehenden Verlängerungen",
+    "noActiveContracts": "Keine aktiven Verträge",
+    "noExpiredContracts": "Keine abgelaufenen Verträge"
+  },
+  "common": {
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "qrCode": {
+    "title": "Wohnungs-QR-Code",
+    "description": "Scannen Sie diesen QR-Code, um Wohnungsdetails anzuzeigen",
+    "generating": "QR-Code wird generiert...",
+    "generateError": "Fehler beim Generieren des QR-Codes",
+    "download": "Herunterladen",
+    "downloadSuccess": "QR-Code erfolgreich heruntergeladen"
+  },
+  "analytics": {
+    "title": "Mieter-Analysen",
+    "overallScore": "Gesamtpunktzahl",
+    "paymentScore": "Zahlungspunktzahl",
+    "contactScore": "Kontaktpunktzahl",
+    "maintenanceScore": "Wartungspunktzahl",
+    "paymentHistory": "Zahlungsverlauf",
+    "contractHistory": "Vertragsverlauf",
+    "appointmentHistory": "Terminverlauf",
+    "maintenanceHistory": "Wartungsverlauf",
+    "totalPayments": "Gesamtzahlungen",
+    "totalContracts": "Gesamtverträge",
+    "paid": "Bezahlt",
+    "pending": "Ausstehend",
+    "overdue": "Überfällig",
+    "active": "Aktiv",
+    "expired": "Abgelaufen",
+    "terminated": "Beendet",
+    "recalculate": "Neu berechnen",
+    "recalculated": "Analysen erfolgreich neu berechnet",
+    "recalculateError": "Fehler beim Neuberechnen der Analysen",
+    "loadError": "Fehler beim Laden der Analysen",
+    "excellent": "Ausgezeichnet",
+    "good": "Gut",
+    "fair": "Mittel",
+    "poor": "Schlecht",
+    "onTimeRate": "{{rate}}% pünktlich",
+    "appointments": "{{total}} Termine",
+    "maintenanceRecords": "{{total}} Datensätze"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Immobilienname eingeben",
+    "type": "Typ",
+    "typePlaceholder": "Typ auswählen",
+    "code": "Code",
+    "codePlaceholder": "Optionaler Code",
+    "country": "Land",
+    "countryPlaceholder": "Land",
+    "address": "Adresse",
+    "addressPlaceholder": "Adresse eingeben",
+    "city": "Stadt",
+    "cityPlaceholder": "Stadt eingeben",
+    "district": "Bezirk",
+    "districtPlaceholder": "Bezirk eingeben",
+    "neighborhood": "Stadtteil",
+    "neighborhoodPlaceholder": "Stadtteil eingeben",
+    "street": "Straße",
+    "streetPlaceholder": "Straße eingeben",
+    "buildingNo": "Hausnummer",
+    "buildingNoPlaceholder": "Hausnummer eingeben",
+    "postalCode": "Postleitzahl",
+    "postalCodePlaceholder": "Postleitzahl eingeben",
+    "latitude": "Breitengrad",
+    "latitudePlaceholder": "Breitengrad eingeben",
+    "longitude": "Längengrad",
+    "longitudePlaceholder": "Längengrad eingeben",
+    "monthlyFee": "Monatliche Gebühr",
+    "monthlyFeePlaceholder": "Monatliche Gebühr eingeben",
+    "paymentDay": "Zahlungstag",
+    "paymentDayPlaceholder": "Zahlungstag eingeben (1-31)",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung eingeben"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "types": {
+    "apartment": "Wohnung",
+    "complex": "Komplex",
+    "building": "Gebäude"
+  },
+  "messages": {
+    "success": "Erfolg",
+    "error": "Fehler",
+    "createError": "Ein Fehler ist aufgetreten",
+    "createSuccess": "Erfolgreich erstellt",
+    "updateSuccess": "Erfolgreich aktualisiert",
+    "updateError": "Fehler beim Aktualisieren"
+  },
+  "table": {
+    "name": "Name",
+    "type": "Typ",
+    "address": "Adresse",
+    "city": "Stadt",
+    "actions": "Aktionen"
+  }
+}

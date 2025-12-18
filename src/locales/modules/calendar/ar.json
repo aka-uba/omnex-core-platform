@@ -1,0 +1,65 @@
+{
+  "title": "التقويم",
+  "description": "عرض الأحداث والتسجيلات",
+  "actions": {
+    "createEvent": "حدث جديد"
+  },
+  "toolbar": {
+    "today": "اليوم",
+    "month": "الشهر",
+    "week": "الأسبوع",
+    "day": "اليوم",
+    "addEvent": "إضافة حدث",
+    "view": "عرض",
+    "edit": "تعديل",
+    "event": "حدث",
+    "events": "أحداث"
+  },
+  "summary": {
+    "title": "ملخص هذا الشهر",
+    "totalEvents": "إجمالي الأحداث",
+    "totalRegistrations": "إجمالي التسجيلات",
+    "upcomingEvents": "الأحداث القادمة"
+  },
+  "calendar": {
+    "registrations": "التسجيلات",
+    "more": "المزيد..."
+  },
+  "form": {
+    "createEvent": "إنشاء حدث جديد",
+    "editEvent": "تعديل الحدث",
+    "viewEvent": "عرض الحدث",
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل عنوان الحدث",
+    "titleRequired": "العنوان مطلوب",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الحدث",
+    "client": "العميل",
+    "clientPlaceholder": "أدخل اسم العميل",
+    "date": "التاريخ",
+    "dateRequired": "التاريخ مطلوب",
+    "time": "الوقت",
+    "timePlaceholder": "اختر الوقت",
+    "status": "الحالة",
+    "statusDraft": "مسودة",
+    "statusScheduled": "مجدول",
+    "statusPublished": "منشور",
+    "statusNeedsRevision": "يحتاج إلى مراجعة",
+    "color": "اللون",
+    "colorYellow": "أصفر",
+    "colorGreen": "أخضر",
+    "colorRed": "أحمر",
+    "colorBlue": "أزرق",
+    "colorPurple": "بنفسجي",
+    "colorSlate": "رمادي",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "close": "إغلاق"
+  }
+}
+
+
+
+

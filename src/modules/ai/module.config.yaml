@@ -1,0 +1,127 @@
+name: "AI Modülü"
+slug: "ai"
+version: "1.0.0"
+description: "Yapay zeka içerik üretim modülü - Metin, görsel, ses, video ve kod üretimi"
+icon: "Brain"
+author: "Omnex Team"
+category: "ai"
+minCoreVersion: "1.0.8"
+maxCoreVersion: "2.0.0"
+dependencies:
+  - slug: "file-manager"
+    version: ">=1.0.0"
+  - slug: "notifications"
+    version: ">=1.0.0"
+menu:
+  main:
+    label: "AI Studio"
+    icon: "Brain"
+    href: "/modules/ai/dashboard"
+    order: 20
+    permissions: ["ai.text.generate"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/ai/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Text Generator"
+        path: "/modules/ai/text"
+        icon: "FileText"
+        order: 2
+      - title: "Image Generator"
+        path: "/modules/ai/image"
+        icon: "Photo"
+        order: 3
+      - title: "Code Generator"
+        path: "/modules/ai/code"
+        icon: "Code"
+        order: 4
+      - title: "Audio Generator"
+        path: "/modules/ai/audio"
+        icon: "Microphone"
+        order: 5
+      - title: "Video Generator"
+        path: "/modules/ai/video"
+        icon: "Video"
+        order: 6
+      - title: "History"
+        path: "/modules/ai/history"
+        icon: "History"
+        order: 7
+settings:
+  - key: "openai_api_key"
+    label: "OpenAI API Key"
+    description: "OpenAI API key for text and code generation"
+    type: "text"
+    defaultValue: ""
+    category: "API"
+  - key: "default_model"
+    label: "Varsayılan Model"
+    description: "Default AI model to use"
+    type: "select"
+    defaultValue: "gpt-4"
+    options:
+      - value: "gpt-4"
+        label: "GPT-4"
+      - value: "gpt-3.5-turbo"
+        label: "GPT-3.5 Turbo"
+    category: "AI"
+  - key: "maxTokens"
+    label: "Max Tokens"
+    description: "Maximum tokens per generation"
+    type: "number"
+    defaultValue: 2000
+    min: 100
+    max: 8000
+    category: "AI"
+  - key: "enableImageGeneration"
+    label: "Enable Image Generation"
+    description: "Allow AI image generation"
+    type: "boolean"
+    defaultValue: true
+    category: "AI"
+  - key: "enableAudioGeneration"
+    label: "Enable Audio Generation"
+    description: "Allow AI audio generation"
+    type: "boolean"
+    defaultValue: true
+    category: "AI"
+  - key: "enableVideoGeneration"
+    label: "Enable Video Generation"
+    description: "Allow AI video generation"
+    type: "boolean"
+    defaultValue: false
+    category: "AI"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "ai.text.generate"
+    name: "Metin Üretici"
+    category: "AI"
+    description: "AI metin üretimi yapabilir"
+  - key: "ai.image.generate"
+    name: "Görsel Üretici"
+    category: "AI"
+    description: "AI görsel üretimi yapabilir"
+multiTenant:
+  database:
+    tables:
+      - "ai_generations"
+      - "ai_history"
+    migrations:
+      - "20250127000000_create_ai_tables.sql"
+api:
+  routes:
+    - path: "/api/ai/generate"
+      method: "POST"
+      permissions: ["ai.text.generate"]
+    - path: "/api/ai/history"
+      method: "GET" 
+      permissions: ["ai.text.generate"]
+webhooks:
+  - event: "generation.completed"
+    url: "/api/webhooks/ai/generation"

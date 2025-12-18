@@ -1,0 +1,696 @@
+{
+  "title": "Real Estate Management",
+  "description": "Comprehensive real estate management module",
+  "menu": {
+    "label": "Real Estate",
+    "items": {
+      "dashboard": "Dashboard",
+      "properties": "Properties",
+      "apartments": "Apartments",
+      "tenants": "Tenants",
+      "contracts": "Contracts",
+      "payments": "Payments",
+      "appointments": "Appointments",
+      "email": "Email Campaigns",
+      "reports": "Reports",
+      "staff": "Staff"
+    }
+  },
+  "dashboard": {
+    "title": "Real Estate Dashboard",
+    "description": "Overview of your real estate management",
+    "totalRevenue": "Total Revenue",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity"
+  },
+  "properties": {
+    "title": "Properties",
+    "description": "Manage your real estate properties",
+    "create": {
+      "title": "New Property",
+      "description": "Create a new property"
+    },
+    "edit": {
+      "title": "Edit Property",
+      "description": "Edit property information"
+    },
+    "detail": {
+      "title": "Property Details",
+      "description": "View property details"
+    }
+  },
+  "apartments": {
+    "title": "Apartments",
+    "description": "Manage apartments and units",
+    "create": {
+      "title": "New Apartment",
+      "description": "Create a new apartment"
+    },
+    "edit": {
+      "title": "Edit Apartment",
+      "description": "Edit apartment information"
+    },
+    "detail": {
+      "title": "Apartment Details",
+      "description": "View apartment details"
+    }
+  },
+  "tenants": {
+    "title": "Tenants",
+    "description": "Manage tenants and their information",
+    "create": {
+      "title": "New Tenant",
+      "description": "Add a new tenant"
+    },
+    "edit": {
+      "title": "Edit Tenant",
+      "description": "Edit tenant information"
+    },
+    "detail": {
+      "title": "Tenant Details",
+      "description": "View tenant details and analytics"
+    }
+  },
+  "contracts": {
+    "title": "Contracts",
+    "description": "Manage rental contracts",
+    "create": {
+      "title": "New Contract",
+      "description": "Create a new rental contract"
+    },
+    "edit": {
+      "title": "Edit Contract",
+      "description": "Edit contract information"
+    },
+    "tracking": {
+      "title": "Contract Tracking",
+      "description": "Track contract renewals and expirations"
+    },
+    "templates": {
+      "title": "Contract Templates",
+      "description": "Manage contract templates",
+      "create": {
+        "title": "New Contract Template",
+        "description": "Create a new contract template"
+      },
+      "edit": {
+        "title": "Edit Contract Template",
+        "description": "Edit contract template"
+      }
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "description": "Manage rental payments and transactions",
+    "create": {
+      "title": "Create Payment",
+      "description": "Record a new payment"
+    },
+    "edit": {
+      "title": "Edit Payment",
+      "description": "Edit payment information"
+    }
+  },
+  "appointments": {
+    "title": "Appointments",
+    "description": "Manage property viewings and appointments",
+    "create": {
+      "title": "Create Appointment",
+      "description": "Schedule a new appointment"
+    },
+    "edit": {
+      "title": "Edit Appointment",
+      "description": "Edit appointment details"
+    },
+    "detail": {
+      "title": "Appointment Details",
+      "description": "View appointment details"
+    }
+  },
+  "email": {
+    "templates": {
+      "title": "Email Templates",
+      "description": "Manage email templates",
+      "create": {
+        "title": "Create Email Template",
+        "description": "Create a new email template"
+      },
+      "edit": {
+        "title": "Edit Email Template",
+        "description": "Edit email template"
+      }
+    },
+    "campaigns": {
+      "title": "Email Campaigns",
+      "description": "Manage email campaigns"
+    },
+    "send": {
+      "title": "Send Email",
+      "description": "Send email to tenants"
+    }
+  },
+  "map": {
+    "title": "Property Map",
+    "description": "View properties on map"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Generate and view reports"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Module settings"
+  },
+  "staff": {
+    "title": "Staff",
+    "description": "Manage staff members",
+    "create": {
+      "title": "New Staff Member",
+      "description": "Add a new staff member"
+    },
+    "edit": {
+      "title": "Edit Staff Member",
+      "description": "Edit staff member information"
+    },
+    "detail": {
+      "title": "Staff Details",
+      "description": "View staff member details"
+    },
+    "performance": {
+      "title": "Performance",
+      "description": "View staff performance metrics"
+    },
+    "types": {
+      "internal": "Internal",
+      "external": "External"
+    },
+    "roles": {
+      "manager": "Manager",
+      "agent": "Agent",
+      "maintenance": "Maintenance",
+      "administrator": "Administrator"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this staff member?",
+      "success": "Staff member deleted successfully",
+      "error": "Failed to delete staff member"
+    }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "description": "Manage maintenance requests",
+    "create": {
+      "title": "New Maintenance Request",
+      "description": "Create a maintenance request",
+      "success": "Maintenance record created successfully",
+      "error": "Failed to save maintenance record"
+    },
+    "edit": {
+      "title": "Edit Maintenance Request",
+      "description": "Edit maintenance request"
+    },
+    "detail": {
+      "title": "Maintenance Details",
+      "description": "View maintenance request details"
+    },
+    "types": {
+      "preventive": "Preventive",
+      "corrective": "Corrective",
+      "emergency": "Emergency"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "update": {
+      "success": "Maintenance record updated successfully",
+      "error": "Failed to update maintenance record"
+    }
+  },
+  "bulkOperations": {
+    "title": "Bulk Operations",
+    "description": "Perform bulk operations",
+    "create": {
+      "title": "New Bulk Operation",
+      "description": "Create a new bulk operation"
+    }
+  },
+  "agreementReports": {
+    "title": "Agreement Reports",
+    "description": "View and manage agreement reports",
+    "create": {
+      "title": "New Agreement Report",
+      "description": "Create a new agreement report"
+    },
+    "edit": {
+      "title": "Edit Agreement Report",
+      "description": "Edit agreement report"
+    },
+    "detail": {
+      "title": "Agreement Report Details",
+      "description": "View agreement report details"
+    }
+  },
+  "types": {
+    "apartment": "Apartment",
+    "complex": "Complex",
+    "building": "Building"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "empty": "Empty",
+    "rented": "Rented",
+    "sold": "Sold",
+    "maintenance": "Maintenance",
+    "pending": "Pending",
+    "paid": "Paid",
+    "overdue": "Overdue",
+    "cancelled": "Cancelled",
+    "scheduled": "Scheduled",
+    "completed": "Completed",
+    "no_show": "No Show",
+    "urgent": "Urgent",
+    "upcoming": "Upcoming",
+    "default": "Default"
+  },
+  "actions": {
+    "create": "Create New",
+    "update": "Update",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "viewDetails": "View Details",
+    "back": "Back"
+  },
+  "table": {
+    "name": "Name",
+    "type": "Type",
+    "address": "Address",
+    "city": "City",
+    "district": "District",
+    "units": "Units",
+    "status": "Status",
+    "actions": "Actions",
+    "unitNumber": "Unit Number",
+    "property": "Property",
+    "area": "Area",
+    "rooms": "Rooms",
+    "active": "Active",
+    "contractNumber": "Contract Number",
+    "apartment": "Apartment",
+    "endDate": "End Date",
+    "daysUntil": "Days Until"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Enter property name",
+    "type": "Type",
+    "typePlaceholder": "Select type",
+    "code": "Code",
+    "codePlaceholder": "Optional code",
+    "address": "Address",
+    "addressPlaceholder": "Enter address",
+    "city": "City",
+    "cityPlaceholder": "Enter city",
+    "district": "District",
+    "districtPlaceholder": "Enter district",
+    "neighborhood": "Neighborhood",
+    "neighborhoodPlaceholder": "Enter neighborhood",
+    "street": "Street",
+    "streetPlaceholder": "Enter street",
+    "buildingNo": "Building No",
+    "buildingNoPlaceholder": "Enter building number",
+    "postalCode": "Postal Code",
+    "postalCodePlaceholder": "Enter postal code",
+    "country": "Country",
+    "countryPlaceholder": "Enter country",
+    "latitude": "Latitude",
+    "latitudePlaceholder": "Enter latitude",
+    "longitude": "Longitude",
+    "longitudePlaceholder": "Enter longitude",
+    "monthlyFee": "Monthly Fee",
+    "monthlyFeePlaceholder": "Enter monthly fee",
+    "paymentDay": "Payment Day",
+    "paymentDayPlaceholder": "Enter payment day (1-31)",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "property": "Property",
+    "propertyPlaceholder": "Select property",
+    "unitNumber": "Unit Number",
+    "unitNumberPlaceholder": "Enter unit number",
+    "floor": "Floor",
+    "floorPlaceholder": "Enter floor",
+    "block": "Block",
+    "blockPlaceholder": "Enter block",
+    "area": "Area (m²)",
+    "areaPlaceholder": "Enter area",
+    "roomCount": "Room Count",
+    "roomCountPlaceholder": "Enter room count",
+    "bathroomCount": "Bathroom Count",
+    "bathroomCountPlaceholder": "Enter bathroom count",
+    "livingRoom": "Living Room",
+    "balcony": "Balcony",
+    "rentPrice": "Rent Price",
+    "rentPricePlaceholder": "Enter rent price",
+    "salePrice": "Sale Price",
+    "salePricePlaceholder": "Enter sale price",
+    "documents": "Documents",
+    "noDocuments": "No documents uploaded",
+    "uploadDocuments": "Upload Documents",
+    "uploadDocumentsHint": "Click or drag files here (PDF, Images, Word documents)"
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "filter": {
+    "all": "All",
+    "type": "Type",
+    "status": "Status",
+    "property": "Property",
+    "active": "Active"
+  },
+  "messages": {
+    "createSuccess": "Successfully created",
+    "createError": "Creation error",
+    "updateSuccess": "Successfully updated",
+    "updateError": "Update error",
+    "deleteSuccess": "Successfully deleted",
+    "deleteError": "Delete error",
+    "renewSuccess": "Contract renewed successfully",
+    "renewError": "Contract renewal error",
+    "autoRenewSuccess": "Auto-renewal successful",
+    "autoRenewError": "Auto-renewal error",
+    "fileUploaded": "File uploaded successfully",
+    "fileUploadError": "File upload error",
+    "fileDeleted": "File deleted successfully",
+    "fileDeleteError": "File delete error",
+    "uploadAfterCreate": "Files will be uploaded after contract is created",
+    "info": "Info",
+    "success": "Success",
+    "error": "Error"
+  },
+  "delete": {
+    "confirm": "Are you sure you want to delete?",
+    "success": "Successfully deleted"
+  },
+  "pagination": {
+    "showing": "Showing: {{from}}-{{to}} / {{total}}"
+  },
+  "renewal": {
+    "title": "Contracts Needing Renewal",
+    "autoRenew": "Auto-Renew All",
+    "noContracts": "No contracts need renewal at this time",
+    "info": "contract(s) need renewal in the next",
+    "days": "days"
+  },
+  "analytics": {
+    "title": "Tenant Analytics",
+    "overallScore": "Overall Score",
+    "paymentScore": "Payment Score",
+    "contactScore": "Contact Score",
+    "maintenanceScore": "Maintenance Score",
+    "paymentHistory": "Payment History",
+    "contractHistory": "Contract History",
+    "appointmentHistory": "Appointment History",
+    "maintenanceHistory": "Maintenance History",
+    "totalPayments": "Total Payments",
+    "totalContracts": "Total Contracts",
+    "paid": "Paid",
+    "pending": "Pending",
+    "overdue": "Overdue",
+    "active": "Active",
+    "expired": "Expired",
+    "terminated": "Terminated",
+    "recalculate": "Recalculate",
+    "recalculated": "Analytics recalculated successfully",
+    "recalculateError": "Failed to recalculate analytics",
+    "loadError": "Failed to load analytics",
+    "excellent": "Excellent",
+    "good": "Good",
+    "fair": "Fair",
+    "poor": "Poor",
+    "onTimeRate": "{{rate}}% on-time",
+    "appointments": "{{total}} appointments",
+    "maintenanceRecords": "{{total}} records"
+  },
+  "form": {
+    "moveInDate": "Move-In Date",
+    "moveOutDate": "Move-Out Date",
+    "amount": "Amount",
+    "dueDate": "Due Date",
+    "paidDate": "Paid Date"
+  },
+  "messages": {
+    "noContracts": "No contracts found",
+    "noPayments": "No payments found"
+  },
+  "tracking": {
+    "title": "Contract Tracking",
+    "totalActive": "Total Active",
+    "upcomingRenewals": "Upcoming Renewals",
+    "expired": "Expired",
+    "autoRenewal": "Auto-Renewal",
+    "active": "Active",
+    "urgent": "Urgent",
+    "upcoming": "Upcoming",
+    "noUpcomingRenewals": "No upcoming renewals",
+    "noActiveContracts": "No active contracts",
+    "noExpiredContracts": "No expired contracts"
+  },
+  "table": {
+    "daysUntil": "Days Until",
+    "endDate": "End Date"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "payments": {
+    "title": "Payments",
+    "create": "New Payment",
+    "edit": "Edit Payment",
+    "types": {
+      "rent": "Rent",
+      "deposit": "Deposit",
+      "fee": "Fee",
+      "maintenance": "Maintenance",
+      "utility": "Utility"
+    },
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled"
+    },
+    "methods": {
+      "cash": "Cash",
+      "bankTransfer": "Bank Transfer",
+      "card": "Card",
+      "check": "Check"
+    },
+    "markedAsPaid": "Payment marked as paid",
+    "markAsPaidError": "Failed to mark payment as paid"
+  },
+  "form": {
+    "required": "This field is required",
+    "amountRequired": "Amount must be greater than 0",
+    "selectApartment": "Select apartment",
+    "selectContract": "Select contract",
+    "selectDate": "Select date",
+    "selectPaymentMethod": "Select payment method",
+    "enterAmount": "Enter amount",
+    "enterReceiptNumber": "Enter receipt number",
+    "enterNotes": "Enter notes",
+    "extraCharges": "Extra Charges",
+    "addExtraCharge": "Add Extra Charge",
+    "chargeName": "Charge name",
+    "totalAmount": "Total Amount",
+    "isAutoGenerated": "Auto Generated",
+    "reminderSent": "Reminder Sent"
+  },
+  "table": {
+    "contract": "Contract",
+    "amount": "Amount",
+    "title": "Title",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "appointments": {
+    "title": "Appointments",
+    "create": "New Appointment",
+    "edit": "Edit Appointment",
+    "types": {
+      "viewing": "Viewing",
+      "delivery": "Delivery",
+      "maintenance": "Maintenance",
+      "inspection": "Inspection",
+      "meeting": "Meeting"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No Show"
+    },
+    "markedAsCompleted": "Appointment marked as completed",
+    "markAsCompletedError": "Failed to mark appointment as completed"
+  },
+  "form": {
+    "endDateAfterStart": "End date must be after start date",
+    "enterTitle": "Enter title",
+    "enterDescription": "Enter description",
+    "startTime": "Start Time (HH:mm)",
+    "endTime": "End Time (HH:mm)",
+    "enterDuration": "Enter duration",
+    "durationAutoCalculated": "Automatically calculated from start and end dates",
+    "enterLocation": "Enter location",
+    "externalParticipants": "External Participants",
+    "addParticipant": "Add Participant",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "followUpRequired": "Follow-up Required",
+    "selectTime": "Select time",
+    "apartment": "Apartment",
+    "selectApartment": "Select apartment",
+    "type": "Type",
+    "selectType": "Select type",
+    "status": "Status",
+    "selectStatus": "Select status",
+    "title": "Title",
+    "titlePlaceholder": "Enter title",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "scheduledDate": "Scheduled Date",
+    "selectDateTime": "Select date and time",
+    "startDate": "Start Date (Optional)",
+    "endDate": "End Date (Optional)",
+    "assignedStaff": "Assigned Staff (Optional)",
+    "selectStaff": "Select staff",
+    "performedByStaff": "Performed By Staff (Optional)",
+    "back": "Back"
+  },
+  "appointments": {
+    "followUpForm": "Appointment Follow-up Form",
+    "followUpDescription": "Fill in the details after the appointment is completed",
+    "rating": "Rating",
+    "forViewing": "for viewing",
+    "interestLevel": "Interest Level",
+    "interestLevels": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "resultNotes": "Result Notes",
+    "enterResultNotes": "Enter result notes...",
+    "outcome": "Outcome",
+    "enterOutcome": "Enter outcome...",
+    "nextAction": "Next Action",
+    "enterNextAction": "Enter next action...",
+    "followUpSaved": "Follow-up information saved successfully",
+    "details": "Details",
+    "followUp": "Follow-up",
+    "minutes": "minutes",
+    "result": "Result"
+  },
+  "map": {
+    "title": "Map",
+    "mapboxTokenMissing": "Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.",
+    "totalProperties": "Total Properties",
+    "totalApartments": "Total Apartments",
+    "rented": "Rented",
+    "empty": "Empty"
+  },
+  "qrCode": {
+    "title": "Apartment QR Code",
+    "description": "Scan this QR code to view apartment details",
+    "generating": "Generating QR code...",
+    "generateError": "Failed to generate QR code",
+    "download": "Download",
+    "downloadSuccess": "QR code downloaded successfully"
+  },
+  "apartments": {
+    "details": "Details",
+    "floor": "Floor",
+    "block": "Block",
+    "area": "Area",
+    "roomCount": "Room Count",
+    "rooms": "rooms",
+    "rentPrice": "Rent Price",
+    "salePrice": "Sale Price",
+    "deliveryDate": "Delivery Date",
+    "status": {
+      "empty": "Empty",
+      "rented": "Rented",
+      "sold": "Sold",
+      "maintenance": "Maintenance"
+    }
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Enter property name",
+    "type": "Type",
+    "typePlaceholder": "Select type",
+    "code": "Code",
+    "codePlaceholder": "Optional code",
+    "country": "Country",
+    "countryPlaceholder": "Country",
+    "address": "Address",
+    "addressPlaceholder": "Enter address",
+    "city": "City",
+    "cityPlaceholder": "Enter city",
+    "district": "District",
+    "districtPlaceholder": "Enter district",
+    "neighborhood": "Neighborhood",
+    "neighborhoodPlaceholder": "Enter neighborhood",
+    "street": "Street",
+    "streetPlaceholder": "Enter street",
+    "buildingNo": "Building No",
+    "buildingNoPlaceholder": "Enter building number",
+    "postalCode": "Postal Code",
+    "postalCodePlaceholder": "Enter postal code",
+    "latitude": "Latitude",
+    "latitudePlaceholder": "Enter latitude",
+    "longitude": "Longitude",
+    "longitudePlaceholder": "Enter longitude",
+    "monthlyFee": "Monthly Fee",
+    "monthlyFeePlaceholder": "Enter monthly fee",
+    "paymentDay": "Payment Day",
+    "paymentDayPlaceholder": "Enter payment day (1-31)",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description"
+  },
+  "actions": {
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "types": {
+    "apartment": "Apartment",
+    "complex": "Complex",
+    "building": "Building"
+  },
+  "messages": {
+    "success": "Success",
+    "error": "Error",
+    "createError": "An error occurred",
+    "createSuccess": "Created successfully",
+    "updateSuccess": "Updated successfully",
+    "updateError": "Error updating"
+  },
+  "table": {
+    "name": "Name",
+    "type": "Type",
+    "address": "Address",
+    "city": "City",
+    "actions": "Actions"
+  }
+}

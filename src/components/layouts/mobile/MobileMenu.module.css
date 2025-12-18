@@ -1,0 +1,141 @@
+.mobileMenu {
+  /* Drawer stilleri */
+}
+
+/* Dark mode - Global dark stillerdeki gri tonları kullan */
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-content) {
+  background-color: var(--bg-card-dark, #303134) !important;
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-body) {
+  background-color: var(--bg-card-dark, #303134) !important;
+  padding: 0 !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-header) {
+  background-color: var(--bg-card-dark, #303134) !important;
+  border-bottom-color: var(--border-color-dark, #5f6368) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-title) {
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-close) {
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-Drawer-close:hover) {
+  background-color: var(--bg-secondary-dark, #3c4043) !important;
+}
+
+/* ScrollArea dark mode */
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-ScrollArea-root) {
+  background-color: var(--bg-card-dark, #303134) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mobileMenu :global(.mantine-ScrollArea-viewport) {
+  background-color: var(--bg-card-dark, #303134) !important;
+}
+
+.menuContent {
+  padding: 8px;
+}
+
+/* Dark mode - Menu content arka planı */
+[data-mantine-color-scheme="dark"] .menuContent {
+  background-color: var(--bg-card-dark, #303134);
+  color: var(--text-primary-dark, #e8eaed);
+}
+
+.menuLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.menuLink:hover {
+  background-color: var(--hover-bg-color, rgba(0, 0, 0, 0.05));
+}
+
+[data-mantine-color-scheme="dark"] .menuLink:hover {
+  background-color: var(--hover-bg-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+.menuLink[data-active="true"] {
+  background-color: var(--active-bg-color, rgba(13, 127, 242, 0.1));
+}
+
+[data-mantine-color-scheme="dark"] .menuLink[data-active="true"] {
+  background-color: var(--active-bg-color-dark, rgba(13, 127, 242, 0.2));
+}
+
+.menuItem {
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+/* Dark mode - Menu item stilleri */
+[data-mantine-color-scheme="dark"] .menuItem :global(.mantine-NavLink-root) {
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+[data-mantine-color-scheme="dark"] .menuItem :global(.mantine-NavLink-root:hover) {
+  background-color: var(--bg-secondary-dark, #3c4043) !important;
+}
+
+[data-mantine-color-scheme="dark"] .menuItem :global(.mantine-NavLink-root[data-active="true"]) {
+  background-color: rgba(13, 127, 242, 0.2) !important;
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+.subMenu {
+  padding-left: 1rem;
+  margin-top: 4px;
+}
+
+/* Dark mode - Sub menu arka planı */
+[data-mantine-color-scheme="dark"] .subMenu {
+  background-color: var(--bg-card-dark, #303134);
+}
+
+.subMenuItem {
+  padding-left: 2rem !important;
+  font-size: 0.875rem;
+}
+
+/* Dark mode - Sub menu item stilleri */
+[data-mantine-color-scheme="dark"] .subMenuItem :global(.mantine-NavLink-root) {
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+[data-mantine-color-scheme="dark"] .subMenuItem :global(.mantine-NavLink-root:hover) {
+  background-color: var(--bg-secondary-dark, #3c4043) !important;
+}
+
+[data-mantine-color-scheme="dark"] .subMenuItem :global(.mantine-NavLink-root[data-active="true"]) {
+  background-color: rgba(13, 127, 242, 0.2) !important;
+  color: var(--text-primary-dark, #e8eaed) !important;
+}
+
+/* Grup Divider stilleri */
+.groupDivider {
+  margin: 0.75rem 0 0.5rem;
+}
+
+.groupDivider :global(.mantine-Divider-label) {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+[data-mantine-color-scheme="dark"] .groupDivider :global(.mantine-Divider-label) {
+  color: var(--text-secondary-dark);
+}
+

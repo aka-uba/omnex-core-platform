@@ -1,0 +1,65 @@
+{
+  "title": "Berechtigungsverwaltung",
+  "description": "Verwalten Sie systemweite Benutzerberechtigungen und Zugriffsebenen.",
+  "create": {
+    "title": "Neue Berechtigung erstellen",
+    "description": "Erstellen Sie eine neue Berechtigung.",
+    "button": "Berechtigung erstellen"
+  },
+  "edit": {
+    "title": "Berechtigung bearbeiten",
+    "description": "Aktualisieren Sie Berechtigungsinformationen.",
+    "button": "Änderungen speichern"
+  },
+  "view": {
+    "title": "Berechtigungsdetails",
+    "description": "Zeigen Sie Berechtigungsinformationen an."
+  },
+  "table": {
+    "permissionKey": "Berechtigungsschlüssel",
+    "name": "Name",
+    "description": "Beschreibung",
+    "category": "Kategorie",
+    "module": "Modul",
+    "actions": "Aktionen",
+    "searchPlaceholder": "Nach Name oder Schlüssel suchen...",
+    "categoryFilter": "Kategorie",
+    "moduleFilter": "Modul",
+    "clearFilters": "Filter löschen"
+  },
+  "form": {
+    "permissionKey": "Berechtigungsschlüssel",
+    "permissionKeyPlaceholder": "z.B. client.create",
+    "name": "Name",
+    "namePlaceholder": "z.B. Kunde erstellen",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Geben Sie die Berechtigungsbeschreibung ein",
+    "category": "Kategorie",
+    "categoryPlaceholder": "Kategorie auswählen",
+    "module": "Modul",
+    "modulePlaceholder": "Modul auswählen"
+  },
+  "actions": {
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "validation": {
+    "keyRequired": "Berechtigungsschlüssel ist erforderlich",
+    "keyFormat": "Berechtigungsschlüsselformat: module.action (z.B. client.create)",
+    "nameRequired": "Name ist erforderlich",
+    "descriptionRequired": "Beschreibung ist erforderlich",
+    "categoryRequired": "Kategorie ist erforderlich"
+  },
+  "categories": {
+    "clientManagement": "Kundenverwaltung",
+    "contentAI": "Content AI",
+    "scheduling": "Planung",
+    "finance": "Finanzen",
+    "general": "Allgemein"
+  }
+}
+
+
+
+

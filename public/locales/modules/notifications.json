@@ -1,0 +1,55 @@
+{
+    "title": "Notifications",
+    "description": "Manage system-wide notifications and alerts",
+    "create": "Create Notification",
+    "edit": "Edit Notification",
+    "status": {
+        "read": "Read",
+        "unread": "Unread",
+        "global": "Global",
+        "archived": "Archived"
+    },
+    "priority": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+    },
+    "type": {
+        "info": "Info",
+        "warning": "Warning",
+        "error": "Error",
+        "success": "Success",
+        "task": "Task",
+        "alert": "Alert"
+    },
+    "fields": {
+        "title": "Title",
+        "message": "Message",
+        "type": "Type",
+        "priority": "Priority",
+        "user": "User",
+        "module": "Module",
+        "status": "Status",
+        "data": "Data (JSON)",
+        "expires_at": "Expires At",
+        "is_global": "Global Notification",
+        "location": "Location",
+        "action_url": "Action URL",
+        "action_text": "Action Text",
+        "attachments": "Attachments"
+    },
+    "validation": {
+        "required": "This field is required",
+        "user_required": "User is required for non-global notifications",
+        "action_required": "Action details are required for tasks"
+    },
+    "actions": {
+        "view": "View Details",
+        "edit": "Edit",
+        "archive": "Archive",
+        "delete": "Delete",
+        "save": "Save Notification",
+        "cancel": "Cancel"
+    }
+}

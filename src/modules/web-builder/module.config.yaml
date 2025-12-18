@@ -1,0 +1,102 @@
+name: "Web Builder"
+slug: "web-builder"
+version: "1.0.0"
+description: "Advanced drag & drop website builder module - Create beautiful, responsive websites without coding using visual editor, pre-built templates, custom components, form builder, media library, and comprehensive analytics integration"
+icon: "Layout"
+author: "Omnex"
+category: "business"
+minCoreVersion: "1.0.10"
+menu:
+  main:
+    label: "Web Builder"
+    icon: "Layout"
+    href: "/modules/web-builder/dashboard"
+    order: 25
+    permissions: ["SuperAdmin", "AgencyUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/web-builder/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Websites"
+        path: "/modules/web-builder/websites"
+        icon: "Layout"
+        order: 2
+      - title: "Pages"
+        path: "/modules/web-builder/pages"
+        icon: "FileText"
+        order: 3
+      - title: "Templates"
+        path: "/modules/web-builder/templates"
+        icon: "Layout"
+        order: 4
+      - title: "Themes"
+        path: "/modules/web-builder/themes"
+        icon: "Photo"
+        order: 5
+      - title: "Components"
+        path: "/modules/web-builder/components"
+        icon: "Components"
+        order: 6
+      - title: "Forms"
+        path: "/modules/web-builder/forms"
+        icon: "FileCheck"
+        order: 7
+      - title: "Media Library"
+        path: "/modules/web-builder/media"
+        icon: "Photo"
+        order: 8
+      - title: "Assets"
+        path: "/modules/web-builder/assets"
+        icon: "Folder"
+        order: 9
+      - title: "Analytics"
+        path: "/modules/web-builder/analytics"
+        icon: "ChartBar"
+        order: 10
+      - title: "Settings"
+        path: "/modules/web-builder/settings"
+        icon: "Settings"
+        order: 11
+settings:
+  - key: "enableAutoSave"
+    label: "Enable Auto Save"
+    description: "Automatically save changes"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "autoSaveInterval"
+    label: "Auto Save Interval (seconds)"
+    description: "Seconds between auto saves"
+    type: "number"
+    defaultValue: 30
+    min: 5
+    max: 300
+    category: "General"
+  - key: "maxUploadSize"
+    label: "Max Upload Size (MB)"
+    description: "Maximum file upload size"
+    type: "number"
+    defaultValue: 10
+    min: 1
+    max: 100
+    category: "Media"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "web-builder.create"
+    name: "Create Page"
+    description: "Allow creating pages"
+  - key: "web-builder.edit"
+    name: "Edit Page"
+    description: "Allow editing pages"
+  - key: "web-builder.delete"
+    name: "Delete Page"
+    description: "Allow deleting pages"
+  - key: "web-builder.publish"
+    name: "Publish Page"
+    description: "Allow publishing pages"

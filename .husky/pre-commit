@@ -1,0 +1,38 @@
+#!/bin/sh
+# Pre-commit hook for schema validation
+# Mode-aware: DEV MODE allows warnings, GUARDED MODE blocks
+
+. "$(dirname "$0")/_/husky.sh"
+
+# Check operational mode
+if [ "$DEV_MODE" = "true" ] || [ "$NODE_ENV" = "development" ] || [ -z "$CI" ]; then
+  echo "⚠️  DEV MODE: Pre-commit hooks are optional"
+  # Optional: run validations but don't block
+  npm run schema:merge || true
+  npm run schema:validate || true
+else
+  # GUARDED MODE: Strict validation
+  echo "🔒 GUARDED MODE: Running strict validation..."
+  npm run schema:merge
+  npm run schema:validate
+  npm run schema:validate-relations
+  npm run schema:validate-contracts
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

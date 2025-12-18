@@ -1,0 +1,71 @@
+{
+  "title": "Calendar",
+  "description": "View events and registrations",
+  "menu": {
+    "label": "Calendar",
+    "items": {
+      "dashboard": "Dashboard",
+      "events": "Events",
+      "appointments": "Appointments",
+      "view": "Calendar View"
+    }
+  },
+  "actions": {
+    "createEvent": "New Event"
+  },
+  "toolbar": {
+    "today": "Today",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "addEvent": "Add Event",
+    "view": "View",
+    "edit": "Edit",
+    "event": "Event",
+    "events": "Events"
+  },
+  "summary": {
+    "title": "This Month Summary",
+    "totalEvents": "Total Events",
+    "totalRegistrations": "Total Registrations",
+    "upcomingEvents": "Upcoming Events"
+  },
+  "calendar": {
+    "registrations": "Registrations",
+    "more": "more..."
+  },
+  "form": {
+    "createEvent": "Create Event",
+    "editEvent": "Edit Event",
+    "viewEvent": "View Event",
+    "title": "Title",
+    "titlePlaceholder": "Enter event title",
+    "titleRequired": "Title is required",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter event description",
+    "client": "Client",
+    "clientPlaceholder": "Enter client name",
+    "date": "Date",
+    "dateRequired": "Date is required",
+    "time": "Time",
+    "timePlaceholder": "Select time",
+    "status": "Status",
+    "statusDraft": "Draft",
+    "statusScheduled": "Scheduled",
+    "statusPublished": "Published",
+    "statusNeedsRevision": "Needs Revision",
+    "color": "Color",
+    "colorYellow": "Yellow",
+    "colorGreen": "Green",
+    "colorRed": "Red",
+    "colorBlue": "Blue",
+    "colorPurple": "Purple",
+    "colorSlate": "Slate",
+    "create": "Create",
+    "update": "Update",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "close": "Close"
+  }
+}
+

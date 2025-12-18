@@ -1,0 +1,54 @@
+name: "Müşteri"
+slug: "musteri"
+version: "1.0.0"
+description: "Complete Customer Relationship Management (CRM) system - Manage customer contacts, track sales opportunities, monitor customer interactions, manage leads, and analyze customer relationships with comprehensive CRM features"
+icon: "UserCircle"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.8"
+status: "planned"
+dependencies: []
+menu:
+  main:
+    label: "Müşteri"
+    icon: "UserCircle"
+    href: "/modules/musteri/dashboard"
+    order: 60
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/musteri/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Müşteriler"
+        path: "/modules/musteri/customers"
+        icon: "Users"
+        order: 2
+      - title: "Fırsatlar"
+        path: "/modules/musteri/opportunities"
+        icon: "Target"
+        order: 3
+      - title: "İletişim"
+        path: "/modules/musteri/contacts"
+        icon: "Phone"
+        order: 4
+settings:
+  - key: "enableLeadTracking"
+    label: "Enable Lead Tracking"
+    description: "Enable lead tracking functionality"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "musteri:read"
+    description: "View customer data"
+  - key: "musteri:write"
+    description: "Create and edit customer data"
+  - key: "musteri:delete"
+    description: "Delete customer data"

@@ -1,0 +1,293 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from '@mantine/form';
+import {
+  Container,
+  Paper,
+  Tabs,
+  Button,
+  Group,
+} from '@mantine/core';
+import { IconUser, IconBriefcase, IconPhone, IconFileText, IconFileDescription, IconSettings, IconUserEdit } from '@tabler/icons-react';
+import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
+import { useUser, useUpdateUser } from '@/hooks/useUsers';
+import { useTranslation } from '@/lib/i18n/client';
+import { PersonalInfoTab } from '../../create/tabs/PersonalInfoTab';
+import { WorkInfoTab } from '../../create/tabs/WorkInfoTab';
+import { ContactInfoTab } from '../../create/tabs/ContactInfoTab';
+import { DocumentsTab } from '../../create/tabs/DocumentsTab';
+import { CVTab } from '../../create/tabs/CVTab';
+import { PreferencesTab } from '../../create/tabs/PreferencesTab';
+import { notifications } from '@mantine/notifications';
+import classes from '../../create/CreateUserPage.module.css';
+import { EditUserPageSkeleton } from './EditUserPageSkeleton';
+
+export function EditUserPageClient({ locale, userId }: { locale: string; userId: string }) {
+  const router = useRouter();
+  const { t } = useTranslation('modules/users');
+  const { t: tGlobal } = useTranslation('global');
+  const [activeTab, setActiveTab] = useState<string | null>('personal');
+  const { data: user, isLoading } = useUser(userId);
+  const updateUser = useUpdateUser();
+
+  const form = useForm({
+    initialValues: {
+      personal: {
+        profilePicture: undefined,
+        fullName: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+      },
+      work: {
+        department: '',
+        position: '',
+        employeeId: '',
+        hireDate: undefined as any,
+        manager: '',
+        agencyIds: [],
+        role: 'AgencyUser' as const,
+      },
+      contact: {
+        address: '',
+        city: '',
+        country: '',
+        postalCode: '',
+        emergencyContact: '',
+        emergencyPhone: '',
+      },
+      documents: {
+        passport: undefined,
+        idCard: undefined,
+        contract: undefined,
+        otherDocuments: [],
+      },
+      cv: {
+        cv: undefined,
+      },
+      preferences: {
+        defaultLanguage: 'tr',
+        defaultTheme: 'auto' as const,
+        defaultLayout: 'comfortable' as const,
+      },
+    },
+    // Validasyonu manuel yapacağız - nested yapıda zodResolver sorun çıkarıyor
+  });
+
+  useEffect(() => {
+    if (user) {
+      form.setValues({
+        personal: {
+          profilePicture: undefined, // Keep as undefined, we'll use currentProfilePicture prop
+          fullName: user.name,
+          email: user.email,
+          phone: user.phone || '',
+          password: '',
+          confirmPassword: '',
+        },
+        work: {
+          department: user.department || '',
+          position: user.position || '',
+          employeeId: user.employeeId || '',
+          hireDate: user.hireDate ? new Date(user.hireDate) : undefined,
+          manager: '',
+          agencyIds: [],
+          role: user.role as any,
+        },
+        contact: {
+          address: '',
+          city: '',
+          country: '',
+          postalCode: '',
+          emergencyContact: '',
+          emergencyPhone: '',
+        },
+        documents: {
+          passport: undefined,
+          idCard: undefined,
+          contract: undefined,
+          otherDocuments: [],
+        },
+        cv: {
+          cv: undefined,
+        },
+        preferences: {
+          defaultLanguage: 'tr',
+          defaultTheme: 'auto' as const,
+          defaultLayout: 'comfortable' as const,
+        },
+      });
+    }
+  }, [user]);
+
+  const handleSubmit = async () => {
+    // Temel validasyon
+    if (!form.values.personal.fullName || !form.values.personal.email) {
+      notifications.show({
+        title: tGlobal('notifications.validation.title'),
+        message: tGlobal('notifications.validation.requiredFields'),
+        color: 'red',
+      });
+      return;
+    }
+
+    // Email format kontrolü
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.values.personal.email)) {
+      notifications.show({
+        title: tGlobal('notifications.validation.title'),
+        message: tGlobal('notifications.validation.invalidEmail'),
+        color: 'red',
+      });
+      return;
+    }
+
+    // Şifre kontrolü (eğer şifre girilmişse)
+    if (form.values.personal.password && form.values.personal.password.length < 8) {
+      notifications.show({
+        title: tGlobal('notifications.validation.title'),
+        message: tGlobal('notifications.validation.passwordMinLength'),
+        color: 'red',
+      });
+      return;
+    }
+
+    // Şifre eşleşme kontrolü
+    if (form.values.personal.password && form.values.personal.password !== form.values.personal.confirmPassword) {
+      notifications.show({
+        title: tGlobal('notifications.validation.title'),
+        message: tGlobal('notifications.validation.passwordMismatch'),
+        color: 'red',
+      });
+      return;
+    }
+
+    try {
+      const response = await updateUser.mutateAsync({ userId, data: form.values });
+      
+      // Eğer güncellenen kullanıcı mevcut kullanıcıysa, localStorage'ı güncelle
+      if (typeof window !== 'undefined') {
+        const currentUser = localStorage.getItem('user');
+        if (currentUser) {
+          try {
+            const user = JSON.parse(currentUser);
+            if (user.id === userId && response?.user) {
+              // Profil resmi ve diğer bilgileri güncelle
+              // profilePicture'ı önce response'dan al, yoksa mevcut değeri koru
+              const updatedUser = {
+                ...user,
+                name: response.user.name || user.name,
+                email: response.user.email || user.email,
+                profilePicture: response.user.profilePicture !== undefined 
+                  ? response.user.profilePicture 
+                  : user.profilePicture,
+              };
+              localStorage.setItem('user', JSON.stringify(updatedUser));
+              // Custom event dispatch et ki useAuth hook'u güncellensin
+              window.dispatchEvent(new Event('user-updated'));
+            }
+          } catch (e) {
+            // Error updating localStorage - silently fail
+          }
+        }
+      }
+      
+      notifications.show({
+        title: t('edit.title'),
+        message: tGlobal('notifications.success.userUpdated'),
+        color: 'green',
+      });
+      router.push(`/${locale}/users`);
+    } catch (error) {
+      notifications.show({
+        title: tGlobal('notifications.error.title'),
+        message: error instanceof Error ? error.message : tGlobal('notifications.error.userUpdateFailed'),
+        color: 'red',
+      });
+    }
+  };
+
+  if (isLoading) {
+    return <EditUserPageSkeleton />;
+  }
+
+  return (
+    <Container size="xl" py="xl">
+      <CentralPageHeader
+        title="edit.title"
+        description="edit.description"
+        namespace="modules/users"
+        icon={<IconUserEdit size={32} />}
+        breadcrumbs={[
+          { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+          { label: 'title', href: `/${locale}/users`, namespace: 'modules/users' },
+          { label: 'edit.title', namespace: 'modules/users' },
+        ]}
+      />
+
+      <Paper shadow="sm" radius="md" className={classes.formContainer}>
+        <Tabs value={activeTab} onChange={setActiveTab} className={classes.tabs}>
+          <Tabs.List className={classes.tabsList}>
+            <Tabs.Tab value="personal" leftSection={<IconUser size={16} />}>
+              {t('tabs.personal')}
+            </Tabs.Tab>
+            <Tabs.Tab value="work" leftSection={<IconBriefcase size={16} />}>
+              {t('tabs.work')}
+            </Tabs.Tab>
+            <Tabs.Tab value="contact" leftSection={<IconPhone size={16} />}>
+              {t('tabs.contact')}
+            </Tabs.Tab>
+            <Tabs.Tab value="documents" leftSection={<IconFileText size={16} />}>
+              {t('tabs.documents')}
+            </Tabs.Tab>
+            <Tabs.Tab value="cv" leftSection={<IconFileDescription size={16} />}>
+              {t('tabs.cv')}
+            </Tabs.Tab>
+            <Tabs.Tab value="preferences" leftSection={<IconSettings size={16} />}>
+              {t('tabs.preferences')}
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="personal" pt={0}>
+            <PersonalInfoTab form={form as any} currentProfilePicture={user?.profilePicture} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="work" pt={0}>
+            <WorkInfoTab form={form as any} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="contact" pt={0}>
+            <ContactInfoTab form={form as any} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="documents" pt={0}>
+            <DocumentsTab form={form as any} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="cv" pt={0}>
+            <CVTab form={form as any} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="preferences" pt={0}>
+            <PreferencesTab form={form as any} />
+          </Tabs.Panel>
+        </Tabs>
+
+        <div className={classes.actionBar}>
+          <Group justify="flex-end" gap="md">
+            <Button variant="default" onClick={() => router.back()}>
+              {tGlobal('form.cancel')}
+            </Button>
+            <Button onClick={handleSubmit} loading={updateUser.isPending}>
+              {t('edit.button')}
+            </Button>
+          </Group>
+        </div>
+      </Paper>
+    </Container>
+  );
+}
+

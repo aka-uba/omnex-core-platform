@@ -1,0 +1,42 @@
+{
+  "main": {
+    "items": [
+      {
+        "title": "Raporlar",
+        "icon": "ChartBar",
+        "path": "/modules/raporlar",
+        "order": 1,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Export Geçmişi",
+        "icon": "Circle",
+        "path": "/modules/raporlar/exports",
+        "order": 2,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Zamanlanmış",
+        "icon": "Circle",
+        "path": "/modules/raporlar/scheduled",
+        "order": 3,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
+        "title": "Settings",
+        "icon": "Circle",
+        "path": "/modules/raporlar/settings",
+        "order": 4,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,512 @@
+.topHeader {
+  position: relative;
+  top: auto;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: var(--top-height, 64px);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--top-bg-color, rgba(245, 247, 248, 0.75));
+  -webkit-backdrop-filter: blur(12px) saturate(180%); /* Sidebar header ile aynı */
+  backdrop-filter: blur(12px) saturate(180%); /* Sidebar header ile aynı */
+  transition: border-color 0.3s ease, height 0.3s ease;
+  /* background-color transition kaldırıldı - anlık renk değişimi için */
+}
+
+.topHeader.sticky {
+  position: sticky;
+  top: 0;
+  transition: transform 0.3s ease, border-color 0.3s ease, height 0.3s ease;
+  /* background-color transition kaldırıldı - anlık renk değişimi için */
+}
+
+/* Hidden scroll behavior - header scroll down'da gizlenir */
+.topHeader.headerHidden {
+  transform: translateY(-100%);
+}
+
+/* Hidden on hover scroll behavior - header scroll down'da gizlenir, mouse üstteyken görünür */
+.topHeader.headerHiddenOnHover {
+  transform: translateY(-100%);
+}
+
+/* Show header when mouse is near top (hidden-on-hover mode) */
+.topLayout[data-scroll-behavior="hidden-on-hover"]:hover .topHeader.headerHiddenOnHover,
+.topLayout[data-scroll-behavior="hidden-on-hover"] .topHeader.headerHiddenOnHover:hover {
+  transform: translateY(0);
+}
+
+[data-mantine-color-scheme="dark"] .topHeader {
+  background-color: rgba(48, 49, 52, 0.75) !important; /* --bg-card (#303134) ile uyumlu - Google Dark Theme - otomatik renk hesaplamasını override et */
+  border-bottom-color: var(--border-color-dark) !important;
+}
+
+.topHeaderContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0.75rem 1.5rem; /* Sidebar header ile aynı padding */
+  gap: 2rem;
+}
+
+.logoSection {
+  flex-shrink: 0;
+}
+
+.logoTitle {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+/* Light mode - custom background için dinamik renkler */
+.topHeader:not([data-mantine-color-scheme="dark"]) .logoTitle {
+  color: var(--top-text-color, var(--text-primary));
+}
+
+[data-mantine-color-scheme="dark"] .logoTitle {
+  color: var(--text-primary-dark) !important;
+}
+
+.navigation {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rightActions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* LanguageSelector içindeki bayrak resmi için özel stil */
+.rightActions :global(.languageSelectorButton) {
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.rightActions :global(.languageSelectorButton) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  aspect-ratio: 3/2;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .searchInput {
+    display: none;
+  }
+}
+
+/* Search button active state (mobil ve tablet için) */
+.searchButtonActive {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchButtonActive {
+  background-color: var(--top-hover-bg, rgba(0, 0, 0, 0.05)) !important;
+}
+
+[data-mantine-color-scheme="dark"] .searchButtonActive,
+.topHeader[data-mantine-color-scheme="dark"] .searchButtonActive {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: inherit;
+  font-size: 20px;
+  transition: color 0.15s ease;
+}
+
+/* Light mode - custom background için dinamik renkler */
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInput {
+  color: var(--top-icon-color, var(--text-secondary));
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchIcon {
+  color: var(--top-icon-color, var(--text-secondary));
+}
+
+[data-mantine-color-scheme="dark"] .searchIcon {
+  color: var(--text-secondary-dark) !important;
+}
+
+.searchInputField {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  resize: none;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  outline: none;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  height: 2.5rem;
+  padding-left: 2.5rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode - arka plan rengi yok, kenar çizgisi kalacak */
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInputField {
+  background-color: transparent !important;
+  color: var(--top-text-color, var(--text-primary));
+  border-color: var(--top-border-color, var(--border-color));
+}
+
+/* Placeholder rengi - otomatik renk hesaplaması */
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInputField::placeholder {
+  color: var(--top-placeholder-color, rgba(0, 0, 0, 0.5)) !important;
+  opacity: 1; /* Firefox için */
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInputField::-webkit-input-placeholder {
+  color: var(--top-placeholder-color, rgba(0, 0, 0, 0.5)) !important;
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInputField::-moz-placeholder {
+  color: var(--top-placeholder-color, rgba(0, 0, 0, 0.5)) !important;
+  opacity: 1; /* Firefox için */
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .searchInputField:-ms-input-placeholder {
+  color: var(--top-placeholder-color, rgba(0, 0, 0, 0.5)) !important;
+}
+
+/* Dark mode - global dark stilleri kullan */
+.topHeader[data-mantine-color-scheme="dark"] .searchInputField,
+[data-mantine-color-scheme="dark"] .topHeader .searchInputField {
+  background-color: var(--bg-card-dark) !important;
+  color: var(--text-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+}
+
+.topHeader[data-mantine-color-scheme="dark"] .searchInputField::placeholder,
+[data-mantine-color-scheme="dark"] .topHeader .searchInputField::placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+.topHeader[data-mantine-color-scheme="dark"] .searchInputField::-webkit-input-placeholder,
+[data-mantine-color-scheme="dark"] .topHeader .searchInputField::-webkit-input-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+.topHeader[data-mantine-color-scheme="dark"] .searchInputField::-moz-placeholder,
+[data-mantine-color-scheme="dark"] .topHeader .searchInputField::-moz-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+.topHeader[data-mantine-color-scheme="dark"] .searchInputField:-ms-input-placeholder,
+[data-mantine-color-scheme="dark"] .topHeader .searchInputField:-ms-input-placeholder {
+  color: var(--text-secondary-dark) !important;
+  opacity: 1 !important;
+}
+
+.searchInputField:focus {
+  outline: none;
+}
+
+.actionButton {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Light mode - arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .actionButton {
+  background-color: transparent !important;
+  color: var(--top-icon-color, var(--text-primary));
+  border-color: transparent !important;
+}
+
+.actionButton:hover {
+  background-color: var(--bg-surface);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode - custom background için dinamik hover */
+/* Light mode - hover'da da arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .actionButton:hover {
+  background-color: transparent !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.actionButtonIcon {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+/* Light mode - custom background için dinamik icon rengi */
+.topHeader:not([data-mantine-color-scheme="dark"]) .actionButtonIcon {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .actionButton:hover .actionButtonIcon {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+/* Dark mode - TopHeader içinde de kutu şekli korunmalı */
+[data-mantine-color-scheme="dark"] .actionButton,
+.topHeader[data-mantine-color-scheme="dark"] .actionButton {
+  background-color: var(--bg-card-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  border: 1px solid var(--border-color-dark) !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .actionButton:hover,
+.topHeader[data-mantine-color-scheme="dark"] .actionButton:hover {
+  background-color: var(--bg-tertiary-dark) !important;
+  border-color: var(--border-color-dark) !important;
+  border: 1px solid var(--border-color-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .actionButtonIcon {
+  color: var(--text-primary-dark) !important;
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+.avatar {
+  cursor: pointer;
+}
+
+/* layoutSwitchButton - actionButton ile aynı stil */
+.layoutSwitchButton {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Light mode - arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .layoutSwitchButton {
+  background-color: transparent !important;
+  color: var(--top-icon-color, var(--text-primary));
+  border-color: transparent !important;
+}
+
+.layoutSwitchButton:hover {
+  background-color: var(--bg-surface);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode - hover'da da arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .layoutSwitchButton:hover {
+  background-color: transparent !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.layoutSwitchIcon {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+/* Light mode - custom background için dinamik icon rengi */
+.topHeader:not([data-mantine-color-scheme="dark"]) .layoutSwitchIcon {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) .layoutSwitchButton:hover .layoutSwitchIcon {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+/* Dark mode - kutu şekli kaldırıldı */
+[data-mantine-color-scheme="dark"] .layoutSwitchButton,
+.topHeader[data-mantine-color-scheme="dark"] .layoutSwitchButton {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .layoutSwitchButton:hover,
+.topHeader[data-mantine-color-scheme="dark"] .layoutSwitchButton:hover {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-mantine-color-scheme="dark"] .layoutSwitchIcon {
+  color: var(--text-primary-dark) !important;
+}
+
+/* ActionIcon root override */
+.layoutSwitchButton :global(.mantine-ActionIcon-root) {
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.layoutSwitchButton :global(.mantine-ActionIcon-icon) {
+  color: inherit !important;
+}
+
+/* rightActions içindeki tüm button ve ActionIcon'lar - actionButton ile aynı stil */
+.rightActions button,
+.rightActions :global([data-mantine-component="ActionIcon"]),
+.rightActions :global(.mantine-Menu-target) button {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Light mode - arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions button,
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global([data-mantine-component="ActionIcon"]),
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global(.mantine-Menu-target) button {
+  background-color: transparent !important;
+  color: var(--top-icon-color, var(--text-primary));
+  border-color: transparent !important;
+}
+
+.rightActions button:hover,
+.rightActions :global([data-mantine-component="ActionIcon"]):hover,
+.rightActions :global(.mantine-Menu-target):hover button {
+  background-color: var(--bg-surface);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode - hover'da da arka plan rengi yok */
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions button:hover,
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global([data-mantine-component="ActionIcon"]):hover,
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global(.mantine-Menu-target):hover button {
+  background-color: transparent !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon elementleri */
+.rightActions button svg,
+.rightActions :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-icon),
+.rightActions :global([data-mantine-component="ActionIcon"]) svg,
+.rightActions :global(.mantine-Menu-target) button svg {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+/* Light mode - icon rengi */
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions button svg,
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-icon),
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global([data-mantine-component="ActionIcon"]) svg,
+.topHeader:not([data-mantine-color-scheme="dark"]) .rightActions :global(.mantine-Menu-target) button svg {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+/* Dark mode - kutu şekli kaldırıldı */
+[data-mantine-color-scheme="dark"] .rightActions button,
+[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]),
+[data-mantine-color-scheme="dark"] .rightActions :global(.mantine-Menu-target) button,
+.topHeader[data-mantine-color-scheme="dark"] .rightActions button,
+.topHeader[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]),
+.topHeader[data-mantine-color-scheme="dark"] .rightActions :global(.mantine-Menu-target) button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .rightActions button:hover,
+[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]):hover,
+[data-mantine-color-scheme="dark"] .rightActions :global(.mantine-Menu-target):hover button,
+.topHeader[data-mantine-color-scheme="dark"] .rightActions button:hover,
+.topHeader[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]):hover,
+.topHeader[data-mantine-color-scheme="dark"] .rightActions :global(.mantine-Menu-target):hover button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-mantine-color-scheme="dark"] .rightActions button svg,
+[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-icon),
+[data-mantine-color-scheme="dark"] .rightActions :global([data-mantine-component="ActionIcon"]) svg,
+[data-mantine-color-scheme="dark"] .rightActions :global(.mantine-Menu-target) button svg {
+  color: var(--text-primary-dark) !important;
+}
+
+/* ActionIcon root override */
+.rightActions :global([data-mantine-component="ActionIcon"]) :global(.mantine-ActionIcon-root) {
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Menu dropdown içindeki iconlar */
+.topHeader:not([data-mantine-color-scheme="dark"]) :global(.mantine-Menu-item) :global(.mantine-Menu-itemSection),
+.topHeader:not([data-mantine-color-scheme="dark"]) :global(.mantine-Menu-item) :global(.mantine-Menu-itemSection) svg {
+  color: var(--top-icon-color, var(--text-primary));
+}
+
+.topHeader:not([data-mantine-color-scheme="dark"]) :global(.mantine-Menu-item:hover) :global(.mantine-Menu-itemSection),
+.topHeader:not([data-mantine-color-scheme="dark"]) :global(.mantine-Menu-item:hover) :global(.mantine-Menu-itemSection) svg {
+  color: var(--top-icon-color, var(--text-primary));
+}
+

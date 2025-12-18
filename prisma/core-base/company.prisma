@@ -1,0 +1,55 @@
+// ============================================
+// Company (Tenant'ın İş Birimi)
+// ============================================
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  industry  String?
+  website   String?
+  status    String   @default("Active") // Active, Archived
+  
+  // Kurumsal bilgiler (Template'ler için gerekli)
+  logo             String? // Logo URL
+  logoFile         String? // Logo dosya yolu
+  address          String? // Adres
+  city             String?
+  state            String?
+  postalCode       String?
+  country          String?
+  phone            String?
+  email            String?
+  taxNumber        String? // Vergi numarası
+  taxOffice        String? // Vergi dairesi
+  registrationNumber String? // Ticaret sicil numarası
+  mersisNumber     String? // MERSIS numarası
+  iban             String? // IBAN
+  bankName         String? // Banka adı
+  accountHolder    String? // Hesap sahibi
+  
+  // Ek bilgiler
+  description      String? // Firma açıklaması
+  foundedYear      Int? // Kuruluş yılı
+  employeeCount    Int? // Çalışan sayısı
+  capital          String? // Sermaye
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users         User[]               @relation("CompanyUsers")
+  brandKit      BrandKit?
+  assets        Asset[]
+  contents      Content[]
+  finances      Finance[]
+  aiGenerations AIGeneration[]
+  aiHistory     AIHistory[]
+  layoutConfig  CompanyLayoutConfig?
+  websites      Website[]
+
+  @@index([name])
+  @@index([status])
+}
+
+
+

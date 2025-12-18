@@ -1,0 +1,230 @@
+{
+  "title": "الموارد البشرية",
+  "description": "إدارة الموظفين وتتبع الإجازات ونظام كشوف المرتبات",
+  "employees": {
+    "title": "الموظفون",
+    "description": "إدارة الموظفين",
+    "create": "موظف جديد",
+    "createDescription": "إنشاء سجل موظف جديد",
+    "edit": "تعديل الموظف",
+    "editDescription": "تحديث معلومات الموظف",
+    "detail": "تفاصيل الموظف",
+    "detailDescription": "عرض تفاصيل الموظف",
+    "notFound": "لم يتم العثور على الموظف",
+    "workTypes": {
+      "full_time": "دوام كامل",
+      "part_time": "دوام جزئي",
+      "contract": "عقد"
+    },
+    "table": {
+      "employeeNumber": "رقم الموظف",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "department": "القسم",
+      "position": "المنصب",
+      "workType": "نوع العمل",
+      "hireDate": "تاريخ التوظيف",
+      "salary": "الراتب",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "user": "المستخدم",
+      "userPlaceholder": "اختر المستخدم",
+      "employeeNumber": "رقم الموظف",
+      "employeeNumberPlaceholder": "أدخل رقم الموظف",
+      "department": "القسم",
+      "departmentPlaceholder": "أدخل القسم",
+      "position": "المنصب",
+      "positionPlaceholder": "أدخل المنصب",
+      "hireDate": "تاريخ التوظيف",
+      "hireDatePlaceholder": "اختر تاريخ التوظيف",
+      "manager": "المدير",
+      "managerPlaceholder": "اختر المدير",
+      "workType": "نوع العمل",
+      "workTypePlaceholder": "اختر نوع العمل",
+      "salary": "الراتب",
+      "salaryPlaceholder": "أدخل الراتب",
+      "salaryGroup": "مجموعة الراتب",
+      "salaryGroupPlaceholder": "أدخل مجموعة الراتب",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "isActive": "نشط"
+    },
+    "filter": {
+      "department": "القسم",
+      "workType": "نوع العمل",
+      "status": "الحالة"
+    },
+    "createSuccess": "تم إنشاء الموظف بنجاح",
+    "updateSuccess": "تم تحديث الموظف بنجاح",
+    "exportSuccess": "تم تصدير الموظفين بنجاح",
+    "exportError": "حدث خطأ أثناء تصدير الموظفين",
+    "exportDescription": "تقرير الموظفين",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذا الموظف؟",
+      "success": "تم حذف الموظف بنجاح",
+      "error": "حدث خطأ أثناء حذف الموظف"
+    }
+  },
+  "leaves": {
+    "title": "الإجازات",
+    "description": "إدارة إجازات الموظفين",
+    "create": "إجازة جديدة",
+    "createDescription": "إنشاء سجل إجازة جديد",
+    "edit": "تعديل الإجازة",
+    "editDescription": "تحديث معلومات الإجازة",
+    "detail": "تفاصيل الإجازة",
+    "detailDescription": "عرض تفاصيل الإجازة",
+    "notFound": "لم يتم العثور على الإجازة",
+    "types": {
+      "annual": "إجازة سنوية",
+      "sick": "إجازة مرضية",
+      "unpaid": "إجازة غير مدفوعة",
+      "maternity": "إجازة أمومة"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض"
+    },
+    "table": {
+      "employee": "الموظف",
+      "type": "النوع",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "days": "الأيام",
+      "status": "الحالة",
+      "reason": "السبب",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "employee": "الموظف",
+      "employeePlaceholder": "اختر الموظف",
+      "type": "النوع",
+      "typePlaceholder": "اختر النوع",
+      "startDate": "تاريخ البدء",
+      "startDatePlaceholder": "اختر تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "endDatePlaceholder": "اختر تاريخ الانتهاء",
+      "endDateAfterStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
+      "days": "الأيام",
+      "daysPlaceholder": "أدخل الأيام",
+      "reason": "السبب",
+      "reasonPlaceholder": "أدخل السبب",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "approvedAt": "تمت الموافقة في"
+    },
+    "filter": {
+      "employee": "الموظف",
+      "type": "النوع",
+      "status": "الحالة"
+    },
+    "createSuccess": "تم إنشاء الإجازة بنجاح",
+    "updateSuccess": "تم تحديث الإجازة بنجاح",
+    "exportSuccess": "تم تصدير الإجازات بنجاح",
+    "exportError": "حدث خطأ أثناء تصدير الإجازات",
+    "exportDescription": "تقرير الإجازات",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف هذه الإجازة؟",
+      "success": "تم حذف الإجازة بنجاح",
+      "error": "حدث خطأ أثناء حذف الإجازة"
+    }
+  },
+  "payrolls": {
+    "title": "كشوف المرتبات",
+    "description": "إدارة كشوف مرتبات الموظفين",
+    "create": "كشف مرتب جديد",
+    "createDescription": "إنشاء سجل كشف مرتب جديد",
+    "edit": "تعديل كشف المرتب",
+    "editDescription": "تحديث معلومات كشف المرتب",
+    "detail": "تفاصيل كشف المرتب",
+    "detailDescription": "عرض تفاصيل كشف المرتب",
+    "notFound": "لم يتم العثور على كشف المرتب",
+    "status": {
+      "draft": "مسودة",
+      "approved": "موافق عليه",
+      "paid": "مدفوع"
+    },
+    "table": {
+      "employee": "الموظف",
+      "period": "الفترة",
+      "payDate": "تاريخ الدفع",
+      "grossSalary": "الراتب الإجمالي",
+      "deductions": "الخصومات",
+      "netSalary": "الراتب الصافي",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "employee": "الموظف",
+      "employeePlaceholder": "اختر الموظف",
+      "period": "الفترة",
+      "periodPlaceholder": "اختر الفترة",
+      "payDate": "تاريخ الدفع",
+      "payDatePlaceholder": "اختر تاريخ الدفع",
+      "grossSalary": "الراتب الإجمالي",
+      "grossSalaryPlaceholder": "أدخل الراتب الإجمالي",
+      "deductions": "الخصومات",
+      "deductionsPlaceholder": "أدخل الخصومات",
+      "netSalary": "الراتب الصافي",
+      "netSalaryPlaceholder": "الراتب الصافي",
+      "taxDeduction": "خصم الضريبة",
+      "taxDeductionPlaceholder": "أدخل خصم الضريبة",
+      "sgkDeduction": "خصم التأمين الاجتماعي",
+      "sgkDeductionPlaceholder": "أدخل خصم التأمين الاجتماعي",
+      "otherDeductions": "خصومات أخرى",
+      "otherDeductionsPlaceholder": "أدخل خصومات أخرى",
+      "bonuses": "المكافآت",
+      "bonusesPlaceholder": "أدخل المكافآت",
+      "overtime": "العمل الإضافي",
+      "overtimePlaceholder": "أدخل العمل الإضافي",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل الملاحظات"
+    },
+    "filter": {
+      "employee": "الموظف",
+      "period": "الفترة",
+      "status": "الحالة"
+    },
+    "createSuccess": "تم إنشاء كشف المرتب بنجاح",
+    "updateSuccess": "تم تحديث كشف المرتب بنجاح",
+    "exportSuccess": "تم تصدير كشوف المرتبات بنجاح",
+    "exportError": "حدث خطأ أثناء تصدير كشوف المرتبات",
+    "exportDescription": "تقرير كشوف المرتبات",
+    "delete": {
+      "confirm": "هل أنت متأكد من حذف كشف المرتب هذا؟",
+      "success": "تم حذف كشف المرتب بنجاح",
+      "error": "حدث خطأ أثناء حذف كشف المرتب"
+    }
+  },
+  "search": {
+    "placeholder": "بحث..."
+  },
+  "export": {
+    "title": "تصدير",
+    "excel": "تصدير إلى Excel",
+    "pdf": "تصدير إلى PDF",
+    "csv": "تصدير إلى CSV"
+  },
+  "messages": {
+    "createSuccess": "تم الإنشاء بنجاح",
+    "createError": "حدث خطأ أثناء الإنشاء",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث",
+    "success": "نجح",
+    "error": "خطأ"
+  },
+  "pagination": {
+    "showing": "عرض",
+    "of": "من"
+  }
+}
+
+
+
+
+
+

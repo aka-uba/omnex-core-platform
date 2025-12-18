@@ -1,0 +1,157 @@
+{
+  "title": "Bildirim Şablonları",
+  "description": "Email, SMS, Push ve sosyal medya bildirimleri için şablonlar oluşturun ve yönetin",
+  "create": "Yeni Şablon",
+  "search": "Şablon ara...",
+  "refresh": "Yenile",
+  "error": "Hata",
+  "loadError": "Şablonlar yüklenirken bir hata oluştu",
+  "noTemplates": "Şablon bulunamadı",
+  "confirmDelete": "Bu şablonu silmek istediğinize emin misiniz?",
+  "delete": {
+    "title": "Şablonu Sil",
+    "confirm": "Sil",
+    "message": "Bu şablonu silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+  },
+  "comingSoon": "Yakında eklenecek...",
+  "tabs": {
+    "email": "Email",
+    "sms": "SMS",
+    "push": "Push",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "basic": "Temel Bilgiler",
+    "content": "İçerik",
+    "signature": "İmza",
+    "design": "Tasarım",
+    "preview": "Önizleme"
+  },
+  "categories": {
+    "system": "Sistem",
+    "user": "Kullanıcı",
+    "task": "Görev",
+    "urgent": "Acil"
+  },
+  "types": {
+    "taskAssignment": "Görev Atama",
+    "urgentAlert": "Acil Bildirim",
+    "systemUpdate": "Sistem Güncellemesi"
+  },
+  "styles": {
+    "corporate": "Kurumsal",
+    "visionary": "Vizyoner",
+    "elegant": "Şık",
+    "modern": "Modern"
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "actions": {
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "setDefault": "Varsayılan olarak ayarla",
+    "preview": "Önizleme",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "table": {
+    "name": "Şablon Adı",
+    "category": "Kategori",
+    "notificationType": "Bildirim Tipi",
+    "emailSubject": "Konu",
+    "style": "Stil",
+    "status": "Durum",
+    "actions": "İşlemler",
+    "smsSubject": "Konu",
+    "smsContent": "İçerik",
+    "pushTitle": "Başlık",
+    "pushBody": "İçerik",
+    "socialContent": "İçerik",
+    "hasImage": "Resim"
+  },
+  "yes": "Var",
+  "no": "Yok",
+  "seed": "Hazır Şablonları Yükle",
+  "seedConfirm": "16 hazır şablon oluşturulacak. Devam etmek istiyor musunuz?",
+  "filterCategory": "Kategori Filtrele",
+  "filterType": "Bildirim Tipi Filtrele",
+  "filterAll": "Tümü",
+  "editEmailTemplate": "Email Şablonu Düzenle",
+  "createEmailTemplate": "Yeni Email Şablonu",
+  "emailTemplateDescription": "Email bildirimleri için şablon oluşturun veya düzenleyin",
+  "cancel": "İptal",
+  "save": "Kaydet",
+  "form": {
+    "name": "Şablon Adı",
+    "namePlaceholder": "Örn: Görev Atama Email Şablonu",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Şablon açıklaması",
+    "category": "Kategori",
+    "categoryPlaceholder": "Kategori seçin",
+    "notificationType": "Bildirim Tipi",
+    "notificationTypePlaceholder": "Bildirim tipi seçin",
+    "isDefault": "Varsayılan Olarak Ayarla",
+    "isActive": "Aktif",
+    "emailSubject": "Email Konu Başlığı",
+    "emailSubjectPlaceholder": "{{notificationTitle}} - {{companyName}}",
+    "emailSubjectDescription": "Dinamik değişkenler kullanabilirsiniz: {{userName}}, {{companyName}}, vb.",
+    "defaultMessagePrefix": "İlk Metin (Mesaj Öncesi)",
+    "defaultMessagePrefixPlaceholder": "Sayın {{userName}},",
+    "defaultMessagePrefixDescription": "Email içeriğinin başında görünecek metin",
+    "emailPlainText": "Düz Metin İçerik",
+    "emailPlainTextPlaceholder": "Email içeriği...",
+    "emailPlainTextDescription": "Kurumsal ve şık düz metin formatında içerik",
+    "defaultMessageSuffix": "Son Metin (Mesaj Sonrası)",
+    "defaultMessageSuffixPlaceholder": "Saygılarımızla,",
+    "defaultMessageSuffixDescription": "Email içeriğinin sonunda görünecek metin",
+    "emailSignatureEnabled": "İmza Alanını Etkinleştir",
+    "emailSignatureEnabledDescription": "Email sonunda imza alanı gösterilsin mi?",
+    "emailSignatureUserInfo": "Kullanıcı Bilgileri",
+    "emailSignatureUserInfoDescription": "Kullanıcı adı, pozisyon, departman bilgileri",
+    "emailSignatureUserAvatar": "Kullanıcı Avatarı",
+    "emailSignatureUserAvatarDescription": "Kullanıcının profil fotoğrafı",
+    "emailSignatureCompanyLogo": "Firma Logosu",
+    "emailSignatureCompanyLogoDescription": "Firma logosu imza altında gösterilsin",
+    "emailSignatureCompanyInfo": "Firma Bilgileri",
+    "emailSignatureCompanyInfoDescription": "Firma adı, adres, telefon, email bilgileri",
+    "emailTemplateStyle": "Template Stili",
+    "emailTemplateStylePlaceholder": "Stil seçin",
+    "emailTemplateStyleDescription": "HTML email template tasarım stili",
+    "emailHtmlTemplate": "HTML Template (Gelişmiş)",
+    "emailHtmlTemplatePlaceholder": "<html>...</html>",
+    "emailHtmlTemplateDescription": "Özel HTML template kullanmak istiyorsanız buraya yazın"
+  },
+  "variables": {
+    "title": "Dinamik Değişkenler",
+    "description": "Kullanılabilir değişkenler: {{userName}}, {{userEmail}}, {{companyName}}, {{companyLogo}}, {{taskTitle}}, {{notificationMessage}}, vb."
+  },
+  "preview": {
+    "description": "Önizleme yakında eklenecek..."
+  },
+  "notifications": {
+    "success": "Başarılı",
+    "error": "Hata",
+    "deleted": "Şablon başarıyla silindi",
+    "defaultUpdated": "Varsayılan şablon güncellendi",
+    "defaultError": "Varsayılan şablon ayarlanırken bir hata oluştu",
+    "deleteError": "Şablon silinirken bir hata oluştu",
+    "saveError": "Şablon kaydedilirken bir hata oluştu",
+    "updated": "Şablon başarıyla güncellendi",
+    "created": "Şablon başarıyla oluşturuldu",
+    "seeded": "{{count}} şablon başarıyla oluşturuldu",
+    "seedError": "Şablonlar oluşturulurken bir hata oluştu"
+  },
+  "dashboard": {
+    "description": "Bildirim şablonlarına genel bakış ve istatistikler",
+    "title": "Dashboard"
+  },
+  "navigation": {
+    "dashboard": "Panel",
+    "settings": "Ayarlar"
+  }
+}

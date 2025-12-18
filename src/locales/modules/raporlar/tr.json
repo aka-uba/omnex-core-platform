@@ -1,0 +1,231 @@
+{
+  "title": "Raporlar",
+  "description": "Sistem ve kullanıcı raporlarını oluşturma, görüntüleme ve export etme modülü",
+  "menu": {
+    "label": "Raporlar",
+    "items": {
+      "all": "Tüm Raporlar",
+      "create": "Rapor Oluştur",
+      "templates": "Şablonlar",
+      "scheduled": "Zamanlanmış",
+      "exports": "Export Geçmişi"
+    }
+  },
+  "page": {
+    "allReports": {
+      "title": "Tüm Raporlar",
+      "description": "Sistem ve kullanıcı raporlarını oluşturun, görüntüleyin ve export edin"
+    },
+    "exports": {
+      "title": "Export Geçmişi",
+      "description": "Oluşturulmuş ve export edilmiş raporların geçmişini görüntüleyin"
+    },
+    "scheduled": {
+      "title": "Zamanlanmış Raporlar",
+      "description": "Otomatik olarak oluşturulacak raporları yönetin"
+    }
+  },
+  "actions": {
+    "create": "Yeni Rapor Oluştur",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "export": "Export",
+    "view": "Görüntüle",
+    "success": "Başarılı",
+    "error": "Hata",
+    "back": "Geri Dön",
+    "backToList": "Raporlar Listesine Dön",
+    "update": "Güncelle",
+    "save": "Kaydet",
+    "cancel": "İptal"
+  },
+  "filters": {
+    "title": "Filtreler",
+    "description": "Rapor oluşturmak için parametrelerinizi seçin",
+    "search": "Ara",
+    "type": "Rapor Tipi",
+    "status": "Durum",
+    "dateRange": "Tarih Aralığı",
+    "allReports": "Tüm Raporlar",
+    "coreReports": "Çekirdek Raporlar",
+    "moduleReports": "Modül Raporları",
+    "startDate": "Başlangıç tarihi",
+    "endDate": "Bitiş tarihi",
+    "typeOptions": {
+      "userActivity": "Kullanıcı Aktivitesi",
+      "systemStats": "Sistem İstatistikleri",
+      "loginHistory": "Giriş Geçmişi"
+    }
+  },
+  "list": {
+    "title": "Raporlar",
+    "columns": {
+      "name": "Rapor Adı",
+      "type": "Tip",
+      "status": "Durum",
+      "createdAt": "Oluşturulma",
+      "fileSize": "Dosya Boyutu"
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "Rapor Sil",
+      "confirm": "Bu raporu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "success": "Rapor başarıyla silindi",
+      "error": "Rapor silinirken bir hata oluştu"
+    },
+    "bulkDelete": {
+      "title": "Toplu Silme",
+      "confirm": "{{count}} rapor silinecek. Bu işlem geri alınamaz. Emin misiniz?",
+      "success": "{{count}} rapor başarıyla silindi",
+      "error": "Raporlar silinirken bir hata oluştu"
+    }
+  },
+  "status": {
+    "pending": "Beklemede",
+    "completed": "Tamamlandı",
+    "failed": "Başarısız",
+    "generating": "Oluşturuluyor"
+  },
+  "empty": {
+    "noReports": "Rapor bulunamadı",
+    "createFirst": "İlk raporunuzu oluşturun"
+  },
+  "errors": {
+    "loadFailed": "Raporlar yüklenirken bir hata oluştu",
+    "deleteFailed": "Rapor silinirken bir hata oluştu",
+    "createFailed": "Rapor oluşturulurken bir hata oluştu",
+    "exportsLoadFailed": "Export geçmişi yüklenirken bir hata oluştu",
+    "scheduledLoadFailed": "Zamanlanmış raporlar yüklenirken bir hata oluştu",
+    "reportNotFound": "Rapor bulunamadı",
+    "reportGenerationFailed": "Rapor oluşturulamadı",
+    "exportFailed": "Export işlemi başarısız oldu"
+  },
+  "messages": {
+    "warning": {
+      "noReportsToExport": "Export edilecek rapor bulunamadı",
+      "noSelectedReports": "Seçili rapor bulunamadı",
+      "noReportsToDelete": "Silinecek rapor seçilmedi"
+    },
+    "info": {
+      "multipleReportsFound": "{{count}} rapor bulundu. İlk rapor export edildi. Toplu export için \"Toplu Export\" butonunu kullanın.",
+      "multipleReportsSelected": "{{count}} rapor seçili. İlk rapor export edildi. Toplu export için \"Toplu Export\" butonunu kullanın."
+    },
+    "bulkDelete": {
+      "title": "Toplu Silme",
+      "message": "{{count}} rapor silinecek. Bu işlem geri alınamaz. Emin misiniz?"
+    }
+  },
+  "tooltips": {
+    "deleteSelected": "Seçili Raporları Sil",
+    "columnSettings": "Sütun Ayarları",
+    "view": "Görüntüle",
+    "downloadPdf": "PDF İndir"
+  },
+  "search": {
+    "placeholder": "Raporlarda ara..."
+  },
+  "bulkActions": {
+    "export": "Toplu Export",
+    "exportWithCount": "Toplu Export ({{count}})"
+  },
+  "metrics": {
+    "total": "Toplam Rapor",
+    "completed": "Tamamlanan",
+    "pending": "Beklemede",
+    "failed": "Başarısız"
+  },
+  "charts": {
+    "statusDistribution": "Durum Dağılımı",
+    "typeDistribution": "Rapor Tipi Dağılımı",
+    "trend30Days": "Son 30 Günlük Rapor Trendi",
+    "noData": "Veri bulunamadı",
+    "reportCount": "Rapor Sayısı",
+    "statusCompleted": "Tamamlanan",
+    "statusPending": "Beklemede",
+    "statusGenerating": "Oluşturuluyor",
+    "statusFailed": "Başarısız"
+  },
+  "scheduled": {
+    "empty": "Zamanlanmış rapor bulunamadı",
+    "createNew": "Yeni Zamanlanmış Rapor Oluştur",
+    "status": {
+      "active": "Aktif",
+      "paused": "Duraklatıldı",
+      "completed": "Tamamlandı"
+    },
+    "frequency": {
+      "daily": "Günlük",
+      "weekly": "Haftalık",
+      "monthly": "Aylık"
+    },
+    "fields": {
+      "type": "Tip",
+      "frequency": "Sıklık",
+      "time": "Saat",
+      "nextRun": "Sonraki Çalıştırma",
+      "lastRun": "Son Çalıştırma"
+    },
+    "actions": {
+      "pause": "Duraklat",
+      "activate": "Aktif Et",
+      "edit": "Düzenle",
+      "delete": "Sil"
+    },
+    "confirmations": {
+      "toggleTitle": "Durum Değiştir",
+      "pauseMessage": "Zamanlanmış raporu duraklatmak istediğinizden emin misiniz?",
+      "activateMessage": "Zamanlanmış raporu aktif etmek istediğinizden emin misiniz?",
+      "deleteTitle": "Zamanlanmış Raporu Sil",
+      "deleteMessage": "Bu zamanlanmış raporu silmek istediğinizden emin misiniz?"
+    },
+    "messages": {
+      "statusUpdated": "Durum başarıyla güncellendi",
+      "deleted": "Zamanlanmış rapor başarıyla silindi"
+    }
+  },
+  "exports": {
+    "empty": "Export geçmişi bulunamadı",
+    "createNew": "Yeni Rapor Oluştur"
+  },
+  "create": {
+    "sections": {
+      "details": "Rapor Detayları",
+      "configuration": "Yapılandırma",
+      "output": "Çıktı"
+    },
+    "fields": {
+      "name": "Rapor Adı",
+      "namePlaceholder": "Raporunuz için bir ad girin",
+      "description": "Rapor Açıklaması (İsteğe Bağlı)",
+      "descriptionPlaceholder": "Raporun amacı hakkında kısa bir açıklama sağlayın",
+      "type": "Rapor Tipi",
+      "typePlaceholder": "Rapor tipi seçin",
+      "startDate": "Başlangıç Tarihi",
+      "startDatePlaceholder": "Başlangıç tarihi seçin",
+      "endDate": "Bitiş Tarihi",
+      "endDatePlaceholder": "Bitiş tarihi seçin",
+      "format": "Format"
+    },
+    "formats": {
+      "table": "Tablo",
+      "bar": "Bar Grafik",
+      "line": "Çizgi Grafik"
+    },
+    "buttons": {
+      "cancel": "İptal",
+      "generate": "Rapor Oluştur"
+    },
+    "messages": {
+      "success": "Rapor oluşturuldu",
+      "error": "Rapor oluşturulurken bir hata oluştu"
+    },
+    "description": "Yeni bir rapor oluşturmak için aşağıdaki formu doldurun"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "table": {
+    "actions": "İşlemler"
+  }
+}

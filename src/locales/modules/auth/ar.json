@@ -1,0 +1,56 @@
+{
+  "login": {
+    "title": "تسجيل الدخول",
+    "subtitle": "قم بتسجيل الدخول إلى حسابك",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "submit": "تسجيل الدخول",
+    "noAccount": "ليس لديك حساب؟",
+    "register": "التسجيل",
+    "or": "أو",
+    "errors": {
+      "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+      "accountPending": "حسابك في انتظار الموافقة. يرجى انتظار موافقة المسؤول.",
+      "accountInactive": "حسابك غير نشط. يرجى الاتصال بالمسؤول.",
+      "required": "يرجى ملء جميع الحقول"
+    }
+  },
+  "register": {
+    "title": "التسجيل",
+    "subtitle": "إنشاء حساب جديد",
+    "name": "الاسم الكامل",
+    "namePlaceholder": "أدخل اسمك الكامل",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "usernameHint": "يُسمح فقط بالأحرف والأرقام والشرطة السفلية",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "مثال@email.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "8 أحرف على الأقل",
+    "passwordHint": "يجب أن تحتوي على حرف كبير وحرف صغير ورقم واحد على الأقل",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "submit": "التسجيل",
+    "hasAccount": "هل لديك حساب بالفعل؟",
+    "login": "تسجيل الدخول",
+    "success": {
+      "title": "تم التسجيل بنجاح!",
+      "message": "حسابك في انتظار الموافقة. ستتمكن من تسجيل الدخول بعد الموافقة.",
+      "redirecting": "إعادة التوجيه إلى صفحة تسجيل الدخول..."
+    },
+    "errors": {
+      "usernameExists": "اسم المستخدم هذا مستخدم بالفعل",
+      "emailExists": "عنوان البريد الإلكتروني هذا مسجل بالفعل",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "required": "يرجى ملء جميع الحقول"
+    }
+  }
+}
+
+
+
+

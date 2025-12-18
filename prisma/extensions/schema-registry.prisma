@@ -1,0 +1,19 @@
+// ============================================
+// Schema Version Registry
+// ============================================
+// 
+// Tracks the schema version for each tenant database.
+// Used to prevent migration chaos in production.
+
+model TenantSchemaRegistry {
+  id        String   @id @default(uuid())
+  tenantId  String   @unique
+  companyId String
+  version   String   // v1.4.2 format (SemVer)
+  modules   String[] // Active module versions
+  appliedAt DateTime @default(now())
+  checksum  String?  // Schema integrity checksum
+
+  @@index([version])
+}
+

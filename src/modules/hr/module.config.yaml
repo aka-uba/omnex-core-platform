@@ -1,0 +1,89 @@
+name: "Human Resources"
+slug: "hr"
+version: "1.0.0"
+description: "Employee management, leave tracking, and payroll system"
+icon: "Users"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.10"
+dependencies: []
+menu:
+  main:
+    label: "Human Resources"
+    icon: "Users"
+    href: "/modules/hr/dashboard"
+    order: 5
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/hr/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Employees"
+        path: "/modules/hr/employees"
+        icon: "Users"
+        order: 2
+      - title: "Leaves"
+        path: "/modules/hr/leaves"
+        icon: "Calendar"
+        order: 3
+      - title: "Payrolls"
+        path: "/modules/hr/payrolls"
+        icon: "CurrencyDollar"
+        order: 4
+      - title: "Reports"
+        path: "/modules/hr/reports"
+        icon: "ChartBar"
+        order: 5
+settings:
+  - key: "enableNotifications"
+    label: "Enable Notifications"
+    description: "Send notifications for HR events"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "leaveAutoApproval"
+    label: "Auto Approve Leaves"
+    description: "Automatically approve leave requests"
+    type: "boolean"
+    defaultValue: false
+    category: "Leaves"
+  - key: "payrollAutoCalculation"
+    label: "Auto Calculate Payroll"
+    description: "Automatically calculate payroll amounts"
+    type: "boolean"
+    defaultValue: true
+    category: "Payrolls"
+  - key: "defaultWorkHours"
+    label: "Default Work Hours (per day)"
+    description: "Default working hours per day"
+    type: "number"
+    defaultValue: 8
+    min: 1
+    max: 24
+    category: "General"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "hr:employees:read"
+    description: "View employees"
+  - key: "hr:employees:write"
+    description: "Create and edit employees"
+  - key: "hr:employees:delete"
+    description: "Delete employees"
+  - key: "hr:leaves:read"
+    description: "View leaves"
+  - key: "hr:leaves:write"
+    description: "Create and edit leaves"
+  - key: "hr:leaves:delete"
+    description: "Delete leaves"
+  - key: "hr:payrolls:read"
+    description: "View payrolls"
+  - key: "hr:payrolls:write"
+    description: "Create and edit payrolls"
+  - key: "hr:payrolls:delete"
+    description: "Delete payrolls"

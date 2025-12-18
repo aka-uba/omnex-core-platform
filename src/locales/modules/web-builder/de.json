@@ -1,0 +1,31 @@
+{
+  "title": "Web-Builder",
+  "description": "Drag-and-Drop-Website-Builder-Modul",
+  "menu": {
+    "label": "Web-Builder",
+    "items": {
+      "dashboard": "Dashboard",
+      "websites": "Websites",
+      "pages": "Seiten",
+      "templates": "Vorlagen",
+      "themes": "Themen",
+      "components": "Komponenten",
+      "forms": "Formulare",
+      "media": "Medienbibliothek",
+      "assets": "Medien & Assets",
+      "analytics": "Analytik",
+      "settings": "Einstellungen"
+    }
+  },
+  "dashboard": {
+    "title": "Web-Builder-Dashboard",
+    "description": "Überblick über Ihre Website-Erstellung",
+    "totalPages": "Gesamtseiten",
+    "templates": "Vorlagen",
+    "mediaFiles": "Mediendateien",
+    "recentActivity": "Letzte Aktivitäten",
+    "noActivity": "Keine letzten Aktivitäten"
+  }
+}
+
+

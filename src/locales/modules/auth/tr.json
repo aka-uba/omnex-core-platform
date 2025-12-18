@@ -1,0 +1,66 @@
+{
+  "login": {
+    "title": "Giriş Yap",
+    "subtitle": "Hesabınıza giriş yapın",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "Kullanıcı adınızı giriniz",
+    "password": "Şifre",
+    "passwordPlaceholder": "Şifrenizi giriniz",
+    "rememberMe": "Beni Hatırla",
+    "forgotPassword": "Şifremi Unuttum",
+    "submit": "Giriş Yap",
+    "noAccount": "Hesabınız yok mu?",
+    "register": "Kayıt Ol",
+    "or": "veya",
+    "errors": {
+      "invalidCredentials": "Kullanıcı adı veya şifre hatalı",
+      "accountPending": "Hesabınız henüz onaylanmamış. Lütfen yönetici onayını bekleyin.",
+      "accountInactive": "Hesabınız aktif değil. Lütfen yönetici ile iletişime geçin.",
+      "required": "Lütfen tüm alanları doldurun"
+    }
+  },
+  "register": {
+    "title": "Kayıt Ol",
+    "subtitle": "Yeni hesap oluşturun",
+    "name": "Ad Soyad",
+    "namePlaceholder": "Adınızı ve soyadınızı giriniz",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "Kullanıcı adınızı giriniz",
+    "usernameHint": "Sadece harf, rakam ve alt çizgi kullanabilirsiniz",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@email.com",
+    "password": "Şifre",
+    "passwordPlaceholder": "En az 8 karakter",
+    "passwordHint": "En az bir büyük harf, bir küçük harf ve bir rakam içermelidir",
+    "confirmPassword": "Şifre Tekrar",
+    "confirmPasswordPlaceholder": "Şifrenizi tekrar giriniz",
+    "submit": "Kayıt Ol",
+    "hasAccount": "Zaten hesabınız var mı?",
+    "login": "Giriş Yap",
+    "success": {
+      "title": "Kayıt Başarılı!",
+      "message": "Hesabınız yönetici onayı beklemektedir. Onay sonrasında giriş yapabileceksiniz.",
+      "redirecting": "Giriş sayfasına yönlendiriliyorsunuz..."
+    },
+    "errors": {
+      "usernameExists": "Bu kullanıcı adı zaten kullanılıyor",
+      "emailExists": "Bu e-posta adresi zaten kayıtlı",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "required": "Lütfen tüm alanları doldurun"
+    }
+  },
+  "actions": {
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "back": "Geri"
+  },
+  "common": {
+    "error": "Hata"
+  },
+  "user-updated": "User-updated"
+}

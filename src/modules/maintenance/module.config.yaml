@@ -1,0 +1,73 @@
+name: "Maintenance"
+slug: "maintenance"
+version: "1.0.0"
+description: "Comprehensive maintenance management module with equipment tracking, scheduled maintenance, cost management, and analytics"
+icon: "Tools"
+author: "Omnex Team"
+category: "business"
+minCoreVersion: "1.0.10"
+dependencies: []
+menu:
+  main:
+    label: "Maintenance"
+    icon: "Tools"
+    href: "/modules/maintenance/dashboard"
+    order: 40
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/maintenance/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Records"
+        path: "/modules/maintenance/records"
+        icon: "ClipboardList"
+        order: 2
+      - title: "Calendar"
+        path: "/modules/maintenance/calendar"
+        icon: "Calendar"
+        order: 3
+      - title: "Reports"
+        path: "/modules/maintenance/reports"
+        icon: "ChartBar"
+        order: 4
+settings:
+  - key: "enableNotifications"
+    label: "Enable Notifications"
+    description: "Send notifications for maintenance schedules"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "autoScheduleReminders"
+    label: "Auto Schedule Reminders"
+    description: "Automatically send reminders before scheduled maintenance"
+    type: "boolean"
+    defaultValue: true
+    category: "Scheduling"
+  - key: "reminderDaysBefore"
+    label: "Reminder Days Before"
+    description: "Days before maintenance to send reminder"
+    type: "number"
+    defaultValue: 7
+    min: 1
+    max: 30
+    category: "Scheduling"
+  - key: "primaryColor"
+    label: "Primary Color"
+    description: "Primary theme color for module"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "maintenance.record.create"
+    name: "Create Maintenance Record"
+    description: "Allow creating new maintenance records"
+  - key: "maintenance.record.update"
+    name: "Update Maintenance Record"
+    description: "Allow updating maintenance records"
+  - key: "maintenance.record.delete"
+    name: "Delete Maintenance Record"
+    description: "Allow deleting maintenance records"
+  - key: "maintenance.record.view"
+    name: "View Maintenance Record"
+    description: "Allow viewing maintenance records"

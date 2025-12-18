@@ -1,0 +1,16 @@
+## Sohbet Module - Version History
+
+### Version 1.0.0 (2025-01-28)
+- ✅ Initial release
+- ✅ Real-time chat
+- ✅ Chat rooms
+- ✅ Direct messages
+- ✅ Group conversations
+- ✅ File attachments
+- ✅ Message history
+
+
+
+
+
+

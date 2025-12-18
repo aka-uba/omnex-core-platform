@@ -1,0 +1,1025 @@
+@import "tailwindcss";
+
+@import '@mantine/core/styles.css';
+@import '@mantine/dates/styles.css';
+@import '@mantine/notifications/styles.css';
+@import '@mantine/dropzone/styles.css';
+@import '../styles/_tokens.css';
+@import '../styles/dark-global.css';
+
+:root {
+  /* Color Palette - Primary (Blue) */
+  --color-primary-50: #e7f5ff;
+  --color-primary-100: #d0ebff;
+  --color-primary-200: #a5d8ff;
+  --color-primary-300: #74c0fc;
+  --color-primary-400: #4dabf7;
+  --color-primary-500: #339af0;
+  --color-primary-600: #228be6;
+  --color-primary-700: #1c7ed6;
+  --color-primary-800: #1971c2;
+  --color-primary-900: #1864ab;
+
+  /* Primary Color - Light Mode (Chat Design) */
+  --primary: #0d7ff2;
+
+  /* Semantic Tokens - Light Mode (Chat Design Colors) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7f8;
+  --bg-card: #ffffff;
+  --bg-surface: #ffffff;
+
+  /* Header Colors (Top Layout) */
+  --header-light: #ffffff;
+  --header-dark: #15202b;
+
+  /* Text Colors - Light Mode (Chat Design) */
+  --text-light: #0d141c;
+  --text-dark: #f5f7f8;
+  --text-secondary-light: #49739c;
+  --text-secondary-dark: #a0b3c6;
+
+  /* Border Colors - Light Mode (Chat Design) */
+  --border-light: #e7edf4;
+  --border-dark: #2a3b4d;
+
+  /* Interactive Colors (Top Layout) */
+  --interactive-light: #e7edf4;
+  --interactive-dark: #253341;
+
+  --text-primary: #212529;
+  --text-secondary: #868e96;
+  --text-muted: #adb5bd;
+
+  --border-color: #dee2e6;
+  --border-hover: #ced4da;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] {
+  /* Primary Color - Dark Mode (Gray Tones) */
+  --primary: #9aa0a6;
+
+  /* Semantic Tokens - Dark Mode (Google Dark Theme Gray Tones) */
+  --bg-primary: #202124;
+  --bg-secondary: #303134;
+  --bg-card: #303134;
+  --bg-surface: #303134;
+
+  /* Header Colors (Top Layout - Dark Mode) */
+  --header-light: #ffffff;
+  --header-dark: #303134;
+
+  /* Text Colors - Dark Mode (Google Dark Theme) */
+  --text-light: #0d141c;
+  --text-dark: #e8eaed;
+  --text-secondary-light: #49739c;
+  --text-secondary-dark: #9aa0a6;
+
+  /* Border Colors - Dark Mode (Google Dark Theme) */
+  --border-light: #e1e8ed;
+  --border-dark: #5f6368;
+
+  /* Interactive Colors (Top Layout - Dark Mode) */
+  --interactive-light: #e7edf4;
+  --interactive-dark: #3c4043;
+
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --text-muted: #80868b;
+
+  --border-color: #5f6368;
+  --border-hover: #70757a;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+}
+
+html {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure Container component respects dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Container-root {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+/* Standardize Container max-width across all pages */
+.mantine-Container-root[data-size="xl"] {
+  max-width: 1320px !important;
+}
+
+/* Container padding - sadece desktop için, mobil ve tablet için kaldırıldı */
+/* Mobil ve tablet padding'leri tema ayarlarından yönetiliyor */
+/* RTL desteği için logical properties kullan */
+@media (min-width: 1025px) {
+  .mantine-Container-root {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+    padding-inline-start: 20px !important;
+    padding-inline-end: 20px !important;
+  }
+
+  /* Override Mantine's py prop to use our custom padding */
+  .mantine-Container-root[style*="padding-top"],
+  .mantine-Container-root[style*="padding-bottom"] {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+}
+
+/* Tablet ve mobil için Container padding'i kaldır */
+@media (max-width: 1024px) {
+  .mantine-Container-root {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-inline-start: 0 !important;
+    padding-inline-end: 0 !important;
+  }
+}
+
+/* Ensure Paper component respects dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Paper-root {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Force Paper background in dark mode for all pages */
+[data-mantine-color-scheme="dark"] .mantine-Paper-root {
+  background-color: var(--bg-card) !important;
+}
+
+/* Ensure all form inputs respect dark mode */
+[data-mantine-color-scheme="dark"] .mantine-TextInput-input,
+[data-mantine-color-scheme="dark"] .mantine-Textarea-input,
+[data-mantine-color-scheme="dark"] .mantine-Select-input,
+[data-mantine-color-scheme="dark"] .mantine-NumberInput-input,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-input,
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-input {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-TextInput-input:focus,
+[data-mantine-color-scheme="dark"] .mantine-Textarea-input:focus,
+[data-mantine-color-scheme="dark"] .mantine-Select-input:focus,
+[data-mantine-color-scheme="dark"] .mantine-NumberInput-input:focus,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-input:focus,
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-input:focus {
+  border-color: var(--border-hover) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-TextInput-input::placeholder,
+[data-mantine-color-scheme="dark"] .mantine-Textarea-input::placeholder,
+[data-mantine-color-scheme="dark"] .mantine-Select-input::placeholder,
+[data-mantine-color-scheme="dark"] .mantine-NumberInput-input::placeholder,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-input::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* Select dropdown dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Select-dropdown,
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-dropdown {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Select-option,
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-option {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Select-option:hover,
+[data-mantine-color-scheme="dark"] .mantine-Select-option[data-hovered],
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-option:hover,
+[data-mantine-color-scheme="dark"] .mantine-MultiSelect-option[data-hovered] {
+  background-color: #3c4043 !important;
+}
+
+/* Tab Styles - Enhanced for better visibility */
+.mantine-Tabs-tab {
+  font-size: 0.875rem !important; /* 14px - Mobile default */
+  font-weight: 500 !important;
+  padding: 0.625rem 1rem !important; /* 10px 16px */
+  min-height: 2.5rem !important; /* 40px */
+  gap: 0.5rem !important; /* 8px gap between icon and text */
+  transition: all 0.2s ease !important;
+}
+
+.mantine-Tabs-tab .tabler-icon,
+.mantine-Tabs-tab svg {
+  width: 1rem !important; /* 16px - Mobile default */
+  height: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Active Tab - Blue color for text, icon, and border */
+.mantine-Tabs-tab[data-active="true"] {
+  color: var(--mantine-color-blue-6) !important;
+  font-weight: 600 !important;
+  border-bottom-color: var(--mantine-color-blue-6) !important;
+}
+
+.mantine-Tabs-tab[data-active="true"] .tabler-icon,
+.mantine-Tabs-tab[data-active="true"] svg {
+  color: var(--mantine-color-blue-6) !important;
+  width: 1.125rem !important; /* 18px - Slightly larger when active */
+  height: 1.125rem !important;
+}
+
+/* PC/Desktop - Moderate sizes */
+@media (min-width: 768px) {
+  .mantine-Tabs-tab {
+    font-size: 0.9375rem !important; /* 15px - PC (orta boy) */
+    padding: 0.75rem 1.25rem !important; /* 12px 20px - PC */
+    min-height: 2.75rem !important; /* 44px - PC */
+    gap: 0.625rem !important; /* 10px - PC */
+  }
+
+  .mantine-Tabs-tab .tabler-icon,
+  .mantine-Tabs-tab svg {
+    width: 1.125rem !important; /* 18px - PC (orta boy) */
+    height: 1.125rem !important;
+  }
+
+  .mantine-Tabs-tab[data-active="true"] .tabler-icon,
+  .mantine-Tabs-tab[data-active="true"] svg {
+    width: 1.25rem !important; /* 24px - PC active (büyütüldü) */
+    height: 1.25rem !important;
+  }
+}
+
+/* Tabs dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Tabs-tab {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Tabs-tab[data-active="true"] {
+  color: var(--mantine-color-blue-4) !important;
+  border-bottom-color: var(--mantine-color-blue-4) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Tabs-tab[data-active="true"] .tabler-icon,
+[data-mantine-color-scheme="dark"] .mantine-Tabs-tab[data-active="true"] svg {
+  color: var(--mantine-color-blue-4) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Tabs-tab:hover {
+  background-color: #3c4043 !important;
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Tabs-list {
+  border-bottom-color: var(--border-color) !important;
+}
+
+/* Labels and text in dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Input-label,
+[data-mantine-color-scheme="dark"] .mantine-Text-root {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Input-description,
+[data-mantine-color-scheme="dark"] .mantine-Input-error {
+  color: var(--text-secondary) !important;
+}
+
+/* Grid and Stack in dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Grid-root,
+[data-mantine-color-scheme="dark"] .mantine-Stack-root {
+  color: var(--text-primary) !important;
+}
+
+/* Divider dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Divider-root {
+  border-color: var(--border-color) !important;
+}
+
+/* Badge dark mode */
+[data-mantine-color-scheme="dark"] .mantine-Badge-root {
+  color: var(--text-primary) !important;
+}
+
+/* Button dark mode - ensure proper colors */
+[data-mantine-color-scheme="dark"] .mantine-Button-root[data-variant="default"] {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Button-root[data-variant="default"]:hover {
+  background-color: #3c4043 !important;
+}
+
+/* Hover Flash Maske Efekti - Mantine Button'lar - Güçlendirilmiş */
+button.mantine-Button-root,
+.mantine-UnstyledButton-root.mantine-Button-root,
+[class*="mantine-Button-root"],
+.mantine-Button-root {
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Maske efekti - ::before pseudo element - Çok belirgin ve geniş */
+button.mantine-Button-root::before,
+.mantine-UnstyledButton-root.mantine-Button-root::before,
+[class*="mantine-Button-root"]::before,
+.mantine-Button-root::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: -100% !important;
+  /* Başlangıçta butonun solunda gizli */
+  right: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      transparent 5%,
+      rgba(255, 255, 255, 0.7) 30%,
+      /* Çok belirgin başlangıç */
+      rgba(255, 255, 255, 0.9) 50%,
+      /* Maksimum parlaklık merkez */
+      rgba(255, 255, 255, 0.7) 70%,
+      /* Çok belirgin bitiş */
+      transparent 95%,
+      transparent 100%) !important;
+  transition: left 0.5s ease !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  border-radius: inherit !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Hover olduğunda maske efekti sağa kayar */
+button.mantine-Button-root:hover::before,
+.mantine-UnstyledButton-root.mantine-Button-root:hover::before,
+[class*="mantine-Button-root"]:hover::before,
+.mantine-Button-root:hover::before {
+  left: 100% !important;
+  /* Hover'da sağa kayar */
+}
+
+/* Dark mode için çok belirgin efekt */
+[data-mantine-color-scheme="dark"] button.mantine-Button-root::before,
+[data-mantine-color-scheme="dark"] .mantine-UnstyledButton-root.mantine-Button-root::before,
+[data-mantine-color-scheme="dark"] [class*="mantine-Button-root"]::before,
+[data-mantine-color-scheme="dark"] .mantine-Button-root::before {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      transparent 5%,
+      rgba(255, 255, 255, 0.5) 30%,
+      /* Dark mode'da çok belirgin başlangıç */
+      rgba(255, 255, 255, 0.7) 50%,
+      /* Dark mode'da maksimum parlaklık merkez */
+      rgba(255, 255, 255, 0.5) 70%,
+      /* Dark mode'da çok belirgin bitiş */
+      transparent 95%,
+      transparent 100%) !important;
+}
+
+/* Buton içeriğini flash efektinin üstünde tut */
+.mantine-Button-root>*,
+.mantine-Button-inner,
+button.mantine-Button-root>*,
+.mantine-UnstyledButton-root.mantine-Button-root>* {
+  position: relative !important;
+  z-index: 2 !important;
+  /* İçerik maske efektinin üstünde */
+}
+
+/* Hover effect - hafif yukarı hareket ve hafif gölge */
+button.mantine-Button-root:hover,
+.mantine-UnstyledButton-root.mantine-Button-root:hover,
+[class*="mantine-Button-root"]:hover,
+.mantine-Button-root:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-mantine-color-scheme="dark"] button.mantine-Button-root:hover,
+[data-mantine-color-scheme="dark"] .mantine-UnstyledButton-root.mantine-Button-root:hover,
+[data-mantine-color-scheme="dark"] [class*="mantine-Button-root"]:hover,
+[data-mantine-color-scheme="dark"] .mantine-Button-root:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* DateInput calendar popover */
+[data-mantine-color-scheme="dark"] .mantine-DateInput-popover {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-DateInput-calendar {
+  background-color: var(--bg-card) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-DateInput-day,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-month,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-year {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-DateInput-day:hover,
+[data-mantine-color-scheme="dark"] .mantine-DateInput-day[data-selected] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Central Data Table Dark Mode Styles */
+[data-mantine-color-scheme="dark"] .mantine-Table-root {
+  background-color: transparent;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Table-thead {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Table-th {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-bottom-color: var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Table-tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Table-td {
+  border-top-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Table-tbody .mantine-Table-tr {
+  border-top-color: var(--border-color);
+}
+
+/* Modal Dark Mode Styles */
+[data-mantine-color-scheme="dark"] .mantine-Modal-content {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-header {
+  background-color: var(--bg-card) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-title {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-body {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-close {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-close:hover {
+  background-color: #3c4043 !important;
+}
+
+/* Dropzone Dark Mode */
+[data-mantine-color-scheme="dark"] .mantine-Dropzone-root {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Dropzone-root:hover {
+  background-color: #3c4043 !important;
+}
+
+/* Module Management Styles */
+.module-card {
+  transition: all 0.2s ease;
+}
+
+.module-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.module-status-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.module-status-active {
+  background-color: rgb(220 252 231);
+  color: rgb(22 101 52);
+}
+
+[data-mantine-color-scheme="dark"] .module-status-active {
+  background-color: rgba(20, 83, 45, 0.4);
+  color: rgb(134 239 172);
+}
+
+.module-status-inactive {
+  background-color: rgb(241 245 249);
+  color: rgb(30 41 59);
+}
+
+[data-mantine-color-scheme="dark"] .module-status-inactive {
+  background-color: rgb(51 65 85);
+  color: rgb(203 213 225);
+}
+
+.module-status-installed {
+  background-color: rgb(219 234 254);
+  color: rgb(30 64 175);
+}
+
+[data-mantine-color-scheme="dark"] .module-status-installed {
+  background-color: rgba(112, 117, 122, 0.3);
+  color: #bdc1c6;
+}
+
+/* Module Upload Dropzone */
+.module-upload-dropzone {
+  border: 2px dashed var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--bg-secondary);
+}
+
+.module-upload-dropzone:hover {
+  border-color: var(--color-primary-500);
+  background-color: var(--bg-surface);
+}
+
+.module-upload-dropzone.accept {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-50);
+}
+
+[data-mantine-color-scheme="dark"] .module-upload-dropzone:hover {
+  border-color: var(--border-hover);
+}
+
+[data-mantine-color-scheme="dark"] .module-upload-dropzone.accept {
+  border-color: var(--border-hover);
+  background-color: rgba(112, 117, 122, 0.15);
+}
+
+/* Module Grid */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .module-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .module-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .module-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Search and Filter Bar */
+.module-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.module-search-input {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* Empty State */
+.module-empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  border: 2px dashed var(--border-color);
+  border-radius: 0.75rem;
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+/* Module Manifest Code Block */
+.module-manifest-code {
+  background-color: var(--bg-surface);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .module-manifest-code {
+  background-color: rgb(15 23 42);
+}
+
+
+/* Search Dropdown Animation */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal z-index and global styles */
+.mantine-Modal-root {
+  z-index: 1300 !important;
+}
+
+.mantine-Modal-overlay {
+  z-index: 1299 !important;
+}
+
+.mantine-Modal-inner {
+  z-index: 1300 !important;
+  /* Tüm modalları dikey olarak merkeze hizala */
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mantine-Modal-content {
+  z-index: 1300 !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+/* DateInput, TimeInput, Select ve Combobox dropdowns should be above modal */
+.mantine-DateInput-dropdown,
+.mantine-TimeInput-dropdown,
+.mantine-Select-dropdown,
+.mantine-Combobox-dropdown,
+.mantine-MultiSelect-dropdown,
+.mantine-Autocomplete-dropdown {
+  z-index: 1400 !important;
+}
+
+.mantine-DatePickerInput-dropdown,
+.mantine-DatePicker-dropdown {
+  z-index: 1400 !important;
+}
+
+/* Popover dropdowns for calendar events - should be above everything */
+.mantine-Popover-dropdown {
+  z-index: 1500 !important;
+}
+
+.mantine-Popover-arrow {
+  z-index: 1500 !important;
+}
+
+/* Tooltip should be above popover */
+.mantine-Tooltip-dropdown {
+  z-index: 1600 !important;
+}
+
+.mantine-Modal-header {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.mantine-Modal-title {
+  color: var(--text-primary) !important;
+  font-size: var(--mantine-font-size-lg) !important;
+  font-weight: 600 !important;
+}
+
+.mantine-Modal-body {
+  color: var(--text-primary) !important;
+  font-size: var(--mantine-font-size-sm) !important;
+  line-height: var(--mantine-line-height-sm) !important;
+}
+
+/* Harita modalları için özel ayarlar - merkez hizalama devre dışı */
+.map-modal .mantine-Modal-inner {
+  align-items: flex-start !important;
+  padding-top: 2rem !important;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .mantine-Modal-content {
+    margin: 1rem !important;
+    max-width: calc(100% - 2rem) !important;
+  }
+}
+
+/* Menu Dropdown z-index - harita ve diğer yüksek z-index elementlerinin üstünde kalması için */
+/* NOT: Select ve Combobox dropdown'ları modal içinde kullanıldığında
+   daha yüksek z-index'e ihtiyaç duyar (satır 699-708'de tanımlı z-index: 1400) */
+.mantine-Menu-dropdown {
+  z-index: 1000 !important;
+}
+
+/* Custom Scrollbar for Menu Dropdowns */
+.custom-scrollbar-left .mantine-Menu-dropdown,
+.custom-scrollbar .mantine-Menu-dropdown {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.custom-scrollbar-left .mantine-Menu-dropdown::-webkit-scrollbar,
+.custom-scrollbar .mantine-Menu-dropdown::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar-left .mantine-Menu-dropdown::-webkit-scrollbar-track,
+.custom-scrollbar .mantine-Menu-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-left .mantine-Menu-dropdown::-webkit-scrollbar-thumb,
+.custom-scrollbar .mantine-Menu-dropdown::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+  opacity: 0.3;
+}
+
+.custom-scrollbar-left .mantine-Menu-dropdown::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar .mantine-Menu-dropdown::-webkit-scrollbar-thumb:hover {
+  opacity: 0.5;
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar-left .mantine-Menu-dropdown,
+.custom-scrollbar .mantine-Menu-dropdown {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+/* Chat module - Sol panel arka plan rengi (dark mode) */
+[data-mantine-color-scheme="dark"] #chat-list-panel,
+.dark #chat-list-panel {
+  background-color: var(--bg-primary) !important;
+}
+
+/* ============================================
+   MANTINE BUTTON LOADING ANIMATION - CENTER
+   ============================================ */
+
+/* Button Loading State - Position relative for absolute positioning */
+button[data-loading="true"],
+button[data-loading="true"] *,
+.mantine-Button-root[data-loading="true"],
+.mantine-Button-root[data-loading="true"] *,
+[class*="mantine-Button-root"][data-loading="true"],
+[class*="mantine-Button-root"][data-loading="true"] *,
+.mantine-UnstyledButton-root[data-loading="true"],
+.mantine-UnstyledButton-root[data-loading="true"] * {
+  position: relative !important;
+}
+
+button[data-loading="true"],
+.mantine-Button-root[data-loading="true"],
+[class*="mantine-Button-root"][data-loading="true"],
+.mantine-UnstyledButton-root[data-loading="true"] {
+  overflow: visible !important;
+}
+
+/* Mantine Button Loader Container (span) - Center - Override all positions */
+button[data-loading="true"] > span[aria-hidden="true"],
+.mantine-Button-root[data-loading="true"] > span[aria-hidden="true"],
+[class*="mantine-Button-root"][data-loading="true"] > span[aria-hidden="true"],
+.mantine-Button-root[data-loading="true"] [class*="loader"],
+button[data-loading="true"] [class*="loader"],
+.mantine-Button-root[data-loading="true"] [class*="Loader"],
+button[data-loading="true"] [class*="Loader"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 100 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Mantine Button Loader - Center - Override all default positions */
+button[data-loading="true"] .mantine-Loader-root,
+button[data-loading="true"] [class*="mantine-Loader"],
+.mantine-Button-root[data-loading="true"] .mantine-Loader-root,
+.mantine-Button-root[data-loading="true"] [class*="mantine-Loader"],
+[class*="mantine-Button-root"][data-loading="true"] .mantine-Loader-root,
+[class*="mantine-Button-root"][data-loading="true"] [class*="mantine-Loader"],
+button[data-loading="true"] > span[aria-hidden="true"] .mantine-Loader-root,
+.mantine-Button-root[data-loading="true"] > span[aria-hidden="true"] .mantine-Loader-root,
+button[data-loading="true"] > span[aria-hidden="true"] [class*="mantine-Loader"],
+.mantine-Button-root[data-loading="true"] > span[aria-hidden="true"] [class*="mantine-Loader"] {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 0 auto !important;
+}
+
+/* Hide loader when NOT loading - Prevent flash */
+button:not([data-loading="true"]) > span[aria-hidden="true"],
+.mantine-Button-root:not([data-loading="true"]) > span[aria-hidden="true"],
+[class*="mantine-Button-root"]:not([data-loading="true"]) > span[aria-hidden="true"],
+button:not([data-loading="true"]) [class*="loader"],
+.mantine-Button-root:not([data-loading="true"]) [class*="loader"],
+button:not([data-loading="true"]) [class*="Loader"],
+.mantine-Button-root:not([data-loading="true"]) [class*="Loader"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Button içeriğini loading durumunda gizle */
+button[data-loading="true"] .mantine-Button-inner,
+button[data-loading="true"] .mantine-Button-label,
+.mantine-Button-root[data-loading="true"] .mantine-Button-inner,
+.mantine-Button-root[data-loading="true"] .mantine-Button-label,
+[class*="mantine-Button-root"][data-loading="true"] .mantine-Button-inner,
+[class*="mantine-Button-root"][data-loading="true"] .mantine-Button-label {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Button inner wrapper'ı ortala */
+button[data-loading="true"] .mantine-Button-inner,
+.mantine-Button-root[data-loading="true"] .mantine-Button-inner,
+[class*="mantine-Button-root"][data-loading="true"] .mantine-Button-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Dynamic Footer Dark Mode Styles */
+[data-mantine-color-scheme="dark"] .dynamic-footer {
+  background-color: var(--bg-card) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .footer-text {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .footer-link {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .footer-link:hover {
+  color: var(--text-primary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .footer-icon {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .footer-logo {
+  border-color: var(--border-color) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .mantine-Text-root {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .mantine-ActionIcon-root {
+  color: var(--text-secondary) !important;
+}
+
+[data-mantine-color-scheme="dark"] .dynamic-footer .mantine-ActionIcon-root:hover {
+  color: var(--text-primary) !important;
+  background-color: var(--interactive-dark) !important;
+}
+
+/* Leaflet Popup Dark Mode Styles */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content-wrapper {
+  background-color: #1a1b1e !important;
+  color: #c1c2c5 !important;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-tip {
+  background-color: #1a1b1e !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content {
+  color: #c1c2c5 !important;
+  background-color: #1a1b1e !important;
+}
+
+/* Popup içindeki tüm div'ler için dark background */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content > div,
+[data-mantine-color-scheme="dark"] .leaflet-popup-content div {
+  background-color: #1a1b1e !important;
+  color: #c1c2c5 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-close-button {
+  color: #909296 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-close-button:hover {
+  color: #c1c2c5 !important;
+}
+
+/* Leaflet Popup içindeki Mantine bileşenleri için dark mode */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Text-root {
+  color: #c1c2c5 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Text-root[data-c="dimmed"] {
+  color: #909296 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Badge-root {
+  color: white !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Anchor-root {
+  color: #4dabf7 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Anchor-root:hover {
+  color: #74c0fc !important;
+}
+
+/* Leaflet Popup içindeki Group bileşenleri için dark mode */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .mantine-Group-root {
+  background-color: transparent !important;
+}
+
+/* Popup içindeki span ve diğer inline elementler */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content span {
+  color: inherit !important;
+}
+
+/* Apartment item hover için özel background (Real Estate Map) */
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .apartment-item {
+  background-color: #1a1b1e !important;
+  border-color: #373a40 !important;
+}
+
+[data-mantine-color-scheme="dark"] .leaflet-popup-content .apartment-item:hover {
+  background-color: #25262b !important;
+}

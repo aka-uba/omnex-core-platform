@@ -1,0 +1,228 @@
+.bellWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Menu.Target'ın oluşturduğu wrapper'ı override et */
+.bellWrapper :global(.mantine-Menu-target) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Indicator'ın oluşturduğu wrapper'ı override et */
+.bellWrapper :global(.mantine-Indicator-root) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Indicator'ın child element'lerini override et */
+.bellWrapper :global(.mantine-Indicator-root) > * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.indicator {
+    display: inline-block;
+}
+
+/* bellButton - actionButton ile aynı stil */
+.bellButton {
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--text-primary);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.bellButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: none;
+    box-shadow: none;
+}
+
+[data-mantine-color-scheme="dark"] .bellButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bellIcon {
+    font-size: 20px;
+    color: inherit;
+    transition: color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Notification dropdown */
+.notificationDropdown {
+    background-color: var(--mantine-color-body) !important;
+    border-color: var(--mantine-color-gray-3) !important;
+}
+
+/* Dark mode - NotificationBell dropdown menu */
+[data-mantine-color-scheme="dark"] .notificationDropdown,
+[data-mantine-color-scheme="dark"] :global(.mantine-Menu-dropdown),
+.header[data-mantine-color-scheme="dark"] :global(.mantine-Menu-dropdown) {
+    background-color: var(--bg-card-dark) !important;
+    border-color: var(--border-color-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item),
+.header[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item) {
+    color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item:hover),
+[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item[data-hovered]),
+.header[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item:hover),
+.header[data-mantine-color-scheme="dark"] :global(.mantine-Menu-item[data-hovered]),
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-Menu-item:hover),
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-Menu-item[data-hovered]) {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-Menu-item) {
+    color: var(--text-primary-dark) !important;
+}
+
+/* Notification header area */
+.notificationHeader {
+    background-color: var(--mantine-color-gray-0);
+}
+
+.notificationHeaderText {
+    color: var(--text-primary);
+}
+
+.markAllButton {
+    color: var(--text-primary);
+}
+
+/* Dark mode - notification header - global dark stilleri kullan */
+[data-mantine-color-scheme="dark"] .notificationHeader {
+    background-color: var(--bg-card-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationHeaderText {
+    color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .markAllButton {
+    color: var(--text-primary-dark) !important;
+}
+
+[data-mantine-color-scheme="dark"] .markAllButton:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary-dark) !important;
+}
+
+/* Notification item styles */
+.notificationItem {
+    border-bottom: 1px solid var(--mantine-color-gray-2);
+    background-color: transparent;
+}
+
+.notificationItemUnread {
+    background-color: var(--mantine-color-blue-0);
+}
+
+.notificationContent {
+    flex: 1;
+}
+
+.unreadIndicator {
+    width: 8px;
+    height: 8px;
+    background-color: var(--mantine-color-blue-6);
+    border-radius: 50%;
+}
+
+/* Notification scroll area */
+.notificationScrollArea {
+    background-color: transparent;
+}
+
+/* Dark mode - notification scroll area */
+[data-mantine-color-scheme="dark"] .notificationScrollArea {
+    background-color: transparent !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-ScrollArea-viewport) {
+    background-color: transparent !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-ScrollArea-scrollbar) {
+    background-color: transparent !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-ScrollArea-thumb) {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationScrollArea :global(.mantine-ScrollArea-thumb:hover) {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Dark mode - notification items - global dark stilleri kullan */
+[data-mantine-color-scheme="dark"] .notificationItem {
+    border-bottom-color: var(--border-color-dark) !important;
+    background-color: transparent !important;
+}
+
+[data-mantine-color-scheme="dark"] .notificationItemUnread {
+    background-color: rgba(13, 127, 242, 0.15) !important;
+}
+
+[data-mantine-color-scheme="dark"] .unreadIndicator {
+    background-color: var(--mantine-color-blue-5) !important;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}

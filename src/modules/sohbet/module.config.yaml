@@ -1,0 +1,95 @@
+name: "Sohbet Modülü"
+slug: "sohbet"
+version: "1.0.0"
+description: "Gerçek zamanlı mesajlaşma ve sohbet sistemi - Chat rooms, direct messages, file sharing, and group conversations"
+icon: "MessageCircle"
+author: "Omnex Team"
+category: "communication"
+minCoreVersion: "1.0.8"
+dependencies:
+  - slug: "file-manager"
+    version: ">=1.0.0"
+    optional: false
+  - slug: "notifications"
+    version: ">=1.0.0"
+    optional: false
+menu:
+  main:
+    label: "Sohbet"
+    icon: "MessageCircle"
+    href: "/modules/chat/dashboard"
+    order: 25
+    permissions: ["SuperAdmin", "AgencyUser", "ClientUser"]
+    items:
+      - title: "Dashboard"
+        path: "/modules/chat/dashboard"
+        icon: "Dashboard"
+        order: 1
+      - title: "Sohbet Odaları"
+        path: "/modules/chat/rooms"
+        icon: "Users"
+        order: 2
+      - title: "Direkt Mesajlar"
+        path: "/modules/chat/direct"
+        icon: "Message"
+        order: 3
+      - title: "Arşiv"
+        path: "/modules/chat/archived"
+        icon: "Archive"
+        order: 4
+settings:
+  - key: "enableNotifications"
+    label: "Bildirimleri Etkinleştir"
+    description: "Yeni mesajlar için bildirim gönder"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "enableFileSharing"
+    label: "Dosya Paylaşımını Etkinleştir"
+    description: "Sohbette dosya eklemeye izin ver"
+    type: "boolean"
+    defaultValue: true
+    category: "General"
+  - key: "maxFileSize"
+    label: "Maksimum Dosya Boyutu (MB)"
+    description: "Ekler için maksimum dosya boyutu"
+    type: "number"
+    defaultValue: 10
+    min: 1
+    max: 100
+    category: "General"
+  - key: "messageRetentionDays"
+    label: "Mesaj Saklama Süresi (Gün)"
+    description: "Mesajların arşivlenmeden önce saklanma süresi"
+    type: "number"
+    defaultValue: 90
+    min: 7
+    max: 365
+    category: "General"
+  - key: "pollingInterval"
+    label: "Polling Aralığı (saniye)"
+    description: "Gerçek zamanlı mesaj polling aralığı"
+    type: "number"
+    defaultValue: 5
+    min: 1
+    max: 30
+    category: "General"
+  - key: "primaryColor"
+    label: "Ana Renk"
+    description: "Modül için ana tema rengi"
+    type: "color"
+    defaultValue: "#228BE6"
+    category: "Appearance"
+permissions:
+  - key: "sohbet:rooms:read"
+    description: "Sohbet odalarını görüntüle"
+  - key: "sohbet:rooms:write"
+    description: "Sohbet odaları oluştur ve düzenle"
+  - key: "sohbet:rooms:delete"
+    description: "Sohbet odalarını sil"
+  - key: "sohbet:messages:read"
+    description: "Mesajları görüntüle"
+  - key: "sohbet:messages:write"
+    description: "Mesaj gönder"
+  - key: "sohbet:messages:delete"
+    description: "Mesajları sil"

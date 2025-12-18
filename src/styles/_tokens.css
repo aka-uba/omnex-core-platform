@@ -1,0 +1,172 @@
+/**
+ * Design Tokens - Single Source of Truth
+ * All design tokens are defined as CSS custom properties here.
+ * These are consumed by Mantine theme and Tailwind config.
+ */
+
+:root {
+  /* ============================================
+     Color Palette - Primary (Blue)
+     ============================================ */
+  --color-primary-50: #e7f5ff;
+  --color-primary-100: #d0ebff;
+  --color-primary-200: #a5d8ff;
+  --color-primary-300: #74c0fc;
+  --color-primary-400: #4dabf7;
+  --color-primary-500: #339af0;
+  --color-primary-600: #228be6;
+  --color-primary-700: #1c7ed6;
+  --color-primary-800: #1971c2;
+  --color-primary-900: #1864ab;
+
+  /* Primary Color - Light Mode */
+  --brand-primary: #0d7ff2;
+
+  /* ============================================
+     Semantic Colors - Light Mode
+     ============================================ */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7f8;
+  --bg-card: #ffffff;
+  --bg-surface: #ffffff;
+
+  /* Header Colors */
+  --header-light: #ffffff;
+  --header-dark: #303134;
+
+  /* Text Colors */
+  --text-light: #0d141c;
+  --text-dark: #f5f7f8;
+  --text-secondary-light: #49739c;
+  --text-secondary-dark: #a0b3c6;
+  --text-primary: #212529;
+  --text-secondary: #868e96;
+  --text-muted: #adb5bd;
+
+  /* Border Colors */
+  --border-light: #e7edf4;
+  --border-dark: #2a3b4d;
+  --border-color: #dee2e6;
+  --border-hover: #ced4da;
+
+  /* Interactive Colors */
+  --interactive-light: #e7edf4;
+  --interactive-dark: #253341;
+
+  /* ============================================
+     Toast Notification Colors - Light Mode
+     ============================================ */
+  --toast-info-bg: #e7f5ff;
+  --toast-info-border: #339af0;
+  --toast-info-text: #1864ab;
+  --toast-success-bg: #d1fae5;
+  --toast-success-border: #10b981;
+  --toast-success-text: #065f46;
+  --toast-warning-bg: #fef3c7;
+  --toast-warning-border: #f59e0b;
+  --toast-warning-text: #92400e;
+  --toast-error-bg: #fee2e2;
+  --toast-error-border: #ef4444;
+  --toast-error-text: #991b1b;
+
+  /* ============================================
+     Spacing Scale
+     ============================================ */
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 1rem;       /* 16px */
+  --spacing-lg: 1.5rem;     /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+  --spacing-3xl: 4rem;      /* 64px */
+
+  /* ============================================
+     Border Radius
+     ============================================ */
+  --radius-xs: 0.125rem;    /* 2px */
+  --radius-sm: 0.25rem;     /* 4px */
+  --radius-md: 0.5rem;      /* 8px */
+  --radius-lg: 0.75rem;     /* 12px */
+  --radius-xl: 1rem;        /* 16px */
+  --radius-full: 9999px;
+
+  /* ============================================
+     Shadows
+     ============================================ */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* ============================================
+     Typography
+     ============================================ */
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem;      /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem;  /* 20px */
+  --font-size-2xl: 1.5rem;  /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+}
+
+[data-mantine-color-scheme="dark"] {
+  /* Primary Color - Dark Mode (Gray Tones) */
+  --brand-primary: #9aa0a6;
+
+  /* ============================================
+     Semantic Colors - Dark Mode (Google Dark Theme - Gray Tones)
+     ============================================ */
+  --bg-primary: #202124;
+  --bg-secondary: #303134;
+  --bg-card: #303134;
+  --bg-surface: #303134;
+
+  /* Text Colors - Dark Mode (Google Dark Theme) */
+  --text-light: #0d141c;
+  --text-dark: #e8eaed;
+  --text-secondary-light: #49739c;
+  --text-secondary-dark: #9aa0a6;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --text-muted: #80868b;
+
+  /* Border Colors - Dark Mode (Google Dark Theme) */
+  --border-light: #e1e8ed;
+  --border-dark: #5f6368;
+  --border-color: #5f6368;
+  --border-hover: #70757a;
+
+  /* Interactive Colors - Dark Mode */
+  --interactive-light: #e7edf4;
+  --interactive-dark: #3c4043;
+
+  /* ============================================
+     Toast Notification Colors - Dark Mode
+     ============================================ */
+  --toast-info-bg: rgba(51, 154, 240, 0.15);
+  --toast-info-border: #339af0;
+  --toast-info-text: #a5d8ff;
+  --toast-success-bg: rgba(16, 185, 129, 0.15);
+  --toast-success-border: #10b981;
+  --toast-success-text: #6ee7b7;
+  --toast-warning-bg: rgba(245, 158, 11, 0.15);
+  --toast-warning-border: #f59e0b;
+  --toast-warning-text: #fcd34d;
+  --toast-error-bg: rgba(239, 68, 68, 0.15);
+  --toast-error-border: #ef4444;
+  --toast-error-text: #fca5a5;
+
+  /* ============================================
+     Shadows - Dark Mode
+     ============================================ */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+
+

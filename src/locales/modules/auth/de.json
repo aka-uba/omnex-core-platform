@@ -1,0 +1,56 @@
+{
+  "login": {
+    "title": "Anmelden",
+    "subtitle": "Melden Sie sich in Ihrem Konto an",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Geben Sie Ihren Benutzernamen ein",
+    "password": "Passwort",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "submit": "Anmelden",
+    "noAccount": "Haben Sie noch kein Konto?",
+    "register": "Registrieren",
+    "or": "oder",
+    "errors": {
+      "invalidCredentials": "Ungültiger Benutzername oder Passwort",
+      "accountPending": "Ihr Konto wartet auf Genehmigung. Bitte warten Sie auf die Genehmigung des Administrators.",
+      "accountInactive": "Ihr Konto ist nicht aktiv. Bitte kontaktieren Sie den Administrator.",
+      "required": "Bitte füllen Sie alle Felder aus"
+    }
+  },
+  "register": {
+    "title": "Registrieren",
+    "subtitle": "Erstellen Sie ein neues Konto",
+    "name": "Vollständiger Name",
+    "namePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Geben Sie Ihren Benutzernamen ein",
+    "usernameHint": "Nur Buchstaben, Zahlen und Unterstrich erlaubt",
+    "email": "E-Mail",
+    "emailPlaceholder": "beispiel@email.com",
+    "password": "Passwort",
+    "passwordPlaceholder": "Mindestens 8 Zeichen",
+    "passwordHint": "Muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten",
+    "confirmPassword": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Geben Sie Ihr Passwort erneut ein",
+    "submit": "Registrieren",
+    "hasAccount": "Haben Sie bereits ein Konto?",
+    "login": "Anmelden",
+    "success": {
+      "title": "Registrierung erfolgreich!",
+      "message": "Ihr Konto wartet auf Genehmigung. Sie können sich nach der Genehmigung anmelden.",
+      "redirecting": "Weiterleitung zur Anmeldeseite..."
+    },
+    "errors": {
+      "usernameExists": "Dieser Benutzername ist bereits vergeben",
+      "emailExists": "Diese E-Mail-Adresse ist bereits registriert",
+      "passwordMismatch": "Passwörter stimmen nicht überein",
+      "required": "Bitte füllen Sie alle Felder aus"
+    }
+  }
+}
+
+
+
+
