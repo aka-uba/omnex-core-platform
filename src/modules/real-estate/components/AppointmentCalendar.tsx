@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Paper } from '@mantine/core';
 import { CalendarView, type CalendarEvent } from '@/components/calendar/CalendarView';
 // // import { useTranslation } from '@/lib/i18n/client'; // removed - unused // removed - unused
 import { useRouter } from 'next/navigation';
@@ -77,16 +76,14 @@ export function AppointmentCalendar({ locale }: AppointmentCalendarProps) {
   };
 
   return (
-    <Paper shadow="xs" p="md">
-      <CalendarView
-        events={calendarEvents}
-        onDateSelect={handleDateSelect}
-        onEventClick={handleEventClick}
-        onEventEdit={handleEventEdit}
-        onEventCreate={handleEventCreate}
-        selectedDate={today}
-      />
-    </Paper>
+    <CalendarView
+      events={calendarEvents}
+      onDateSelect={handleDateSelect}
+      onEventClick={handleEventClick}
+      onEventEdit={handleEventEdit}
+      onEventCreate={handleEventCreate}
+      selectedDate={today}
+    />
   );
 }
 

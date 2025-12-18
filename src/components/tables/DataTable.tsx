@@ -574,22 +574,23 @@ export function DataTable({
       <Stack gap="md">
         {/* Toolbar */}
         {searchable && (
-          <Group justify="space-between" wrap="nowrap" mb="md" {...(classes.toolbar ? { className: classes.toolbar } : {})} style={{ overflowX: 'auto', width: '100%' }}>
-            <TextInput
-              placeholder={tGlobal('table.search.placeholder')}
-              leftSection={<IconSearch size={16} />}
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.currentTarget.value);
-                setCurrentPage(1);
-              }}
-              {...(classes.searchInput ? { className: classes.searchInput } : {})}
-              style={{ flex: 1, minWidth: 200, flexShrink: 1 }}
-            />
-            <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
-              {/* Export Icons */}
-              {showExportIcons && (
-                <>
+          <Stack gap="sm" mb="md" {...(classes.toolbar ? { className: classes.toolbar } : {})}>
+            {/* First Row: Search + Export Icons (mobile: stacked, desktop: inline) */}
+            <Group justify="space-between" wrap={isMobile ? 'wrap' : 'nowrap'} gap="sm" style={{ width: '100%' }}>
+              <TextInput
+                placeholder={tGlobal('table.search.placeholder')}
+                leftSection={<IconSearch size={16} />}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.currentTarget.value);
+                  setCurrentPage(1);
+                }}
+                {...(classes.searchInput ? { className: classes.searchInput } : {})}
+                style={{ flex: 1, minWidth: isMobile ? '100%' : 200 }}
+              />
+              {/* Export Icons - Always visible on same row on desktop, separate row on mobile */}
+              {showExportIcons && !isMobile && (
+                <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
                   {exportOptions.map((option) => {
                     const Icon = option.icon;
                     const isDisabled = !onExport && !exportHook;
@@ -608,38 +609,99 @@ export function DataTable({
                       </ActionIcon>
                     );
                   })}
-                </>
+                </Group>
               )}
-              {filters.length > 0 && (
-                <Button
-                  variant="default"
-                  leftSection={<IconFilter size={16} />}
-                  rightSection={<IconDotsVertical size={16} />}
-                  onClick={() => setShowFilterModal(true)}
-                  size="sm"
-                  style={{ flexShrink: 0 }}
-                >
-                  {tGlobal('table.filter.button')}
-                  {Object.keys(activeFilters).length > 0 && (
-                    <Badge size="xs" color="blue" variant="filled" ml="xs">
-                      {Object.keys(activeFilters).length}
-                    </Badge>
+              {/* Filter & Column Settings - Desktop only inline */}
+              {!isMobile && (
+                <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
+                  {filters.length > 0 && (
+                    <Button
+                      variant="default"
+                      leftSection={<IconFilter size={16} />}
+                      rightSection={<IconDotsVertical size={16} />}
+                      onClick={() => setShowFilterModal(true)}
+                      size="sm"
+                      style={{ flexShrink: 0 }}
+                    >
+                      {tGlobal('table.filter.button')}
+                      {Object.keys(activeFilters).length > 0 && (
+                        <Badge size="xs" color="blue" variant="filled" ml="xs">
+                          {Object.keys(activeFilters).length}
+                        </Badge>
+                      )}
+                    </Button>
                   )}
-                </Button>
-              )}
-              {showColumnSettings && (
-                <ActionIcon
-                  variant="default"
-                  size="lg"
-                  onClick={() => setShowColumnSettingsModal(true)}
-                  title={tGlobal('table.columnSettings.title')}
-                  style={{ flexShrink: 0 }}
-                >
-                  <IconLayout size={20} />
-                </ActionIcon>
+                  {showColumnSettings && (
+                    <ActionIcon
+                      variant="default"
+                      size="lg"
+                      onClick={() => setShowColumnSettingsModal(true)}
+                      title={tGlobal('table.columnSettings.title')}
+                      style={{ flexShrink: 0 }}
+                    >
+                      <IconLayout size={20} />
+                    </ActionIcon>
+                  )}
+                </Group>
               )}
             </Group>
-          </Group>
+
+            {/* Mobile: Second Row - Export Icons */}
+            {isMobile && showExportIcons && (
+              <Group gap="xs" justify="center" wrap="wrap">
+                {exportOptions.map((option) => {
+                  const Icon = option.icon;
+                  const isDisabled = !onExport && !exportHook;
+                  return (
+                    <ActionIcon
+                      key={option.value}
+                      variant={isDisabled ? "transparent" : "subtle"}
+                      color={isDisabled ? "gray" : option.color}
+                      size="lg"
+                      onClick={() => !isDisabled && handleExport(option.value)}
+                      title={isDisabled ? tGlobal('table.export.providerRequired') : `${option.label}`}
+                      style={{ opacity: isDisabled ? 0.5 : 1 }}
+                      disabled={isDisabled}
+                    >
+                      <Icon size={18} />
+                    </ActionIcon>
+                  );
+                })}
+              </Group>
+            )}
+
+            {/* Mobile: Third Row - Filter & Column Settings */}
+            {isMobile && (filters.length > 0 || showColumnSettings) && (
+              <Group gap="xs" justify="flex-end" wrap="nowrap">
+                {filters.length > 0 && (
+                  <Button
+                    variant="default"
+                    leftSection={<IconFilter size={16} />}
+                    onClick={() => setShowFilterModal(true)}
+                    size="sm"
+                    style={{ flex: 1 }}
+                  >
+                    {tGlobal('table.filter.button')}
+                    {Object.keys(activeFilters).length > 0 && (
+                      <Badge size="xs" color="blue" variant="filled" ml="xs">
+                        {Object.keys(activeFilters).length}
+                      </Badge>
+                    )}
+                  </Button>
+                )}
+                {showColumnSettings && (
+                  <ActionIcon
+                    variant="default"
+                    size="lg"
+                    onClick={() => setShowColumnSettingsModal(true)}
+                    title={tGlobal('table.columnSettings.title')}
+                  >
+                    <IconLayout size={20} />
+                  </ActionIcon>
+                )}
+              </Group>
+            )}
+          </Stack>
         )}
 
         {/* Mobile Card View */}
