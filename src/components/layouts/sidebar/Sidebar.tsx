@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useMemo, useEffect, useCallback, memo } from 'react';
+import { useState, useMemo, useEffect, useCallback, memo, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconApps } from '@tabler/icons-react';
@@ -125,6 +125,9 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
   const [mounted, setMounted] = useState(false);
   const [openedMenu, setOpenedMenu] = useState<string | null>(null);
   const [userManuallyToggled, setUserManuallyToggled] = useState(false);
+
+  // Ref for scrolling to active menu item
+  const activeMenuRef = useRef<HTMLDivElement>(null);
 
   const collapsed = externalCollapsed !== undefined ? externalCollapsed : internalCollapsed;
   const sidebarConfig = config.sidebar;
@@ -275,6 +278,21 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     setUserManuallyToggled(false);
   }, [pathname]);
 
+  // Pathname değiştiğinde aktif menü item'ını görünür alana scroll et
+  useEffect(() => {
+    if (mounted && activeMenuRef.current) {
+      // Küçük bir gecikme ile scroll et (menü açılma animasyonu için)
+      const timeoutId = setTimeout(() => {
+        activeMenuRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }, 100);
+      return () => clearTimeout(timeoutId);
+    }
+    return undefined;
+  }, [pathname, mounted, openedMenu]);
+
   return (
     <aside
       className={`${styles.sidebar}${collapsed ? ` ${styles.collapsed}` : ''}`}
@@ -364,8 +382,15 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
                 item.group !== 'module' &&
                 (!prevItem || prevItem.group !== item.group);
 
+              // Bu menü item'ı veya child'ı aktif mi kontrol et
+              const hasActiveChild = item.children?.some(child => isActive(child.href));
+              const isThisItemActive = isActive(item.href) || hasActiveChild;
+
               return (
-                <div key={item.id || item.href}>
+                <div
+                  key={item.id || item.href}
+                  ref={isThisItemActive ? activeMenuRef : null}
+                >
                   {showGroupHeader && (
                     <Divider
                       my="sm"
