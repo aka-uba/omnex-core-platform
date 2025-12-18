@@ -13,7 +13,10 @@ import {
   Stack,
   Button,
   Badge,
+  Card,
+  Box,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconSearch, IconChevronUp, IconChevronDown, IconArrowsSort, IconFilter, IconDotsVertical, IconFile, IconFileSpreadsheet, IconFileText, IconCode, IconPrinter, IconLayout } from '@tabler/icons-react';
 import classes from './DataTable.module.css';
 import { FilterModal, FilterOption } from './FilterModal';
@@ -90,6 +93,9 @@ export function DataTable({
   const [showColumnSettingsModal, setShowColumnSettingsModal] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
   const [visibleColumns, setVisibleColumns] = useState<DataTableColumn[]>(columns);
+
+  // Mobile detection for card view
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   // Update visible columns when columns prop changes (only if structure changed, not just reference)
   useEffect(() => {
@@ -636,117 +642,204 @@ export function DataTable({
           </Group>
         )}
 
-        {/* Table */}
-        <div {...(classes.tableWrapper ? { className: classes.tableWrapper } : {})}>
-        <Table highlightOnHover striped>
-          <Table.Thead>
-            <Table.Tr>
-              {displayColumns.map((column, columnIndex) => {
-                const isSortable = sortable && column.sortable !== false;
-                const isSorted = sortColumn === column.key;
-                const isFirstColumn = columnIndex === 0;
-                const isLastColumn = columnIndex === displayColumns.length - 1;
-                const isActionsColumn = column.key === 'actions';
-                // Otomatik align: İlk sütun sola, son sütun (actions) sağa, ortadaki sütunlar ortalı
-                // Actions sütunu için align property'si varsa onu kullan, yoksa right
-                // Diğer ortadaki sütunlar için her zaman center (align property'si olsa bile)
-                const align = isActionsColumn 
-                  ? (column.align || 'right')
-                  : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+        {/* Mobile Card View */}
+        {isMobile ? (
+          <div className={classes.cardContainer}>
+            {paginatedData.length === 0 ? (
+              <Card withBorder p="xl" className={classes.emptyCard}>
+                <Text c="dimmed" ta="center">{emptyMessage || tGlobal('empty.message')}</Text>
+              </Card>
+            ) : (
+              paginatedData.map((row, rowIndex) => {
+                // İlk sütunu (genellikle başlık/isim) card header olarak kullan
+                const firstColumn = displayColumns.find(col => col.key !== 'actions');
+                // Actions sütununu card footer olarak ayır
+                const actionsColumn = displayColumns.find(col => col.key === 'actions');
+                // Diğer sütunları card body olarak kullan
+                const bodyColumns = displayColumns.filter(col => col.key !== 'actions' && col !== firstColumn);
+
                 return (
-                  <Table.Th
-                    key={column.key}
-                    className={isSorted ? 'sorted' : ''}
-                    style={{
-                      cursor: isSortable ? 'pointer' : 'default',
-                      userSelect: 'none',
-                      transition: 'background-color 0.2s',
-                      textAlign: align,
-                    }}
-                    onClick={() => isSortable && handleSort(column.key)}
+                  <Card
+                    key={rowIndex}
+                    withBorder
+                    shadow="sm"
+                    radius="md"
+                    className={classes.dataCard}
+                    onClick={() => onRowClick?.(row)}
+                    style={{ cursor: onRowClick ? 'pointer' : 'default' }}
                   >
-                    <Group gap="xs" wrap="nowrap" justify={align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start'}>
-                      <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
-                        {(() => {
-                          // Eğer label bir i18n key ise (nokta içeriyorsa ve boşluk yoksa), çevir
-                          const isI18nKey = column.label.includes('.') && 
-                                           !column.label.includes(' ') && 
+                    {/* Card Header - İlk sütun (başlık) */}
+                    {firstColumn && (
+                      <Box className={classes.cardHeader}>
+                        <Text fw={600} size="md" lineClamp={2}>
+                          {firstColumn.render
+                            ? firstColumn.render((row as Record<string, any>)[firstColumn.key], row)
+                            : String((row as Record<string, any>)[firstColumn.key] ?? '-')}
+                        </Text>
+                      </Box>
+                    )}
+
+                    {/* Card Body - Diğer sütunlar */}
+                    <Stack gap="xs" className={classes.cardBody}>
+                      {bodyColumns.map((column) => {
+                        const value = (row as Record<string, any>)[column.key];
+                        const renderedValue = column.render ? column.render(value, row) : String(value ?? '-');
+
+                        // Label çevirisi
+                        const getLabel = () => {
+                          const isI18nKey = column.label.includes('.') &&
+                                           !column.label.includes(' ') &&
                                            column.label.length > 3 &&
                                            /^[a-z]+\.[a-z_]+/.test(column.label);
-                          
+
                           if (isI18nKey) {
                             const translated = t(column.label);
-                            // Eğer çeviri başarılıysa (key'den farklıysa ve boş değilse), çevrilmiş değeri kullan
-                            if (translated !== column.label && translated) {
-                              return translated;
-                            }
-                            // Çeviri başarısız olduysa, tGlobal ile de dene
+                            if (translated !== column.label && translated) return translated;
                             const translatedGlobal = tGlobal(column.label);
-                            if (translatedGlobal !== column.label && translatedGlobal) {
-                              return translatedGlobal;
-                            }
+                            if (translatedGlobal !== column.label && translatedGlobal) return translatedGlobal;
                           }
-                          // Değilse veya çeviri başarısız olduysa, olduğu gibi göster
                           return column.label;
-                        })()}
-                      </Text>
-                      {isSortable && (
-                        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-                          {getSortIcon(column.key)}
-                        </div>
-                      )}
-                    </Group>
-                  </Table.Th>
+                        };
+
+                        return (
+                          <Group key={column.key} justify="space-between" wrap="nowrap" className={classes.cardRow}>
+                            <Text size="sm" c="dimmed" className={classes.cardLabel}>
+                              {getLabel()}
+                            </Text>
+                            <Box className={classes.cardValue}>
+                              {renderedValue}
+                            </Box>
+                          </Group>
+                        );
+                      })}
+                    </Stack>
+
+                    {/* Card Footer - Actions */}
+                    {actionsColumn && (
+                      <Box className={classes.cardActions}>
+                        {actionsColumn.render
+                          ? actionsColumn.render((row as Record<string, any>)[actionsColumn.key], row)
+                          : null}
+                      </Box>
+                    )}
+                  </Card>
                 );
-              })}
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {paginatedData.length === 0 ? (
-              <Table.Tr>
-                <Table.Td colSpan={displayColumns.length} style={{ textAlign: 'center', padding: '2rem' }}>
-                  <Text c="dimmed">{emptyMessage || tGlobal('empty.message')}</Text>
-                </Table.Td>
-              </Table.Tr>
-            ) : (
-              paginatedData.map((row, rowIndex) => (
-                <Table.Tr
-                  key={rowIndex}
-                  onClick={() => onRowClick?.(row)}
-                  style={{ cursor: onRowClick ? 'pointer' : 'default' }}
-                >
-                  {displayColumns.map((column, columnIndex) => {
-                    const isFirstColumn = columnIndex === 0;
-                    const isLastColumn = columnIndex === displayColumns.length - 1;
-                    const isActionsColumn = column.key === 'actions';
-                    // Otomatik align: İlk sütun sola, son sütun (actions) sağa, ortadaki sütunlar ortalı
-                    // Actions sütunu için align property'si varsa onu kullan, yoksa right
-                    // Diğer ortadaki sütunlar için her zaman center (align property'si olsa bile)
-                    const align = isActionsColumn 
-                      ? (column.align || 'right')
-                      : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
-                    return (
-                      <Table.Td 
-                        key={column.key}
-                        style={{ textAlign: align }}
-                      >
-                        <div style={{ 
-                          display: 'flex', 
-                          justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
-                          alignItems: 'center',
-                          width: '100%'
-                        }}>
-                          {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
-                        </div>
-                      </Table.Td>
-                    );
-                  })}
-                </Table.Tr>
-              ))
+              })
             )}
-          </Table.Tbody>
-        </Table>
-      </div>
+          </div>
+        ) : (
+          /* Desktop Table View */
+          <div {...(classes.tableWrapper ? { className: classes.tableWrapper } : {})}>
+          <Table highlightOnHover striped>
+            <Table.Thead>
+              <Table.Tr>
+                {displayColumns.map((column, columnIndex) => {
+                  const isSortable = sortable && column.sortable !== false;
+                  const isSorted = sortColumn === column.key;
+                  const isFirstColumn = columnIndex === 0;
+                  const isLastColumn = columnIndex === displayColumns.length - 1;
+                  const isActionsColumn = column.key === 'actions';
+                  // Otomatik align: İlk sütun sola, son sütun (actions) sağa, ortadaki sütunlar ortalı
+                  // Actions sütunu için align property'si varsa onu kullan, yoksa right
+                  // Diğer ortadaki sütunlar için her zaman center (align property'si olsa bile)
+                  const align = isActionsColumn
+                    ? (column.align || 'right')
+                    : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+                  return (
+                    <Table.Th
+                      key={column.key}
+                      className={isSorted ? 'sorted' : ''}
+                      style={{
+                        cursor: isSortable ? 'pointer' : 'default',
+                        userSelect: 'none',
+                        transition: 'background-color 0.2s',
+                        textAlign: align,
+                      }}
+                      onClick={() => isSortable && handleSort(column.key)}
+                    >
+                      <Group gap="xs" wrap="nowrap" justify={align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start'}>
+                        <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
+                          {(() => {
+                            // Eğer label bir i18n key ise (nokta içeriyorsa ve boşluk yoksa), çevir
+                            const isI18nKey = column.label.includes('.') &&
+                                             !column.label.includes(' ') &&
+                                             column.label.length > 3 &&
+                                             /^[a-z]+\.[a-z_]+/.test(column.label);
+
+                            if (isI18nKey) {
+                              const translated = t(column.label);
+                              // Eğer çeviri başarılıysa (key'den farklıysa ve boş değilse), çevrilmiş değeri kullan
+                              if (translated !== column.label && translated) {
+                                return translated;
+                              }
+                              // Çeviri başarısız olduysa, tGlobal ile de dene
+                              const translatedGlobal = tGlobal(column.label);
+                              if (translatedGlobal !== column.label && translatedGlobal) {
+                                return translatedGlobal;
+                              }
+                            }
+                            // Değilse veya çeviri başarısız olduysa, olduğu gibi göster
+                            return column.label;
+                          })()}
+                        </Text>
+                        {isSortable && (
+                          <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                            {getSortIcon(column.key)}
+                          </div>
+                        )}
+                      </Group>
+                    </Table.Th>
+                  );
+                })}
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {paginatedData.length === 0 ? (
+                <Table.Tr>
+                  <Table.Td colSpan={displayColumns.length} style={{ textAlign: 'center', padding: '2rem' }}>
+                    <Text c="dimmed">{emptyMessage || tGlobal('empty.message')}</Text>
+                  </Table.Td>
+                </Table.Tr>
+              ) : (
+                paginatedData.map((row, rowIndex) => (
+                  <Table.Tr
+                    key={rowIndex}
+                    onClick={() => onRowClick?.(row)}
+                    style={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                  >
+                    {displayColumns.map((column, columnIndex) => {
+                      const isFirstColumn = columnIndex === 0;
+                      const isLastColumn = columnIndex === displayColumns.length - 1;
+                      const isActionsColumn = column.key === 'actions';
+                      // Otomatik align: İlk sütun sola, son sütun (actions) sağa, ortadaki sütunlar ortalı
+                      // Actions sütunu için align property'si varsa onu kullan, yoksa right
+                      // Diğer ortadaki sütunlar için her zaman center (align property'si olsa bile)
+                      const align = isActionsColumn
+                        ? (column.align || 'right')
+                        : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+                      return (
+                        <Table.Td
+                          key={column.key}
+                          style={{ textAlign: align }}
+                        >
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
+                            alignItems: 'center',
+                            width: '100%'
+                          }}>
+                            {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
+                          </div>
+                        </Table.Td>
+                      );
+                    })}
+                  </Table.Tr>
+                ))
+              )}
+            </Table.Tbody>
+          </Table>
+        </div>
+        )}
 
         {/* Pagination */}
         {pageable && processedData.length > 0 && (

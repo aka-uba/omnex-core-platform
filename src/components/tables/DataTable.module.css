@@ -101,4 +101,91 @@
   }
 }
 
+/* Mobile Card View Styles */
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+}
+
+.dataCard {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dataCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.emptyCard {
+  text-align: center;
+}
+
+.cardHeader {
+  padding-bottom: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-mantine-color-scheme="dark"] .cardHeader {
+  border-bottom-color: var(--border-color);
+}
+
+.cardBody {
+  padding: var(--mantine-spacing-xs) 0;
+}
+
+.cardRow {
+  padding: var(--mantine-spacing-xs) 0;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.cardRow:last-child {
+  border-bottom: none;
+}
+
+[data-mantine-color-scheme="dark"] .cardRow {
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.cardLabel {
+  flex-shrink: 0;
+  min-width: 100px;
+  max-width: 40%;
+}
+
+.cardValue {
+  text-align: right;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardActions {
+  margin-top: var(--mantine-spacing-sm);
+  padding-top: var(--mantine-spacing-sm);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--mantine-spacing-xs);
+}
+
+[data-mantine-color-scheme="dark"] .cardActions {
+  border-top-color: var(--border-color);
+}
+
+/* Mobile pagination adjustments */
+@media (max-width: 768px) {
+  .pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--mantine-spacing-sm);
+  }
+
+  .pagination > div {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 
