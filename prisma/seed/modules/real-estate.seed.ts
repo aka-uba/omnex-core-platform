@@ -274,6 +274,248 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['staff'] = staffCreated;
 
+      // Contract Templates (Sözleşme Şablonları)
+      const contractTemplatesData = [
+        { name: 'Standart Kira Sözleşmesi', type: 'rental', description: 'Konut kiralama için standart sözleşme şablonu' },
+        { name: 'Ticari Kira Sözleşmesi', type: 'commercial', description: 'İşyeri kiralama sözleşmesi şablonu' },
+        { name: 'Kısa Dönem Kiralama', type: 'short_term', description: 'Kısa süreli kiralama sözleşmesi' },
+      ];
+      let contractTemplatesCreated = 0;
+
+      for (let idx = 0; idx < contractTemplatesData.length; idx++) {
+        const ct = contractTemplatesData[idx]!;
+        await tenantPrisma.contractTemplate.upsert({
+          where: { id: generateDemoId(tenantSlug, 'contract-template', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'contract-template', String(idx + 1)),
+            tenantId,
+            companyId,
+            name: ct.name,
+            type: ct.type,
+            description: ct.description,
+            content: `<h1>${ct.name}</h1><p>Bu bir demo sözleşme şablonudur.</p><p>Taraflar arasında aşağıdaki şartlarda anlaşmaya varılmıştır...</p>`,
+            variables: JSON.stringify(['kiracı_adı', 'ev_sahibi_adı', 'adres', 'kira_bedeli', 'depozito', 'başlangıç_tarihi', 'bitiş_tarihi']),
+            isDefault: idx === 0,
+            isActive: true,
+          },
+        });
+        contractTemplatesCreated++;
+        itemsCreated++;
+      }
+      details['contractTemplates'] = contractTemplatesCreated;
+
+      // Email Templates (E-posta Şablonları)
+      const emailTemplatesData = [
+        { name: 'Hoşgeldiniz E-postası', type: 'welcome', subject: 'Hoş Geldiniz - {{property_name}}' },
+        { name: 'Kira Hatırlatma', type: 'payment_reminder', subject: 'Kira Ödeme Hatırlatması - {{month}}' },
+        { name: 'Sözleşme Yenileme', type: 'contract_renewal', subject: 'Sözleşme Yenileme Bildirimi' },
+        { name: 'Bakım Bildirimi', type: 'maintenance', subject: 'Bakım Çalışması Bildirimi' },
+      ];
+      let emailTemplatesCreated = 0;
+
+      for (let idx = 0; idx < emailTemplatesData.length; idx++) {
+        const et = emailTemplatesData[idx]!;
+        await tenantPrisma.emailTemplate.upsert({
+          where: { id: generateDemoId(tenantSlug, 'email-template', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'email-template', String(idx + 1)),
+            tenantId,
+            companyId,
+            name: et.name,
+            type: et.type,
+            subject: et.subject,
+            content: `<html><body><h2>${et.name}</h2><p>Sayın {{tenant_name}},</p><p>Bu bir demo e-posta şablonudur.</p><p>Saygılarımızla,<br/>{{company_name}}</p></body></html>`,
+            variables: JSON.stringify(['tenant_name', 'property_name', 'company_name', 'month', 'amount']),
+            isDefault: idx === 0,
+            isActive: true,
+          },
+        });
+        emailTemplatesCreated++;
+        itemsCreated++;
+      }
+      details['emailTemplates'] = emailTemplatesCreated;
+
+      // Email Campaigns (E-posta Kampanyaları)
+      const emailCampaignsData = [
+        { name: 'Yeni Yıl Kutlaması', status: 'sent', type: 'announcement' },
+        { name: 'Kira Artış Bildirimi 2025', status: 'draft', type: 'notification' },
+        { name: 'Bakım Takvimi Duyurusu', status: 'scheduled', type: 'maintenance' },
+      ];
+      let emailCampaignsCreated = 0;
+
+      for (let idx = 0; idx < emailCampaignsData.length; idx++) {
+        const ec = emailCampaignsData[idx]!;
+        await tenantPrisma.emailCampaign.upsert({
+          where: { id: generateDemoId(tenantSlug, 'email-campaign', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'email-campaign', String(idx + 1)),
+            tenantId,
+            companyId,
+            name: ec.name,
+            subject: `${ec.name} - Demo Kampanya`,
+            content: `<html><body><h1>${ec.name}</h1><p>Bu bir demo e-posta kampanyasıdır.</p></body></html>`,
+            status: ec.status,
+            recipientCount: randomChoice([10, 25, 50, 100]),
+            sentCount: ec.status === 'sent' ? randomChoice([8, 20, 45, 95]) : 0,
+            openCount: ec.status === 'sent' ? randomChoice([5, 15, 30, 60]) : 0,
+            clickCount: ec.status === 'sent' ? randomChoice([2, 8, 15, 30]) : 0,
+            scheduledAt: ec.status === 'scheduled' ? randomDate(new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) : null,
+            sentAt: ec.status === 'sent' ? randomDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), new Date()) : null,
+          },
+        });
+        emailCampaignsCreated++;
+        itemsCreated++;
+      }
+      details['emailCampaigns'] = emailCampaignsCreated;
+
+      // Agreement Report Templates (Anlaşma Raporu Şablonları)
+      const agreementReportTemplatesData = [
+        { name: 'Aylık Kira Raporu', type: 'monthly', description: 'Aylık kira gelir ve gider raporu' },
+        { name: 'Yıllık Özet Rapor', type: 'annual', description: 'Yıllık gayrimenkul performans raporu' },
+        { name: 'Doluluk Oranı Raporu', type: 'occupancy', description: 'Mülk doluluk oranları analizi' },
+      ];
+      let agreementReportTemplatesCreated = 0;
+
+      for (let idx = 0; idx < agreementReportTemplatesData.length; idx++) {
+        const art = agreementReportTemplatesData[idx]!;
+        await tenantPrisma.agreementReportTemplate.upsert({
+          where: { id: generateDemoId(tenantSlug, 'agreement-report-template', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'agreement-report-template', String(idx + 1)),
+            tenantId,
+            companyId,
+            name: art.name,
+            type: art.type,
+            description: art.description,
+            content: `<h1>${art.name}</h1><p>Rapor Dönemi: {{period}}</p><p>Toplam Gelir: {{total_income}}</p><p>Toplam Gider: {{total_expense}}</p>`,
+            fields: JSON.stringify(['period', 'total_income', 'total_expense', 'net_profit', 'occupancy_rate']),
+            isDefault: idx === 0,
+            isActive: true,
+          },
+        });
+        agreementReportTemplatesCreated++;
+        itemsCreated++;
+      }
+      details['agreementReportTemplates'] = agreementReportTemplatesCreated;
+
+      // Agreement Reports (Anlaşma Raporları)
+      const agreementReportsData = [
+        { title: 'Ocak 2025 Kira Raporu', period: 'monthly', status: 'completed' },
+        { title: 'Şubat 2025 Kira Raporu', period: 'monthly', status: 'draft' },
+        { title: '2024 Yıllık Özet', period: 'annual', status: 'completed' },
+        { title: 'Q4 2024 Doluluk Raporu', period: 'quarterly', status: 'completed' },
+      ];
+      let agreementReportsCreated = 0;
+
+      for (let idx = 0; idx < agreementReportsData.length; idx++) {
+        const ar = agreementReportsData[idx]!;
+        const startDate = ar.period === 'annual' ? new Date(2024, 0, 1) : new Date(2025, idx, 1);
+        const endDate = ar.period === 'annual' ? new Date(2024, 11, 31) : new Date(2025, idx + 1, 0);
+
+        await tenantPrisma.agreementReport.upsert({
+          where: { id: generateDemoId(tenantSlug, 'agreement-report', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'agreement-report', String(idx + 1)),
+            tenantId,
+            companyId,
+            title: ar.title,
+            description: `${ar.title} - Demo rapor`,
+            period: ar.period,
+            startDate,
+            endDate,
+            status: ar.status,
+            totalIncome: randomDecimal(50000, 200000),
+            totalExpense: randomDecimal(10000, 50000),
+            netProfit: randomDecimal(40000, 150000),
+            occupancyRate: randomDecimal(75, 98),
+            reportData: JSON.stringify({
+              properties: properties.length,
+              totalUnits: apartments.length,
+              rentedUnits: apartments.filter(a => a.status === 'rented').length,
+              collections: randomChoice([85, 90, 95, 98]),
+            }),
+            generatedAt: ar.status === 'completed' ? new Date() : null,
+            generatedBy: ar.status === 'completed' ? ctx.adminUserId : null,
+          },
+        });
+        agreementReportsCreated++;
+        itemsCreated++;
+      }
+      details['agreementReports'] = agreementReportsCreated;
+
+      // Real Estate Maintenance Records (Gayrimenkul Bakım Kayıtları)
+      const maintenanceTypes = ['routine', 'emergency', 'preventive', 'corrective'];
+      const maintenanceStatuses = ['pending', 'in_progress', 'completed'];
+      let maintenanceRecordsCreated = 0;
+
+      for (let idx = 0; idx < Math.min(6, apartments.length); idx++) {
+        const apt = apartments[idx];
+        await tenantPrisma.realEstateMaintenanceRecord.create({
+          data: {
+            tenantId,
+            companyId,
+            apartmentId: apt.id,
+            propertyId: apt.propertyId,
+            type: randomChoice(maintenanceTypes),
+            title: `${apt.unitNumber} No'lu Daire - ${randomChoice(['Tesisat', 'Elektrik', 'Boya', 'Tadilat'])} Bakımı`,
+            description: 'Demo bakım kaydı',
+            status: randomChoice(maintenanceStatuses),
+            priority: randomChoice(['low', 'medium', 'high', 'urgent']),
+            reportedBy: tenants[idx % tenants.length]?.id,
+            assignedTo: `demo-staff-${(idx % 4) + 1}`,
+            scheduledDate: randomDate(new Date(), new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)),
+            completedDate: idx < 2 ? new Date() : null,
+            estimatedCost: randomDecimal(500, 5000),
+            actualCost: idx < 2 ? randomDecimal(400, 4500) : null,
+            notes: 'Demo bakım notları',
+          },
+        });
+        maintenanceRecordsCreated++;
+        itemsCreated++;
+      }
+      details['maintenanceRecords'] = maintenanceRecordsCreated;
+
+      // Bulk Operations (Toplu İşlemler)
+      const bulkOperationsData = [
+        { type: 'rent_increase', status: 'completed', description: 'Yıllık kira artışı uygulaması' },
+        { type: 'payment_reminder', status: 'completed', description: 'Toplu ödeme hatırlatması gönderimi' },
+        { type: 'contract_renewal', status: 'pending', description: 'Sözleşme yenileme bildirimleri' },
+      ];
+      let bulkOperationsCreated = 0;
+
+      for (let idx = 0; idx < bulkOperationsData.length; idx++) {
+        const bo = bulkOperationsData[idx]!;
+        await tenantPrisma.bulkOperation.upsert({
+          where: { id: generateDemoId(tenantSlug, 'bulk-operation', String(idx + 1)) },
+          update: {},
+          create: {
+            id: generateDemoId(tenantSlug, 'bulk-operation', String(idx + 1)),
+            tenantId,
+            companyId,
+            type: bo.type,
+            status: bo.status,
+            description: bo.description,
+            totalItems: randomChoice([10, 25, 50]),
+            processedItems: bo.status === 'completed' ? randomChoice([10, 25, 50]) : 0,
+            successItems: bo.status === 'completed' ? randomChoice([9, 24, 48]) : 0,
+            failedItems: bo.status === 'completed' ? randomChoice([1, 1, 2]) : 0,
+            startedAt: bo.status === 'completed' ? randomDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()) : null,
+            completedAt: bo.status === 'completed' ? new Date() : null,
+            createdBy: ctx.adminUserId,
+            parameters: JSON.stringify({ increaseRate: 0.25, sendEmail: true }),
+            results: bo.status === 'completed' ? JSON.stringify({ message: 'İşlem başarıyla tamamlandı' }) : null,
+          },
+        });
+        bulkOperationsCreated++;
+        itemsCreated++;
+      }
+      details['bulkOperations'] = bulkOperationsCreated;
+
       return { success: true, itemsCreated, details };
     } catch (error: any) {
       return { success: false, itemsCreated, error: error.message, details };
@@ -286,6 +528,49 @@ export class RealEstateSeeder implements ModuleSeeder {
 
     try {
       // Delete in reverse order of dependencies
+
+      // Bulk Operations
+      const bulkOpResult = await tenantPrisma.bulkOperation.deleteMany({
+        where: { id: { contains: '-demo-bulk-operation-' } },
+      });
+      itemsDeleted += bulkOpResult.count;
+
+      // Real Estate Maintenance Records
+      const reMaintenanceResult = await tenantPrisma.realEstateMaintenanceRecord.deleteMany({
+        where: { description: 'Demo bakım kaydı' },
+      });
+      itemsDeleted += reMaintenanceResult.count;
+
+      // Agreement Reports
+      const agreementReportResult = await tenantPrisma.agreementReport.deleteMany({
+        where: { id: { contains: '-demo-agreement-report-' } },
+      });
+      itemsDeleted += agreementReportResult.count;
+
+      // Agreement Report Templates
+      const agreementReportTemplateResult = await tenantPrisma.agreementReportTemplate.deleteMany({
+        where: { id: { contains: '-demo-agreement-report-template-' } },
+      });
+      itemsDeleted += agreementReportTemplateResult.count;
+
+      // Email Campaigns
+      const emailCampaignResult = await tenantPrisma.emailCampaign.deleteMany({
+        where: { id: { contains: '-demo-email-campaign-' } },
+      });
+      itemsDeleted += emailCampaignResult.count;
+
+      // Email Templates
+      const emailTemplateResult = await tenantPrisma.emailTemplate.deleteMany({
+        where: { id: { contains: '-demo-email-template-' } },
+      });
+      itemsDeleted += emailTemplateResult.count;
+
+      // Contract Templates
+      const contractTemplateResult = await tenantPrisma.contractTemplate.deleteMany({
+        where: { id: { contains: '-demo-contract-template-' } },
+      });
+      itemsDeleted += contractTemplateResult.count;
+
       // Appointments
       const appointmentResult = await tenantPrisma.appointment.deleteMany({
         where: { description: 'Demo randevu kaydı' },
