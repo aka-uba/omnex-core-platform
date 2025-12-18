@@ -4,10 +4,6 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const nextConfig: NextConfig = {
-  // Enable experimental dynamicIO for force-dynamic pages in Next.js 16
-  experimental: {
-    dynamicIO: true,
-  },
   /* config options here */
   // Skip TypeScript errors during production builds
   typescript: {
