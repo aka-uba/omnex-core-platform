@@ -1034,19 +1034,55 @@ button[data-loading="true"] .mantine-Button-inner,
   .leaflet-popup-content-wrapper {
     max-width: 280px !important;
     min-width: 200px !important;
+    overflow: hidden !important;
   }
 
   .leaflet-popup-content {
-    max-width: 260px !important;
+    max-width: 256px !important;
     min-width: 180px !important;
-    margin: 10px 12px !important;
-    font-size: 13px !important;
+    margin: 8px 10px !important;
+    font-size: 12px !important;
+    overflow: hidden !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
 
   /* Popup içindeki div'ler - PropertyMap için */
   .leaflet-popup-content > div {
-    min-width: 180px !important;
-    max-width: 260px !important;
+    min-width: 170px !important;
+    max-width: 236px !important;
+    overflow: hidden !important;
+    word-wrap: break-word !important;
+  }
+
+  /* Popup içindeki tüm elementler için overflow kontrolü */
+  .leaflet-popup-content * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Badge ve butonların taşmasını engelle */
+  .leaflet-popup-content span {
+    white-space: normal !important;
+    word-break: break-word !important;
+    font-size: 11px !important;
+  }
+
+  .leaflet-popup-content button {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Flex container'ların taşmasını engelle */
+  .leaflet-popup-content div[style*="display: flex"] {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+
+  /* Apartment item daha kompakt */
+  .leaflet-popup-content .apartment-item {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
   }
 
   /* Close button - mobilde daha büyük ve görünür */
