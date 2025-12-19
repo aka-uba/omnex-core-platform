@@ -34,13 +34,31 @@ export async function GET(
                 const { searchParams } = new URL(request.url);
 
                 const userId = searchParams.get('userId') || authResult.payload.userId;
-                const roleId = searchParams.get('roleId') || authResult.payload.role;
+                const roleName = searchParams.get('roleId') || authResult.payload.role;
                 const branchId = searchParams.get('branchId');
-                
+
                 // Get tenantId from auth payload (more reliable than getTenantFromRequest)
                 // tenantId can be undefined for global contexts, which is OK
                 const tenantId = authResult.payload.tenantId || undefined;
-                
+
+                // Look up the actual role ID from role name
+                // The JWT payload contains role name (e.g., "Admin"), but assignments use role ID (UUID)
+                let roleId: string | null = null;
+                if (roleName) {
+                    try {
+                        const role = await tenantPrisma.role.findFirst({
+                            where: { name: roleName },
+                            select: { id: true },
+                        });
+                        if (role) {
+                            roleId = role.id;
+                        }
+                    } catch (roleError) {
+                        // If role lookup fails, continue without roleId
+                        console.warn('Failed to lookup role ID from role name:', roleError);
+                    }
+                }
+
                 // Get companyId for filtering (optional, graceful degradation)
                 // companyId currently not used but may be needed for future filtering
                 // let companyId: string | undefined;
@@ -226,8 +244,8 @@ export async function GET(
                 const filterItemsByPermissions = (items: any[]): any[] => {
                     return items
                         .filter(item => {
-                            // Check role requirement
-                            if (item.requiredRole && item.requiredRole !== roleId) {
+                            // Check role requirement (compare by role name, not ID)
+                            if (item.requiredRole && item.requiredRole !== roleName) {
                                 return false;
                             }
                             // TODO: Check permission requirement
