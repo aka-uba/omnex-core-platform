@@ -170,21 +170,43 @@ export function ModuleUpload() {
               <Text c="dimmed">
                 {t('upload.manifest.description2')}
               </Text>
+              <Text c="dimmed" fw={500}>
+                {t('upload.manifest.fileName')}: <Code>module.config.yaml</Code>
+              </Text>
               <Code block className="bg-slate-200 dark:bg-slate-800 p-4 rounded">
-                {`{
-  "name": "My Awesome Module",
-  "slug": "my-module",
-  "version": "1.0.0",
-  "description": "This is a brief summary of what the module does.",
-  "author": "Your Name",
-  "icon": "IconName",
-  "menu": {
-    "label": "My Module",
-    "icon": "IconName",
-    "route": "/modules/my-module",
-    "order": 10
-  }
-}`}
+                {`name: My Awesome Module
+slug: my-module
+version: 1.0.0
+description: This is a brief summary of what the module does.
+author: Your Name
+icon: Apps
+category: business
+minCoreVersion: 1.0.0
+
+menu:
+  main:
+    label: My Module
+    icon: Apps
+    href: /modules/my-module
+    order: 10
+    items:
+      - title: Dashboard
+        path: /modules/my-module/dashboard
+        icon: Dashboard
+        order: 1
+
+settings:
+  - key: enableFeature
+    label: Enable Feature
+    type: boolean
+    defaultValue: true
+    category: General
+
+permissions:
+  - key: my-module.view
+    name: View Module
+    description: Allows user to view module
+    category: Access`}
               </Code>
             </Stack>
           </Paper>

@@ -12,7 +12,8 @@ import {
   createTenantDirectoryStructure,
   uploadCompanyAsset,
   createDefaultExportTemplate,
-  createInitialLocation
+  createInitialLocation,
+  updateCompanyWithWizardData
 } from './tenantService-helpers';
 
 export interface CreateTenantInput {
@@ -29,10 +30,25 @@ export interface CreateTenantInput {
     logo?: File | string; // File or path
     favicon?: File | string;
     address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
     phone?: string;
     email?: string;
     website?: string;
+    industry?: string;
+    description?: string;
+    foundedYear?: number;
+    employeeCount?: number;
+    capital?: string;
     taxNumber?: string;
+    taxOffice?: string;
+    registrationNumber?: string;
+    mersisNumber?: string;
+    iban?: string;
+    bankName?: string;
+    accountHolder?: string;
   };
 
   // Initial location (NEW - OPTIONAL)
@@ -233,6 +249,42 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
         faviconUrl = await uploadCompanyAsset(input.slug, input.companyInfo.favicon, 'favicon');
       } catch (error) {
         logger.warn('Favicon upload failed', { error }, 'tenant-service');
+      }
+    }
+
+    // 7.5. Update company with wizard data (NEW)
+    // Seed creates a default company, now update it with actual wizard data
+    let companyId: string | undefined;
+    if (input.companyInfo) {
+      try {
+        companyId = await updateCompanyWithWizardData(tenantDbUrl, input.slug, {
+          name: input.companyInfo.name,
+          ...(logoUrl ? { logoUrl } : {}),
+          ...(faviconUrl ? { faviconUrl } : {}),
+          address: input.companyInfo.address,
+          city: input.companyInfo.city,
+          state: input.companyInfo.state,
+          postalCode: input.companyInfo.postalCode,
+          country: input.companyInfo.country,
+          phone: input.companyInfo.phone,
+          email: input.companyInfo.email,
+          website: input.companyInfo.website,
+          industry: input.companyInfo.industry,
+          description: input.companyInfo.description,
+          foundedYear: input.companyInfo.foundedYear,
+          employeeCount: input.companyInfo.employeeCount,
+          capital: input.companyInfo.capital,
+          taxNumber: input.companyInfo.taxNumber,
+          taxOffice: input.companyInfo.taxOffice,
+          registrationNumber: input.companyInfo.registrationNumber,
+          mersisNumber: input.companyInfo.mersisNumber,
+          iban: input.companyInfo.iban,
+          bankName: input.companyInfo.bankName,
+          accountHolder: input.companyInfo.accountHolder,
+        });
+        logger.info(`Company updated with wizard data for tenant: ${input.slug}`, { companyId }, 'tenant-service');
+      } catch (error) {
+        logger.warn('Company update with wizard data failed', { error }, 'tenant-service');
       }
     }
 

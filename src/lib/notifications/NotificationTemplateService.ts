@@ -190,14 +190,14 @@ export class NotificationTemplateService {
     if (channel) where.channel = channel;
     if (notificationType) where.notificationType = notificationType;
 
+    // Only filter by location/company if explicitly provided
+    // If not provided, return all templates for this tenant
     if (locationId) {
       where.locationId = locationId;
     } else if (companyId) {
       where.companyId = companyId;
-    } else {
-      where.companyId = null;
-      where.locationId = null;
     }
+    // else: return all templates regardless of companyId/locationId
 
     const templates = await this.tenantPrisma.notificationTemplate.findMany({
       where,

@@ -2,17 +2,97 @@ import { NextRequest } from 'next/server';
 import { requireSuperAdmin } from '@/lib/middleware/superAdminMiddleware';
 import { successResponse, errorResponse } from '@/lib/api/response';
 import { logger } from '@/lib/utils/logger';
+import { cacheManager } from '@/lib/cache/CacheManager';
 import fs from 'fs';
 import path from 'path';
+
+/**
+ * Delete directory contents (not the directory itself)
+ */
+function deleteDirectoryContents(dirPath: string): { deleted: number; failed: number } {
+    let deleted = 0;
+    let failed = 0;
+
+    try {
+        if (!fs.existsSync(dirPath)) {
+            return { deleted: 0, failed: 0 };
+        }
+
+        const items = fs.readdirSync(dirPath);
+        for (const item of items) {
+            const curPath = path.join(dirPath, item);
+            try {
+                if (fs.lstatSync(curPath).isDirectory()) {
+                    const result = deleteDirectoryRecursive(curPath);
+                    deleted += result.deleted;
+                    failed += result.failed;
+                } else {
+                    fs.unlinkSync(curPath);
+                    deleted++;
+                }
+            } catch (error) {
+                failed++;
+                logger.warn('Failed to delete cache item', { path: curPath, error }, 'api-cache-clear');
+            }
+        }
+    } catch (error) {
+        logger.error('Error deleting directory contents', { dirPath, error }, 'api-cache-clear');
+    }
+
+    return { deleted, failed };
+}
+
 /**
  * Delete directory recursively
+ */
+function deleteDirectoryRecursive(dirPath: string): { deleted: number; failed: number } {
+    let deleted = 0;
+    let failed = 0;
+
+    try {
+        if (!fs.existsSync(dirPath)) {
+            return { deleted: 0, failed: 0 };
+        }
+
+        const items = fs.readdirSync(dirPath);
+        for (const item of items) {
+            const curPath = path.join(dirPath, item);
+            try {
+                if (fs.lstatSync(curPath).isDirectory()) {
+                    const result = deleteDirectoryRecursive(curPath);
+                    deleted += result.deleted;
+                    failed += result.failed;
+                } else {
+                    fs.unlinkSync(curPath);
+                    deleted++;
+                }
+            } catch (error) {
+                failed++;
+            }
+        }
+
+        // Try to remove the directory itself
+        try {
+            fs.rmdirSync(dirPath);
+        } catch (error) {
+            // Directory not empty or in use - that's ok
+        }
+    } catch (error) {
+        logger.error('Error deleting directory', { dirPath, error }, 'api-cache-clear');
+    }
+
+    return { deleted, failed };
+}
+
+/**
+ * Delete directory recursively (legacy for single operations)
  */
 function deleteDirectory(dirPath: string): boolean {
     try {
         if (!fs.existsSync(dirPath)) {
             return false;
         }
-        
+
         fs.readdirSync(dirPath).forEach((file) => {
             const curPath = path.join(dirPath, file);
             if (fs.lstatSync(curPath).isDirectory()) {
@@ -101,22 +181,45 @@ export async function POST(request: NextRequest) {
                 return errorResponse('NOT_FOUND', 'Cache key not found');
             }
         } else {
-            // Clear all cache
-            const cachePath = path.join(process.cwd(), '.next', 'cache');
-            if (fs.existsSync(cachePath)) {
-                const dirs = fs.readdirSync(cachePath);
-                let cleared = 0;
-                for (const dir of dirs) {
-                    const dirPath = path.join(cachePath, dir);
-                    if (deleteDirectory(dirPath)) {
-                        cleared++;
-                    }
-                }
-                logger.info('All cache cleared', { cleared, userId: auth.userId }, 'api-cache-clear');
-                return successResponse({ message: 'All cache cleared', cleared });
-            } else {
-                return successResponse({ message: 'Cache directory does not exist', cleared: 0 });
+            // Clear all cache - both in-memory and file-based
+            let totalDeleted = 0;
+            let totalFailed = 0;
+
+            // 1. Clear in-memory CacheManager
+            try {
+                cacheManager.clear();
+                logger.info('In-memory cache cleared', { userId: auth.userId }, 'api-cache-clear');
+            } catch (error) {
+                logger.warn('Failed to clear in-memory cache', { error }, 'api-cache-clear');
             }
+
+            // 2. Clear file-based cache directories
+            const cwd = process.cwd();
+            const cachePaths = [
+                path.join(cwd, '.next', 'cache'),
+                path.join(cwd, 'node_modules', '.cache'),
+            ];
+
+            for (const cachePath of cachePaths) {
+                if (fs.existsSync(cachePath)) {
+                    const result = deleteDirectoryContents(cachePath);
+                    totalDeleted += result.deleted;
+                    totalFailed += result.failed;
+                }
+            }
+
+            logger.info('All cache cleared', {
+                deleted: totalDeleted,
+                failed: totalFailed,
+                userId: auth.userId
+            }, 'api-cache-clear');
+
+            return successResponse({
+                message: 'All cache cleared',
+                deleted: totalDeleted,
+                failed: totalFailed,
+                inMemoryCleared: true
+            });
         }
     } catch (error: any) {
         logger.error('Failed to clear cache', error, 'api-cache-clear');

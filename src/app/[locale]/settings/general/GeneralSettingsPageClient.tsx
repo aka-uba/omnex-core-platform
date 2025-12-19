@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Container, Tabs, Paper, LoadingOverlay } from '@mantine/core';
+import { Container, Tabs, LoadingOverlay } from '@mantine/core';
 import { IconWorld, IconMail, IconCalendar, IconShield } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams } from 'next/navigation';
@@ -154,58 +154,56 @@ export function GeneralSettingsPageClient({ locale }: { locale: string }) {
                 ]}
             />
 
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', marginTop: 'var(--mantine-spacing-xl)' }}>
                 <LoadingOverlay visible={loading} />
-                <Paper shadow="sm" p="xl" withBorder mt="xl">
-                    <Tabs value={activeTab} onChange={setActiveTab}>
-                        <Tabs.List>
-                            <Tabs.Tab value="region-time" leftSection={<IconWorld size={16} />}>
-                                {t('settings.general.tabs.regionTime')}
-                            </Tabs.Tab>
-                            <Tabs.Tab value="email" leftSection={<IconMail size={16} />}>
-                                {t('settings.general.tabs.email')}
-                            </Tabs.Tab>
-                            <Tabs.Tab value="calendar" leftSection={<IconCalendar size={16} />}>
-                                {t('settings.general.tabs.calendar')}
-                            </Tabs.Tab>
-                            <Tabs.Tab value="security" leftSection={<IconShield size={16} />}>
-                                {t('settings.general.tabs.security')}
-                            </Tabs.Tab>
-                        </Tabs.List>
+                <Tabs value={activeTab} onChange={setActiveTab}>
+                    <Tabs.List>
+                        <Tabs.Tab value="region-time" leftSection={<IconWorld size={16} />}>
+                            {t('settings.general.tabs.regionTime')}
+                        </Tabs.Tab>
+                        <Tabs.Tab value="email" leftSection={<IconMail size={16} />}>
+                            {t('settings.general.tabs.email')}
+                        </Tabs.Tab>
+                        <Tabs.Tab value="calendar" leftSection={<IconCalendar size={16} />}>
+                            {t('settings.general.tabs.calendar')}
+                        </Tabs.Tab>
+                        <Tabs.Tab value="security" leftSection={<IconShield size={16} />}>
+                            {t('settings.general.tabs.security')}
+                        </Tabs.Tab>
+                    </Tabs.List>
 
-                        <Tabs.Panel value="region-time" pt="xl">
-                            <RegionTimeTab
-                                settings={settings}
-                                onSave={handleSave}
-                                saving={saving}
-                            />
-                        </Tabs.Panel>
+                    <Tabs.Panel value="region-time" pt="xl">
+                        <RegionTimeTab
+                            settings={settings}
+                            onSave={handleSave}
+                            saving={saving}
+                        />
+                    </Tabs.Panel>
 
-                        <Tabs.Panel value="email" pt="xl">
-                            <EmailTab
-                                settings={settings}
-                                onSave={handleSave}
-                                saving={saving}
-                            />
-                        </Tabs.Panel>
+                    <Tabs.Panel value="email" pt="xl">
+                        <EmailTab
+                            settings={settings}
+                            onSave={handleSave}
+                            saving={saving}
+                        />
+                    </Tabs.Panel>
 
-                        <Tabs.Panel value="calendar" pt="xl">
-                            <CalendarTab
-                                settings={settings}
-                                onSave={handleSave}
-                                saving={saving}
-                            />
-                        </Tabs.Panel>
+                    <Tabs.Panel value="calendar" pt="xl">
+                        <CalendarTab
+                            settings={settings}
+                            onSave={handleSave}
+                            saving={saving}
+                        />
+                    </Tabs.Panel>
 
-                        <Tabs.Panel value="security" pt="xl">
-                            <SecurityTab
-                                settings={settings}
-                                onSave={handleSave}
-                                saving={saving}
-                            />
-                        </Tabs.Panel>
-                    </Tabs>
-                </Paper>
+                    <Tabs.Panel value="security" pt="xl">
+                        <SecurityTab
+                            settings={settings}
+                            onSave={handleSave}
+                            saving={saving}
+                        />
+                    </Tabs.Panel>
+                </Tabs>
             </div>
         </Container>
     );

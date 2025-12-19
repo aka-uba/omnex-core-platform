@@ -535,7 +535,7 @@ function ThemeConfiguratorComponent() {
                     <div>
                       <Text size="sm" mb="xs">Renk Paleti</Text>
                       <div className={styles.colorPalette}>
-                        {['#228be6', '#37b24d', '#fa5252', '#fd7e14', '#fab005', '#7950f2', '#e64980', '#000000', '#ffffff', '#868e96', '#40c057', '#ff6b6b', '#4c6ef5', '#845ef7', '#f06595', '#ffd43b', '#ff922b'].map((color) => (
+                        {['#228be6', '#37b24d', '#fa5252', '#fd7e14', '#fab005', '#7950f2', '#e64980', '#353a40', '#000000', '#ffffff', '#868e96', '#40c057', '#ff6b6b', '#4c6ef5', '#845ef7', '#f06595', '#ffd43b', '#ff922b'].map((color) => (
                           <button
                             key={color}
                             type="button"
@@ -574,6 +574,75 @@ function ThemeConfiguratorComponent() {
                       />
                     </div>
                   )}
+
+                  {/* Sidebar Border Settings */}
+                  <div>
+                    <Text size="sm" fw={500} mb="xs">Kenar Çizgisi</Text>
+                    <Switch
+                      label="Kenar çizgisi göster"
+                      checked={config.sidebar?.border?.enabled || false}
+                      onChange={(e) => debouncedApplyChanges({
+                        sidebar: {
+                          ...(config.sidebar || {
+                            background: 'light',
+                            width: 260,
+                            collapsed: false,
+                            menuColor: 'light'
+                          }),
+                          border: {
+                            ...(config.sidebar?.border || { enabled: false, width: 1, color: '#dee2e6' }),
+                            enabled: e.currentTarget.checked
+                          }
+                        }
+                      }, true)}
+                      mb="xs"
+                    />
+                    {config.sidebar?.border?.enabled && (
+                      <>
+                        <Text size="sm" mb="xs">Kalınlık: {config.sidebar.border.width}px</Text>
+                        <Slider
+                          value={config.sidebar.border.width}
+                          onChange={(value) => debouncedApplyChanges({
+                            sidebar: {
+                              ...(config.sidebar || {
+                                background: 'light',
+                                width: 260,
+                                collapsed: false,
+                                menuColor: 'light'
+                              }),
+                              border: {
+                                ...(config.sidebar?.border || { enabled: true, width: 1, color: '#dee2e6' }),
+                                width: value
+                              }
+                            }
+                          })}
+                          min={1}
+                          max={5}
+                          step={1}
+                          mb="xs"
+                        />
+                        <ColorInput
+                          label="Çizgi Rengi"
+                          value={config.sidebar?.border?.color || '#dee2e6'}
+                          onChange={(value) => debouncedApplyChanges({
+                            sidebar: {
+                              ...(config.sidebar || {
+                                background: 'light',
+                                width: 260,
+                                collapsed: false,
+                                menuColor: 'light'
+                              }),
+                              border: {
+                                ...(config.sidebar?.border || { enabled: true, width: 1, color: '#dee2e6' }),
+                                color: value
+                              }
+                            }
+                          })}
+                          size="xs"
+                        />
+                      </>
+                    )}
+                  </div>
                 </Stack>
               </div>
             )}
@@ -715,7 +784,7 @@ function ThemeConfiguratorComponent() {
                     <div>
                       <Text size="sm" mb="xs">Renk Paleti</Text>
                       <div className={styles.colorPalette}>
-                        {['#228be6', '#37b24d', '#fa5252', '#fd7e14', '#fab005', '#7950f2', '#e64980', '#000000', '#ffffff', '#868e96', '#40c057', '#ff6b6b', '#4c6ef5', '#845ef7', '#f06595', '#ffd43b', '#ff922b'].map((color) => (
+                        {['#228be6', '#37b24d', '#fa5252', '#fd7e14', '#fab005', '#7950f2', '#e64980', '#353a40', '#000000', '#ffffff', '#868e96', '#40c057', '#ff6b6b', '#4c6ef5', '#845ef7', '#f06595', '#ffd43b', '#ff922b'].map((color) => (
                           <button
                             key={color}
                             type="button"
@@ -771,6 +840,72 @@ function ThemeConfiguratorComponent() {
                       { value: 'hidden-on-hover', label: 'Hover' },
                     ]}
                   />
+
+                  {/* Top Header Border Settings */}
+                  <div>
+                    <Text size="sm" fw={500} mb="xs">Alt Kenar Çizgisi</Text>
+                    <Switch
+                      label="Kenar çizgisi göster"
+                      checked={config.top?.border?.enabled || false}
+                      onChange={(e) => debouncedApplyChanges({
+                        top: {
+                          ...(config.top || {
+                            background: 'light',
+                            scrollBehavior: 'fixed',
+                            menuColor: 'light'
+                          }),
+                          border: {
+                            ...(config.top?.border || { enabled: false, width: 1, color: '#dee2e6' }),
+                            enabled: e.currentTarget.checked
+                          }
+                        }
+                      }, true)}
+                      mb="xs"
+                    />
+                    {config.top?.border?.enabled && (
+                      <>
+                        <Text size="sm" mb="xs">Kalınlık: {config.top.border.width}px</Text>
+                        <Slider
+                          value={config.top.border.width}
+                          onChange={(value) => debouncedApplyChanges({
+                            top: {
+                              ...(config.top || {
+                                background: 'light',
+                                scrollBehavior: 'fixed',
+                                menuColor: 'light'
+                              }),
+                              border: {
+                                ...(config.top?.border || { enabled: true, width: 1, color: '#dee2e6' }),
+                                width: value
+                              }
+                            }
+                          })}
+                          min={1}
+                          max={5}
+                          step={1}
+                          mb="xs"
+                        />
+                        <ColorInput
+                          label="Çizgi Rengi"
+                          value={config.top?.border?.color || '#dee2e6'}
+                          onChange={(value) => debouncedApplyChanges({
+                            top: {
+                              ...(config.top || {
+                                background: 'light',
+                                scrollBehavior: 'fixed',
+                                menuColor: 'light'
+                              }),
+                              border: {
+                                ...(config.top?.border || { enabled: true, width: 1, color: '#dee2e6' }),
+                                color: value
+                              }
+                            }
+                          })}
+                          size="xs"
+                        />
+                      </>
+                    )}
+                  </div>
                 </Stack>
               </div>
             )}

@@ -229,6 +229,17 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
     .filter(Boolean)
     .join(' ');
 
+  // Border ayarları (Top header için alt çizgi)
+  const borderStyle = useMemo(() => {
+    const borderConfig = topConfig?.border;
+    if (borderConfig?.enabled) {
+      return {
+        borderBottom: `${borderConfig.width}px solid ${borderConfig.color}`,
+      };
+    }
+    return {};
+  }, [topConfig?.border]);
+
   return (
     <header
       ref={headerRef}
@@ -254,6 +265,7 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
         ...(!autoColors && {
           '--top-height': `${topConfig?.height || 64}px`,
         } as React.CSSProperties),
+        ...borderStyle,
       }}
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>

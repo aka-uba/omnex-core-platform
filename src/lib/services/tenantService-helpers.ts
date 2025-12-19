@@ -145,6 +145,97 @@ export async function createDefaultExportTemplate(
 }
 
 /**
+ * Update company with wizard data
+ * Updates the company created by seed with actual wizard data
+ */
+export async function updateCompanyWithWizardData(
+    tenantDbUrl: string,
+    tenantSlug: string,
+    companyInfo: {
+        name?: string;
+        logoUrl?: string;
+        faviconUrl?: string;
+        address?: string;
+        city?: string;
+        state?: string;
+        postalCode?: string;
+        country?: string;
+        phone?: string;
+        email?: string;
+        website?: string;
+        industry?: string;
+        description?: string;
+        foundedYear?: number;
+        employeeCount?: number;
+        capital?: string;
+        taxNumber?: string;
+        taxOffice?: string;
+        registrationNumber?: string;
+        mersisNumber?: string;
+        iban?: string;
+        bankName?: string;
+        accountHolder?: string;
+    }
+): Promise<string> {
+    // We need to use tenant-specific Prisma client
+    const { PrismaClient: TenantPrismaClient } = await import('@prisma/tenant-client');
+    const tenantPrisma = new TenantPrismaClient({
+        datasources: {
+            db: {
+                url: tenantDbUrl,
+            },
+        },
+    });
+
+    try {
+        // Get the company created by seed
+        const company = await tenantPrisma.company.findFirst({
+            where: { id: `${tenantSlug}-company-001` }
+        });
+
+        if (!company) {
+            throw new Error('Company not found in tenant database');
+        }
+
+        // Update with wizard data
+        const updatedCompany = await tenantPrisma.company.update({
+            where: { id: company.id },
+            data: {
+                ...(companyInfo.name ? { name: companyInfo.name } : {}),
+                ...(companyInfo.logoUrl ? { logo: companyInfo.logoUrl } : {}),
+                ...(companyInfo.faviconUrl ? { logoFile: companyInfo.faviconUrl } : {}),
+                ...(companyInfo.address ? { address: companyInfo.address } : {}),
+                ...(companyInfo.city ? { city: companyInfo.city } : {}),
+                ...(companyInfo.state ? { state: companyInfo.state } : {}),
+                ...(companyInfo.postalCode ? { postalCode: companyInfo.postalCode } : {}),
+                ...(companyInfo.country ? { country: companyInfo.country } : {}),
+                ...(companyInfo.phone ? { phone: companyInfo.phone } : {}),
+                ...(companyInfo.email ? { email: companyInfo.email } : {}),
+                ...(companyInfo.website ? { website: companyInfo.website } : {}),
+                ...(companyInfo.industry ? { industry: companyInfo.industry } : {}),
+                ...(companyInfo.description ? { description: companyInfo.description } : {}),
+                ...(companyInfo.foundedYear ? { foundedYear: companyInfo.foundedYear } : {}),
+                ...(companyInfo.employeeCount ? { employeeCount: companyInfo.employeeCount } : {}),
+                ...(companyInfo.capital ? { capital: companyInfo.capital } : {}),
+                ...(companyInfo.taxNumber ? { taxNumber: companyInfo.taxNumber } : {}),
+                ...(companyInfo.taxOffice ? { taxOffice: companyInfo.taxOffice } : {}),
+                ...(companyInfo.registrationNumber ? { registrationNumber: companyInfo.registrationNumber } : {}),
+                ...(companyInfo.mersisNumber ? { mersisNumber: companyInfo.mersisNumber } : {}),
+                ...(companyInfo.iban ? { iban: companyInfo.iban } : {}),
+                ...(companyInfo.bankName ? { bankName: companyInfo.bankName } : {}),
+                ...(companyInfo.accountHolder ? { accountHolder: companyInfo.accountHolder } : {}),
+            },
+        });
+
+        logger.info(`Updated company with wizard data for tenant: ${tenantSlug}`, { companyId: updatedCompany.id }, 'tenant-service');
+
+        return updatedCompany.id;
+    } finally {
+        await tenantPrisma.$disconnect();
+    }
+}
+
+/**
  * Create initial location
  * Returns the location ID
  */

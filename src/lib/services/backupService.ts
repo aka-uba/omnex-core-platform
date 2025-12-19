@@ -117,6 +117,11 @@ export async function createBackup({ tenantId, userId, type = 'MANUAL' }: Backup
         // We replace the DB name in the URL
         const urlObj = new URL(dbUrl);
         urlObj.pathname = `/${tenant.dbName}`;
+
+        // Remove 'schema' query parameter as pg_dump doesn't recognize it
+        // This is commonly added by Prisma but not valid for pg_dump
+        urlObj.searchParams.delete('schema');
+
         const targetDbUrl = urlObj.toString();
 
         // Execute pg_dump

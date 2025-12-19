@@ -19,15 +19,16 @@
       "descriptionPlaceholder": "Modül açıklaması yüklemeden sonra burada görünecek."
     },
     "manifest": {
-      "title": "Modül Manifest (`module.json`)",
-      "description1": "Modülünüzün `.zip` dosyası kök dizininde bir `module.json` dosyası içermelidir. Bu manifest dosyası modülünüz hakkında temel bilgileri sağlar.",
-      "description2": "Sistem bu dosyayı otomatik olarak ayrıştırarak modül adı, sürüm ve açıklama alanlarını doldurur."
+      "title": "Modül Yapılandırma Dosyası",
+      "description1": "Modülünüzün `.zip` dosyası kök dizininde bir `module.config.yaml` dosyası içermelidir. Bu yapılandırma dosyası modülünüz hakkında temel bilgileri sağlar.",
+      "description2": "Sistem bu dosyayı otomatik olarak ayrıştırarak modül adı, sürüm ve açıklama alanlarını doldurur.",
+      "fileName": "Dosya adı"
     },
     "errors": {
       "onlyZip": "Sadece .zip dosyaları kabul edilir",
       "fileSize": "Dosya boyutu 50MB'dan küçük olmalıdır",
       "selectFile": "Lütfen bir modül dosyası seçin",
-      "readManifest": "Arşivden module.json okunamadı",
+      "readManifest": "Arşivden module.config.yaml okunamadı",
       "error": "Hata"
     },
     "buttons": {

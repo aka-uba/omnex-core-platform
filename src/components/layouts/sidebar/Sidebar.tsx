@@ -186,6 +186,18 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       width: collapsed ? '4rem' : `${sidebarConfig?.width || 260}px`,
     };
 
+    // Border ayarlarını ekle (LTR: sağ, RTL: sol kenar)
+    const borderConfig = sidebarConfig?.border;
+    if (borderConfig?.enabled) {
+      const isRtl = config.direction === 'rtl';
+      const borderStyle = `${borderConfig.width}px solid ${borderConfig.color}`;
+      if (isRtl) {
+        baseStyle.borderLeft = borderStyle;
+      } else {
+        baseStyle.borderRight = borderStyle;
+      }
+    }
+
     // Sadece client-side'da ve light mode'da özel renkler uygula
     if (mounted && !isDarkMode && backgroundColor && autoColors) {
       return {
@@ -203,7 +215,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     }
 
     return baseStyle;
-  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, backgroundColor, autoColors]);
+  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, sidebarConfig?.border, config.direction, backgroundColor, autoColors]);
 
   const locale = useMemo(() => pathname?.split('/')[1] || 'tr', [pathname]);
 

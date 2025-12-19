@@ -11,6 +11,13 @@ export type BackgroundType = 'light' | 'dark' | 'brand' | 'gradient' | 'custom';
 export type TopBarScroll = 'fixed' | 'hidden' | 'hidden-on-hover';
 export type LayoutSource = 'role' | 'user' | 'company' | 'default';
 
+// Border Configuration
+export interface BorderConfig {
+  enabled: boolean;
+  width: number;
+  color: string;
+}
+
 // Sidebar Configuration
 export interface SidebarConfig {
   background: BackgroundType;
@@ -24,6 +31,7 @@ export interface SidebarConfig {
   logoPosition?: 'top' | 'center' | 'bottom';
   logoSize?: 'small' | 'medium' | 'large';
   hoverEffects?: boolean;
+  border?: BorderConfig;
 }
 
 // Top Layout Configuration
@@ -37,6 +45,7 @@ export interface TopConfig {
   customMenuColor?: string;
   logoPosition?: 'left' | 'center' | 'right';
   logoSize?: 'small' | 'medium' | 'large';
+  border?: BorderConfig;
 }
 
 // Mobile Layout Configuration
@@ -107,6 +116,11 @@ export const DEFAULT_SIDEBAR_CONFIG: SidebarConfig = {
   logoPosition: 'top',
   logoSize: 'medium',
   hoverEffects: true,
+  border: {
+    enabled: false,
+    width: 1,
+    color: '#dee2e6',
+  },
 };
 
 export const DEFAULT_TOP_CONFIG: TopConfig = {
@@ -118,6 +132,11 @@ export const DEFAULT_TOP_CONFIG: TopConfig = {
   customMenuColor: '#228be6',
   logoPosition: 'left',
   logoSize: 'medium',
+  border: {
+    enabled: false,
+    width: 1,
+    color: '#dee2e6',
+  },
 };
 
 export const DEFAULT_MOBILE_CONFIG: MobileConfig = {

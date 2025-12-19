@@ -73,7 +73,13 @@
     "modules": "modules",
     "search": "Search",
     "showing": "Showing",
-    "of": "of"
+    "of": "of",
+    "delete": "Delete",
+    "update": "Update",
+    "view": "View",
+    "confirm": "Confirm",
+    "close": "Close",
+    "information": "Information"
   },
   "export": {
     "report": "Report",
@@ -367,6 +373,92 @@
       "approveFailed": "Approval failed",
       "rejected": "Payment rejected",
       "rejectFailed": "Rejection failed"
+    }
+  },
+  "optimization": {
+    "title": "Optimization",
+    "description": "System optimization and performance management",
+    "performance": {
+      "title": "Performance",
+      "description": "System performance metrics and optimization recommendations",
+      "cpu": "CPU Usage",
+      "memory": "Memory Usage",
+      "disk": "Disk Usage",
+      "responseTime": "Response Time",
+      "requestsPerSecond": "Requests Per Second",
+      "activeConnections": "Active Connections",
+      "loadError": "Failed to load performance metrics"
+    },
+    "cache": {
+      "title": "Cache Management",
+      "description": "Cache settings and cleanup operations",
+      "clearAll": "Clear All",
+      "clearAllTitle": "Clear All Cache",
+      "clearKey": "Clear Key",
+      "clearSelected": "Clear Selected",
+      "clearSelectedTitle": "Clear Selected Cache",
+      "clearDirectoryTitle": "Clear Directory",
+      "selectAll": "Select All",
+      "key": "Cache Key",
+      "keyPlaceholder": "Enter cache key to clear",
+      "cleared": "All cache cleared",
+      "keyCleared": "Cache key cleared",
+      "selectedCleared": "Selected caches cleared",
+      "directoryCleared": "Directory cleared",
+      "clearError": "An error occurred while clearing cache",
+      "loadError": "Failed to load cache list",
+      "clear": "Clear",
+      "info": "Cache clearing operations may affect system performance. Use with caution.",
+      "confirmClearAll": "Are you sure you want to clear all cache?",
+      "confirmClearSelected": "Are you sure you want to clear selected caches?",
+      "confirmClearDirectory": "Are you sure you want to clear this directory?",
+      "noDirectories": "No directories found",
+      "noEntries": "No cache entries found",
+      "tabs": {
+        "directories": "Directories",
+        "entries": "Cache Entries"
+      },
+      "stats": {
+        "totalSize": "Total Size",
+        "directories": "Directories",
+        "files": "Files",
+        "usage": "Usage"
+      },
+      "table": {
+        "directory": "Directory",
+        "size": "Size",
+        "files": "File Count",
+        "lastModified": "Last Modified",
+        "key": "Key",
+        "type": "Type",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      }
+    },
+    "database": {
+      "title": "Database Maintenance",
+      "description": "PostgreSQL database optimization and maintenance operations",
+      "optimize": "Optimize Database",
+      "optimizeDesc": "Optimizes database with VACUUM ANALYZE, cleans dead rows and updates statistics",
+      "vacuum": "Vacuum Operation",
+      "vacuumDesc": "Reclaims unused disk space with VACUUM ANALYZE and updates query optimization statistics",
+      "analyze": "Update Statistics",
+      "analyzeDesc": "Updates database statistics with ANALYZE command. Helps query planner make better decisions",
+      "reindex": "Rebuild Indexes",
+      "reindexDesc": "Rebuilds all indexes with REINDEX command. May take long on large databases",
+      "run": "Run",
+      "confirm": "Confirm Operation",
+      "confirmMessage": "This operation will run directly on the database. Do you want to continue?",
+      "operationSuccess": "Operation completed successfully",
+      "operationError": "An error occurred during operation",
+      "warning": "These operations run on the main (CORE) database. Use with caution during peak hours in production.",
+      "coreDbInfo": "These operations only run on the CORE database. Tenant databases require separate maintenance.",
+      "lastResult": "Last Operation Result",
+      "operationToRun": "Command to Run",
+      "riskLow": "Low Risk",
+      "riskMedium": "Medium Risk",
+      "riskHigh": "High Risk",
+      "highRiskWarning": "This operation may lock the database and take a long time. It's recommended to run during off-peak hours in production."
     }
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { Stack, Title, Text, Progress, Timeline, ThemeIcon } from '@mantine/core';
-import { IconCheck, IconDatabase, IconFolder, IconFileText, IconMapPin, IconLoader } from '@tabler/icons-react';
+import { IconCheck, IconDatabase, IconFolder, IconFileText, IconMapPin, IconLoader, IconBuilding } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
 export function CreationProgressStep() {
@@ -12,6 +12,7 @@ export function CreationProgressStep() {
         { icon: IconFileText, label: 'Running migrations', description: 'Applying database schema' },
         { icon: IconFolder, label: 'Creating storage', description: 'Setting up file directories' },
         { icon: IconFileText, label: 'Seeding data', description: 'Creating default users and roles' },
+        { icon: IconBuilding, label: 'Configuring company', description: 'Saving company information' },
         { icon: IconFileText, label: 'Creating export template', description: 'Setting up company template' },
         { icon: IconMapPin, label: 'Creating location', description: 'Setting up initial location' },
     ];

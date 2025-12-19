@@ -37,6 +37,14 @@ interface Menu {
     items: any[];
 }
 
+// Recursive function to count all menu items including children
+const countMenuItems = (items: any[]): number => {
+    if (!items || items.length === 0) return 0;
+    return items.reduce((count, item) => {
+        return count + 1 + countMenuItems(item.children || []);
+    }, 0);
+};
+
 interface MenuListProps {
     menus: Menu[];
     activeMenuId: string | null;
@@ -274,7 +282,7 @@ export function MenuList({
                                                 <Text size="sm" fw={500}>{menu.name}</Text>
                                                 <Group gap={4}>
                                                     <Badge size="xs" variant="light" color="gray">{menu.locale}</Badge>
-                                                    <Text size="xs" c="dimmed">{menu.items?.length || 0} {t('items')}</Text>
+                                                    <Text size="xs" c="dimmed">{countMenuItems(menu.items)} {t('items')}</Text>
                                                 </Group>
                                             </div>
                                         </Group>

@@ -124,5 +124,9 @@
   },
   "footerSettingsUpdated": "Alt bilgi ayarları güncellendi",
   "menuUpdated": "Menü güncellendi",
-  "user": "Kullanıcı"
+  "user": "Kullanıcı",
+  "assignmentType": "Atama Türü",
+  "selectType": "Tür Seçin",
+  "selectUser": "Kullanıcı Seçin",
+  "deleteAssignmentTitle": "Atamayı Sil"
 }

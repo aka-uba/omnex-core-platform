@@ -93,6 +93,52 @@ export async function POST(request: NextRequest) {
     const taxNumber = formData.get('taxNumber') as string | null;
     if (taxNumber) companyInfo.taxNumber = taxNumber;
 
+    // Additional company fields from wizard
+    const companyCity = formData.get('companyCity') as string | null;
+    if (companyCity) companyInfo.city = companyCity;
+
+    const companyState = formData.get('companyState') as string | null;
+    if (companyState) companyInfo.state = companyState;
+
+    const companyPostalCode = formData.get('companyPostalCode') as string | null;
+    if (companyPostalCode) companyInfo.postalCode = companyPostalCode;
+
+    const companyCountry = formData.get('companyCountry') as string | null;
+    if (companyCountry) companyInfo.country = companyCountry;
+
+    const companyIndustry = formData.get('companyIndustry') as string | null;
+    if (companyIndustry) companyInfo.industry = companyIndustry;
+
+    const companyDescription = formData.get('companyDescription') as string | null;
+    if (companyDescription) companyInfo.description = companyDescription;
+
+    const companyFoundedYear = formData.get('companyFoundedYear') as string | null;
+    if (companyFoundedYear) companyInfo.foundedYear = parseInt(companyFoundedYear, 10);
+
+    const companyEmployeeCount = formData.get('companyEmployeeCount') as string | null;
+    if (companyEmployeeCount) companyInfo.employeeCount = parseInt(companyEmployeeCount, 10);
+
+    const companyCapital = formData.get('companyCapital') as string | null;
+    if (companyCapital) companyInfo.capital = companyCapital;
+
+    const companyTaxOffice = formData.get('companyTaxOffice') as string | null;
+    if (companyTaxOffice) companyInfo.taxOffice = companyTaxOffice;
+
+    const companyRegistrationNumber = formData.get('companyRegistrationNumber') as string | null;
+    if (companyRegistrationNumber) companyInfo.registrationNumber = companyRegistrationNumber;
+
+    const companyMersisNumber = formData.get('companyMersisNumber') as string | null;
+    if (companyMersisNumber) companyInfo.mersisNumber = companyMersisNumber;
+
+    const companyIban = formData.get('companyIban') as string | null;
+    if (companyIban) companyInfo.iban = companyIban;
+
+    const companyBankName = formData.get('companyBankName') as string | null;
+    if (companyBankName) companyInfo.bankName = companyBankName;
+
+    const companyAccountHolder = formData.get('companyAccountHolder') as string | null;
+    if (companyAccountHolder) companyInfo.accountHolder = companyAccountHolder;
+
     // Extract initial location (optional)
     let initialLocation: any = undefined;
     const locationName = formData.get('locationName') as string | null;
