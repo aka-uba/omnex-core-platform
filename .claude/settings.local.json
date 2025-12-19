@@ -49,7 +49,9 @@
       "Bash(ssh root@104.248.80.247 \"sudo -u postgres psql -d omnex_core -c \"\"GRANT ALL ON SCHEMA public TO omnex_user;\"\" && sudo -u postgres psql -d tenant_omnexcore_2025 -c \"\"GRANT ALL ON SCHEMA public TO omnex_user;\"\"\")",
       "Bash(ssh root@104.248.80.247 \"npm install -g pm2 && pm2 -v && mkdir -p /var/log/pm2\")",
       "Bash(ssh root@104.248.80.247:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(node node_modules/typescript/bin/tsc:*)"
     ],
     "deny": [],
     "ask": []

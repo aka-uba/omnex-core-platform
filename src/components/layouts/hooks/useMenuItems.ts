@@ -668,6 +668,9 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
   useEffect(() => {
     const loadManagedMenus = async () => {
+      // Set loading true at start to prevent showing stale data during refetch
+      setMenusLoading(true);
+
       try {
         // Fetch from menu-resolver API with location parameter
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
@@ -675,6 +678,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
         // If 401, silently fail (user not logged in, use default menus)
         if (response.status === 401) {
+          setMenusLoading(false);
           return;
         }
 
@@ -683,6 +687,14 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         }
 
         const data = await response.json();
+
+        console.log('[useMenuItems] API response:', {
+          success: data.success,
+          hasData: !!data.data,
+          hasMenu: !!data.data?.menu,
+          assignmentType: data.data?.assignment?.type,
+          menuName: data.data?.menu?.name
+        });
 
         if (data.success && data.data && data.data.menu) {
           const menuData = data.data.menu;
@@ -785,10 +797,12 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
           };
 
           const convertedMenus = convertItems(menuData.items || []);
+          console.log('[useMenuItems] Setting managedMenus:', convertedMenus.length, 'items');
           setManagedMenus(convertedMenus);
           setRawManagedMenus(menuData.items || []);
         } else {
           // No menu assigned to this location, use fallback
+          console.log('[useMenuItems] No menu found, using fallback (empty managedMenus)');
           setManagedMenus([]);
           setRawManagedMenus([]);
         }

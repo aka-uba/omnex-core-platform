@@ -53,6 +53,7 @@ export async function GET(
                         if (role) {
                             roleId = role.id;
                         }
+                        console.log('[menu-resolver] Role lookup:', { roleName, roleId, found: !!role });
                     } catch (roleError) {
                         // If role lookup fails, continue without roleId
                         console.warn('Failed to lookup role ID from role name:', roleError);
@@ -208,11 +209,23 @@ export async function GET(
         // Find the best matching assignment based on priority
         let selectedAssignment = null;
 
+        // Debug log all assignments
+        console.log('[menu-resolver] All assignments:', assignments.map(a => ({
+            type: a.assignmentType,
+            assignmentId: a.assignmentId,
+            menuId: a.menuId,
+            menuName: a.menu?.name
+        })));
+        console.log('[menu-resolver] Looking for:', { userId, roleId, branchId });
+
         // 1. Check for user-specific assignment
         if (userId) {
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'user' && a.assignmentId === userId
             );
+            if (selectedAssignment) {
+                console.log('[menu-resolver] Found user assignment');
+            }
         }
 
         // 2. Check for role-specific assignment
@@ -220,6 +233,19 @@ export async function GET(
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'role' && a.assignmentId === roleId
             );
+            if (selectedAssignment) {
+                console.log('[menu-resolver] Found role assignment by roleId');
+            }
+        }
+
+        // 2b. Fallback: Check for role-specific assignment by role name (for backwards compatibility)
+        if (!selectedAssignment && roleName) {
+            selectedAssignment = assignments.find(
+                a => a.assignmentType === 'role' && a.assignmentId === roleName
+            );
+            if (selectedAssignment) {
+                console.log('[menu-resolver] Found role assignment by roleName');
+            }
         }
 
         // 3. Check for branch-specific assignment
@@ -234,6 +260,9 @@ export async function GET(
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'default'
             );
+            if (selectedAssignment) {
+                console.log('[menu-resolver] Falling back to default assignment');
+            }
         }
 
                 if (!selectedAssignment || !selectedAssignment.menu) {
