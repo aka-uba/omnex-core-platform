@@ -2,7 +2,7 @@ name: Real Estate
 slug: real-estate
 version: 1.0.0
 description: Comprehensive real estate management module with property, apartment, tenant, contract, payment, appointment, and email automation features
-icon: BuildingCommunity
+icon: Building
 author: Omnex Team
 category: business
 minCoreVersion: 1.0.10

@@ -12,7 +12,7 @@
       },
       {
         "title": "Map",
-        "icon": "Circle",
+        "icon": "MapPin",
         "path": "/modules/real-estate/map",
         "order": 2,
         "visible": true,
