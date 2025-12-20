@@ -883,8 +883,17 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Combine and sort - useMemo ile memoize et
   // IMPORTANT: Wait for managed menus to load before returning final menu to prevent flash
   const allMenuItems = useMemo(() => {
+    console.log('[useMenuItems] useMemo triggered:', {
+      menusLoading,
+      managedMenusLength: managedMenus.length,
+      loading,
+      isSuperAdmin,
+      location
+    });
+
     // If still loading managed menus, return empty to prevent flash
     if (menusLoading) {
+      console.log('[useMenuItems] Still loading, returning empty');
       return [];
     }
 
