@@ -1,13 +1,14 @@
 /**
  * useMenuItems - Merkezi menü kaynağı
  * Sidebar ve TopNavigation için ortak menü verisi sağlar
- * 
+ *
  * v2.0 - Çift render ve modül menü sorunları düzeltildi
+ * v2.2 - Simplified without complex caching
  */
 
 'use client';
 
-import { useMemo, useEffect, useState, useRef } from 'react';
+import { useMemo, useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { useModules } from '@/context/ModuleContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -125,6 +126,10 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   const locale = (params?.locale as string) || 'tr';
   const { t } = useTranslation('global');
 
+  // Memoize t function reference to prevent re-renders
+  const stableT = useRef(t);
+  stableT.current = t;
+
   // Access control config for module visibility
   const [moduleAccessConfig, setModuleAccessConfig] = useState<Record<string, { enabled: boolean; features?: string[] }>>({});
   const [menuVisibilityConfig, setMenuVisibilityConfig] = useState<{ items: { id: string; visible: boolean; order: number }[] }>({ items: [] });
@@ -199,8 +204,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Track if initial menu load is complete to prevent flash
   const initialLoadComplete = useRef(false);
 
-  // Helper function to get translation for module menu
-  const getModuleTranslation = (moduleSlug: string, key: string, fallback: string): string => {
+  // Helper function to get translation for module menu - memoized to prevent re-renders
+  const getModuleTranslation = useCallback((moduleSlug: string, key: string, fallback: string): string => {
     try {
       const translationModule = require(`@/locales/modules/${moduleSlug}/${locale}.json`);
       const translations = translationModule.default || translationModule;
@@ -262,7 +267,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     } catch {
       return fallback;
     }
-  };
+  }, [locale]);
 
   // SuperAdmin kontrolü - role case-insensitive olarak kontrol et
   // User yüklenene kadar bekle
@@ -600,7 +605,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         } else {
           // Settings doesn't exist - add it at the end
           // Get Settings label from module translation or use global "Settings"
-          const settingsLabel = getModuleTranslation(module.slug, 'item.settings', t('settings'));
+          const settingsLabel = getModuleTranslation(module.slug, 'item.settings', stableT.current('settings'));
 
           // Add Settings item at the end
           const settingsItem: MenuItem = {
@@ -667,14 +672,21 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   }, []);
 
   useEffect(() => {
+    let isCancelled = false;
+
     const loadManagedMenus = async () => {
+      setMenusLoading(true);
+
       try {
-        // Fetch from menu-resolver API with location parameter
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
         const response = await fetchWithAuth(`/api/menu-resolver/${location}`);
 
+        if (isCancelled) return;
+
         // If 401, silently fail (user not logged in, use default menus)
         if (response.status === 401) {
+          setMenusLoading(false);
+          initialLoadComplete.current = true;
           return;
         }
 
@@ -684,125 +696,106 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
         const data = await response.json();
 
+        if (isCancelled) return;
+
         if (data.success && data.data && data.data.menu) {
           const menuData = data.data.menu;
-
-          // Helper to check if href contains dynamic route patterns like [id], [slug], etc.
-          // Also filter out create/edit/tracking pages as they are typically form/detail pages
-          const hasDynamicRoute = (href: string) => {
-            // Check for dynamic route patterns like [id], [slug]
-            if (/\[.*\]/.test(href)) return true;
-            // Check for create/edit pages (they shouldn't be in menu)
-            if (href.includes('/create') || href.includes('/edit')) return true;
-            // Check for tracking pages (they shouldn't be in menu)
-            if (href.includes('/tracking')) return true;
-            return false;
-          };
-
-          // Helper to get localized label
-          const getLocalizedLabel = (label: any): string => {
-            if (typeof label === 'string') return label;
-            if (typeof label === 'object' && label !== null) {
-              return label[locale] || label['en'] || Object.values(label)[0] || '';
-            }
-            return '';
-          };
-
-          // Convert menu items to MenuItem format
-          const convertItems = (items: any[]): MenuItem[] => {
-            return items
-              .filter((item: any) => !hasDynamicRoute(item.href))
-              .map((item: any) => {
-                // Get icon component
-                let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
-                if (item.icon && iconMap[item.icon]) {
-                  const mappedIcon = iconMap[item.icon];
-                  if (mappedIcon) {
-                    iconComponent = mappedIcon;
-                  }
-                }
-
-                const label = getLocalizedLabel(item.label);
-                const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
-
-                // Backfill group from default menus if missing
-                let group = item.menuGroup;
-                if (!group) {
-                  // Try to find in default menus
-                  const findInDefaults = (menus: any[]): string | undefined => {
-                    for (const menu of menus) {
-                      // Check exact match or localized href match
-                      const menuHref = menu.href.startsWith('/') ? `/${locale}${menu.href}` : `/${locale}/${menu.href}`;
-                      if (menu.href === item.href || menuHref === href) {
-                        return menu.group;
-                      }
-                      if (menu.children) {
-                        const childGroup = findInDefaults(menu.children);
-                        if (childGroup) return childGroup;
-                      }
-                    }
-                    return undefined;
-                  };
-
-                  // defaultMenus is available in scope via useMemo above
-                  // We need to access the raw defaultMenus config, but it's inside useMemo
-                  // So we'll use the defaultMenusForRole which is already processed but has group info
-                  // Actually, defaultMenusForRole has MenuItem structure which has group
-
-                  const findInProcessedDefaults = (menus: MenuItem[]): string | undefined => {
-                    for (const menu of menus) {
-                      if (menu.href === href) {
-                        return menu.group;
-                      }
-                      if (menu.children) {
-                        const childGroup = findInProcessedDefaults(menu.children);
-                        if (childGroup) return childGroup;
-                      }
-                    }
-                    return undefined;
-                  };
-
-                  group = findInProcessedDefaults(defaultMenusForRole);
-                }
-
-                const menuItem: MenuItem = {
-                  label,
-                  href,
-                  icon: iconComponent,
-                  order: typeof item.order === 'number' ? item.order : 999,
-                };
-
-                if (group) {
-                  menuItem.group = group;
-                }
-
-                if (item.children && item.children.length > 0) {
-                  menuItem.children = convertItems(item.children);
-                }
-
-                return menuItem;
-              });
-          };
-
           const convertedMenus = convertItems(menuData.items || []);
           setManagedMenus(convertedMenus);
           setRawManagedMenus(menuData.items || []);
         } else {
-          // No menu assigned to this location, use fallback
           setManagedMenus([]);
           setRawManagedMenus([]);
         }
       } catch (error) {
+        if (isCancelled) return;
         console.error('[useMenuItems] Error loading menu from resolver:', error);
         setManagedMenus([]);
         setRawManagedMenus([]);
       } finally {
-        setMenusLoading(false);
-        initialLoadComplete.current = true;
+        if (!isCancelled) {
+          setMenusLoading(false);
+          initialLoadComplete.current = true;
+        }
       }
     };
 
+    // Helper to check if href contains dynamic route patterns
+    const hasDynamicRoute = (href: string) => {
+      if (/\[.*\]/.test(href)) return true;
+      if (href.includes('/create') || href.includes('/edit')) return true;
+      if (href.includes('/tracking')) return true;
+      return false;
+    };
+
+    // Helper to get localized label
+    const getLocalizedLabel = (label: any): string => {
+      if (typeof label === 'string') return label;
+      if (typeof label === 'object' && label !== null) {
+        return label[locale] || label['en'] || Object.values(label)[0] || '';
+      }
+      return '';
+    };
+
+    // Convert menu items to MenuItem format
+    const convertItems = (items: any[]): MenuItem[] => {
+      return items
+        .filter((item: any) => !hasDynamicRoute(item.href))
+        .map((item: any) => {
+          let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
+          if (item.icon && iconMap[item.icon]) {
+            const mappedIcon = iconMap[item.icon];
+            if (mappedIcon) {
+              iconComponent = mappedIcon;
+            }
+          }
+
+          const label = getLocalizedLabel(item.label);
+          const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
+
+          // Backfill group from default menus if missing
+          let group = item.menuGroup;
+          if (!group) {
+            const findInProcessedDefaults = (menus: MenuItem[]): string | undefined => {
+              for (const menu of menus) {
+                if (menu.href === href) {
+                  return menu.group;
+                }
+                if (menu.children) {
+                  const childGroup = findInProcessedDefaults(menu.children);
+                  if (childGroup) return childGroup;
+                }
+              }
+              return undefined;
+            };
+            group = findInProcessedDefaults(defaultMenusForRole);
+          }
+
+          const menuItem: MenuItem = {
+            label,
+            href,
+            icon: iconComponent,
+            order: typeof item.order === 'number' ? item.order : 999,
+          };
+
+          if (group) {
+            menuItem.group = group;
+          }
+
+          if (item.children && item.children.length > 0) {
+            menuItem.children = convertItems(item.children);
+          }
+
+          return menuItem;
+        });
+    };
+
     loadManagedMenus();
+
+    return () => {
+      isCancelled = true;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, location, refreshTrigger]);
 
   // SuperAdmin-only menü kontrolü için yardımcı fonksiyon
@@ -866,11 +859,16 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     return true;
   };
 
+  // Serialize config objects for stable comparison
+  const moduleAccessConfigKey = JSON.stringify(moduleAccessConfig);
+  const menuVisibilityConfigKey = JSON.stringify(menuVisibilityConfig);
+
   // Combine and sort - useMemo ile memoize et
-  // IMPORTANT: Wait for ALL data to load before returning final menu to prevent flash
+  // IMPORTANT: Wait for managed menus to load before returning final menu to prevent flash
   const allMenuItems = useMemo(() => {
-    // If still loading menus OR modules, return empty to prevent flash/partial render
-    if (menusLoading || modulesLoading) {
+
+    // If still loading managed menus OR modules, return empty to prevent flash/partial render
+    if (menusLoading || modulesLoading || pagesLoading) {
       return [];
     }
 
@@ -916,7 +914,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         }
       });
 
-      // Menü atandığında SADECE o menü görünsün, aktif modüller eklenmez
+      // Menü atandığında SADECE o menü görünsün
+      // Aktif modül menüleri eklenmez - kullanıcı bunu istedi
     } else {
       // No managed menus - use default menus
       // Add default menus for user role
@@ -1017,7 +1016,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     });
 
     return processedMenus;
-  }, [defaultMenusForRole, managedMenus, activeModuleMenuItems, user, loading, menusLoading, modulesLoading, isSuperAdmin, isTenantAdmin, t, locale, moduleAccessConfig, menuVisibilityConfig]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultMenusForRole, managedMenus, activeModuleMenuItems, user?.id, loading, menusLoading, modulesLoading, pagesLoading, isSuperAdmin, isTenantAdmin, locale, moduleAccessConfigKey, menuVisibilityConfigKey]);
 
   return allMenuItems;
 }
