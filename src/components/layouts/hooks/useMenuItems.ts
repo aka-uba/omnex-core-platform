@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useMemo, useEffect, useState, useRef } from 'react';
+import { useMemo, useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { useModules } from '@/context/ModuleContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -125,6 +125,10 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   const locale = (params?.locale as string) || 'tr';
   const { t } = useTranslation('global');
 
+  // Memoize t function reference to prevent re-renders
+  const stableT = useRef(t);
+  stableT.current = t;
+
   // Access control config for module visibility
   const [moduleAccessConfig, setModuleAccessConfig] = useState<Record<string, { enabled: boolean; features?: string[] }>>({});
   const [menuVisibilityConfig, setMenuVisibilityConfig] = useState<{ items: { id: string; visible: boolean; order: number }[] }>({ items: [] });
@@ -199,8 +203,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Track if initial menu load is complete to prevent flash
   const initialLoadComplete = useRef(false);
 
-  // Helper function to get translation for module menu
-  const getModuleTranslation = (moduleSlug: string, key: string, fallback: string): string => {
+  // Helper function to get translation for module menu - memoized to prevent re-renders
+  const getModuleTranslation = useCallback((moduleSlug: string, key: string, fallback: string): string => {
     try {
       const translationModule = require(`@/locales/modules/${moduleSlug}/${locale}.json`);
       const translations = translationModule.default || translationModule;
@@ -262,7 +266,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     } catch {
       return fallback;
     }
-  };
+  }, [locale]);
 
   // SuperAdmin kontrolü - role case-insensitive olarak kontrol et
   // User yüklenene kadar bekle
@@ -600,7 +604,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         } else {
           // Settings doesn't exist - add it at the end
           // Get Settings label from module translation or use global "Settings"
-          const settingsLabel = getModuleTranslation(module.slug, 'item.settings', t('settings'));
+          const settingsLabel = getModuleTranslation(module.slug, 'item.settings', stableT.current('settings'));
 
           // Add Settings item at the end
           const settingsItem: MenuItem = {
@@ -667,7 +671,9 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   }, []);
 
   useEffect(() => {
-    console.log('[useMenuItems] useEffect triggered, will fetch menu for:', location, 'refreshTrigger:', refreshTrigger);
+    // Abort controller to cancel duplicate requests
+    const abortController = new AbortController();
+    let isCancelled = false;
 
     const loadManagedMenus = async () => {
       // Set loading true at start to prevent showing stale data during refetch
@@ -676,7 +682,12 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       try {
         // Fetch from menu-resolver API with location parameter
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
-        const response = await fetchWithAuth(`/api/menu-resolver/${location}`);
+        const response = await fetchWithAuth(`/api/menu-resolver/${location}`, {
+          signal: abortController.signal
+        });
+
+        // Check if request was cancelled
+        if (isCancelled) return;
 
         // If 401, silently fail (user not logged in, use default menus)
         if (response.status === 401) {
@@ -690,13 +701,6 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
         const data = await response.json();
 
-        console.log('[useMenuItems] API response:', {
-          success: data.success,
-          hasData: !!data.data,
-          hasMenu: !!data.data?.menu,
-          assignmentType: data.data?.assignment?.type,
-          menuName: data.data?.menu?.name
-        });
 
         if (data.success && data.data && data.data.menu) {
           const menuData = data.data.menu;
@@ -799,26 +803,37 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
           };
 
           const convertedMenus = convertItems(menuData.items || []);
-          console.log('[useMenuItems] Setting managedMenus:', convertedMenus.length, 'items');
-          setManagedMenus(convertedMenus);
+            setManagedMenus(convertedMenus);
           setRawManagedMenus(menuData.items || []);
         } else {
           // No menu assigned to this location, use fallback
-          console.log('[useMenuItems] No menu found, using fallback (empty managedMenus)');
           setManagedMenus([]);
           setRawManagedMenus([]);
         }
       } catch (error) {
+        // Ignore abort errors
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
+        if (isCancelled) return;
         console.error('[useMenuItems] Error loading menu from resolver:', error);
         setManagedMenus([]);
         setRawManagedMenus([]);
       } finally {
-        setMenusLoading(false);
-        initialLoadComplete.current = true;
+        if (!isCancelled) {
+          setMenusLoading(false);
+          initialLoadComplete.current = true;
+        }
       }
     };
 
     loadManagedMenus();
+
+    // Cleanup function to cancel request on unmount or dependency change
+    return () => {
+      isCancelled = true;
+      abortController.abort();
+    };
   }, [locale, location, refreshTrigger]);
 
   // SuperAdmin-only menü kontrolü için yardımcı fonksiyon
@@ -882,20 +897,16 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     return true;
   };
 
+  // Serialize config objects for stable comparison
+  const moduleAccessConfigKey = JSON.stringify(moduleAccessConfig);
+  const menuVisibilityConfigKey = JSON.stringify(menuVisibilityConfig);
+
   // Combine and sort - useMemo ile memoize et
   // IMPORTANT: Wait for managed menus to load before returning final menu to prevent flash
   const allMenuItems = useMemo(() => {
-    console.log('[useMenuItems] useMemo triggered:', {
-      menusLoading,
-      managedMenusLength: managedMenus.length,
-      loading,
-      isSuperAdmin,
-      location
-    });
 
     // If still loading managed menus, return empty to prevent flash
     if (menusLoading) {
-      console.log('[useMenuItems] Still loading, returning empty');
       return [];
     }
 
@@ -1067,7 +1078,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     });
 
     return processedMenus;
-  }, [defaultMenusForRole, managedMenus, activeModuleMenuItems, user, loading, menusLoading, modulesLoading, isSuperAdmin, isTenantAdmin, t, locale, moduleAccessConfig, menuVisibilityConfig]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultMenusForRole, managedMenus, activeModuleMenuItems, user?.id, loading, menusLoading, modulesLoading, isSuperAdmin, isTenantAdmin, locale, moduleAccessConfigKey, menuVisibilityConfigKey]);
 
   return allMenuItems;
 }
