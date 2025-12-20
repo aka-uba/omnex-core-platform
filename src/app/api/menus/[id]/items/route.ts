@@ -249,10 +249,18 @@ export async function PUT(
             );
         }
 
+        // Clean up empty strings to null for optional fields
+        const cleanedUpdates = { ...updates };
+        if (cleanedUpdates.icon === '') cleanedUpdates.icon = null;
+        if (cleanedUpdates.target === '') cleanedUpdates.target = null;
+        if (cleanedUpdates.cssClass === '') cleanedUpdates.cssClass = null;
+        if (cleanedUpdates.requiredRole === '') cleanedUpdates.requiredRole = null;
+        if (cleanedUpdates.requiredPermission === '') cleanedUpdates.requiredPermission = null;
+
         // Update menu item
         const item = await prisma.menuItem.update({
             where: { id: itemId },
-            data: updates,
+            data: cleanedUpdates,
         });
 
         return NextResponse.json({
