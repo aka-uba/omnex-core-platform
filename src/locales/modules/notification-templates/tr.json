@@ -13,6 +13,12 @@
     "confirm": "Sil",
     "message": "Bu şablonu silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
   },
+  "bulkDelete": {
+    "title": "Toplu Silme",
+    "message": "{{count}} şablonu silmek istediğinize emin misiniz?",
+    "confirm": "Tümünü Sil",
+    "button": "{{count}} Seçili Sil"
+  },
   "comingSoon": "Yakında eklenecek...",
   "tabs": {
     "email": "Email",
@@ -51,6 +57,7 @@
     "edit": "Düzenle",
     "delete": "Sil",
     "setDefault": "Varsayılan olarak ayarla",
+    "unsetDefault": "Varsayılandan çıkar",
     "preview": "Önizleme",
     "create": "Oluştur",
     "update": "Güncelle",
@@ -136,6 +143,7 @@
   "notifications": {
     "success": "Başarılı",
     "error": "Hata",
+    "warning": "Uyarı",
     "deleted": "Şablon başarıyla silindi",
     "defaultUpdated": "Varsayılan şablon güncellendi",
     "defaultError": "Varsayılan şablon ayarlanırken bir hata oluştu",
@@ -144,7 +152,11 @@
     "updated": "Şablon başarıyla güncellendi",
     "created": "Şablon başarıyla oluşturuldu",
     "seeded": "{{count}} şablon başarıyla oluşturuldu",
-    "seedError": "Şablonlar oluşturulurken bir hata oluştu"
+    "seedError": "Şablonlar oluşturulurken bir hata oluştu",
+    "bulkDeleted": "{{count}} şablon başarıyla silindi",
+    "bulkDeleteError": "{{count}} şablon silinirken hata oluştu",
+    "cannotDeleteDefault": "Varsayılan şablon silinemez. Önce varsayılandan çıkarın.",
+    "defaultRemoved": "Varsayılan durumu kaldırıldı"
   },
   "dashboard": {
     "description": "Bildirim şablonlarına genel bakış ve istatistikler",

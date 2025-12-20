@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Group,
   Button,
@@ -19,9 +19,11 @@ import {
   IconBrandTelegram,
   IconStar,
   IconStarFilled,
+  IconStarOff,
   IconSearch,
   IconRefresh,
   IconDatabase,
+  IconTrashX,
 } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
@@ -54,6 +56,7 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   const { data, isLoading, error, refetch } = useQuery<TelegramTemplate[]>({
     queryKey: ['notificationTemplates', 'telegram', categoryFilter, typeFilter],
@@ -119,6 +122,77 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
     }
   };
 
+  const handleBulkDelete = useCallback(async () => {
+    if (selectedRows.length === 0) return;
+
+    const hasDefaultTemplate = data?.some(
+      (template) => selectedRows.includes(template.id) && template.isDefault
+    );
+
+    if (hasDefaultTemplate) {
+      showToast({
+        type: 'warning',
+        title: t('notifications.warning'),
+        message: t('notifications.cannotDeleteDefault'),
+      });
+      return;
+    }
+
+    const confirmed = await confirm({
+      title: t('bulkDelete.title'),
+      message: t('bulkDelete.message', { count: selectedRows.length }),
+      confirmLabel: t('bulkDelete.confirm'),
+      confirmColor: 'red',
+    });
+
+    if (!confirmed) return;
+
+    try {
+      let successCount = 0;
+      let errorCount = 0;
+
+      for (const id of selectedRows) {
+        try {
+          const response = await fetchWithAuth(`/api/notification-templates/${id}`, {
+            method: 'DELETE',
+          });
+          const result = await response.json();
+          if (result.success) {
+            successCount++;
+          } else {
+            errorCount++;
+          }
+        } catch {
+          errorCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        showToast({
+          type: 'success',
+          title: t('notifications.success'),
+          message: t('notifications.bulkDeleted', { count: successCount }),
+        });
+        setSelectedRows([]);
+        refetch();
+      }
+
+      if (errorCount > 0) {
+        showToast({
+          type: 'error',
+          title: t('notifications.error'),
+          message: t('notifications.bulkDeleteError', { count: errorCount }),
+        });
+      }
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        title: t('notifications.error'),
+        message: error.message || t('notifications.deleteError'),
+      });
+    }
+  }, [selectedRows, data, confirm, t, refetch]);
+
   const handleSetDefault = async (id: string) => {
     try {
       const response = await fetchWithAuth(`/api/notification-templates/${id}/set-default`, {
@@ -132,6 +206,33 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
           type: 'success',
           title: t('notifications.success'),
           message: t('notifications.defaultUpdated'),
+        });
+        refetch();
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        title: t('notifications.error'),
+        message: error.message || t('notifications.defaultError'),
+      });
+    }
+  };
+
+  const handleUnsetDefault = async (id: string) => {
+    try {
+      const response = await fetchWithAuth(`/api/notification-templates/${id}/unset-default`, {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast({
+          type: 'success',
+          title: t('notifications.success'),
+          message: t('notifications.defaultRemoved'),
         });
         refetch();
       } else {
@@ -261,7 +362,16 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
           >
             <IconEdit size={16} />
           </ActionIcon>
-          {!row.isDefault && (
+          {row.isDefault ? (
+            <ActionIcon
+              variant="subtle"
+              color="orange"
+              onClick={() => handleUnsetDefault(row.id)}
+              title={t('actions.unsetDefault')}
+            >
+              <IconStarOff size={16} />
+            </ActionIcon>
+          ) : (
             <ActionIcon
               variant="subtle"
               color="yellow"
@@ -320,6 +430,16 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
           onChange={(value) => setTypeFilter(value || null)}
           clearable
         />
+        {selectedRows.length > 0 && (
+          <Button
+            leftSection={<IconTrashX size={16} />}
+            onClick={handleBulkDelete}
+            variant="light"
+            color="red"
+          >
+            {t('bulkDelete.button', { count: selectedRows.length })}
+          </Button>
+        )}
         <Button
           leftSection={<IconRefresh size={16} />}
           onClick={() => refetch()}
@@ -359,6 +479,10 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
           defaultPageSize={10}
           pageSizeOptions={[10, 25, 50]}
           emptyMessage={t('noTemplates')}
+          selectable={true}
+          selectedRows={selectedRows}
+          onSelectionChange={setSelectedRows}
+          rowIdKey="id"
         />
       )}
       <ConfirmDialog />
