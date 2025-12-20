@@ -39,17 +39,11 @@ export default async function RootLayout({
   const directionScript = `
     (function() {
       try {
-        if (typeof localStorage !== 'undefined') {
-          var config = localStorage.getItem('omnex-layout-config-v2');
-          if (config) {
-            var parsed = JSON.parse(config);
-            if (parsed.direction) {
-              var html = document.documentElement;
-              var currentDir = html.getAttribute('dir');
-              if (parsed.direction !== currentDir) {
-                html.setAttribute('dir', parsed.direction);
-              }
-            }
+        var config = localStorage.getItem('omnex-layout-config-v2');
+        if (config) {
+          var parsed = JSON.parse(config);
+          if (parsed.direction) {
+            document.documentElement.setAttribute('dir', parsed.direction);
           }
         }
       } catch (e) {}
