@@ -20,6 +20,7 @@ interface PageItem {
     id: string;
     title: string;
     url: string;
+    icon?: string;
     type: 'page' | 'module' | 'custom' | 'submodule';
     children?: PageItem[];
 }
@@ -91,6 +92,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                                 id: page.id,
                                 title: page.label,
                                 url: page.href,
+                                icon: page.icon, // Include icon from API
                                 type: 'submodule',
                                 children: [],
                             };
@@ -141,6 +143,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                                 id: page.id,
                                 title: page.label,
                                 url: page.href,
+                                icon: page.icon, // Include icon from API
                                 type: 'page',
                                 children: [],
                             };
@@ -153,6 +156,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                                 id: page.id,
                                 title: page.label,
                                 url: page.href,
+                                icon: page.icon, // Include icon from API
                                 type: 'page',
                             };
                             allPages.push(pageItem);
@@ -195,16 +199,17 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
         return translations;
     };
 
-    const addItemToMenu = async (label: string, href: string, group: string, moduleSlug?: string, parentId?: string, pageKey?: string) => {
+    const addItemToMenu = async (label: string, href: string, group: string, moduleSlug?: string, parentId?: string, icon?: string) => {
         // Get translations for all locales (using current label for all, user can edit later)
         const translations = getTranslationsForAllLocales(label);
-        
+
         const response = await fetchWithAuth(`/api/menus/${menuId}/items`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 label: translations, // All locales
                 href,
+                icon: icon || null, // Include icon
                 menuGroup: group,
                 moduleSlug: moduleSlug || null,
                 parentId: parentId || null,
@@ -228,7 +233,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
             for (const pageId of selectedPages) {
                 const page = pages.find(p => p.id === pageId);
                 if (page) {
-                    await addItemToMenu(page.title, page.url, 'page');
+                    await addItemToMenu(page.title, page.url, 'page', undefined, undefined, page.icon);
                 }
             }
 
@@ -296,7 +301,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                 );
                 
                 // Add parent module first
-                const parentResponse = await addItemToMenu(mod.title, mod.url, 'module', moduleSlug);
+                const parentResponse = await addItemToMenu(mod.title, mod.url, 'module', moduleSlug, undefined, mod.icon);
                 if (parentResponse?.success && parentResponse?.data?.id) {
                     const parentId = parentResponse.data.id;
                     processedModules.set(modId, parentId);
@@ -317,10 +322,10 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                     const isParentSelected = selectedModules.includes(parentItem.id);
                     
                     if (isChildSelected || isParentSelected) {
-                        const moduleSlug = child.url.split('/').filter(Boolean).find((part, idx, arr) => 
+                        const moduleSlug = child.url.split('/').filter(Boolean).find((part, idx, arr) =>
                             idx > 0 && arr[idx - 1] === 'modules'
                         );
-                        const childResponse = await addItemToMenu(child.title, child.url, 'module', moduleSlug, parentItemId);
+                        const childResponse = await addItemToMenu(child.title, child.url, 'module', moduleSlug, parentItemId, child.icon);
                         if (childResponse?.success && childResponse?.data?.id) {
                             addedItems.add(child.id);
                             const childItemId = childResponse.data.id;
@@ -359,10 +364,10 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                 
                 // If this is a child, add it with parentId
                 if (parentId) {
-                    const moduleSlug = mod.url.split('/').filter(Boolean).find((part, idx, arr) => 
+                    const moduleSlug = mod.url.split('/').filter(Boolean).find((part, idx, arr) =>
                         idx > 0 && arr[idx - 1] === 'modules'
                     );
-                    await addItemToMenu(mod.title, mod.url, 'module', moduleSlug, parentId);
+                    await addItemToMenu(mod.title, mod.url, 'module', moduleSlug, parentId, mod.icon);
                     addedItems.add(modId);
                 }
             }
