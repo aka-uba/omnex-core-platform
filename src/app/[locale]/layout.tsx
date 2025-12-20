@@ -34,14 +34,22 @@ export default async function RootLayout({
   const dir = isRTL ? 'rtl' : 'ltr';
 
   // Direction Script - localStorage'dan direction'ı oku ve HTML'e uygula (flash önleme)
+  // Bu script ColorSchemeScript'ten önce çalışır ve sayfa render edilmeden direction'ı set eder
+  // Not: Bu script client-side'da çalışır, server-side'da localStorage undefined olur
   const directionScript = `
     (function() {
       try {
-        var config = localStorage.getItem('omnex-layout-config-v2');
-        if (config) {
-          var parsed = JSON.parse(config);
-          if (parsed.direction) {
-            document.documentElement.setAttribute('dir', parsed.direction);
+        if (typeof localStorage !== 'undefined') {
+          var config = localStorage.getItem('omnex-layout-config-v2');
+          if (config) {
+            var parsed = JSON.parse(config);
+            if (parsed.direction) {
+              var html = document.documentElement;
+              var currentDir = html.getAttribute('dir');
+              if (parsed.direction !== currentDir) {
+                html.setAttribute('dir', parsed.direction);
+              }
+            }
           }
         }
       } catch (e) {}
