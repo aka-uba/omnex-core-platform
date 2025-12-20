@@ -744,6 +744,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         .filter((item: any) => !hasDynamicRoute(item.href))
         .map((item: any) => {
           let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
+          console.log('[convertItems] item.icon:', item.icon, 'found in iconMap:', !!iconMap[item.icon]);
           if (item.icon && iconMap[item.icon]) {
             const mappedIcon = iconMap[item.icon];
             if (mappedIcon) {
