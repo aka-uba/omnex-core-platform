@@ -33,9 +33,25 @@ export default async function RootLayout({
   const isRTL = rtlLocales.includes(locale);
   const dir = isRTL ? 'rtl' : 'ltr';
 
+  // Direction Script - localStorage'dan direction'ı oku ve HTML'e uygula (flash önleme)
+  const directionScript = `
+    (function() {
+      try {
+        var config = localStorage.getItem('omnex-layout-config-v2');
+        if (config) {
+          var parsed = JSON.parse(config);
+          if (parsed.direction) {
+            document.documentElement.setAttribute('dir', parsed.direction);
+          }
+        }
+      } catch (e) {}
+    })();
+  `;
+
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: directionScript }} />
         <ColorSchemeScript />
         {/* Preload Material Symbols font for faster icon rendering */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
