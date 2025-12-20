@@ -16,6 +16,7 @@ import {
     IconFileText,
     IconStar,
     IconStarFilled,
+    IconStarOff,
     IconBuilding,
     IconMapPin,
     IconDatabase,
@@ -213,6 +214,33 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
                     type: 'success',
                     title: t('notifications.success'),
                     message: t('notifications.defaultUpdated'),
+                });
+                refetch();
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error: any) {
+            showToast({
+                type: 'error',
+                title: t('notifications.error'),
+                message: error.message || t('notifications.defaultError'),
+            });
+        }
+    };
+
+    const handleUnsetDefault = async (id: string) => {
+        try {
+            const response = await fetchWithAuth(`/api/export-templates/${id}/unset-default`, {
+                method: 'POST',
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showToast({
+                    type: 'success',
+                    title: t('notifications.success'),
+                    message: t('notifications.defaultRemoved'),
                 });
                 refetch();
             } else {
@@ -454,7 +482,16 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
                     >
                         <IconDownload size={16} />
                     </ActionIcon>
-                    {!row.isDefault && (
+                    {row.isDefault ? (
+                        <ActionIcon
+                            variant="subtle"
+                            color="orange"
+                            onClick={() => handleUnsetDefault(row.id)}
+                            title={t('actions.unsetDefault')}
+                        >
+                            <IconStarOff size={16} />
+                        </ActionIcon>
+                    ) : (
                         <ActionIcon
                             variant="subtle"
                             color="yellow"

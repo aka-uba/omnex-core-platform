@@ -39,6 +39,7 @@
     "edit": "Düzenle",
     "delete": "Sil",
     "setDefault": "Varsayılan olarak ayarla",
+    "unsetDefault": "Varsayılandan çıkar",
     "preview": "Önizleme",
     "export": "Dışa Aktar",
     "create": "Oluştur",
@@ -78,7 +79,8 @@
     "exportError": "Şablon dışa aktarılırken bir hata oluştu",
     "bulkDeleted": "{{count}} şablon başarıyla silindi",
     "bulkDeleteError": "{{count}} şablon silinirken hata oluştu",
-    "cannotDeleteDefault": "Varsayılan şablon silinemez. Önce varsayılandan çıkarın."
+    "cannotDeleteDefault": "Varsayılan şablon silinemez. Önce varsayılandan çıkarın.",
+    "defaultRemoved": "Varsayılan durumu kaldırıldı"
   },
   "validation": {
     "nameRequired": "Şablon adı gereklidir",
