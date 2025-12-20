@@ -667,6 +667,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   }, []);
 
   useEffect(() => {
+    console.log('[useMenuItems] useEffect triggered, will fetch menu for:', location, 'refreshTrigger:', refreshTrigger);
+
     const loadManagedMenus = async () => {
       // Set loading true at start to prevent showing stale data during refetch
       setMenusLoading(true);
