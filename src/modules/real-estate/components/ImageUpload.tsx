@@ -103,7 +103,7 @@ export function ImageUpload({
     if (!files || files.length === 0) return;
 
     const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    
+
     if (imageFiles.length === 0) {
       showToast({
         type: 'error',

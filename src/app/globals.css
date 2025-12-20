@@ -832,7 +832,7 @@ button[data-loading="true"],
 .mantine-Button-root[data-loading="true"],
 [class*="mantine-Button-root"][data-loading="true"],
 .mantine-UnstyledButton-root[data-loading="true"] {
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
 /* Mantine Button Loader Container (span) - Center - Override all positions */
