@@ -183,75 +183,88 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   }, [module.slug, module.version]);
 
   // Load menu items with hierarchical structure
-  useEffect(() => {
-    const loadMenuItems = async () => {
-      try {
-        const response = await fetch(`/api/modules/${module.slug}/menu?locale=${locale}`);
-        
-        if (!response.ok) throw new Error('Failed to fetch menu');
-        const result = await response.json();
-        
-        if (result.success && result.data) {
-          const menuConfig = result.data;
-          
-          if (menuConfig.main && menuConfig.main.items) {
-            // Sort items by order first (recursively)
-            const sortItemsByOrder = (items: any[]): any[] => {
-              return items
-                .map(item => ({
-                  ...item,
-                  children: item.children && item.children.length > 0 
-                    ? sortItemsByOrder(item.children) 
-                    : undefined
-                }))
-                .sort((a, b) => {
-                  const orderA = typeof a.order === 'number' ? a.order : 999;
-                  const orderB = typeof b.order === 'number' ? b.order : 999;
-                  return orderA - orderB;
-                });
-            };
-            
-            // Sort the root items first
-            const sortedRootItems = sortItemsByOrder(menuConfig.main.items);
-            
-            // Flatten hierarchical structure for display (but keep level info)
-            const flattenItems = (items: any[], level = 0): MenuItem[] => {
-              const flattened: MenuItem[] = [];
-              
-              items.forEach((item, index) => {
-                const menuItem: MenuItem = {
-                  id: item.id || `item-${level}-${index}`,
-                  title: item.title || item.label || 'Untitled',
-                  icon: item.icon || 'Circle',
-                  path: item.path || item.href || '#',
-                  order: item.order || index + 1,
-                  visible: true,
-                  target: '_self' as const,
-                  level,
-                  children: item.children,
-                };
-                flattened.push(menuItem);
-                
-                // Add children recursively (children are already sorted)
-                if (item.children && item.children.length > 0) {
-                  flattened.push(...flattenItems(item.children, level + 1));
-                }
+  const loadMenuItems = async () => {
+    try {
+      const response = await fetch(`/api/modules/${module.slug}/menu?locale=${locale}`);
+
+      if (!response.ok) throw new Error('Failed to fetch menu');
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        const menuConfig = result.data;
+
+        if (menuConfig.main && menuConfig.main.items) {
+          // Sort items by order first (recursively)
+          const sortItemsByOrder = (items: any[]): any[] => {
+            return items
+              .map(item => ({
+                ...item,
+                children: item.children && item.children.length > 0
+                  ? sortItemsByOrder(item.children)
+                  : undefined
+              }))
+              .sort((a, b) => {
+                const orderA = typeof a.order === 'number' ? a.order : 999;
+                const orderB = typeof b.order === 'number' ? b.order : 999;
+                return orderA - orderB;
               });
-              
-              return flattened;
-            };
-            
-            const items = flattenItems(sortedRootItems);
-            setMenuItems(items);
-            setOriginalMenuItems(JSON.parse(JSON.stringify(items))); // Deep copy
-          }
+          };
+
+          // Sort the root items first
+          const sortedRootItems = sortItemsByOrder(menuConfig.main.items);
+
+          // Flatten hierarchical structure for display (but keep level info)
+          const flattenItems = (items: any[], level = 0): MenuItem[] => {
+            const flattened: MenuItem[] = [];
+
+            items.forEach((item, index) => {
+              const menuItem: MenuItem = {
+                id: item.id || `item-${level}-${index}`,
+                title: item.title || item.label || 'Untitled',
+                icon: item.icon || 'Circle',
+                path: item.path || item.href || '#',
+                order: item.order || index + 1,
+                visible: item.visible !== false,
+                target: (item.target || '_self') as '_self' | '_blank',
+                level,
+                children: item.children,
+              };
+              flattened.push(menuItem);
+
+              // Add children recursively (children are already sorted)
+              if (item.children && item.children.length > 0) {
+                flattened.push(...flattenItems(item.children, level + 1));
+              }
+            });
+
+            return flattened;
+          };
+
+          const items = flattenItems(sortedRootItems);
+          setMenuItems(items);
+          setOriginalMenuItems(JSON.parse(JSON.stringify(items))); // Deep copy
         }
-      } catch (error) {
-        console.error('Failed to load menu items:', error);
       }
+    } catch (error) {
+      console.error('Failed to load menu items:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadMenuItems();
+  }, [module.slug, locale]);
+
+  // Listen for menu-updated events to refresh menu items
+  // This syncs changes made in the menu management page
+  useEffect(() => {
+    const handleMenuUpdated = () => {
+      loadMenuItems();
     };
 
-    loadMenuItems();
+    window.addEventListener('menu-updated', handleMenuUpdated);
+    return () => {
+      window.removeEventListener('menu-updated', handleMenuUpdated);
+    };
   }, [module.slug, locale]);
 
   // Load module settings
@@ -454,7 +467,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   const saveMenu = async () => {
     setSavingMenu(true);
     try {
-      const response = await fetch(`/api/modules/${module.slug}/menu`, {
+      const response = await fetch(`/api/modules/${module.slug}/menu?locale=${locale}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -462,6 +475,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
         body: JSON.stringify({
           main: {
             items: menuItems.map(item => ({
+              id: item.id, // Include ID for database update
               title: item.title,
               icon: item.icon,
               path: item.path,
@@ -476,7 +490,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
 
       if (!response.ok) throw new Error('Failed to save menu');
 
-      // Dispatch menu-updated event to refresh sidebar
+      // Dispatch menu-updated event to refresh sidebar and menu management page
       window.dispatchEvent(new CustomEvent('menu-updated'));
 
       showSuccess(
