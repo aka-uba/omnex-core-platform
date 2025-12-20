@@ -33,30 +33,9 @@ export default async function RootLayout({
   const isRTL = rtlLocales.includes(locale);
   const dir = isRTL ? 'rtl' : 'ltr';
 
-  // Direction Script - localStorage'dan direction'ı oku ve HTML'e uygula (flash önleme)
-  // Bu script ColorSchemeScript'ten önce çalışır ve sayfa render edilmeden direction'ı set eder
-  // Not: Bu script client-side'da çalışır, server-side'da localStorage undefined olur
-  const directionScript = `
-    (function() {
-      try {
-        var config = localStorage.getItem('omnex-layout-config-v2');
-        if (config) {
-          var parsed = JSON.parse(config);
-          if (parsed.direction) {
-            document.documentElement.setAttribute('dir', parsed.direction);
-          }
-        }
-      } catch (e) {}
-    })();
-  `;
-
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
-        {/* Direction Script - MUST run before anything else */}
-        <script
-          dangerouslySetInnerHTML={{ __html: directionScript }}
-        />
         <ColorSchemeScript />
         {/* Preload Material Symbols font for faster icon rendering */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

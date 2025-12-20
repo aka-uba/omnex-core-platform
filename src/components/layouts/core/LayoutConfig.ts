@@ -18,6 +18,9 @@ export interface BorderConfig {
   color: string;
 }
 
+// Sidebar Position Type
+export type SidebarPosition = 'left' | 'right';
+
 // Sidebar Configuration
 export interface SidebarConfig {
   background: BackgroundType;
@@ -32,6 +35,7 @@ export interface SidebarConfig {
   logoSize?: 'small' | 'medium' | 'large';
   hoverEffects?: boolean;
   border?: BorderConfig;
+  position?: SidebarPosition; // left (default) or right
 }
 
 // Top Layout Configuration
@@ -121,6 +125,7 @@ export const DEFAULT_SIDEBAR_CONFIG: SidebarConfig = {
     width: 1,
     color: '#dee2e6',
   },
+  position: 'left', // left (default) or right
 };
 
 export const DEFAULT_TOP_CONFIG: TopConfig = {

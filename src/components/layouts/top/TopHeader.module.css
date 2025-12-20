@@ -86,11 +86,6 @@
   gap: 0.5rem;
 }
 
-/* RTL support for top header */
-[dir="rtl"] .rightActions {
-  flex-direction: row-reverse;
-}
-
 /* LanguageSelector içindeki bayrak resmi için özel stil */
 .rightActions :global(.languageSelectorButton) {
   flex-shrink: 0;

@@ -180,27 +180,8 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
   }, [loadedConfig]);
   */
 
-  // Direction'ı HTML'e uygula
-  // NOT: İlk mount'ta layout.tsx'deki script zaten localStorage'dan direction'ı set etti
-  // Bu useEffect sadece kullanıcı tema ayarlarından direction değiştirdiğinde çalışmalı
-  const prevDirectionRef = useRef<string | null>(null);
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    const currentHtmlDir = document.documentElement.getAttribute('dir');
-
-    // İlk mount'ta: script zaten doğru direction'ı set etti, değiştirme
-    if (prevDirectionRef.current === null) {
-      prevDirectionRef.current = currentHtmlDir || 'ltr';
-      return;
-    }
-
-    // Sonraki değişikliklerde: config.direction değiştiyse HTML'i güncelle
-    if (config.direction !== currentHtmlDir) {
-      document.documentElement.setAttribute('dir', config.direction);
-      prevDirectionRef.current = config.direction;
-    }
-  }, [config.direction]);
+  // Direction artık sadece locale'e göre belirleniyor (layout.tsx'te)
+  // Sidebar konumu ayrı bir ayar (sidebar.position)
 
   // Theme mode'u Mantine'e, HTML'e ve eski ThemeContext'e uygula
   // setColorScheme ve setOldThemeMode'u dependency'den çıkar - sadece config.themeMode değiştiğinde çalışsın

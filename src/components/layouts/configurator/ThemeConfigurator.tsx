@@ -353,30 +353,42 @@ function ThemeConfiguratorComponent() {
               </Group>
             </div>
 
-            {/* Direction */}
-            <div className={styles.themeCustomizerSection} suppressHydrationWarning>
-              <h6 className={styles.themeCustomizerSectionTitle}>Yön</h6>
-              <Group gap="xs">
-                <ActionIcon
-                  variant={config.direction === 'ltr' ? 'filled' : 'subtle'}
-                  color={config.direction === 'ltr' ? 'blue' : 'gray'}
-                  size="xl"
-                  onClick={() => applyChanges({ direction: 'ltr' })}
-                  title="LTR"
-                >
-                  {mounted && <IconAlignLeft size={24} />}
-                </ActionIcon>
-                <ActionIcon
-                  variant={config.direction === 'rtl' ? 'filled' : 'subtle'}
-                  color={config.direction === 'rtl' ? 'blue' : 'gray'}
-                  size="xl"
-                  onClick={() => applyChanges({ direction: 'rtl' })}
-                  title="RTL"
-                >
-                  {mounted && <IconAlignRight size={24} />}
-                </ActionIcon>
-              </Group>
-            </div>
+            {/* Sidebar Position - Only show for sidebar layout */}
+            {config.layoutType === 'sidebar' && (
+              <div className={styles.themeCustomizerSection} suppressHydrationWarning>
+                <h6 className={styles.themeCustomizerSectionTitle}>Sidebar Konumu</h6>
+                <Group gap="xs">
+                  <ActionIcon
+                    variant={config.sidebar?.position !== 'right' ? 'filled' : 'subtle'}
+                    color={config.sidebar?.position !== 'right' ? 'blue' : 'gray'}
+                    size="xl"
+                    onClick={() => applyChanges({
+                      sidebar: {
+                        ...config.sidebar,
+                        position: 'left'
+                      }
+                    })}
+                    title="Sol"
+                  >
+                    {mounted && <IconAlignLeft size={24} />}
+                  </ActionIcon>
+                  <ActionIcon
+                    variant={config.sidebar?.position === 'right' ? 'filled' : 'subtle'}
+                    color={config.sidebar?.position === 'right' ? 'blue' : 'gray'}
+                    size="xl"
+                    onClick={() => applyChanges({
+                      sidebar: {
+                        ...config.sidebar,
+                        position: 'right'
+                      }
+                    })}
+                    title="Sağ"
+                  >
+                    {mounted && <IconAlignRight size={24} />}
+                  </ActionIcon>
+                </Group>
+              </div>
+            )}
 
             {/* Sidebar Config */}
             {config.layoutType === 'sidebar' && config.sidebar && (

@@ -21,12 +21,6 @@
   /* backgroundColor inline style'dan geliyor, transition yok */
 }
 
-/* RTL support - sidebar pozisyonu */
-[dir="rtl"] .sidebar {
-  left: auto;
-  right: 0;
-}
-
 .sidebar.collapsed {
   width: 4rem;
   padding: 1rem 0.5rem;
@@ -131,23 +125,14 @@
   z-index: 1000;
 }
 
-[dir="rtl"] .collapseButton {
-  right: auto;
-  left: 0.5rem;
-}
-
 .sidebar.collapsed .collapseButton {
   position: absolute;
   top: auto;
   bottom: 2rem;
   /* Yarısı sidebar içinde, yarısı dışarıda - sağ kenara yapışık ve dışarı taşacak */
-  right: -0.75rem; /* Butonun yarısı dışarı taşsın (buton ~1.5rem genişliğinde) */
+  /* Position sağ olduğunda inline style ile left:-0.75rem uygulanır */
+  right: -0.75rem;
   left: auto;
-}
-
-[dir="rtl"] .sidebar.collapsed .collapseButton {
-  right: auto;
-  left: -0.75rem; /* RTL'de sol kenara yapışık ve dışarı taşsın */
 }
 
 .collapseIcon {

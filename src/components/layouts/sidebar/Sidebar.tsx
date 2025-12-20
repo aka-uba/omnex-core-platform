@@ -186,13 +186,13 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       width: collapsed ? '4rem' : `${sidebarConfig?.width || 260}px`,
     };
 
-    // Border ayarlarını ekle (LTR: sağ, RTL: sol kenar)
+    // Border ayarlarını ekle (position'a göre: left = sağ kenar, right = sol kenar)
     const borderConfig = sidebarConfig?.border;
-    const isRtl = config.direction === 'rtl';
+    const isRightPosition = sidebarConfig?.position === 'right';
 
     if (borderConfig?.enabled) {
       const borderStyleValue = `${borderConfig.width}px solid ${borderConfig.color}`;
-      if (isRtl) {
+      if (isRightPosition) {
         baseStyle.borderLeft = borderStyleValue;
         baseStyle.borderRight = 'none';
       } else {
@@ -202,13 +202,22 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     } else {
       // Varsayılan border (1px solid)
       const defaultBorder = '1px solid var(--border-color)';
-      if (isRtl) {
+      if (isRightPosition) {
         baseStyle.borderLeft = defaultBorder;
         baseStyle.borderRight = 'none';
       } else {
         baseStyle.borderRight = defaultBorder;
         baseStyle.borderLeft = 'none';
       }
+    }
+
+    // Position ayarı (left veya right)
+    if (isRightPosition) {
+      baseStyle.left = 'auto';
+      baseStyle.right = 0;
+    } else {
+      baseStyle.left = 0;
+      baseStyle.right = 'auto';
     }
 
     // Sadece client-side'da ve light mode'da özel renkler uygula
@@ -228,7 +237,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     }
 
     return baseStyle;
-  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, sidebarConfig?.border, config.direction, backgroundColor, autoColors]);
+  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, sidebarConfig?.border, sidebarConfig?.position, backgroundColor, autoColors]);
 
   const locale = useMemo(() => pathname?.split('/')[1] || 'tr', [pathname]);
 
@@ -388,14 +397,20 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       </div>
 
       {/* Collapse Toggle */}
-      <div {...(styles.collapseButton ? { className: styles.collapseButton } : {})}>
+      <div {...(styles.collapseButton ? { className: styles.collapseButton } : {})}
+        style={sidebarConfig?.position === 'right' ? { right: 'auto', left: '-0.75rem' } : undefined}
+      >
         <ActionIcon
           variant="subtle"
           onClick={() => setCollapsed(!collapsed)}
           {...(styles.collapseIcon ? { className: styles.collapseIcon } : {})}
           aria-label={collapsed ? t('layout.expandSidebar') : t('layout.collapseSidebar')}
         >
-          {mounted && (collapsed ? <IconChevronRight size={20} /> : <IconChevronLeft size={20} />)}
+          {mounted && (
+            sidebarConfig?.position === 'right'
+              ? (collapsed ? <IconChevronLeft size={20} /> : <IconChevronRight size={20} />)
+              : (collapsed ? <IconChevronRight size={20} /> : <IconChevronLeft size={20} />)
+          )}
         </ActionIcon>
       </div>
 

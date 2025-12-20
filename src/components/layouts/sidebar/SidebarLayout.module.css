@@ -80,24 +80,6 @@
   gap: 2rem;
 }
 
-/* RTL support for header */
-/* RTL'de headerLeft sağda, headerRight solda olmalı */
-/* headerLeft içindeki elemanlar da ters sırada: title sonra expand icon */
-/* headerRight içindeki elemanlar da ters sırada: avatar en solda, search en sağda */
-
-[dir="rtl"] .header {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .headerLeft {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .headerRight {
-  flex-direction: row-reverse;
-}
-
-
 .expandSidebarButton {
   display: flex;
   align-items: center;

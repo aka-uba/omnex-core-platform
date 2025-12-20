@@ -40,8 +40,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [companyName, setCompanyName] = useState<string>('Omnex-Core');
 
-  const isRTL = config.direction === 'rtl';
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -193,9 +191,10 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       {/* Main Content */}
       <div
         className={styles.mainContent}
-        style={{
-          marginInlineStart: `${sidebarWidth}px`,
-        }}
+        style={sidebarConfig?.position === 'right'
+          ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 }
+          : { marginLeft: `${sidebarWidth}px`, marginRight: 0 }
+        }
       >
         {/* Header */}
         <header className={styles.header}>
@@ -207,7 +206,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 className={styles.expandSidebarButton}
                 aria-label={t('layout.expandSidebar')}
               >
-                {mounted && (isRTL ? <IconChevronLeft size={20} className={styles.expandSidebarIcon} /> : <IconChevronRight size={20} className={styles.expandSidebarIcon} />)}
+                {mounted && <IconChevronRight size={20} className={styles.expandSidebarIcon} />}
               </button>
             ) : (
               <button
@@ -216,7 +215,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 aria-label={t('layout.collapseSidebar')}
                 onClick={() => setSidebarCollapsed(true)}
               >
-                {mounted && (isRTL ? <IconChevronRight size={20} className={styles.expandSidebarIcon} /> : <IconChevronLeft size={20} className={styles.expandSidebarIcon} />)}
+                {mounted && <IconChevronLeft size={20} className={styles.expandSidebarIcon} />}
               </button>
             )}
             <h2 className={styles.headerTitle} title={companyName}>
