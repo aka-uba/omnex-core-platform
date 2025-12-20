@@ -166,7 +166,7 @@ export async function GET(
                     locationId: location.id,
                     isActive: true,
                 };
-                
+
                 // Build OR clause for tenantId
                 // Don't filter by companyId here - we want to see all assignments for the location
                 // The location itself is already filtered by companyId
@@ -179,7 +179,9 @@ export async function GET(
                     // No tenantId, only search global assignments
                     assignmentWhere.tenantId = null;
                 }
-                
+
+                console.log('[menu-resolver] Assignment query:', { locationId: location.id, tenantId, assignmentWhere });
+
                 const assignments = await tenantPrisma.menuLocationAssignment.findMany({
                     where: assignmentWhere,
             include: {
