@@ -13,94 +13,8 @@ import { useParams } from 'next/navigation';
 import { useModules } from '@/context/ModuleContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslation } from '@/lib/i18n/client';
-import {
-  IconDashboard,
-  IconApps,
-  IconSettings,
-  IconSettings2,
-  IconHelp,
-  IconBrain,
-  IconCalendar,
-  IconCalendarEvent,
-  IconCalendarTime,
-  IconCalendarCheck,
-  IconFolder,
-  IconFileCheck,
-  IconSignature,
-  IconBell,
-  IconUsers,
-  IconUser,
-  IconMapPin,
-  IconMap,
-  IconTable,
-  IconUserCircle,
-  IconMessageCircle,
-  IconMessage,
-  IconMail,
-  IconSend,
-  IconReport,
-  IconUpload,
-  IconDownload,
-  IconShield,
-  IconShieldCheck,
-  IconMenu2,
-  IconLock,
-  IconKey,
-  IconMessageChatbot,
-  IconPhoto,
-  IconCode,
-  IconMicrophone,
-  IconVideo,
-  IconChartBar,
-  IconChartLine,
-  IconChartPie,
-  IconLayout,
-  IconLayoutGrid,
-  IconBuilding,
-  IconBuildingCommunity,
-  IconDatabase,
-  IconServer,
-  IconHistory,
-  IconFileExport,
-  IconForms,
-  IconCurrencyDollar,
-  IconTools,
-  IconTool,
-  IconHammer,
-  IconBuildingFactory,
-  IconPackage,
-  IconBox,
-  IconBoxMultiple,
-  IconList,
-  IconClipboardList,
-  IconClipboard,
-  IconClipboardCheck,
-  IconRepeat,
-  IconFileText,
-  IconCreditCard,
-  IconReceipt,
-  IconReceipt2,
-  IconWallet,
-  IconSchool,
-  IconTruck,
-  IconClock,
-  IconCircle,
-  IconTemplate,
-  IconHome,
-  IconDoor,
-  IconPlus,
-  IconEdit,
-  IconEye,
-  IconArchive,
-  IconFile,
-  IconChevronRight,
-  IconShoppingCart,
-  IconAlertCircle,
-  IconTicket,
-  IconHeadset,
-  IconTrendingUp,
-  IconAdjustments,
-} from '@tabler/icons-react';
+import * as TablerIcons from '@tabler/icons-react';
+import { IconApps } from '@tabler/icons-react';
 
 export interface MenuItem {
   id?: string; // Unique identifier for menu item
@@ -285,131 +199,23 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Bu sayede menü yönetimi sayfasındaki sıralama ile sidebar sıralaması her zaman uyumlu olur.
   // Eğer managedMenus boşsa, fallback olarak varsayılan menüler kullanılır.
 
-  // Icon mapping for string icons - MUST be defined before usage
-  // Memoized to prevent re-creation on every render
-  const iconMap = useMemo<Record<string, React.ComponentType<{ size?: number; className?: string }>>>(() => ({
-    // Dashboard & Overview
-    Dashboard: IconDashboard,
-    ChartBar: IconChartBar,
-    ChartLine: IconChartLine,
-    ChartPie: IconChartPie,
-    Report: IconReport,
-    TrendingUp: IconTrendingUp,
+  // Dynamic icon resolver - looks up icons from @tabler/icons-react
+  // This supports ALL Tabler icons, not just a predefined list
+  const getIconComponent = useCallback((iconName: string | undefined | null): React.ComponentType<{ size?: number; className?: string }> => {
+    if (!iconName) return IconApps;
 
-    // Navigation & Apps
-    Apps: IconApps,
-    Layout: IconLayout,
-    LayoutFooter: IconLayout, // Fallback - IconLayoutFooter doesn't exist
-    LayoutGrid: IconLayoutGrid,
-    Menu2: IconMenu2,
-    ChevronRight: IconChevronRight,
+    // Try with "Icon" prefix first (e.g., "Tooltip" -> "IconTooltip")
+    const iconKey = iconName.startsWith('Icon') ? iconName : `Icon${iconName}`;
+    const icon = (TablerIcons as Record<string, unknown>)[iconKey];
 
-    // Users & People
-    Users: IconUsers,
-    User: IconUser,
-    UserCircle: IconUserCircle,
-    UserCheck: IconUsers,
+    // Check if it's a valid React component (function or forwardRef object)
+    if (icon && (typeof icon === 'function' || (typeof icon === 'object' && icon !== null && '$$typeof' in icon))) {
+      return icon as React.ComponentType<{ size?: number; className?: string }>;
+    }
 
-    // Settings & Config
-    Settings: IconSettings,
-    Settings2: IconSettings2,
-    Adjustments: IconAdjustments,
-
-    // Currency & Finance
-    CurrencyDollar: IconCurrencyDollar,
-    CreditCard: IconCreditCard,
-    Receipt: IconReceipt,
-    Receipt2: IconReceipt2,
-    Wallet: IconWallet,
-    Repeat: IconRepeat,
-    ShoppingCart: IconShoppingCart,
-
-    // Buildings & Locations
-    Building: IconBuilding,
-    BuildingCommunity: IconBuildingCommunity,
-    BuildingFactory: IconBuildingFactory,
-    Factory: IconBuildingFactory,
-    Warehouse: IconBuilding,
-    Home: IconHome,
-    Door: IconDoor,
-    MapPin: IconMapPin,
-    Map: IconMap,
-
-    // Calendar & Time
-    Calendar: IconCalendar,
-    CalendarEvent: IconCalendarEvent,
-    CalendarTime: IconCalendarTime,
-    CalendarCheck: IconCalendarCheck,
-    Clock: IconClock,
-    History: IconHistory,
-
-    // Files & Documents
-    File: IconFile,
-    FileText: IconFileText,
-    FileCheck: IconFileCheck,
-    FileSignature: IconSignature,
-    FileExport: IconFileExport,
-    Folder: IconFolder,
-    Template: IconTemplate,
-    Forms: IconForms,
-    Clipboard: IconClipboard,
-    ClipboardList: IconClipboardList,
-    ClipboardCheck: IconClipboardCheck,
-
-    // Communication
-    Message: IconMessage,
-    MessageCircle: IconMessageCircle,
-    MessageChatbot: IconMessageChatbot,
-    Mail: IconMail,
-    Send: IconSend,
-    Bell: IconBell,
-
-    // CRUD Actions
-    Plus: IconPlus,
-    Edit: IconEdit,
-    Eye: IconEye,
-    List: IconList,
-    Archive: IconArchive,
-    Upload: IconUpload,
-    Download: IconDownload,
-
-    // Security & Access
-    Shield: IconShield,
-    ShieldCheck: IconShieldCheck,
-    Lock: IconLock,
-    Key: IconKey,
-
-    // Tech & Development
-    Brain: IconBrain,
-    Code: IconCode,
-    Database: IconDatabase,
-    Server: IconServer,
-    Photo: IconPhoto,
-    Microphone: IconMicrophone,
-    Video: IconVideo,
-
-    // Tools & Maintenance
-    Tools: IconTools,
-    Tool: IconTool,
-    Hammer: IconHammer,
-    AlertCircle: IconAlertCircle,
-    Ticket: IconTicket,
-
-    // Products & Inventory
-    Package: IconPackage,
-    Box: IconBox,
-    BoxMultiple: IconBoxMultiple,
-
-    // Misc
-    Help: IconHelp,
-    Headset: IconHeadset,
-    Table: IconTable,
-    Hierarchy: IconTable,
-    Components: IconApps,
-    Circle: IconCircle,
-    School: IconSchool,
-    Truck: IconTruck,
-  }), []);
+    // Fallback to IconApps if icon not found
+    return IconApps;
+  }, []);
 
   // Import default menus
   const { getDefaultMenusByRole } = useMemo(() => {
@@ -429,7 +235,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     return roleDefaultMenus.map((menu: any) => {
       const label = typeof menu.label === 'string' ? menu.label : (menu.label[locale] || menu.label['en'] || menu.label['tr']);
       const href = menu.href.startsWith('/') ? `/${locale}${menu.href}` : `/${locale}/${menu.href}`;
-      const iconComponent = iconMap[menu.icon] || IconApps;
+      const iconComponent = getIconComponent(menu.icon);
 
       const menuItem: MenuItem = {
         id: menu.id,
@@ -445,7 +251,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         menuItem.children = menu.children.map((child: any) => {
           const childLabel = typeof child.label === 'string' ? child.label : (child.label[locale] || child.label['en'] || child.label['tr']);
           const childHref = child.href.startsWith('/') ? `/${locale}${child.href}` : `/${locale}/${child.href}`;
-          const childIcon = iconMap[child.icon] || IconApps;
+          const childIcon = getIconComponent(child.icon);
 
           return {
             id: child.id,
@@ -459,7 +265,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
       return menuItem;
     });
-  }, [user, loading, locale, iconMap, getDefaultMenusByRole]);
+  }, [user, loading, locale, getIconComponent, getDefaultMenusByRole]);
 
   // Fetch available pages for all modules
   const [modulePages, setModulePages] = useState<Record<string, any[]>>({});
@@ -542,7 +348,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         }
 
         const normalizedHref = pageHref.startsWith('/') ? `/${locale}${pageHref}` : `/${locale}/${pageHref}`;
-        const pageIcon = page.icon && typeof page.icon === 'string' ? (iconMap[page.icon] || IconApps) : IconApps;
+        const pageIcon = page.icon && typeof page.icon === 'string' ? getIconComponent(page.icon) : IconApps;
 
         // Recursively build children for this page
         const children = buildMenuFromPages(pages, page.id, level + 1);
@@ -572,7 +378,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       // Get icon component
       let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
       if (typeof module.icon === 'string') {
-        iconComponent = iconMap[module.icon] || IconApps;
+        iconComponent = getIconComponent(module.icon);
       } else if (module.icon) {
         iconComponent = module.icon;
       }
@@ -612,7 +418,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
           const settingsItem: MenuItem = {
             label: settingsLabel,
             href: settingsHref,
-            icon: IconSettings,
+            icon: TablerIcons.IconSettings,
             order: maxOrder + 1, // Always at the end
           };
 
@@ -636,7 +442,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     });
 
     return menuItems;
-  }, [activeModules, locale, modulePages, pagesLoading, iconMap, getModuleTranslation]); // Recalculate when activeModules, locale, or modulePages changes
+  }, [activeModules, locale, modulePages, pagesLoading, getIconComponent, getModuleTranslation]); // Recalculate when activeModules, locale, or modulePages changes
 
   // Tenant Admin kontrolü - role case-insensitive olarak kontrol et
   // SuperAdmin da Tenant Admin yetkilerine sahip
@@ -743,13 +549,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       return items
         .filter((item: any) => !hasDynamicRoute(item.href))
         .map((item: any) => {
-          let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
-          if (item.icon && iconMap[item.icon]) {
-            const mappedIcon = iconMap[item.icon];
-            if (mappedIcon) {
-              iconComponent = mappedIcon;
-            }
-          }
+          // Use dynamic icon resolver to support ALL Tabler icons
+          const iconComponent = getIconComponent(item.icon);
 
           const label = getLocalizedLabel(item.label);
           const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
@@ -796,7 +597,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     return () => {
       isCancelled = true;
     };
-  }, [locale, location, refreshTrigger, iconMap, defaultMenusForRole]);
+  }, [locale, location, refreshTrigger, getIconComponent, defaultMenusForRole]);
 
   // SuperAdmin-only menü kontrolü için yardımcı fonksiyon
   const isSuperAdminOnlyMenu = (menu: MenuItem & { moduleSlug?: string; group?: string }): boolean => {
