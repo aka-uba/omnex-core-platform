@@ -916,32 +916,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         }
       });
 
-      // Managed menus varsa bile aktif modülleri ekle (eğer managed menus'te yoksa)
-      // Aktif modüller her zaman görünmeli
-      activeModuleMenuItems.forEach(menu => {
-        // SuperAdmin-only menüleri filtrele
-        if (!isSuperAdmin && isSuperAdminOnlyMenu(menu as any)) {
-          return;
-        }
-
-        // Access Control: Modül erişim kontrolü
-        const moduleSlug = (menu as any).moduleSlug || menu.href.split('/modules/')[1]?.split('/')[0];
-        if (!isModuleEnabled(moduleSlug)) {
-          return; // Modül erişim kontrolünde kapalı
-        }
-
-        // Access Control: Menü görünürlük kontrolü
-        if (!isMenuItemVisible(menu.id)) {
-          return; // Menü görünürlük kontrolünde gizli
-        }
-
-        // Eğer bu modül managed menus'te yoksa ekle
-        if (moduleSlug && !seenModuleSlugs.has(moduleSlug) && !seenHrefs.has(menu.href)) {
-          seenHrefs.add(menu.href);
-          seenModuleSlugs.add(moduleSlug);
-          allMenus.push(menu);
-        }
-      });
+      // Menü atandığında SADECE o menü görünsün, aktif modüller eklenmez
     } else {
       // No managed menus - use default menus
       // Add default menus for user role
