@@ -80,13 +80,16 @@
   gap: 2rem;
 }
 
-/* RTL support for header - flexbox direction automatically handles this */
-[dir="rtl"] .header {
+/* RTL support for header - içerikler otomatik olarak tersine sıralanır */
+/* flexbox ile dir="rtl" kullanıldığında içerikler zaten tersine sıralanır */
+/* Ancak iç elemanların da düzgün sıralanması için ek ayarlar gerekir */
+
+[dir="rtl"] .headerLeft {
   flex-direction: row-reverse;
 }
 
 [dir="rtl"] .headerRight {
-  justify-content: flex-start;
+  flex-direction: row-reverse;
 }
 
 

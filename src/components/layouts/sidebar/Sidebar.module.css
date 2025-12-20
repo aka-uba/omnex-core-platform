@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bg-card);
-  border-right: 1px solid var(--border-color);
+  /* border inline style'dan geliyor (config'e göre) */
   /* width inline style'dan geliyor */
   padding: 1rem;
   transition: width 0.3s ease, border-color 0.3s ease;
@@ -21,21 +21,10 @@
   /* backgroundColor inline style'dan geliyor, transition yok */
 }
 
-/* Light mode - custom background için dinamik border */
-.sidebar:not([data-mantine-color-scheme="dark"]) {
-  border-right-color: var(--sidebar-border-color, var(--border-color));
-}
-
+/* RTL support - sidebar pozisyonu */
 [dir="rtl"] .sidebar {
   left: auto;
   right: 0;
-  border-right: none;
-  border-left: 1px solid var(--border-color);
-}
-
-/* Light mode - custom background için RTL dinamik border */
-[dir="rtl"] .sidebar:not([data-mantine-color-scheme="dark"]) {
-  border-left-color: var(--sidebar-border-color, var(--border-color));
 }
 
 .sidebar.collapsed {
@@ -46,7 +35,6 @@
 
 [data-mantine-color-scheme="dark"] .sidebar {
   background-color: #303134 !important; /* Chrome dark mode tarzı: üst kısım (--bg-card-dark) - otomatik renk hesaplamasını override et */
-  border-right-color: var(--border-color-dark) !important;
 }
 
 .logoSection {

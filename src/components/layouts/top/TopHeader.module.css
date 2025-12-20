@@ -86,6 +86,11 @@
   gap: 0.5rem;
 }
 
+/* RTL support for top header */
+[dir="rtl"] .rightActions {
+  flex-direction: row-reverse;
+}
+
 /* LanguageSelector içindeki bayrak resmi için özel stil */
 .rightActions :global(.languageSelectorButton) {
   flex-shrink: 0;
@@ -126,7 +131,7 @@
 
 .searchIcon {
   position: absolute;
-  left: 0.75rem;
+  inset-inline-start: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   color: inherit;
@@ -160,8 +165,8 @@
   border: 1px solid var(--border-color);
   background-color: var(--bg-card);
   height: 2.5rem;
-  padding-left: 2.5rem;
-  padding-right: 1rem;
+  padding-inline-start: 2.5rem;
+  padding-inline-end: 1rem;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;

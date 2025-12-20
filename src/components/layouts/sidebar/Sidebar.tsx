@@ -188,13 +188,26 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
 
     // Border ayarlarını ekle (LTR: sağ, RTL: sol kenar)
     const borderConfig = sidebarConfig?.border;
+    const isRtl = config.direction === 'rtl';
+
     if (borderConfig?.enabled) {
-      const isRtl = config.direction === 'rtl';
-      const borderStyle = `${borderConfig.width}px solid ${borderConfig.color}`;
+      const borderStyleValue = `${borderConfig.width}px solid ${borderConfig.color}`;
       if (isRtl) {
-        baseStyle.borderLeft = borderStyle;
+        baseStyle.borderLeft = borderStyleValue;
+        baseStyle.borderRight = 'none';
       } else {
-        baseStyle.borderRight = borderStyle;
+        baseStyle.borderRight = borderStyleValue;
+        baseStyle.borderLeft = 'none';
+      }
+    } else {
+      // Varsayılan border (1px solid)
+      const defaultBorder = '1px solid var(--border-color)';
+      if (isRtl) {
+        baseStyle.borderLeft = defaultBorder;
+        baseStyle.borderRight = 'none';
+      } else {
+        baseStyle.borderRight = defaultBorder;
+        baseStyle.borderLeft = 'none';
       }
     }
 
