@@ -664,6 +664,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Listen for menu update events
   useEffect(() => {
     const handleMenuUpdate = () => {
+      console.log('[useMenuItems] menu-updated event received, triggering refresh');
       setRefreshTrigger(prev => prev + 1);
     };
 
@@ -675,6 +676,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     let isCancelled = false;
 
     const loadManagedMenus = async () => {
+      console.log('[useMenuItems] loadManagedMenus called, location:', location, 'refreshTrigger:', refreshTrigger);
       setMenusLoading(true);
 
       try {
@@ -700,10 +702,13 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
 
         if (data.success && data.data && data.data.menu) {
           const menuData = data.data.menu;
+          console.log('[useMenuItems] Menu resolved:', menuData.name, 'items:', menuData.items?.length);
           const convertedMenus = convertItems(menuData.items || []);
+          console.log('[useMenuItems] Converted menus:', convertedMenus.length);
           setManagedMenus(convertedMenus);
           setRawManagedMenus(menuData.items || []);
         } else {
+          console.log('[useMenuItems] No menu resolved, data:', data);
           setManagedMenus([]);
           setRawManagedMenus([]);
         }
