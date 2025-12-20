@@ -139,20 +139,23 @@
 .sidebar.collapsed .collapseButton {
   position: absolute;
   top: auto;
-  bottom: 1rem;
-  right: 0.5rem;
+  bottom: 2rem;
+  /* Yarısı sidebar içinde, yarısı dışarıda - sağ kenara yapışık ve dışarı taşacak */
+  right: -0.75rem; /* Butonun yarısı dışarı taşsın (buton ~1.5rem genişliğinde) */
   left: auto;
 }
 
 [dir="rtl"] .sidebar.collapsed .collapseButton {
   right: auto;
-  left: 0.5rem;
+  left: -0.75rem; /* RTL'de sol kenara yapışık ve dışarı taşsın */
 }
 
 .collapseIcon {
   background-color: var(--bg-surface);
   color: var(--text-primary);
   border-radius: 0.375rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* transition kaldırıldı - anlık renk değişimi için */
 }
 
@@ -347,6 +350,7 @@
 [data-mantine-color-scheme="dark"] .collapseIcon {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: var(--text-primary-dark) !important;
+  border-color: var(--border-color-dark) !important;
 }
 
 [data-mantine-color-scheme="dark"] .collapseIcon:hover {
