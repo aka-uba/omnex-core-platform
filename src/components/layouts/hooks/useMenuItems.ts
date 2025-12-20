@@ -867,10 +867,10 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   };
 
   // Combine and sort - useMemo ile memoize et
-  // IMPORTANT: Wait for managed menus to load before returning final menu to prevent flash
+  // IMPORTANT: Wait for ALL data to load before returning final menu to prevent flash
   const allMenuItems = useMemo(() => {
-    // If still loading managed menus, return empty to prevent flash
-    if (menusLoading) {
+    // If still loading menus OR modules, return empty to prevent flash/partial render
+    if (menusLoading || modulesLoading) {
       return [];
     }
 
