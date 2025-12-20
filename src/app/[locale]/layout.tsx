@@ -39,17 +39,11 @@ export default async function RootLayout({
   const directionScript = `
     (function() {
       try {
-        if (typeof localStorage !== 'undefined') {
-          var config = localStorage.getItem('omnex-layout-config-v2');
-          if (config) {
-            var parsed = JSON.parse(config);
-            if (parsed.direction) {
-              var html = document.documentElement;
-              var currentDir = html.getAttribute('dir');
-              if (parsed.direction !== currentDir) {
-                html.setAttribute('dir', parsed.direction);
-              }
-            }
+        var config = localStorage.getItem('omnex-layout-config-v2');
+        if (config) {
+          var parsed = JSON.parse(config);
+          if (parsed.direction) {
+            document.documentElement.setAttribute('dir', parsed.direction);
           }
         }
       } catch (e) {}
@@ -59,7 +53,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: directionScript }} />
+        {/* Direction Script - MUST run before anything else */}
+        <script
+          dangerouslySetInnerHTML={{ __html: directionScript }}
+        />
         <ColorSchemeScript />
         {/* Preload Material Symbols font for faster icon rendering */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
