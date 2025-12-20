@@ -83,8 +83,12 @@
   },
   "yes": "Var",
   "no": "Yok",
-  "seed": "Hazır Şablonları Yükle",
-  "seedConfirm": "16 hazır şablon oluşturulacak. Devam etmek istiyor musunuz?",
+  "seed": {
+    "title": "Hazır Şablonları Yükle",
+    "confirm": "Yükle",
+    "button": "Hazır Şablonları Yükle",
+    "message": "Eksik şablonlar oluşturulacak. Mevcut şablonlar korunacak. Devam etmek istiyor musunuz?"
+  },
   "filterCategory": "Kategori Filtrele",
   "filterType": "Bildirim Tipi Filtrele",
   "filterAll": "Tümü",
