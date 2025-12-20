@@ -95,6 +95,8 @@ export async function GET(
                     where: locationWhere,
                 });
 
+                console.log('[menu-resolver] Location lookup:', { locationName, found: !!location, locationId: location?.id });
+
         // If location doesn't exist, try to create default locations
         if (!location) {
             // Get companyId for creating location
