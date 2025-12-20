@@ -9,7 +9,6 @@ import {
     Loader,
     Badge,
     Select,
-    Checkbox,
     ActionIcon,
     Divider
 } from '@mantine/core';
@@ -51,12 +50,12 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
-    // New assignment state - now supports multiple locations
+    // New assignment state
     const [newAssignment, setNewAssignment] = useState<{
-        locationIds: string[];
+        locationId: string | null;
         type: 'default' | 'role' | 'user';
         targetId: string | null;
-    }>({ locationIds: [], type: 'default', targetId: null });
+    }>({ locationId: null, type: 'default', targetId: null });
 
     useEffect(() => {
         fetchData();
@@ -80,10 +79,10 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
             if (usersData.success) {
                 // Users API returns { success: true, data: { users: [], total, page, pageSize } }
                 const usersList = usersData.data?.users || usersData.users || [];
-                setUsers(usersList.map((u: any) => ({ 
-                    id: u.id, 
-                    name: u.name || u.email || 'Unknown', 
-                    email: u.email || '' 
+                setUsers(usersList.map((u: any) => ({
+                    id: u.id,
+                    name: u.name || u.email || 'Unknown',
+                    email: u.email || ''
                 })));
             } else {
                 console.error('Users API error:', usersData);
@@ -102,26 +101,21 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
     };
 
     const handleAddAssignment = async () => {
-        if (newAssignment.locationIds.length === 0) return;
+        if (!newAssignment.locationId) return;
         if (newAssignment.type !== 'default' && !newAssignment.targetId) return;
 
         setSaving(true);
         try {
-            // Add assignment to each selected location
-            await Promise.all(
-                newAssignment.locationIds.map(locationId =>
-                    fetchWithAuth(`/api/menu-locations/${locationId}/assign`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            menuId,
-                            assignmentType: newAssignment.type,
-                            assignmentId: newAssignment.targetId,
-                            priority: newAssignment.type === 'default' ? 0 : 1
-                        }),
-                    })
-                )
-            );
+            await fetchWithAuth(`/api/menu-locations/${newAssignment.locationId}/assign`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    menuId,
+                    assignmentType: newAssignment.type,
+                    assignmentId: newAssignment.targetId,
+                    priority: newAssignment.type === 'default' ? 0 : 1
+                }),
+            });
 
             showToast({
                 type: 'success',
@@ -130,7 +124,7 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
             });
 
             // Reset form and refresh
-            setNewAssignment({ locationIds: [], type: 'default', targetId: null });
+            setNewAssignment({ locationId: null, type: 'default', targetId: null });
             fetchData();
 
             // Trigger menu update event to refresh menus in sidebar/top/mobile
@@ -171,7 +165,7 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
             });
 
             fetchData();
-            
+
             // Trigger menu update event to refresh menus in sidebar/top/mobile
             if (typeof window !== 'undefined') {
                 window.dispatchEvent(new Event('menu-updated'));
@@ -248,28 +242,17 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
 
                 {/* Add new assignment form */}
                 <Stack gap="xs">
-                    <Text size="sm" fw={500}>{t('displayLocation')}</Text>
-                    <Checkbox.Group
-                        value={newAssignment.locationIds}
-                        onChange={(values) => setNewAssignment({ ...newAssignment, locationIds: values })}
-                    >
-                        <Stack gap="xs">
-                            {locations.map(l => (
-                                <Checkbox
-                                    key={l.id}
-                                    value={l.id}
-                                    label={getLabel(l)}
-                                />
-                            ))}
-                        </Stack>
-                    </Checkbox.Group>
+                    <Select
+                        placeholder={t('displayLocation')}
+                        data={locations.map(l => ({ value: l.id, label: getLabel(l) }))}
+                        value={newAssignment.locationId}
+                        onChange={(val) => setNewAssignment({ ...newAssignment, locationId: val })}
+                    />
 
-                    {newAssignment.locationIds.length > 0 && (
+                    {newAssignment.locationId && (
                         <>
-                            <Divider my="xs" />
                             <Select
-                                label={t('assignmentType')}
-                                placeholder={t('selectType')}
+                                placeholder="Type"
                                 data={[
                                     { value: 'default', label: t('general') },
                                     { value: 'role', label: t('requiredRole') },
@@ -281,7 +264,6 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
 
                             {newAssignment.type === 'role' && (
                                 <Select
-                                    label={t('selectRole')}
                                     placeholder={t('selectRole')}
                                     data={roles.map(r => ({ value: r.id, label: r.name }))}
                                     value={newAssignment.targetId}
@@ -291,8 +273,7 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
 
                             {newAssignment.type === 'user' && (
                                 <Select
-                                    label={t('selectUser')}
-                                    placeholder={t('selectUser')}
+                                    placeholder="Select User"
                                     data={users.map(u => ({ value: u.id, label: `${u.name} (${u.email})` }))}
                                     value={newAssignment.targetId}
                                     onChange={(val) => setNewAssignment({ ...newAssignment, targetId: val })}
@@ -303,7 +284,7 @@ export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps
                             <Button
                                 fullWidth
                                 onClick={handleAddAssignment}
-                                disabled={newAssignment.locationIds.length === 0 || (newAssignment.type !== 'default' && !newAssignment.targetId)}
+                                disabled={!newAssignment.locationId || (newAssignment.type !== 'default' && !newAssignment.targetId)}
                                 loading={saving}
                             >
                                 {t('save')}
