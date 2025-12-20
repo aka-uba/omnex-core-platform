@@ -284,20 +284,23 @@ export async function GET(
                     }
                 });
 
-                // Enrich menu items with current module icons
-                // This ensures module group icons always reflect the latest icon from module.config.yaml
-                const enrichWithModuleIcons = (items: any[]): any[] => {
+                // Enrich module GROUP icons with current module icons from module.config.yaml
+                // Only apply to parent items (module groups), not to sub-menu items
+                // Sub-menu items should keep their own icons from the database
+                const enrichWithModuleIcons = (items: any[], isTopLevel: boolean = true): any[] => {
                     return items.map(item => {
                         let enrichedItem = { ...item };
 
-                        // If this item has a moduleSlug, use the module's current icon
-                        if (item.moduleSlug && moduleIconMap.has(item.moduleSlug)) {
+                        // Only enrich module group icons (top-level items with moduleSlug)
+                        // Sub-menu items (children) should keep their database icons
+                        if (isTopLevel && item.moduleSlug && moduleIconMap.has(item.moduleSlug)) {
                             enrichedItem.icon = moduleIconMap.get(item.moduleSlug);
                         }
 
-                        // Recursively enrich children
+                        // Recursively process children but mark them as not top-level
+                        // so their icons won't be overwritten
                         if (item.children && item.children.length > 0) {
-                            enrichedItem.children = enrichWithModuleIcons(item.children);
+                            enrichedItem.children = enrichWithModuleIcons(item.children, false);
                         }
 
                         return enrichedItem;
