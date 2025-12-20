@@ -1,13 +1,44 @@
 /**
  * useMenuItems - Merkezi menü kaynağı
  * Sidebar ve TopNavigation için ortak menü verisi sağlar
- * 
+ *
  * v2.0 - Çift render ve modül menü sorunları düzeltildi
+ * v2.1 - Global cache eklendi, duplicate API çağrıları önlendi
  */
 
 'use client';
 
 import { useMemo, useEffect, useState, useRef, useCallback } from 'react';
+
+// Global cache for menu data to prevent duplicate API calls across components
+interface MenuCacheEntry {
+  data: any;
+  timestamp: number;
+  promise?: Promise<any>;
+}
+
+const menuCache = new Map<string, MenuCacheEntry>();
+const CACHE_TTL = 30000; // 30 seconds cache TTL
+
+// Event emitter for cache updates
+const cacheListeners = new Map<string, Set<() => void>>();
+
+function notifyCacheListeners(location: string) {
+  const listeners = cacheListeners.get(location);
+  if (listeners) {
+    listeners.forEach(listener => listener());
+  }
+}
+
+function subscribeToCacheUpdates(location: string, callback: () => void) {
+  if (!cacheListeners.has(location)) {
+    cacheListeners.set(location, new Set());
+  }
+  cacheListeners.get(location)!.add(callback);
+  return () => {
+    cacheListeners.get(location)?.delete(callback);
+  };
+}
 import { useParams } from 'next/navigation';
 import { useModules } from '@/context/ModuleContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -663,160 +694,90 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Listen for menu update events
   useEffect(() => {
     const handleMenuUpdate = () => {
+      // Clear cache for this location when menu is updated
+      menuCache.delete(`${location}-${locale}`);
       setRefreshTrigger(prev => prev + 1);
     };
 
     window.addEventListener('menu-updated', handleMenuUpdate);
     return () => window.removeEventListener('menu-updated', handleMenuUpdate);
-  }, []);
+  }, [location, locale]);
 
   useEffect(() => {
-    // Abort controller to cancel duplicate requests
-    const abortController = new AbortController();
     let isCancelled = false;
+    const cacheKey = `${location}-${locale}`;
 
     const loadManagedMenus = async () => {
+      // Check cache first
+      const cached = menuCache.get(cacheKey);
+      const now = Date.now();
+
+      // If we have valid cached data, use it immediately
+      if (cached && cached.data && (now - cached.timestamp) < CACHE_TTL) {
+        processMenuData(cached.data);
+        return;
+      }
+
+      // If there's already a pending request for this location, wait for it
+      if (cached && cached.promise) {
+        try {
+          const data = await cached.promise;
+          if (!isCancelled) {
+            processMenuData(data);
+          }
+          return;
+        } catch {
+          // Request failed, continue with new request
+        }
+      }
+
       // Set loading true at start to prevent showing stale data during refetch
       setMenusLoading(true);
 
       try {
         // Fetch from menu-resolver API with location parameter
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
-        const response = await fetchWithAuth(`/api/menu-resolver/${location}`, {
-          signal: abortController.signal
+
+        // Create the fetch promise
+        const fetchPromise = fetchWithAuth(`/api/menu-resolver/${location}`).then(async (response) => {
+          // If 401, return null (user not logged in, use default menus)
+          if (response.status === 401) {
+            return null;
+          }
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch menu: ${response.status}`);
+          }
+
+          return response.json();
         });
+
+        // Store promise in cache to prevent duplicate requests
+        menuCache.set(cacheKey, {
+          data: null,
+          timestamp: now,
+          promise: fetchPromise
+        });
+
+        const data = await fetchPromise;
 
         // Check if request was cancelled
         if (isCancelled) return;
 
-        // If 401, silently fail (user not logged in, use default menus)
-        if (response.status === 401) {
-          setMenusLoading(false);
-          return;
-        }
+        // Update cache with actual data
+        menuCache.set(cacheKey, {
+          data,
+          timestamp: Date.now(),
+          promise: undefined
+        });
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch menu: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-
-        if (data.success && data.data && data.data.menu) {
-          const menuData = data.data.menu;
-
-          // Helper to check if href contains dynamic route patterns like [id], [slug], etc.
-          // Also filter out create/edit/tracking pages as they are typically form/detail pages
-          const hasDynamicRoute = (href: string) => {
-            // Check for dynamic route patterns like [id], [slug]
-            if (/\[.*\]/.test(href)) return true;
-            // Check for create/edit pages (they shouldn't be in menu)
-            if (href.includes('/create') || href.includes('/edit')) return true;
-            // Check for tracking pages (they shouldn't be in menu)
-            if (href.includes('/tracking')) return true;
-            return false;
-          };
-
-          // Helper to get localized label
-          const getLocalizedLabel = (label: any): string => {
-            if (typeof label === 'string') return label;
-            if (typeof label === 'object' && label !== null) {
-              return label[locale] || label['en'] || Object.values(label)[0] || '';
-            }
-            return '';
-          };
-
-          // Convert menu items to MenuItem format
-          const convertItems = (items: any[]): MenuItem[] => {
-            return items
-              .filter((item: any) => !hasDynamicRoute(item.href))
-              .map((item: any) => {
-                // Get icon component
-                let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
-                if (item.icon && iconMap[item.icon]) {
-                  const mappedIcon = iconMap[item.icon];
-                  if (mappedIcon) {
-                    iconComponent = mappedIcon;
-                  }
-                }
-
-                const label = getLocalizedLabel(item.label);
-                const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
-
-                // Backfill group from default menus if missing
-                let group = item.menuGroup;
-                if (!group) {
-                  // Try to find in default menus
-                  const findInDefaults = (menus: any[]): string | undefined => {
-                    for (const menu of menus) {
-                      // Check exact match or localized href match
-                      const menuHref = menu.href.startsWith('/') ? `/${locale}${menu.href}` : `/${locale}/${menu.href}`;
-                      if (menu.href === item.href || menuHref === href) {
-                        return menu.group;
-                      }
-                      if (menu.children) {
-                        const childGroup = findInDefaults(menu.children);
-                        if (childGroup) return childGroup;
-                      }
-                    }
-                    return undefined;
-                  };
-
-                  // defaultMenus is available in scope via useMemo above
-                  // We need to access the raw defaultMenus config, but it's inside useMemo
-                  // So we'll use the defaultMenusForRole which is already processed but has group info
-                  // Actually, defaultMenusForRole has MenuItem structure which has group
-
-                  const findInProcessedDefaults = (menus: MenuItem[]): string | undefined => {
-                    for (const menu of menus) {
-                      if (menu.href === href) {
-                        return menu.group;
-                      }
-                      if (menu.children) {
-                        const childGroup = findInProcessedDefaults(menu.children);
-                        if (childGroup) return childGroup;
-                      }
-                    }
-                    return undefined;
-                  };
-
-                  group = findInProcessedDefaults(defaultMenusForRole);
-                }
-
-                const menuItem: MenuItem = {
-                  label,
-                  href,
-                  icon: iconComponent,
-                  order: typeof item.order === 'number' ? item.order : 999,
-                };
-
-                if (group) {
-                  menuItem.group = group;
-                }
-
-                if (item.children && item.children.length > 0) {
-                  menuItem.children = convertItems(item.children);
-                }
-
-                return menuItem;
-              });
-          };
-
-          const convertedMenus = convertItems(menuData.items || []);
-            setManagedMenus(convertedMenus);
-          setRawManagedMenus(menuData.items || []);
-        } else {
-          // No menu assigned to this location, use fallback
-          setManagedMenus([]);
-          setRawManagedMenus([]);
-        }
+        // Notify other listeners
+        notifyCacheListeners(location);
       } catch (error) {
-        // Ignore abort errors
-        if (error instanceof Error && error.name === 'AbortError') {
-          return;
-        }
         if (isCancelled) return;
         console.error('[useMenuItems] Error loading menu from resolver:', error);
+        // Clear failed cache entry
+        menuCache.delete(cacheKey);
         setManagedMenus([]);
         setRawManagedMenus([]);
       } finally {
@@ -827,14 +788,116 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       }
     };
 
+    // Helper to check if href contains dynamic route patterns
+    const hasDynamicRoute = (href: string) => {
+      if (/\[.*\]/.test(href)) return true;
+      if (href.includes('/create') || href.includes('/edit')) return true;
+      if (href.includes('/tracking')) return true;
+      return false;
+    };
+
+    // Helper to get localized label
+    const getLocalizedLabel = (label: any): string => {
+      if (typeof label === 'string') return label;
+      if (typeof label === 'object' && label !== null) {
+        return label[locale] || label['en'] || Object.values(label)[0] || '';
+      }
+      return '';
+    };
+
+    // Convert menu items to MenuItem format
+    const convertItems = (items: any[]): MenuItem[] => {
+      return items
+        .filter((item: any) => !hasDynamicRoute(item.href))
+        .map((item: any) => {
+          let iconComponent: React.ComponentType<{ size?: number; className?: string }> = IconApps;
+          if (item.icon && iconMap[item.icon]) {
+            const mappedIcon = iconMap[item.icon];
+            if (mappedIcon) {
+              iconComponent = mappedIcon;
+            }
+          }
+
+          const label = getLocalizedLabel(item.label);
+          const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
+
+          // Backfill group from default menus if missing
+          let group = item.menuGroup;
+          if (!group) {
+            const findInProcessedDefaults = (menus: MenuItem[]): string | undefined => {
+              for (const menu of menus) {
+                if (menu.href === href) {
+                  return menu.group;
+                }
+                if (menu.children) {
+                  const childGroup = findInProcessedDefaults(menu.children);
+                  if (childGroup) return childGroup;
+                }
+              }
+              return undefined;
+            };
+            group = findInProcessedDefaults(defaultMenusForRole);
+          }
+
+          const menuItem: MenuItem = {
+            label,
+            href,
+            icon: iconComponent,
+            order: typeof item.order === 'number' ? item.order : 999,
+          };
+
+          if (group) {
+            menuItem.group = group;
+          }
+
+          if (item.children && item.children.length > 0) {
+            menuItem.children = convertItems(item.children);
+          }
+
+          return menuItem;
+        });
+    };
+
+    // Process menu data and update state
+    function processMenuData(data: any) {
+      if (!data) {
+        setManagedMenus([]);
+        setRawManagedMenus([]);
+        setMenusLoading(false);
+        initialLoadComplete.current = true;
+        return;
+      }
+
+      if (data.success && data.data && data.data.menu) {
+        const menuData = data.data.menu;
+        const convertedMenus = convertItems(menuData.items || []);
+        setManagedMenus(convertedMenus);
+        setRawManagedMenus(menuData.items || []);
+      } else {
+        // No menu assigned to this location, use fallback
+        setManagedMenus([]);
+        setRawManagedMenus([]);
+      }
+      setMenusLoading(false);
+      initialLoadComplete.current = true;
+    }
+
     loadManagedMenus();
 
-    // Cleanup function to cancel request on unmount or dependency change
+    // Subscribe to cache updates from other components
+    const unsubscribe = subscribeToCacheUpdates(location, () => {
+      const cached = menuCache.get(cacheKey);
+      if (cached && cached.data) {
+        processMenuData(cached.data);
+      }
+    });
+
+    // Cleanup function
     return () => {
       isCancelled = true;
-      abortController.abort();
+      unsubscribe();
     };
-  }, [locale, location, refreshTrigger]);
+  }, [locale, location, refreshTrigger, iconMap, defaultMenusForRole]);
 
   // SuperAdmin-only menü kontrolü için yardımcı fonksiyon
   const isSuperAdminOnlyMenu = (menu: MenuItem & { moduleSlug?: string; group?: string }): boolean => {
