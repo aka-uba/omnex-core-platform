@@ -102,6 +102,10 @@ export function MenuItemEditor({
                     title: t('success'),
                     message: t('itemUpdated'),
                 });
+                // Trigger menu update event to refresh menus in sidebar/top/mobile
+                if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new Event('menu-updated'));
+                }
                 onUpdate();
                 onClose();
             } else {
