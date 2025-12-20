@@ -80,9 +80,14 @@
   gap: 2rem;
 }
 
-/* RTL support for header - içerikler otomatik olarak tersine sıralanır */
-/* flexbox ile dir="rtl" kullanıldığında içerikler zaten tersine sıralanır */
-/* Ancak iç elemanların da düzgün sıralanması için ek ayarlar gerekir */
+/* RTL support for header */
+/* RTL'de headerLeft sağda, headerRight solda olmalı */
+/* headerLeft içindeki elemanlar da ters sırada: title sonra expand icon */
+/* headerRight içindeki elemanlar da ters sırada: avatar en solda, search en sağda */
+
+[dir="rtl"] .header {
+  flex-direction: row-reverse;
+}
 
 [dir="rtl"] .headerLeft {
   flex-direction: row-reverse;
