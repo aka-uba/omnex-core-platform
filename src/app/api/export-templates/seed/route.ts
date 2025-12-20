@@ -29,24 +29,28 @@ export async function POST(request: NextRequest) {
     const service = new ExportTemplateService(tenantPrisma);
     const tenantId = tenantContext.id;
 
-    // Check if templates already exist
+    // Get existing templates to check for duplicates
     const existingTemplates = await service.getTemplates(tenantId, companyId);
-    if (existingTemplates.length > 0) {
-      return NextResponse.json({
-        success: false,
-        message: 'Templates already exist. Delete existing templates first.',
-        data: { count: existingTemplates.length },
-      });
-    }
+    const existingNames = new Set(existingTemplates.map(t => t.name));
 
     const templates = [];
+    let skippedCount = 0;
+
+    // Helper function to create template if not exists
+    const createIfNotExists = async (templateData: any) => {
+      if (existingNames.has(templateData.name)) {
+        skippedCount++;
+        return null;
+      }
+      return await service.createTemplate(tenantId, templateData);
+    };
 
     // ============================================
     // MODERN PROFESSIONAL TEMPLATES
     // ============================================
 
     // 1. Modern Blue Professional
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Modern Blue Professional',
       type: 'full',
       category: 'export',
@@ -87,7 +91,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 2. Classic Corporate
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Classic Corporate',
       type: 'full',
       category: 'export',
@@ -123,7 +127,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 3. Minimal Clean
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Minimal Clean',
       type: 'full',
       category: 'export',
@@ -157,7 +161,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 4. Elegant Gold
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Elegant Gold',
       type: 'full',
       category: 'export',
@@ -193,7 +197,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 5. Tech Modern
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Tech Modern',
       type: 'full',
       category: 'export',
@@ -229,7 +233,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 6. Green Eco
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Green Eco',
       type: 'full',
       category: 'export',
@@ -265,7 +269,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 7. Red Energy
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Red Energy',
       type: 'full',
       category: 'export',
@@ -301,7 +305,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 8. Purple Creative
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Purple Creative',
       type: 'full',
       category: 'export',
@@ -337,7 +341,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 9. Orange Vibrant
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Orange Vibrant',
       type: 'full',
       category: 'export',
@@ -373,7 +377,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 10. Gray Professional
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Gray Professional',
       type: 'full',
       category: 'export',
@@ -413,7 +417,7 @@ export async function POST(request: NextRequest) {
     // ============================================
 
     // 11. Header - Modern Blue
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Header - Modern Blue',
       type: 'header',
       category: 'export',
@@ -444,7 +448,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 12. Header - Classic
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Header - Classic',
       type: 'header',
       category: 'export',
@@ -478,7 +482,7 @@ export async function POST(request: NextRequest) {
     // ============================================
 
     // 13. Footer - Modern
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Footer - Modern',
       type: 'footer',
       category: 'export',
@@ -507,7 +511,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 14. Footer - Classic
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Footer - Classic',
       type: 'footer',
       category: 'export',
@@ -540,7 +544,7 @@ export async function POST(request: NextRequest) {
     // ============================================
 
     // 15. Financial Report
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Financial Report',
       type: 'full',
       category: 'export',
@@ -581,7 +585,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 16. Sales Report
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Sales Report',
       type: 'full',
       category: 'export',
@@ -617,7 +621,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 17. HR Report
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'HR Report',
       type: 'full',
       category: 'export',
@@ -653,7 +657,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 18. Inventory Report
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Inventory Report',
       type: 'full',
       category: 'export',
@@ -689,7 +693,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 19. Executive Summary
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Executive Summary',
       type: 'full',
       category: 'export',
@@ -725,7 +729,7 @@ export async function POST(request: NextRequest) {
     }));
 
     // 20. Annual Report
-    templates.push(await service.createTemplate(tenantId, {
+    templates.push(await createIfNotExists({
       name: 'Annual Report',
       type: 'full',
       category: 'export',
@@ -765,12 +769,23 @@ export async function POST(request: NextRequest) {
       },
     }));
 
-    logger.info('Default export templates created', { count: templates.length }, 'api-export-templates-seed');
+    // Filter out null values (skipped duplicates)
+    const createdTemplates = templates.filter(t => t !== null);
+
+    logger.info('Default export templates created', {
+      created: createdTemplates.length,
+      skipped: skippedCount
+    }, 'api-export-templates-seed');
 
     return NextResponse.json({
       success: true,
-      message: `${templates.length} templates created successfully`,
-      data: { templates: templates.map(t => ({ id: t.id, name: t.name, type: t.type })) },
+      message: skippedCount > 0
+        ? `${createdTemplates.length} templates created, ${skippedCount} skipped (already exist)`
+        : `${createdTemplates.length} templates created successfully`,
+      data: {
+        templates: createdTemplates.map(t => ({ id: t.id, name: t.name, type: t.type })),
+        skipped: skippedCount
+      },
     });
   } catch (error: any) {
     logger.error('Failed to seed export templates', error, 'api-export-templates-seed');

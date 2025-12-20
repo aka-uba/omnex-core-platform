@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
     Container,
     Group,
@@ -21,6 +21,7 @@ import {
     IconDatabase,
     IconEye,
     IconDownload,
+    IconTrashX,
 } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
@@ -60,6 +61,7 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
     const [search] = useState('');
     const [typeFilter, setTypeFilter] = useState<string | null>(null);
     const [scopeFilter, setScopeFilter] = useState<string | null>(null);
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const { confirm, ConfirmDialog } = useConfirmDialog();
 
     const { data, isLoading, error, refetch } = useQuery<ExportTemplate[]>({
@@ -125,6 +127,78 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
             });
         }
     };
+
+    const handleBulkDelete = useCallback(async () => {
+        if (selectedRows.length === 0) return;
+
+        // Check if any selected row is default
+        const hasDefaultTemplate = data?.some(
+            (template) => selectedRows.includes(template.id) && template.isDefault
+        );
+
+        if (hasDefaultTemplate) {
+            showToast({
+                type: 'warning',
+                title: t('notifications.warning'),
+                message: t('notifications.cannotDeleteDefault'),
+            });
+            return;
+        }
+
+        const confirmed = await confirm({
+            title: t('bulkDelete.title'),
+            message: t('bulkDelete.message').replace('{{count}}', selectedRows.length.toString()),
+            confirmLabel: t('bulkDelete.confirm'),
+            confirmColor: 'red',
+        });
+
+        if (!confirmed) return;
+
+        try {
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const id of selectedRows) {
+                try {
+                    const response = await fetchWithAuth(`/api/export-templates/${id}`, {
+                        method: 'DELETE',
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        successCount++;
+                    } else {
+                        errorCount++;
+                    }
+                } catch {
+                    errorCount++;
+                }
+            }
+
+            if (successCount > 0) {
+                showToast({
+                    type: 'success',
+                    title: t('notifications.success'),
+                    message: t('notifications.bulkDeleted').replace('{{count}}', successCount.toString()),
+                });
+                setSelectedRows([]);
+                refetch();
+            }
+
+            if (errorCount > 0) {
+                showToast({
+                    type: 'error',
+                    title: t('notifications.error'),
+                    message: t('notifications.bulkDeleteError').replace('{{count}}', errorCount.toString()),
+                });
+            }
+        } catch (error: any) {
+            showToast({
+                type: 'error',
+                title: t('notifications.error'),
+                message: error.message || t('notifications.deleteError'),
+            });
+        }
+    }, [selectedRows, data, confirm, t, refetch]);
 
     const handleSetDefault = async (id: string) => {
         try {
@@ -425,6 +499,13 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
                     { label: 'title', namespace: 'modules/export-templates' },
                 ]}
                 actions={[
+                    ...(selectedRows.length > 0 ? [{
+                        label: t('bulkDelete.button').replace('{{count}}', selectedRows.length.toString()),
+                        icon: <IconTrashX size={18} />,
+                        onClick: handleBulkDelete,
+                        variant: 'light' as const,
+                        color: 'red',
+                    }] : []),
                     {
                         label: t('seed.title'),
                         icon: <IconDatabase size={18} />,
@@ -474,6 +555,10 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
                             message: t('exportComingSoon', { format: format.toUpperCase() }),
                         });
                     }}
+                    selectable={true}
+                    selectedRows={selectedRows}
+                    onSelectionChange={setSelectedRows}
+                    rowIdKey="id"
                 />
             )}
             <ConfirmDialog />

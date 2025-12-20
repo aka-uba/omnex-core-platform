@@ -15,6 +15,7 @@ import {
   Badge,
   Card,
   Box,
+  Checkbox,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconSearch, IconChevronUp, IconChevronDown, IconArrowsSort, IconFilter, IconDotsVertical, IconFile, IconFileSpreadsheet, IconFileText, IconCode, IconPrinter, IconLayout } from '@tabler/icons-react';
@@ -58,6 +59,11 @@ export interface DataTableProps {
   exportScope?: 'all' | 'current-page' | 'selected'; // Export scope: all data, current page, or selected rows
   exportTitle?: string; // Title for export files
   exportNamespace?: string; // Translation namespace for export labels
+  // Selection props
+  selectable?: boolean; // Enable row selection
+  selectedRows?: string[]; // Currently selected row IDs
+  onSelectionChange?: (selectedIds: string[]) => void; // Callback when selection changes
+  rowIdKey?: string; // Key to use for row ID (default: 'id')
 }
 
 export function DataTable({
@@ -81,6 +87,10 @@ export function DataTable({
   exportScope = 'all', // Default: export all data
   exportTitle,
   exportNamespace = 'global',
+  selectable = false,
+  selectedRows = [],
+  onSelectionChange,
+  rowIdKey = 'id',
 }: DataTableProps) {
   const { t } = useTranslation(exportNamespace);
   const { t: tGlobal } = useTranslation('global');
@@ -96,6 +106,41 @@ export function DataTable({
 
   // Mobile detection for card view
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Selection helpers
+  const isAllSelected = useMemo(() => {
+    if (!selectable || data.length === 0) return false;
+    return data.every(row => selectedRows.includes(row[rowIdKey]));
+  }, [selectable, data, selectedRows, rowIdKey]);
+
+  const isIndeterminate = useMemo(() => {
+    if (!selectable || data.length === 0) return false;
+    const selectedCount = data.filter(row => selectedRows.includes(row[rowIdKey])).length;
+    return selectedCount > 0 && selectedCount < data.length;
+  }, [selectable, data, selectedRows, rowIdKey]);
+
+  const handleSelectAll = useCallback(() => {
+    if (!onSelectionChange) return;
+    if (isAllSelected) {
+      // Deselect all current page rows
+      const currentPageIds = data.map(row => row[rowIdKey]);
+      onSelectionChange(selectedRows.filter(id => !currentPageIds.includes(id)));
+    } else {
+      // Select all current page rows
+      const currentPageIds = data.map(row => row[rowIdKey]);
+      const newSelection = [...new Set([...selectedRows, ...currentPageIds])];
+      onSelectionChange(newSelection);
+    }
+  }, [data, isAllSelected, onSelectionChange, rowIdKey, selectedRows]);
+
+  const handleSelectRow = useCallback((rowId: string) => {
+    if (!onSelectionChange) return;
+    if (selectedRows.includes(rowId)) {
+      onSelectionChange(selectedRows.filter(id => id !== rowId));
+    } else {
+      onSelectionChange([...selectedRows, rowId]);
+    }
+  }, [onSelectionChange, selectedRows]);
 
   // Update visible columns when columns prop changes (only if structure changed, not just reference)
   useEffect(() => {
@@ -795,6 +840,16 @@ export function DataTable({
           <Table highlightOnHover striped>
             <Table.Thead>
               <Table.Tr>
+                {selectable && (
+                  <Table.Th style={{ width: 40, textAlign: 'center' }}>
+                    <Checkbox
+                      checked={isAllSelected}
+                      indeterminate={isIndeterminate}
+                      onChange={handleSelectAll}
+                      aria-label="Select all rows"
+                    />
+                  </Table.Th>
+                )}
                 {displayColumns.map((column, columnIndex) => {
                   const isSortable = sortable && column.sortable !== false;
                   const isSorted = sortColumn === column.key;
@@ -858,17 +913,32 @@ export function DataTable({
             <Table.Tbody>
               {paginatedData.length === 0 ? (
                 <Table.Tr>
-                  <Table.Td colSpan={displayColumns.length} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <Table.Td colSpan={displayColumns.length + (selectable ? 1 : 0)} style={{ textAlign: 'center', padding: '2rem' }}>
                     <Text c="dimmed">{emptyMessage || tGlobal('empty.message')}</Text>
                   </Table.Td>
                 </Table.Tr>
               ) : (
-                paginatedData.map((row, rowIndex) => (
+                paginatedData.map((row, rowIndex) => {
+                  const rowId = row[rowIdKey];
+                  const isRowSelected = selectedRows.includes(rowId);
+                  return (
                   <Table.Tr
                     key={rowIndex}
                     onClick={() => onRowClick?.(row)}
-                    style={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                    style={{
+                      cursor: onRowClick ? 'pointer' : 'default',
+                      backgroundColor: isRowSelected ? 'var(--mantine-color-blue-light)' : undefined,
+                    }}
                   >
+                    {selectable && (
+                      <Table.Td style={{ width: 40, textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={isRowSelected}
+                          onChange={() => handleSelectRow(rowId)}
+                          aria-label={`Select row ${rowIndex + 1}`}
+                        />
+                      </Table.Td>
+                    )}
                     {displayColumns.map((column, columnIndex) => {
                       const isFirstColumn = columnIndex === 0;
                       const isLastColumn = columnIndex === displayColumns.length - 1;
@@ -896,7 +966,8 @@ export function DataTable({
                       );
                     })}
                   </Table.Tr>
-                ))
+                  );
+                })
               )}
             </Table.Tbody>
           </Table>
