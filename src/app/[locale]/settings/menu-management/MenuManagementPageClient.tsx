@@ -47,6 +47,21 @@ export function MenuManagementPageClient() {
     }
   }, [activeMenuId, menus]);
 
+  // Listen for menu-updated events to refresh menu items
+  // This syncs changes made from module settings pages
+  useEffect(() => {
+    const handleMenuUpdated = () => {
+      if (activeMenuId) {
+        fetchMenuItems(activeMenuId);
+      }
+    };
+
+    window.addEventListener('menu-updated', handleMenuUpdated);
+    return () => {
+      window.removeEventListener('menu-updated', handleMenuUpdated);
+    };
+  }, [activeMenuId]);
+
   const fetchMenus = async () => {
     setLoading(true);
     try {
