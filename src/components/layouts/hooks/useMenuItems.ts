@@ -286,7 +286,8 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Eğer managedMenus boşsa, fallback olarak varsayılan menüler kullanılır.
 
   // Icon mapping for string icons - MUST be defined before usage
-  const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  // Memoized to prevent re-creation on every render
+  const iconMap = useMemo<Record<string, React.ComponentType<{ size?: number; className?: string }>>>(() => ({
     // Dashboard & Overview
     Dashboard: IconDashboard,
     ChartBar: IconChartBar,
@@ -408,7 +409,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     Circle: IconCircle,
     School: IconSchool,
     Truck: IconTruck,
-  };
+  }), []);
 
   // Import default menus
   const { getDefaultMenusByRole } = useMemo(() => {
@@ -795,8 +796,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     return () => {
       isCancelled = true;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locale, location, refreshTrigger]);
+  }, [locale, location, refreshTrigger, iconMap, defaultMenusForRole]);
 
   // SuperAdmin-only menü kontrolü için yardımcı fonksiyon
   const isSuperAdminOnlyMenu = (menu: MenuItem & { moduleSlug?: string; group?: string }): boolean => {
