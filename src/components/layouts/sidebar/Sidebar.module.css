@@ -262,8 +262,9 @@
 }
 
 .sidebar.collapsed .navScrollArea {
-  padding-right: 0.25rem;
-  margin-right: -0.5rem;
+  /* Collapsed durumda simetrik padding - 4px her iki tarafta */
+  padding-inline: 0.25rem;
+  margin-inline: -0.5rem;
 }
 
 .nav {
