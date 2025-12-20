@@ -3,42 +3,12 @@
  * Sidebar ve TopNavigation için ortak menü verisi sağlar
  *
  * v2.0 - Çift render ve modül menü sorunları düzeltildi
- * v2.1 - Global cache eklendi, duplicate API çağrıları önlendi
+ * v2.2 - Simplified without complex caching
  */
 
 'use client';
 
 import { useMemo, useEffect, useState, useRef, useCallback } from 'react';
-
-// Global cache for menu data to prevent duplicate API calls across components
-interface MenuCacheEntry {
-  data: any;
-  timestamp: number;
-  promise?: Promise<any>;
-}
-
-const menuCache = new Map<string, MenuCacheEntry>();
-const CACHE_TTL = 30000; // 30 seconds cache TTL
-
-// Event emitter for cache updates
-const cacheListeners = new Map<string, Set<() => void>>();
-
-function notifyCacheListeners(location: string) {
-  const listeners = cacheListeners.get(location);
-  if (listeners) {
-    listeners.forEach(listener => listener());
-  }
-}
-
-function subscribeToCacheUpdates(location: string, callback: () => void) {
-  if (!cacheListeners.has(location)) {
-    cacheListeners.set(location, new Set());
-  }
-  cacheListeners.get(location)!.add(callback);
-  return () => {
-    cacheListeners.get(location)?.delete(callback);
-  };
-}
 import { useParams } from 'next/navigation';
 import { useModules } from '@/context/ModuleContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -694,93 +664,52 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   // Listen for menu update events
   useEffect(() => {
     const handleMenuUpdate = () => {
-      // Clear cache for this location when menu is updated
-      menuCache.delete(`${location}-${locale}`);
       setRefreshTrigger(prev => prev + 1);
     };
 
     window.addEventListener('menu-updated', handleMenuUpdate);
     return () => window.removeEventListener('menu-updated', handleMenuUpdate);
-  }, [location, locale]);
+  }, []);
 
   useEffect(() => {
     let isCancelled = false;
-    const cacheKey = `${location}-${locale}`;
 
     const loadManagedMenus = async () => {
-      // Check cache first
-      const cached = menuCache.get(cacheKey);
-      const now = Date.now();
-
-      // If we have valid cached data, use it immediately
-      if (cached && cached.data && (now - cached.timestamp) < CACHE_TTL) {
-        processMenuData(cached.data);
-        return;
-      }
-
-      // If there's already a pending request for this location, wait for it
-      if (cached && cached.promise) {
-        try {
-          const data = await cached.promise;
-          if (!isCancelled) {
-            processMenuData(data);
-          }
-          return;
-        } catch {
-          // Request failed, continue with new request
-        }
-      }
-
-      // Set loading true at start to prevent showing stale data during refetch
       setMenusLoading(true);
 
       try {
-        // Fetch from menu-resolver API with location parameter
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
+        const response = await fetchWithAuth(`/api/menu-resolver/${location}`);
 
-        // Create the fetch promise
-        const fetchPromise = fetchWithAuth(`/api/menu-resolver/${location}`).then(async (response) => {
-          // If 401, return null (user not logged in, use default menus)
-          if (response.status === 401) {
-            return null;
-          }
-
-          if (!response.ok) {
-            throw new Error(`Failed to fetch menu: ${response.status}`);
-          }
-
-          return response.json();
-        });
-
-        // Store promise in cache to prevent duplicate requests
-        menuCache.set(cacheKey, {
-          data: null,
-          timestamp: now,
-          promise: fetchPromise
-        });
-
-        const data = await fetchPromise;
-
-        // Check if request was cancelled
         if (isCancelled) return;
 
-        // Update cache with actual data
-        menuCache.set(cacheKey, {
-          data,
-          timestamp: Date.now(),
-          promise: undefined
-        });
+        // If 401, silently fail (user not logged in, use default menus)
+        if (response.status === 401) {
+          setMenusLoading(false);
+          initialLoadComplete.current = true;
+          return;
+        }
 
-        // Process the data to update state
-        processMenuData(data);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch menu: ${response.status}`);
+        }
 
-        // Notify other listeners
-        notifyCacheListeners(location);
+        const data = await response.json();
+
+        if (isCancelled) return;
+
+        if (data.success && data.data && data.data.menu) {
+          const menuData = data.data.menu;
+          const convertedMenus = convertItems(menuData.items || []);
+          setManagedMenus(convertedMenus);
+          setRawManagedMenus(menuData.items || []);
+        } else {
+          setManagedMenus([]);
+          setRawManagedMenus([]);
+        }
       } catch (error) {
         if (isCancelled) return;
         console.error('[useMenuItems] Error loading menu from resolver:', error);
-        // Clear failed cache entry
-        menuCache.delete(cacheKey);
         setManagedMenus([]);
         setRawManagedMenus([]);
       } finally {
@@ -861,44 +790,10 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
         });
     };
 
-    // Process menu data and update state
-    function processMenuData(data: any) {
-      if (!data) {
-        setManagedMenus([]);
-        setRawManagedMenus([]);
-        setMenusLoading(false);
-        initialLoadComplete.current = true;
-        return;
-      }
-
-      if (data.success && data.data && data.data.menu) {
-        const menuData = data.data.menu;
-        const convertedMenus = convertItems(menuData.items || []);
-        setManagedMenus(convertedMenus);
-        setRawManagedMenus(menuData.items || []);
-      } else {
-        // No menu assigned to this location, use fallback
-        setManagedMenus([]);
-        setRawManagedMenus([]);
-      }
-      setMenusLoading(false);
-      initialLoadComplete.current = true;
-    }
-
     loadManagedMenus();
 
-    // Subscribe to cache updates from other components
-    const unsubscribe = subscribeToCacheUpdates(location, () => {
-      const cached = menuCache.get(cacheKey);
-      if (cached && cached.data) {
-        processMenuData(cached.data);
-      }
-    });
-
-    // Cleanup function
     return () => {
       isCancelled = true;
-      unsubscribe();
     };
   }, [locale, location, refreshTrigger, iconMap, defaultMenusForRole]);
 
