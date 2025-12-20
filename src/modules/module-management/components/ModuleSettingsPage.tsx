@@ -50,6 +50,7 @@ import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from '@/lib/i18n/client';
 import { useNotification } from '@/hooks/useNotification';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 import type { ModuleRecord } from '@/lib/modules/types';
 
 interface ModuleSettingsPageProps {
@@ -185,7 +186,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   // Load menu items with hierarchical structure
   const loadMenuItems = async () => {
     try {
-      const response = await fetch(`/api/modules/${module.slug}/menu?locale=${locale}`);
+      const response = await fetchWithAuth(`/api/modules/${module.slug}/menu?locale=${locale}`);
 
       if (!response.ok) throw new Error('Failed to fetch menu');
       const result = await response.json();
@@ -467,7 +468,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   const saveMenu = async () => {
     setSavingMenu(true);
     try {
-      const response = await fetch(`/api/modules/${module.slug}/menu?locale=${locale}`, {
+      const response = await fetchWithAuth(`/api/modules/${module.slug}/menu?locale=${locale}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
