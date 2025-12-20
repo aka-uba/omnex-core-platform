@@ -44,28 +44,47 @@ export async function POST(request: NextRequest) {
       companyId = firstCompany?.id || undefined;
     }
 
-    // Check if templates already exist
-    const existingTemplates = await service.getTemplates(tenantId, 'email');
-    if (existingTemplates.length > 0) {
-      return NextResponse.json({
-        success: false,
-        message: 'Templates already exist. Delete existing templates first.',
-        data: { count: existingTemplates.length },
-      });
-    }
+    // Get all existing templates to check which ones are missing
+    const [existingEmail, existingSMS, existingPush, existingWhatsApp, existingTelegram] = await Promise.all([
+      service.getTemplates(tenantId, 'email'),
+      service.getTemplates(tenantId, 'sms'),
+      service.getTemplates(tenantId, 'push'),
+      service.getTemplates(tenantId, 'whatsapp'),
+      service.getTemplates(tenantId, 'telegram'),
+    ]);
 
-    const templates = [];
+    // Create a set of existing template names for quick lookup
+    const existingNames = new Set([
+      ...existingEmail.map(t => t.name),
+      ...existingSMS.map(t => t.name),
+      ...existingPush.map(t => t.name),
+      ...existingWhatsApp.map(t => t.name),
+      ...existingTelegram.map(t => t.name),
+    ]);
+
+    const templates: any[] = [];
+    let skippedCount = 0;
+
+    // Helper function to create template only if it doesn't exist
+    const createIfMissing = async (name: string, data: any) => {
+      if (existingNames.has(name)) {
+        skippedCount++;
+        return null;
+      }
+      const template = await service.createTemplate(tenantId, data, companyId);
+      templates.push(template);
+      return template;
+    };
 
     // ============================================
     // EMAIL TEMPLATES
     // ============================================
 
     // 1. Corporate Email Template (Default)
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Kurumsal Email Şablonu', {
       name: 'Kurumsal Email Şablonu',
       channel: 'email',
       category: 'system',
-      // notificationType is optional, omit it
       description: 'Kurumsal ve profesyonel email şablonu',
       emailSubject: '{{notificationTitle}} - {{companyName}}',
       emailPlainText: 'Sayın {{userName}},\n\n{{notificationMessage}}\n\nSaygılarımızla,\n{{companyName}}',
@@ -79,10 +98,10 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'Saygılarımızla,\n{{companyName}}',
       isDefault: true,
       isActive: true,
-    }, companyId));
+    });
 
     // 2. Task Assignment Email
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Görev Atama Email Şablonu', {
       name: 'Görev Atama Email Şablonu',
       channel: 'email',
       category: 'task',
@@ -100,10 +119,10 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'Saygılarımızla,\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 3. Urgent Alert Email
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Acil Bildirim Email Şablonu', {
       name: 'Acil Bildirim Email Şablonu',
       channel: 'email',
       category: 'urgent',
@@ -121,10 +140,10 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'Lütfen derhal işlem yapın.\n\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 4. Visionary Email Template
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Vizyoner Email Şablonu', {
       name: 'Vizyoner Email Şablonu',
       channel: 'email',
       category: 'system',
@@ -142,10 +161,10 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'Geleceği birlikte şekillendiriyoruz.\n\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 5. Elegant Email Template
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Şık Email Şablonu', {
       name: 'Şık Email Şablonu',
       channel: 'email',
       category: 'system',
@@ -163,10 +182,10 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'En iyi dileklerimizle,\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 6. System Update Email
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Sistem Güncellemesi Email Şablonu', {
       name: 'Sistem Güncellemesi Email Şablonu',
       channel: 'email',
       category: 'system',
@@ -184,14 +203,14 @@ export async function POST(request: NextRequest) {
       defaultMessageSuffix: 'Sorularınız için bizimle iletişime geçebilirsiniz.\n\nSaygılarımızla,\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // ============================================
     // SMS TEMPLATES
     // ============================================
 
     // 7. SMS - Task Assignment
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('SMS - Görev Atama', {
       name: 'SMS - Görev Atama',
       channel: 'sms',
       category: 'task',
@@ -201,10 +220,10 @@ export async function POST(request: NextRequest) {
       smsContent: '{{userName}}, size yeni görev atandı: {{taskTitle}}. Son tarih: {{taskDueDate}}. Detay: {{companyName}}',
       isDefault: true,
       isActive: true,
-    }, companyId));
+    });
 
     // 8. SMS - Urgent Alert
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('SMS - Acil Bildirim', {
       name: 'SMS - Acil Bildirim',
       channel: 'sms',
       category: 'urgent',
@@ -214,10 +233,10 @@ export async function POST(request: NextRequest) {
       smsContent: 'ACİL: {{notificationMessage}} - {{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 9. SMS - System Notification
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('SMS - Sistem Bildirimi', {
       name: 'SMS - Sistem Bildirimi',
       channel: 'sms',
       category: 'system',
@@ -227,14 +246,14 @@ export async function POST(request: NextRequest) {
       smsContent: '{{companyName}}: {{notificationMessage}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // ============================================
     // PUSH NOTIFICATION TEMPLATES
     // ============================================
 
     // 10. Push - Task Assignment
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Push - Görev Atama', {
       name: 'Push - Görev Atama',
       channel: 'push',
       category: 'task',
@@ -244,10 +263,10 @@ export async function POST(request: NextRequest) {
       pushBody: '{{taskTitle}} görevi size atandı',
       isDefault: true,
       isActive: true,
-    }, companyId));
+    });
 
     // 11. Push - Urgent Alert
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Push - Acil Bildirim', {
       name: 'Push - Acil Bildirim',
       channel: 'push',
       category: 'urgent',
@@ -257,10 +276,10 @@ export async function POST(request: NextRequest) {
       pushBody: '{{notificationMessage}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // 12. Push - System Update
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Push - Sistem Güncellemesi', {
       name: 'Push - Sistem Güncellemesi',
       channel: 'push',
       category: 'system',
@@ -270,14 +289,14 @@ export async function POST(request: NextRequest) {
       pushBody: '{{notificationMessage}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // ============================================
     // WHATSAPP TEMPLATES
     // ============================================
 
     // 13. WhatsApp - Task Assignment
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('WhatsApp - Görev Atama', {
       name: 'WhatsApp - Görev Atama',
       channel: 'whatsapp',
       category: 'task',
@@ -286,10 +305,10 @@ export async function POST(request: NextRequest) {
       socialContent: '👋 Merhaba {{userName}},\n\n📋 Size yeni bir görev atandı:\n\n*{{taskTitle}}*\n\n{{taskDescription}}\n\n📅 Son Tarih: {{taskDueDate}}\n\nDetaylar için sisteme giriş yapabilirsiniz.\n\n{{companyName}}',
       isDefault: true,
       isActive: true,
-    }, companyId));
+    });
 
     // 14. WhatsApp - Urgent Alert
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('WhatsApp - Acil Bildirim', {
       name: 'WhatsApp - Acil Bildirim',
       channel: 'whatsapp',
       category: 'urgent',
@@ -298,14 +317,14 @@ export async function POST(request: NextRequest) {
       socialContent: '🚨 *ACİL BİLDİRİM*\n\n{{notificationMessage}}\n\nLütfen derhal işlem yapın.\n\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
     // ============================================
     // TELEGRAM TEMPLATES
     // ============================================
 
     // 15. Telegram - Task Assignment
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Telegram - Görev Atama', {
       name: 'Telegram - Görev Atama',
       channel: 'telegram',
       category: 'task',
@@ -314,10 +333,10 @@ export async function POST(request: NextRequest) {
       socialContent: '👋 Merhaba {{userName}},\n\n📋 Size yeni bir görev atandı:\n\n*{{taskTitle}}*\n\n{{taskDescription}}\n\n📅 Son Tarih: {{taskDueDate}}\n\nDetaylar için sisteme giriş yapabilirsiniz.\n\n{{companyName}}',
       isDefault: true,
       isActive: true,
-    }, companyId));
+    });
 
     // 16. Telegram - Urgent Alert
-    templates.push(await service.createTemplate(tenantId, {
+    await createIfMissing('Telegram - Acil Bildirim', {
       name: 'Telegram - Acil Bildirim',
       channel: 'telegram',
       category: 'urgent',
@@ -326,14 +345,23 @@ export async function POST(request: NextRequest) {
       socialContent: '🚨 *ACİL BİLDİRİM*\n\n{{notificationMessage}}\n\nLütfen derhal işlem yapın.\n\n{{companyName}}',
       isDefault: false,
       isActive: true,
-    }, companyId));
+    });
 
-    logger.info('Default notification templates created', { count: templates.length }, 'api-notification-templates-seed');
+    logger.info('Default notification templates created', {
+      created: templates.length,
+      skipped: skippedCount
+    }, 'api-notification-templates-seed');
 
     return NextResponse.json({
       success: true,
-      message: `${templates.length} templates created successfully`,
-      data: { templates: templates.map(t => ({ id: t.id, name: t.name, channel: t.channel })) },
+      message: templates.length > 0
+        ? `${templates.length} yeni şablon oluşturuldu${skippedCount > 0 ? `, ${skippedCount} şablon zaten mevcut` : ''}`
+        : 'Tüm şablonlar zaten mevcut',
+      data: {
+        templates: templates.map(t => ({ id: t.id, name: t.name, channel: t.channel })),
+        created: templates.length,
+        skipped: skippedCount
+      },
     });
   } catch (error: any) {
     logger.error('Failed to seed notification templates', error, 'api-notification-templates-seed');

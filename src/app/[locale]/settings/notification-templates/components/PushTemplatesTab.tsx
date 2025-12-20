@@ -251,7 +251,7 @@ export function PushTemplatesTab({ locale }: { locale: string }) {
   const handleSeedTemplates = async () => {
     const confirmed = await confirm({
       title: t('seed.title'),
-      message: t('seedConfirm'),
+      message: t('seed.message'),
       confirmLabel: t('seed.confirm'),
       confirmColor: 'blue',
     });
@@ -453,7 +453,7 @@ export function PushTemplatesTab({ locale }: { locale: string }) {
           onClick={handleSeedTemplates}
           variant="light"
         >
-          {t('seed')}
+          {t('seed.button')}
         </Button>
         <Button
           leftSection={<IconPlus size={16} />}
