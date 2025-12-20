@@ -77,6 +77,7 @@ export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
                                 id: `module-${moduleSlug}`,
                                 title: category.label || moduleSlug,
                                 url: `/modules/${moduleSlug}`,
+                                icon: category.icon, // Use module icon from category (comes from module.config.yaml)
                                 type: 'module',
                                 children: [],
                             };

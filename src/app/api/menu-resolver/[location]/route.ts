@@ -3,6 +3,7 @@ import { withTenant } from '@/lib/api/withTenant';
 import { verifyAuth } from '@/lib/auth/jwt';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { errorResponse, successResponse } from '@/lib/api/errorHandler';
+import { ModuleLoader } from '@/lib/modules/loader';
 
 /**
  * GET /api/menu-resolver/[location]
@@ -273,6 +274,36 @@ export async function GET(
                     return successResponse(null, 'No menu assigned to this location');
                 }
 
+                // Load all modules to get current icons
+                const moduleLoader = new ModuleLoader();
+                const allModules = await moduleLoader.loadAllModules();
+                const moduleIconMap = new Map<string, string>();
+                allModules.forEach(mod => {
+                    if (mod.slug && mod.icon) {
+                        moduleIconMap.set(mod.slug, mod.icon);
+                    }
+                });
+
+                // Enrich menu items with current module icons
+                // This ensures module group icons always reflect the latest icon from module.config.yaml
+                const enrichWithModuleIcons = (items: any[]): any[] => {
+                    return items.map(item => {
+                        let enrichedItem = { ...item };
+
+                        // If this item has a moduleSlug, use the module's current icon
+                        if (item.moduleSlug && moduleIconMap.has(item.moduleSlug)) {
+                            enrichedItem.icon = moduleIconMap.get(item.moduleSlug);
+                        }
+
+                        // Recursively enrich children
+                        if (item.children && item.children.length > 0) {
+                            enrichedItem.children = enrichWithModuleIcons(item.children);
+                        }
+
+                        return enrichedItem;
+                    });
+                };
+
                 // Filter menu items based on user permissions
                 const filterItemsByPermissions = (items: any[]): any[] => {
                     return items
@@ -303,10 +334,13 @@ export async function GET(
 
                 const filteredItems = filterItemsByPermissions(rootItems);
 
+                // Enrich filtered items with current module icons
+                const enrichedItems = enrichWithModuleIcons(filteredItems);
+
                 return successResponse({
                     menu: {
                         ...selectedAssignment.menu,
-                        items: filteredItems,
+                        items: enrichedItems,
                     },
                     location: {
                         id: location.id,
