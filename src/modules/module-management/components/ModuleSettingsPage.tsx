@@ -109,6 +109,13 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   const [iconPickerItemId, setIconPickerItemId] = useState<string | null>(null);
   const [headerIconPickerOpen, setHeaderIconPickerOpen] = useState(false);
 
+  // Sync moduleIcon state when module.icon prop changes (e.g., after page refresh)
+  useEffect(() => {
+    if (module.icon && module.icon !== moduleIcon) {
+      setModuleIcon(module.icon);
+    }
+  }, [module.icon]);
+
   // Function to update module icon via API
   const handleModuleIconChange = async (iconName: string) => {
     setSavingIcon(true);

@@ -83,6 +83,31 @@ export function MenuBuilder({ menuId, items, onUpdateItems, onEditItem }: MenuBu
         setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
+    // Helper to get all descendant indices of an item (children, grandchildren, etc.)
+    const getDescendantIndices = (items: MenuItem[], parentIndex: number): number[] => {
+        const parentItem = items[parentIndex];
+        if (!parentItem) return [];
+
+        const parentDepth = parentItem.depth || 0;
+        const descendants: number[] = [];
+
+        // Look at items after the parent
+        for (let i = parentIndex + 1; i < items.length; i++) {
+            const item = items[i];
+            const itemDepth = item?.depth || 0;
+
+            // If depth is greater than parent, it's a descendant
+            if (itemDepth > parentDepth) {
+                descendants.push(i);
+            } else {
+                // If depth is same or less, we've exited the subtree
+                break;
+            }
+        }
+
+        return descendants;
+    };
+
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
 
@@ -92,15 +117,31 @@ export function MenuBuilder({ menuId, items, onUpdateItems, onEditItem }: MenuBu
         if (sourceIndex === destinationIndex) return;
 
         const newItems = Array.from(flatItems);
-        const [movedItem] = newItems.splice(sourceIndex, 1);
-        if (movedItem) {
-            newItems.splice(destinationIndex, 0, movedItem);
+
+        // Get all descendants of the moved item
+        const descendantIndices = getDescendantIndices(newItems, sourceIndex);
+        const itemsToMove = [sourceIndex, ...descendantIndices];
+
+        // Extract items to move (in order)
+        const movedItems = itemsToMove.map(idx => newItems[idx]).filter(Boolean) as MenuItem[];
+
+        // Remove items from their original positions (from end to start to preserve indices)
+        for (let i = itemsToMove.length - 1; i >= 0; i--) {
+            const idx = itemsToMove[i];
+            if (idx !== undefined) {
+                newItems.splice(idx, 1);
+            }
         }
 
-        // Logic to handle nesting based on position would go here
-        // For now, we just reorder in the flat list and let the user adjust depth manually
-        // or we could infer depth based on the item above it (WordPress style)
-        // But implementing true "drag right to nest" is complex with just a flat list
+        // Calculate adjusted destination index
+        // If moving down, we need to account for removed items
+        let adjustedDestination = destinationIndex;
+        if (destinationIndex > sourceIndex) {
+            adjustedDestination = destinationIndex - movedItems.length + 1;
+        }
+
+        // Insert all moved items at destination
+        newItems.splice(adjustedDestination, 0, ...movedItems);
 
         setFlatItems(newItems);
     };
