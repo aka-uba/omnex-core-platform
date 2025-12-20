@@ -771,6 +771,9 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
           promise: undefined
         });
 
+        // Process the data to update state
+        processMenuData(data);
+
         // Notify other listeners
         notifyCacheListeners(location);
       } catch (error) {
