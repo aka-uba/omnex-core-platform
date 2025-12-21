@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -13,8 +13,12 @@ import {
   Grid,
   NumberInput,
   Switch,
+  Divider,
+  Text,
+  Card,
+  Title,
 } from '@mantine/core';
-import { IconArrowLeft } from '@tabler/icons-react';
+import { IconArrowLeft, IconCash, IconReceipt } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateApartment, useUpdateApartment, useApartment } from '@/hooks/useApartments';
 import { useProperties } from '@/hooks/useProperties';
@@ -60,6 +64,10 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
       deliveryDate: undefined as Date | undefined,
       rentPrice: undefined as number | undefined,
       salePrice: undefined as number | undefined,
+      coldRent: undefined as number | undefined,
+      additionalCosts: undefined as number | undefined,
+      heatingCosts: undefined as number | undefined,
+      deposit: undefined as number | undefined,
       description: '',
       images: [] as string[],
       coverImage: undefined as string | undefined,
@@ -73,6 +81,14 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
       roomCount: (value) => (value < 0 ? t('form.roomCount') + ' ' + t('form.mustBeNonNegative') : null),
     },
   });
+
+  // Toplam Kira (Warm Rent) hesaplamasi
+  const warmRent = useMemo(() => {
+    const cold = form.values.coldRent || 0;
+    const additional = form.values.additionalCosts || 0;
+    const heating = form.values.heatingCosts || 0;
+    return cold + additional + heating;
+  }, [form.values.coldRent, form.values.additionalCosts, form.values.heatingCosts]);
 
   // Load apartment data for edit
   useEffect(() => {
@@ -95,6 +111,10 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
           deliveryDate: apartmentData.deliveryDate ? new Date(apartmentData.deliveryDate) : undefined,
           rentPrice: apartmentData.rentPrice ? Number(apartmentData.rentPrice) : undefined,
           salePrice: apartmentData.salePrice ? Number(apartmentData.salePrice) : undefined,
+          coldRent: apartmentData.coldRent ? Number(apartmentData.coldRent) : undefined,
+          additionalCosts: apartmentData.additionalCosts ? Number(apartmentData.additionalCosts) : undefined,
+          heatingCosts: apartmentData.heatingCosts ? Number(apartmentData.heatingCosts) : undefined,
+          deposit: apartmentData.deposit ? Number(apartmentData.deposit) : undefined,
           description: apartmentData.description || '',
           images: apartmentData.images || [],
           coverImage: apartmentData.coverImage ?? undefined,
@@ -124,6 +144,10 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
         deliveryDate: values.deliveryDate || undefined,
         rentPrice: values.rentPrice ?? undefined,
         salePrice: values.salePrice ?? undefined,
+        coldRent: values.coldRent ?? undefined,
+        additionalCosts: values.additionalCosts ?? undefined,
+        heatingCosts: values.heatingCosts ?? undefined,
+        deposit: values.deposit ?? undefined,
         description: values.description || undefined,
         images: values.images || [],
         coverImage: values.coverImage || null,
@@ -280,6 +304,105 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 {...form.getInputProps('balcony', { type: 'checkbox' })}
               />
             </Grid.Col>
+          </Grid>
+
+          {/* Kira ve Yan Giderler Bolumu */}
+          <Divider my="md" />
+          <Group gap="xs">
+            <IconCash size={20} />
+            <Title order={4}>{t('sideCosts.rentAndSideCosts')}</Title>
+          </Group>
+
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <NumberInput
+                label={t('form.coldRent')}
+                placeholder={t('form.coldRentPlaceholder')}
+                min={0}
+                decimalScale={2}
+                leftSection={<IconReceipt size={16} />}
+                {...form.getInputProps('coldRent')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <NumberInput
+                label={t('form.additionalCosts')}
+                placeholder={t('form.additionalCostsPlaceholder')}
+                min={0}
+                decimalScale={2}
+                description={t('sideCosts.monthlyEstimate')}
+                {...form.getInputProps('additionalCosts')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <NumberInput
+                label={t('form.heatingCosts')}
+                placeholder={t('form.heatingCostsPlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('heatingCosts')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <NumberInput
+                label={t('form.deposit')}
+                placeholder={t('form.depositPlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('deposit')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          {/* Toplam Kira Hesaplama Karti */}
+          {(form.values.coldRent || form.values.additionalCosts || form.values.heatingCosts) && (
+            <Card withBorder p="md" radius="md">
+              <Stack gap="xs">
+                <Title order={5}>{t('sideCosts.rentCalculation')}</Title>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {(form.values.coldRent || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {(form.values.additionalCosts || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {(form.values.heatingCosts || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Divider my="xs" />
+                  </Grid.Col>
+                  <Grid.Col span={8}>
+                    <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={700} c="blue">
+                      {warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                    </Text>
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Card>
+          )}
+
+          <Divider my="md" />
+
+          <Grid>
             <Grid.Col span={12}>
               <Textarea
                 label={t('form.description')}

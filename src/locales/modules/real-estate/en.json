@@ -616,6 +616,12 @@
     "rented": "Rented",
     "empty": "Empty"
   },
+  "sideCosts": {
+    "rentAndSideCosts": "Rent and Side Costs",
+    "monthlyEstimate": "Monthly estimate",
+    "rentCalculation": "Rent Calculation",
+    "totalRent": "Total Rent (Warm)"
+  },
   "qrCode": {
     "title": "Apartment QR Code",
     "description": "Scan this QR code to view apartment details",

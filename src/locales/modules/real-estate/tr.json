@@ -1554,6 +1554,12 @@
     "required": "Gerekli",
     "updatedAt": "Güncellenme Tarihi"
   },
+  "sideCosts": {
+    "rentAndSideCosts": "Kira ve Yan Giderler",
+    "monthlyEstimate": "Tahmini aylik tutar",
+    "rentCalculation": "Kira Hesaplamasi",
+    "totalRent": "Toplam Kira (Brut)"
+  },
   "qrCode": {
     "title": "Daire QR Kodu",
     "description": "Bu QR kodu tarayarak daire detaylarını görüntüleyebilirsiniz",
