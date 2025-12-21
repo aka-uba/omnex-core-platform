@@ -620,7 +620,9 @@
     "rentAndSideCosts": "Rent and Side Costs",
     "monthlyEstimate": "Monthly estimate",
     "rentCalculation": "Rent Calculation",
-    "totalRent": "Total Rent (Warm)"
+    "totalRent": "Total Rent (Warm)",
+    "total": "Total",
+    "apartmentBreakdown": "Apartment Breakdown"
   },
   "qrCode": {
     "title": "Apartment QR Code",

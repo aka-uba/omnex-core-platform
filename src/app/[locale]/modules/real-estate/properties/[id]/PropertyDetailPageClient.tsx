@@ -1,7 +1,8 @@
 'use client';
 
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button } from '@mantine/core';
-import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye } from '@tabler/icons-react';
+import { useMemo } from 'react';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table } from '@mantine/core';
+import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';
@@ -19,6 +20,53 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const propertyId = params?.id as string;
 
   const { data: property, isLoading } = useProperty(propertyId);
+
+  // Bina seviyesinde yan gider özeti hesaplaması
+  const propertySideCostSummary = useMemo(() => {
+    if (!property?.apartments || property.apartments.length === 0) return null;
+
+    let totalColdRent = 0;
+    let totalAdditionalCosts = 0;
+    let totalHeatingCosts = 0;
+    let apartmentsWithSideCosts = 0;
+
+    const apartmentDetails = property.apartments.map((apt: any) => {
+      const coldRent = Number(apt.coldRent) || 0;
+      const additionalCosts = Number(apt.additionalCosts) || 0;
+      const heatingCosts = Number(apt.heatingCosts) || 0;
+      const warmRent = coldRent + additionalCosts + heatingCosts;
+
+      if (warmRent > 0) apartmentsWithSideCosts++;
+
+      totalColdRent += coldRent;
+      totalAdditionalCosts += additionalCosts;
+      totalHeatingCosts += heatingCosts;
+
+      return {
+        id: apt.id,
+        unitNumber: apt.unitNumber,
+        coldRent,
+        additionalCosts,
+        heatingCosts,
+        warmRent,
+        area: Number(apt.area) || 0,
+      };
+    });
+
+    const totalWarmRent = totalColdRent + totalAdditionalCosts + totalHeatingCosts;
+
+    if (totalWarmRent === 0) return null;
+
+    return {
+      totalColdRent,
+      totalAdditionalCosts,
+      totalHeatingCosts,
+      totalWarmRent,
+      apartmentCount: property.apartments.length,
+      apartmentsWithSideCosts,
+      apartmentDetails: apartmentDetails.filter((a: any) => a.warmRent > 0),
+    };
+  }, [property]);
 
   if (isLoading) {
     return <PropertyDetailPageSkeleton />;
@@ -83,6 +131,11 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
               {property.apartments && property.apartments.length > 0 && (
                 <Tabs.Tab value="apartments" leftSection={<IconHome size={20} />}>
                   {t('apartments.title')} ({property.apartments.length})
+                </Tabs.Tab>
+              )}
+              {propertySideCostSummary && (
+                <Tabs.Tab value="sideCosts" leftSection={<IconCash size={20} />}>
+                  {t('sideCosts.rentAndSideCosts')}
                 </Tabs.Tab>
               )}
             </Tabs.List>
@@ -403,6 +456,107 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                 ))}
               </Stack>
             </Paper>
+          </Tabs.Panel>
+        )}
+
+        {/* Yan Gider Sekmesi */}
+        {propertySideCostSummary && (
+          <Tabs.Panel value="sideCosts" pt="md">
+            <Stack gap="md">
+              {/* Özet Kart */}
+              <Card withBorder p="md" radius="md">
+                <Stack gap="md">
+                  <Group gap="xs">
+                    <IconCash size={20} />
+                    <Title order={4}>{t('sideCosts.rentAndSideCosts')}</Title>
+                    <Badge variant="light" color="blue">
+                      {propertySideCostSummary.apartmentsWithSideCosts} / {propertySideCostSummary.apartmentCount} {t('apartments.title')}
+                    </Badge>
+                  </Group>
+                  <Divider />
+                  <Grid>
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">{t('form.coldRent')} ({t('sideCosts.total')})</Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" ta="right" fw={500}>
+                        {propertySideCostSummary.totalColdRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">{t('form.additionalCosts')} ({t('sideCosts.total')})</Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" ta="right" fw={500}>
+                        {propertySideCostSummary.totalAdditionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">{t('form.heatingCosts')} ({t('sideCosts.total')})</Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" ta="right" fw={500}>
+                        {propertySideCostSummary.totalHeatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                      <Divider my="xs" />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" fw={600}>{t('sideCosts.totalRent')} ({t('sideCosts.total')})</Text>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <Text size="sm" ta="right" fw={700} c="blue">
+                        {propertySideCostSummary.totalWarmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      </Text>
+                    </Grid.Col>
+                  </Grid>
+                </Stack>
+              </Card>
+
+              {/* Daire Detayları Tablosu */}
+              <Paper shadow="xs" p="md">
+                <Stack gap="md">
+                  <Title order={5}>{t('sideCosts.apartmentBreakdown')}</Title>
+                  <Table striped highlightOnHover>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>{t('table.unitNumber')}</Table.Th>
+                        <Table.Th ta="right">{t('apartments.area')}</Table.Th>
+                        <Table.Th ta="right">{t('form.coldRent')}</Table.Th>
+                        <Table.Th ta="right">{t('form.additionalCosts')}</Table.Th>
+                        <Table.Th ta="right">{t('form.heatingCosts')}</Table.Th>
+                        <Table.Th ta="right">{t('sideCosts.totalRent')}</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {propertySideCostSummary.apartmentDetails.map((apt: any) => (
+                        <Table.Tr
+                          key={apt.id}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => router.push(`/${currentLocale}/modules/real-estate/apartments/${apt.id}`)}
+                        >
+                          <Table.Td>{apt.unitNumber}</Table.Td>
+                          <Table.Td ta="right">{apt.area} m²</Table.Td>
+                          <Table.Td ta="right">
+                            {apt.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                          </Table.Td>
+                          <Table.Td ta="right">
+                            {apt.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                          </Table.Td>
+                          <Table.Td ta="right">
+                            {apt.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                          </Table.Td>
+                          <Table.Td ta="right" fw={600} c="blue">
+                            {apt.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                </Stack>
+              </Paper>
+            </Stack>
           </Tabs.Panel>
         )}
       </Tabs>

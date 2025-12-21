@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -16,11 +16,14 @@ import {
   Text,
   ActionIcon,
   Badge,
+  Card,
+  Title,
+  Divider,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { IconArrowLeft, IconUpload, IconFile, IconTrash } from '@tabler/icons-react';
+import { IconArrowLeft, IconUpload, IconFile, IconTrash, IconCash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateContract, useUpdateContract, useContract } from '@/hooks/useContracts';
 import { useApartments } from '@/hooks/useApartments';
@@ -190,6 +193,30 @@ export function ContractForm({ locale, contractId }: ContractFormProps) {
     label: `${a.unitNumber} - ${a.property?.name || ''}`,
   })) || [];
 
+  // Seçili dairenin yan gider bilgileri
+  const selectedApartmentSideCosts = useMemo(() => {
+    if (!form.values.apartmentId || !apartmentsData?.apartments) return null;
+    const apt = apartmentsData.apartments.find((a: any) => a.id === form.values.apartmentId);
+    if (!apt) return null;
+
+    const coldRent = Number(apt.coldRent) || 0;
+    const additionalCosts = Number(apt.additionalCosts) || 0;
+    const heatingCosts = Number(apt.heatingCosts) || 0;
+    const warmRent = coldRent + additionalCosts + heatingCosts;
+    const deposit = Number(apt.deposit) || 0;
+
+    return {
+      coldRent,
+      additionalCosts,
+      heatingCosts,
+      warmRent,
+      deposit,
+      unitNumber: apt.unitNumber,
+      propertyName: apt.property?.name,
+      area: Number(apt.area) || 0,
+    };
+  }, [form.values.apartmentId, apartmentsData?.apartments]);
+
   const tenantOptions = tenantsData?.tenants.map(t => ({
     value: t.id,
     label: t.tenantNumber || t.id,
@@ -225,6 +252,62 @@ export function ContractForm({ locale, contractId }: ContractFormProps) {
                 {...form.getInputProps('tenantRecordId')}
               />
             </Grid.Col>
+
+            {/* Seçili Dairenin Yan Gider Özeti */}
+            {selectedApartmentSideCosts && (selectedApartmentSideCosts.coldRent > 0 || selectedApartmentSideCosts.additionalCosts > 0 || selectedApartmentSideCosts.heatingCosts > 0) && (
+              <Grid.Col span={12}>
+                <Card withBorder p="md" radius="md">
+                  <Stack gap="sm">
+                    <Group gap="xs">
+                      <IconCash size={18} />
+                      <Title order={5}>{t('sideCosts.rentAndSideCosts')}</Title>
+                      <Text size="xs" c="dimmed">
+                        ({selectedApartmentSideCosts.propertyName} - {selectedApartmentSideCosts.unitNumber})
+                      </Text>
+                    </Group>
+                    <Divider />
+                    <Grid>
+                      <Grid.Col span={6}>
+                        <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" ta="right" fw={500}>
+                          {selectedApartmentSideCosts.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" ta="right" fw={500}>
+                          {selectedApartmentSideCosts.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" ta="right" fw={500}>
+                          {selectedApartmentSideCosts.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <Divider my="xs" />
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" ta="right" fw={700} c="blue">
+                          {selectedApartmentSideCosts.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Card>
+              </Grid.Col>
+            )}
+
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Select
                 label={t('form.template')}

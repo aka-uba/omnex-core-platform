@@ -1558,7 +1558,9 @@
     "rentAndSideCosts": "Kira ve Yan Giderler",
     "monthlyEstimate": "Tahmini aylik tutar",
     "rentCalculation": "Kira Hesaplamasi",
-    "totalRent": "Toplam Kira (Brut)"
+    "totalRent": "Toplam Kira (Brut)",
+    "total": "Toplam",
+    "apartmentBreakdown": "Daire Bazında Detay"
   },
   "qrCode": {
     "title": "Daire QR Kodu",

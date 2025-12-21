@@ -44,6 +44,23 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               startDate: true,
               endDate: true,
               rentAmount: true,
+              apartment: {
+                select: {
+                  id: true,
+                  unitNumber: true,
+                  area: true,
+                  coldRent: true,
+                  additionalCosts: true,
+                  heatingCosts: true,
+                  deposit: true,
+                  property: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
             },
             take: 10,
             orderBy: { createdAt: 'desc' },

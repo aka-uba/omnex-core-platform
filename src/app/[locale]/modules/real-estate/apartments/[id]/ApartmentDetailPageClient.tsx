@@ -1,7 +1,8 @@
 'use client';
 
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button } from '@mantine/core';
-import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye } from '@tabler/icons-react';
+import { useMemo } from 'react';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button, Divider, Title } from '@mantine/core';
+import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
 import { useApartment } from '@/hooks/useApartments';
@@ -20,6 +21,21 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const apartmentId = params?.id as string;
 
   const { data: apartment, isLoading } = useApartment(apartmentId);
+
+  // Yan gider hesaplaması
+  const sideCostSummary = useMemo(() => {
+    if (!apartment) return null;
+    const coldRent = Number(apartment.coldRent) || 0;
+    const additionalCosts = Number(apartment.additionalCosts) || 0;
+    const heatingCosts = Number(apartment.heatingCosts) || 0;
+    const warmRent = coldRent + additionalCosts + heatingCosts;
+    const deposit = Number(apartment.deposit) || 0;
+
+    // Eğer hiçbir değer yoksa null döndür
+    if (coldRent === 0 && additionalCosts === 0 && heatingCosts === 0) return null;
+
+    return { coldRent, additionalCosts, heatingCosts, warmRent, deposit };
+  }, [apartment]);
 
   if (isLoading) {
     return <ApartmentDetailPageSkeleton />;
@@ -227,6 +243,70 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                         })}
                       </Text>
                     </Stack>
+                  </Grid.Col>
+                )}
+
+                {/* Yan Gider Özeti */}
+                {sideCostSummary && (
+                  <Grid.Col span={12}>
+                    <Card withBorder p="md" radius="md" mt="md">
+                      <Stack gap="sm">
+                        <Group gap="xs">
+                          <IconCash size={18} />
+                          <Title order={5}>{t('sideCosts.rentAndSideCosts')}</Title>
+                        </Group>
+                        <Divider />
+                        <Grid>
+                          <Grid.Col span={6}>
+                            <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" ta="right" fw={500}>
+                              {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            </Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" ta="right" fw={500}>
+                              {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            </Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" ta="right" fw={500}>
+                              {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            </Text>
+                          </Grid.Col>
+                          <Grid.Col span={12}>
+                            <Divider my="xs" />
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Text size="sm" ta="right" fw={700} c="blue">
+                              {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            </Text>
+                          </Grid.Col>
+                          {sideCostSummary.deposit > 0 && (
+                            <>
+                              <Grid.Col span={6}>
+                                <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
+                              </Grid.Col>
+                              <Grid.Col span={6}>
+                                <Text size="sm" ta="right" fw={500}>
+                                  {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                </Text>
+                              </Grid.Col>
+                            </>
+                          )}
+                        </Grid>
+                      </Stack>
+                    </Card>
                   </Grid.Col>
                 )}
 
