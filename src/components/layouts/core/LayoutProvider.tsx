@@ -180,7 +180,7 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
   }, [loadedConfig]);
   */
 
-  // Direction artık sadece locale'e göre belirleniyor (layout.tsx'te)
+// Direction artık sadece locale'e göre belirleniyor (layout.tsx'te)
   // Sidebar konumu ayrı bir ayar (sidebar.position)
 
   // Theme mode'u Mantine'e, HTML'e ve eski ThemeContext'e uygula

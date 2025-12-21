@@ -36,9 +36,10 @@ import { PaymentForm } from './PaymentForm';
 
 interface PaymentListProps {
   locale: string;
+  paymentType?: 'incoming' | 'outgoing'; // incoming = tahsilatlar (faturalar), outgoing = ödemelerimiz (giderler)
 }
 
-export function PaymentList({ locale }: PaymentListProps) {
+export function PaymentList({ locale, paymentType }: PaymentListProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
   const { exportToExcel, exportToPDF, exportToCSV, isExporting } = useExport();
@@ -57,6 +58,7 @@ export function PaymentList({ locale }: PaymentListProps) {
     ...(subscriptionId ? { subscriptionId } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(paymentMethodFilter ? { paymentMethod: paymentMethodFilter } : {}),
+    ...(paymentType ? { paymentType } : {}),
   });
 
   // Fetch invoices and subscriptions for filters

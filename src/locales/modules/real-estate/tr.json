@@ -182,7 +182,10 @@
       "error": "Daire silinirken hata oluştu"
     },
     "images": "Resimler",
-    "contactForDetails": "Detaylar için iletişime geçin"
+    "contactForDetails": "Detaylar için iletişime geçin",
+    "tenantHistory": "Kiracı Geçmişi",
+    "maintenance": "Bakım",
+    "maintenanceDescription": "Bu daire için bakım kayıtlarını görmek için 'Tümünü Gör' butonuna tıklayın veya yeni bakım talebi oluşturun."
   },
   "tenants": {
     "title": "Kiracılar",
@@ -671,6 +674,12 @@
   "staff": {
     "title": "Personel",
     "description": "Personel üyelerini yönetin",
+    "tabs": {
+      "details": "Detaylar",
+      "detailsDescription": "Personel üyesi hakkında detaylı bilgiler yukarıda görüntülenmektedir.",
+      "assignedProperties": "Atanan Gayrimenkuller",
+      "assignedApartments": "Atanan Daireler"
+    },
     "create": {
       "title": "Yeni Personel Üyesi",
       "description": "Yeni personel üyesi ekleyin",
@@ -758,6 +767,7 @@
   "maintenance": {
     "title": "Bakım",
     "description": "Bakım taleplerini yönetin",
+    "viewAll": "Tümünü Gör",
     "create": {
       "title": "Yeni Bakım Talebi",
       "description": "Bakım talebi oluşturun",

@@ -1,7 +1,7 @@
 'use client';
 
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid } from '@mantine/core';
-import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto } from '@tabler/icons-react';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button } from '@mantine/core';
+import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
 import { useApartment } from '@/hooks/useApartments';
@@ -89,6 +89,14 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
           )}
           <Tabs.Tab value="qrcode" leftSection={<IconQrcode size={16} />}>
             {t('qrCode.title')}
+          </Tabs.Tab>
+          {apartment.contracts && apartment.contracts.length > 0 && (
+            <Tabs.Tab value="tenantHistory" leftSection={<IconUsers size={16} />}>
+              {t('apartments.tenantHistory')} ({apartment.contracts.length})
+            </Tabs.Tab>
+          )}
+          <Tabs.Tab value="maintenance" leftSection={<IconTool size={16} />}>
+            {t('apartments.maintenance')}
           </Tabs.Tab>
         </Tabs.List>
 
@@ -316,6 +324,117 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
             size={300}
             showActions={true}
           />
+        </Tabs.Panel>
+
+        {apartment.contracts && apartment.contracts.length > 0 && (
+          <Tabs.Panel value="tenantHistory" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Text size="lg" fw={600}>
+                  {t('apartments.tenantHistory')}
+                </Text>
+                <Table striped highlightOnHover>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>{t('tenants.title')}</Table.Th>
+                      <Table.Th>{t('form.startDate')}</Table.Th>
+                      <Table.Th>{t('form.endDate')}</Table.Th>
+                      <Table.Th>{t('form.rentAmount')}</Table.Th>
+                      <Table.Th>{t('table.status')}</Table.Th>
+                      <Table.Th>{tGlobal('actions.actions')}</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {apartment.contracts.map((contract: any) => (
+                      <Table.Tr key={contract.id}>
+                        <Table.Td>
+                          {contract.tenantRecord ? (
+                            <Group gap="xs">
+                              <Text size="sm" fw={500}>
+                                {contract.tenantRecord.firstName} {contract.tenantRecord.lastName}
+                              </Text>
+                              {contract.tenantRecord.email && (
+                                <Text size="xs" c="dimmed">({contract.tenantRecord.email})</Text>
+                              )}
+                            </Group>
+                          ) : (
+                            <Text size="sm" c="dimmed">{tGlobal('common.notApplicable')}</Text>
+                          )}
+                        </Table.Td>
+                        <Table.Td>
+                          {contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          {contract.rentAmount ? Number(contract.rentAmount).toLocaleString('tr-TR', {
+                            style: 'currency',
+                            currency: 'TRY',
+                          }) : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          <Badge
+                            color={
+                              contract.status === 'active' ? 'green' :
+                              contract.status === 'expired' ? 'gray' :
+                              contract.status === 'terminated' ? 'red' : 'yellow'
+                            }
+                          >
+                            {t(`contracts.status.${contract.status}`) || contract.status}
+                          </Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <Button
+                              size="xs"
+                              variant="subtle"
+                              leftSection={<IconEye size={14} />}
+                              onClick={() => router.push(`/${currentLocale}/modules/real-estate/contracts/${contract.id}`)}
+                            >
+                              {tGlobal('actions.view')}
+                            </Button>
+                            {contract.tenantRecord && (
+                              <Button
+                                size="xs"
+                                variant="subtle"
+                                leftSection={<IconUsers size={14} />}
+                                onClick={() => router.push(`/${currentLocale}/modules/real-estate/tenants/${contract.tenantRecord.id}`)}
+                              >
+                                {t('tenants.detail.title')}
+                              </Button>
+                            )}
+                          </Group>
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              </Stack>
+            </Paper>
+          </Tabs.Panel>
+        )}
+
+        <Tabs.Panel value="maintenance" pt="md">
+          <Paper shadow="xs" p="md">
+            <Stack gap="md">
+              <Group justify="space-between">
+                <Text size="lg" fw={600}>
+                  {t('apartments.maintenance')}
+                </Text>
+                <Button
+                  size="sm"
+                  leftSection={<IconTool size={16} />}
+                  onClick={() => router.push(`/${currentLocale}/modules/real-estate/maintenance?apartmentId=${apartmentId}`)}
+                >
+                  {t('maintenance.viewAll')}
+                </Button>
+              </Group>
+              <Text c="dimmed" ta="center" py="xl">
+                {t('apartments.maintenanceDescription')}
+              </Text>
+            </Stack>
+          </Paper>
         </Tabs.Panel>
       </Tabs>
     </Container>

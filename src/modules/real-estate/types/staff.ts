@@ -30,6 +30,12 @@ export interface RealEstateStaff {
   createdAt: Date;
   updatedAt: Date;
   properties?: PropertyStaff[];
+  apartments?: Array<{
+    id: string;
+    unitNumber: string;
+    status?: string;
+    property?: { id: string; name: string };
+  }>;
 }
 
 export interface PropertyStaff {
