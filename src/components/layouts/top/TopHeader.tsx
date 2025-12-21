@@ -157,26 +157,18 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
     };
   }, [isDarkMode, backgroundColor]);
 
-  // Theme toggle - cycles through light -> dark -> auto -> light
+  // Theme toggle - toggles between light and dark based on current visual state
   const handleThemeToggle = (e?: React.MouseEvent) => {
     // Event propagation'ı durdur (menü tıklamalarıyla karışmasını önle)
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
-    
-    const currentMode = config.themeMode || 'auto';
-    let newThemeMode: 'light' | 'dark' | 'auto';
-    
-    // Döngü: light -> dark -> auto -> light
-    if (currentMode === 'light') {
-      newThemeMode = 'dark';
-    } else if (currentMode === 'dark') {
-      newThemeMode = 'auto';
-    } else {
-      newThemeMode = 'light';
-    }
-    
+
+    // Mevcut görsel duruma göre toggle yap (colorScheme dark ise light'a, değilse dark'a)
+    // Bu sayede auto modunda bile tek tıkla değişir
+    const newThemeMode: 'light' | 'dark' = colorScheme === 'dark' ? 'light' : 'dark';
+
     // Config'i güncelle - LayoutProvider'daki useEffect otomatik olarak tema değişikliğini uygulayacak
     applyChanges({
       themeMode: newThemeMode,
@@ -330,17 +322,12 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
             aria-label={t('layout.toggleTheme')}
             type="button"
           >
-            {mounted && (() => {
-              const currentMode = config.themeMode || 'auto';
-              if (currentMode === 'light') {
-                return <IconSun size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} />;
-              } else if (currentMode === 'dark') {
-                return <IconMoon size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} />;
-              } else {
-                // Auto mode - show icon based on current colorScheme
-                return colorScheme === 'dark' ? <IconMoon size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} /> : <IconSun size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} />;
-              }
-            })()}
+            {mounted && (
+              // Mevcut görsel duruma göre icon göster - dark ise moon, light ise sun
+              colorScheme === 'dark'
+                ? <IconMoon size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} />
+                : <IconSun size={20} {...(styles.actionButtonIcon ? { className: styles.actionButtonIcon } : {})} />
+            )}
           </button>
           <button
             onClick={handleFullscreenToggle}
