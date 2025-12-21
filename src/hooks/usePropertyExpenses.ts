@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchApi } from '@/lib/api/fetchApi';
 import type {
   PropertyExpense,
   PropertyExpenseCreate,
   PropertyExpenseUpdate,
 } from '@/modules/real-estate/types/property-expense';
+
+const API_BASE = '/api/real-estate/property-expenses';
 
 interface PropertyExpensesResponse {
   expenses: PropertyExpense[];
@@ -37,10 +38,12 @@ export function usePropertyExpenses(params: UsePropertyExpensesParams = {}) {
   return useQuery({
     queryKey: ['property-expenses', params],
     queryFn: async () => {
-      const response = await fetchApi<PropertyExpensesResponse>(
-        `/api/real-estate/property-expenses?${queryParams.toString()}`
-      );
-      return response;
+      const response = await fetch(`${API_BASE}?${queryParams.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch property expenses');
+      }
+      const data = await response.json();
+      return data.data as PropertyExpensesResponse;
     },
   });
 }
@@ -50,10 +53,12 @@ export function usePropertyExpense(id: string | undefined) {
     queryKey: ['property-expense', id],
     queryFn: async () => {
       if (!id) return null;
-      const response = await fetchApi<{ expense: PropertyExpense }>(
-        `/api/real-estate/property-expenses/${id}`
-      );
-      return response.expense;
+      const response = await fetch(`${API_BASE}/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch property expense');
+      }
+      const data = await response.json();
+      return data.data.expense as PropertyExpense;
     },
     enabled: !!id,
   });
@@ -64,14 +69,17 @@ export function useCreatePropertyExpense() {
 
   return useMutation({
     mutationFn: async (data: PropertyExpenseCreate) => {
-      const response = await fetchApi<{ expense: PropertyExpense }>(
-        '/api/real-estate/property-expenses',
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-        }
-      );
-      return response.expense;
+      const response = await fetch(API_BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create property expense');
+      }
+      const result = await response.json();
+      return result.data.expense as PropertyExpense;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['property-expenses'] });
@@ -84,14 +92,17 @@ export function useUpdatePropertyExpense() {
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: PropertyExpenseUpdate }) => {
-      const response = await fetchApi<{ expense: PropertyExpense }>(
-        `/api/real-estate/property-expenses/${id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(data),
-        }
-      );
-      return response.expense;
+      const response = await fetch(`${API_BASE}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to update property expense');
+      }
+      const result = await response.json();
+      return result.data.expense as PropertyExpense;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['property-expenses'] });
@@ -105,9 +116,12 @@ export function useDeletePropertyExpense() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      await fetchApi(`/api/real-estate/property-expenses/${id}`, {
+      const response = await fetch(`${API_BASE}/${id}`, {
         method: 'DELETE',
       });
+      if (!response.ok) {
+        throw new Error('Failed to delete property expense');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['property-expenses'] });

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table } from '@mantine/core';
-import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash } from '@tabler/icons-react';
+import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';
@@ -10,6 +10,7 @@ import { useTranslation } from '@/lib/i18n/client';
 import dayjs from 'dayjs';
 import type { PropertyType } from '@/modules/real-estate/types/property';
 import { PropertyDetailPageSkeleton } from './PropertyDetailPageSkeleton';
+import { PropertyExpenseList } from '@/modules/real-estate/components/PropertyExpenseList';
 
 export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -138,6 +139,9 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                   {t('sideCosts.rentAndSideCosts')}
                 </Tabs.Tab>
               )}
+              <Tabs.Tab value="expenses" leftSection={<IconReceipt size={20} />}>
+                {t('propertyExpenses.title')}
+              </Tabs.Tab>
             </Tabs.List>
 
         <Tabs.Panel value="details" pt="md">
@@ -559,6 +563,15 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
             </Stack>
           </Tabs.Panel>
         )}
+
+        {/* Gider Yönetimi Sekmesi */}
+        <Tabs.Panel value="expenses" pt="md">
+          <PropertyExpenseList
+            locale={currentLocale}
+            propertyId={propertyId}
+            propertyName={property.name}
+          />
+        </Tabs.Panel>
       </Tabs>
     </Container>
   );
