@@ -114,25 +114,33 @@
           "order": 7
         },
         {
+          "id": "module-real-estate-config-reconciliation",
+          "label": "reconciliation.menuTitle",
+          "labelKey": "reconciliation.menuTitle",
+          "href": "/modules/real-estate/reconciliation",
+          "icon": "Calculator",
+          "order": 8
+        },
+        {
           "id": "module-real-estate-config-7",
           "label": "Email Campaigns",
           "href": "/modules/real-estate/email",
           "icon": "Mail",
-          "order": 8
+          "order": 9
         },
         {
           "id": "module-real-estate-config-8",
           "label": "Reports",
           "href": "/modules/real-estate/reports",
           "icon": "Report",
-          "order": 9
+          "order": 10
         },
         {
           "id": "module-real-estate-config-9",
           "label": "Staff",
           "href": "/modules/real-estate/staff",
           "icon": "UserCheck",
-          "order": 10
+          "order": 11
         }
       ]
     },

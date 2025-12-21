@@ -17,8 +17,7 @@ import {
   Modal,
   NumberFormatter,
   Alert,
-  Loader,
-  Tooltip,
+  Skeleton,
   ActionIcon,
   Menu,
 } from '@mantine/core';
@@ -193,9 +192,19 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
       {/* Reconciliations List */}
       <Paper shadow="xs" p="md">
         {isLoading ? (
-          <Group justify="center" py="xl">
-            <Loader />
-          </Group>
+          <Stack gap="md">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Group key={i} gap="md">
+                <Skeleton height={20} width="20%" radius="sm" />
+                <Skeleton height={20} width="10%" radius="sm" />
+                <Skeleton height={20} width="15%" radius="sm" />
+                <Skeleton height={20} width="15%" radius="sm" />
+                <Skeleton height={20} width="15%" radius="sm" />
+                <Skeleton height={20} width="10%" radius="sm" />
+                <Skeleton height={20} width="5%" radius="sm" />
+              </Group>
+            ))}
+          </Stack>
         ) : reconciliations.length === 0 ? (
           <Text ta="center" py="xl" c="dimmed">{t('reconciliation.noReconciliations')}</Text>
         ) : (
@@ -342,9 +351,27 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
         size="xl"
       >
         {isLoadingDetail ? (
-          <Group justify="center" py="xl">
-            <Loader />
-          </Group>
+          <Stack gap="md">
+            <Card withBorder p="md">
+              <Grid>
+                <Grid.Col span={6}><Skeleton height={16} width="60%" mb="xs" /><Skeleton height={20} width="80%" /></Grid.Col>
+                <Grid.Col span={6}><Skeleton height={16} width="40%" mb="xs" /><Skeleton height={20} width="50%" /></Grid.Col>
+                <Grid.Col span={6}><Skeleton height={16} width="50%" mb="xs" /><Skeleton height={20} width="70%" /></Grid.Col>
+                <Grid.Col span={6}><Skeleton height={16} width="45%" mb="xs" /><Skeleton height={20} width="40%" /></Grid.Col>
+              </Grid>
+            </Card>
+            <Skeleton height={24} width="40%" />
+            {[1, 2, 3].map((i) => (
+              <Group key={i} gap="md">
+                <Skeleton height={20} width="15%" />
+                <Skeleton height={20} width="20%" />
+                <Skeleton height={20} width="15%" />
+                <Skeleton height={20} width="15%" />
+                <Skeleton height={20} width="15%" />
+                <Skeleton height={20} width="10%" />
+              </Group>
+            ))}
+          </Stack>
         ) : selectedReconciliation ? (
           <Stack gap="md">
             {/* Summary */}

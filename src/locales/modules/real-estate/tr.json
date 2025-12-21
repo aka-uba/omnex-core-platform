@@ -1617,6 +1617,7 @@
   },
   "reconciliation": {
     "title": "Yıl Sonu Uzlaştırma",
+    "menuTitle": "Yan Gider Uzlaştırma",
     "description": "Yan gider hesaplama ve uzlaştırma",
     "createNew": "Yeni Hesaplama Oluştur",
     "noReconciliations": "Henüz uzlaştırma kaydı yok",
