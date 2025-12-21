@@ -114,8 +114,10 @@ model Property {
   updatedAt DateTime @updatedAt
 
   // Relations
-  apartments Apartment[]
-  staff      PropertyStaff[]
+  apartments      Apartment[]
+  staff           PropertyStaff[]
+  expenses        PropertyExpense[]
+  reconciliations SideCostReconciliation[]
 
   @@index([tenantId, companyId])
   @@index([tenantId, companyId, isActive])
@@ -805,5 +807,96 @@ model AgreementReportTemplate {
   @@index([category])
   @@index([isDefault])
   @@index([isActive])
+}
+
+// ============================================
+// YAN GİDER (NEBENKOSTEN) SİSTEMİ
+// ============================================
+
+// Gayrimenkul (Bina) Giderleri
+model PropertyExpense {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  propertyId String
+
+  // Gider bilgileri
+  name        String // Gider adı (örn: "Ortak alan elektriği")
+  category    String // utilities, maintenance, insurance, taxes, management, cleaning, heating, other
+  amount      Decimal  @db.Decimal(12, 2)
+  expenseDate DateTime // Gider tarihi
+  year        Int // Yıl (raporlama için)
+  month       Int? // Ay (opsiyonel)
+
+  // Detaylar
+  description String? // Açıklama
+  receiptUrl  String? // Fatura/Makbuz URL
+  invoiceNumber String? // Fatura numarası
+  vendorName  String? // Tedarikçi adı
+
+  // Dağıtım
+  isDistributed      Boolean @default(false) // Dairelere dağıtıldı mı?
+  distributionMethod String? // equal, area_based, custom
+  distributedAt      DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, companyId])
+  @@index([propertyId])
+  @@index([year])
+  @@index([year, month])
+  @@index([category])
+  @@index([isDistributed])
+}
+
+// Yıl Sonu Uzlaştırma
+model SideCostReconciliation {
+  id         String @id @default(uuid())
+  tenantId   String
+  companyId  String
+  propertyId String
+  year       Int
+
+  // Hesaplama bilgileri
+  totalExpenses     Decimal @db.Decimal(12, 2) // Toplam giderler
+  apartmentCount    Int // Daire sayısı
+  perApartmentShare Decimal @db.Decimal(12, 2) // Daire başı pay (eşit dağılım)
+
+  // Dağıtım yöntemi
+  distributionMethod String // equal, area_based, custom
+
+  // Mali yıl (özel dönem seçeneği)
+  fiscalYearStart DateTime? // Varsayılan: 1 Ocak
+  fiscalYearEnd   DateTime? // Varsayılan: 31 Aralık
+
+  // Durum
+  status       String    @default("draft") // draft, calculated, finalized, cancelled
+  calculatedAt DateTime?
+  finalizedAt  DateTime?
+  finalizedBy  String? // User ID
+
+  // Detay bilgileri (her dairenin hesaplaması)
+  details Json // ReconciliationApartmentDetail[]
+
+  // Notlar
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, year])
+  @@index([tenantId, companyId])
+  @@index([propertyId])
+  @@index([year])
+  @@index([status])
 }
 

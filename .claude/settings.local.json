@@ -54,7 +54,9 @@
       "Bash(node node_modules/typescript/bin/tsc:*)",
       "Bash(git log:*)",
       "Bash(npx next build)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(git branch:*)",
+      "Bash(npm run prisma:generate:*)"
     ],
     "deny": [],
     "ask": []

@@ -624,6 +624,95 @@
     "total": "Total",
     "apartmentBreakdown": "Apartment Breakdown"
   },
+  "propertyExpenses": {
+    "title": "Property Expenses",
+    "description": "Property side cost tracking",
+    "addExpense": "Add Expense",
+    "editExpense": "Edit Expense",
+    "noExpenses": "No expense records yet",
+    "categories": {
+      "utilities": "Utilities",
+      "maintenance": "Maintenance",
+      "insurance": "Insurance",
+      "taxes": "Taxes",
+      "management": "Management Fee",
+      "cleaning": "Cleaning",
+      "heating": "Heating",
+      "other": "Other"
+    },
+    "form": {
+      "name": "Expense Name",
+      "category": "Category",
+      "amount": "Amount",
+      "expenseDate": "Expense Date",
+      "year": "Year",
+      "month": "Month",
+      "description": "Description",
+      "receiptUrl": "Receipt URL",
+      "invoiceNumber": "Invoice No",
+      "vendorName": "Vendor"
+    },
+    "messages": {
+      "created": "Expense created successfully",
+      "updated": "Expense updated successfully",
+      "deleted": "Expense deleted successfully"
+    }
+  },
+  "reconciliation": {
+    "title": "Year-End Reconciliation",
+    "description": "Side cost calculation and reconciliation",
+    "create": "New Calculation",
+    "noReconciliations": "No reconciliation records yet",
+    "status": {
+      "draft": "Draft",
+      "calculated": "Calculated",
+      "finalized": "Finalized",
+      "cancelled": "Cancelled"
+    },
+    "distributionMethod": {
+      "equal": "Equal Distribution",
+      "area_based": "Area Based",
+      "custom": "Custom Ratio"
+    },
+    "form": {
+      "property": "Property",
+      "year": "Year",
+      "method": "Distribution Method",
+      "fiscalYearStart": "Fiscal Year Start",
+      "fiscalYearEnd": "Fiscal Year End",
+      "notes": "Notes"
+    },
+    "summary": {
+      "totalExpenses": "Total Expenses",
+      "apartmentCount": "Apartment Count",
+      "perApartmentShare": "Per Apartment Share",
+      "totalDebt": "Total Debt",
+      "totalCredit": "Total Credit"
+    },
+    "apartmentDetail": {
+      "unit": "Unit",
+      "area": "Area",
+      "estimatedPaid": "Estimated Paid",
+      "actualShare": "Actual Share",
+      "difference": "Difference",
+      "tenant": "Tenant",
+      "debt": "Debtor",
+      "credit": "Creditor",
+      "balanced": "Balanced"
+    },
+    "actions": {
+      "calculate": "Calculate",
+      "recalculate": "Recalculate",
+      "finalize": "Finalize",
+      "export": "Export"
+    },
+    "messages": {
+      "created": "Reconciliation calculated",
+      "finalized": "Reconciliation finalized",
+      "deleted": "Reconciliation deleted",
+      "cannotModify": "Finalized reconciliations cannot be modified"
+    }
+  },
   "qrCode": {
     "title": "Apartment QR Code",
     "description": "Scan this QR code to view apartment details",

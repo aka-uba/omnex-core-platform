@@ -1562,6 +1562,95 @@
     "total": "Toplam",
     "apartmentBreakdown": "Daire Bazında Detay"
   },
+  "propertyExpenses": {
+    "title": "Bina Giderleri",
+    "description": "Gayrimenkul yan gider takibi",
+    "addExpense": "Gider Ekle",
+    "editExpense": "Gider Düzenle",
+    "noExpenses": "Henüz gider kaydı yok",
+    "categories": {
+      "utilities": "Elektrik/Su/Gaz",
+      "maintenance": "Bakım",
+      "insurance": "Sigorta",
+      "taxes": "Vergiler",
+      "management": "Yönetim Ücreti",
+      "cleaning": "Temizlik",
+      "heating": "Isıtma",
+      "other": "Diğer"
+    },
+    "form": {
+      "name": "Gider Adı",
+      "category": "Kategori",
+      "amount": "Tutar",
+      "expenseDate": "Gider Tarihi",
+      "year": "Yıl",
+      "month": "Ay",
+      "description": "Açıklama",
+      "receiptUrl": "Fatura/Makbuz URL",
+      "invoiceNumber": "Fatura No",
+      "vendorName": "Tedarikçi"
+    },
+    "messages": {
+      "created": "Gider başarıyla oluşturuldu",
+      "updated": "Gider başarıyla güncellendi",
+      "deleted": "Gider başarıyla silindi"
+    }
+  },
+  "reconciliation": {
+    "title": "Yıl Sonu Uzlaştırma",
+    "description": "Yan gider hesaplama ve uzlaştırma",
+    "create": "Yeni Hesaplama",
+    "noReconciliations": "Henüz uzlaştırma kaydı yok",
+    "status": {
+      "draft": "Taslak",
+      "calculated": "Hesaplandı",
+      "finalized": "Kesinleştirildi",
+      "cancelled": "İptal Edildi"
+    },
+    "distributionMethod": {
+      "equal": "Eşit Dağılım",
+      "area_based": "Metrekare Bazlı",
+      "custom": "Özel Oran"
+    },
+    "form": {
+      "property": "Gayrimenkul",
+      "year": "Yıl",
+      "method": "Dağıtım Yöntemi",
+      "fiscalYearStart": "Mali Yıl Başlangıcı",
+      "fiscalYearEnd": "Mali Yıl Bitişi",
+      "notes": "Notlar"
+    },
+    "summary": {
+      "totalExpenses": "Toplam Giderler",
+      "apartmentCount": "Daire Sayısı",
+      "perApartmentShare": "Daire Başı Pay",
+      "totalDebt": "Toplam Borç",
+      "totalCredit": "Toplam Alacak"
+    },
+    "apartmentDetail": {
+      "unit": "Daire",
+      "area": "Alan",
+      "estimatedPaid": "Ödenen Tahmini",
+      "actualShare": "Gerçek Pay",
+      "difference": "Fark",
+      "tenant": "Kiracı",
+      "debt": "Borçlu",
+      "credit": "Alacaklı",
+      "balanced": "Dengeli"
+    },
+    "actions": {
+      "calculate": "Hesapla",
+      "recalculate": "Yeniden Hesapla",
+      "finalize": "Kesinleştir",
+      "export": "Dışa Aktar"
+    },
+    "messages": {
+      "created": "Uzlaştırma hesaplandı",
+      "finalized": "Uzlaştırma kesinleştirildi",
+      "deleted": "Uzlaştırma silindi",
+      "cannotModify": "Kesinleştirilmiş uzlaştırma değiştirilemez"
+    }
+  },
   "qrCode": {
     "title": "Daire QR Kodu",
     "description": "Bu QR kodu tarayarak daire detaylarını görüntüleyebilirsiniz",
