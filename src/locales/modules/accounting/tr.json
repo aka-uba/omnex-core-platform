@@ -193,6 +193,10 @@
   "payments": {
     "title": "Ödemeler",
     "description": "Ödeme kayıtlarını ve işlemlerini yönetin",
+    "tabs": {
+      "collections": "Tahsilatlar",
+      "outgoing": "Ödemelerimiz"
+    },
     "table": {
       "paymentNumber": "Ödeme Numarası",
       "amount": "Tutar",

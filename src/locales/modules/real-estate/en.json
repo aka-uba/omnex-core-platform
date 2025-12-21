@@ -53,7 +53,10 @@
     "detail": {
       "title": "Apartment Details",
       "description": "View apartment details"
-    }
+    },
+    "tenantHistory": "Tenant History",
+    "maintenance": "Maintenance",
+    "maintenanceDescription": "Click 'View All' to see maintenance records for this apartment or create a new maintenance request."
   },
   "tenants": {
     "title": "Tenants",
@@ -164,6 +167,12 @@
   "staff": {
     "title": "Staff",
     "description": "Manage staff members",
+    "tabs": {
+      "details": "Details",
+      "detailsDescription": "Detailed information about this staff member is displayed above.",
+      "assignedProperties": "Assigned Properties",
+      "assignedApartments": "Assigned Apartments"
+    },
     "create": {
       "title": "New Staff Member",
       "description": "Add a new staff member"
@@ -198,6 +207,7 @@
   },
   "maintenance": {
     "title": "Maintenance",
+    "viewAll": "View All",
     "description": "Manage maintenance requests",
     "create": {
       "title": "New Maintenance Request",

@@ -53,7 +53,8 @@
       "Bash(npm install:*)",
       "Bash(node node_modules/typescript/bin/tsc:*)",
       "Bash(git log:*)",
-      "Bash(npx next build)"
+      "Bash(npx next build)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

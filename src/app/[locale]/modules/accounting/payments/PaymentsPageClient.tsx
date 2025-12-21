@@ -1,7 +1,7 @@
 'use client';
 
-import { Container } from '@mantine/core';
-import { IconCreditCard } from '@tabler/icons-react';
+import { Container, Tabs } from '@mantine/core';
+import { IconCreditCard, IconCash, IconReceipt } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { PaymentList } from '@/modules/accounting/components/PaymentList';
 import { useParams } from 'next/navigation';
@@ -25,7 +25,25 @@ export function PaymentsPageClient({ locale }: { locale: string }) {
           { label: 'payments.title', namespace: 'modules/accounting' },
         ]}
       />
-      <PaymentList locale={currentLocale} />
+
+      <Tabs defaultValue="collections" mt="md">
+        <Tabs.List>
+          <Tabs.Tab value="collections" leftSection={<IconReceipt size={16} />}>
+            {t('payments.tabs.collections')}
+          </Tabs.Tab>
+          <Tabs.Tab value="outgoing" leftSection={<IconCash size={16} />}>
+            {t('payments.tabs.outgoing')}
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="collections" pt="md">
+          <PaymentList locale={currentLocale} paymentType="incoming" />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="outgoing" pt="md">
+          <PaymentList locale={currentLocale} paymentType="outgoing" />
+        </Tabs.Panel>
+      </Tabs>
     </Container>
   );
 }

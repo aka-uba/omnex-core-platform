@@ -27,6 +27,12 @@
   "reports": {
     "title": "Reports",
     "description": "Accounting reports and analytics"
+  },
+  "payments": {
+    "tabs": {
+      "collections": "Collections",
+      "outgoing": "Outgoing Payments"
+    }
   }
 }
 
