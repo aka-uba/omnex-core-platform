@@ -40,6 +40,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               isActive: true,
               images: true,
               coverImage: true,
+              // Yan gider alanları
+              coldRent: true,
+              additionalCosts: true,
+              heatingCosts: true,
+              deposit: true,
               contracts: {
                 where: {
                   status: 'active',
