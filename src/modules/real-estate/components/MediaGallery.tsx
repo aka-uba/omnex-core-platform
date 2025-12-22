@@ -79,10 +79,19 @@ function FilePreviewModal({ opened, onClose, fileId, fileInfo }: FilePreviewModa
     if (opened && fileId && !fileInfo) {
       setLoading(true);
       fetch(`/api/core-files/${fileId}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then(data => {
-          if (data.file) {
-            setLocalFileInfo(data.file);
+          // API returns { success: true, data: { file: {...} } } or { file: {...} }
+          const fileData = data?.data?.file || data?.file;
+          if (fileData) {
+            setLocalFileInfo(fileData);
+          } else {
+            console.error('File data not found in response:', data);
           }
         })
         .catch(err => console.error('Error fetching file info:', err))
@@ -241,7 +250,7 @@ export function MediaGallery({
   tenantId,
   entityId,
   entityType,
-  images,
+  images = [],
   documents = [],
   coverImage,
   onImagesChange,
@@ -353,7 +362,8 @@ export function MediaGallery({
   };
 
   const handleRemoveImage = (imageId: string) => {
-    const newImages = images.filter((id) => id !== imageId);
+    const currentImages = Array.isArray(images) ? images : [];
+    const newImages = currentImages.filter((id) => id !== imageId);
     onImagesChange(newImages);
 
     if (coverImage === imageId) {
@@ -364,7 +374,8 @@ export function MediaGallery({
 
   const handleRemoveDocument = (docId: string) => {
     if (!onDocumentsChange) return;
-    const newDocs = documents.filter((id) => id !== docId);
+    const currentDocs = Array.isArray(documents) ? documents : [];
+    const newDocs = currentDocs.filter((id) => id !== docId);
     onDocumentsChange(newDocs);
   };
 
@@ -397,16 +408,20 @@ export function MediaGallery({
     }
   };
 
+  // Ensure arrays are valid
+  const safeImages = Array.isArray(images) ? images : [];
+  const safeDocs = Array.isArray(documents) ? documents : [];
+
   return (
     <Stack gap="md">
       <Tabs defaultValue="images">
         <Tabs.List>
           <Tabs.Tab value="images" leftSection={<IconPhoto size={16} />}>
-            {t('mediaGallery.images') || 'Images'} ({images.length})
+            {t('mediaGallery.images') || 'Images'} ({safeImages.length})
           </Tabs.Tab>
           {onDocumentsChange && (
             <Tabs.Tab value="documents" leftSection={<IconFile size={16} />}>
-              {t('mediaGallery.documents') || 'Documents'} ({documents.length})
+              {t('mediaGallery.documents') || 'Documents'} ({safeDocs.length})
             </Tabs.Tab>
           )}
         </Tabs.List>
@@ -440,7 +455,7 @@ export function MediaGallery({
               {t('form.uploadImagesHint')}
             </Text>
 
-            {images.length === 0 ? (
+            {safeImages.length === 0 ? (
               <Box
                 p="xl"
                 style={{
@@ -455,7 +470,7 @@ export function MediaGallery({
               </Box>
             ) : (
               <SimpleGrid cols={{ base: 3, sm: 4, md: 5, lg: 6 }} spacing="xs">
-                {images.map((imageId) => (
+                {safeImages.map((imageId) => (
                   <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden' }}>
                     <Box pos="relative" h={80}>
                       <Image
@@ -549,7 +564,7 @@ export function MediaGallery({
                 {t('mediaGallery.uploadDocumentsHint') || 'Supported: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV'}
               </Text>
 
-              {documents.length === 0 ? (
+              {safeDocs.length === 0 ? (
                 <Box
                   p="xl"
                   style={{
@@ -564,7 +579,7 @@ export function MediaGallery({
                 </Box>
               ) : (
                 <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
-                  {documents.map((docId) => (
+                  {safeDocs.map((docId) => (
                     <Card key={docId} padding="md" radius="md" withBorder>
                       <Stack align="center" gap="xs">
                         {getDocumentIcon()}
