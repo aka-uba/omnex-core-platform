@@ -25,6 +25,24 @@
   }
 }
 
+/* Leaflet container z-index fix - prevent map from overlapping header */
+:global(.leaflet-container) {
+  z-index: 1 !important;
+}
+
+:global(.leaflet-pane) {
+  z-index: 1 !important;
+}
+
+:global(.leaflet-top),
+:global(.leaflet-bottom) {
+  z-index: 2 !important;
+}
+
+:global(.leaflet-popup-pane) {
+  z-index: 3 !important;
+}
+
 /* Leaflet marker styles */
 :global(.leaflet-marker-icon) {
   background: transparent !important;
