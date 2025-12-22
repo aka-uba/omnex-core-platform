@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -17,8 +17,11 @@ import {
   Text,
   Card,
   Title,
+  Badge,
+  ActionIcon,
+  Tooltip,
 } from '@mantine/core';
-import { IconArrowLeft, IconCash, IconReceipt } from '@tabler/icons-react';
+import { IconArrowLeft, IconCash, IconReceipt, IconHome, IconSettings } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateApartment, useUpdateApartment, useApartment } from '@/hooks/useApartments';
 import { useProperties } from '@/hooks/useProperties';
@@ -28,6 +31,7 @@ import type { ApartmentStatus, OwnerType, OwnershipType } from '@/modules/real-e
 import { ImageUpload } from './ImageUpload';
 import { useAuth } from '@/hooks/useAuth';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import { UsageRightsPanel, ApartmentUsageRight } from './UsageRightsPanel';
 
 interface ApartmentFormProps {
   locale: string;
@@ -45,6 +49,10 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
   const { data: propertiesData } = useProperties({ page: 1, pageSize: 1000 });
 
   const isEdit = !!apartmentId;
+
+  // Usage Rights Panel state
+  const [usageRightsPanelOpened, setUsageRightsPanelOpened] = useState(false);
+  const [usageRights, setUsageRights] = useState<ApartmentUsageRight[]>([]);
 
   const form = useForm({
     initialValues: {
@@ -121,6 +129,11 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
           documents: apartmentData.documents || [],
           qrCode: apartmentData.qrCode ?? undefined,
         } as any);
+
+        // Load usage rights from apartment data
+        if (apartmentData.usageRights) {
+          setUsageRights(apartmentData.usageRights as ApartmentUsageRight[]);
+        }
       }
     }
   }, [isEdit, apartmentData, isLoadingApartment, form]);
@@ -153,9 +166,12 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
         coverImage: values.coverImage || null,
         documents: values.documents || [],
         qrCode: values.qrCode || undefined,
+        usageRights: usageRights,
       };
 
       const validatedData = apartmentCreateSchema.parse(formData) as any;
+      // Add usageRights to validated data (not in schema but accepted by API)
+      validatedData.usageRights = usageRights;
 
       if (isEdit && apartmentId) {
         await updateApartment.mutateAsync({
@@ -400,6 +416,51 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
             </Card>
           )}
 
+          {/* Kullanım Hakları (Nutzungsrechte) Bölümü */}
+          <Divider my="md" />
+          <Group gap="xs" justify="space-between">
+            <Group gap="xs">
+              <IconHome size={20} />
+              <Title order={4}>{t('usageRights.title')}</Title>
+              {usageRights.filter(r => r.active).length > 0 && (
+                <Badge color="blue" variant="filled">
+                  {usageRights.filter(r => r.active).length}
+                </Badge>
+              )}
+            </Group>
+            <Tooltip label={t('usageRights.manage')}>
+              <ActionIcon
+                variant="light"
+                color="blue"
+                size="lg"
+                onClick={() => setUsageRightsPanelOpened(true)}
+              >
+                <IconSettings size={18} />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+
+          {/* Selected Usage Rights Preview */}
+          {usageRights.filter(r => r.active).length > 0 && (
+            <Card withBorder p="sm" radius="md">
+              <Group gap="xs" wrap="wrap">
+                {usageRights
+                  .filter(r => r.active)
+                  .slice(0, 10)
+                  .map(r => (
+                    <Badge key={r.id} variant="light" color="gray">
+                      {r.name}
+                    </Badge>
+                  ))}
+                {usageRights.filter(r => r.active).length > 10 && (
+                  <Badge variant="light" color="blue">
+                    +{usageRights.filter(r => r.active).length - 10} {t('usageRights.more')}
+                  </Badge>
+                )}
+              </Group>
+            </Card>
+          )}
+
           <Divider my="md" />
 
           <Grid>
@@ -439,6 +500,15 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
           </Group>
         </Stack>
       </form>
+
+      {/* Usage Rights Panel */}
+      <UsageRightsPanel
+        opened={usageRightsPanelOpened}
+        onClose={() => setUsageRightsPanelOpened(false)}
+        locale={locale}
+        selectedRights={usageRights}
+        onSave={setUsageRights}
+      />
     </Paper>
   );
 }

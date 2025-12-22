@@ -882,5 +882,31 @@
     "createSuccess": "Created successfully",
     "updateSuccess": "Updated successfully",
     "updateError": "Error updating"
+  },
+  "usageRights": {
+    "title": "Usage Rights",
+    "manage": "Manage Usage Rights",
+    "search": "Search usage rights...",
+    "allCategories": "All",
+    "name": "Name",
+    "selection": "Selection",
+    "selectAll": "Select All",
+    "selectedCount": "{{count}} features selected",
+    "more": "more",
+    "noRights": "No Usage Rights",
+    "noRightsDescription": "No usage rights have been defined yet. Click the button below to load the default list.",
+    "seedDefaults": "Load Default Features",
+    "categories": {
+      "parking": "Parking",
+      "heating": "Heating",
+      "security": "Security",
+      "technology": "Technology",
+      "bathroom": "Bathroom",
+      "outdoor": "Outdoor",
+      "storage": "Storage",
+      "accessibility": "Accessibility",
+      "flooring": "Flooring & Interior",
+      "energy": "Energy"
+    }
   }
 }

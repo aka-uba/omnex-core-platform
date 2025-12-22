@@ -900,3 +900,44 @@ model SideCostReconciliation {
   @@index([status])
 }
 
+// ============================================
+// KULLANIM HAKLARI (NUTZUNGSRECHTE) SİSTEMİ
+// ============================================
+
+// Master list - Admin tarafından yönetilen kullanım hakları listesi
+model UsageRight {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String?
+
+  // Temel bilgiler
+  name      String // Kullanım hakkı adı (örn: "Stellplatz", "Balkon")
+  nameEn    String? // İngilizce adı
+  nameTr    String? // Türkçe adı
+  category  String // parking, heating, security, technology, bathroom, outdoor, storage, accessibility, flooring, energy
+
+  // Sıralama ve görünüm
+  sortOrder Int @default(0) // Sıralama (tablo görünümü için)
+  icon      String? // İkon adı (opsiyonel)
+
+  // Açıklama
+  description   String?
+  descriptionEn String?
+  descriptionTr String?
+
+  // Varsayılan olarak aktif mi?
+  isDefaultActive Boolean @default(false)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, name])
+  @@index([tenantId, companyId])
+  @@index([tenantId, category])
+  @@index([category])
+  @@index([sortOrder])
+  @@index([isActive])
+}
+

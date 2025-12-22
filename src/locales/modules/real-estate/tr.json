@@ -1800,6 +1800,32 @@
   "list": "Liste",
   "style": "Stil",
   "templateId": "Şablon ID",
+  "usageRights": {
+    "title": "Kullanım Hakları",
+    "manage": "Kullanım Haklarını Yönet",
+    "search": "Kullanım hakkı ara...",
+    "allCategories": "Tümü",
+    "name": "Ad",
+    "selection": "Seçim",
+    "selectAll": "Tümünü Seç",
+    "selectedCount": "{{count}} özellik seçildi",
+    "more": "daha fazla",
+    "noRights": "Kullanım Hakkı Yok",
+    "noRightsDescription": "Henüz kullanım hakkı tanımlanmamış. Varsayılan listeyi yüklemek için aşağıdaki butona tıklayın.",
+    "seedDefaults": "Varsayılan Özellikleri Yükle",
+    "categories": {
+      "parking": "Otopark",
+      "heating": "Isıtma",
+      "security": "Güvenlik",
+      "technology": "Teknoloji",
+      "bathroom": "Banyo",
+      "outdoor": "Dış Mekan",
+      "storage": "Depolama",
+      "accessibility": "Erişilebilirlik",
+      "flooring": "Zemin & İç Mekan",
+      "energy": "Enerji"
+    }
+  },
   "emailTemplates": {
     "title": "E-posta Şablonları",
     "detail": {

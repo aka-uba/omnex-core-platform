@@ -628,5 +628,31 @@
     "createSuccess": "Erfolgreich erstellt",
     "updateSuccess": "Erfolgreich aktualisiert",
     "updateError": "Fehler beim Aktualisieren"
+  },
+  "usageRights": {
+    "title": "Nutzungsrechte",
+    "manage": "Nutzungsrechte verwalten",
+    "search": "Nutzungsrechte suchen...",
+    "allCategories": "Alle",
+    "name": "Name",
+    "selection": "Auswahl",
+    "selectAll": "Alle auswählen",
+    "selectedCount": "{{count}} Merkmale ausgewählt",
+    "more": "weitere",
+    "noRights": "Keine Nutzungsrechte",
+    "noRightsDescription": "Es wurden noch keine Nutzungsrechte definiert. Klicken Sie auf die Schaltfläche unten, um die Standardliste zu laden.",
+    "seedDefaults": "Standardmerkmale laden",
+    "categories": {
+      "parking": "Parken",
+      "heating": "Heizung",
+      "security": "Sicherheit",
+      "technology": "Technologie",
+      "bathroom": "Bad",
+      "outdoor": "Außenbereich",
+      "storage": "Lagerung",
+      "accessibility": "Barrierefreiheit",
+      "flooring": "Boden & Innenraum",
+      "energy": "Energie"
+    }
   }
 }
