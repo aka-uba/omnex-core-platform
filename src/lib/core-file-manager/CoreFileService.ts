@@ -23,6 +23,55 @@ export class CoreFileService {
   }
 
   /**
+   * Entity için okunabilir klasör adı oluştur
+   * Örnek: "Hauptstr_42_W01" (Property adı + Daire numarası)
+   */
+  private async getEntityFolderName(
+    entityType: string,
+    entityId: string
+  ): Promise<string | null> {
+    try {
+      if (entityType === 'apartment') {
+        // Daire için: Property adı + Daire numarası
+        const apartment = await this.tenantPrisma.apartment.findUnique({
+          where: { id: entityId },
+          select: {
+            unitNumber: true,
+            property: {
+              select: { name: true }
+            }
+          }
+        });
+        if (apartment) {
+          const propertyName = apartment.property?.name || 'Unknown';
+          return `${propertyName}_${apartment.unitNumber}`;
+        }
+      } else if (entityType === 'property') {
+        // Gayrimenkul için: Property adı
+        const property = await this.tenantPrisma.property.findUnique({
+          where: { id: entityId },
+          select: { name: true }
+        });
+        if (property) {
+          return property.name;
+        }
+      } else if (entityType === 'tenant') {
+        // Kiracı için: Ad Soyad
+        const tenant = await this.tenantPrisma.realEstateTenant.findUnique({
+          where: { id: entityId },
+          select: { firstName: true, lastName: true }
+        });
+        if (tenant) {
+          return `${tenant.firstName}_${tenant.lastName}`;
+        }
+      }
+    } catch (error) {
+      console.error('Error getting entity folder name:', error);
+    }
+    return null;
+  }
+
+  /**
    * Dosya yükleme - tüm modüller için ortak
    */
   async uploadFile(options: UploadOptions): Promise<CoreFile> {
@@ -38,11 +87,22 @@ export class CoreFileService {
       metadata = {},
     } = options;
 
+    // Entity için okunabilir klasör adı al
+    let entityName: string | undefined;
+    if (entityType && entityId) {
+      const folderName = await this.getEntityFolderName(entityType, entityId);
+      if (folderName) {
+        entityName = folderName;
+      }
+    }
+
     // 1. Dosya yolunu oluştur
     const filePath = this.buildFilePath({
       tenantId,
       module,
       ...(entityType ? { entityType } : {}),
+      ...(entityId ? { entityId } : {}),
+      ...(entityName ? { entityName } : {}),
       filename: typeof file === 'object' && 'name' in file ? file.name : 'file',
     });
 
@@ -58,7 +118,7 @@ export class CoreFileService {
     const fileBuffer = typeof file === 'object' && 'arrayBuffer' in file
       ? Buffer.from(await file.arrayBuffer())
       : file as Buffer;
-    
+
     await fs.writeFile(fullPath, fileBuffer);
 
     // 5. Dosya bilgilerini hazırla
@@ -102,26 +162,36 @@ export class CoreFileService {
 
   /**
    * Modül bazlı dosya yolu oluşturma
+   * Örnek yapı: tenants/{tenantId}/module-files/real-estate/apartments/{entityName}/{timestamp}/{file}
    */
   private buildFilePath(options: BuildPathOptions): string {
-    const { tenantId, module, entityType, filename } = options;
+    const { tenantId, module, entityType, entityId, entityName, filename } = options;
     const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    
+
     let filePath = `tenants/${tenantId}/module-files/${module}/`;
-    
-    // Entity type'a göre alt klasör
+
+    // Entity type'a göre alt klasör (apartments, properties, tenants, etc.)
     if (entityType) {
       filePath += `${entityType}/`;
     }
-    
+
+    // Entity name'e göre anlamlı klasör adı (örn: "Hauptstr_42_W01" veya entityId)
+    if (entityName) {
+      const safeFolderName = this.sanitizeFilename(entityName);
+      filePath += `${safeFolderName}/`;
+    } else if (entityId) {
+      // entityName yoksa entityId kullan
+      filePath += `${entityId}/`;
+    }
+
     // Tarih bazlı organizasyon
     filePath += `${timestamp}/`;
-    
+
     // Benzersiz dosya adı
     const uniqueId = randomUUID().slice(0, 8);
     const safeFilename = this.sanitizeFilename(filename);
     filePath += `${uniqueId}_${safeFilename}`;
-    
+
     return filePath;
   }
 
@@ -186,8 +256,8 @@ export class CoreFileService {
     entityType?: string
   ): Promise<FilePermissions> {
     // Real-estate modülündeki görseller varsayılan olarak public
-    const isPublic = module === 'real-estate' && (entityType === 'apartment' || entityType === 'property');
-    
+    const isPublic = module === 'real-estate' && (entityType === 'apartment' || entityType === 'property' || entityType === 'tenant');
+
     // Varsayılan izinler: oluşturan kullanıcı tüm yetkilere sahip
     return {
       read: ['*'], // Tüm kullanıcılar okuyabilir (modül izinleri kontrol edilecek)
@@ -363,4 +433,3 @@ export class CoreFileService {
     });
   }
 }
-

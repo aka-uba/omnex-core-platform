@@ -28,6 +28,8 @@ export interface UploadOptions {
 }
 
 export interface BuildPathOptions {
+  entityId?: string;
+  entityName?: string; // Okunabilir klasör adı için
   tenantId: string;
   module: string;
   entityType?: string;
