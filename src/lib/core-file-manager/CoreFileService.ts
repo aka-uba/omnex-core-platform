@@ -185,9 +185,10 @@ export class CoreFileService {
     module: string,
     entityType?: string
   ): Promise<FilePermissions> {
-    // Real-estate modülündeki görseller varsayılan olarak public
-    const isPublic = module === 'real-estate' && (entityType === 'apartment' || entityType === 'property');
-    
+    // Real-estate modülündeki görseller varsayılan olarak public (apartment, property, tenant)
+    const isPublic = module === 'real-estate' &&
+      (entityType === 'apartment' || entityType === 'property' || entityType === 'tenant');
+
     // Varsayılan izinler: oluşturan kullanıcı tüm yetkilere sahip
     return {
       read: ['*'], // Tüm kullanıcılar okuyabilir (modül izinleri kontrol edilecek)

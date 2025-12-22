@@ -42,14 +42,13 @@ export async function GET(
         // Public dosyalar için userId gerekmez
         const permissions = file.permissions as unknown as { isPublic?: boolean; read?: string[] };
         const isPublic = permissions?.isPublic === true;
-        
-        // Real-estate modülündeki apartment ve property görsellerini otomatik olarak public kabul et
-        // (Eski görseller için backward compatibility)
-        const isRealEstateImage = file.module === 'real-estate' && 
-          (file.entityType === 'apartment' || file.entityType === 'property') &&
-          file.mimeType?.startsWith('image/');
-        
-        const shouldAllowAccess = isPublic || isRealEstateImage;
+
+        // Real-estate modülündeki apartment, property ve tenant dosyalarını otomatik olarak public kabul et
+        // (Eski dosyalar için backward compatibility)
+        const isRealEstateFile = file.module === 'real-estate' &&
+          (file.entityType === 'apartment' || file.entityType === 'property' || file.entityType === 'tenant');
+
+        const shouldAllowAccess = isPublic || isRealEstateFile;
 
         if (!shouldAllowAccess) {
           // Public değilse ve real-estate görseli değilse userId gerekli
