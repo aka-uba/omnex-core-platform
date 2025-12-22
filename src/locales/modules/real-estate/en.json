@@ -302,6 +302,35 @@
     "create": {
       "title": "New Bulk Operation",
       "description": "Create a new bulk operation"
+    },
+    "types": {
+      "rent_increase": "Rent Increase",
+      "fee_update": "Fee Update",
+      "payment_generate": "Payment Generation",
+      "contract_renewal": "Contract Renewal",
+      "custom": "Custom"
+    },
+    "detail": {
+      "title": "Bulk Operation Details",
+      "progress": "Progress",
+      "totalAffected": "Total Affected",
+      "successCount": "Success Count",
+      "failedCount": "Failed Count",
+      "progressPercent": "Progress Percentage",
+      "parameters": "Parameters",
+      "results": "Results",
+      "timing": "Timing",
+      "createdAt": "Created At",
+      "startedAt": "Started At",
+      "completedAt": "Completed At",
+      "updatedAt": "Updated At"
+    },
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
     }
   },
   "agreementReports": {
@@ -973,6 +1002,15 @@
   },
   "usageRights": {
     "title": "Usage Rights"
+  },
+  "contractTemplates": {
+    "title": "Contract Templates",
+    "types": {
+      "residential": "Residential",
+      "commercial": "Commercial",
+      "short_term": "Short Term",
+      "long_term": "Long Term"
+    }
   },
   "tenantForm": {
     "basicInfo": "Basic Information",

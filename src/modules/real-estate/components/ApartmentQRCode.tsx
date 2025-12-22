@@ -129,8 +129,8 @@ export function ApartmentQRCode({ apartmentId, locale, size = 200, showActions =
           </div>
         </Stack>
 
-        {/* Sağ taraf: Açıklama ve butonlar - aşağı hizalı */}
-        <Stack gap="md" justify="flex-end" style={{ flex: 1 }}>
+        {/* Sağ taraf: Açıklama ve butonlar - dikey ortalı */}
+        <Stack gap="md" justify="center" style={{ flex: 1 }}>
           <Text size="sm" c="dimmed">
             {t('qrCode.description')}
           </Text>

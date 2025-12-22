@@ -854,7 +854,24 @@
     "types": {
       "rent_increase": "Kira Artışı",
       "fee_update": "Ücret Güncelleme",
+      "payment_generate": "Ödeme Oluşturma",
+      "contract_renewal": "Sözleşme Yenileme",
       "custom": "Özel"
+    },
+    "detail": {
+      "title": "Toplu İşlem Detayı",
+      "progress": "İlerleme",
+      "totalAffected": "Toplam Etkilenen",
+      "successCount": "Başarılı",
+      "failedCount": "Başarısız",
+      "progressPercent": "İlerleme Yüzdesi",
+      "parameters": "Parametreler",
+      "results": "Sonuçlar",
+      "timing": "Zamanlama",
+      "createdAt": "Oluşturulma Tarihi",
+      "startedAt": "Başlangıç Tarihi",
+      "completedAt": "Tamamlanma Tarihi",
+      "updatedAt": "Güncellenme Tarihi"
     },
     "filter": {
       "type": "Tipe Göre Filtrele",
@@ -1788,7 +1805,13 @@
     "dashboard": "Panel"
   },
   "contractTemplates": {
-    "title": "Sözleşme Şablonları"
+    "title": "Sözleşme Şablonları",
+    "types": {
+      "residential": "Konut",
+      "commercial": "Ticari",
+      "short_term": "Kısa Vadeli",
+      "long_term": "Uzun Vadeli"
+    }
   },
   "agreementReport": {
     "types": {
