@@ -24,7 +24,9 @@ export class CoreFileService {
 
   /**
    * Entity için okunabilir klasör adı oluştur
-   * Örnek: "Hauptstr_42_W01" (Property adı + Daire numarası)
+   * Kiracı: hitap-adı-soyadı (örn: Herr_Max_Mustermann)
+   * Daire: adres-gayrimenkul-adı-daire-no (örn: Hauptstr_42_Bahce_Evleri_W01)
+   * Gayrimenkul: adres-gayrimenkul-ismi (örn: Hauptstr_42_Bahce_Evleri)
    */
   private async getEntityFolderName(
     entityType: string,
@@ -32,37 +34,74 @@ export class CoreFileService {
   ): Promise<string | null> {
     try {
       if (entityType === 'apartment') {
-        // Daire için: Property adı + Daire numarası
+        // Daire için: adres-gayrimenkul-adı-daire-no
         const apartment = await this.tenantPrisma.apartment.findUnique({
           where: { id: entityId },
           select: {
             unitNumber: true,
             property: {
-              select: { name: true }
+              select: {
+                name: true,
+                street: true,
+                buildingNo: true
+              }
             }
           }
         });
         if (apartment) {
-          const propertyName = apartment.property?.name || 'Unknown';
-          return `${propertyName}_${apartment.unitNumber}`;
+          const property = apartment.property;
+          // Adres kısmı: sokak + bina no
+          const addressPart = property?.street
+            ? `${property.street}${property.buildingNo ? '_' + property.buildingNo : ''}`
+            : '';
+          const propertyName = property?.name || 'Unknown';
+          // Format: Hauptstr_42_Bahce_Evleri_W01
+          const parts = [addressPart, propertyName, apartment.unitNumber].filter(Boolean);
+          return parts.join('_');
         }
       } else if (entityType === 'property') {
-        // Gayrimenkul için: Property adı
+        // Gayrimenkul için: adres-gayrimenkul-ismi
         const property = await this.tenantPrisma.property.findUnique({
           where: { id: entityId },
-          select: { name: true }
+          select: {
+            name: true,
+            street: true,
+            buildingNo: true
+          }
         });
         if (property) {
-          return property.name;
+          // Adres kısmı: sokak + bina no
+          const addressPart = property.street
+            ? `${property.street}${property.buildingNo ? '_' + property.buildingNo : ''}`
+            : '';
+          // Format: Hauptstr_42_Bahce_Evleri
+          const parts = [addressPart, property.name].filter(Boolean);
+          return parts.join('_');
         }
       } else if (entityType === 'tenant') {
-        // Kiracı için: Ad Soyad
-        const tenant = await this.tenantPrisma.realEstateTenant.findUnique({
+        // Kiracı için: hitap-adı-soyadı
+        const tenant = await this.tenantPrisma.tenant.findUnique({
           where: { id: entityId },
-          select: { firstName: true, lastName: true }
+          select: {
+            salutation: true,
+            firstName: true,
+            lastName: true,
+            tenantType: true,
+            companyName: true
+          }
         });
         if (tenant) {
-          return `${tenant.firstName}_${tenant.lastName}`;
+          // Şirket ise şirket adı
+          if (tenant.tenantType === 'company' && tenant.companyName) {
+            return tenant.companyName;
+          }
+          // Kişi ise: Herr_Max_Mustermann
+          const parts = [
+            tenant.salutation,
+            tenant.firstName,
+            tenant.lastName
+          ].filter(Boolean);
+          return parts.join('_') || 'Unknown';
         }
       }
     } catch (error) {
