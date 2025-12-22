@@ -885,6 +885,7 @@ export class RealEstateSeeder implements ModuleSeeder {
 
     try {
       // Delete in reverse order of dependencies
+      // Use demo property ID pattern for all related records
 
       // Bulk Operations
       const bulkOpResult = await tenantPrisma.bulkOperation.deleteMany({
@@ -892,9 +893,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += bulkOpResult.count;
 
-      // Real Estate Maintenance Records
+      // Real Estate Maintenance Records - delete via apartment -> property relation
       const reMaintenanceResult = await tenantPrisma.realEstateMaintenanceRecord.deleteMany({
-        where: { apartment: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } } },
+        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
       });
       itemsDeleted += reMaintenanceResult.count;
 
@@ -940,27 +941,33 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += expenseResult.count;
 
-      // Appointments
+      // Appointments - delete via apartment -> property relation
       const appointmentResult = await tenantPrisma.appointment.deleteMany({
-        where: { apartment: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } } },
+        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
       });
       itemsDeleted += appointmentResult.count;
 
-      // Payments
+      // Payments - delete via contract -> apartment -> property relation
       const paymentResult = await tenantPrisma.payment.deleteMany({
-        where: { contract: { contractNumber: { startsWith: 'CONT-' } } },
+        where: { contract: { apartment: { property: { id: { contains: '-demo-property-' } } } } },
       });
       itemsDeleted += paymentResult.count;
 
-      // Contracts
+      // Contracts - delete via apartment -> property relation
       const contractResult = await tenantPrisma.contract.deleteMany({
-        where: { contractNumber: { startsWith: 'CONT-' } },
+        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
       });
       itemsDeleted += contractResult.count;
 
+      // RE Staff - PropertyStaff records
+      const propertyStaffResult = await tenantPrisma.propertyStaff.deleteMany({
+        where: { property: { id: { contains: '-demo-property-' } } },
+      });
+      itemsDeleted += propertyStaffResult.count;
+
       // RE Staff
       const staffResult = await tenantPrisma.realEstateStaff.deleteMany({
-        where: { userId: { startsWith: 'demo-staff-' } },
+        where: { id: { contains: '-demo-re-staff-' } },
       });
       itemsDeleted += staffResult.count;
 
@@ -970,9 +977,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += tenantResult.count;
 
-      // Apartments
+      // Apartments - delete via property relation
       const apartmentResult = await tenantPrisma.apartment.deleteMany({
-        where: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } },
+        where: { property: { id: { contains: '-demo-property-' } } },
       });
       itemsDeleted += apartmentResult.count;
 
@@ -984,6 +991,7 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       return { success: true, itemsCreated: 0, itemsDeleted };
     } catch (error: any) {
+      console.error('Real Estate unseed error:', error);
       return { success: false, itemsCreated: 0, itemsDeleted, error: error.message };
     }
   }
