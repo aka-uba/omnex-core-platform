@@ -117,26 +117,36 @@ export async function GET(request: NextRequest) {
         `;
         const tableCount = Number(result[0]?.count || 0);
         
-        // Check if database has any data (sample a few key tables)
+        // Check if database has any data by querying key tables directly
         let hasData = false;
+        let totalRecords = 0;
+
+        // Check User table (most reliable indicator)
         try {
-          // Check a few key tables for data
-          const sampleTables = ['User', 'Company', 'Property', 'Product', 'Invoice'];
-          for (const tableName of sampleTables) {
-            try {
-              const countResult = await prisma.$queryRaw<Array<{ count: bigint }>>`
-                SELECT COUNT(*) as count FROM "${tableName}"
-              `.then(r => Number(r[0]?.count || 0));
-              if (countResult > 0) {
-                hasData = true;
-                break;
-              }
-            } catch (e) {
-              // Table might not exist, continue
-            }
+          const userCount = await prisma.$queryRaw<Array<{ count: bigint }>>`
+            SELECT COUNT(*) as count FROM "User"
+          `;
+          const count = Number(userCount[0]?.count || 0);
+          if (count > 0) {
+            hasData = true;
+            totalRecords += count;
           }
         } catch (e) {
-          // Ignore
+          // Table might not exist
+        }
+
+        // Also check Company table
+        try {
+          const companyCount = await prisma.$queryRaw<Array<{ count: bigint }>>`
+            SELECT COUNT(*) as count FROM "Company"
+          `;
+          const count = Number(companyCount[0]?.count || 0);
+          if (count > 0) {
+            hasData = true;
+            totalRecords += count;
+          }
+        } catch (e) {
+          // Table might not exist
         }
         
         await prisma.$disconnect();
@@ -147,6 +157,7 @@ export async function GET(request: NextRequest) {
           url: tenantDatabaseUrl.replace(/:[^:@]+@/, ':****@'), // Hide password
           info: tenantDbInfo,
           tables: tableCount,
+          totalRecords: totalRecords > 0 ? totalRecords : undefined,
           isEmpty: !hasData && tableCount > 0, // Tables exist but no data
         });
       } catch (error: any) {
