@@ -880,12 +880,29 @@ export class RealEstateSeeder implements ModuleSeeder {
   }
 
   async unseed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma } = ctx;
+    const { tenantPrisma, tenantSlug } = ctx;
     let itemsDeleted = 0;
 
     try {
       // Delete in reverse order of dependencies
-      // Use demo property ID pattern for all related records
+      // Support both old format (property-1) and new format (tenantSlug-demo-property-1)
+      const propertyIdPatterns = [
+        { id: { contains: '-demo-property-' } },
+        { id: { startsWith: `${tenantSlug}-demo-property-` } },
+        { id: { in: ['property-1', 'property-2', 'property-3'] } }, // Old format fallback
+      ];
+
+      // Find all demo properties first
+      const demoProperties = await tenantPrisma.property.findMany({
+        where: { OR: propertyIdPatterns },
+        select: { id: true },
+      });
+      const propertyIds = demoProperties.map(p => p.id);
+
+      if (propertyIds.length === 0) {
+        // No demo properties found
+        return { success: true, itemsCreated: 0, itemsDeleted: 0 };
+      }
 
       // Bulk Operations
       const bulkOpResult = await tenantPrisma.bulkOperation.deleteMany({
@@ -895,7 +912,7 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // Real Estate Maintenance Records - delete via apartment -> property relation
       const reMaintenanceResult = await tenantPrisma.realEstateMaintenanceRecord.deleteMany({
-        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
+        where: { apartment: { propertyId: { in: propertyIds } } },
       });
       itemsDeleted += reMaintenanceResult.count;
 
@@ -931,37 +948,37 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // Side Cost Reconciliations
       const reconciliationResult = await tenantPrisma.sideCostReconciliation.deleteMany({
-        where: { property: { id: { contains: '-demo-property-' } } },
+        where: { propertyId: { in: propertyIds } },
       });
       itemsDeleted += reconciliationResult.count;
 
       // Property Expenses
       const expenseResult = await tenantPrisma.propertyExpense.deleteMany({
-        where: { property: { id: { contains: '-demo-property-' } } },
+        where: { propertyId: { in: propertyIds } },
       });
       itemsDeleted += expenseResult.count;
 
       // Appointments - delete via apartment -> property relation
       const appointmentResult = await tenantPrisma.appointment.deleteMany({
-        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
+        where: { apartment: { propertyId: { in: propertyIds } } },
       });
       itemsDeleted += appointmentResult.count;
 
       // Payments - delete via contract -> apartment -> property relation
       const paymentResult = await tenantPrisma.payment.deleteMany({
-        where: { contract: { apartment: { property: { id: { contains: '-demo-property-' } } } } },
+        where: { contract: { apartment: { propertyId: { in: propertyIds } } } },
       });
       itemsDeleted += paymentResult.count;
 
       // Contracts - delete via apartment -> property relation
       const contractResult = await tenantPrisma.contract.deleteMany({
-        where: { apartment: { property: { id: { contains: '-demo-property-' } } } },
+        where: { apartment: { propertyId: { in: propertyIds } } },
       });
       itemsDeleted += contractResult.count;
 
       // RE Staff - PropertyStaff records
       const propertyStaffResult = await tenantPrisma.propertyStaff.deleteMany({
-        where: { property: { id: { contains: '-demo-property-' } } },
+        where: { propertyId: { in: propertyIds } },
       });
       itemsDeleted += propertyStaffResult.count;
 
@@ -979,13 +996,13 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // Apartments - delete via property relation
       const apartmentResult = await tenantPrisma.apartment.deleteMany({
-        where: { property: { id: { contains: '-demo-property-' } } },
+        where: { propertyId: { in: propertyIds } },
       });
       itemsDeleted += apartmentResult.count;
 
       // Properties
       const propertyResult = await tenantPrisma.property.deleteMany({
-        where: { id: { contains: '-demo-property-' } },
+        where: { id: { in: propertyIds } },
       });
       itemsDeleted += propertyResult.count;
 
