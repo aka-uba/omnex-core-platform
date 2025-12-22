@@ -288,6 +288,7 @@ export function EmailTemplateList({ locale }: EmailTemplateListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-email-templates"
         columns={columns}
         data={tableData}
         searchable={true}

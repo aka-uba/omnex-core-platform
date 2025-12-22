@@ -334,6 +334,7 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-maintenance"
         columns={columns}
         data={tableData}
         searchable={true}

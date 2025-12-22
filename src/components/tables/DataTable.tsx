@@ -66,6 +66,8 @@ export interface DataTableProps {
   rowIdKey?: string; // Key to use for row ID (default: 'id')
   // Row number column
   showRowNumbers?: boolean; // Show row number (#) column (default: true)
+  // Persistence
+  tableId?: string; // Unique ID for persisting column settings to localStorage
 }
 
 export function DataTable({
@@ -94,6 +96,7 @@ export function DataTable({
   onSelectionChange,
   rowIdKey = 'id',
   showRowNumbers = true,
+  tableId,
 }: DataTableProps) {
   const { t } = useTranslation(exportNamespace);
   const { t: tGlobal } = useTranslation('global');
@@ -105,7 +108,36 @@ export function DataTable({
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showColumnSettingsModal, setShowColumnSettingsModal] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
-  const [visibleColumns, setVisibleColumns] = useState<DataTableColumn[]>(columns);
+  const [visibleColumns, setVisibleColumns] = useState<DataTableColumn[]>(() => {
+    // Try to load saved column settings from localStorage
+    if (tableId && typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`datatable-columns-${tableId}`);
+        if (saved) {
+          const savedSettings = JSON.parse(saved) as Array<{ key: string; hidden?: boolean; order: number }>;
+          // Merge saved settings with current columns
+          const merged = columns.map(col => {
+            const savedCol = savedSettings.find(s => s.key === col.key);
+            if (savedCol) {
+              return { ...col, hidden: savedCol.hidden };
+            }
+            return col;
+          });
+          // Sort by saved order
+          merged.sort((a, b) => {
+            const aOrder = savedSettings.find(s => s.key === a.key)?.order ?? 999;
+            const bOrder = savedSettings.find(s => s.key === b.key)?.order ?? 999;
+            return aOrder - bOrder;
+          });
+          return merged;
+        }
+      } catch (e) {
+        console.warn('Failed to load column settings from localStorage:', e);
+      }
+    }
+    return columns;
+  });
+  const [columnsInitialized, setColumnsInitialized] = useState(false);
 
   // Mobile detection for card view
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -147,10 +179,14 @@ export function DataTable({
 
   // Update visible columns when columns prop changes (only if structure changed, not just reference)
   useEffect(() => {
+    // Skip if already initialized from localStorage
+    if (columnsInitialized) return;
+
     // Only update if the keys are different (new columns added/removed)
     // Don't reset if user has made customizations
     if (visibleColumns.length === 0 || columns.length === 0) {
       setVisibleColumns(columns);
+      setColumnsInitialized(true);
       return;
     }
     const currentKeys = visibleColumns.map(c => c.key).sort().join(',');
@@ -164,7 +200,23 @@ export function DataTable({
       });
       setVisibleColumns(merged);
     }
-  }, [columns]);
+    setColumnsInitialized(true);
+  }, [columns, columnsInitialized]);
+
+  // Save column settings to localStorage when they change
+  useEffect(() => {
+    if (!tableId || !columnsInitialized) return;
+    try {
+      const settings = visibleColumns.map((col, index) => ({
+        key: col.key,
+        hidden: col.hidden,
+        order: index,
+      }));
+      localStorage.setItem(`datatable-columns-${tableId}`, JSON.stringify(settings));
+    } catch (e) {
+      console.warn('Failed to save column settings to localStorage:', e);
+    }
+  }, [visibleColumns, tableId, columnsInitialized]);
 
   // Filter and sort data
   const processedData = useMemo(() => {
@@ -1054,6 +1106,14 @@ export function DataTable({
           onReset={() => {
             setVisibleColumns(columns);
             onColumnReorder?.(columns);
+            // Clear localStorage when reset
+            if (tableId) {
+              try {
+                localStorage.removeItem(`datatable-columns-${tableId}`);
+              } catch (e) {
+                console.warn('Failed to remove column settings from localStorage:', e);
+              }
+            }
           }}
         />
       )}

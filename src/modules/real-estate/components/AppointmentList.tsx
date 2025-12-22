@@ -363,6 +363,7 @@ export function AppointmentList({ locale }: AppointmentListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-appointments"
         columns={columns}
         data={tableData}
         searchable={true}

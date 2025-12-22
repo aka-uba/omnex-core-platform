@@ -267,6 +267,7 @@ export function BulkOperationList({ locale }: BulkOperationListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-bulk-operations"
         columns={columns}
         data={tableData}
         searchable={true}

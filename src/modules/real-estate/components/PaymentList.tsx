@@ -403,6 +403,7 @@ export function PaymentList({ locale }: PaymentListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-payments"
         columns={columns}
         data={tableData}
         searchable={true}

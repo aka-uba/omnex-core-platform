@@ -338,6 +338,7 @@ export function TenantList({ locale }: TenantListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-tenants"
         columns={columns}
         data={tableData}
         searchable={true}

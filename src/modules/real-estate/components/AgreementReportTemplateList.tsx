@@ -281,6 +281,7 @@ export function AgreementReportTemplateList({ locale }: AgreementReportTemplateL
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-agreement-report-templates"
         columns={columns}
         data={tableData}
         searchable={true}

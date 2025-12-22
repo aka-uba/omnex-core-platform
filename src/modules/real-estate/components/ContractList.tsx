@@ -366,6 +366,7 @@ export function ContractList({ locale }: ContractListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-contracts"
         columns={columns}
         data={tableData}
         searchable={true}

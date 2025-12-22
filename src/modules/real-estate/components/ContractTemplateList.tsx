@@ -279,6 +279,7 @@ export function ContractTemplateList({ locale }: ContractTemplateListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-contract-templates"
         columns={columns}
         data={tableData}
         searchable={true}

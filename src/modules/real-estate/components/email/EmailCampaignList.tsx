@@ -261,6 +261,7 @@ export function EmailCampaignList({ locale }: EmailCampaignListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-email-campaigns"
         columns={columns}
         data={tableData}
         searchable={true}

@@ -353,6 +353,7 @@ export function AgreementReportList({ locale }: AgreementReportListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-agreement-reports"
         columns={columns}
         data={tableData}
         searchable={true}

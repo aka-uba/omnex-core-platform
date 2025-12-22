@@ -351,6 +351,7 @@ export function RealEstateStaffList({ locale }: RealEstateStaffListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-staff"
         columns={columns}
         data={tableData}
         searchable={true}

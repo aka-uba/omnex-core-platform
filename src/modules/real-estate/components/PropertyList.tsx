@@ -494,6 +494,7 @@ export function PropertyList({ locale }: PropertyListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-properties"
         columns={columns}
         data={tableData}
         searchable={true}

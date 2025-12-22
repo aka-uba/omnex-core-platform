@@ -575,6 +575,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
         variant="danger"
       />
       <DataTable
+        tableId="real-estate-apartments"
         columns={columns}
         data={tableData}
         searchable={true}
