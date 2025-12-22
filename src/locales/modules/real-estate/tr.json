@@ -613,7 +613,7 @@
       "error": "E-posta gönderilirken hata oluştu"
     },
     "description": "E-posta şablonlarını ve kampanyalarını yönetin",
-    "status": {
+      "status": {
       "default": "Varsayılan",
       "active": "Aktif",
       "inactive": "Pasif"
@@ -1450,9 +1450,7 @@
     "noDocuments": "Belge bulunamadı",
     "select": "Seç",
     "selectCategory": "Kategori seçin",
-    "cancel": "İptal",
-    "download": "İndir",
-    "preview": "Önizle"
+    "cancel": "İptal"
   },
   "validation": {
     "required": "Gerekli"
@@ -1856,14 +1854,18 @@
   "mediaGallery": {
     "images": "Resimler",
     "documents": "Belgeler",
-    "apartmentImages": "Daire Resimleri",
-    "apartmentDocuments": "Daire Belgeleri",
+    "preview": "Önizleme",
+    "download": "İndir",
     "uploadDocuments": "Belge Yükle",
-    "uploadDocumentsHint": "Plan, döküman ve diğer belgeleri yükleyin (PDF, DOC, XLS vb.)",
-    "imagesUploaded": "resim yüklendi",
+    "uploadDocumentsHint": "Desteklenen formatlar: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
+    "noDocuments": "Henüz belge yüklenmedi",
+    "documentUploadSuccess": "Belgeler yüklendi",
     "documentsUploaded": "belge yüklendi",
-    "documentUploadSuccess": "Belge Yüklendi",
-    "documentUploadError": "Belge Yükleme Hatası",
-    "noDocuments": "Henüz belge eklenmemiş"
+    "documentUploadError": "Belge yüklenirken hata oluştu",
+    "imagesUploaded": "resim yüklendi",
+    "loading": "Yükleniyor...",
+    "videoNotSupported": "Tarayıcınız video etiketini desteklemiyor.",
+    "audioNotSupported": "Tarayıcınız ses etiketini desteklemiyor.",
+    "previewNotAvailable": "Bu dosya türü için önizleme kullanılamıyor"
   }
 }
