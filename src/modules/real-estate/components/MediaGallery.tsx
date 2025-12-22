@@ -29,11 +29,7 @@ import {
   IconFile,
   IconFileTypePdf,
   IconFileTypeDoc,
-  IconFileTypeDocx,
   IconFileTypeXls,
-  IconFileTypeCsv,
-  IconFileTypeTxt,
-  IconFileTypeZip,
   IconEye,
   IconDownload,
 } from '@tabler/icons-react';
@@ -83,10 +79,19 @@ function FilePreviewModal({ opened, onClose, fileId, fileInfo }: FilePreviewModa
     if (opened && fileId && !fileInfo) {
       setLoading(true);
       fetch(`/api/core-files/${fileId}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then(data => {
-          if (data.file) {
-            setLocalFileInfo(data.file);
+          // API returns { success: true, data: { file: {...} } } or { file: {...} }
+          const fileData = data?.data?.file || data?.file;
+          if (fileData) {
+            setLocalFileInfo(fileData);
+          } else {
+            console.error('File data not found in response:', data);
           }
         })
         .catch(err => console.error('Error fetching file info:', err))
@@ -245,7 +250,7 @@ export function MediaGallery({
   tenantId,
   entityId,
   entityType,
-  images,
+  images = [],
   documents = [],
   coverImage,
   onImagesChange,
@@ -259,31 +264,6 @@ export function MediaGallery({
   const [previewOpened, { open: openPreview, close: closePreview }] = useDisclosure(false);
   const [previewFileId, setPreviewFileId] = useState<string | null>(null);
   const [previewFileInfo, setPreviewFileInfo] = useState<CoreFileInfo | null>(null);
-  const [documentInfoMap, setDocumentInfoMap] = useState<Record<string, CoreFileInfo>>({});
-
-  // Fetch document info when documents change
-  useEffect(() => {
-    const fetchDocumentInfo = async () => {
-      const newDocs = documents.filter(id => !documentInfoMap[id]);
-      if (newDocs.length === 0) return;
-
-      for (const docId of newDocs) {
-        try {
-          const res = await fetch(`/api/core-files/${docId}`);
-          const data = await res.json();
-          if (data.file) {
-            setDocumentInfoMap(prev => ({ ...prev, [docId]: data.file }));
-          }
-        } catch (error) {
-          console.error('Error fetching document info:', error);
-        }
-      }
-    };
-
-    if (documents.length > 0) {
-      fetchDocumentInfo();
-    }
-  }, [documents, documentInfoMap]);
 
   const { uploadFile } = useCoreFileManager({
     tenantId,
@@ -382,7 +362,8 @@ export function MediaGallery({
   };
 
   const handleRemoveImage = (imageId: string) => {
-    const newImages = images.filter((id) => id !== imageId);
+    const currentImages = Array.isArray(images) ? images : [];
+    const newImages = currentImages.filter((id) => id !== imageId);
     onImagesChange(newImages);
 
     if (coverImage === imageId) {
@@ -393,7 +374,8 @@ export function MediaGallery({
 
   const handleRemoveDocument = (docId: string) => {
     if (!onDocumentsChange) return;
-    const newDocs = documents.filter((id) => id !== docId);
+    const currentDocs = Array.isArray(documents) ? documents : [];
+    const newDocs = currentDocs.filter((id) => id !== docId);
     onDocumentsChange(newDocs);
   };
 
@@ -411,51 +393,35 @@ export function MediaGallery({
     return `/api/core-files/${fileId}/download`;
   };
 
-  const getDocumentIcon = (extension?: string, size: number = 40) => {
-    const ext = extension?.toLowerCase();
-    const iconProps = { size, style: { flexShrink: 0 } };
-
-    switch (ext) {
+  const getDocumentIcon = (extension?: string) => {
+    switch (extension?.toLowerCase()) {
       case 'pdf':
-        return <IconFileTypePdf {...iconProps} color="#E53935" />;
+        return <IconFileTypePdf size={32} />;
       case 'doc':
-        return <IconFileTypeDoc {...iconProps} color="#2196F3" />;
       case 'docx':
-        return <IconFileTypeDocx {...iconProps} color="#2196F3" />;
+        return <IconFileTypeDoc size={32} />;
       case 'xls':
       case 'xlsx':
-        return <IconFileTypeXls {...iconProps} color="#4CAF50" />;
-      case 'csv':
-        return <IconFileTypeCsv {...iconProps} color="#4CAF50" />;
-      case 'txt':
-        return <IconFileTypeTxt {...iconProps} color="#757575" />;
-      case 'zip':
-      case 'rar':
-      case '7z':
-        return <IconFileTypeZip {...iconProps} color="#FF9800" />;
+        return <IconFileTypeXls size={32} />;
       default:
-        return <IconFile {...iconProps} color="#9E9E9E" />;
+        return <IconFile size={32} />;
     }
   };
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  };
+  // Ensure arrays are valid
+  const safeImages = Array.isArray(images) ? images : [];
+  const safeDocs = Array.isArray(documents) ? documents : [];
 
   return (
     <Stack gap="md">
       <Tabs defaultValue="images">
         <Tabs.List>
           <Tabs.Tab value="images" leftSection={<IconPhoto size={16} />}>
-            {t('mediaGallery.images') || 'Images'} ({images.length})
+            {t('mediaGallery.images') || 'Images'} ({safeImages.length})
           </Tabs.Tab>
           {onDocumentsChange && (
             <Tabs.Tab value="documents" leftSection={<IconFile size={16} />}>
-              {t('mediaGallery.documents') || 'Documents'} ({documents.length})
+              {t('mediaGallery.documents') || 'Documents'} ({safeDocs.length})
             </Tabs.Tab>
           )}
         </Tabs.List>
@@ -489,7 +455,7 @@ export function MediaGallery({
               {t('form.uploadImagesHint')}
             </Text>
 
-            {images.length === 0 ? (
+            {safeImages.length === 0 ? (
               <Box
                 p="xl"
                 style={{
@@ -504,7 +470,7 @@ export function MediaGallery({
               </Box>
             ) : (
               <SimpleGrid cols={{ base: 3, sm: 4, md: 5, lg: 6 }} spacing="xs">
-                {images.map((imageId) => (
+                {safeImages.map((imageId) => (
                   <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden' }}>
                     <Box pos="relative" h={80}>
                       <Image
@@ -598,7 +564,7 @@ export function MediaGallery({
                 {t('mediaGallery.uploadDocumentsHint') || 'Supported: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV'}
               </Text>
 
-              {documents.length === 0 ? (
+              {safeDocs.length === 0 ? (
                 <Box
                   p="xl"
                   style={{
@@ -612,72 +578,49 @@ export function MediaGallery({
                   </Text>
                 </Box>
               ) : (
-                <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="sm">
-                  {documents.map((docId) => {
-                    const docInfo = documentInfoMap[docId];
-                    const extension = docInfo?.extension || '';
-                    const fileName = docInfo?.originalName || `${docId.slice(0, 8)}...`;
-                    const fileSize = docInfo?.size ? formatFileSize(docInfo.size) : '';
-
-                    return (
-                      <Card key={docId} padding="sm" radius="md" withBorder>
-                        <Group wrap="nowrap" gap="sm">
-                          <Box style={{ flexShrink: 0 }}>
-                            {getDocumentIcon(extension, 36)}
-                          </Box>
-                          <Box style={{ flex: 1, minWidth: 0 }}>
-                            <Text size="sm" fw={500} lineClamp={1} title={fileName}>
-                              {fileName}
-                            </Text>
-                            <Group gap="xs">
-                              {extension && (
-                                <Badge size="xs" variant="light" color="gray">
-                                  {extension.toUpperCase()}
-                                </Badge>
-                              )}
-                              {fileSize && (
-                                <Text size="xs" c="dimmed">
-                                  {fileSize}
-                                </Text>
-                              )}
-                            </Group>
-                          </Box>
-                          <Group gap={4} style={{ flexShrink: 0 }}>
-                            <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
-                              <ActionIcon
-                                variant="light"
-                                color="blue"
-                                size="sm"
-                                onClick={() => handlePreview(docId, docInfo)}
-                              >
-                                <IconEye size={16} />
-                              </ActionIcon>
-                            </Tooltip>
-                            <Tooltip label={t('mediaGallery.download') || 'Download'}>
-                              <ActionIcon
-                                component="a"
-                                href={`/api/core-files/${docId}/download`}
-                                download
-                                variant="light"
-                                color="green"
-                                size="sm"
-                              >
-                                <IconDownload size={16} />
-                              </ActionIcon>
-                            </Tooltip>
+                <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
+                  {safeDocs.map((docId) => (
+                    <Card key={docId} padding="md" radius="md" withBorder>
+                      <Stack align="center" gap="xs">
+                        {getDocumentIcon()}
+                        <Text size="xs" ta="center" lineClamp={2}>
+                          {docId.slice(0, 8)}...
+                        </Text>
+                        <Group gap="xs">
+                          <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
                             <ActionIcon
                               variant="light"
-                              color="red"
+                              color="blue"
                               size="sm"
-                              onClick={() => handleRemoveDocument(docId)}
+                              onClick={() => handlePreview(docId)}
                             >
-                              <IconX size={16} />
+                              <IconEye size={16} />
                             </ActionIcon>
-                          </Group>
+                          </Tooltip>
+                          <Tooltip label={t('mediaGallery.download') || 'Download'}>
+                            <ActionIcon
+                              component="a"
+                              href={`/api/core-files/${docId}/download`}
+                              download
+                              variant="light"
+                              color="green"
+                              size="sm"
+                            >
+                              <IconDownload size={16} />
+                            </ActionIcon>
+                          </Tooltip>
+                          <ActionIcon
+                            variant="light"
+                            color="red"
+                            size="sm"
+                            onClick={() => handleRemoveDocument(docId)}
+                          >
+                            <IconX size={16} />
+                          </ActionIcon>
                         </Group>
-                      </Card>
-                    );
-                  })}
+                      </Stack>
+                    </Card>
+                  ))}
                 </SimpleGrid>
               )}
             </Stack>
