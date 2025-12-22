@@ -12,6 +12,7 @@ export interface FilePermissions {
 
 export interface UploadOptions {
   tenantId: string;
+  tenantSlug: string; // Used for file path (e.g., ./storage/tenants/{slug}/...)
   companyId: string;
   module: string;
   entityType?: string;
@@ -28,7 +29,7 @@ export interface UploadOptions {
 }
 
 export interface BuildPathOptions {
-  tenantId: string;
+  tenantSlug: string; // Used for file path instead of tenantId
   module: string;
   entityType?: string;
   filename: string;

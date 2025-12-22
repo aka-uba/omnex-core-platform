@@ -102,9 +102,10 @@ export async function POST(request: NextRequest) {
         }
 
         const fileService = new CoreFileService(tenantPrisma);
-        
+
         const uploadedFile = await fileService.uploadFile({
           tenantId: tenantContext.id,
+          tenantSlug: tenantContext.slug, // Used for file path (e.g., ./storage/tenants/{slug}/...)
           companyId: finalCompanyId,
           module,
           ...(entityType ? { entityType } : {}),
