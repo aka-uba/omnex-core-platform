@@ -63,23 +63,21 @@
     }
   },
   "apartments": {
-    "title": "Apartments",
-    "description": "Manage apartments and units",
-    "create": {
-      "title": "New Apartment",
-      "description": "Create a new apartment"
-    },
-    "edit": {
-      "title": "Edit Apartment",
-      "description": "Edit apartment information"
-    },
-    "detail": {
-      "title": "Apartment Details",
-      "description": "View apartment details"
-    },
-    "tenantHistory": "Tenant History",
-    "maintenance": "Maintenance",
-    "maintenanceDescription": "Click 'View All' to see maintenance records for this apartment or create a new maintenance request."
+    "details": "Details",
+    "floor": "Floor",
+    "block": "Block",
+    "area": "Area",
+    "roomCount": "Room Count",
+    "rooms": "rooms",
+    "rentPrice": "Rent Price",
+    "salePrice": "Sale Price",
+    "deliveryDate": "Delivery Date",
+    "status": {
+      "empty": "Empty",
+      "rented": "Rented",
+      "sold": "Sold",
+      "maintenance": "Maintenance"
+    }
   },
   "tenants": {
     "title": "Tenants",
@@ -127,31 +125,14 @@
   },
   "payments": {
     "title": "Payments",
-    "description": "Manage rental payments and transactions",
-    "list": "List",
-    "analytics": "Analytics",
-    "create": {
-      "title": "Create Payment",
-      "description": "Record a new payment"
-    },
-    "edit": {
-      "title": "Edit Payment",
-      "description": "Edit payment information"
-    },
-    "markedAsPaid": "Payment marked as paid",
-    "markAsPaid": "Mark as Paid",
-    "markAsPaidError": "Error marking payment as paid",
-    "quickBoard": {
-      "upcoming": "Upcoming Payments",
-      "overdue": "Overdue Payments",
-      "next30Days": "Next 30 Days",
-      "requiresAction": "Requires Action",
-      "noUpcoming": "No upcoming payments",
-      "noOverdue": "No overdue payments",
-      "daysLeft": "days left",
-      "daysLate": "days late",
-      "projected": "Projected",
-      "viewContract": "View Contract"
+    "create": "New Payment",
+    "edit": "Edit Payment",
+    "types": {
+      "rent": "Rent",
+      "deposit": "Deposit",
+      "fee": "Fee",
+      "maintenance": "Maintenance",
+      "utility": "Utility"
     },
     "status": {
       "pending": "Pending",
@@ -159,29 +140,37 @@
       "overdue": "Overdue",
       "cancelled": "Cancelled"
     },
-    "types": {
-      "rent": "Rent",
-      "deposit": "Deposit",
-      "fee": "Fee",
-      "maintenance": "Maintenance",
-      "utility": "Utility"
-    }
+    "methods": {
+      "cash": "Cash",
+      "bankTransfer": "Bank Transfer",
+      "card": "Card",
+      "check": "Check"
+    },
+    "markedAsPaid": "Payment marked as paid",
+    "markAsPaidError": "Failed to mark payment as paid"
   },
   "appointments": {
-    "title": "Appointments",
-    "description": "Manage property viewings and appointments",
-    "create": {
-      "title": "Create Appointment",
-      "description": "Schedule a new appointment"
+    "followUpForm": "Appointment Follow-up Form",
+    "followUpDescription": "Fill in the details after the appointment is completed",
+    "rating": "Rating",
+    "forViewing": "for viewing",
+    "interestLevel": "Interest Level",
+    "interestLevels": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
     },
-    "edit": {
-      "title": "Edit Appointment",
-      "description": "Edit appointment details"
-    },
-    "detail": {
-      "title": "Appointment Details",
-      "description": "View appointment details"
-    }
+    "resultNotes": "Result Notes",
+    "enterResultNotes": "Enter result notes...",
+    "outcome": "Outcome",
+    "enterOutcome": "Enter outcome...",
+    "nextAction": "Next Action",
+    "enterNextAction": "Enter next action...",
+    "followUpSaved": "Follow-up information saved successfully",
+    "details": "Details",
+    "followUp": "Follow-up",
+    "minutes": "minutes",
+    "result": "Result"
   },
   "email": {
     "templates": {
@@ -206,8 +195,12 @@
     }
   },
   "map": {
-    "title": "Property Map",
-    "description": "View properties on map"
+    "title": "Map",
+    "mapboxTokenMissing": "Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.",
+    "totalProperties": "Total Properties",
+    "totalApartments": "Total Apartments",
+    "rented": "Rented",
+    "empty": "Empty"
   },
   "reports": {
     "title": "Reports",
@@ -350,15 +343,12 @@
     "mrs": "Mrs."
   },
   "actions": {
-    "create": "Create New",
+    "create": "Create",
     "update": "Update",
     "delete": "Delete",
     "edit": "Edit",
-    "view": "View",
     "save": "Save",
-    "cancel": "Cancel",
-    "viewDetails": "View Details",
-    "back": "Back"
+    "cancel": "Cancel"
   },
   "table": {
     "name": "Name",
@@ -424,6 +414,8 @@
     "typePlaceholder": "Select type",
     "code": "Code",
     "codePlaceholder": "Optional code",
+    "country": "Country",
+    "countryPlaceholder": "Country",
     "address": "Address",
     "addressPlaceholder": "Enter address",
     "city": "City",
@@ -438,8 +430,6 @@
     "buildingNoPlaceholder": "Enter building number",
     "postalCode": "Postal Code",
     "postalCodePlaceholder": "Enter postal code",
-    "country": "Country",
-    "countryPlaceholder": "Enter country",
     "latitude": "Latitude",
     "latitudePlaceholder": "Enter latitude",
     "longitude": "Longitude",
@@ -450,30 +440,8 @@
     "paymentDayPlaceholder": "Enter payment day (1-31)",
     "description": "Description",
     "descriptionPlaceholder": "Enter description",
-    "property": "Property",
-    "propertyPlaceholder": "Select property",
-    "unitNumber": "Unit Number",
-    "unitNumberPlaceholder": "Enter unit number",
-    "floor": "Floor",
-    "floorPlaceholder": "Enter floor",
-    "block": "Block",
-    "blockPlaceholder": "Enter block",
-    "area": "Area (m²)",
-    "areaPlaceholder": "Enter area",
-    "roomCount": "Room Count",
-    "roomCountPlaceholder": "Enter room count",
-    "bathroomCount": "Bathroom Count",
-    "bathroomCountPlaceholder": "Enter bathroom count",
-    "livingRoom": "Living Room",
-    "balcony": "Balcony",
-    "rentPrice": "Rent Price",
-    "rentPricePlaceholder": "Enter rent price",
-    "salePrice": "Sale Price",
-    "salePricePlaceholder": "Enter sale price",
-    "documents": "Documents",
-    "noDocuments": "No documents uploaded",
-    "uploadDocuments": "Upload Documents",
-    "uploadDocumentsHint": "Click or drag files here (PDF, Images, Word documents)"
+    "download": "Download",
+    "preview": "Preview"
   },
   "search": {
     "placeholder": "Search..."
@@ -486,24 +454,12 @@
     "active": "Active"
   },
   "messages": {
-    "createSuccess": "Successfully created",
-    "createError": "Creation error",
-    "updateSuccess": "Successfully updated",
-    "updateError": "Update error",
-    "deleteSuccess": "Successfully deleted",
-    "deleteError": "Delete error",
-    "renewSuccess": "Contract renewed successfully",
-    "renewError": "Contract renewal error",
-    "autoRenewSuccess": "Auto-renewal successful",
-    "autoRenewError": "Auto-renewal error",
-    "fileUploaded": "File uploaded successfully",
-    "fileUploadError": "File upload error",
-    "fileDeleted": "File deleted successfully",
-    "fileDeleteError": "File delete error",
-    "uploadAfterCreate": "Files will be uploaded after contract is created",
-    "info": "Info",
     "success": "Success",
-    "error": "Error"
+    "error": "Error",
+    "createError": "An error occurred",
+    "createSuccess": "Created successfully",
+    "updateSuccess": "Updated successfully",
+    "updateError": "Error updating"
   },
   "delete": {
     "confirm": "Are you sure you want to delete?",
@@ -549,17 +505,6 @@
     "appointments": "{{total}} appointments",
     "maintenanceRecords": "{{total}} records"
   },
-  "form": {
-    "moveInDate": "Move-In Date",
-    "moveOutDate": "Move-Out Date",
-    "amount": "Amount",
-    "dueDate": "Due Date",
-    "paidDate": "Paid Date"
-  },
-  "messages": {
-    "noContracts": "No contracts found",
-    "noPayments": "No payments found"
-  },
   "tracking": {
     "title": "Contract Tracking",
     "totalActive": "Total Active",
@@ -573,138 +518,9 @@
     "noActiveContracts": "No active contracts",
     "noExpiredContracts": "No expired contracts"
   },
-    "common": {
+  "common": {
     "yes": "Yes",
     "no": "No"
-  },
-  "payments": {
-    "title": "Payments",
-    "create": "New Payment",
-    "edit": "Edit Payment",
-    "types": {
-      "rent": "Rent",
-      "deposit": "Deposit",
-      "fee": "Fee",
-      "maintenance": "Maintenance",
-      "utility": "Utility"
-    },
-    "status": {
-      "pending": "Pending",
-      "paid": "Paid",
-      "overdue": "Overdue",
-      "cancelled": "Cancelled"
-    },
-    "methods": {
-      "cash": "Cash",
-      "bankTransfer": "Bank Transfer",
-      "card": "Card",
-      "check": "Check"
-    },
-    "markedAsPaid": "Payment marked as paid",
-    "markAsPaidError": "Failed to mark payment as paid"
-  },
-  "form": {
-    "required": "This field is required",
-    "amountRequired": "Amount must be greater than 0",
-    "selectApartment": "Select apartment",
-    "selectContract": "Select contract",
-    "selectDate": "Select date",
-    "selectPaymentMethod": "Select payment method",
-    "enterAmount": "Enter amount",
-    "enterReceiptNumber": "Enter receipt number",
-    "enterNotes": "Enter notes",
-    "extraCharges": "Extra Charges",
-    "addExtraCharge": "Add Extra Charge",
-    "chargeName": "Charge name",
-    "totalAmount": "Total Amount",
-    "isAutoGenerated": "Auto Generated",
-    "reminderSent": "Reminder Sent"
-  },
-    "appointments": {
-    "title": "Appointments",
-    "create": "New Appointment",
-    "edit": "Edit Appointment",
-    "types": {
-      "viewing": "Viewing",
-      "delivery": "Delivery",
-      "maintenance": "Maintenance",
-      "inspection": "Inspection",
-      "meeting": "Meeting"
-    },
-    "status": {
-      "scheduled": "Scheduled",
-      "completed": "Completed",
-      "cancelled": "Cancelled",
-      "no_show": "No Show"
-    },
-    "markedAsCompleted": "Appointment marked as completed",
-    "markAsCompletedError": "Failed to mark appointment as completed"
-  },
-  "form": {
-    "endDateAfterStart": "End date must be after start date",
-    "enterTitle": "Enter title",
-    "enterDescription": "Enter description",
-    "startTime": "Start Time (HH:mm)",
-    "endTime": "End Time (HH:mm)",
-    "enterDuration": "Enter duration",
-    "durationAutoCalculated": "Automatically calculated from start and end dates",
-    "enterLocation": "Enter location",
-    "externalParticipants": "External Participants",
-    "addParticipant": "Add Participant",
-    "name": "Name",
-    "phone": "Phone",
-    "email": "Email",
-    "followUpRequired": "Follow-up Required",
-    "selectTime": "Select time",
-    "apartment": "Apartment",
-    "selectApartment": "Select apartment",
-    "type": "Type",
-    "selectType": "Select type",
-    "status": "Status",
-    "selectStatus": "Select status",
-    "title": "Title",
-    "titlePlaceholder": "Enter title",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter description",
-    "scheduledDate": "Scheduled Date",
-    "selectDateTime": "Select date and time",
-    "startDate": "Start Date (Optional)",
-    "endDate": "End Date (Optional)",
-    "assignedStaff": "Assigned Staff (Optional)",
-    "selectStaff": "Select staff",
-    "performedByStaff": "Performed By Staff (Optional)",
-    "back": "Back"
-  },
-  "appointments": {
-    "followUpForm": "Appointment Follow-up Form",
-    "followUpDescription": "Fill in the details after the appointment is completed",
-    "rating": "Rating",
-    "forViewing": "for viewing",
-    "interestLevel": "Interest Level",
-    "interestLevels": {
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "resultNotes": "Result Notes",
-    "enterResultNotes": "Enter result notes...",
-    "outcome": "Outcome",
-    "enterOutcome": "Enter outcome...",
-    "nextAction": "Next Action",
-    "enterNextAction": "Enter next action...",
-    "followUpSaved": "Follow-up information saved successfully",
-    "details": "Details",
-    "followUp": "Follow-up",
-    "minutes": "minutes",
-    "result": "Result"
-  },
-  "map": {
-    "title": "Map",
-    "mapboxTokenMissing": "Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.",
-    "totalProperties": "Total Properties",
-    "totalApartments": "Total Apartments",
-    "rented": "Rented",
-    "empty": "Empty"
   },
   "sideCosts": {
     "rentAndSideCosts": "Rent and Side Costs",
@@ -811,78 +627,6 @@
     "download": "Download",
     "downloadSuccess": "QR code downloaded successfully"
   },
-  "apartments": {
-    "details": "Details",
-    "floor": "Floor",
-    "block": "Block",
-    "area": "Area",
-    "roomCount": "Room Count",
-    "rooms": "rooms",
-    "rentPrice": "Rent Price",
-    "salePrice": "Sale Price",
-    "deliveryDate": "Delivery Date",
-    "status": {
-      "empty": "Empty",
-      "rented": "Rented",
-      "sold": "Sold",
-      "maintenance": "Maintenance"
-    }
-  },
-  "form": {
-    "name": "Name",
-    "namePlaceholder": "Enter property name",
-    "type": "Type",
-    "typePlaceholder": "Select type",
-    "code": "Code",
-    "codePlaceholder": "Optional code",
-    "country": "Country",
-    "countryPlaceholder": "Country",
-    "address": "Address",
-    "addressPlaceholder": "Enter address",
-    "city": "City",
-    "cityPlaceholder": "Enter city",
-    "district": "District",
-    "districtPlaceholder": "Enter district",
-    "neighborhood": "Neighborhood",
-    "neighborhoodPlaceholder": "Enter neighborhood",
-    "street": "Street",
-    "streetPlaceholder": "Enter street",
-    "buildingNo": "Building No",
-    "buildingNoPlaceholder": "Enter building number",
-    "postalCode": "Postal Code",
-    "postalCodePlaceholder": "Enter postal code",
-    "latitude": "Latitude",
-    "latitudePlaceholder": "Enter latitude",
-    "longitude": "Longitude",
-    "longitudePlaceholder": "Enter longitude",
-    "monthlyFee": "Monthly Fee",
-    "monthlyFeePlaceholder": "Enter monthly fee",
-    "paymentDay": "Payment Day",
-    "paymentDayPlaceholder": "Enter payment day (1-31)",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter description"
-  },
-  "actions": {
-    "create": "Create",
-    "update": "Update",
-    "delete": "Delete",
-    "edit": "Edit",
-    "save": "Save",
-    "cancel": "Cancel"
-  },
-  "types": {
-    "apartment": "Apartment",
-    "complex": "Complex",
-    "building": "Building"
-  },
-  "messages": {
-    "success": "Success",
-    "error": "Error",
-    "createError": "An error occurred",
-    "createSuccess": "Created successfully",
-    "updateSuccess": "Updated successfully",
-    "updateError": "Error updating"
-  },
   "usageRights": {
     "title": "Usage Rights",
     "manage": "Manage Usage Rights",
@@ -908,5 +652,18 @@
       "flooring": "Flooring & Interior",
       "energy": "Energy"
     }
+  },
+  "mediaGallery": {
+    "images": "Images",
+    "documents": "Documents",
+    "apartmentImages": "Apartment Images",
+    "apartmentDocuments": "Apartment Documents",
+    "uploadDocuments": "Upload Documents",
+    "uploadDocumentsHint": "Upload floor plans, documents, and other files (PDF, DOC, XLS, etc.)",
+    "imagesUploaded": "images uploaded",
+    "documentsUploaded": "documents uploaded",
+    "documentUploadSuccess": "Document Uploaded",
+    "documentUploadError": "Document Upload Error",
+    "noDocuments": "No documents added yet"
   }
 }

@@ -613,7 +613,7 @@
       "error": "E-posta gönderilirken hata oluştu"
     },
     "description": "E-posta şablonlarını ve kampanyalarını yönetin",
-      "status": {
+    "status": {
       "default": "Varsayılan",
       "active": "Aktif",
       "inactive": "Pasif"
@@ -1450,7 +1450,9 @@
     "noDocuments": "Belge bulunamadı",
     "select": "Seç",
     "selectCategory": "Kategori seçin",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "download": "İndir",
+    "preview": "Önizle"
   },
   "validation": {
     "required": "Gerekli"
@@ -1850,5 +1852,18 @@
       "welcome": "Hoş Geldiniz",
       "agreement": "Anlaşma"
     }
+  },
+  "mediaGallery": {
+    "images": "Resimler",
+    "documents": "Belgeler",
+    "apartmentImages": "Daire Resimleri",
+    "apartmentDocuments": "Daire Belgeleri",
+    "uploadDocuments": "Belge Yükle",
+    "uploadDocumentsHint": "Plan, döküman ve diğer belgeleri yükleyin (PDF, DOC, XLS vb.)",
+    "imagesUploaded": "resim yüklendi",
+    "documentsUploaded": "belge yüklendi",
+    "documentUploadSuccess": "Belge Yüklendi",
+    "documentUploadError": "Belge Yükleme Hatası",
+    "noDocuments": "Henüz belge eklenmemiş"
   }
 }

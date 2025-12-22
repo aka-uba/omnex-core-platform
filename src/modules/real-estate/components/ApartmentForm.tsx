@@ -28,7 +28,7 @@ import { useProperties } from '@/hooks/useProperties';
 import { useTranslation } from '@/lib/i18n/client';
 import { apartmentCreateSchema } from '@/modules/real-estate/schemas/apartment.schema';
 import type { ApartmentStatus, OwnerType, OwnershipType } from '@/modules/real-estate/types/apartment';
-import { ImageUpload } from './ImageUpload';
+import { MediaGallery } from './MediaGallery';
 import { useAuth } from '@/hooks/useAuth';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { UsageRightsPanel, ApartmentUsageRight } from './UsageRightsPanel';
@@ -473,13 +473,15 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
               />
             </Grid.Col>
             <Grid.Col span={12}>
-              <ImageUpload
+              <MediaGallery
                 tenantId="temp-tenant-id"
                 {...(apartmentId ? { entityId: apartmentId } : {})}
                 entityType="apartment"
                 images={form.values.images}
+                documents={form.values.documents}
                 {...(form.values.coverImage ? { coverImage: form.values.coverImage } : {})}
                 onImagesChange={(images) => form.setFieldValue('images', images)}
+                onDocumentsChange={(documents) => form.setFieldValue('documents', documents)}
                 onCoverImageChange={(coverImage) => form.setFieldValue('coverImage', coverImage ?? undefined)}
                 userId={user?.id || 'system'}
               />
