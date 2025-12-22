@@ -1012,7 +1012,9 @@
     "expired": "Süresi Dolmuş",
     "terminated": "Feshedilmiş",
     "paidOff": "Ödendi",
-    "notPaidOff": "Ödenmedi"
+    "notPaidOff": "Ödenmedi",
+    "yes": "Evet",
+    "no": "Hayır"
   },
   "actions": {
     "title": "İşlemler",
@@ -1456,7 +1458,10 @@
     "noDocuments": "Belge bulunamadı",
     "select": "Seç",
     "selectCategory": "Kategori seçin",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "buildingInfo": "Bina Bilgileri",
+    "purchaseAndFinancing": "Satın Alma ve Finansman",
+    "coordinates": "Koordinatlar"
   },
   "validation": {
     "required": "Gerekli"
@@ -1617,6 +1622,7 @@
   },
   "sideCosts": {
     "rentAndSideCosts": "Kira ve Yan Giderler",
+    "sideCosts": "Yan Giderler",
     "monthlyEstimate": "Tahmini aylik tutar",
     "rentCalculation": "Kira Hesaplamasi",
     "totalRent": "Toplam Kira (Brut)",

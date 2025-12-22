@@ -102,7 +102,7 @@ export function ApartmentQRCode({ apartmentId, locale, size = 200, showActions =
 
   return (
     <Paper shadow="xs" p="md">
-      <Group align="flex-start" gap="xl">
+      <Group align="stretch" gap="xl">
         {/* Sol taraf: QR Code */}
         <Stack align="center" gap="md">
           <Text size="lg" fw={500}>
@@ -129,8 +129,8 @@ export function ApartmentQRCode({ apartmentId, locale, size = 200, showActions =
           </div>
         </Stack>
 
-        {/* Sağ taraf: Açıklama ve butonlar */}
-        <Stack gap="md" style={{ flex: 1 }}>
+        {/* Sağ taraf: Açıklama ve butonlar - aşağı hizalı */}
+        <Stack gap="md" justify="flex-end" style={{ flex: 1 }}>
           <Text size="sm" c="dimmed">
             {t('qrCode.description')}
           </Text>
@@ -138,7 +138,7 @@ export function ApartmentQRCode({ apartmentId, locale, size = 200, showActions =
             {t('qrCode.scanHint') || 'Scan this QR code to view the apartment details on your mobile device.'}
           </Text>
           {showActions && (
-            <Group mt="md">
+            <Group>
               <Button
                 leftSection={<IconDownload size={18} />}
                 onClick={handleDownload}

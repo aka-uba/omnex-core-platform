@@ -117,10 +117,8 @@ export function EntityImagesTab({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'var(--mantine-color-gray-1)',
             borderRadius: 'var(--mantine-radius-md)',
-            minHeight: '400px',
-            maxHeight: '500px',
+            height: '450px',
             overflow: 'hidden',
           }}
         >
@@ -146,8 +144,9 @@ export function EntityImagesTab({
               src={`/api/core-files/${currentImageId}/download?inline=true`}
               alt={`Image ${currentIndex + 1}`}
               style={{
+                height: '450px',
+                width: 'auto',
                 maxWidth: '100%',
-                maxHeight: '500px',
                 objectFit: 'contain',
               }}
             />

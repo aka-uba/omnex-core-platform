@@ -98,7 +98,8 @@
     "modules": "modül",
     "information": "Bilgi",
     "createdAt": "Oluşturulma Tarihi",
-    "updatedAt": "Güncellenme Tarihi"
+    "updatedAt": "Güncellenme Tarihi",
+    "notApplicable": "Belirtilmemiş"
   },
   "calendar": "Takvim",
   "list": "Liste",

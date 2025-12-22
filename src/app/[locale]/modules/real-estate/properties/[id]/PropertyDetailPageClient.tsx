@@ -638,6 +638,35 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                                   {t('apartments.area')}: {Number(apartment.area).toLocaleString('tr-TR')} m²
                                 </Text>
                               )}
+                              {/* Kira ve Yan Gider Bilgileri */}
+                              {(apartment.coldRent || apartment.additionalCosts || apartment.heatingCosts || apartment.deposit) && (
+                                <Stack gap={4} mt="xs">
+                                  {apartment.coldRent && (
+                                    <Text size="sm">
+                                      <Text span fw={500}>{t('form.coldRent')}: </Text>
+                                      {Number(apartment.coldRent).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                    </Text>
+                                  )}
+                                  {(apartment.additionalCosts || apartment.heatingCosts) && (
+                                    <Text size="sm">
+                                      <Text span fw={500}>{t('sideCosts.sideCosts')}: </Text>
+                                      {(Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                    </Text>
+                                  )}
+                                  {(apartment.coldRent || apartment.additionalCosts || apartment.heatingCosts) && (
+                                    <Text size="sm" fw={600} c="blue">
+                                      <Text span fw={600}>{t('sideCosts.totalRent')}: </Text>
+                                      {(Number(apartment.coldRent || 0) + Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                    </Text>
+                                  )}
+                                  {apartment.deposit && (
+                                    <Text size="sm">
+                                      <Text span fw={500}>{t('form.deposit')}: </Text>
+                                      {Number(apartment.deposit).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                    </Text>
+                                  )}
+                                </Stack>
+                              )}
                               {/* Ekstra Bilgiler */}
                               {apartment.contracts && apartment.contracts.length > 0 && (
                                 <Stack gap={4} mt="xs">

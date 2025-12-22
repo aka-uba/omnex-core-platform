@@ -787,29 +787,53 @@ export class RealEstateSeeder implements ModuleSeeder {
       const maintenanceStatuses = ['scheduled', 'in_progress', 'completed', 'cancelled'];
       let maintenanceRecordsCreated = 0;
 
-      for (let idx = 0; idx < Math.min(8, apartments.length); idx++) {
-        const apt = apartments[idx];
-        const status = randomChoice(maintenanceStatuses);
-        await tenantPrisma.realEstateMaintenanceRecord.create({
-          data: {
-            tenantId,
-            companyId,
-            apartmentId: apt.id,
-            type: randomChoice(maintenanceTypes),
-            title: `${apt.unitNumber} No'lu Daire - ${randomChoice(['Tesisat', 'Elektrik', 'Boya', 'Tadilat'])} Bakımı`,
-            description: `${apt.unitNumber} no'lu daire için planlı bakım`,
-            status,
-            scheduledDate: randomDate(new Date(), new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)),
-            startDate: status !== 'scheduled' ? new Date() : null,
-            endDate: status === 'completed' ? new Date() : null,
-            estimatedCost: randomDecimal(500, 5000),
-            actualCost: status === 'completed' ? randomDecimal(400, 4500) : null,
-            documents: [],
-            photos: [],
-          },
-        });
-        maintenanceRecordsCreated++;
-        itemsCreated++;
+      // Detailed maintenance records with realistic scenarios
+      const maintenanceScenarios = [
+        { category: 'Tesisat', items: ['Pis su borusu değişimi', 'Musluk tamiri', 'Sıcak su deposu bakımı', 'Tesisat kaçak tespiti'] },
+        { category: 'Elektrik', items: ['Sigorta kutusu yenileme', 'Priz arıza tamiri', 'Aydınlatma bakımı', 'Kablo değişimi'] },
+        { category: 'Boya', items: ['İç cephe boyama', 'Dış cephe boyama', 'Kapı boyama', 'Tavan boyama'] },
+        { category: 'Tadilat', items: ['Mutfak dolabı yenileme', 'Banyo tadilatı', 'Zemin döşeme', 'Balkon tadilatı'] },
+        { category: 'Isıtma', items: ['Kombi bakımı', 'Radyatör temizliği', 'Kalorifer tesisatı kontrolü', 'Termostat değişimi'] },
+        { category: 'Klima', items: ['Klima bakımı', 'Filtre değişimi', 'Gaz dolumu', 'Klima montajı'] },
+      ];
+
+      // Create maintenance records for each apartment with varied scenarios
+      for (const apt of apartments) {
+        // Each apartment gets 2-3 maintenance records
+        const numRecords = Math.floor(Math.random() * 2) + 2;
+        for (let i = 0; i < numRecords; i++) {
+          const scenario = randomChoice(maintenanceScenarios);
+          const item = randomChoice(scenario.items);
+          const status = randomChoice(maintenanceStatuses);
+          const daysOffset = Math.floor(Math.random() * 60) - 30; // -30 to +30 days from now
+          const scheduledDate = new Date(Date.now() + daysOffset * 24 * 60 * 60 * 1000);
+
+          await tenantPrisma.realEstateMaintenanceRecord.create({
+            data: {
+              tenantId,
+              companyId,
+              apartmentId: apt.id,
+              type: randomChoice(maintenanceTypes),
+              title: `${apt.unitNumber} - ${item}`,
+              description: `${apt.unitNumber} no'lu daire için ${scenario.category.toLowerCase()} bakımı: ${item}. ${
+                status === 'completed' ? 'İşlem başarıyla tamamlandı.' :
+                status === 'in_progress' ? 'İşlem devam ediyor.' :
+                status === 'cancelled' ? 'İşlem iptal edildi.' :
+                'İşlem planlandı.'
+              }`,
+              status,
+              scheduledDate,
+              startDate: status !== 'scheduled' && status !== 'cancelled' ? new Date(scheduledDate.getTime() + 24 * 60 * 60 * 1000) : null,
+              endDate: status === 'completed' ? new Date(scheduledDate.getTime() + 3 * 24 * 60 * 60 * 1000) : null,
+              estimatedCost: randomDecimal(500, 8000),
+              actualCost: status === 'completed' ? randomDecimal(400, 7500) : null,
+              documents: [],
+              photos: [],
+            },
+          });
+          maintenanceRecordsCreated++;
+          itemsCreated++;
+        }
       }
       details['maintenanceRecords'] = maintenanceRecordsCreated;
 

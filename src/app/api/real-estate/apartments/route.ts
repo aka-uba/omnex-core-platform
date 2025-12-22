@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
               name: true,
               type: true,
               address: true,
-              zipCode: true,
+              postalCode: true,
               city: true,
               latitude: true,
               longitude: true,
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
             orderBy: { createdAt: 'desc' },
             select: {
               id: true,
-              tenant: {
+              tenantRecord: {
                 select: {
                   id: true,
                   tenantNumber: true,

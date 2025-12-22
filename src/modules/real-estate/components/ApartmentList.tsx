@@ -115,7 +115,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
     return data.apartments.map((apartment: any) => {
       // Get current tenant from active contract
       const activeContract = apartment.contracts?.[0];
-      const currentTenant = activeContract?.tenant;
+      const currentTenant = activeContract?.tenantRecord;
 
       // Get last payment info
       const lastPayment = apartment.payments?.[0];
@@ -125,7 +125,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
         preview: apartment,
         isActive: apartment.isActive,
         property: apartment.property
-          ? `${apartment.property.address || ''}\n${apartment.property.zipCode || ''} ${apartment.property.city || ''}`.trim()
+          ? `${apartment.property.address || ''}\n${apartment.property.postalCode || ''} ${apartment.property.city || ''}`.trim()
           : '-',
         apartmentType: apartment.apartmentType || '-',
         floor: apartment.floor ?? '-',
