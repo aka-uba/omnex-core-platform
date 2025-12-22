@@ -214,16 +214,16 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      // Get upcoming payments (next 30 days)
+      // Get upcoming payments (next 30 days, including today)
       const today = dayjs().startOf('day');
       const next30Days = dayjs().add(30, 'days').endOf('day');
 
       const upcomingPayments = payments
         .filter((p) => {
-          const dueDate = dayjs(p.dueDate);
+          const dueDate = dayjs(p.dueDate).startOf('day');
           return (
             p.status === 'pending' &&
-            dueDate.isAfter(today) &&
+            !dueDate.isBefore(today) &&
             dueDate.isBefore(next30Days)
           );
         })
@@ -237,10 +237,10 @@ export async function GET(request: NextRequest) {
         .sort((a, b) => a.daysUntilDue - b.daysUntilDue)
         .slice(0, 10);
 
-      // Get overdue payments
+      // Get overdue payments (due date is before today)
       const overduePayments = payments
         .filter((p) => {
-          const dueDate = dayjs(p.dueDate);
+          const dueDate = dayjs(p.dueDate).startOf('day');
           return (
             (p.status === 'pending' || p.status === 'overdue') &&
             dueDate.isBefore(today)
