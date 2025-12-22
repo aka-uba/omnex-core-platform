@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table } from '@mantine/core';
-import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt } from '@tabler/icons-react';
+import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';
@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import type { PropertyType } from '@/modules/real-estate/types/property';
 import { PropertyDetailPageSkeleton } from './PropertyDetailPageSkeleton';
 import { PropertyExpenseList } from '@/modules/real-estate/components/PropertyExpenseList';
+import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
+import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 
 export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -21,6 +23,65 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const propertyId = params?.id as string;
 
   const { data: property, isLoading } = useProperty(propertyId);
+
+  const [downloadingImages, setDownloadingImages] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState(false);
+
+  // Download all images as ZIP
+  const handleDownloadAllImages = useCallback(async () => {
+    if (!property?.images || property.images.length === 0) return;
+    setDownloadingImages(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: property.images, filename: `${property.name}-images.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${property.name}-images.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading images:', error);
+    } finally {
+      setDownloadingImages(false);
+    }
+  }, [property?.images, property?.name]);
+
+  // Download all documents as ZIP
+  const handleDownloadAllDocs = useCallback(async () => {
+    if (!property?.documents || property.documents.length === 0) return;
+    setDownloadingDocs(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: property.documents, filename: `${property.name}-documents.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${property.name}-documents.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+    } finally {
+      setDownloadingDocs(false);
+    }
+  }, [property?.documents, property?.name]);
 
   // Bina seviyesinde yan gider özeti hesaplaması
   const propertySideCostSummary = useMemo(() => {
@@ -129,16 +190,20 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
               <Tabs.Tab value="details" leftSection={<IconFileText size={20} />}>
                 {t('properties.details')}
               </Tabs.Tab>
+              <Tabs.Tab value="images" leftSection={<IconPhoto size={20} />}>
+                {t('mediaGallery.images')} ({property.images?.length || 0})
+              </Tabs.Tab>
+              <Tabs.Tab value="documents" leftSection={<IconFile size={20} />}>
+                {t('mediaGallery.documents')} ({property.documents?.length || 0})
+              </Tabs.Tab>
               {property.apartments && property.apartments.length > 0 && (
                 <Tabs.Tab value="apartments" leftSection={<IconHome size={20} />}>
                   {t('apartments.title')} ({property.apartments.length})
                 </Tabs.Tab>
               )}
-              {propertySideCostSummary && (
-                <Tabs.Tab value="sideCosts" leftSection={<IconCash size={20} />}>
-                  {t('sideCosts.rentAndSideCosts')}
-                </Tabs.Tab>
-              )}
+              <Tabs.Tab value="sideCosts" leftSection={<IconCash size={20} />}>
+                {t('sideCosts.rentAndSideCosts')}
+              </Tabs.Tab>
               <Tabs.Tab value="expenses" leftSection={<IconReceipt size={20} />}>
                 {t('propertyExpenses.title')}
               </Tabs.Tab>
@@ -300,6 +365,169 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                 )}
 
+                {/* Bina Bilgileri */}
+                {((property as any).constructionYear || (property as any).floorCount || (property as any).landArea || (property as any).livingArea || (property as any).lastRenovationDate) && (
+                  <>
+                    <Grid.Col span={12}>
+                      <Divider my="xs" label={t('form.buildingInfo') || 'Building Information'} labelPosition="center" />
+                    </Grid.Col>
+                    {(property as any).constructionYear && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.constructionYear')}</Text>
+                          <Text>{(property as any).constructionYear}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).floorCount && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.floorCount')}</Text>
+                          <Text>{(property as any).floorCount}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).landArea && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.landArea')}</Text>
+                          <Text>{Number((property as any).landArea).toLocaleString('tr-TR')} m²</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).livingArea && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.livingArea')}</Text>
+                          <Text>{Number((property as any).livingArea).toLocaleString('tr-TR')} m²</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).lastRenovationDate && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.lastRenovationDate')}</Text>
+                          <Text>{dayjs((property as any).lastRenovationDate).format('DD.MM.YYYY')}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                  </>
+                )}
+
+                {/* Satın Alma ve Finansman Bilgileri */}
+                {((property as any).purchaseDate || (property as any).purchasePrice || (property as any).financingStartDate) && (
+                  <>
+                    <Grid.Col span={12}>
+                      <Divider my="xs" label={t('form.purchaseAndFinancing') || 'Purchase & Financing'} labelPosition="center" />
+                    </Grid.Col>
+                    {(property as any).purchaseDate && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.purchaseDate')}</Text>
+                          <Text>{dayjs((property as any).purchaseDate).format('DD.MM.YYYY')}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).purchasePrice && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.purchasePrice')}</Text>
+                          <Text fw={500}>
+                            {Number((property as any).purchasePrice).toLocaleString('tr-TR', {
+                              style: 'currency',
+                              currency: 'TRY',
+                            })}
+                          </Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).isPaidOff !== undefined && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.isPaidOff')}</Text>
+                          <Badge color={(property as any).isPaidOff ? 'green' : 'yellow'}>
+                            {(property as any).isPaidOff ? t('status.yes') || 'Yes' : t('status.no') || 'No'}
+                          </Badge>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).financingStartDate && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.financingStartDate')}</Text>
+                          <Text>{dayjs((property as any).financingStartDate).format('DD.MM.YYYY')}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).financingEndDate && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.financingEndDate')}</Text>
+                          <Text>{dayjs((property as any).financingEndDate).format('DD.MM.YYYY')}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).monthlyFinancingRate && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.monthlyFinancingRate')}</Text>
+                          <Text fw={500}>
+                            {Number((property as any).monthlyFinancingRate).toLocaleString('tr-TR', {
+                              style: 'currency',
+                              currency: 'TRY',
+                            })}
+                          </Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).numberOfInstallments && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.numberOfInstallments')}</Text>
+                          <Text>{(property as any).numberOfInstallments}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {(property as any).financingPaymentDay && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.financingPaymentDay')}</Text>
+                          <Text>{(property as any).financingPaymentDay}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                  </>
+                )}
+
+                {/* Koordinatlar */}
+                {(property.latitude || property.longitude) && (
+                  <>
+                    <Grid.Col span={12}>
+                      <Divider my="xs" label={t('form.coordinates') || 'Coordinates'} labelPosition="center" />
+                    </Grid.Col>
+                    {property.latitude && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.latitude')}</Text>
+                          <Text>{Number(property.latitude).toFixed(6)}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                    {property.longitude && (
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="xs">
+                          <Text size="sm" fw={500} c="dimmed">{t('form.longitude')}</Text>
+                          <Text>{Number(property.longitude).toFixed(6)}</Text>
+                        </Stack>
+                      </Grid.Col>
+                    )}
+                  </>
+                )}
+
+                <Grid.Col span={12}>
+                  <Divider my="xs" />
+                </Grid.Col>
+
                 <Grid.Col span={{ base: 12, md: 6 }}>
                   <Stack gap="xs">
                     <Text size="sm" fw={500} c="dimmed">
@@ -322,6 +550,27 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
               </Group>
             </Stack>
           </Paper>
+        </Tabs.Panel>
+
+        {/* Images Tab */}
+        <Tabs.Panel value="images" pt="md">
+          <EntityImagesTab
+            images={property.images || []}
+            coverImage={property.coverImage}
+            entityName={property.name}
+            onDownloadAll={handleDownloadAllImages}
+            downloadAllLoading={downloadingImages}
+          />
+        </Tabs.Panel>
+
+        {/* Documents Tab */}
+        <Tabs.Panel value="documents" pt="md">
+          <EntityFilesTab
+            documents={property.documents || []}
+            entityName={property.name}
+            onDownloadAll={handleDownloadAllDocs}
+            downloadAllLoading={downloadingDocs}
+          />
         </Tabs.Panel>
 
         {property.apartments && property.apartments.length > 0 && (
@@ -463,9 +712,9 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
           </Tabs.Panel>
         )}
 
-        {/* Yan Gider Sekmesi */}
-        {propertySideCostSummary && (
-          <Tabs.Panel value="sideCosts" pt="md">
+        {/* Yan Gider Sekmesi - Her zaman görünür */}
+        <Tabs.Panel value="sideCosts" pt="md">
+          {propertySideCostSummary ? (
             <Stack gap="md">
               {/* Özet Kart */}
               <Card withBorder p="md" radius="md">
@@ -561,8 +810,20 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                 </Stack>
               </Paper>
             </Stack>
-          </Tabs.Panel>
-        )}
+          ) : (
+            <Paper shadow="xs" p="md">
+              <Stack align="center" gap="md" py="xl">
+                <IconCash size={48} color="gray" />
+                <Text c="dimmed" ta="center">
+                  {t('sideCosts.noData') || 'No side cost data available for this property'}
+                </Text>
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('sideCosts.noDataHint') || 'Add apartments with rent and side cost information to see the summary'}
+                </Text>
+              </Stack>
+            </Paper>
+          )}
+        </Tabs.Panel>
 
         {/* Gider Yönetimi Sekmesi */}
         <Tabs.Panel value="expenses" pt="md">

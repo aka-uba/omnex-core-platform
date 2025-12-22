@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button, Divider, Title } from '@mantine/core';
-import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash } from '@tabler/icons-react';
+import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash, IconFile, IconCheck, IconX } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
 import { useApartment } from '@/hooks/useApartments';
@@ -11,6 +11,8 @@ import { useTranslation } from '@/lib/i18n/client';
 import dayjs from 'dayjs';
 import type { ApartmentStatus } from '@/modules/real-estate/types/apartment';
 import { ApartmentDetailPageSkeleton } from './ApartmentDetailPageSkeleton';
+import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
+import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 
 export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -21,6 +23,65 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const apartmentId = params?.id as string;
 
   const { data: apartment, isLoading } = useApartment(apartmentId);
+
+  const [downloadingImages, setDownloadingImages] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState(false);
+
+  // Download all images as ZIP
+  const handleDownloadAllImages = useCallback(async () => {
+    if (!apartment?.images || apartment.images.length === 0) return;
+    setDownloadingImages(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: apartment.images, filename: `${apartment.unitNumber}-images.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${apartment.unitNumber}-images.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading images:', error);
+    } finally {
+      setDownloadingImages(false);
+    }
+  }, [apartment?.images, apartment?.unitNumber]);
+
+  // Download all documents as ZIP
+  const handleDownloadAllDocs = useCallback(async () => {
+    if (!apartment?.documents || apartment.documents.length === 0) return;
+    setDownloadingDocs(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: apartment.documents, filename: `${apartment.unitNumber}-documents.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${apartment.unitNumber}-documents.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+    } finally {
+      setDownloadingDocs(false);
+    }
+  }, [apartment?.documents, apartment?.unitNumber]);
 
   // Yan gider hesaplaması
   const sideCostSummary = useMemo(() => {
@@ -98,11 +159,15 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
           <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
             {t('apartments.details')}
           </Tabs.Tab>
-          {apartment.images && apartment.images.length > 0 && (
-            <Tabs.Tab value="images" leftSection={<IconPhoto size={16} />}>
-              {t('apartments.images')} ({apartment.images.length})
-            </Tabs.Tab>
-          )}
+          <Tabs.Tab value="images" leftSection={<IconPhoto size={16} />}>
+            {t('mediaGallery.images')} ({apartment.images?.length || 0})
+          </Tabs.Tab>
+          <Tabs.Tab value="documents" leftSection={<IconFile size={16} />}>
+            {t('mediaGallery.documents')} ({apartment.documents?.length || 0})
+          </Tabs.Tab>
+          <Tabs.Tab value="sideCosts" leftSection={<IconCash size={16} />}>
+            {t('sideCosts.rentAndSideCosts')}
+          </Tabs.Tab>
           <Tabs.Tab value="qrcode" leftSection={<IconQrcode size={16} />}>
             {t('qrCode.title')}
           </Tabs.Tab>
@@ -214,6 +279,41 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Stack>
                 </Grid.Col>
 
+                {apartment.bathroomCount && (
+                  <Grid.Col span={{ base: 12, md: 6 }}>
+                    <Stack gap="xs">
+                      <Text size="sm" fw={500} c="dimmed">
+                        {t('form.bathroomCount')}
+                      </Text>
+                      <Text>{apartment.bathroomCount}</Text>
+                    </Stack>
+                  </Grid.Col>
+                )}
+
+                {/* Özellikler */}
+                <Grid.Col span={12}>
+                  <Group gap="md" mt="xs">
+                    {apartment.livingRoom !== undefined && (
+                      <Badge
+                        variant="light"
+                        color={apartment.livingRoom ? 'green' : 'gray'}
+                        leftSection={apartment.livingRoom ? <IconCheck size={12} /> : <IconX size={12} />}
+                      >
+                        {t('form.livingRoom')}
+                      </Badge>
+                    )}
+                    {apartment.balcony !== undefined && (
+                      <Badge
+                        variant="light"
+                        color={apartment.balcony ? 'green' : 'gray'}
+                        leftSection={apartment.balcony ? <IconCheck size={12} /> : <IconX size={12} />}
+                      >
+                        {t('form.balcony')}
+                      </Badge>
+                    )}
+                  </Group>
+                </Grid.Col>
+
                 {apartment.rentPrice && (
                   <Grid.Col span={{ base: 12, md: 6 }}>
                     <Stack gap="xs">
@@ -246,67 +346,19 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                 )}
 
-                {/* Yan Gider Özeti */}
-                {sideCostSummary && (
+                {/* Kullanım Hakları (Usage Rights) */}
+                {(apartment as any).usageRights && Array.isArray((apartment as any).usageRights) && (apartment as any).usageRights.filter((r: any) => r.active).length > 0 && (
                   <Grid.Col span={12}>
-                    <Card withBorder p="md" radius="md" mt="md">
-                      <Stack gap="sm">
-                        <Group gap="xs">
-                          <IconCash size={18} />
-                          <Title order={5}>{t('sideCosts.rentAndSideCosts')}</Title>
-                        </Group>
-                        <Divider />
-                        <Grid>
-                          <Grid.Col span={6}>
-                            <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" ta="right" fw={500}>
-                              {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                            </Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" ta="right" fw={500}>
-                              {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                            </Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" ta="right" fw={500}>
-                              {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                            </Text>
-                          </Grid.Col>
-                          <Grid.Col span={12}>
-                            <Divider my="xs" />
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
-                          </Grid.Col>
-                          <Grid.Col span={6}>
-                            <Text size="sm" ta="right" fw={700} c="blue">
-                              {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                            </Text>
-                          </Grid.Col>
-                          {sideCostSummary.deposit > 0 && (
-                            <>
-                              <Grid.Col span={6}>
-                                <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
-                              </Grid.Col>
-                              <Grid.Col span={6}>
-                                <Text size="sm" ta="right" fw={500}>
-                                  {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                                </Text>
-                              </Grid.Col>
-                            </>
-                          )}
-                        </Grid>
-                      </Stack>
-                    </Card>
+                    <Divider my="xs" label={t('usageRights.title')} labelPosition="center" />
+                    <Group gap="xs" mt="xs" wrap="wrap">
+                      {(apartment as any).usageRights
+                        .filter((r: any) => r.active)
+                        .map((r: any) => (
+                          <Badge key={r.id} variant="light" color="blue">
+                            {r.name}
+                          </Badge>
+                        ))}
+                    </Group>
                   </Grid.Col>
                 )}
 
@@ -356,46 +408,102 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
           </Paper>
         </Tabs.Panel>
 
-        {apartment.images && apartment.images.length > 0 && (
-          <Tabs.Panel value="images" pt="md">
-            <Paper shadow="xs" p="md">
+        {/* Images Tab */}
+        <Tabs.Panel value="images" pt="md">
+          <EntityImagesTab
+            images={apartment.images || []}
+            coverImage={apartment.coverImage}
+            entityName={apartment.unitNumber}
+            onDownloadAll={handleDownloadAllImages}
+            downloadAllLoading={downloadingImages}
+          />
+        </Tabs.Panel>
+
+        {/* Documents Tab */}
+        <Tabs.Panel value="documents" pt="md">
+          <EntityFilesTab
+            documents={apartment.documents || []}
+            entityName={apartment.unitNumber}
+            onDownloadAll={handleDownloadAllDocs}
+            downloadAllLoading={downloadingDocs}
+          />
+        </Tabs.Panel>
+
+        {/* Side Costs Tab */}
+        <Tabs.Panel value="sideCosts" pt="md">
+          {sideCostSummary ? (
+            <Card withBorder p="md" radius="md">
               <Stack gap="md">
-                <Text size="lg" fw={600}>
-                  {t('apartments.images')}
+                <Group gap="xs">
+                  <IconCash size={20} />
+                  <Title order={4}>{t('sideCosts.rentAndSideCosts')}</Title>
+                </Group>
+                <Divider />
+                <Grid>
+                  <Grid.Col span={6}>
+                    <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Divider my="xs" />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" ta="right" fw={700} c="blue">
+                      {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+                  {sideCostSummary.deposit > 0 && (
+                    <>
+                      <Grid.Col span={6}>
+                        <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <Text size="sm" ta="right" fw={500}>
+                          {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                    </>
+                  )}
+                </Grid>
+              </Stack>
+            </Card>
+          ) : (
+            <Paper shadow="xs" p="md">
+              <Stack align="center" gap="md" py="xl">
+                <IconCash size={48} color="gray" />
+                <Text c="dimmed" ta="center">
+                  {t('sideCosts.noData') || 'No side cost data available'}
                 </Text>
-                <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
-                  {apartment.images.map((imageId) => (
-                    <Card key={imageId} padding="xs" radius="md" withBorder>
-                      <Card.Section>
-                        <Box style={{ aspectRatio: '16/9', position: 'relative' }}>
-                          <Image
-                            src={`/api/core-files/${imageId}/download?inline=true`}
-                            alt="Apartment image"
-                            height={200}
-                            fit="cover"
-                            fallbackSrc="https://placehold.co/300x200?text=Image"
-                          />
-                          {apartment.coverImage === imageId && (
-                            <Badge
-                              pos="absolute"
-                              top={8}
-                              left={8}
-                              color="yellow"
-                              variant="filled"
-                              size="sm"
-                            >
-                              {t('form.coverImage')}
-                            </Badge>
-                          )}
-                        </Box>
-                      </Card.Section>
-                    </Card>
-                  ))}
-                </SimpleGrid>
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('sideCosts.noDataApartmentHint') || 'Add rent and side cost information in edit mode'}
+                </Text>
               </Stack>
             </Paper>
-          </Tabs.Panel>
-        )}
+          )}
+        </Tabs.Panel>
 
         <Tabs.Panel value="qrcode" pt="md">
           <ApartmentQRCode

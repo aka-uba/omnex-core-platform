@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Paper,
@@ -22,11 +22,15 @@ import {
   IconCurrencyDollar,
   IconCash,
   IconHome,
+  IconPhoto,
+  IconFile,
 } from '@tabler/icons-react';
 import { useTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
 import { TenantAnalytics } from './TenantAnalytics';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
+import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
+import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 import dayjs from 'dayjs';
 
 interface TenantDetailProps {
@@ -39,6 +43,65 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
   const { data: tenant, isLoading, error } = useTenant(tenantId);
+
+  const [downloadingImages, setDownloadingImages] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState(false);
+
+  // Download all images as ZIP
+  const handleDownloadAllImages = useCallback(async () => {
+    if (!tenant?.images || tenant.images.length === 0) return;
+    setDownloadingImages(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: tenant.images, filename: `${tenant.firstName}-${tenant.lastName}-images.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${tenant.firstName}-${tenant.lastName}-images.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading images:', error);
+    } finally {
+      setDownloadingImages(false);
+    }
+  }, [tenant?.images, tenant?.firstName, tenant?.lastName]);
+
+  // Download all documents as ZIP
+  const handleDownloadAllDocs = useCallback(async () => {
+    if (!tenant?.documents || tenant.documents.length === 0) return;
+    setDownloadingDocs(true);
+    try {
+      const response = await fetch('/api/core-files/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileIds: tenant.documents, filename: `${tenant.firstName}-${tenant.lastName}-documents.zip` }),
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${tenant.firstName}-${tenant.lastName}-documents.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+    } finally {
+      setDownloadingDocs(false);
+    }
+  }, [tenant?.documents, tenant?.firstName, tenant?.lastName]);
 
   // Aktif sözleşme ve daire bilgileri
   const activeContract = useMemo(() => {
@@ -157,89 +220,20 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
         </Grid>
       </Paper>
 
-      {/* Yan Gider Özeti */}
-      {sideCostSummary && (
-        <Card withBorder p="md" radius="md">
-          <Stack gap="md">
-            <Group gap="xs">
-              <IconCash size={20} />
-              <Title order={4}>{t('sideCosts.rentAndSideCosts')}</Title>
-            </Group>
-
-            {/* Daire Bilgisi */}
-            <Group gap="xs">
-              <IconHome size={16} />
-              <Text size="sm" c="dimmed">
-                {sideCostSummary.propertyName} - {sideCostSummary.apartmentUnit}
-                {sideCostSummary.area > 0 && ` (${sideCostSummary.area} m²)`}
-              </Text>
-            </Group>
-
-            <Divider />
-
-            <Grid>
-              <Grid.Col span={8}>
-                <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Text size="sm" ta="right" fw={500}>
-                  {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                </Text>
-              </Grid.Col>
-
-              <Grid.Col span={8}>
-                <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Text size="sm" ta="right" fw={500}>
-                  {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                </Text>
-              </Grid.Col>
-
-              <Grid.Col span={8}>
-                <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Text size="sm" ta="right" fw={500}>
-                  {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                </Text>
-              </Grid.Col>
-
-              <Grid.Col span={12}>
-                <Divider my="xs" />
-              </Grid.Col>
-
-              <Grid.Col span={8}>
-                <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
-              </Grid.Col>
-              <Grid.Col span={4}>
-                <Text size="sm" ta="right" fw={700} c="blue">
-                  {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                </Text>
-              </Grid.Col>
-
-              {sideCostSummary.deposit > 0 && (
-                <>
-                  <Grid.Col span={8}>
-                    <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Text size="sm" ta="right" fw={500}>
-                      {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
-                    </Text>
-                  </Grid.Col>
-                </>
-              )}
-            </Grid>
-          </Stack>
-        </Card>
-      )}
-
       {/* Tabs */}
       <Tabs defaultValue="analytics">
         <Tabs.List>
           <Tabs.Tab value="analytics" leftSection={<IconCurrencyDollar size={18} />}>
             {t('analytics.title')}
+          </Tabs.Tab>
+          <Tabs.Tab value="images" leftSection={<IconPhoto size={18} />}>
+            {t('mediaGallery.images')} ({tenant.images?.length || 0})
+          </Tabs.Tab>
+          <Tabs.Tab value="documents" leftSection={<IconFile size={18} />}>
+            {t('mediaGallery.documents')} ({tenant.documents?.length || 0})
+          </Tabs.Tab>
+          <Tabs.Tab value="sideCosts" leftSection={<IconCash size={18} />}>
+            {t('sideCosts.rentAndSideCosts')}
           </Tabs.Tab>
           <Tabs.Tab value="contracts" leftSection={<IconContract size={18} />}>
             {t('contracts.title')} ({tenant.contracts?.length || 0})
@@ -251,6 +245,119 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
 
         <Tabs.Panel value="analytics" pt="md">
           <TenantAnalytics tenantId={tenantId} locale={locale} />
+        </Tabs.Panel>
+
+        {/* Images Tab */}
+        <Tabs.Panel value="images" pt="md">
+          <EntityImagesTab
+            images={tenant.images || []}
+            coverImage={tenant.coverImage}
+            entityName={`${tenant.firstName} ${tenant.lastName}`}
+            onDownloadAll={handleDownloadAllImages}
+            downloadAllLoading={downloadingImages}
+          />
+        </Tabs.Panel>
+
+        {/* Documents Tab */}
+        <Tabs.Panel value="documents" pt="md">
+          <EntityFilesTab
+            documents={tenant.documents || []}
+            entityName={`${tenant.firstName} ${tenant.lastName}`}
+            onDownloadAll={handleDownloadAllDocs}
+            downloadAllLoading={downloadingDocs}
+          />
+        </Tabs.Panel>
+
+        {/* Side Costs Tab */}
+        <Tabs.Panel value="sideCosts" pt="md">
+          {sideCostSummary ? (
+            <Card withBorder p="md" radius="md">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconCash size={20} />
+                  <Title order={4}>{t('sideCosts.rentAndSideCosts')}</Title>
+                </Group>
+
+                {/* Daire Bilgisi */}
+                <Group gap="xs">
+                  <IconHome size={16} />
+                  <Text size="sm" c="dimmed">
+                    {sideCostSummary.propertyName} - {sideCostSummary.apartmentUnit}
+                    {sideCostSummary.area > 0 && ` (${sideCostSummary.area} m²)`}
+                  </Text>
+                </Group>
+
+                <Divider />
+
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+
+                  <Grid.Col span={8}>
+                    <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={500}>
+                      {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+
+                  <Grid.Col span={12}>
+                    <Divider my="xs" />
+                  </Grid.Col>
+
+                  <Grid.Col span={8}>
+                    <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text size="sm" ta="right" fw={700} c="blue">
+                      {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                    </Text>
+                  </Grid.Col>
+
+                  {sideCostSummary.deposit > 0 && (
+                    <>
+                      <Grid.Col span={8}>
+                        <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={4}>
+                        <Text size="sm" ta="right" fw={500}>
+                          {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        </Text>
+                      </Grid.Col>
+                    </>
+                  )}
+                </Grid>
+              </Stack>
+            </Card>
+          ) : (
+            <Paper shadow="xs" p="md">
+              <Stack align="center" gap="md" py="xl">
+                <IconCash size={48} color="gray" />
+                <Text c="dimmed" ta="center">
+                  {t('sideCosts.noData') || 'No side cost data available'}
+                </Text>
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('sideCosts.noDataTenantHint') || 'Side cost information is linked to the tenant\'s active contract apartment'}
+                </Text>
+              </Stack>
+            </Paper>
+          )}
         </Tabs.Panel>
 
         <Tabs.Panel value="contracts" pt="md">

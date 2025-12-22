@@ -1615,7 +1615,11 @@
     "rentCalculation": "Kira Hesaplamasi",
     "totalRent": "Toplam Kira (Brut)",
     "total": "Toplam",
-    "apartmentBreakdown": "Daire Bazında Detay"
+    "apartmentBreakdown": "Daire Bazında Detay",
+    "noData": "Bu kayıt için yan gider verisi bulunamadı",
+    "noDataHint": "Kira ve yan gider bilgilerini görmek için daire ekleyin",
+    "noDataApartmentHint": "Düzenleme modunda kira ve yan gider bilgilerini ekleyin",
+    "noDataTenantHint": "Yan gider bilgileri kiracının aktif sözleşme dairesine bağlıdır"
   },
   "propertyExpenses": {
     "title": "Bina Giderleri",
@@ -1856,6 +1860,8 @@
     "documents": "Belgeler",
     "preview": "Önizleme",
     "download": "İndir",
+    "downloadAll": "Tümünü İndir (ZIP)",
+    "noImages": "Henüz resim eklenmedi",
     "uploadDocuments": "Belge Yükle",
     "uploadDocumentsHint": "Desteklenen formatlar: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
     "noDocuments": "Henüz belge yüklenmedi",
@@ -1867,5 +1873,8 @@
     "videoNotSupported": "Tarayıcınız video etiketini desteklemiyor.",
     "audioNotSupported": "Tarayıcınız ses etiketini desteklemiyor.",
     "previewNotAvailable": "Bu dosya türü için önizleme kullanılamıyor"
+  },
+  "usageRights": {
+    "title": "Kullanım Hakları"
   }
 }

@@ -712,7 +712,11 @@
     "rentCalculation": "Rent Calculation",
     "totalRent": "Total Rent (Warm)",
     "total": "Total",
-    "apartmentBreakdown": "Apartment Breakdown"
+    "apartmentBreakdown": "Apartment Breakdown",
+    "noData": "No side cost data available for this record",
+    "noDataHint": "Add apartments with rent and side cost information to see the summary",
+    "noDataApartmentHint": "Add rent and side cost information in edit mode",
+    "noDataTenantHint": "Side cost information is linked to the tenant's active contract apartment"
   },
   "propertyExpenses": {
     "title": "Property Expenses",
@@ -914,6 +918,8 @@
     "documents": "Documents",
     "preview": "Preview",
     "download": "Download",
+    "downloadAll": "Download All (ZIP)",
+    "noImages": "No images available",
     "uploadDocuments": "Upload Documents",
     "uploadDocumentsHint": "Supported formats: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
     "noDocuments": "No documents uploaded yet",
@@ -925,5 +931,8 @@
     "videoNotSupported": "Your browser does not support the video tag.",
     "audioNotSupported": "Your browser does not support the audio tag.",
     "previewNotAvailable": "Preview not available for this file type"
+  },
+  "usageRights": {
+    "title": "Usage Rights"
   }
 }
