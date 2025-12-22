@@ -314,7 +314,7 @@ export function RealEstateDashboardClient() {
                         fullWidth
                         onClick={() => router.push(`/${locale}/modules/real-estate/apartments/create`)}
                       >
-                        {t('apartments.create')}
+                        {t('apartments.create.title')}
                       </Button>
                       <Button
                         variant="light"
@@ -324,7 +324,7 @@ export function RealEstateDashboardClient() {
                         fullWidth
                         onClick={() => router.push(`/${locale}/modules/real-estate/contracts/create`)}
                       >
-                        {t('contracts.create')}
+                        {t('contracts.create.title')}
                       </Button>
                       <Button
                         variant="light"
@@ -334,7 +334,7 @@ export function RealEstateDashboardClient() {
                         fullWidth
                         onClick={() => router.push(`/${locale}/modules/real-estate/payments/create`)}
                       >
-                        {t('payments.create')}
+                        {t('payments.create.title')}
                       </Button>
                       <Button
                         variant="light"
