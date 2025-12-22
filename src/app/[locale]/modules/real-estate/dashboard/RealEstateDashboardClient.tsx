@@ -157,212 +157,177 @@ export function RealEstateDashboardClient() {
             <Text c="dimmed">{tGlobal('common.noData')}</Text>
           ) : (
             <>
-              {/* Hero Stats Row - Tek satırda 4 kart, eşit yükseklik */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* All Stats - 8 kart tek satırda */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
                 {/* Properties Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-700/30' : 'bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-700/30' : 'bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>
                         {t('properties.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.properties.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="blue" variant="light" size="sm">
-                          {data.statistics.properties.active} {t('dashboard.active')}
-                        </Badge>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                        {data.statistics.properties.active} {t('dashboard.active')}
+                      </p>
                     </div>
-                    <IconBuilding className={`w-8 h-8 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                    <IconBuilding className={`w-6 h-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconBuilding className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconBuilding className="w-16 h-16" />
                   </div>
                 </div>
 
                 {/* Apartments Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 border border-emerald-700/30' : 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-emerald-900/40 to-emerald-800/20 border border-emerald-700/30' : 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>
                         {t('apartments.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.apartments.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <div className={`flex items-center gap-1 text-xs ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-                          <IconTrendingUp className="w-3 h-3" />
-                          <span>{data.statistics.apartments.occupancyRate}% doluluk</span>
-                        </div>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                        {data.statistics.apartments.occupancyRate}% {t('dashboard.occupied')}
+                      </p>
                     </div>
-                    <IconHome className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                    <IconHome className={`w-6 h-6 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                   </div>
-                  <div className="mt-3">
-                    <Progress
-                      value={data.statistics.apartments.occupancyRate}
-                      color="teal"
-                      size="sm"
-                      radius="xl"
-                    />
-                  </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconHome className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconHome className="w-16 h-16" />
                   </div>
                 </div>
 
                 {/* Tenants Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/20 border border-orange-700/30' : 'bg-gradient-to-br from-orange-50 to-orange-100/50 border border-orange-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/20 border border-orange-700/30' : 'bg-gradient-to-br from-orange-50 to-orange-100/50 border border-orange-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-orange-300' : 'text-orange-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-orange-300' : 'text-orange-600'}`}>
                         {t('tenants.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.tenants.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="orange" variant="light" size="sm">
-                          {data.statistics.tenants.active} {t('dashboard.active')}
-                        </Badge>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
+                        {data.statistics.tenants.active} {t('dashboard.active')}
+                      </p>
                     </div>
-                    <IconUsers className={`w-8 h-8 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
+                    <IconUsers className={`w-6 h-6 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconUsers className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconUsers className="w-16 h-16" />
                   </div>
                 </div>
 
-                {/* Revenue Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-violet-900/40 to-violet-800/20 border border-violet-700/30' : 'bg-gradient-to-br from-violet-50 to-violet-100/50 border border-violet-200/50'}`}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
-                        {t('dashboard.monthlyRevenue') || 'Aylık Gelir'}
-                      </p>
-                      <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {formatCurrency(data.revenue.currentMonth ?? 0)}
-                      </p>
-                      <div className="flex items-center gap-1 mt-2">
-                        {(data.revenue.changePercentage ?? 0) >= 0 ? (
-                          <div className="flex items-center gap-1 text-xs text-emerald-500">
-                            <IconArrowUpRight className="w-3 h-3" />
-                            <span>+{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-1 text-xs text-red-500">
-                            <IconArrowDownRight className="w-3 h-3" />
-                            <span>{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
-                          </div>
-                        )}
-                        <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                          vs geçen ay
-                        </span>
-                      </div>
-                    </div>
-                    <IconCurrencyDollar className={`w-8 h-8 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
-                  </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconCurrencyDollar className="w-32 h-32" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Secondary Stats Row - Tek satırda 4 kart (gradient tasarım) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {/* Contracts Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-700/30' : 'bg-gradient-to-br from-cyan-50 to-cyan-100/50 border border-cyan-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-700/30' : 'bg-gradient-to-br from-cyan-50 to-cyan-100/50 border border-cyan-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-cyan-300' : 'text-cyan-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-cyan-300' : 'text-cyan-600'}`}>
                         {t('contracts.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.contracts.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="cyan" variant="light" size="sm">
-                          {data.statistics.contracts.active} {t('dashboard.active')}
-                        </Badge>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
+                        {data.statistics.contracts.active} {t('dashboard.active')}
+                      </p>
                     </div>
-                    <IconFileText className={`w-8 h-8 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} />
+                    <IconFileText className={`w-6 h-6 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconFileText className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconFileText className="w-16 h-16" />
                   </div>
                 </div>
 
                 {/* Payments Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-teal-900/40 to-teal-800/20 border border-teal-700/30' : 'bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-teal-900/40 to-teal-800/20 border border-teal-700/30' : 'bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-teal-300' : 'text-teal-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-teal-300' : 'text-teal-600'}`}>
                         {t('payments.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.payments.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="teal" variant="light" size="sm">
-                          {data.statistics.payments.paid} {t('payments.status.paid')}
-                        </Badge>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
+                        {data.statistics.payments.paid} {t('payments.status.paid')}
+                      </p>
                     </div>
-                    <IconCurrencyDollar className={`w-8 h-8 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
+                    <IconCurrencyDollar className={`w-6 h-6 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconCurrencyDollar className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconCurrencyDollar className="w-16 h-16" />
                   </div>
                 </div>
 
                 {/* Appointments Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-grape-900/40 to-grape-800/20 border border-grape-700/30' : 'bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-700/30' : 'bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
                         {t('appointments.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.appointments.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="grape" variant="light" size="sm">
-                          {data.statistics.appointments.upcoming} {t('dashboard.upcoming')}
-                        </Badge>
-                      </div>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+                        {data.statistics.appointments.upcoming} {t('dashboard.upcoming')}
+                      </p>
                     </div>
-                    <IconCalendar className={`w-8 h-8 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
+                    <IconCalendar className={`w-6 h-6 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconCalendar className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconCalendar className="w-16 h-16" />
                   </div>
                 </div>
 
                 {/* Maintenance Card */}
-                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-700/30' : 'bg-gradient-to-br from-red-50 to-red-100/50 border border-red-200/50'}`}>
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-700/30' : 'bg-gradient-to-br from-red-50 to-red-100/50 border border-red-200/50'}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${isDark ? 'text-red-300' : 'text-red-600'}`}>
+                      <p className={`text-xs font-medium ${isDark ? 'text-red-300' : 'text-red-600'}`}>
                         {t('maintenance.title')}
                       </p>
-                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {data.statistics.maintenance.total}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color="red" variant="light" size="sm">
-                          {data.statistics.maintenance.open} {t('dashboard.open')}
-                        </Badge>
+                      <p className={`text-xs mt-1 ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+                        {data.statistics.maintenance.open} {t('dashboard.open')}
+                      </p>
+                    </div>
+                    <IconTools className={`w-6 h-6 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconTools className="w-16 h-16" />
+                  </div>
+                </div>
+
+                {/* Revenue Card */}
+                <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-violet-900/40 to-violet-800/20 border border-violet-700/30' : 'bg-gradient-to-br from-violet-50 to-violet-100/50 border border-violet-200/50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className={`text-xs font-medium ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
+                        {t('dashboard.monthlyRevenue') || 'Aylık Gelir'}
+                      </p>
+                      <p className={`text-lg font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {formatCurrency(data.revenue.currentMonth ?? 0)}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        {(data.revenue.changePercentage ?? 0) >= 0 ? (
+                          <span className="text-xs text-emerald-500">+{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
+                        ) : (
+                          <span className="text-xs text-red-500">{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
+                        )}
                       </div>
                     </div>
-                    <IconTools className={`w-8 h-8 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <IconCurrencyDollar className={`w-6 h-6 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
                   </div>
-                  <div className="absolute -bottom-4 -right-4 opacity-5">
-                    <IconTools className="w-32 h-32" />
+                  <div className="absolute -bottom-2 -right-2 opacity-10">
+                    <IconCurrencyDollar className="w-16 h-16" />
                   </div>
                 </div>
               </div>
