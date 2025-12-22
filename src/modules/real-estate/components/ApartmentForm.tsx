@@ -131,7 +131,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
         } as any);
 
         // Load usage rights from apartment data
-        if (apartmentData.usageRights) {
+        if (apartmentData.usageRights && Array.isArray(apartmentData.usageRights)) {
           setUsageRights(apartmentData.usageRights as ApartmentUsageRight[]);
         }
       }
@@ -422,7 +422,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
             <Group gap="xs">
               <IconHome size={20} />
               <Title order={4}>{t('usageRights.title')}</Title>
-              {usageRights.filter(r => r.active).length > 0 && (
+              {Array.isArray(usageRights) && usageRights.filter(r => r.active).length > 0 && (
                 <Badge color="blue" variant="filled">
                   {usageRights.filter(r => r.active).length}
                 </Badge>
@@ -441,7 +441,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
           </Group>
 
           {/* Selected Usage Rights Preview */}
-          {usageRights.filter(r => r.active).length > 0 && (
+          {Array.isArray(usageRights) && usageRights.filter(r => r.active).length > 0 && (
             <Card withBorder p="sm" radius="md">
               <Group gap="xs" wrap="wrap">
                 {usageRights
