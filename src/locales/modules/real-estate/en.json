@@ -312,6 +312,7 @@
     },
     "detail": {
       "title": "Bulk Operation Details",
+      "description": "View bulk operation details",
       "progress": "Progress",
       "totalAffected": "Total Affected",
       "successCount": "Success Count",
@@ -352,7 +353,18 @@
   "types": {
     "apartment": "Apartment",
     "complex": "Complex",
-    "building": "Building"
+    "building": "Building",
+    "rental": "Rental",
+    "sale": "Sale",
+    "lease": "Lease",
+    "general": "General",
+    "commercial": "Commercial",
+    "short_term": "Short Term",
+    "long_term": "Long Term",
+    "residential": "Residential",
+    "cash": "Cash",
+    "bankTransfer": "Bank Transfer",
+    "autoDebit": "Auto Debit"
   },
   "status": {
     "active": "Active",
@@ -945,7 +957,18 @@
   "types": {
     "apartment": "Apartment",
     "complex": "Complex",
-    "building": "Building"
+    "building": "Building",
+    "rental": "Rental",
+    "sale": "Sale",
+    "lease": "Lease",
+    "general": "General",
+    "commercial": "Commercial",
+    "short_term": "Short Term",
+    "long_term": "Long Term",
+    "residential": "Residential",
+    "cash": "Cash",
+    "bankTransfer": "Bank Transfer",
+    "autoDebit": "Auto Debit"
   },
   "messages": {
     "success": "Success",

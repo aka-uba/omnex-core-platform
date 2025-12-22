@@ -57,7 +57,8 @@
       "Bash(git restore:*)",
       "Bash(git branch:*)",
       "Bash(npm run prisma:generate:*)",
-      "Bash(npx prisma db push:*)"
+      "Bash(npx prisma db push:*)",
+      "Bash(git diff:*)"
     ],
     "deny": [],
     "ask": []

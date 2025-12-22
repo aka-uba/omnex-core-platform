@@ -543,7 +543,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       <Table.Th>{t('form.endDate')}</Table.Th>
                       <Table.Th>{t('form.rentAmount')}</Table.Th>
                       <Table.Th>{t('table.status')}</Table.Th>
-                      <Table.Th>{tGlobal('actions.actions')}</Table.Th>
+                      <Table.Th>{tGlobal('table.actions')}</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody>

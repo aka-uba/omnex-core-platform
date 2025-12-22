@@ -860,6 +860,7 @@
     },
     "detail": {
       "title": "Toplu İşlem Detayı",
+      "description": "Toplu işlem detaylarını görüntüleyin",
       "progress": "İlerleme",
       "totalAffected": "Toplam Etkilenen",
       "successCount": "Başarılı",
@@ -996,6 +997,10 @@
     "sale": "Satış",
     "lease": "Kiralama",
     "general": "Genel",
+    "commercial": "Ticari",
+    "short_term": "Kısa Dönem",
+    "long_term": "Uzun Dönem",
+    "residential": "Konut",
     "cash": "Nakit",
     "bankTransfer": "Banka Transferi",
     "autoDebit": "Otomatik Ödeme"
