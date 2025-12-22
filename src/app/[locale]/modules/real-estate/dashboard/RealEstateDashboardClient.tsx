@@ -251,18 +251,18 @@ export function RealEstateDashboardClient() {
                         {t('dashboard.monthlyRevenue') || 'Aylık Gelir'}
                       </p>
                       <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {formatCurrency(data.revenue.currentMonth)}
+                        {formatCurrency(data.revenue.currentMonth ?? 0)}
                       </p>
                       <div className="flex items-center gap-1 mt-2">
-                        {data.revenue.changePercentage >= 0 ? (
+                        {(data.revenue.changePercentage ?? 0) >= 0 ? (
                           <div className="flex items-center gap-1 text-xs text-emerald-500">
                             <IconArrowUpRight className="w-3 h-3" />
-                            <span>+{data.revenue.changePercentage.toFixed(1)}%</span>
+                            <span>+{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-1 text-xs text-red-500">
                             <IconArrowDownRight className="w-3 h-3" />
-                            <span>{data.revenue.changePercentage.toFixed(1)}%</span>
+                            <span>{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
                           </div>
                         )}
                         <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
