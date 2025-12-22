@@ -299,6 +299,13 @@ export function PropertyList({ locale }: PropertyListProps) {
   // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
+      key: 'preview',
+      label: t('table.preview'),
+      sortable: false,
+      searchable: false,
+      render: renderPreview,
+    },
+    {
       key: 'isActive',
       label: t('table.active'),
       sortable: true,
@@ -414,7 +421,7 @@ export function PropertyList({ locale }: PropertyListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderStatus, renderType, renderAddress, renderArea, renderDate, renderCurrency, renderPaidOff, renderActions]);
+  ], [t, renderPreview, renderStatus, renderType, renderAddress, renderArea, renderDate, renderCurrency, renderPaidOff, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [

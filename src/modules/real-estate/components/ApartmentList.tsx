@@ -298,6 +298,13 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
+      key: 'preview',
+      label: t('table.preview'),
+      sortable: false,
+      searchable: false,
+      render: renderPreview,
+    },
+    {
       key: 'isActive',
       label: t('table.active'),
       sortable: true,
@@ -407,7 +414,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions]);
+  ], [t, renderPreview, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [
