@@ -77,6 +77,7 @@ export class CoreFileService {
   async uploadFile(options: UploadOptions): Promise<CoreFile> {
     const {
       tenantId,
+      tenantSlug,
       companyId,
       module,
       entityType,
@@ -96,9 +97,9 @@ export class CoreFileService {
       }
     }
 
-    // 1. Dosya yolunu oluştur
+    // 1. Dosya yolunu oluştur (tenantSlug ile dosya yöneticisiyle uyumlu yol)
     const filePath = this.buildFilePath({
-      tenantId,
+      tenantSlug,
       module,
       ...(entityType ? { entityType } : {}),
       ...(entityId ? { entityId } : {}),
@@ -162,13 +163,15 @@ export class CoreFileService {
 
   /**
    * Modül bazlı dosya yolu oluşturma
-   * Örnek yapı: tenants/{tenantId}/module-files/real-estate/apartments/{entityName}/{timestamp}/{file}
+   * tenantSlug kullanarak dosya yöneticisiyle uyumlu yol oluşturur
+   * Örnek yapı: tenants/{slug}/module-files/real-estate/apartments/{entityName}/{timestamp}/{file}
    */
   private buildFilePath(options: BuildPathOptions): string {
-    const { tenantId, module, entityType, entityId, entityName, filename } = options;
+    const { tenantSlug, module, entityType, entityId, entityName, filename } = options;
     const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-    let filePath = `tenants/${tenantId}/module-files/${module}/`;
+    // Dosya yöneticisi yapısı: tenants/{slug}/module-files/{module}/...
+    let filePath = `tenants/${tenantSlug}/module-files/${module}/`;
 
     // Entity type'a göre alt klasör (apartments, properties, tenants, etc.)
     if (entityType) {
@@ -274,6 +277,7 @@ export class CoreFileService {
    */
   async uploadInvoice(
     tenantId: string,
+    tenantSlug: string,
     companyId: string,
     invoiceId: string,
     file: File | Buffer,
@@ -281,6 +285,7 @@ export class CoreFileService {
   ): Promise<CoreFile> {
     return this.uploadFile({
       tenantId,
+      tenantSlug,
       companyId,
       module: 'accounting',
       entityType: 'invoice',
@@ -292,6 +297,7 @@ export class CoreFileService {
 
   async uploadNotificationAttachment(
     tenantId: string,
+    tenantSlug: string,
     companyId: string,
     notificationId: string,
     file: File | Buffer,
@@ -299,6 +305,7 @@ export class CoreFileService {
   ): Promise<CoreFile> {
     return this.uploadFile({
       tenantId,
+      tenantSlug,
       companyId,
       module: 'notifications',
       entityType: 'attachment',
@@ -310,6 +317,7 @@ export class CoreFileService {
 
   async uploadMaintenanceDocument(
     tenantId: string,
+    tenantSlug: string,
     companyId: string,
     maintenanceId: string,
     file: File | Buffer,
@@ -317,6 +325,7 @@ export class CoreFileService {
   ): Promise<CoreFile> {
     return this.uploadFile({
       tenantId,
+      tenantSlug,
       companyId,
       module: 'maintenance',
       entityType: 'document',
