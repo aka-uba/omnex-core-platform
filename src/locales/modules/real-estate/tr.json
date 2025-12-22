@@ -193,6 +193,10 @@
   "tenants": {
     "title": "Kiracılar",
     "description": "Kiracıları ve bilgilerini yönetin",
+    "apartmentInfo": "Daire Bilgisi",
+    "currentApartment": "Mevcut Daire",
+    "noActiveContract": "Aktif sözleşme bulunamadı",
+    "noActiveContractHint": "Bu kiracının aktif bir kira sözleşmesi bulunmamaktadır",
     "create": {
       "title": "Yeni Kiracı",
       "description": "Yeni kiracı ekleyin"
@@ -1141,7 +1145,9 @@
     "firstName": "Ad",
     "lastName": "Soyad",
     "birthDate": "Doğum Tarihi",
-    "mobile": "Cep Telefonu"
+    "mobile": "Cep Telefonu",
+    "lastPaymentStatus": "Ödeme Durumu",
+    "lastPaymentDate": "Son Ödeme Tarihi"
   },
   "form": {
     "files": "dosya",
@@ -1876,5 +1882,30 @@
   },
   "usageRights": {
     "title": "Kullanım Hakları"
+  },
+  "tenantForm": {
+    "basicInfo": "Temel Bilgiler",
+    "tenantType": "Kiracı Tipi",
+    "selectType": "Tip seçin",
+    "typePerson": "Kişi",
+    "typeCompany": "Şirket",
+    "personalInfo": "Kişisel Bilgiler",
+    "companyInfo": "Şirket Bilgileri",
+    "salutation": "Hitap",
+    "selectSalutation": "Hitap seçin",
+    "salutationMr": "Bay",
+    "salutationMs": "Bayan",
+    "birthDate": "Doğum Tarihi",
+    "birthDatePlaceholder": "Doğum tarihi seçin",
+    "birthPlace": "Doğum Yeri",
+    "birthPlacePlaceholder": "Doğum yerini girin",
+    "address": "Adres Bilgileri",
+    "contactInfo": "İletişim Bilgileri",
+    "additionalInfo": "Ek Bilgiler",
+    "nationality": "Vatandaşlık",
+    "nationalityPlaceholder": "Vatandaşlık bilgisini girin",
+    "taxNumber": "Vergi Numarası",
+    "taxNumberPlaceholder": "Vergi numarasını girin",
+    "systemFields": "Sistem Alanları"
   }
 }

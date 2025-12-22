@@ -84,6 +84,10 @@
   "tenants": {
     "title": "Tenants",
     "description": "Manage tenants and their information",
+    "apartmentInfo": "Apartment Info",
+    "currentApartment": "Current Apartment",
+    "noActiveContract": "No active contract found",
+    "noActiveContractHint": "This tenant does not have an active rental contract",
     "create": {
       "title": "New Tenant",
       "description": "Add a new tenant"
@@ -415,7 +419,9 @@
     "startDate": "Start Date",
     "noProperties": "No properties found",
     "noApartments": "No apartments found",
-    "noTenants": "No tenants found"
+    "noTenants": "No tenants found",
+    "lastPaymentStatus": "Payment Status",
+    "lastPaymentDate": "Last Payment Date"
   },
   "form": {
     "name": "Name",
@@ -934,5 +940,30 @@
   },
   "usageRights": {
     "title": "Usage Rights"
+  },
+  "tenantForm": {
+    "basicInfo": "Basic Information",
+    "tenantType": "Tenant Type",
+    "selectType": "Select type",
+    "typePerson": "Person",
+    "typeCompany": "Company",
+    "personalInfo": "Personal Information",
+    "companyInfo": "Company Information",
+    "salutation": "Salutation",
+    "selectSalutation": "Select",
+    "salutationMr": "Mr.",
+    "salutationMs": "Ms.",
+    "birthDate": "Birth Date",
+    "birthDatePlaceholder": "Select birth date",
+    "birthPlace": "Birth Place",
+    "birthPlacePlaceholder": "Enter birth place",
+    "address": "Address",
+    "contactInfo": "Contact Information",
+    "additionalInfo": "Additional Information",
+    "nationality": "Nationality",
+    "nationalityPlaceholder": "Enter nationality",
+    "taxNumber": "Tax Number",
+    "taxNumberPlaceholder": "Enter tax number",
+    "systemFields": "System Fields"
   }
 }

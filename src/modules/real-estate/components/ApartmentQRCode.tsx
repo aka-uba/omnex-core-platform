@@ -102,50 +102,61 @@ export function ApartmentQRCode({ apartmentId, locale, size = 200, showActions =
 
   return (
     <Paper shadow="xs" p="md">
-      <Stack align="center" gap="md">
-        <Text size="lg" fw={500}>
-          {t('qrCode.title')}
-        </Text>
-        <div
-          style={{
-            padding: '16px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            display: 'inline-block',
-          }}
-        >
-          <img
-            src={qrCodeUrl}
-            alt="QR Code"
+      <Group align="flex-start" gap="xl">
+        {/* Sol taraf: QR Code */}
+        <Stack align="center" gap="md">
+          <Text size="lg" fw={500}>
+            {t('qrCode.title')}
+          </Text>
+          <div
             style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              display: 'block',
+              padding: '16px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              display: 'inline-block',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
             }}
-          />
-        </div>
-        <Text size="sm" c="dimmed" ta="center">
-          {t('qrCode.description')}
-        </Text>
-        {showActions && (
-          <Group>
-            <Button
-              leftSection={<IconDownload size={18} />}
-              onClick={handleDownload}
-              variant="light"
-            >
-              {t('qrCode.download')}
-            </Button>
-            <Button
-              leftSection={<IconRefresh size={18} />}
-              onClick={fetchQRCode}
-              variant="light"
-            >
-              {t('actions.refresh')}
-            </Button>
-          </Group>
-        )}
-      </Stack>
+          >
+            <img
+              src={qrCodeUrl}
+              alt="QR Code"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                display: 'block',
+              }}
+            />
+          </div>
+        </Stack>
+
+        {/* Sağ taraf: Açıklama ve butonlar */}
+        <Stack gap="md" style={{ flex: 1 }}>
+          <Text size="sm" c="dimmed">
+            {t('qrCode.description')}
+          </Text>
+          <Text size="sm" c="dimmed">
+            {t('qrCode.scanHint') || 'Scan this QR code to view the apartment details on your mobile device.'}
+          </Text>
+          {showActions && (
+            <Group mt="md">
+              <Button
+                leftSection={<IconDownload size={18} />}
+                onClick={handleDownload}
+                variant="light"
+              >
+                {t('qrCode.download')}
+              </Button>
+              <Button
+                leftSection={<IconRefresh size={18} />}
+                onClick={fetchQRCode}
+                variant="light"
+              >
+                {t('actions.refresh')}
+              </Button>
+            </Group>
+          )}
+        </Stack>
+      </Group>
     </Paper>
   );
 }

@@ -70,8 +70,38 @@ export async function GET(request: NextRequest) {
               name: true,
               type: true,
               address: true,
+              zipCode: true,
+              city: true,
               latitude: true,
               longitude: true,
+            },
+          },
+          contracts: {
+            where: { status: 'active' },
+            take: 1,
+            orderBy: { createdAt: 'desc' },
+            select: {
+              id: true,
+              tenant: {
+                select: {
+                  id: true,
+                  tenantNumber: true,
+                  firstName: true,
+                  lastName: true,
+                },
+              },
+            },
+          },
+          payments: {
+            take: 1,
+            orderBy: { dueDate: 'desc' },
+            select: {
+              id: true,
+              type: true,
+              amount: true,
+              status: true,
+              dueDate: true,
+              paidDate: true,
             },
           },
           _count: {

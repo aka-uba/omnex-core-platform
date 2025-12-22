@@ -13,15 +13,12 @@ import {
   Box,
   Button,
   ActionIcon,
-  Modal,
-  Loader,
 } from '@mantine/core';
 import {
   IconPhoto,
   IconDownload,
   IconChevronLeft,
   IconChevronRight,
-  IconX,
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 
@@ -33,7 +30,7 @@ interface EntityImagesTabProps {
   downloadAllLoading?: boolean;
 }
 
-const IMAGE_SIZE = 160; // Fixed size for all image cards
+const THUMB_SIZE = 80; // Thumbnail size
 
 export function EntityImagesTab({
   images,
@@ -43,42 +40,18 @@ export function EntityImagesTab({
   downloadAllLoading = false,
 }: EntityImagesTabProps) {
   const { t } = useTranslation('modules/real-estate');
-  const { t: tGlobal } = useTranslation('global');
 
-  const [previewOpened, setPreviewOpened] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [imageLoading, setImageLoading] = useState(false);
 
   const safeImages = Array.isArray(images) ? images : [];
 
-  const openPreview = useCallback((index: number) => {
-    setCurrentIndex(index);
-    setPreviewOpened(true);
-  }, []);
-
-  const closePreview = useCallback(() => {
-    setPreviewOpened(false);
-  }, []);
-
   const goToPrevious = useCallback(() => {
-    setImageLoading(true);
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : safeImages.length - 1));
   }, [safeImages.length]);
 
   const goToNext = useCallback(() => {
-    setImageLoading(true);
     setCurrentIndex((prev) => (prev < safeImages.length - 1 ? prev + 1 : 0));
   }, [safeImages.length]);
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') {
-      goToPrevious();
-    } else if (e.key === 'ArrowRight') {
-      goToNext();
-    } else if (e.key === 'Escape') {
-      closePreview();
-    }
-  }, [goToPrevious, goToNext, closePreview]);
 
   const handleDownload = useCallback((imageId: string) => {
     const link = document.createElement('a');
@@ -107,120 +80,50 @@ export function EntityImagesTab({
   return (
     <Paper shadow="xs" p="md">
       <Stack gap="md">
+        {/* Header */}
         <Group justify="space-between">
           <Text size="lg" fw={600}>
             {t('mediaGallery.images') || 'Images'} ({safeImages.length})
           </Text>
-          {onDownloadAll && safeImages.length > 0 && (
-            <Button
-              variant="light"
-              leftSection={<IconDownload size={16} />}
-              onClick={onDownloadAll}
-              loading={downloadAllLoading}
-            >
-              {t('mediaGallery.downloadAll') || 'Download All (ZIP)'}
-            </Button>
-          )}
+          <Group gap="xs">
+            {currentImageId && (
+              <Button
+                variant="light"
+                size="sm"
+                leftSection={<IconDownload size={16} />}
+                onClick={() => handleDownload(currentImageId)}
+              >
+                {t('mediaGallery.download') || 'Download'}
+              </Button>
+            )}
+            {onDownloadAll && safeImages.length > 1 && (
+              <Button
+                variant="light"
+                size="sm"
+                leftSection={<IconDownload size={16} />}
+                onClick={onDownloadAll}
+                loading={downloadAllLoading}
+              >
+                {t('mediaGallery.downloadAll') || 'Download All (ZIP)'}
+              </Button>
+            )}
+          </Group>
         </Group>
 
-        <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing="md">
-          {safeImages.map((imageId, index) => (
-            <Card
-              key={imageId}
-              padding={0}
-              radius="md"
-              withBorder
-              style={{
-                cursor: 'pointer',
-                overflow: 'hidden',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-              }}
-              onClick={() => openPreview(index)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <Box
-                style={{
-                  width: '100%',
-                  height: IMAGE_SIZE,
-                  position: 'relative',
-                }}
-              >
-                <Image
-                  src={`/api/core-files/${imageId}/download?inline=true`}
-                  alt={`Image ${index + 1}`}
-                  h={IMAGE_SIZE}
-                  w="100%"
-                  fit="cover"
-                  fallbackSrc={`https://placehold.co/${IMAGE_SIZE}x${IMAGE_SIZE}?text=Image`}
-                />
-                {coverImage === imageId && (
-                  <Badge
-                    pos="absolute"
-                    top={8}
-                    left={8}
-                    color="yellow"
-                    variant="filled"
-                    size="sm"
-                  >
-                    {t('form.coverImage') || 'Cover'}
-                  </Badge>
-                )}
-              </Box>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </Stack>
-
-      {/* Image Preview Modal */}
-      <Modal
-        opened={previewOpened}
-        onClose={closePreview}
-        size="xl"
-        centered
-        withCloseButton={false}
-        padding={0}
-        styles={{
-          content: {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-          },
-          body: {
-            padding: 0,
-          },
-        }}
-        onKeyDown={handleKeyDown}
-      >
+        {/* Main Image Display - Inline (not modal) */}
         <Box
           style={{
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '70vh',
+            backgroundColor: 'var(--mantine-color-gray-1)',
+            borderRadius: 'var(--mantine-radius-md)',
+            minHeight: '400px',
+            maxHeight: '500px',
+            overflow: 'hidden',
           }}
         >
-          {/* Close Button */}
-          <ActionIcon
-            variant="filled"
-            color="dark"
-            size="lg"
-            radius="xl"
-            pos="absolute"
-            top={-40}
-            right={0}
-            onClick={closePreview}
-            style={{ zIndex: 10 }}
-          >
-            <IconX size={20} />
-          </ActionIcon>
-
           {/* Previous Button */}
           {safeImages.length > 1 && (
             <ActionIcon
@@ -229,7 +132,7 @@ export function EntityImagesTab({
               size="xl"
               radius="xl"
               pos="absolute"
-              left={-60}
+              left={16}
               onClick={goToPrevious}
               style={{ zIndex: 10 }}
             >
@@ -237,46 +140,18 @@ export function EntityImagesTab({
             </ActionIcon>
           )}
 
-          {/* Image Container */}
-          <Box
-            style={{
-              position: 'relative',
-              maxWidth: '90vw',
-              maxHeight: '80vh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {imageLoading && (
-              <Box
-                pos="absolute"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  zIndex: 5,
-                }}
-              >
-                <Loader size="lg" color="white" />
-              </Box>
-            )}
-            {currentImageId && (
-              <img
-                src={`/api/core-files/${currentImageId}/download?inline=true`}
-                alt={`Preview ${currentIndex + 1}`}
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '80vh',
-                  objectFit: 'contain',
-                  borderRadius: '8px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                }}
-                onLoad={() => setImageLoading(false)}
-                onError={() => setImageLoading(false)}
-              />
-            )}
-          </Box>
+          {/* Main Image */}
+          {currentImageId && (
+            <img
+              src={`/api/core-files/${currentImageId}/download?inline=true`}
+              alt={`Image ${currentIndex + 1}`}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '500px',
+                objectFit: 'contain',
+              }}
+            />
+          )}
 
           {/* Next Button */}
           {safeImages.length > 1 && (
@@ -286,7 +161,7 @@ export function EntityImagesTab({
               size="xl"
               radius="xl"
               pos="absolute"
-              right={-60}
+              right={16}
               onClick={goToNext}
               style={{ zIndex: 10 }}
             >
@@ -294,33 +169,90 @@ export function EntityImagesTab({
             </ActionIcon>
           )}
 
-          {/* Footer Info */}
+          {/* Cover Badge */}
+          {coverImage === currentImageId && (
+            <Badge
+              pos="absolute"
+              top={16}
+              left={16}
+              color="yellow"
+              variant="filled"
+              size="lg"
+            >
+              {t('form.coverImage') || 'Cover'}
+            </Badge>
+          )}
+
+          {/* Image Counter */}
           <Paper
             pos="absolute"
-            bottom={-50}
-            p="sm"
+            bottom={16}
+            p="xs"
+            px="md"
             radius="md"
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
             }}
           >
-            <Group gap="md">
-              <Text size="sm" c="white">
-                {currentIndex + 1} / {safeImages.length}
-              </Text>
-              {currentImageId && (
-                <ActionIcon
-                  variant="subtle"
-                  color="white"
-                  onClick={() => handleDownload(currentImageId)}
-                >
-                  <IconDownload size={18} />
-                </ActionIcon>
-              )}
-            </Group>
+            <Text size="sm" c="white" fw={500}>
+              {currentIndex + 1} / {safeImages.length}
+            </Text>
           </Paper>
         </Box>
-      </Modal>
+
+        {/* Thumbnail Strip */}
+        {safeImages.length > 1 && (
+          <SimpleGrid cols={{ base: 4, sm: 6, md: 8, lg: 10 }} spacing="xs">
+            {safeImages.map((imageId, index) => (
+              <Card
+                key={imageId}
+                padding={0}
+                radius="sm"
+                withBorder
+                style={{
+                  cursor: 'pointer',
+                  overflow: 'hidden',
+                  opacity: index === currentIndex ? 1 : 0.6,
+                  border: index === currentIndex
+                    ? '2px solid var(--mantine-color-blue-6)'
+                    : '1px solid var(--mantine-color-gray-3)',
+                  transition: 'all 0.2s',
+                }}
+                onClick={() => setCurrentIndex(index)}
+              >
+                <Box
+                  style={{
+                    width: '100%',
+                    height: THUMB_SIZE,
+                    position: 'relative',
+                  }}
+                >
+                  <Image
+                    src={`/api/core-files/${imageId}/download?inline=true`}
+                    alt={`Thumbnail ${index + 1}`}
+                    h={THUMB_SIZE}
+                    w="100%"
+                    fit="cover"
+                    fallbackSrc={`https://placehold.co/${THUMB_SIZE}x${THUMB_SIZE}?text=${index + 1}`}
+                  />
+                  {coverImage === imageId && (
+                    <Badge
+                      pos="absolute"
+                      top={2}
+                      left={2}
+                      color="yellow"
+                      variant="filled"
+                      size="xs"
+                    >
+                      {t('form.coverImage') || 'Cover'}
+                    </Badge>
+                  )}
+                </Box>
+              </Card>
+            ))}
+          </SimpleGrid>
+        )}
+      </Stack>
     </Paper>
   );
 }

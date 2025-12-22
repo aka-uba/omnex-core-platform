@@ -128,7 +128,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
     <Container size="xl" pt="xl">
       <CentralPageHeader
         title={apartment.unitNumber}
-        description={t('apartments.details')}
+        description={`${apartment.property?.address || ''} - ${apartment.property?.name || ''} - ${t('apartments.details')}`}
         namespace="modules/real-estate"
         icon={<IconHome size={32} />}
         breadcrumbs={[
@@ -183,10 +183,15 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
 
         <Tabs.Panel value="details" pt="md">
           <Paper shadow="xs" p="md">
-            <Stack gap="md">
-              <Group align="flex-start" gap="xl">
-                {/* Cover Image */}
-                <Box>
+            <Grid gutter="xl">
+              {/* Sol Kolon: Büyük Resim */}
+              <Grid.Col span={{ base: 12, md: 5 }}>
+                <Box
+                  style={{
+                    position: 'sticky',
+                    top: 20,
+                  }}
+                >
                   <Image
                     src={
                       apartment.coverImage
@@ -196,26 +201,46 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                         : undefined
                     }
                     alt={apartment.unitNumber}
-                    width={300}
-                    height={200}
                     radius="md"
                     fit="cover"
                     style={{
                       border: '4px solid var(--mantine-color-gray-3)',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      aspectRatio: '4/3',
+                      width: '100%',
                     }}
-                    fallbackSrc="https://placehold.co/300x200?text=Apartment"
+                    fallbackSrc="https://placehold.co/600x450?text=Apartment"
                   />
+                  {/* Image count indicator */}
+                  {apartment.images && apartment.images.length > 1 && (
+                    <Badge
+                      pos="absolute"
+                      bottom={16}
+                      right={16}
+                      size="lg"
+                      variant="filled"
+                      color="dark"
+                      style={{ opacity: 0.8 }}
+                    >
+                      <Group gap={4}>
+                        <IconPhoto size={14} />
+                        {apartment.images.length}
+                      </Group>
+                    </Badge>
+                  )}
                 </Box>
+              </Grid.Col>
 
-                {/* Apartment Info */}
-                <div style={{ flex: 1 }}>
-                  <Group justify="space-between" align="flex-start" mb="md">
+              {/* Sağ Kolon: Tüm Detaylar */}
+              <Grid.Col span={{ base: 12, md: 7 }}>
+                <Stack gap="md">
+                  {/* Header with title and badges */}
+                  <Group justify="space-between" align="flex-start">
                     <div>
                       <Text size="xl" fw={600}>{apartment.unitNumber}</Text>
                       {apartment.property && (
                         <Text size="sm" c="dimmed" mt={4}>
-                          {apartment.property.name}
+                          {apartment.property.name} - {apartment.property.address}
                         </Text>
                       )}
                     </div>
@@ -229,70 +254,61 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                     </Group>
                   </Group>
 
-              <Grid>
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Stack gap="xs">
-                    <Text size="sm" fw={500} c="dimmed">
-                      {t('table.unitNumber')}
-                    </Text>
-                    <Text>{apartment.unitNumber}</Text>
-                  </Stack>
-                </Grid.Col>
+                  <Divider />
 
-                {apartment.floor && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
+                  {/* Basic Info Grid */}
+                  <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
-                        {t('apartments.floor')}
+                        {t('table.unitNumber')}
                       </Text>
-                      <Text>{apartment.floor}</Text>
+                      <Text>{apartment.unitNumber}</Text>
                     </Stack>
-                  </Grid.Col>
-                )}
 
-                {apartment.block && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
+                    {apartment.floor && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('apartments.floor')}
+                        </Text>
+                        <Text>{apartment.floor}</Text>
+                      </Stack>
+                    )}
+
+                    {apartment.block && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('apartments.block')}
+                        </Text>
+                        <Text>{apartment.block}</Text>
+                      </Stack>
+                    )}
+
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
-                        {t('apartments.block')}
+                        {t('apartments.area')}
                       </Text>
-                      <Text>{apartment.block}</Text>
+                      <Text>{Number(apartment.area).toLocaleString('tr-TR')} m²</Text>
                     </Stack>
-                  </Grid.Col>
-                )}
 
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Stack gap="xs">
-                    <Text size="sm" fw={500} c="dimmed">
-                      {t('apartments.area')}
-                    </Text>
-                    <Text>{Number(apartment.area).toLocaleString('tr-TR')} m²</Text>
-                  </Stack>
-                </Grid.Col>
-
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Stack gap="xs">
-                    <Text size="sm" fw={500} c="dimmed">
-                      {t('apartments.roomCount')}
-                    </Text>
-                    <Text>{apartment.roomCount} {t('apartments.rooms')}</Text>
-                  </Stack>
-                </Grid.Col>
-
-                {apartment.bathroomCount && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
-                        {t('form.bathroomCount')}
+                        {t('apartments.roomCount')}
                       </Text>
-                      <Text>{apartment.bathroomCount}</Text>
+                      <Text>{apartment.roomCount} {t('apartments.rooms')}</Text>
                     </Stack>
-                  </Grid.Col>
-                )}
 
-                {/* Özellikler */}
-                <Grid.Col span={12}>
-                  <Group gap="md" mt="xs">
+                    {apartment.bathroomCount && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.bathroomCount')}
+                        </Text>
+                        <Text>{apartment.bathroomCount}</Text>
+                      </Stack>
+                    )}
+                  </SimpleGrid>
+
+                  {/* Features */}
+                  <Group gap="md">
                     {apartment.livingRoom !== undefined && (
                       <Badge
                         variant="light"
@@ -312,99 +328,97 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       </Badge>
                     )}
                   </Group>
-                </Grid.Col>
 
-                {apartment.rentPrice && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <Stack gap="xs">
-                      <Text size="sm" fw={500} c="dimmed">
-                        {t('apartments.rentPrice')}
-                      </Text>
-                      <Text fw={500}>
-                        {Number(apartment.rentPrice).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
-                      </Text>
-                    </Stack>
-                  </Grid.Col>
-                )}
+                  <Divider />
 
-                {apartment.salePrice && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <Stack gap="xs">
-                      <Text size="sm" fw={500} c="dimmed">
-                        {t('apartments.salePrice')}
-                      </Text>
-                      <Text fw={500}>
-                        {Number(apartment.salePrice).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
-                      </Text>
-                    </Stack>
-                  </Grid.Col>
-                )}
+                  {/* Price Info */}
+                  <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                    {apartment.rentPrice && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('apartments.rentPrice')}
+                        </Text>
+                        <Text fw={500} size="lg" c="blue">
+                          {Number(apartment.rentPrice).toLocaleString('tr-TR', {
+                            style: 'currency',
+                            currency: 'TRY',
+                          })}
+                        </Text>
+                      </Stack>
+                    )}
 
-                {/* Kullanım Hakları (Usage Rights) */}
-                {(apartment as any).usageRights && Array.isArray((apartment as any).usageRights) && (apartment as any).usageRights.filter((r: any) => r.active).length > 0 && (
-                  <Grid.Col span={12}>
-                    <Divider my="xs" label={t('usageRights.title')} labelPosition="center" />
-                    <Group gap="xs" mt="xs" wrap="wrap">
-                      {(apartment as any).usageRights
-                        .filter((r: any) => r.active)
-                        .map((r: any) => (
-                          <Badge key={r.id} variant="light" color="blue">
-                            {r.name}
-                          </Badge>
-                        ))}
-                    </Group>
-                  </Grid.Col>
-                )}
+                    {apartment.salePrice && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('apartments.salePrice')}
+                        </Text>
+                        <Text fw={500} size="lg" c="green">
+                          {Number(apartment.salePrice).toLocaleString('tr-TR', {
+                            style: 'currency',
+                            currency: 'TRY',
+                          })}
+                        </Text>
+                      </Stack>
+                    )}
+                  </SimpleGrid>
 
-                {apartment.deliveryDate && (
-                  <Grid.Col span={{ base: 12, md: 6 }}>
+                  {/* Usage Rights */}
+                  {(apartment as any).usageRights && Array.isArray((apartment as any).usageRights) && (apartment as any).usageRights.filter((r: any) => r.active).length > 0 && (
+                    <>
+                      <Divider label={t('usageRights.title')} labelPosition="center" />
+                      <Group gap="xs" wrap="wrap">
+                        {(apartment as any).usageRights
+                          .filter((r: any) => r.active)
+                          .map((r: any) => (
+                            <Badge key={r.id} variant="light" color="blue">
+                              {r.name}
+                            </Badge>
+                          ))}
+                      </Group>
+                    </>
+                  )}
+
+                  {/* Delivery Date */}
+                  {apartment.deliveryDate && (
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
                         {t('apartments.deliveryDate')}
                       </Text>
                       <Text>{dayjs(apartment.deliveryDate).format('DD.MM.YYYY')}</Text>
                     </Stack>
-                  </Grid.Col>
-                )}
+                  )}
 
-                {apartment.description && (
-                  <Grid.Col span={12}>
+                  {/* Description */}
+                  {apartment.description && (
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
                         {t('form.description')}
                       </Text>
                       <Text>{apartment.description}</Text>
                     </Stack>
-                  </Grid.Col>
-                )}
+                  )}
 
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Stack gap="xs">
-                    <Text size="sm" fw={500} c="dimmed">
-                      {tGlobal('common.createdAt')}
-                    </Text>
-                    <Text>{dayjs(apartment.createdAt).format('DD.MM.YYYY HH:mm')}</Text>
-                  </Stack>
-                </Grid.Col>
+                  <Divider />
 
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Stack gap="xs">
-                    <Text size="sm" fw={500} c="dimmed">
-                      {tGlobal('common.updatedAt')}
-                    </Text>
-                    <Text>{dayjs(apartment.updatedAt).format('DD.MM.YYYY HH:mm')}</Text>
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-                </div>
-              </Group>
-            </Stack>
+                  {/* Timestamps */}
+                  <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                    <Stack gap="xs">
+                      <Text size="sm" fw={500} c="dimmed">
+                        {tGlobal('common.createdAt')}
+                      </Text>
+                      <Text size="sm">{dayjs(apartment.createdAt).format('DD.MM.YYYY HH:mm')}</Text>
+                    </Stack>
+
+                    <Stack gap="xs">
+                      <Text size="sm" fw={500} c="dimmed">
+                        {tGlobal('common.updatedAt')}
+                      </Text>
+                      <Text size="sm">{dayjs(apartment.updatedAt).format('DD.MM.YYYY HH:mm')}</Text>
+                    </Stack>
+                  </SimpleGrid>
+                </Stack>
+              </Grid.Col>
+            </Grid>
           </Paper>
         </Tabs.Panel>
 

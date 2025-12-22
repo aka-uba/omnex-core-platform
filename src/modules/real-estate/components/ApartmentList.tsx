@@ -18,6 +18,9 @@ import {
   IconTrash,
   IconEye,
   IconHome,
+  IconCheck,
+  IconX,
+  IconClock,
 } from '@tabler/icons-react';
 import { useApartments, useDeleteApartment } from '@/hooks/useApartments';
 import { useProperties } from '@/hooks/useProperties';
@@ -109,29 +112,47 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   // Prepare data for DataTable
   const tableData = useMemo(() => {
     if (!data?.apartments) return [];
-    return data.apartments.map((apartment: any) => ({
-      id: apartment.id,
-      preview: apartment,
-      isActive: apartment.isActive,
-      property: apartment.property
-        ? `${apartment.property.address || ''}\n${apartment.property.zipCode || ''} ${apartment.property.city || ''}`.trim()
-        : '-',
-      apartmentType: apartment.apartmentType || '-',
-      floor: apartment.floor ?? '-',
-      area: apartment.area,
-      basementSize: apartment.basementSize ?? '-',
-      rooms: apartment.roomCount,
-      bedrooms: apartment.bedroomCount ?? '-',
-      bathrooms: apartment.bathroomCount ?? '-',
-      lastRenovation: apartment.lastRenovationDate,
-      internetSpeed: apartment.internetSpeed || '-',
-      coldRent: apartment.coldRent,
-      additionalCosts: apartment.additionalCosts,
-      heatingCosts: apartment.heatingCosts,
-      deposit: apartment.deposit,
-      unitNumber: apartment.unitNumber,
-      status: apartment.status,
-    }));
+    return data.apartments.map((apartment: any) => {
+      // Get current tenant from active contract
+      const activeContract = apartment.contracts?.[0];
+      const currentTenant = activeContract?.tenant;
+
+      // Get last payment info
+      const lastPayment = apartment.payments?.[0];
+
+      return {
+        id: apartment.id,
+        preview: apartment,
+        isActive: apartment.isActive,
+        property: apartment.property
+          ? `${apartment.property.address || ''}\n${apartment.property.zipCode || ''} ${apartment.property.city || ''}`.trim()
+          : '-',
+        apartmentType: apartment.apartmentType || '-',
+        floor: apartment.floor ?? '-',
+        area: apartment.area,
+        basementSize: apartment.basementSize ?? '-',
+        rooms: apartment.roomCount,
+        bedrooms: apartment.bedroomCount ?? '-',
+        bathrooms: apartment.bathroomCount ?? '-',
+        lastRenovation: apartment.lastRenovationDate,
+        internetSpeed: apartment.internetSpeed || '-',
+        coldRent: apartment.coldRent,
+        additionalCosts: apartment.additionalCosts,
+        heatingCosts: apartment.heatingCosts,
+        deposit: apartment.deposit,
+        unitNumber: apartment.unitNumber,
+        status: apartment.status,
+        // New: Current tenant
+        currentTenant: currentTenant
+          ? `${currentTenant.firstName || ''} ${currentTenant.lastName || ''}`.trim() || currentTenant.tenantNumber
+          : null,
+        // New: Last payment status and date
+        lastPaymentStatus: lastPayment?.status || null,
+        lastPaymentDate: lastPayment?.dueDate || null,
+        lastPaymentPaidDate: lastPayment?.paidDate || null,
+        lastPaymentAmount: lastPayment?.amount || null,
+      };
+    });
   }, [data]);
 
   // Memoized render functions
@@ -251,6 +272,35 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   const renderDate = useCallback((value: Date | string | null) => {
     if (!value) return '-';
     return new Date(value).toLocaleDateString('de-DE');
+  }, []);
+
+  const renderPaymentStatus = useCallback((value: string | null) => {
+    if (!value) return <Text size="xs" c="dimmed">-</Text>;
+    const statusColors: Record<string, string> = {
+      paid: 'green',
+      pending: 'yellow',
+      overdue: 'red',
+      cancelled: 'gray',
+    };
+    const statusIcons: Record<string, React.ReactNode> = {
+      paid: <IconCheck size={12} />,
+      pending: <IconClock size={12} />,
+      overdue: <IconX size={12} />,
+    };
+    return (
+      <Badge
+        color={statusColors[value] || 'gray'}
+        leftSection={statusIcons[value] || null}
+        size="sm"
+      >
+        {t(`status.${value}`) || value}
+      </Badge>
+    );
+  }, [t]);
+
+  const renderTenant = useCallback((value: string | null) => {
+    if (!value) return <Text size="xs" c="dimmed">-</Text>;
+    return <Text size="sm">{value}</Text>;
   }, []);
 
   const renderActions = useCallback((value: any, row: any) => (
@@ -407,6 +457,27 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       render: renderCurrency,
     },
     {
+      key: 'currentTenant',
+      label: t('table.tenant'),
+      sortable: true,
+      searchable: true,
+      render: renderTenant,
+    },
+    {
+      key: 'lastPaymentStatus',
+      label: t('table.lastPaymentStatus') || 'Payment Status',
+      sortable: true,
+      searchable: false,
+      render: renderPaymentStatus,
+    },
+    {
+      key: 'lastPaymentDate',
+      label: t('table.lastPaymentDate') || 'Payment Date',
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+    },
+    {
       key: 'actions',
       label: t('table.actions'),
       sortable: false,
@@ -414,7 +485,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderPreview, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions]);
+  ], [t, renderPreview, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions, renderPaymentStatus, renderTenant]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [
