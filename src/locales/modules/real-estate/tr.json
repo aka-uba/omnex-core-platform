@@ -1914,9 +1914,6 @@
     "audioNotSupported": "Tarayıcınız ses etiketini desteklemiyor.",
     "previewNotAvailable": "Bu dosya türü için önizleme kullanılamıyor"
   },
-  "usageRights": {
-    "title": "Kullanım Hakları"
-  },
   "tenantForm": {
     "basicInfo": "Temel Bilgiler",
     "tenantType": "Kiracı Tipi",
