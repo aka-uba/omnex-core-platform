@@ -102,16 +102,25 @@ export function PropertyList({ locale }: PropertyListProps) {
   // Prepare data for DataTable
   const tableData = useMemo(() => {
     if (!data?.properties) return [];
-    return data.properties.map((property) => ({
+    return data.properties.map((property: any) => ({
       id: property.id,
       preview: property,
-      name: property.name,
+      isActive: property.isActive,
       type: property.type,
-      propertyNumber: (property as any).propertyNumber || '-',
-      address: property.address,
-      city: property.city,
+      address: `${property.address || ''}\n${property.postalCode || ''} ${property.city || ''}`.trim(),
       units: property.totalUnits,
-      status: property.isActive,
+      landArea: property.landArea,
+      livingArea: property.livingArea,
+      yearBuilt: property.constructionYear,
+      renovatedYear: property.lastRenovationDate,
+      purchasePrice: property.purchasePrice,
+      isPaidOff: property.isPaidOff,
+      financingStart: property.financingStartDate,
+      financingEnd: property.financingEndDate,
+      monthlyFinancingRate: property.monthlyFinancingRate,
+      numberOfInstallments: property.numberOfInstallments,
+      financingPaymentDay: property.financingPaymentDay,
+      name: property.name,
     }));
   }, [data]);
 
@@ -214,6 +223,37 @@ export function PropertyList({ locale }: PropertyListProps) {
 
   const renderStatus = useCallback((value: boolean) => getStatusBadge(value), [getStatusBadge]);
 
+  const renderAddress = useCallback((value: string) => (
+    <Text size="xs" style={{ whiteSpace: 'pre-line' }}>{value}</Text>
+  ), []);
+
+  const renderArea = useCallback((value: number | null) => {
+    if (value === null || value === undefined) return '-';
+    return `${Number(value).toLocaleString('de-DE')} m²`;
+  }, []);
+
+  const renderCurrency = useCallback((value: number | null) => {
+    if (value === null || value === undefined) return '-';
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+    }).format(Number(value));
+  }, []);
+
+  const renderDate = useCallback((value: Date | string | null) => {
+    if (!value) return '-';
+    return new Date(value).toLocaleDateString('de-DE');
+  }, []);
+
+  const renderPaidOff = useCallback((value: boolean) => {
+    return value ? (
+      <Badge color="green">{t('status.paidOff')}</Badge>
+    ) : (
+      <Badge color="red">{t('status.notPaidOff')}</Badge>
+    );
+  }, [t]);
+
   const renderActions = useCallback((value: any, row: any) => (
     <Group gap="xs" justify="flex-end">
       <Tooltip label={t('actions.view')} withArrow>
@@ -255,21 +295,15 @@ export function PropertyList({ locale }: PropertyListProps) {
     </Group>
   ), [router, locale, handleDeleteClick, t]);
 
-  // Define columns with memoization
+  // Define columns with memoization - Customer table order
+  // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
-      key: 'preview',
-      label: t('table.preview'),
-      sortable: false,
-      searchable: false,
-      render: renderPreview,
-    },
-    {
-      key: 'name',
-      label: t('table.name'),
+      key: 'isActive',
+      label: t('table.active'),
       sortable: true,
-      searchable: true,
-      render: renderName,
+      searchable: false,
+      render: renderStatus,
     },
     {
       key: 'type',
@@ -279,22 +313,11 @@ export function PropertyList({ locale }: PropertyListProps) {
       render: renderType,
     },
     {
-      key: 'propertyNumber',
-      label: t('table.propertyNumber'),
-      sortable: true,
-      searchable: true,
-    },
-    {
       key: 'address',
       label: t('table.address'),
       sortable: true,
       searchable: true,
-    },
-    {
-      key: 'city',
-      label: t('table.city'),
-      sortable: true,
-      searchable: true,
+      render: renderAddress,
     },
     {
       key: 'units',
@@ -303,11 +326,85 @@ export function PropertyList({ locale }: PropertyListProps) {
       searchable: false,
     },
     {
-      key: 'status',
-      label: t('table.status'),
+      key: 'landArea',
+      label: t('table.landArea'),
       sortable: true,
       searchable: false,
-      render: renderStatus,
+      render: renderArea,
+    },
+    {
+      key: 'livingArea',
+      label: t('table.livingArea'),
+      sortable: true,
+      searchable: false,
+      render: renderArea,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'yearBuilt',
+      label: t('table.yearBuilt'),
+      sortable: true,
+      searchable: false,
+    },
+    {
+      key: 'renovatedYear',
+      label: t('table.renovatedYear'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'purchasePrice',
+      label: t('table.purchasePrice'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
+    },
+    {
+      key: 'isPaidOff',
+      label: t('table.paidOff'),
+      sortable: true,
+      searchable: false,
+      render: renderPaidOff,
+    },
+    {
+      key: 'financingStart',
+      label: t('table.financingStart'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'financingEnd',
+      label: t('table.financingEnd'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'monthlyFinancingRate',
+      label: t('table.financingRate'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'numberOfInstallments',
+      label: t('table.numberOfInstallments'),
+      sortable: true,
+      searchable: false,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'financingPaymentDay',
+      label: t('table.financingPaymentDay'),
+      sortable: true,
+      searchable: false,
+      hidden: true, // Hidden by default
     },
     {
       key: 'actions',
@@ -317,7 +414,7 @@ export function PropertyList({ locale }: PropertyListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderPreview, renderName, renderType, renderStatus, renderActions]);
+  ], [t, renderStatus, renderType, renderAddress, renderArea, renderDate, renderCurrency, renderPaidOff, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [

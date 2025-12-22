@@ -109,15 +109,28 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   // Prepare data for DataTable
   const tableData = useMemo(() => {
     if (!data?.apartments) return [];
-    return data.apartments.map((apartment) => ({
+    return data.apartments.map((apartment: any) => ({
       id: apartment.id,
       preview: apartment,
-      unitNumber: apartment.unitNumber,
-      property: apartment.property?.name || '-',
-      area: apartment.area,
-      rooms: apartment.roomCount,
-      status: apartment.status,
       isActive: apartment.isActive,
+      property: apartment.property
+        ? `${apartment.property.address || ''}\n${apartment.property.zipCode || ''} ${apartment.property.city || ''}`.trim()
+        : '-',
+      apartmentType: apartment.apartmentType || '-',
+      floor: apartment.floor ?? '-',
+      area: apartment.area,
+      basementSize: apartment.basementSize ?? '-',
+      rooms: apartment.roomCount,
+      bedrooms: apartment.bedroomCount ?? '-',
+      bathrooms: apartment.bathroomCount ?? '-',
+      lastRenovation: apartment.lastRenovationDate,
+      internetSpeed: apartment.internetSpeed || '-',
+      coldRent: apartment.coldRent,
+      additionalCosts: apartment.additionalCosts,
+      heatingCosts: apartment.heatingCosts,
+      deposit: apartment.deposit,
+      unitNumber: apartment.unitNumber,
+      status: apartment.status,
     }));
   }, [data]);
 
@@ -216,11 +229,29 @@ export function ApartmentList({ locale }: ApartmentListProps) {
     </Group>
   ), []);
 
-  const renderArea = useCallback((value: number) => `${value} m²`, []);
+  const renderArea = useCallback((value: number) => value ? `${value} m²` : '-', []);
 
   const renderStatus = useCallback((value: ApartmentStatus) => getStatusBadge(value), [getStatusBadge]);
 
   const renderActive = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
+
+  const renderProperty = useCallback((value: string) => (
+    <Text size="xs" style={{ whiteSpace: 'pre-line' }}>{value}</Text>
+  ), []);
+
+  const renderCurrency = useCallback((value: number | null) => {
+    if (value === null || value === undefined) return '-';
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+    }).format(Number(value));
+  }, []);
+
+  const renderDate = useCallback((value: Date | string | null) => {
+    if (!value) return '-';
+    return new Date(value).toLocaleDateString('de-DE');
+  }, []);
 
   const renderActions = useCallback((value: any, row: any) => (
     <Group gap="xs" justify="flex-end">
@@ -263,27 +294,34 @@ export function ApartmentList({ locale }: ApartmentListProps) {
     </Group>
   ), [router, locale, handleDeleteClick, t]);
 
-  // Define columns with memoization
+  // Define columns with memoization - Customer table order
+  // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
-      key: 'preview',
-      label: t('table.preview'),
-      sortable: false,
-      searchable: false,
-      render: renderPreview,
-    },
-    {
-      key: 'unitNumber',
-      label: t('table.unitNumber'),
+      key: 'isActive',
+      label: t('table.active'),
       sortable: true,
-      searchable: true,
-      render: renderUnitNumber,
+      searchable: false,
+      render: renderActive,
     },
     {
       key: 'property',
       label: t('table.property'),
       sortable: true,
       searchable: true,
+      render: renderProperty,
+    },
+    {
+      key: 'apartmentType',
+      label: t('table.apartmentType'),
+      sortable: true,
+      searchable: true,
+    },
+    {
+      key: 'floor',
+      label: t('table.floor'),
+      sortable: true,
+      searchable: false,
     },
     {
       key: 'area',
@@ -293,24 +331,73 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       render: renderArea,
     },
     {
+      key: 'basementSize',
+      label: t('table.basementSize'),
+      sortable: true,
+      searchable: false,
+      hidden: true, // Hidden by default, can be shown via column settings
+    },
+    {
       key: 'rooms',
       label: t('table.rooms'),
       sortable: true,
       searchable: false,
     },
     {
-      key: 'status',
-      label: t('table.status'),
+      key: 'bedrooms',
+      label: t('table.bedrooms'),
       sortable: true,
       searchable: false,
-      render: renderStatus,
     },
     {
-      key: 'isActive',
-      label: t('table.active'),
+      key: 'bathrooms',
+      label: t('table.bathrooms'),
       sortable: true,
       searchable: false,
-      render: renderActive,
+    },
+    {
+      key: 'lastRenovation',
+      label: t('table.lastRenovation'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'internetSpeed',
+      label: t('table.internetSpeed'),
+      sortable: true,
+      searchable: false,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'coldRent',
+      label: t('table.coldRent'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
+    },
+    {
+      key: 'additionalCosts',
+      label: t('table.additionalCosts'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
+    },
+    {
+      key: 'heatingCosts',
+      label: t('table.heatingCosts'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
+      hidden: true, // Hidden by default
+    },
+    {
+      key: 'deposit',
+      label: t('table.deposit'),
+      sortable: true,
+      searchable: false,
+      render: renderCurrency,
     },
     {
       key: 'actions',
@@ -320,7 +407,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderPreview, renderUnitNumber, renderArea, renderStatus, renderActive, renderActions]);
+  ], [t, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [

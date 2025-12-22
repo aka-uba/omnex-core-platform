@@ -979,6 +979,14 @@
     "bankTransfer": "Banka Transferi",
     "autoDebit": "Otomatik Ödeme"
   },
+  "tenantTypes": {
+    "person": "Kişi",
+    "company": "Şirket"
+  },
+  "salutations": {
+    "mr": "Bay",
+    "mrs": "Bayan"
+  },
   "status": {
     "active": "Aktif",
     "inactive": "Pasif",
@@ -998,7 +1006,9 @@
     "default": "Varsayılan",
     "draft": "Taslak",
     "expired": "Süresi Dolmuş",
-    "terminated": "Feshedilmiş"
+    "terminated": "Feshedilmiş",
+    "paidOff": "Ödendi",
+    "notPaidOff": "Ödenmedi"
   },
   "actions": {
     "title": "İşlemler",
@@ -1102,7 +1112,36 @@
     "isDefault": "Varsayılan Olarak Ayarla",
     "notDefault": "Varsayılan Değil",
     "contentHint": "Dinamik değerler için {{değişkenAdı}} kullanın (örn: {{contractNumber}}, {{tenantName}}, {{rentAmount}})",
-    "premium": "Premium"
+    "premium": "Premium",
+    "apartmentType": "Daire Tipi",
+    "floor": "Kat",
+    "basementSize": "Kiler Boyutu",
+    "bedrooms": "Yatak Odası",
+    "bathrooms": "Banyo",
+    "lastRenovation": "Son Yenileme",
+    "internetSpeed": "İnternet Hızı",
+    "coldRent": "Net Kira",
+    "additionalCosts": "Ek Giderler",
+    "heatingCosts": "Isıtma Giderleri",
+    "deposit": "Depozito",
+    "landArea": "Arsa Alanı",
+    "livingArea": "Yaşam Alanı",
+    "yearBuilt": "Yapım Yılı",
+    "renovatedYear": "Yenileme Tarihi",
+    "purchasePrice": "Satın Alma Fiyatı",
+    "paidOff": "Ödeme Durumu",
+    "financingStart": "Finansman Başlangıcı",
+    "financingEnd": "Finansman Bitişi",
+    "financingRate": "Aylık Taksit",
+    "numberOfInstallments": "Taksit Sayısı",
+    "financingPaymentDay": "Taksit Günü",
+    "tenantType": "Kiracı Tipi",
+    "companyName": "Şirket Adı",
+    "salutation": "Hitap",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "birthDate": "Doğum Tarihi",
+    "mobile": "Cep Telefonu"
   },
   "form": {
     "files": "dosya",

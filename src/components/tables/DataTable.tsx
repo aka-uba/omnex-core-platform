@@ -64,6 +64,8 @@ export interface DataTableProps {
   selectedRows?: string[]; // Currently selected row IDs
   onSelectionChange?: (selectedIds: string[]) => void; // Callback when selection changes
   rowIdKey?: string; // Key to use for row ID (default: 'id')
+  // Row number column
+  showRowNumbers?: boolean; // Show row number (#) column (default: true)
 }
 
 export function DataTable({
@@ -91,6 +93,7 @@ export function DataTable({
   selectedRows = [],
   onSelectionChange,
   rowIdKey = 'id',
+  showRowNumbers = true,
 }: DataTableProps) {
   const { t } = useTranslation(exportNamespace);
   const { t: tGlobal } = useTranslation('global');
@@ -840,6 +843,13 @@ export function DataTable({
           <Table highlightOnHover striped>
             <Table.Thead>
               <Table.Tr>
+                {showRowNumbers && (
+                  <Table.Th style={{ width: 50, textAlign: 'center' }}>
+                    <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
+                      #
+                    </Text>
+                  </Table.Th>
+                )}
                 {selectable && (
                   <Table.Th style={{ width: 40, textAlign: 'center' }}>
                     <Checkbox
@@ -913,7 +923,7 @@ export function DataTable({
             <Table.Tbody>
               {paginatedData.length === 0 ? (
                 <Table.Tr>
-                  <Table.Td colSpan={displayColumns.length + (selectable ? 1 : 0)} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <Table.Td colSpan={displayColumns.length + (selectable ? 1 : 0) + (showRowNumbers ? 1 : 0)} style={{ textAlign: 'center', padding: '2rem' }}>
                     <Text c="dimmed">{emptyMessage || tGlobal('empty.message')}</Text>
                   </Table.Td>
                 </Table.Tr>
@@ -921,6 +931,8 @@ export function DataTable({
                 paginatedData.map((row, rowIndex) => {
                   const rowId = row[rowIdKey];
                   const isRowSelected = selectedRows.includes(rowId);
+                  // Calculate actual row number (considering pagination)
+                  const rowNumber = startIndex + rowIndex + 1;
                   return (
                   <Table.Tr
                     key={rowIndex}
@@ -930,6 +942,11 @@ export function DataTable({
                       backgroundColor: isRowSelected ? 'var(--mantine-color-blue-light)' : undefined,
                     }}
                   >
+                    {showRowNumbers && (
+                      <Table.Td style={{ width: 50, textAlign: 'center' }}>
+                        <Text size="sm" c="dimmed">{rowNumber}</Text>
+                      </Table.Td>
+                    )}
                     {selectable && (
                       <Table.Td style={{ width: 40, textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
                         <Checkbox

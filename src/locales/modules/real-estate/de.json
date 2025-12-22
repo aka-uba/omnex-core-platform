@@ -211,7 +211,17 @@
     "no_show": "Nicht erschienen",
     "urgent": "Dringend",
     "upcoming": "Bevorstehend",
-    "default": "Standard"
+    "default": "Standard",
+    "paidOff": "Abbezahlt",
+    "notPaidOff": "Nicht abbezahlt"
+  },
+  "tenantTypes": {
+    "person": "Privatperson",
+    "company": "Firma"
+  },
+  "salutations": {
+    "mr": "Herr",
+    "mrs": "Frau"
   },
   "actions": {
     "viewDetails": "Details anzeigen",
@@ -230,7 +240,60 @@
     "contract": "Vertrag",
     "amount": "Betrag",
     "title": "Titel",
-    "startDate": "Startdatum"
+    "startDate": "Startdatum",
+    "name": "Name",
+    "type": "Typ",
+    "address": "Adresse",
+    "city": "Stadt",
+    "district": "Bezirk",
+    "units": "Einheiten",
+    "status": "Status",
+    "actions": "Aktionen",
+    "unitNumber": "Wohnungsnr.",
+    "property": "Immobilie",
+    "area": "Fläche",
+    "rooms": "Zimmer",
+    "active": "Aktiv",
+    "contractNumber": "Vertragsnr.",
+    "apartment": "Wohnung",
+    "apartmentType": "Wohnungstyp",
+    "floor": "Etage",
+    "basementSize": "Kellergröße",
+    "bedrooms": "Schlafzimmer",
+    "bathrooms": "Badezimmer",
+    "lastRenovation": "Letzte Renovierung",
+    "internetSpeed": "Internetgeschwindigkeit",
+    "coldRent": "Kaltmiete",
+    "additionalCosts": "Nebenkosten",
+    "heatingCosts": "Heizkosten",
+    "deposit": "Kaution",
+    "landArea": "Grundstücksfläche",
+    "livingArea": "Wohnfläche",
+    "yearBuilt": "Baujahr",
+    "renovatedYear": "Renoviert am",
+    "purchasePrice": "Kaufpreis",
+    "paidOff": "Abbezahlt",
+    "financingStart": "Finanzierung Start",
+    "financingEnd": "Finanzierung Ende",
+    "financingRate": "Finanzierungsrate",
+    "numberOfInstallments": "Anzahl Raten",
+    "financingPaymentDay": "Tag Finanzierungsrate",
+    "tenantType": "Mietertyp",
+    "companyName": "Firma",
+    "salutation": "Anrede",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "birthDate": "Geburtsdatum",
+    "mobile": "Mobil",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "contract": "Vertrag",
+    "amount": "Betrag",
+    "title": "Titel",
+    "startDate": "Startdatum",
+    "noProperties": "Keine Immobilien gefunden",
+    "noApartments": "Keine Wohnungen gefunden",
+    "noTenants": "Keine Mieter gefunden"
   },
   "form": {
     "documents": "Dokumente",
@@ -565,12 +628,5 @@
     "createSuccess": "Erfolgreich erstellt",
     "updateSuccess": "Erfolgreich aktualisiert",
     "updateError": "Fehler beim Aktualisieren"
-  },
-  "table": {
-    "name": "Name",
-    "type": "Typ",
-    "address": "Adresse",
-    "city": "Stadt",
-    "actions": "Aktionen"
   }
 }

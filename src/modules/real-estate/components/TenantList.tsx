@@ -87,25 +87,31 @@ export function TenantList({ locale }: TenantListProps) {
       // Use Tenant model's direct fields first, then fallback to contact/user relations
       const firstName = tenant.firstName || tenant.contact?.name?.split(' ')[0] || tenant.user?.name?.split(' ')[0] || '-';
       const lastName = tenant.lastName || tenant.contact?.name?.split(' ').slice(1).join(' ') || tenant.user?.name?.split(' ').slice(1).join(' ') || '-';
-      const fullName = tenant.firstName && tenant.lastName 
-        ? `${tenant.firstName} ${tenant.lastName}`.trim()
-        : tenant.contact?.name || tenant.user?.name || '-';
       const email = tenant.email || tenant.contact?.email || tenant.user?.email || '-';
-      const phone = tenant.phone || tenant.mobile || tenant.contact?.phone || tenant.user?.phone || '-';
-      // City: Use Tenant model's city field (handle null, undefined, and empty string)
-      const city = (tenant.city && tenant.city.trim()) || '-';
-      
+      const phone = tenant.phone || tenant.contact?.phone || tenant.user?.phone || '-';
+      const mobile = tenant.mobile || '-';
+      // Build full address
+      const addressParts = [
+        tenant.street ? `${tenant.street} ${tenant.houseNumber || ''}`.trim() : null,
+        `${tenant.postalCode || ''} ${tenant.city || ''}`.trim() || null
+      ].filter(Boolean);
+      const address = addressParts.length > 0 ? addressParts.join('\n') : '-';
+
       return {
         id: tenant.id,
-        tenantNumber: tenant.tenantNumber || '-',
+        isActive: tenant.isActive,
+        tenantType: tenant.tenantType || 'person',
+        companyName: tenant.companyName || '-',
+        salutation: tenant.salutation || '-',
         firstName: firstName,
         lastName: lastName,
-        fullName: fullName,
+        birthDate: tenant.birthDate,
         phone: phone,
+        mobile: mobile,
         email: email,
-        city: city,
+        address: address,
+        tenantNumber: tenant.tenantNumber || '-',
         moveInDate: tenant.moveInDate,
-        isActive: tenant.isActive,
       };
     });
   }, [data]);
@@ -118,25 +124,37 @@ export function TenantList({ locale }: TenantListProps) {
     </Group>
   ), []);
 
-  const renderFullName = useCallback((value: string) => (
-    <Text fw={500}>{value}</Text>
-  ), []);
-
-  const renderPhone = useCallback((value: string) => (
-    <Text size="sm">{value}</Text>
-  ), []);
-
-  const renderEmail = useCallback((value: string) => (
-    <Text size="sm">{value}</Text>
-  ), []);
-
-  const renderCity = useCallback((value: string) => (
-    <Text size="sm">{value}</Text>
-  ), []);
-
-  const renderMoveInDate = useCallback((value: Date | null) => value ? new Date(value).toLocaleDateString() : '-', []);
-
   const renderStatus = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
+
+  const renderTenantType = useCallback((value: string) => {
+    const typeLabels: Record<string, string> = {
+      person: t('tenantTypes.person'),
+      company: t('tenantTypes.company'),
+    };
+    return (
+      <Badge color={value === 'company' ? 'blue' : 'gray'} variant="light">
+        {typeLabels[value] || value}
+      </Badge>
+    );
+  }, [t]);
+
+  const renderSalutation = useCallback((value: string) => {
+    if (!value || value === '-') return '-';
+    const salutationLabels: Record<string, string> = {
+      Herr: t('salutations.mr'),
+      Frau: t('salutations.mrs'),
+    };
+    return <Text size="sm">{salutationLabels[value] || value}</Text>;
+  }, [t]);
+
+  const renderDate = useCallback((value: Date | string | null) => {
+    if (!value) return '-';
+    return new Date(value).toLocaleDateString('de-DE');
+  }, []);
+
+  const renderAddress = useCallback((value: string) => (
+    <Text size="xs" style={{ whiteSpace: 'pre-line' }}>{value}</Text>
+  ), []);
 
   const renderActions = useCallback((value: any, row: any) => (
     <Group gap="xs" justify="flex-end">
@@ -179,56 +197,80 @@ export function TenantList({ locale }: TenantListProps) {
     </Group>
   ), [router, locale, handleDeleteClick, t]);
 
-  // Define columns with memoization
+  // Define columns with memoization - Customer table order
+  // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
-      key: 'tenantNumber',
-      label: t('table.tenantNumber'),
+      key: 'isActive',
+      label: t('table.active'),
       sortable: true,
-      searchable: true,
-      render: renderTenantNumber,
+      searchable: false,
+      render: renderStatus,
     },
     {
-      key: 'fullName',
-      label: t('table.fullName'),
+      key: 'tenantType',
+      label: t('table.tenantType'),
+      sortable: true,
+      searchable: false,
+      render: renderTenantType,
+    },
+    {
+      key: 'companyName',
+      label: t('table.companyName'),
       sortable: true,
       searchable: true,
-      render: renderFullName,
+    },
+    {
+      key: 'salutation',
+      label: t('table.salutation'),
+      sortable: true,
+      searchable: false,
+      render: renderSalutation,
+    },
+    {
+      key: 'firstName',
+      label: t('table.firstName'),
+      sortable: true,
+      searchable: true,
+    },
+    {
+      key: 'lastName',
+      label: t('table.lastName'),
+      sortable: true,
+      searchable: true,
+    },
+    {
+      key: 'birthDate',
+      label: t('table.birthDate'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+      hidden: true, // Hidden by default
     },
     {
       key: 'phone',
       label: t('table.phone'),
       sortable: true,
       searchable: true,
-      render: renderPhone,
+    },
+    {
+      key: 'mobile',
+      label: t('table.mobile'),
+      sortable: true,
+      searchable: true,
     },
     {
       key: 'email',
       label: t('table.email'),
       sortable: true,
       searchable: true,
-      render: renderEmail,
     },
     {
-      key: 'city',
-      label: t('table.city'),
+      key: 'address',
+      label: t('table.address'),
       sortable: true,
       searchable: true,
-      render: renderCity,
-    },
-    {
-      key: 'moveInDate',
-      label: t('table.moveInDate'),
-      sortable: true,
-      searchable: false,
-      render: renderMoveInDate,
-    },
-    {
-      key: 'isActive',
-      label: t('table.status'),
-      sortable: true,
-      searchable: false,
-      render: renderStatus,
+      render: renderAddress,
     },
     {
       key: 'actions',
@@ -238,7 +280,7 @@ export function TenantList({ locale }: TenantListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderTenantNumber, renderFullName, renderPhone, renderEmail, renderCity, renderMoveInDate, renderStatus, renderActions]);
+  ], [t, renderStatus, renderTenantType, renderSalutation, renderDate, renderAddress, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [
