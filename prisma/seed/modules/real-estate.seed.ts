@@ -1,5 +1,10 @@
 /**
  * Real Estate Module Seeder
+ *
+ * Bu seeder tamamen birbirine bağlı veriler oluşturur:
+ * - Property → Apartment → Contract → Tenant → Payments
+ * - PropertyExpenses (Yan Giderler)
+ * - SideCostReconciliation (Yıl Sonu Mutabakat)
  */
 
 import { Prisma } from '@prisma/tenant-client';
@@ -8,7 +13,7 @@ import { ModuleSeeder, SeederContext, SeederResult, generateDemoId, randomChoice
 export class RealEstateSeeder implements ModuleSeeder {
   moduleSlug = 'real-estate';
   moduleName = 'Real Estate';
-  description = 'Gayrimenkul yönetimi demo verileri';
+  description = 'Gayrimenkul yönetimi demo verileri - Tamamen birbirine bağlı';
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
     const { tenantPrisma, tenantId, companyId, tenantSlug } = ctx;
@@ -16,11 +21,61 @@ export class RealEstateSeeder implements ModuleSeeder {
     const details: Record<string, number> = {};
 
     try {
-      // Properties
+      // ============================================
+      // 1. PROPERTIES (Binalar/Apartmanlar)
+      // ============================================
       const propertiesData = [
-        { name: 'Deniz Apartmanı', type: 'apartment', code: 'PROP-DEMO-001', address: 'Sahil Caddesi No: 45', city: 'İstanbul', district: 'Kadıköy', neighborhood: 'Fenerbahçe', totalUnits: 12, monthlyFee: 2500, description: 'Deniz manzaralı lüks apartman' },
-        { name: 'Park Residence', type: 'complex', code: 'PROP-DEMO-002', address: 'Park Sokak No: 12', city: 'İstanbul', district: 'Beşiktaş', neighborhood: 'Etiler', totalUnits: 24, monthlyFee: 3500, description: 'Parkın yanında prestijli konut' },
-        { name: 'Yeşil Vadi Sitesi', type: 'complex', code: 'PROP-DEMO-003', address: 'Vadi Yolu No: 78', city: 'İstanbul', district: 'Sarıyer', neighborhood: 'Maslak', totalUnits: 48, monthlyFee: 4000, description: 'Doğayla iç içe yaşam alanı' },
+        {
+          name: 'Deniz Apartmanı',
+          type: 'apartment',
+          code: 'PROP-001',
+          address: 'Sahil Caddesi No: 45',
+          city: 'İstanbul',
+          district: 'Kadıköy',
+          neighborhood: 'Fenerbahçe',
+          totalUnits: 6,
+          monthlyFee: 2500,
+          paymentDay: 5,
+          description: 'Deniz manzaralı lüks apartman',
+          constructionYear: 2018,
+          floorCount: 3,
+          livingArea: 720,
+          landArea: 450,
+        },
+        {
+          name: 'Park Residence',
+          type: 'complex',
+          code: 'PROP-002',
+          address: 'Park Sokak No: 12',
+          city: 'İstanbul',
+          district: 'Beşiktaş',
+          neighborhood: 'Etiler',
+          totalUnits: 6,
+          monthlyFee: 3500,
+          paymentDay: 1,
+          description: 'Parkın yanında prestijli konut',
+          constructionYear: 2020,
+          floorCount: 4,
+          livingArea: 960,
+          landArea: 600,
+        },
+        {
+          name: 'Yeşil Vadi Sitesi',
+          type: 'complex',
+          code: 'PROP-003',
+          address: 'Vadi Yolu No: 78',
+          city: 'İstanbul',
+          district: 'Sarıyer',
+          neighborhood: 'Maslak',
+          totalUnits: 6,
+          monthlyFee: 4000,
+          paymentDay: 10,
+          description: 'Doğayla iç içe yaşam alanı',
+          constructionYear: 2015,
+          floorCount: 5,
+          livingArea: 1200,
+          landArea: 800,
+        },
       ];
 
       const properties: any[] = [];
@@ -43,8 +98,12 @@ export class RealEstateSeeder implements ModuleSeeder {
             country: 'TR',
             totalUnits: p.totalUnits,
             monthlyFee: new Prisma.Decimal(p.monthlyFee),
-            paymentDay: randomChoice([1, 5, 10, 15]),
+            paymentDay: p.paymentDay,
             description: p.description,
+            constructionYear: p.constructionYear,
+            floorCount: p.floorCount,
+            livingArea: new Prisma.Decimal(p.livingArea),
+            landArea: new Prisma.Decimal(p.landArea),
             isActive: true,
           },
         });
@@ -53,16 +112,32 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['properties'] = properties.length;
 
-      // Apartments
+      // ============================================
+      // 2. APARTMENTS (Daireler) - Her binada 6 daire
+      // ============================================
+      const apartmentConfigs = [
+        // Deniz Apartmanı daireleri
+        { unitNumber: '1', floor: 1, block: 'A', area: 85, roomCount: 2, rentPrice: 15000, coldRent: 12000, additionalCosts: 2000, heatingCosts: 1000 },
+        { unitNumber: '2', floor: 1, block: 'A', area: 100, roomCount: 3, rentPrice: 18000, coldRent: 14000, additionalCosts: 2500, heatingCosts: 1500 },
+        { unitNumber: '3', floor: 2, block: 'A', area: 120, roomCount: 3, rentPrice: 22000, coldRent: 17000, additionalCosts: 3000, heatingCosts: 2000 },
+        { unitNumber: '4', floor: 2, block: 'A', area: 150, roomCount: 4, rentPrice: 28000, coldRent: 22000, additionalCosts: 3500, heatingCosts: 2500 },
+        { unitNumber: '5', floor: 3, block: 'A', area: 180, roomCount: 4, rentPrice: 35000, coldRent: 28000, additionalCosts: 4000, heatingCosts: 3000 },
+        { unitNumber: '6', floor: 3, block: 'A', area: 200, roomCount: 5, rentPrice: 42000, coldRent: 34000, additionalCosts: 4500, heatingCosts: 3500 },
+      ];
+
       const apartments: any[] = [];
-      for (const property of properties) {
-        const unitCount = property.type === 'apartment' ? 4 : 6;
-        for (let i = 1; i <= unitCount; i++) {
+      for (let propIdx = 0; propIdx < properties.length; propIdx++) {
+        const property = properties[propIdx];
+        for (let aptIdx = 0; aptIdx < 6; aptIdx++) {
+          const config = apartmentConfigs[aptIdx]!;
+          // Her property için farklı fiyatlar
+          const priceMultiplier = propIdx === 0 ? 1 : propIdx === 1 ? 1.2 : 1.4;
+
           const apartment = await tenantPrisma.apartment.upsert({
             where: {
               propertyId_unitNumber: {
                 propertyId: property.id,
-                unitNumber: `DEMO-${i}`,
+                unitNumber: config.unitNumber,
               },
             },
             update: {},
@@ -70,160 +145,80 @@ export class RealEstateSeeder implements ModuleSeeder {
               tenantId,
               companyId,
               propertyId: property.id,
-              unitNumber: `DEMO-${i}`,
-              floor: Math.ceil(i / 2),
-              block: i <= 3 ? 'A' : 'B',
-              area: new Prisma.Decimal(randomChoice([85, 100, 120, 150, 180])),
-              roomCount: randomChoice([2, 3, 3, 4]),
+              unitNumber: config.unitNumber,
+              floor: config.floor,
+              block: config.block,
+              area: new Prisma.Decimal(config.area),
+              roomCount: config.roomCount,
               livingRoom: true,
-              bathroomCount: randomChoice([1, 2, 2]),
-              balcony: Math.random() > 0.3,
-              status: randomChoice(['empty', 'rented', 'rented', 'rented']),
-              rentPrice: randomDecimal(8000, 25000),
-              salePrice: randomDecimal(2000000, 8000000),
+              bathroomCount: config.roomCount > 3 ? 2 : 1,
+              balcony: config.floor > 1,
+              status: 'rented', // Tüm daireler kiralık (bağlantı için)
+              rentPrice: new Prisma.Decimal(Math.round(config.rentPrice * priceMultiplier)),
+              coldRent: new Prisma.Decimal(Math.round(config.coldRent * priceMultiplier)),
+              additionalCosts: new Prisma.Decimal(Math.round(config.additionalCosts * priceMultiplier)),
+              heatingCosts: new Prisma.Decimal(Math.round(config.heatingCosts * priceMultiplier)),
+              deposit: new Prisma.Decimal(Math.round(config.rentPrice * priceMultiplier * 2)),
               isActive: true,
             },
           });
-          apartments.push(apartment);
+          apartments.push({ ...apartment, propertyIndex: propIdx, apartmentIndex: aptIdx });
           itemsCreated++;
         }
       }
       details['apartments'] = apartments.length;
 
-      // RE Tenants (Kiracılar) - with full details
+      // ============================================
+      // 3. TENANTS (Kiracılar) - 18 kiracı (her daire için bir kiracı)
+      // ============================================
       const tenantNames = [
-        {
-          tenantType: 'person' as const,
-          salutation: 'Herr',
-          firstName: 'Ahmet',
-          lastName: 'Yılmaz',
-          email: 'ahmet.yilmaz@demo.com',
-          phone: '0212 111 2233',
-          mobile: '0532 111 2233',
-          street: 'Atatürk Caddesi',
-          houseNumber: '45/3',
-          postalCode: '34710',
-          city: 'İstanbul',
-          birthDate: new Date(1985, 5, 15),
-          birthPlace: 'İstanbul',
-          nationality: 'TR',
-          taxNumber: '12345678901',
-        },
-        {
-          tenantType: 'person' as const,
-          salutation: 'Frau',
-          firstName: 'Ayşe',
-          lastName: 'Demir',
-          email: 'ayse.demir@demo.com',
-          phone: '0212 222 3344',
-          mobile: '0533 222 3344',
-          street: 'İstiklal Caddesi',
-          houseNumber: '123',
-          postalCode: '34430',
-          city: 'İstanbul',
-          birthDate: new Date(1990, 2, 22),
-          birthPlace: 'Ankara',
-          nationality: 'TR',
-          taxNumber: '23456789012',
-        },
-        {
-          tenantType: 'person' as const,
-          salutation: 'Herr',
-          firstName: 'Mehmet',
-          lastName: 'Kaya',
-          email: 'mehmet.kaya@demo.com',
-          phone: '0312 333 4455',
-          mobile: '0534 333 4455',
-          street: 'Kızılay Sokak',
-          houseNumber: '78/A',
-          postalCode: '06420',
-          city: 'Ankara',
-          birthDate: new Date(1978, 8, 10),
-          birthPlace: 'Konya',
-          nationality: 'TR',
-          taxNumber: '34567890123',
-        },
-        {
-          tenantType: 'company' as const,
-          companyName: 'Özkan Ticaret Ltd. Şti.',
-          email: 'info@ozkanticaret.demo.com',
-          phone: '0232 444 5566',
-          mobile: '0535 444 5566',
-          street: 'Konak Meydanı',
-          houseNumber: '5',
-          postalCode: '35220',
-          city: 'İzmir',
-          taxNumber: '45678901234',
-        },
-        {
-          tenantType: 'person' as const,
-          salutation: 'Herr',
-          firstName: 'Ali',
-          lastName: 'Çelik',
-          email: 'ali.celik@demo.com',
-          phone: '0216 555 6677',
-          mobile: '0536 555 6677',
-          street: 'Bağdat Caddesi',
-          houseNumber: '234/5',
-          postalCode: '34740',
-          city: 'İstanbul',
-          birthDate: new Date(1995, 11, 5),
-          birthPlace: 'İstanbul',
-          nationality: 'TR',
-          taxNumber: '56789012345',
-        },
-        {
-          tenantType: 'person' as const,
-          salutation: 'Frau',
-          firstName: 'Zeynep',
-          lastName: 'Arslan',
-          email: 'zeynep.arslan@demo.com',
-          phone: '0224 666 7788',
-          mobile: '0537 666 7788',
-          street: 'Mudanya Yolu',
-          houseNumber: '89',
-          postalCode: '16050',
-          city: 'Bursa',
-          birthDate: new Date(1988, 3, 18),
-          birthPlace: 'Bursa',
-          nationality: 'TR',
-          taxNumber: '67890123456',
-        },
+        // Property 1 - Deniz Apartmanı kiracıları
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Ahmet', lastName: 'Yılmaz', email: 'ahmet.yilmaz@demo.com', phone: '0212 111 2233', mobile: '0532 111 2233', street: 'Atatürk Caddesi', houseNumber: '45/3', postalCode: '34710', city: 'İstanbul', birthDate: new Date(1985, 5, 15), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '12345678901' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Ayşe', lastName: 'Demir', email: 'ayse.demir@demo.com', phone: '0212 222 3344', mobile: '0533 222 3344', street: 'İstiklal Caddesi', houseNumber: '123', postalCode: '34430', city: 'İstanbul', birthDate: new Date(1990, 2, 22), birthPlace: 'Ankara', nationality: 'TR', taxNumber: '23456789012' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Mehmet', lastName: 'Kaya', email: 'mehmet.kaya@demo.com', phone: '0312 333 4455', mobile: '0534 333 4455', street: 'Kızılay Sokak', houseNumber: '78/A', postalCode: '06420', city: 'Ankara', birthDate: new Date(1978, 8, 10), birthPlace: 'Konya', nationality: 'TR', taxNumber: '34567890123' },
+        { tenantType: 'company', companyName: 'Özkan Ticaret Ltd. Şti.', email: 'info@ozkanticaret.demo.com', phone: '0232 444 5566', mobile: '0535 444 5566', street: 'Konak Meydanı', houseNumber: '5', postalCode: '35220', city: 'İzmir', taxNumber: '45678901234' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Ali', lastName: 'Çelik', email: 'ali.celik@demo.com', phone: '0216 555 6677', mobile: '0536 555 6677', street: 'Bağdat Caddesi', houseNumber: '234/5', postalCode: '34740', city: 'İstanbul', birthDate: new Date(1995, 11, 5), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '56789012345' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Zeynep', lastName: 'Arslan', email: 'zeynep.arslan@demo.com', phone: '0224 666 7788', mobile: '0537 666 7788', street: 'Mudanya Yolu', houseNumber: '89', postalCode: '16050', city: 'Bursa', birthDate: new Date(1988, 3, 18), birthPlace: 'Bursa', nationality: 'TR', taxNumber: '67890123456' },
+
+        // Property 2 - Park Residence kiracıları
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Mustafa', lastName: 'Öztürk', email: 'mustafa.ozturk@demo.com', phone: '0212 777 8899', mobile: '0538 777 8899', street: 'Nişantaşı Caddesi', houseNumber: '56', postalCode: '34365', city: 'İstanbul', birthDate: new Date(1982, 7, 25), birthPlace: 'Trabzon', nationality: 'TR', taxNumber: '78901234567' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Fatma', lastName: 'Yıldırım', email: 'fatma.yildirim@demo.com', phone: '0212 888 9900', mobile: '0539 888 9900', street: 'Bebek Caddesi', houseNumber: '12/A', postalCode: '34342', city: 'İstanbul', birthDate: new Date(1992, 1, 8), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '89012345678' },
+        { tenantType: 'company', companyName: 'Yıldız Danışmanlık A.Ş.', email: 'info@yildizdanismanlik.demo.com', phone: '0212 999 0011', mobile: '0540 999 0011', street: 'Levent Caddesi', houseNumber: '100', postalCode: '34330', city: 'İstanbul', taxNumber: '90123456789' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Hasan', lastName: 'Şahin', email: 'hasan.sahin@demo.com', phone: '0216 111 2244', mobile: '0541 111 2244', street: 'Fenerbahçe Caddesi', houseNumber: '78', postalCode: '34726', city: 'İstanbul', birthDate: new Date(1975, 9, 12), birthPlace: 'Samsun', nationality: 'TR', taxNumber: '01234567890' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Elif', lastName: 'Koç', email: 'elif.koc@demo.com', phone: '0216 222 3355', mobile: '0542 222 3355', street: 'Suadiye Caddesi', houseNumber: '45/B', postalCode: '34740', city: 'İstanbul', birthDate: new Date(1998, 4, 30), birthPlace: 'İzmir', nationality: 'TR', taxNumber: '12345678902' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Emre', lastName: 'Aydın', email: 'emre.aydin@demo.com', phone: '0216 333 4466', mobile: '0543 333 4466', street: 'Caddebostan Caddesi', houseNumber: '23', postalCode: '34728', city: 'İstanbul', birthDate: new Date(1987, 6, 20), birthPlace: 'Ankara', nationality: 'TR', taxNumber: '23456789013' },
+
+        // Property 3 - Yeşil Vadi Sitesi kiracıları
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Burak', lastName: 'Demir', email: 'burak.demir@demo.com', phone: '0212 444 5577', mobile: '0544 444 5577', street: 'Maslak Caddesi', houseNumber: '67', postalCode: '34398', city: 'İstanbul', birthDate: new Date(1980, 2, 14), birthPlace: 'Eskişehir', nationality: 'TR', taxNumber: '34567890124' },
+        { tenantType: 'company', companyName: 'Teknoloji Sistemleri Ltd.', email: 'info@teknolojisistem.demo.com', phone: '0212 555 6688', mobile: '0545 555 6688', street: 'İTÜ Ayazağa Kampüsü', houseNumber: '1', postalCode: '34469', city: 'İstanbul', taxNumber: '45678901235' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Selin', lastName: 'Yılmaz', email: 'selin.yilmaz@demo.com', phone: '0212 666 7799', mobile: '0546 666 7799', street: 'Vadistanbul Caddesi', houseNumber: '34', postalCode: '34396', city: 'İstanbul', birthDate: new Date(1993, 11, 7), birthPlace: 'Adana', nationality: 'TR', taxNumber: '56789012346' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Oğuz', lastName: 'Kara', email: 'oguz.kara@demo.com', phone: '0212 777 8800', mobile: '0547 777 8800', street: 'Sarıyer Caddesi', houseNumber: '89/C', postalCode: '34450', city: 'İstanbul', birthDate: new Date(1984, 8, 23), birthPlace: 'Bursa', nationality: 'TR', taxNumber: '67890123457' },
+        { tenantType: 'person', salutation: 'Frau', firstName: 'Deniz', lastName: 'Tan', email: 'deniz.tan@demo.com', phone: '0212 888 9911', mobile: '0548 888 9911', street: 'Tarabya Caddesi', houseNumber: '56', postalCode: '34457', city: 'İstanbul', birthDate: new Date(1996, 5, 16), birthPlace: 'Antalya', nationality: 'TR', taxNumber: '78901234568' },
+        { tenantType: 'person', salutation: 'Herr', firstName: 'Can', lastName: 'Özdemir', email: 'can.ozdemir@demo.com', phone: '0212 999 0022', mobile: '0549 999 0022', street: 'Emirgan Caddesi', houseNumber: '12', postalCode: '34467', city: 'İstanbul', birthDate: new Date(1979, 0, 28), birthPlace: 'İzmir', nationality: 'TR', taxNumber: '89012345679' },
       ];
 
       const tenants: any[] = [];
       for (let idx = 0; idx < tenantNames.length; idx++) {
         const t = tenantNames[idx]!;
+        const isCompany = t.tenantType === 'company';
+
+        // Kiracının hangi daireye bağlı olacağını belirle
+        const linkedApartment = apartments[idx];
+        const moveInDate = new Date(2024, Math.floor(idx / 2), 1 + (idx % 28)); // 2024 yılında farklı tarihlerde
+
         const created = await tenantPrisma.tenant.upsert({
           where: { id: generateDemoId(tenantSlug, 're-tenant', String(idx + 1)) },
-          update: {
-            tenantType: t.tenantType,
-            companyName: t.tenantType === 'company' ? (t as any).companyName : null,
-            salutation: t.tenantType === 'person' ? (t as any).salutation : null,
-            firstName: t.tenantType === 'person' ? (t as any).firstName : null,
-            lastName: t.tenantType === 'person' ? (t as any).lastName : null,
-            email: t.email,
-            phone: t.phone,
-            mobile: t.mobile,
-            street: t.street,
-            houseNumber: t.houseNumber,
-            postalCode: t.postalCode,
-            city: t.city,
-            birthDate: t.tenantType === 'person' ? (t as any).birthDate : null,
-            birthPlace: t.tenantType === 'person' ? (t as any).birthPlace : null,
-            nationality: t.tenantType === 'person' ? (t as any).nationality : null,
-            taxNumber: t.taxNumber,
-          },
+          update: {},
           create: {
             id: generateDemoId(tenantSlug, 're-tenant', String(idx + 1)),
             tenantId,
             companyId,
-            tenantNumber: `KRC-DEMO-${String(idx + 1).padStart(4, '0')}`,
+            tenantNumber: `KRC-${String(idx + 1).padStart(4, '0')}`,
             tenantType: t.tenantType,
-            companyName: t.tenantType === 'company' ? (t as any).companyName : null,
-            salutation: t.tenantType === 'person' ? (t as any).salutation : null,
-            firstName: t.tenantType === 'person' ? (t as any).firstName : null,
-            lastName: t.tenantType === 'person' ? (t as any).lastName : null,
+            companyName: isCompany ? (t as any).companyName : null,
+            salutation: !isCompany ? (t as any).salutation : null,
+            firstName: !isCompany ? (t as any).firstName : null,
+            lastName: !isCompany ? (t as any).lastName : null,
             email: t.email,
             phone: t.phone,
             mobile: t.mobile,
@@ -231,18 +226,18 @@ export class RealEstateSeeder implements ModuleSeeder {
             houseNumber: t.houseNumber,
             postalCode: t.postalCode,
             city: t.city,
-            birthDate: t.tenantType === 'person' ? (t as any).birthDate : null,
-            birthPlace: t.tenantType === 'person' ? (t as any).birthPlace : null,
-            nationality: t.tenantType === 'person' ? (t as any).nationality : null,
+            birthDate: !isCompany ? (t as any).birthDate : null,
+            birthPlace: !isCompany ? (t as any).birthPlace : null,
+            nationality: !isCompany ? (t as any).nationality : null,
             taxNumber: t.taxNumber,
-            moveInDate: randomDate(new Date(2022, 0, 1), new Date(2024, 6, 1)),
+            moveInDate,
             paymentScore: randomDecimal(70, 100),
             contactScore: randomDecimal(80, 100),
             maintenanceScore: randomDecimal(75, 100),
             overallScore: randomDecimal(75, 100),
-            notes: t.tenantType === 'company'
-              ? `Demo şirket kiracı: ${(t as any).companyName}`
-              : `Demo kiracı: ${(t as any).firstName} ${(t as any).lastName}`,
+            notes: isCompany
+              ? `Şirket kiracı: ${(t as any).companyName} - ${linkedApartment?.unitNumber} no'lu dairede`
+              : `Kiracı: ${(t as any).firstName} ${(t as any).lastName} - ${linkedApartment?.unitNumber} no'lu dairede`,
             isActive: true,
           },
         });
@@ -251,52 +246,118 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['tenants'] = tenants.length;
 
-      // Contracts
-      const rentedApartments = apartments.filter((a) => a.status === 'rented');
+      // ============================================
+      // 4. CONTRACTS (Sözleşmeler) - Her kiracı için aktif sözleşme
+      // ============================================
       const contracts: any[] = [];
+      for (let idx = 0; idx < apartments.length; idx++) {
+        const apartment = apartments[idx];
+        const tenant = tenants[idx];
 
-      for (let idx = 0; idx < Math.min(6, rentedApartments.length); idx++) {
-        const apt = rentedApartments[idx];
+        // Sözleşme başlangıç tarihi - kiracının taşınma tarihiyle uyumlu
+        const startDate = new Date(2024, Math.floor(idx / 2), 1);
+        const endDate = new Date(2025, Math.floor(idx / 2), 1);
+
         const contract = await tenantPrisma.contract.upsert({
           where: {
             tenantId_contractNumber: {
               tenantId,
-              contractNumber: `CONT-DEMO-${String(idx + 1).padStart(4, '0')}`,
+              contractNumber: `CONT-${String(idx + 1).padStart(4, '0')}`,
             },
           },
           update: {},
           create: {
             tenantId,
             companyId,
-            apartmentId: apt.id,
-            tenantRecordId: tenants[idx % tenants.length].id,
-            contractNumber: `CONT-DEMO-${String(idx + 1).padStart(4, '0')}`,
+            apartmentId: apartment.id,
+            tenantRecordId: tenant.id,
+            contractNumber: `CONT-${String(idx + 1).padStart(4, '0')}`,
             type: 'rental',
-            startDate: randomDate(new Date(2023, 0, 1), new Date(2024, 0, 1)),
-            endDate: randomDate(new Date(2025, 0, 1), new Date(2026, 0, 1)),
-            rentAmount: apt.rentPrice || new Prisma.Decimal(10000),
-            deposit: new Prisma.Decimal(Number(apt.rentPrice || 10000) * 2),
+            startDate,
+            endDate,
+            rentAmount: apartment.rentPrice || new Prisma.Decimal(15000),
+            deposit: apartment.deposit || new Prisma.Decimal(30000),
             currency: 'TRY',
             paymentType: randomChoice(['bank_transfer', 'auto_debit']),
-            paymentDay: randomChoice([1, 5, 10, 15]),
-            autoRenewal: Math.random() > 0.5,
+            paymentDay: properties[apartment.propertyIndex]?.paymentDay || 5,
+            autoRenewal: true,
             increaseRate: new Prisma.Decimal(0.25),
             status: 'active',
             isActive: true,
+            terms: 'Standart kira sözleşmesi şartları geçerlidir.',
+            notes: `${apartment.unitNumber} no'lu daire için kira sözleşmesi`,
           },
         });
-        contracts.push(contract);
+        contracts.push({ ...contract, apartmentIndex: idx, propertyIndex: apartment.propertyIndex });
         itemsCreated++;
       }
       details['contracts'] = contracts.length;
 
-      // Payments
+      // ============================================
+      // 5. PAYMENTS (Ödemeler) - 12+ aylık ödeme geçmişi
+      // Her sözleşme için: geçmiş ödenmiş, yaklaşan, gecikmiş ödemeler
+      // ============================================
       let paymentsCreated = 0;
-      for (const contract of contracts) {
-        for (let month = 0; month < 3; month++) {
-          const dueDate = new Date();
-          dueDate.setMonth(dueDate.getMonth() - month);
-          dueDate.setDate(contract.paymentDay || 5);
+      const today = new Date();
+      const currentMonth = today.getMonth();
+      const currentYear = today.getFullYear();
+
+      for (let contractIdx = 0; contractIdx < contracts.length; contractIdx++) {
+        const contract = contracts[contractIdx];
+        const apartment = apartments[contract.apartmentIndex];
+        const tenant = tenants[contractIdx];
+        const paymentDay = contract.paymentDay || 5;
+
+        // 12 aylık ödeme geçmişi oluştur (6 ay geçmiş + bu ay + 5 ay gelecek)
+        for (let monthOffset = -6; monthOffset <= 5; monthOffset++) {
+          const paymentDate = new Date(currentYear, currentMonth + monthOffset, paymentDay);
+
+          // Ödeme durumunu belirle
+          let status: string;
+          let paidDate: Date | null = null;
+          let paymentMethod: string | null = null;
+
+          if (monthOffset < 0) {
+            // Geçmiş aylar - bazıları ödenmiş, bazıları gecikmiş ödendi
+            if (contractIdx % 5 === 0 && monthOffset === -1) {
+              // Her 5. kiracının bir önceki ay ödemesi gecikmiş (henüz ödenmemiş)
+              status = 'overdue';
+            } else {
+              status = 'paid';
+              // Ödeme tarihi - bazen geç, bazen zamanında
+              const daysLate = contractIdx % 3 === 0 ? randomChoice([0, 3, 5, 7]) : 0;
+              paidDate = new Date(paymentDate.getTime() + daysLate * 24 * 60 * 60 * 1000);
+              paymentMethod = randomChoice(['bank_transfer', 'cash', 'card']);
+            }
+          } else if (monthOffset === 0) {
+            // Bu ay - bazıları ödendi, bazıları bekliyor, bazıları gecikmiş
+            if (today.getDate() > paymentDay) {
+              // Ödeme günü geçmiş
+              if (contractIdx % 4 === 0) {
+                status = 'overdue'; // Her 4. kiracı gecikmiş
+              } else if (contractIdx % 3 === 0) {
+                status = 'pending'; // Her 3. kiracı henüz ödememiş ama gecikme yok
+              } else {
+                status = 'paid';
+                paidDate = new Date(currentYear, currentMonth, paymentDay + randomChoice([0, 1, 2]));
+                paymentMethod = randomChoice(['bank_transfer', 'auto_debit']);
+              }
+            } else {
+              // Ödeme günü henüz gelmedi
+              status = 'pending';
+            }
+          } else {
+            // Gelecek aylar - hepsi beklemede
+            status = 'pending';
+          }
+
+          // Kira + ek giderler (coldRent + additionalCosts + heatingCosts)
+          const baseRent = Number(contract.rentAmount);
+          const extraCharges = [
+            { type: 'additional_costs', name: 'Yan Giderler', amount: Number(apartment.additionalCosts || 2000) },
+            { type: 'heating', name: 'Isıtma', amount: Number(apartment.heatingCosts || 1500) },
+          ];
+          const totalExtra = extraCharges.reduce((sum, e) => sum + e.amount, 0);
 
           await tenantPrisma.payment.create({
             data: {
@@ -304,16 +365,20 @@ export class RealEstateSeeder implements ModuleSeeder {
               companyId,
               apartmentId: contract.apartmentId,
               contractId: contract.id,
-              tenantRecordId: contract.tenantRecordId,
+              tenantRecordId: tenant.id,
               type: 'rent',
-              amount: contract.rentAmount,
+              amount: new Prisma.Decimal(baseRent),
               currency: 'TRY',
-              dueDate,
-              paidDate: month > 0 ? dueDate : null,
-              status: month > 0 ? 'paid' : randomChoice(['pending', 'paid']),
-              totalAmount: contract.rentAmount,
-              paymentMethod: month > 0 ? randomChoice(['bank_transfer', 'cash']) : null,
-              isAutoGenerated: false,
+              dueDate: paymentDate,
+              paidDate,
+              status,
+              extraCharges: extraCharges as Prisma.InputJsonValue,
+              totalAmount: new Prisma.Decimal(baseRent + totalExtra),
+              paymentMethod,
+              receiptNumber: paidDate ? `RCP-${contract.contractNumber}-${String(Math.abs(monthOffset) + 1).padStart(2, '0')}` : null,
+              isAutoGenerated: true,
+              reminderSent: status === 'overdue' || (status === 'pending' && monthOffset === 0),
+              notes: monthOffset < 0 ? `${Math.abs(monthOffset)} ay önceki kira ödemesi` : monthOffset === 0 ? 'Bu ayki kira ödemesi' : `${monthOffset} ay sonraki kira ödemesi`,
             },
           });
           paymentsCreated++;
@@ -322,21 +387,153 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['payments'] = paymentsCreated;
 
-      // Appointments
+      // ============================================
+      // 6. PROPERTY EXPENSES (Bina Giderleri - Yan Giderler)
+      // Her bina için 12 aylık gider kaydı
+      // ============================================
+      const expenseCategories = [
+        { category: 'utilities', name: 'Ortak Alan Elektriği', monthlyAmount: 2500 },
+        { category: 'utilities', name: 'Su Gideri', monthlyAmount: 1800 },
+        { category: 'heating', name: 'Merkezi Isıtma', monthlyAmount: 8000 },
+        { category: 'cleaning', name: 'Temizlik Hizmeti', monthlyAmount: 3000 },
+        { category: 'maintenance', name: 'Genel Bakım', monthlyAmount: 1500 },
+        { category: 'insurance', name: 'Bina Sigortası', monthlyAmount: 800 },
+        { category: 'management', name: 'Yönetim Gideri', monthlyAmount: 2000 },
+        { category: 'taxes', name: 'Emlak Vergisi', monthlyAmount: 1200 },
+      ];
+
+      let expensesCreated = 0;
+      for (let propIdx = 0; propIdx < properties.length; propIdx++) {
+        const property = properties[propIdx];
+        const priceMultiplier = propIdx === 0 ? 1 : propIdx === 1 ? 1.2 : 1.4;
+
+        // 2024 yılı için 12 aylık gider
+        for (let month = 0; month < 12; month++) {
+          for (const expenseConfig of expenseCategories) {
+            const amount = Math.round(expenseConfig.monthlyAmount * priceMultiplier * (0.9 + Math.random() * 0.2)); // ±10% varyasyon
+
+            await tenantPrisma.propertyExpense.create({
+              data: {
+                tenantId,
+                companyId,
+                propertyId: property.id,
+                name: expenseConfig.name,
+                category: expenseConfig.category,
+                amount: new Prisma.Decimal(amount),
+                expenseDate: new Date(2024, month, 15),
+                year: 2024,
+                month: month + 1,
+                description: `${property.name} - ${expenseConfig.name} - ${month + 1}. ay`,
+                invoiceNumber: `INV-${property.code}-${2024}-${String(month + 1).padStart(2, '0')}-${expenseConfig.category.toUpperCase().substring(0, 3)}`,
+                vendorName: randomChoice(['Enerjisa', 'İGDAŞ', 'İSKİ', 'Temizlik A.Ş.', 'Sigorta Ltd.', 'Yönetim Hizmetleri']),
+                isDistributed: month < currentMonth, // Geçmiş aylar dağıtılmış
+                distributionMethod: 'area_based',
+                distributedAt: month < currentMonth ? new Date(2024, month, 28) : null,
+                isActive: true,
+              },
+            });
+            expensesCreated++;
+            itemsCreated++;
+          }
+        }
+      }
+      details['propertyExpenses'] = expensesCreated;
+
+      // ============================================
+      // 7. SIDE COST RECONCILIATION (Yıl Sonu Mutabakat)
+      // Her bina için 2024 yılı mutabakatı
+      // ============================================
+      let reconciliationsCreated = 0;
+      for (let propIdx = 0; propIdx < properties.length; propIdx++) {
+        const property = properties[propIdx];
+
+        // Toplam giderleri hesapla
+        const propertyExpenses = await tenantPrisma.propertyExpense.findMany({
+          where: {
+            propertyId: property.id,
+            year: 2024,
+          },
+        });
+
+        const totalExpenses = propertyExpenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
+        const apartmentCount = 6; // Her binada 6 daire
+        const perApartmentShare = totalExpenses / apartmentCount;
+
+        // Her daire için hesaplama detayları
+        const propertyApartments = apartments.filter(a => a.propertyIndex === propIdx);
+        const details: any[] = propertyApartments.map((apt, idx) => {
+          const area = Number(apt.area);
+          const totalArea = propertyApartments.reduce((sum, a) => sum + Number(a.area), 0);
+          const areaBasedShare = (area / totalArea) * totalExpenses;
+
+          // Bu dairenin yıl boyunca ödediği yan giderler (additionalCosts + heatingCosts * 12)
+          const monthlyPaid = Number(apt.additionalCosts || 2000) + Number(apt.heatingCosts || 1500);
+          const totalPaid = monthlyPaid * 12;
+
+          // Fark (pozitif = iade, negatif = borç)
+          const difference = totalPaid - areaBasedShare;
+
+          return {
+            apartmentId: apt.id,
+            unitNumber: apt.unitNumber,
+            area,
+            areaPercentage: (area / totalArea) * 100,
+            calculatedShare: areaBasedShare,
+            totalPaid,
+            difference,
+            status: difference >= 0 ? 'refund' : 'debt',
+          };
+        });
+
+        await tenantPrisma.sideCostReconciliation.upsert({
+          where: {
+            propertyId_year: {
+              propertyId: property.id,
+              year: 2024,
+            },
+          },
+          update: {},
+          create: {
+            tenantId,
+            companyId,
+            propertyId: property.id,
+            year: 2024,
+            totalExpenses: new Prisma.Decimal(totalExpenses),
+            apartmentCount,
+            perApartmentShare: new Prisma.Decimal(perApartmentShare),
+            distributionMethod: 'area_based',
+            fiscalYearStart: new Date(2024, 0, 1),
+            fiscalYearEnd: new Date(2024, 11, 31),
+            status: 'calculated',
+            calculatedAt: new Date(),
+            details: details as Prisma.InputJsonValue,
+            notes: `${property.name} - 2024 yılı yan gider mutabakatı. Toplam ${apartmentCount} daire için ${totalExpenses.toLocaleString('tr-TR')} TL gider dağıtılmıştır.`,
+          },
+        });
+        reconciliationsCreated++;
+        itemsCreated++;
+      }
+      details['sideCostReconciliations'] = reconciliationsCreated;
+
+      // ============================================
+      // 8. APPOINTMENTS (Randevular)
+      // ============================================
       const appointmentTypes = ['viewing', 'delivery', 'maintenance', 'inspection'];
       let appointmentsCreated = 0;
 
-      for (let idx = 0; idx < Math.min(8, apartments.length); idx++) {
+      for (let idx = 0; idx < Math.min(12, apartments.length); idx++) {
         const apt = apartments[idx];
+        const tenant = tenants[idx];
+
         await tenantPrisma.appointment.create({
           data: {
             tenantId,
             companyId,
             apartmentId: apt.id,
-            tenantRecordId: tenants[idx % tenants.length]?.id,
+            tenantRecordId: tenant.id,
             type: randomChoice(appointmentTypes),
             title: `${apt.unitNumber} No'lu Daire - ${randomChoice(['Gösterim', 'Teslim', 'Bakım', 'Kontrol'])}`,
-            description: 'Demo randevu kaydı',
+            description: `${tenant.firstName || tenant.companyName} ile randevu`,
             startDate: randomDate(new Date(), new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)),
             endDate: randomDate(new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
             duration: randomChoice([30, 60, 90]),
@@ -349,7 +546,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['appointments'] = appointmentsCreated;
 
-      // RE Staff
+      // ============================================
+      // 9. RE STAFF (Gayrimenkul Personeli)
+      // ============================================
       const staffRoles = ['manager', 'agent', 'accountant', 'maintenance'];
       const staffNames = ['Murat Şahin', 'Elif Yıldız', 'Burak Aydın', 'Selin Koç'];
       let staffCreated = 0;
@@ -373,8 +572,8 @@ export class RealEstateSeeder implements ModuleSeeder {
             phone: `053${idx + 1} ${idx + 1}${idx + 1}${idx + 1} ${idx + 2}${idx + 2}${idx + 2}${idx + 2}`,
             staffType: 'internal',
             role: staffRoles[idx]!,
-            propertyIds: properties.slice(0, idx + 1).map((p) => p.id),
-            assignedUnits: (idx + 1) * 5,
+            propertyIds: properties.map((p) => p.id),
+            assignedUnits: 6,
             collectionRate: randomDecimal(85, 98),
             averageVacancyDays: randomDecimal(5, 30),
             customerSatisfaction: randomDecimal(80, 100),
@@ -386,7 +585,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['staff'] = staffCreated;
 
-      // Contract Templates (Sözleşme Şablonları)
+      // ============================================
+      // 10. CONTRACT TEMPLATES
+      // ============================================
       const contractTemplatesData = [
         { name: 'Standart Kira Sözleşmesi', type: 'rental', description: 'Konut kiralama için standart sözleşme şablonu' },
         { name: 'Ticari Kira Sözleşmesi', type: 'commercial', description: 'İşyeri kiralama sözleşmesi şablonu' },
@@ -417,7 +618,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['contractTemplates'] = contractTemplatesCreated;
 
-      // Email Templates (E-posta Şablonları)
+      // ============================================
+      // 11. EMAIL TEMPLATES
+      // ============================================
       const emailTemplatesData = [
         { name: 'Hoşgeldiniz E-postası', category: 'welcome', subject: 'Hoş Geldiniz - {{property_name}}' },
         { name: 'Kira Hatırlatma', category: 'reminder', subject: 'Kira Ödeme Hatırlatması - {{month}}' },
@@ -454,7 +657,9 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['emailTemplates'] = emailTemplatesCreated;
 
-      // Email Campaigns - Requires EmailTemplate first
+      // ============================================
+      // 12. EMAIL CAMPAIGNS
+      // ============================================
       const firstEmailTemplate = await tenantPrisma.emailTemplate.findFirst({
         where: { tenantId },
         orderBy: { createdAt: 'asc' },
@@ -477,15 +682,15 @@ export class RealEstateSeeder implements ModuleSeeder {
               companyId,
               templateId: firstEmailTemplate.id,
               name: ec.name,
-              recipients: JSON.stringify([
-                { email: 'demo1@example.com', name: 'Demo User 1' },
-                { email: 'demo2@example.com', name: 'Demo User 2' },
-              ]),
-              recipientCount: randomChoice([10, 25, 50, 100]),
+              recipients: JSON.stringify(tenants.map(t => ({
+                email: t.email,
+                name: t.firstName ? `${t.firstName} ${t.lastName}` : t.companyName,
+              }))),
+              recipientCount: tenants.length,
               status: ec.status,
-              sentCount: ec.status === 'sent' ? randomChoice([8, 20, 45, 95]) : 0,
-              openedCount: ec.status === 'sent' ? randomChoice([5, 15, 30, 60]) : 0,
-              clickedCount: ec.status === 'sent' ? randomChoice([2, 8, 15, 30]) : 0,
+              sentCount: ec.status === 'sent' ? tenants.length - 2 : 0,
+              openedCount: ec.status === 'sent' ? Math.floor(tenants.length * 0.7) : 0,
+              clickedCount: ec.status === 'sent' ? Math.floor(tenants.length * 0.3) : 0,
               scheduledAt: ec.status === 'scheduled' ? randomDate(new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) : null,
               sentAt: ec.status === 'sent' ? randomDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), new Date()) : null,
             },
@@ -496,7 +701,9 @@ export class RealEstateSeeder implements ModuleSeeder {
         details['emailCampaigns'] = emailCampaignsCreated;
       }
 
-      // Agreement Report Templates (Anlaşma Raporu Şablonları)
+      // ============================================
+      // 13. AGREEMENT REPORT TEMPLATES
+      // ============================================
       const agreementReportTemplatesData = [
         { name: 'Patron Raporu', category: 'boss', description: 'Üst yönetime sunulan anlaşma raporu' },
         { name: 'Mal Sahibi Raporu', category: 'owner', description: 'Ev sahibine gönderilen anlaşma raporu' },
@@ -533,14 +740,17 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['agreementReportTemplates'] = agreementReportTemplatesCreated;
 
-      // Agreement Reports (Anlaşma Raporları) - Requires Apartment and optionally Contract
+      // ============================================
+      // 14. AGREEMENT REPORTS
+      // ============================================
       const agreementTypes = ['boss', 'owner', 'tenant', 'internal'];
       const agreementStatuses = ['pre_agreement', 'signed', 'delivery_scheduled', 'deposit_received'];
       let agreementReportsCreated = 0;
 
-      for (let idx = 0; idx < Math.min(4, apartments.length); idx++) {
+      for (let idx = 0; idx < Math.min(6, apartments.length); idx++) {
         const apt = apartments[idx];
-        const contract = contracts[idx % contracts.length];
+        const contract = contracts[idx];
+        const tenant = tenants[idx];
 
         await tenantPrisma.agreementReport.create({
           data: {
@@ -549,20 +759,20 @@ export class RealEstateSeeder implements ModuleSeeder {
             companyId,
             type: agreementTypes[idx % agreementTypes.length]!,
             apartmentId: apt.id,
-            contractId: contract?.id,
+            contractId: contract.id,
             agreementStatus: agreementStatuses[idx % agreementStatuses.length]!,
             rentAmount: apt.rentPrice || randomDecimal(8000, 25000),
-            deposit: randomDecimal(16000, 50000),
+            deposit: apt.deposit || randomDecimal(16000, 50000),
             deliveryDate: randomDate(new Date(), new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
-            contractDate: idx < 2 ? new Date() : null,
-            specialTerms: 'Demo özel şartlar',
-            nextSteps: 'Demo sonraki adımlar',
+            contractDate: idx < 3 ? new Date() : null,
+            specialTerms: 'Standart şartlar geçerlidir.',
+            nextSteps: 'Sözleşme imzası ve depozito tahsilatı',
             recipients: JSON.stringify([
-              { email: 'demo@example.com', name: 'Demo Alıcı', type: 'to' },
+              { email: tenant.email, name: tenant.firstName ? `${tenant.firstName} ${tenant.lastName}` : tenant.companyName, type: 'to' },
             ]),
             attachments: [],
-            status: idx < 2 ? 'sent' : 'draft',
-            sentAt: idx < 2 ? new Date() : null,
+            status: idx < 3 ? 'sent' : 'draft',
+            sentAt: idx < 3 ? new Date() : null,
           },
         });
         agreementReportsCreated++;
@@ -570,12 +780,14 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['agreementReports'] = agreementReportsCreated;
 
-      // Real Estate Maintenance Records (Gayrimenkul Bakım Kayıtları)
+      // ============================================
+      // 15. MAINTENANCE RECORDS
+      // ============================================
       const maintenanceTypes = ['preventive', 'corrective', 'emergency'];
       const maintenanceStatuses = ['scheduled', 'in_progress', 'completed', 'cancelled'];
       let maintenanceRecordsCreated = 0;
 
-      for (let idx = 0; idx < Math.min(6, apartments.length); idx++) {
+      for (let idx = 0; idx < Math.min(8, apartments.length); idx++) {
         const apt = apartments[idx];
         const status = randomChoice(maintenanceStatuses);
         await tenantPrisma.realEstateMaintenanceRecord.create({
@@ -585,7 +797,7 @@ export class RealEstateSeeder implements ModuleSeeder {
             apartmentId: apt.id,
             type: randomChoice(maintenanceTypes),
             title: `${apt.unitNumber} No'lu Daire - ${randomChoice(['Tesisat', 'Elektrik', 'Boya', 'Tadilat'])} Bakımı`,
-            description: 'Demo bakım kaydı',
+            description: `${apt.unitNumber} no'lu daire için planlı bakım`,
             status,
             scheduledDate: randomDate(new Date(), new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)),
             startDate: status !== 'scheduled' ? new Date() : null,
@@ -601,11 +813,13 @@ export class RealEstateSeeder implements ModuleSeeder {
       }
       details['maintenanceRecords'] = maintenanceRecordsCreated;
 
-      // Bulk Operations (Toplu İşlemler)
+      // ============================================
+      // 16. BULK OPERATIONS
+      // ============================================
       const bulkOperationsData = [
-        { type: 'rent_increase', title: 'Yıllık Kira Artışı', status: 'completed', description: 'Yıllık kira artışı uygulaması' },
-        { type: 'payment_generate', title: 'Ödeme Oluşturma', status: 'completed', description: 'Toplu ödeme oluşturma işlemi' },
-        { type: 'contract_renewal', title: 'Sözleşme Yenileme', status: 'pending', description: 'Sözleşme yenileme bildirimleri' },
+        { type: 'rent_increase', title: 'Yıllık Kira Artışı 2024', status: 'completed', description: 'Yıllık %25 kira artışı uygulaması' },
+        { type: 'payment_generate', title: 'Ocak 2025 Ödeme Oluşturma', status: 'completed', description: 'Toplu ödeme oluşturma işlemi' },
+        { type: 'contract_renewal', title: 'Sözleşme Yenileme Bildirimi', status: 'pending', description: 'Süresi dolacak sözleşmeler için bildirim' },
       ];
       let bulkOperationsCreated = 0;
 
@@ -621,11 +835,11 @@ export class RealEstateSeeder implements ModuleSeeder {
             title: bo.title,
             description: bo.description,
             status: bo.status,
-            affectedCount: randomChoice([10, 25, 50]),
-            successCount: bo.status === 'completed' ? randomChoice([9, 24, 48]) : 0,
-            failedCount: bo.status === 'completed' ? randomChoice([1, 1, 2]) : 0,
-            parameters: { increaseRate: 0.25, sendEmail: true },
-            results: bo.status === 'completed' ? { message: 'İşlem başarıyla tamamlandı' } : null,
+            affectedCount: contracts.length,
+            successCount: bo.status === 'completed' ? contracts.length - 1 : 0,
+            failedCount: bo.status === 'completed' ? 1 : 0,
+            parameters: { increaseRate: 0.25, sendEmail: true, year: 2024 },
+            results: bo.status === 'completed' ? { message: 'İşlem başarıyla tamamlandı', processedContracts: contracts.length } : null,
             startedAt: bo.status === 'completed' ? randomDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()) : null,
             completedAt: bo.status === 'completed' ? new Date() : null,
           },
@@ -656,7 +870,7 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // Real Estate Maintenance Records
       const reMaintenanceResult = await tenantPrisma.realEstateMaintenanceRecord.deleteMany({
-        where: { description: 'Demo bakım kaydı' },
+        where: { apartment: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } } },
       });
       itemsDeleted += reMaintenanceResult.count;
 
@@ -690,21 +904,33 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += contractTemplateResult.count;
 
+      // Side Cost Reconciliations
+      const reconciliationResult = await tenantPrisma.sideCostReconciliation.deleteMany({
+        where: { property: { id: { contains: '-demo-property-' } } },
+      });
+      itemsDeleted += reconciliationResult.count;
+
+      // Property Expenses
+      const expenseResult = await tenantPrisma.propertyExpense.deleteMany({
+        where: { property: { id: { contains: '-demo-property-' } } },
+      });
+      itemsDeleted += expenseResult.count;
+
       // Appointments
       const appointmentResult = await tenantPrisma.appointment.deleteMany({
-        where: { description: 'Demo randevu kaydı' },
+        where: { apartment: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } } },
       });
       itemsDeleted += appointmentResult.count;
 
-      // Payments (RE payments have contractId)
+      // Payments
       const paymentResult = await tenantPrisma.payment.deleteMany({
-        where: { contract: { contractNumber: { startsWith: 'CONT-DEMO-' } } },
+        where: { contract: { contractNumber: { startsWith: 'CONT-' } } },
       });
       itemsDeleted += paymentResult.count;
 
       // Contracts
       const contractResult = await tenantPrisma.contract.deleteMany({
-        where: { contractNumber: { startsWith: 'CONT-DEMO-' } },
+        where: { contractNumber: { startsWith: 'CONT-' } },
       });
       itemsDeleted += contractResult.count;
 
@@ -722,7 +948,7 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // Apartments
       const apartmentResult = await tenantPrisma.apartment.deleteMany({
-        where: { unitNumber: { startsWith: 'DEMO-' } },
+        where: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } },
       });
       itemsDeleted += apartmentResult.count;
 
@@ -746,10 +972,14 @@ export class RealEstateSeeder implements ModuleSeeder {
     });
 
     const apartmentCount = await tenantPrisma.apartment.count({
-      where: { unitNumber: { startsWith: 'DEMO-' } },
+      where: { unitNumber: { in: ['1', '2', '3', '4', '5', '6'] } },
     });
 
-    const count = propertyCount + apartmentCount;
+    const contractCount = await tenantPrisma.contract.count({
+      where: { contractNumber: { startsWith: 'CONT-' } },
+    });
+
+    const count = propertyCount + apartmentCount + contractCount;
     return { hasData: count > 0, count };
   }
 }
