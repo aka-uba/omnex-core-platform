@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Stack, Alert, Text, Paper, Title, Divider, Badge, Group, Progress, RingProgress, ThemeIcon, Button, Tabs, useMantineColorScheme } from '@mantine/core';
+import { Container, Stack, Alert, Text, Paper, Badge, Group, Progress, RingProgress, Button, useMantineColorScheme } from '@mantine/core';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
@@ -175,9 +175,7 @@ export function RealEstateDashboardClient() {
                         </Badge>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-xl ${isDark ? 'bg-blue-500/20' : 'bg-blue-500/10'}`}>
-                      <IconBuilding className={`w-6 h-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
-                    </div>
+                    <IconBuilding className={`w-8 h-8 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
                   </div>
                   <div className="absolute -bottom-4 -right-4 opacity-5">
                     <IconBuilding className="w-32 h-32" />
@@ -201,9 +199,7 @@ export function RealEstateDashboardClient() {
                         </div>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-xl ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-500/10'}`}>
-                      <IconHome className={`w-6 h-6 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
-                    </div>
+                    <IconHome className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                   </div>
                   <div className="mt-3">
                     <Progress
@@ -234,9 +230,7 @@ export function RealEstateDashboardClient() {
                         </Badge>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-500/10'}`}>
-                      <IconUsers className={`w-6 h-6 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
-                    </div>
+                    <IconUsers className={`w-8 h-8 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
                   </div>
                   <div className="absolute -bottom-4 -right-4 opacity-5">
                     <IconUsers className="w-32 h-32" />
@@ -270,9 +264,7 @@ export function RealEstateDashboardClient() {
                         </span>
                       </div>
                     </div>
-                    <div className={`p-3 rounded-xl ${isDark ? 'bg-violet-500/20' : 'bg-violet-500/10'}`}>
-                      <IconCurrencyDollar className={`w-6 h-6 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
-                    </div>
+                    <IconCurrencyDollar className={`w-8 h-8 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
                   </div>
                   <div className="absolute -bottom-4 -right-4 opacity-5">
                     <IconCurrencyDollar className="w-32 h-32" />
@@ -280,56 +272,106 @@ export function RealEstateDashboardClient() {
                 </div>
               </div>
 
-              {/* Secondary Stats Row - Tek satırda 4 kart (küçük) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Paper shadow="xs" p="md" radius="md" withBorder className="flex items-center gap-3">
-                  <ThemeIcon size="lg" radius="md" variant="light" color="cyan">
-                    <IconFileText className="w-5 h-5" />
-                  </ThemeIcon>
-                  <div>
-                    <Text size="xs" c="dimmed">{t('contracts.title')}</Text>
-                    <Text size="lg" fw={700}>{data.statistics.contracts.total}</Text>
+              {/* Secondary Stats Row - Tek satırda 4 kart (gradient tasarım) */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {/* Contracts Card */}
+                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-cyan-900/40 to-cyan-800/20 border border-cyan-700/30' : 'bg-gradient-to-br from-cyan-50 to-cyan-100/50 border border-cyan-200/50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className={`text-sm font-medium ${isDark ? 'text-cyan-300' : 'text-cyan-600'}`}>
+                        {t('contracts.title')}
+                      </p>
+                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {data.statistics.contracts.total}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge color="cyan" variant="light" size="sm">
+                          {data.statistics.contracts.active} {t('dashboard.active')}
+                        </Badge>
+                      </div>
+                    </div>
+                    <IconFileText className={`w-8 h-8 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} />
                   </div>
-                </Paper>
+                  <div className="absolute -bottom-4 -right-4 opacity-5">
+                    <IconFileText className="w-32 h-32" />
+                  </div>
+                </div>
 
-                <Paper shadow="xs" p="md" radius="md" withBorder className="flex items-center gap-3">
-                  <ThemeIcon size="lg" radius="md" variant="light" color="teal">
-                    <IconCurrencyDollar className="w-5 h-5" />
-                  </ThemeIcon>
-                  <div>
-                    <Text size="xs" c="dimmed">{t('payments.title')}</Text>
-                    <Text size="lg" fw={700}>{data.statistics.payments.total}</Text>
+                {/* Payments Card */}
+                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-teal-900/40 to-teal-800/20 border border-teal-700/30' : 'bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200/50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className={`text-sm font-medium ${isDark ? 'text-teal-300' : 'text-teal-600'}`}>
+                        {t('payments.title')}
+                      </p>
+                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {data.statistics.payments.total}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge color="teal" variant="light" size="sm">
+                          {data.statistics.payments.paid} {t('payments.status.paid')}
+                        </Badge>
+                      </div>
+                    </div>
+                    <IconCurrencyDollar className={`w-8 h-8 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
                   </div>
-                </Paper>
+                  <div className="absolute -bottom-4 -right-4 opacity-5">
+                    <IconCurrencyDollar className="w-32 h-32" />
+                  </div>
+                </div>
 
-                <Paper shadow="xs" p="md" radius="md" withBorder className="flex items-center gap-3">
-                  <ThemeIcon size="lg" radius="md" variant="light" color="grape">
-                    <IconCalendar className="w-5 h-5" />
-                  </ThemeIcon>
-                  <div>
-                    <Text size="xs" c="dimmed">{t('appointments.title')}</Text>
-                    <Text size="lg" fw={700}>{data.statistics.appointments.total}</Text>
+                {/* Appointments Card */}
+                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-grape-900/40 to-grape-800/20 border border-grape-700/30' : 'bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-200/50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className={`text-sm font-medium ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                        {t('appointments.title')}
+                      </p>
+                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {data.statistics.appointments.total}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge color="grape" variant="light" size="sm">
+                          {data.statistics.appointments.upcoming} {t('dashboard.upcoming')}
+                        </Badge>
+                      </div>
+                    </div>
+                    <IconCalendar className={`w-8 h-8 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
                   </div>
-                </Paper>
+                  <div className="absolute -bottom-4 -right-4 opacity-5">
+                    <IconCalendar className="w-32 h-32" />
+                  </div>
+                </div>
 
-                <Paper shadow="xs" p="md" radius="md" withBorder className="flex items-center gap-3">
-                  <ThemeIcon size="lg" radius="md" variant="light" color="red">
-                    <IconTools className="w-5 h-5" />
-                  </ThemeIcon>
-                  <div>
-                    <Text size="xs" c="dimmed">{t('maintenance.title')}</Text>
-                    <Text size="lg" fw={700}>{data.statistics.maintenance.total}</Text>
+                {/* Maintenance Card */}
+                <div className={`relative overflow-hidden rounded-xl p-5 ${isDark ? 'bg-gradient-to-br from-red-900/40 to-red-800/20 border border-red-700/30' : 'bg-gradient-to-br from-red-50 to-red-100/50 border border-red-200/50'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className={`text-sm font-medium ${isDark ? 'text-red-300' : 'text-red-600'}`}>
+                        {t('maintenance.title')}
+                      </p>
+                      <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {data.statistics.maintenance.total}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge color="red" variant="light" size="sm">
+                          {data.statistics.maintenance.open} {t('dashboard.open')}
+                        </Badge>
+                      </div>
+                    </div>
+                    <IconTools className={`w-8 h-8 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                   </div>
-                </Paper>
+                  <div className="absolute -bottom-4 -right-4 opacity-5">
+                    <IconTools className="w-32 h-32" />
+                  </div>
+                </div>
               </div>
 
               {/* Map Section - Full Width with Stats Overlay */}
               <div className={`rounded-xl overflow-hidden ${isDark ? 'bg-gray-800/50 border border-gray-700' : 'bg-white border border-gray-200'}`}>
                 <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <ThemeIcon size="lg" radius="md" variant="light" color="blue">
-                      <IconMap className="w-5 h-5" />
-                    </ThemeIcon>
+                    <IconMap className={`w-6 h-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
                     <div>
                       <Text fw={600}>{t('map.title')}</Text>
                       <Text size="xs" c="dimmed">{t('map.description')}</Text>
