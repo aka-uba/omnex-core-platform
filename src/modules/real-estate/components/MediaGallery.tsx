@@ -503,36 +503,27 @@ export function MediaGallery({
                 </Text>
               </Box>
             ) : (
-              <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
+              <SimpleGrid cols={{ base: 3, sm: 4, md: 5, lg: 6 }} spacing="xs">
                 {images.map((imageId) => (
-                  <Card key={imageId} padding={0} radius="md" withBorder pos="relative" style={{ overflow: 'hidden' }}>
-                    <Box pos="relative" h={120}>
+                  <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden' }}>
+                    <Box pos="relative" h={80}>
                       <Image
                         src={getImageUrl(imageId)}
                         alt="Property image"
-                        h={120}
+                        h={80}
+                        w="100%"
                         fit="cover"
-                        fallbackSrc="https://placehold.co/300x200?text=Image"
+                        fallbackSrc="https://placehold.co/100x80?text=Img"
                         style={{ cursor: 'pointer' }}
                         onClick={() => handlePreview(imageId)}
                       />
                       <Box
                         pos="absolute"
-                        top={6}
-                        right={6}
+                        top={4}
+                        right={4}
                         style={{ zIndex: 1 }}
                       >
-                        <Group gap={4}>
-                          <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
-                            <ActionIcon
-                              variant="filled"
-                              color="blue"
-                              size="xs"
-                              onClick={() => handlePreview(imageId)}
-                            >
-                              <IconEye size={14} />
-                            </ActionIcon>
-                          </Tooltip>
+                        <Group gap={2}>
                           <Tooltip label={coverImage === imageId ? t('form.coverImage') : t('form.setAsCover')}>
                             <ActionIcon
                               variant="filled"
@@ -541,9 +532,9 @@ export function MediaGallery({
                               onClick={() => handleSetCover(imageId)}
                             >
                               {coverImage === imageId ? (
-                                <IconStarFilled size={14} />
+                                <IconStarFilled size={12} />
                               ) : (
-                                <IconStar size={14} />
+                                <IconStar size={12} />
                               )}
                             </ActionIcon>
                           </Tooltip>
@@ -553,15 +544,15 @@ export function MediaGallery({
                             size="xs"
                             onClick={() => handleRemoveImage(imageId)}
                           >
-                            <IconX size={14} />
+                            <IconX size={12} />
                           </ActionIcon>
                         </Group>
                       </Box>
                       {coverImage === imageId && (
                         <Badge
                           pos="absolute"
-                          bottom={6}
-                          left={6}
+                          bottom={4}
+                          left={4}
                           color="yellow"
                           variant="filled"
                           size="xs"

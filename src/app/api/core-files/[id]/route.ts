@@ -19,10 +19,10 @@ export async function GET(
     async (tenantPrisma) => {
       // Get user from JWT token or header
       const authResult = await verifyAuth(request);
-      const userId = authResult.valid && authResult.payload 
-        ? authResult.payload.userId 
+      const userId = authResult.valid && authResult.payload
+        ? authResult.payload.userId
         : request.headers.get('x-user-id');
-      
+
       const { id } = await params;
       const fileId = id;
 
