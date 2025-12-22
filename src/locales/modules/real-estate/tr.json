@@ -1850,5 +1850,22 @@
       "welcome": "Hoş Geldiniz",
       "agreement": "Anlaşma"
     }
+  },
+  "mediaGallery": {
+    "images": "Resimler",
+    "documents": "Belgeler",
+    "preview": "Önizleme",
+    "download": "İndir",
+    "uploadDocuments": "Belge Yükle",
+    "uploadDocumentsHint": "Desteklenen formatlar: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
+    "noDocuments": "Henüz belge yüklenmedi",
+    "documentUploadSuccess": "Belgeler yüklendi",
+    "documentsUploaded": "belge yüklendi",
+    "documentUploadError": "Belge yüklenirken hata oluştu",
+    "imagesUploaded": "resim yüklendi",
+    "loading": "Yükleniyor...",
+    "videoNotSupported": "Tarayıcınız video etiketini desteklemiyor.",
+    "audioNotSupported": "Tarayıcınız ses etiketini desteklemiyor.",
+    "previewNotAvailable": "Bu dosya türü için önizleme kullanılamıyor"
   }
 }

@@ -21,7 +21,7 @@ import { useCreateProperty, useUpdateProperty, useProperty } from '@/hooks/usePr
 import { useTranslation } from '@/lib/i18n/client';
 import { propertyCreateSchema } from '@/modules/real-estate/schemas/property.schema';
 import type { PropertyType } from '@/modules/real-estate/types/property';
-import { ImageUpload } from './ImageUpload';
+import { MediaGallery } from './MediaGallery';
 import { useAuth } from '@/hooks/useAuth';
 
 interface PropertyFormProps {
@@ -469,13 +469,15 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
               />
             </Grid.Col>
             <Grid.Col span={12}>
-              <ImageUpload
+              <MediaGallery
                 tenantId="temp-tenant-id"
                 {...(propertyId ? { entityId: propertyId } : {})}
                 entityType="property"
                 images={form.values.images}
+                documents={form.values.documents}
                 {...(form.values.coverImage ? { coverImage: form.values.coverImage } : {})}
                 onImagesChange={(images) => form.setFieldValue('images', images)}
+                onDocumentsChange={(documents) => form.setFieldValue('documents', documents)}
                 onCoverImageChange={(coverImage) => form.setFieldValue('coverImage', coverImage ?? undefined)}
                 userId={user?.id || 'system'}
               />

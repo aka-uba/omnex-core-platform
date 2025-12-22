@@ -18,6 +18,8 @@ import { useRouter } from 'next/navigation';
 import { useCreateTenant, useUpdateTenant, useTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
 import { tenantCreateSchema } from '@/modules/real-estate/schemas/tenant.schema';
+import { MediaGallery } from './MediaGallery';
+import { useAuth } from '@/hooks/useAuth';
 
 interface TenantFormProps {
   locale: string;
@@ -31,6 +33,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   const createTenant = useCreateTenant();
   const updateTenant = useUpdateTenant();
   const { data: tenantData, isLoading: isLoadingTenant } = useTenant(tenantId || '');
+  const { user } = useAuth();
 
   const isEdit = !!tenantId;
 
@@ -42,6 +45,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
       moveInDate: null as Date | null,
       moveOutDate: null as Date | null,
       notes: '',
+      images: [] as string[],
+      documents: [] as string[],
+      coverImage: undefined as string | undefined,
     },
     validate: {
       tenantNumber: (value) => (!value ? t('form.tenantNumber') + ' ' + tGlobal('common.required') : null),
@@ -59,6 +65,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
           moveInDate: tenantData.moveInDate ? new Date(tenantData.moveInDate) : null,
           moveOutDate: tenantData.moveOutDate ? new Date(tenantData.moveOutDate) : null,
           notes: tenantData.notes || '',
+          images: (tenantData as any).images || [],
+          documents: (tenantData as any).documents || [],
+          coverImage: (tenantData as any).coverImage ?? undefined,
         });
       }
     }
@@ -73,6 +82,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
         moveInDate: values.moveInDate || undefined,
         moveOutDate: values.moveOutDate || undefined,
         notes: values.notes || undefined,
+        images: values.images || [],
+        documents: values.documents || [],
+        coverImage: values.coverImage || undefined,
       };
 
       const validatedData = tenantCreateSchema.parse(formData) as any;
@@ -159,6 +171,20 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
                 placeholder={t('form.notesPlaceholder')}
                 rows={4}
                 {...form.getInputProps('notes')}
+              />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <MediaGallery
+                tenantId="temp-tenant-id"
+                {...(tenantId ? { entityId: tenantId } : {})}
+                entityType="tenant"
+                images={form.values.images}
+                documents={form.values.documents}
+                {...(form.values.coverImage ? { coverImage: form.values.coverImage } : {})}
+                onImagesChange={(images) => form.setFieldValue('images', images)}
+                onDocumentsChange={(documents) => form.setFieldValue('documents', documents)}
+                onCoverImageChange={(coverImage) => form.setFieldValue('coverImage', coverImage ?? undefined)}
+                userId={user?.id || 'system'}
               />
             </Grid.Col>
           </Grid>

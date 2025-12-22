@@ -12,6 +12,9 @@ export const tenantSchema = z.object({
   overallScore: z.number().min(0).max(100).optional().nullable(),
   notes: z.string().optional().nullable(),
   analysis: z.record(z.string(), z.any()).optional().nullable(),
+  images: z.array(z.string()).optional().default([]),
+  documents: z.array(z.string()).optional().default([]),
+  coverImage: z.string().optional().nullable(),
   isActive: z.boolean().default(true),
 });
 

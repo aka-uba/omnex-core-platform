@@ -908,5 +908,22 @@
       "flooring": "Flooring & Interior",
       "energy": "Energy"
     }
+  },
+  "mediaGallery": {
+    "images": "Images",
+    "documents": "Documents",
+    "preview": "Preview",
+    "download": "Download",
+    "uploadDocuments": "Upload Documents",
+    "uploadDocumentsHint": "Supported formats: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
+    "noDocuments": "No documents uploaded yet",
+    "documentUploadSuccess": "Documents uploaded",
+    "documentsUploaded": "documents uploaded",
+    "documentUploadError": "Error uploading documents",
+    "imagesUploaded": "images uploaded",
+    "loading": "Loading...",
+    "videoNotSupported": "Your browser does not support the video tag.",
+    "audioNotSupported": "Your browser does not support the audio tag.",
+    "previewNotAvailable": "Preview not available for this file type"
   }
 }

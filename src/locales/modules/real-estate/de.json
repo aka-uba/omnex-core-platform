@@ -654,5 +654,22 @@
       "flooring": "Boden & Innenraum",
       "energy": "Energie"
     }
+  },
+  "mediaGallery": {
+    "images": "Bilder",
+    "documents": "Dokumente",
+    "preview": "Vorschau",
+    "download": "Herunterladen",
+    "uploadDocuments": "Dokumente hochladen",
+    "uploadDocumentsHint": "Unterstützte Formate: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
+    "noDocuments": "Noch keine Dokumente hochgeladen",
+    "documentUploadSuccess": "Dokumente hochgeladen",
+    "documentsUploaded": "Dokumente hochgeladen",
+    "documentUploadError": "Fehler beim Hochladen der Dokumente",
+    "imagesUploaded": "Bilder hochgeladen",
+    "loading": "Wird geladen...",
+    "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht.",
+    "audioNotSupported": "Ihr Browser unterstützt das Audio-Tag nicht.",
+    "previewNotAvailable": "Vorschau für diesen Dateityp nicht verfügbar"
   }
 }
