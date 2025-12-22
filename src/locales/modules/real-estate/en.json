@@ -128,6 +128,8 @@
   "payments": {
     "title": "Payments",
     "description": "Manage rental payments and transactions",
+    "list": "List",
+    "analytics": "Analytics",
     "create": {
       "title": "Create Payment",
       "description": "Record a new payment"
@@ -135,6 +137,32 @@
     "edit": {
       "title": "Edit Payment",
       "description": "Edit payment information"
+    },
+    "markedAsPaid": "Payment marked as paid",
+    "markAsPaid": "Mark as Paid",
+    "markAsPaidError": "Error marking payment as paid",
+    "quickBoard": {
+      "upcoming": "Upcoming Payments",
+      "overdue": "Overdue Payments",
+      "next30Days": "Next 30 Days",
+      "requiresAction": "Requires Action",
+      "noUpcoming": "No upcoming payments",
+      "noOverdue": "No overdue payments",
+      "daysLeft": "days left",
+      "daysLate": "days late"
+    },
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled"
+    },
+    "types": {
+      "rent": "Rent",
+      "deposit": "Deposit",
+      "fee": "Fee",
+      "maintenance": "Maintenance",
+      "utility": "Utility"
     }
   },
   "appointments": {

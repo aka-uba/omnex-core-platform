@@ -360,7 +360,18 @@
       "autoDebit": "Otomatik Ödeme"
     },
     "markedAsPaid": "Ödeme ödendi olarak işaretlendi",
+    "markAsPaid": "Ödendi Olarak İşaretle",
     "markAsPaidError": "Ödeme işaretlenirken hata oluştu",
+    "quickBoard": {
+      "upcoming": "Yaklaşan Ödemeler",
+      "overdue": "Vadesi Geçmiş Ödemeler",
+      "next30Days": "Sonraki 30 Gün",
+      "requiresAction": "İşlem Gerekiyor",
+      "noUpcoming": "Yaklaşan ödeme yok",
+      "noOverdue": "Vadesi geçmiş ödeme yok",
+      "daysLeft": "gün kaldı",
+      "daysLate": "gün gecikmiş"
+    },
     "exportDescription": "Emlak Ödemeler Raporu",
     "exportSuccess": "Ödemeler başarıyla dışa aktarıldı",
     "exportError": "Ödemeler dışa aktarılırken hata oluştu",

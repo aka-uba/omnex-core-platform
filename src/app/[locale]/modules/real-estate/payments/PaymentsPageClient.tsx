@@ -6,6 +6,7 @@ import { IconCurrencyDollar, IconChartBar, IconList } from '@tabler/icons-react'
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { PaymentList } from '@/modules/real-estate/components/PaymentList';
 import { PaymentAnalytics } from '@/modules/real-estate/components/PaymentAnalytics';
+import { PaymentQuickBoard } from '@/modules/real-estate/components/PaymentQuickBoard';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 
@@ -38,7 +39,13 @@ export function PaymentsPageClient({ locale }: { locale: string }) {
           },
         ]}
       />
-      <Tabs value={activeTab} onChange={setActiveTab} mt="md">
+
+      {/* Quick Board - Upcoming & Overdue Payments */}
+      <div className="mt-6">
+        <PaymentQuickBoard locale={currentLocale} />
+      </div>
+
+      <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List>
           <Tabs.Tab value="list" leftSection={<IconList size={16} />}>
             {t('payments.list')}
