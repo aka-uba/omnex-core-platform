@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Stack,
   Group,
@@ -167,10 +167,28 @@ function PreviewModal({ opened, onClose, fileId, fileInfo }: PreviewModalProps) 
   const [textContent, setTextContent] = useState<string>('');
   const [loadingText, setLoadingText] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [localFileInfo, setLocalFileInfo] = useState<CoreFileInfo | null>(null);
 
+  // Fetch file info if not provided
+  useEffect(() => {
+    if (opened && fileId && !fileInfo) {
+      fetch(`/api/core-files/${fileId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.file) {
+            setLocalFileInfo(data.file);
+          }
+        })
+        .catch(err => console.error('Error fetching file info:', err));
+    } else if (fileInfo) {
+      setLocalFileInfo(fileInfo);
+    }
+  }, [opened, fileId, fileInfo]);
+
+  const effectiveFileInfo = localFileInfo || fileInfo;
   const previewUrl = fileId ? `/api/core-files/${fileId}/download` : '';
-  const filename = fileInfo?.originalName || fileInfo?.filename || 'file';
-  const mimeType = fileInfo?.mimeType || '';
+  const filename = effectiveFileInfo?.originalName || effectiveFileInfo?.filename || 'file';
+  const mimeType = effectiveFileInfo?.mimeType || '';
 
   const isImage = isImageFile(filename, mimeType);
   const isPdf = isPdfFile(filename, mimeType);
@@ -182,7 +200,7 @@ function PreviewModal({ opened, onClose, fileId, fileInfo }: PreviewModalProps) 
   const isMarkdown = /\.(md|markdown)$/i.test(filename);
 
   // Load text content for text files
-  useMemo(() => {
+  useEffect(() => {
     if (opened && fileId && (isText || isMarkdown)) {
       setLoadingText(true);
       fetch(previewUrl)
@@ -391,7 +409,7 @@ function PreviewModal({ opened, onClose, fileId, fileInfo }: PreviewModalProps) 
                 {filename}
               </Text>
               <Text size="xs" c="dimmed">
-                {formatFileSize(fileInfo?.size)} • {mimeType || '-'}
+                {formatFileSize(effectiveFileInfo?.size)} • {mimeType || '-'}
               </Text>
             </Stack>
             <Button
@@ -426,7 +444,7 @@ function MediaCard({ fileId, type, isCover, onRemove, onSetCover, onPreview }: M
   const imageUrl = `/api/core-files/${fileId}/download`;
 
   // Fetch file info
-  useMemo(() => {
+  useEffect(() => {
     fetch(`/api/core-files/${fileId}`)
       .then(res => res.json())
       .then(data => {
