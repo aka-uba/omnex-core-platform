@@ -29,7 +29,11 @@ import {
   IconFile,
   IconFileTypePdf,
   IconFileTypeDoc,
+  IconFileTypeDocx,
   IconFileTypeXls,
+  IconFileTypeCsv,
+  IconFileTypeTxt,
+  IconFileTypeZip,
   IconEye,
   IconDownload,
 } from '@tabler/icons-react';
@@ -255,6 +259,31 @@ export function MediaGallery({
   const [previewOpened, { open: openPreview, close: closePreview }] = useDisclosure(false);
   const [previewFileId, setPreviewFileId] = useState<string | null>(null);
   const [previewFileInfo, setPreviewFileInfo] = useState<CoreFileInfo | null>(null);
+  const [documentInfoMap, setDocumentInfoMap] = useState<Record<string, CoreFileInfo>>({});
+
+  // Fetch document info when documents change
+  useEffect(() => {
+    const fetchDocumentInfo = async () => {
+      const newDocs = documents.filter(id => !documentInfoMap[id]);
+      if (newDocs.length === 0) return;
+
+      for (const docId of newDocs) {
+        try {
+          const res = await fetch(`/api/core-files/${docId}`);
+          const data = await res.json();
+          if (data.file) {
+            setDocumentInfoMap(prev => ({ ...prev, [docId]: data.file }));
+          }
+        } catch (error) {
+          console.error('Error fetching document info:', error);
+        }
+      }
+    };
+
+    if (documents.length > 0) {
+      fetchDocumentInfo();
+    }
+  }, [documents, documentInfoMap]);
 
   const { uploadFile } = useCoreFileManager({
     tenantId,
@@ -382,19 +411,39 @@ export function MediaGallery({
     return `/api/core-files/${fileId}/download`;
   };
 
-  const getDocumentIcon = (extension?: string) => {
-    switch (extension?.toLowerCase()) {
+  const getDocumentIcon = (extension?: string, size: number = 40) => {
+    const ext = extension?.toLowerCase();
+    const iconProps = { size, style: { flexShrink: 0 } };
+
+    switch (ext) {
       case 'pdf':
-        return <IconFileTypePdf size={32} />;
+        return <IconFileTypePdf {...iconProps} color="#E53935" />;
       case 'doc':
+        return <IconFileTypeDoc {...iconProps} color="#2196F3" />;
       case 'docx':
-        return <IconFileTypeDoc size={32} />;
+        return <IconFileTypeDocx {...iconProps} color="#2196F3" />;
       case 'xls':
       case 'xlsx':
-        return <IconFileTypeXls size={32} />;
+        return <IconFileTypeXls {...iconProps} color="#4CAF50" />;
+      case 'csv':
+        return <IconFileTypeCsv {...iconProps} color="#4CAF50" />;
+      case 'txt':
+        return <IconFileTypeTxt {...iconProps} color="#757575" />;
+      case 'zip':
+      case 'rar':
+      case '7z':
+        return <IconFileTypeZip {...iconProps} color="#FF9800" />;
       default:
-        return <IconFile size={32} />;
+        return <IconFile {...iconProps} color="#9E9E9E" />;
     }
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   };
 
   return (
@@ -456,73 +505,71 @@ export function MediaGallery({
             ) : (
               <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
                 {images.map((imageId) => (
-                  <Card key={imageId} padding="xs" radius="md" withBorder pos="relative">
-                    <Card.Section>
-                      <Box pos="relative" style={{ aspectRatio: '16/9' }}>
-                        <Image
-                          src={getImageUrl(imageId)}
-                          alt="Property image"
-                          height={150}
-                          fit="cover"
-                          fallbackSrc="https://placehold.co/300x200?text=Image"
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => handlePreview(imageId)}
-                        />
-                        <Box
-                          pos="absolute"
-                          top={8}
-                          right={8}
-                          style={{ zIndex: 1 }}
-                        >
-                          <Group gap="xs">
-                            <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
-                              <ActionIcon
-                                variant="filled"
-                                color="blue"
-                                size="sm"
-                                onClick={() => handlePreview(imageId)}
-                              >
-                                <IconEye size={16} />
-                              </ActionIcon>
-                            </Tooltip>
-                            <Tooltip label={coverImage === imageId ? t('form.coverImage') : t('form.setAsCover')}>
-                              <ActionIcon
-                                variant="filled"
-                                color={coverImage === imageId ? 'yellow' : 'dark'}
-                                size="sm"
-                                onClick={() => handleSetCover(imageId)}
-                              >
-                                {coverImage === imageId ? (
-                                  <IconStarFilled size={16} />
-                                ) : (
-                                  <IconStar size={16} />
-                                )}
-                              </ActionIcon>
-                            </Tooltip>
+                  <Card key={imageId} padding={0} radius="md" withBorder pos="relative" style={{ overflow: 'hidden' }}>
+                    <Box pos="relative" h={120}>
+                      <Image
+                        src={getImageUrl(imageId)}
+                        alt="Property image"
+                        h={120}
+                        fit="cover"
+                        fallbackSrc="https://placehold.co/300x200?text=Image"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handlePreview(imageId)}
+                      />
+                      <Box
+                        pos="absolute"
+                        top={6}
+                        right={6}
+                        style={{ zIndex: 1 }}
+                      >
+                        <Group gap={4}>
+                          <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
                             <ActionIcon
                               variant="filled"
-                              color="red"
-                              size="sm"
-                              onClick={() => handleRemoveImage(imageId)}
+                              color="blue"
+                              size="xs"
+                              onClick={() => handlePreview(imageId)}
                             >
-                              <IconX size={16} />
+                              <IconEye size={14} />
                             </ActionIcon>
-                          </Group>
-                        </Box>
-                        {coverImage === imageId && (
-                          <Badge
-                            pos="absolute"
-                            bottom={8}
-                            left={8}
-                            color="yellow"
+                          </Tooltip>
+                          <Tooltip label={coverImage === imageId ? t('form.coverImage') : t('form.setAsCover')}>
+                            <ActionIcon
+                              variant="filled"
+                              color={coverImage === imageId ? 'yellow' : 'dark'}
+                              size="xs"
+                              onClick={() => handleSetCover(imageId)}
+                            >
+                              {coverImage === imageId ? (
+                                <IconStarFilled size={14} />
+                              ) : (
+                                <IconStar size={14} />
+                              )}
+                            </ActionIcon>
+                          </Tooltip>
+                          <ActionIcon
                             variant="filled"
-                            size="sm"
+                            color="red"
+                            size="xs"
+                            onClick={() => handleRemoveImage(imageId)}
                           >
-                            {t('form.coverImage')}
-                          </Badge>
-                        )}
+                            <IconX size={14} />
+                          </ActionIcon>
+                        </Group>
                       </Box>
-                    </Card.Section>
+                      {coverImage === imageId && (
+                        <Badge
+                          pos="absolute"
+                          bottom={6}
+                          left={6}
+                          color="yellow"
+                          variant="filled"
+                          size="xs"
+                        >
+                          {t('form.coverImage')}
+                        </Badge>
+                      )}
+                    </Box>
                   </Card>
                 ))}
               </SimpleGrid>
@@ -574,49 +621,72 @@ export function MediaGallery({
                   </Text>
                 </Box>
               ) : (
-                <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
-                  {documents.map((docId) => (
-                    <Card key={docId} padding="md" radius="md" withBorder>
-                      <Stack align="center" gap="xs">
-                        {getDocumentIcon()}
-                        <Text size="xs" ta="center" lineClamp={2}>
-                          {docId.slice(0, 8)}...
-                        </Text>
-                        <Group gap="xs">
-                          <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
+                <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="sm">
+                  {documents.map((docId) => {
+                    const docInfo = documentInfoMap[docId];
+                    const extension = docInfo?.extension || '';
+                    const fileName = docInfo?.originalName || `${docId.slice(0, 8)}...`;
+                    const fileSize = docInfo?.size ? formatFileSize(docInfo.size) : '';
+
+                    return (
+                      <Card key={docId} padding="sm" radius="md" withBorder>
+                        <Group wrap="nowrap" gap="sm">
+                          <Box style={{ flexShrink: 0 }}>
+                            {getDocumentIcon(extension, 36)}
+                          </Box>
+                          <Box style={{ flex: 1, minWidth: 0 }}>
+                            <Text size="sm" fw={500} lineClamp={1} title={fileName}>
+                              {fileName}
+                            </Text>
+                            <Group gap="xs">
+                              {extension && (
+                                <Badge size="xs" variant="light" color="gray">
+                                  {extension.toUpperCase()}
+                                </Badge>
+                              )}
+                              {fileSize && (
+                                <Text size="xs" c="dimmed">
+                                  {fileSize}
+                                </Text>
+                              )}
+                            </Group>
+                          </Box>
+                          <Group gap={4} style={{ flexShrink: 0 }}>
+                            <Tooltip label={t('mediaGallery.preview') || 'Preview'}>
+                              <ActionIcon
+                                variant="light"
+                                color="blue"
+                                size="sm"
+                                onClick={() => handlePreview(docId, docInfo)}
+                              >
+                                <IconEye size={16} />
+                              </ActionIcon>
+                            </Tooltip>
+                            <Tooltip label={t('mediaGallery.download') || 'Download'}>
+                              <ActionIcon
+                                component="a"
+                                href={`/api/core-files/${docId}/download`}
+                                download
+                                variant="light"
+                                color="green"
+                                size="sm"
+                              >
+                                <IconDownload size={16} />
+                              </ActionIcon>
+                            </Tooltip>
                             <ActionIcon
                               variant="light"
-                              color="blue"
+                              color="red"
                               size="sm"
-                              onClick={() => handlePreview(docId)}
+                              onClick={() => handleRemoveDocument(docId)}
                             >
-                              <IconEye size={16} />
+                              <IconX size={16} />
                             </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label={t('mediaGallery.download') || 'Download'}>
-                            <ActionIcon
-                              component="a"
-                              href={`/api/core-files/${docId}/download`}
-                              download
-                              variant="light"
-                              color="green"
-                              size="sm"
-                            >
-                              <IconDownload size={16} />
-                            </ActionIcon>
-                          </Tooltip>
-                          <ActionIcon
-                            variant="light"
-                            color="red"
-                            size="sm"
-                            onClick={() => handleRemoveDocument(docId)}
-                          >
-                            <IconX size={16} />
-                          </ActionIcon>
+                          </Group>
                         </Group>
-                      </Stack>
-                    </Card>
-                  ))}
+                      </Card>
+                    );
+                  })}
                 </SimpleGrid>
               )}
             </Stack>
