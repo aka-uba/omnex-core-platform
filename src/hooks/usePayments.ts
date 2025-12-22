@@ -216,6 +216,8 @@ export function usePaymentAnalytics(params?: { companyId?: string; dateFrom?: st
           amount: number;
           dueDate: string;
           daysUntilDue: number;
+          isProjected?: boolean;
+          contractId?: string;
         }>;
         overduePayments: Array<{
           id: string;
@@ -223,6 +225,8 @@ export function usePaymentAnalytics(params?: { companyId?: string; dateFrom?: st
           amount: number;
           dueDate: string;
           daysOverdue: number;
+          isProjected?: boolean;
+          contractId?: string;
         }>;
       };
     },

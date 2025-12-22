@@ -149,7 +149,9 @@
       "noUpcoming": "No upcoming payments",
       "noOverdue": "No overdue payments",
       "daysLeft": "days left",
-      "daysLate": "days late"
+      "daysLate": "days late",
+      "projected": "Projected",
+      "viewContract": "View Contract"
     },
     "status": {
       "pending": "Pending",

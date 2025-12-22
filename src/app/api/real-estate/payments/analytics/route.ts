@@ -44,6 +44,8 @@ export async function GET(request: NextRequest) {
       amount: number;
       dueDate: string;
       daysUntilDue: number;
+      isProjected?: boolean; // Sözleşmeden hesaplanmış ödeme
+      contractId?: string;
     }>;
     overduePayments: Array<{
       id: string;
@@ -51,6 +53,8 @@ export async function GET(request: NextRequest) {
       amount: number;
       dueDate: string;
       daysOverdue: number;
+      isProjected?: boolean; // Sözleşmeden hesaplanmış ödeme
+      contractId?: string;
     }>;
   }>>(
     request,
@@ -218,7 +222,8 @@ export async function GET(request: NextRequest) {
       const today = dayjs().startOf('day');
       const next30Days = dayjs().add(30, 'days').endOf('day');
 
-      const upcomingPayments = payments
+      // Get existing upcoming payments from Payment records
+      const existingUpcomingPayments = payments
         .filter((p) => {
           const dueDate = dayjs(p.dueDate).startOf('day');
           return (
@@ -233,12 +238,122 @@ export async function GET(request: NextRequest) {
           amount: Number(p.totalAmount || p.amount),
           dueDate: p.dueDate.toISOString(),
           daysUntilDue: dayjs(p.dueDate).diff(today, 'day'),
-        }))
+          isProjected: false,
+          contractId: p.contractId || undefined,
+        }));
+
+      // Get projected payments from active contracts
+      const activeContracts = await tenantPrisma.contract.findMany({
+        where: {
+          tenantId: tenantContext.id,
+          ...(finalCompanyId && { companyId: finalCompanyId }),
+          status: 'active',
+          paymentDay: { not: null },
+        },
+        include: {
+          apartment: {
+            select: {
+              id: true,
+              unitNumber: true,
+            },
+          },
+        },
+      });
+
+      // Calculate projected payments for each contract
+      const projectedPayments: Array<{
+        id: string;
+        apartmentUnitNumber: string;
+        amount: number;
+        dueDate: string;
+        daysUntilDue: number;
+        isProjected: boolean;
+        contractId: string;
+      }> = [];
+
+      const projectedOverduePayments: Array<{
+        id: string;
+        apartmentUnitNumber: string;
+        amount: number;
+        dueDate: string;
+        daysOverdue: number;
+        isProjected: boolean;
+        contractId: string;
+      }> = [];
+
+      for (const contract of activeContracts) {
+        if (!contract.paymentDay) continue;
+
+        // Calculate this month's and next month's payment due dates
+        const currentMonth = dayjs();
+        const nextMonth = dayjs().add(1, 'month');
+
+        // This month's payment date
+        const thisMonthPaymentDate = dayjs()
+          .date(Math.min(contract.paymentDay, currentMonth.daysInMonth()))
+          .startOf('day');
+
+        // Next month's payment date
+        const nextMonthPaymentDate = dayjs()
+          .add(1, 'month')
+          .date(Math.min(contract.paymentDay, nextMonth.daysInMonth()))
+          .startOf('day');
+
+        // Check payment dates within our range
+        const paymentDatesToCheck = [thisMonthPaymentDate, nextMonthPaymentDate];
+
+        for (const paymentDate of paymentDatesToCheck) {
+          // Skip if outside our 30-day window for upcoming (but check for overdue)
+          const isInUpcomingWindow = !paymentDate.isBefore(today) && paymentDate.isBefore(next30Days);
+          const isOverdue = paymentDate.isBefore(today);
+
+          if (!isInUpcomingWindow && !isOverdue) continue;
+
+          // Check if a payment record already exists for this contract and period
+          const existingPayment = payments.find((p) => {
+            if (p.contractId !== contract.id) return false;
+            const pDueDate = dayjs(p.dueDate);
+            // Check if same month and year
+            return pDueDate.month() === paymentDate.month() &&
+                   pDueDate.year() === paymentDate.year();
+          });
+
+          // If no existing payment record, add as projected
+          if (!existingPayment) {
+            const rentAmount = Number(contract.rentAmount);
+
+            if (isOverdue) {
+              projectedOverduePayments.push({
+                id: `projected-${contract.id}-${paymentDate.format('YYYY-MM')}`,
+                apartmentUnitNumber: contract.apartment?.unitNumber || 'N/A',
+                amount: rentAmount,
+                dueDate: paymentDate.toISOString(),
+                daysOverdue: today.diff(paymentDate, 'day'),
+                isProjected: true,
+                contractId: contract.id,
+              });
+            } else if (isInUpcomingWindow) {
+              projectedPayments.push({
+                id: `projected-${contract.id}-${paymentDate.format('YYYY-MM')}`,
+                apartmentUnitNumber: contract.apartment?.unitNumber || 'N/A',
+                amount: rentAmount,
+                dueDate: paymentDate.toISOString(),
+                daysUntilDue: paymentDate.diff(today, 'day'),
+                isProjected: true,
+                contractId: contract.id,
+              });
+            }
+          }
+        }
+      }
+
+      // Combine existing and projected upcoming payments
+      const upcomingPayments = [...existingUpcomingPayments, ...projectedPayments]
         .sort((a, b) => a.daysUntilDue - b.daysUntilDue)
         .slice(0, 10);
 
       // Get overdue payments (due date is before today)
-      const overduePayments = payments
+      const existingOverduePayments = payments
         .filter((p) => {
           const dueDate = dayjs(p.dueDate).startOf('day');
           return (
@@ -252,7 +367,12 @@ export async function GET(request: NextRequest) {
           amount: Number(p.totalAmount || p.amount),
           dueDate: p.dueDate.toISOString(),
           daysOverdue: today.diff(dayjs(p.dueDate), 'day'),
-        }))
+          isProjected: false,
+          contractId: p.contractId || undefined,
+        }));
+
+      // Combine existing and projected overdue payments
+      const overduePayments = [...existingOverduePayments, ...projectedOverduePayments]
         .sort((a, b) => b.daysOverdue - a.daysOverdue)
         .slice(0, 10);
 

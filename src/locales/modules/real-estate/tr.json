@@ -370,7 +370,9 @@
       "noUpcoming": "Yaklaşan ödeme yok",
       "noOverdue": "Vadesi geçmiş ödeme yok",
       "daysLeft": "gün kaldı",
-      "daysLate": "gün gecikmiş"
+      "daysLate": "gün gecikmiş",
+      "projected": "Tahmini",
+      "viewContract": "Sözleşmeyi Görüntüle"
     },
     "exportDescription": "Emlak Ödemeler Raporu",
     "exportSuccess": "Ödemeler başarıyla dışa aktarıldı",

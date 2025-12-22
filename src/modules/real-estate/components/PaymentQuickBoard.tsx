@@ -21,6 +21,8 @@ interface QuickPaymentItem {
   dueDate: string;
   daysUntilDue?: number;
   daysOverdue?: number;
+  isProjected?: boolean;
+  contractId?: string;
 }
 
 export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
@@ -60,8 +62,13 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
     }
   }, [markAsPaid, t, refetch]);
 
-  const handleViewPayment = useCallback((id: string) => {
-    router.push(`/${locale}/modules/real-estate/payments/${id}`);
+  const handleViewPayment = useCallback((payment: QuickPaymentItem) => {
+    if (payment.isProjected && payment.contractId) {
+      // For projected payments, navigate to contract detail
+      router.push(`/${locale}/modules/real-estate/contracts/${payment.contractId}`);
+    } else {
+      router.push(`/${locale}/modules/real-estate/payments/${payment.id}`);
+    }
   }, [router, locale]);
 
   const upcomingPayments = useMemo(() => {
@@ -92,12 +99,13 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
   ) => {
     const days = isOverdue ? payment.daysOverdue! : payment.daysUntilDue!;
     const urgencyColor = getUrgencyColor(days, isOverdue);
+    const isProjected = payment.isProjected === true;
 
     return (
       <div
         key={payment.id}
         className={`${styles.paymentRow} ${styles[`delay${index}`]}`}
-        onClick={() => handleViewPayment(payment.id)}
+        onClick={() => handleViewPayment(payment)}
       >
         <div className={styles.rowContent}>
           {/* Left: Apartment & Date */}
@@ -110,6 +118,11 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
             <Text size="xs" c="dimmed" className={styles.dateText}>
               {dayjs(payment.dueDate).format('DD MMM')}
             </Text>
+            {isProjected && (
+              <Badge size="xs" variant="outline" color="gray">
+                {t('payments.quickBoard.projected')}
+              </Badge>
+            )}
           </div>
 
           {/* Center: Amount */}
@@ -134,7 +147,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
             </Badge>
 
             <Group gap={4} className={styles.actions}>
-              {!isOverdue && (
+              {!isOverdue && !isProjected && (
                 <Tooltip label={t('payments.markAsPaid')} withArrow>
                   <ActionIcon
                     variant="light"
@@ -147,14 +160,14 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
                   </ActionIcon>
                 </Tooltip>
               )}
-              <Tooltip label={t('actions.view')} withArrow>
+              <Tooltip label={isProjected ? t('payments.quickBoard.viewContract') : t('actions.view')} withArrow>
                 <ActionIcon
                   variant="light"
                   color="blue"
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleViewPayment(payment.id);
+                    handleViewPayment(payment);
                   }}
                 >
                   <IconEye size={14} />
