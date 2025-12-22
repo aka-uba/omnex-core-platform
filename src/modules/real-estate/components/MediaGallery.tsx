@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Stack,
   Group,
@@ -19,6 +19,8 @@ import {
   Paper,
   Code,
   ScrollArea,
+  Loader,
+  useMantineColorScheme,
 } from '@mantine/core';
 import {
   IconUpload,
@@ -38,6 +40,7 @@ import { useCoreFileManager } from '@/hooks/useCoreFileManager';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useDisclosure } from '@mantine/hooks';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface CoreFileInfo {
   id: string;
@@ -70,157 +73,123 @@ interface FilePreviewModalProps {
 
 function FilePreviewModal({ opened, onClose, fileId, fileInfo }: FilePreviewModalProps) {
   const { t } = useTranslation('modules/real-estate');
+  const { colorScheme } = useMantineColorScheme();
   const [localFileInfo, setLocalFileInfo] = useState<CoreFileInfo | null>(null);
-  const [textContent, setTextContent] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [textContent, setTextContent] = useState<string>('');
+  const [loadingInfo, setLoadingInfo] = useState(false);
+  const [loadingText, setLoadingText] = useState(false);
+
+  // Effective file info
+  const effectiveFileInfo = localFileInfo || fileInfo;
+
+  // Calculate file properties safely (must be after hooks)
+  const fileName = useMemo(() => effectiveFileInfo?.originalName?.toLowerCase() || effectiveFileInfo?.filename?.toLowerCase() || '', [effectiveFileInfo]);
+  const fileExtension = useMemo(() => effectiveFileInfo?.extension?.toLowerCase() || '', [effectiveFileInfo]);
+  const mimeType = useMemo(() => effectiveFileInfo?.mimeType || '', [effectiveFileInfo]);
+
+  // Determine file type (memoized to avoid hooks order issues)
+  const isText = useMemo(() =>
+    mimeType.startsWith('text/') || /\.(txt|log|json|xml|yaml|yml|ini|conf)$/i.test(fileName),
+    [mimeType, fileName]
+  );
+  const isMarkdown = useMemo(() =>
+    /\.(md|markdown)$/i.test(fileName),
+    [fileName]
+  );
+  const isImage = useMemo(() =>
+    mimeType.startsWith('image/') || /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(fileName),
+    [mimeType, fileName]
+  );
+  const isPdf = useMemo(() =>
+    mimeType === 'application/pdf' || fileExtension === 'pdf' || fileName.endsWith('.pdf'),
+    [mimeType, fileExtension, fileName]
+  );
+  const isVideo = useMemo(() =>
+    mimeType.startsWith('video/') || /\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i.test(fileName),
+    [mimeType, fileName]
+  );
+  const isAudio = useMemo(() =>
+    mimeType.startsWith('audio/') || /\.(mp3|wav|ogg|aac|flac|m4a|wma)$/i.test(fileName),
+    [mimeType, fileName]
+  );
+  const isWord = useMemo(() =>
+    /\.(doc|docx)$/i.test(fileName) || mimeType.includes('word') || mimeType.includes('msword'),
+    [mimeType, fileName]
+  );
+  const isExcel = useMemo(() =>
+    /\.(xls|xlsx)$/i.test(fileName) || mimeType.includes('excel') || mimeType.includes('spreadsheet'),
+    [mimeType, fileName]
+  );
 
   // Fetch file info when modal opens
   useEffect(() => {
     if (opened && fileId && !fileInfo) {
-      setLoading(true);
+      setLoadingInfo(true);
       fetch(`/api/core-files/${fileId}`)
         .then(res => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-          }
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.json();
         })
         .then(data => {
-          // API returns { success: true, data: { file: {...} } } or { file: {...} }
           const fileData = data?.data?.file || data?.file;
           if (fileData) {
             setLocalFileInfo(fileData);
-          } else {
-            console.error('File data not found in response:', data);
           }
         })
         .catch(err => console.error('Error fetching file info:', err))
-        .finally(() => setLoading(false));
+        .finally(() => setLoadingInfo(false));
     } else if (fileInfo) {
       setLocalFileInfo(fileInfo);
     }
   }, [opened, fileId, fileInfo]);
 
-  // Fetch text content for text files
+  // Load text content when file changes
   useEffect(() => {
-    if (!opened || !fileId || !localFileInfo) return;
-
-    const mime = localFileInfo.mimeType;
-    if (mime.startsWith('text/') || mime === 'application/json' ||
-        mime === 'application/javascript' || mime === 'application/xml') {
-      fetch(`/api/core-files/${fileId}/download`)
+    if (opened && fileId && effectiveFileInfo && (isText || isMarkdown)) {
+      setLoadingText(true);
+      fetch(`/api/core-files/${fileId}/download?inline=true`)
         .then(res => res.text())
-        .then(content => setTextContent(content))
-        .catch(err => console.error('Error fetching text content:', err));
+        .then(text => {
+          setTextContent(text);
+          setLoadingText(false);
+        })
+        .catch(err => {
+          console.error('Error loading text file:', err);
+          setTextContent('Dosya yüklenirken hata oluştu.');
+          setLoadingText(false);
+        });
+    } else {
+      setTextContent('');
     }
-  }, [opened, fileId, localFileInfo]);
+  }, [opened, fileId, effectiveFileInfo?.id, isText, isMarkdown]);
 
   // Reset state when modal closes
   useEffect(() => {
     if (!opened) {
       setLocalFileInfo(null);
-      setTextContent(null);
+      setTextContent('');
     }
   }, [opened]);
 
-  const effectiveFileInfo = localFileInfo || fileInfo;
-
   if (!fileId) return null;
 
-  const downloadUrl = `/api/core-files/${fileId}/download`;
-  const mimeType = effectiveFileInfo?.mimeType || '';
-  const extension = effectiveFileInfo?.extension?.toLowerCase() || '';
+  const downloadUrl = `/api/core-files/${fileId}/download?inline=true`;
 
-  const renderPreview = () => {
-    if (loading) {
-      return (
-        <Box ta="center" py="xl">
-          <Text c="dimmed">{t('mediaGallery.loading') || 'Loading...'}</Text>
-        </Box>
-      );
-    }
+  const formatFileSize = (bytes?: number) => {
+    if (!bytes) return '-';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+  };
 
-    // Image preview
-    if (mimeType.startsWith('image/')) {
-      return (
-        <Image
-          src={downloadUrl}
-          alt={effectiveFileInfo?.originalName || 'Preview'}
-          fit="contain"
-          mah={500}
-        />
-      );
-    }
-
-    // PDF preview
-    if (mimeType === 'application/pdf' || extension === 'pdf') {
-      return (
-        <iframe
-          src={downloadUrl}
-          style={{ width: '100%', height: '500px', border: 'none' }}
-          title={effectiveFileInfo?.originalName || 'PDF Preview'}
-        />
-      );
-    }
-
-    // Video preview
-    if (mimeType.startsWith('video/')) {
-      return (
-        <video
-          controls
-          style={{ width: '100%', maxHeight: '500px' }}
-          src={downloadUrl}
-        >
-          {t('mediaGallery.videoNotSupported') || 'Your browser does not support the video tag.'}
-        </video>
-      );
-    }
-
-    // Audio preview
-    if (mimeType.startsWith('audio/')) {
-      return (
-        <audio controls style={{ width: '100%' }} src={downloadUrl}>
-          {t('mediaGallery.audioNotSupported') || 'Your browser does not support the audio tag.'}
-        </audio>
-      );
-    }
-
-    // Text/code preview
-    if (textContent !== null) {
-      if (mimeType === 'text/markdown' || extension === 'md') {
-        return (
-          <ScrollArea h={400}>
-            <Paper p="md">
-              <ReactMarkdown>{textContent}</ReactMarkdown>
-            </Paper>
-          </ScrollArea>
-        );
-      }
-      return (
-        <ScrollArea h={400}>
-          <Code block>{textContent}</Code>
-        </ScrollArea>
-      );
-    }
-
-    // Unsupported file type
-    return (
-      <Box ta="center" py="xl">
-        <IconFile size={64} color="gray" />
-        <Text c="dimmed" mt="md">
-          {t('mediaGallery.previewNotAvailable') || 'Preview not available for this file type'}
-        </Text>
-        <Button
-          component="a"
-          href={downloadUrl}
-          download
-          leftSection={<IconDownload size={16} />}
-          mt="md"
-        >
-          {t('mediaGallery.download') || 'Download'}
-        </Button>
-      </Box>
-    );
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = `/api/core-files/${fileId}/download`;
+    link.download = effectiveFileInfo?.originalName || 'file';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -229,19 +198,183 @@ function FilePreviewModal({ opened, onClose, fileId, fileInfo }: FilePreviewModa
       onClose={onClose}
       title={effectiveFileInfo?.originalName || t('mediaGallery.preview') || 'Preview'}
       size="xl"
+      centered
+      styles={{
+        content: { maxHeight: '90vh' },
+        body: { padding: 0 },
+      }}
     >
-      {renderPreview()}
-      <Group justify="flex-end" mt="md">
-        <Button
-          component="a"
-          href={downloadUrl}
-          download
-          leftSection={<IconDownload size={16} />}
-          variant="light"
-        >
-          {t('mediaGallery.download') || 'Download'}
-        </Button>
-      </Group>
+      <Stack gap={0} style={{ maxHeight: '80vh' }}>
+        {/* Preview Content */}
+        <div style={{
+          minHeight: '400px',
+          maxHeight: '70vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          overflow: 'auto',
+        }}>
+          {loadingInfo ? (
+            <Stack align="center" gap="md">
+              <Loader size="md" />
+              <Text size="sm" c="dimmed">{t('mediaGallery.loading') || 'Loading...'}</Text>
+            </Stack>
+          ) : isImage ? (
+            <img
+              src={downloadUrl}
+              alt={effectiveFileInfo?.originalName || 'Preview'}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '70vh',
+                objectFit: 'contain',
+                borderRadius: '8px',
+              }}
+              onError={(e) => {
+                console.error('Image load error');
+                (e.target as HTMLImageElement).src = '/placeholder-image.png';
+              }}
+            />
+          ) : isPdf ? (
+            <iframe
+              src={downloadUrl + '#toolbar=1'}
+              style={{
+                width: '100%',
+                height: '70vh',
+                border: 'none',
+                borderRadius: '8px',
+              }}
+              title={effectiveFileInfo?.originalName || 'PDF Preview'}
+            />
+          ) : isVideo ? (
+            <video
+              src={downloadUrl}
+              controls
+              style={{
+                maxWidth: '100%',
+                maxHeight: '70vh',
+                borderRadius: '8px',
+                backgroundColor: colorScheme === 'dark' ? '#1a1a1a' : '#f5f5f5',
+              }}
+            >
+              {t('mediaGallery.videoNotSupported') || 'Your browser does not support the video tag.'}
+            </video>
+          ) : isAudio ? (
+            <div style={{
+              width: '100%',
+              maxWidth: '600px',
+              padding: '24px',
+              borderRadius: '8px',
+              backgroundColor: colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+            }}>
+              <audio src={downloadUrl} controls style={{ width: '100%' }}>
+                {t('mediaGallery.audioNotSupported') || 'Your browser does not support the audio tag.'}
+              </audio>
+            </div>
+          ) : isText || isMarkdown ? (
+            <ScrollArea h="70vh" style={{ width: '100%' }}>
+              <Paper p="md" withBorder style={{
+                backgroundColor: colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+              }}>
+                {loadingText ? (
+                  <Stack align="center" gap="md">
+                    <Loader size="md" />
+                    <Text size="sm" c="dimmed">{t('mediaGallery.loading') || 'Loading...'}</Text>
+                  </Stack>
+                ) : isMarkdown ? (
+                  <div style={{
+                    color: colorScheme === 'dark' ? 'var(--mantine-color-gray-0)' : 'var(--mantine-color-dark-9)',
+                  }}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {textContent}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <Code block style={{
+                    whiteSpace: 'pre-wrap',
+                    fontFamily: 'monospace',
+                    fontSize: '14px',
+                    backgroundColor: 'transparent',
+                    color: colorScheme === 'dark' ? 'var(--mantine-color-gray-0)' : 'var(--mantine-color-dark-9)',
+                  }}>
+                    {textContent}
+                  </Code>
+                )}
+              </Paper>
+            </ScrollArea>
+          ) : isWord || isExcel ? (
+            <Paper p="xl" withBorder style={{
+              width: '100%',
+              textAlign: 'center',
+              backgroundColor: colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+            }}>
+              <Stack gap="md" align="center">
+                <Text size="64px" style={{ lineHeight: 1 }}>
+                  {isWord ? '📝' : '📊'}
+                </Text>
+                <Text size="lg" fw={500}>
+                  {isWord ? 'Word Belgesi' : 'Excel Dosyası'}
+                </Text>
+                <Text size="sm" c="dimmed" style={{ maxWidth: '400px' }}>
+                  {t('mediaGallery.previewNotAvailable') || 'Bu dosya türü tarayıcıda önizlenemez. Dosyayı indirip uygun uygulamada açabilirsiniz.'}
+                </Text>
+                <Button
+                  leftSection={<IconDownload size={16} />}
+                  onClick={handleDownload}
+                  mt="md"
+                >
+                  {t('mediaGallery.download') || 'Download'}
+                </Button>
+              </Stack>
+            </Paper>
+          ) : (
+            <Paper p="xl" withBorder style={{
+              width: '100%',
+              textAlign: 'center',
+              backgroundColor: colorScheme === 'dark' ? 'var(--mantine-color-dark-6)' : 'var(--mantine-color-gray-0)',
+            }}>
+              <Stack gap="sm" align="center">
+                <Text size="48px" style={{ lineHeight: 1 }}>📎</Text>
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('mediaGallery.previewNotAvailable') || 'Preview not available for this file type'}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {formatFileSize(effectiveFileInfo?.size)}
+                </Text>
+                <Button
+                  leftSection={<IconDownload size={16} />}
+                  onClick={handleDownload}
+                  mt="md"
+                >
+                  {t('mediaGallery.download') || 'Download'}
+                </Button>
+              </Stack>
+            </Paper>
+          )}
+        </div>
+
+        {/* Footer */}
+        <Paper p="md" withBorder style={{
+          borderTop: `1px solid ${colorScheme === 'dark' ? 'var(--mantine-color-dark-4)' : 'var(--mantine-color-gray-3)'}`,
+        }}>
+          <Group justify="space-between">
+            <Stack gap={4}>
+              <Text size="sm" fw={500}>
+                {effectiveFileInfo?.originalName || effectiveFileInfo?.filename || '-'}
+              </Text>
+              <Text size="xs" c="dimmed">
+                {formatFileSize(effectiveFileInfo?.size)} • {effectiveFileInfo?.mimeType || '-'}
+              </Text>
+            </Stack>
+            <Button
+              leftSection={<IconDownload size={16} />}
+              onClick={handleDownload}
+            >
+              {t('mediaGallery.download') || 'Download'}
+            </Button>
+          </Group>
+        </Paper>
+      </Stack>
     </Modal>
   );
 }
