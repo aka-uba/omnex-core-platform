@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Stack, Alert, Text, Paper, Badge, Group, Progress, RingProgress, Button, useMantineColorScheme } from '@mantine/core';
+import { Container, Alert, Text, Paper, Badge, Group, RingProgress, Stack, Button, useMantineColorScheme } from '@mantine/core';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
@@ -9,30 +9,20 @@ import {
   IconHome,
   IconUsers,
   IconFileText,
-  IconCurrencyDollar,
+  IconCurrencyEuro,
   IconCalendar,
   IconTools,
-  IconArrowUpRight,
-  IconArrowDownRight,
   IconMap,
-  IconCheck,
-  IconHome2,
-  IconTrendingUp,
   IconArrowRight,
-  IconChartPie,
-  IconActivity
 } from '@tabler/icons-react';
 import { useRealEstateDashboard } from '@/hooks/useRealEstateDashboard';
-import { StatisticsCards } from '@/modules/real-estate/components/dashboard/StatisticsCards';
 import { DashboardCharts } from '@/modules/real-estate/components/dashboard/DashboardCharts';
 import { RecentActivity } from '@/modules/real-estate/components/dashboard/RecentActivity';
-import { UpcomingEvents } from '@/modules/real-estate/components/dashboard/UpcomingEvents';
 import { DashboardSkeleton } from '@/modules/dashboard/components/DashboardSkeleton';
 import { PropertyMap } from '@/modules/real-estate/components/PropertyMap';
 import { useProperties } from '@/hooks/useProperties';
 import { useApartments } from '@/hooks/useApartments';
-import { useMemo, useState } from 'react';
-import dayjs from 'dayjs';
+import { useMemo } from 'react';
 
 export function RealEstateDashboardClient() {
   const params = useParams();
@@ -42,7 +32,6 @@ export function RealEstateDashboardClient() {
   const { t: tGlobal } = useTranslation('global');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
-  const [activeView, setActiveView] = useState<'v1' | 'v2'>('v2');
 
   const { data, isLoading, error } = useRealEstateDashboard();
   const { data: propertiesData } = useProperties({ page: 1, pageSize: 1000 });
@@ -82,36 +71,7 @@ export function RealEstateDashboardClient() {
         ]}
       />
 
-      {/* Version Toggle */}
-      <div className="flex items-center justify-end gap-2 mt-4 mb-6">
-        <Text size="sm" c="dimmed">Tasarım:</Text>
-        <div className="flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-          <button
-            onClick={() => setActiveView('v1')}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
-              activeView === 'v1'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
-          >
-            V1 - Mevcut
-          </button>
-          <button
-            onClick={() => setActiveView('v2')}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
-              activeView === 'v2'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
-          >
-            V2 - Yeni (Tailwind + Map)
-          </button>
-        </div>
-      </div>
-
-      {activeView === 'v1' ? (
-        /* ===== V1 - MEVCUT TASARIM ===== */
-        <Stack gap="xl" mt="xl">
+      <div className="mt-6 space-y-6">
           {isLoading ? (
             <DashboardSkeleton />
           ) : error ? (
@@ -122,43 +82,8 @@ export function RealEstateDashboardClient() {
             <Text c="dimmed">{tGlobal('common.noData')}</Text>
           ) : (
             <>
-              {/* Statistics Cards */}
-              <StatisticsCards statistics={data.statistics} loading={isLoading} />
-
-              {/* Charts */}
-              <DashboardCharts
-                statistics={data.statistics}
-                revenue={data.revenue}
-                loading={isLoading}
-              />
-
-              {/* Upcoming Events */}
-              <UpcomingEvents
-                upcomingPayments={data.upcomingPayments}
-                expiringContracts={data.expiringContracts}
-                loading={isLoading}
-              />
-
-              {/* Recent Activity */}
-              <RecentActivity activities={data.recentActivity} loading={isLoading} />
-            </>
-          )}
-        </Stack>
-      ) : (
-        /* ===== V2 - YENİ MODERN TASARIM (Tailwind + Mantine Hibrit) ===== */
-        <div className="mt-6 space-y-6">
-          {isLoading ? (
-            <DashboardSkeleton />
-          ) : error ? (
-            <Alert color="red" title={tGlobal('common.error')}>
-              {error instanceof Error ? error.message : tGlobal('common.errorLoading')}
-            </Alert>
-          ) : !data ? (
-            <Text c="dimmed">{tGlobal('common.noData')}</Text>
-          ) : (
-            <>
-              {/* All Stats - 8 kart tek satırda */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+              {/* All Stats - 4'lü grid, 2 satır */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {/* Properties Card */}
                 <div className={`relative overflow-hidden rounded-xl p-4 ${isDark ? 'bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-700/30' : 'bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50'}`}>
                   <div className="flex items-start justify-between">
@@ -257,10 +182,10 @@ export function RealEstateDashboardClient() {
                         {data.statistics.payments.paid} {t('payments.status.paid')}
                       </p>
                     </div>
-                    <IconCurrencyDollar className={`w-6 h-6 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
+                    <IconCurrencyEuro className={`w-6 h-6 ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
                   </div>
                   <div className="absolute -bottom-2 -right-2 opacity-10">
-                    <IconCurrencyDollar className="w-16 h-16" />
+                    <IconCurrencyEuro className="w-16 h-16" />
                   </div>
                 </div>
 
@@ -311,7 +236,7 @@ export function RealEstateDashboardClient() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className={`text-xs font-medium ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
-                        {t('dashboard.monthlyRevenue') || 'Aylık Gelir'}
+                        {t('dashboard.monthlyRevenue')}
                       </p>
                       <p className={`text-lg font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {formatCurrency(data.revenue.currentMonth ?? 0)}
@@ -324,10 +249,10 @@ export function RealEstateDashboardClient() {
                         )}
                       </div>
                     </div>
-                    <IconCurrencyDollar className={`w-6 h-6 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
+                    <IconCurrencyEuro className={`w-6 h-6 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
                   </div>
                   <div className="absolute -bottom-2 -right-2 opacity-10">
-                    <IconCurrencyDollar className="w-16 h-16" />
+                    <IconCurrencyEuro className="w-16 h-16" />
                   </div>
                 </div>
               </div>
@@ -380,7 +305,7 @@ export function RealEstateDashboardClient() {
                 <div className="space-y-6">
                   {/* Quick Actions */}
                   <Paper shadow="xs" p="md" radius="md" withBorder>
-                    <Text fw={600} mb="md">{tGlobal('common.quickActions') || 'Hızlı İşlemler'}</Text>
+                    <Text fw={600} mb="md">{t('dashboard.quickActions')}</Text>
                     <div className="grid grid-cols-2 gap-2">
                       <Button
                         variant="light"
@@ -404,7 +329,7 @@ export function RealEstateDashboardClient() {
                       <Button
                         variant="light"
                         color="violet"
-                        leftSection={<IconCurrencyDollar className="w-4 h-4" />}
+                        leftSection={<IconCurrencyEuro className="w-4 h-4" />}
                         size="sm"
                         fullWidth
                         onClick={() => router.push(`/${locale}/modules/real-estate/payments/create`)}
@@ -426,7 +351,7 @@ export function RealEstateDashboardClient() {
 
                   {/* Occupancy Ring Chart */}
                   <Paper shadow="xs" p="md" radius="md" withBorder>
-                    <Text fw={600} mb="md">{t('dashboard.occupancyRate') || 'Doluluk Oranı'}</Text>
+                    <Text fw={600} mb="md">{t('dashboard.occupancyRate')}</Text>
                     <div className="flex items-center justify-center">
                       <RingProgress
                         size={160}
@@ -450,7 +375,7 @@ export function RealEstateDashboardClient() {
                       </div>
                       <div className="text-center">
                         <Text size="lg" fw={600} c="gray">{data.statistics.apartments.vacant}</Text>
-                        <Text size="xs" c="dimmed">{t('dashboard.vacant') || 'Boş'}</Text>
+                        <Text size="xs" c="dimmed">{t('dashboard.vacant')}</Text>
                       </div>
                     </div>
                   </Paper>
@@ -504,8 +429,7 @@ export function RealEstateDashboardClient() {
               <RecentActivity activities={data.recentActivity} loading={isLoading} />
             </>
           )}
-        </div>
-      )}
+      </div>
     </Container>
   );
 }

@@ -458,7 +458,7 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
     const hoverBgColor = isDark ? '#25262b' : '#f8f9fa';
 
     return `
-      <div style="min-width: 280px; max-width: 320px; background: ${bgColor}; color: ${textColor}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <div style="width: calc(100vw - 60px); max-width: 320px; min-width: 200px; background: ${bgColor}; color: ${textColor}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box;">
         <div style="font-weight: 600; font-size: 16px; margin-bottom: 8px; color: ${textColor};">${property.name}</div>
         <div style="color: ${dimmedColor}; font-size: 14px; margin-bottom: 4px;">${property.address}</div>
         ${property.city ? `<div style="color: ${dimmedColor}; font-size: 13px; margin-bottom: 12px;">${property.district ? `${property.district}, ` : ''}${property.city}</div>` : ''}

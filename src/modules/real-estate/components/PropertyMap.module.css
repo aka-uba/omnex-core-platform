@@ -31,6 +31,28 @@
   border: none !important;
 }
 
+/* Leaflet popup responsive styles for mobile */
+:global(.leaflet-popup-content-wrapper) {
+  max-width: calc(100vw - 40px) !important;
+  overflow: hidden;
+}
+
+:global(.leaflet-popup-content) {
+  max-width: 100% !important;
+  margin: 12px !important;
+  overflow-x: hidden;
+}
+
+@media (max-width: 480px) {
+  :global(.leaflet-popup-content-wrapper) {
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  :global(.leaflet-popup-content) {
+    margin: 8px !important;
+  }
+}
+
 /* Mapbox marker wrapper */
 .mapbox-marker-wrapper {
   position: relative;
