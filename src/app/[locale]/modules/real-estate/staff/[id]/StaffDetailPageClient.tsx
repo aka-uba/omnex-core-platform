@@ -256,7 +256,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                       </Grid.Col>
                       <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
                         <Text size="sm" c="dimmed">{tUsers('table.lastActive')}</Text>
-                        <Text fw={500}>{linkedUser.lastActiveAt ? dayjs(linkedUser.lastActiveAt).format('DD.MM.YYYY HH:mm') : '-'}</Text>
+                        <Text fw={500}>{linkedUser.lastActive ? dayjs(linkedUser.lastActive).format('DD.MM.YYYY HH:mm') : '-'}</Text>
                       </Grid.Col>
                     </Grid>
                   </Stack>
@@ -286,10 +286,6 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                       <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
                         <Text size="sm" c="dimmed">{tUsers('form.work.hireDate')}</Text>
                         <Text fw={500}>{linkedUser.hireDate ? dayjs(linkedUser.hireDate).format('DD.MM.YYYY') : '-'}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
-                        <Text size="sm" c="dimmed">{tUsers('form.work.manager')}</Text>
-                        <Text fw={500}>{linkedUser.manager || '-'}</Text>
                       </Grid.Col>
                     </Grid>
                   </Stack>
