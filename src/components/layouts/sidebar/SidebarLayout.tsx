@@ -10,6 +10,7 @@ import { useMantineColorScheme, Menu, Avatar, Text } from '@mantine/core';
 import { IconSun, IconMoon, IconSearch, IconChevronLeft, IconChevronRight, IconUser, IconLogout, IconLayoutNavbar, IconMaximize, IconMinimize } from '@tabler/icons-react';
 import { LanguageSelector } from '@/components/language/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
+import { useCompany } from '@/context/CompanyContext';
 import { useRouter } from 'next/navigation';
 import { useLayout } from '../core/LayoutProvider';
 import { ThemeConfigurator } from '../configurator/ThemeConfigurator';
@@ -20,11 +21,6 @@ import { NotificationBell } from '@/modules/notifications/components/Notificatio
 import { useTranslation } from '@/lib/i18n/client';
 import styles from './SidebarLayout.module.css';
 
-interface FooterSettings {
-  companyName: string;
-  companyNameMode: 'dynamic' | 'custom';
-}
-
 interface SidebarLayoutProps {
   children: React.ReactNode;
 }
@@ -34,11 +30,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { config, applyChanges, isMobile } = useLayout();
   const { user, logout, refreshUser } = useAuth();
+  const { company } = useCompany();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(config.sidebar?.collapsed || false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [companyName, setCompanyName] = useState<string>('Omnex-Core');
 
   useEffect(() => {
     setMounted(true);
@@ -69,49 +65,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     }
   }, [user?.id, mounted]);
 
-  // Fetch company name from footer customization
-  useEffect(() => {
-    const fetchCompanyName = async () => {
-      try {
-        const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
-        const response = await fetchWithAuth('/api/footer-customization');
-        
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success && result.data) {
-            const data = result.data as FooterSettings;
-            if (data.companyNameMode === 'custom' && data.companyName) {
-              setCompanyName(data.companyName);
-            } else if (data.companyNameMode === 'dynamic') {
-              // For dynamic mode, get from tenant context
-              try {
-                const tenantResponse = await fetchWithAuth('/api/tenant-context');
-                if (tenantResponse.ok) {
-                  const tenantData = await tenantResponse.json();
-                  if (tenantData.success && tenantData.data?.name) {
-                    setCompanyName(tenantData.data.name);
-                  }
-                }
-              } catch {
-                // Fallback to default
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching company name:', error);
-        // Fallback to default
-      }
-    };
-
-    if (mounted) {
-      fetchCompanyName();
-    }
-  }, [mounted]);
+  // Get company name from CompanyContext
+  const companyName = company?.name || 'Omnex-Core';
 
   // Truncate company name if too long (max 30 characters)
-  const displayCompanyName = companyName.length > 30 
-    ? `${companyName.substring(0, 27)}...` 
+  const displayCompanyName = companyName.length > 30
+    ? `${companyName.substring(0, 27)}...`
     : companyName;
 
   // Sidebar collapse değişikliğini config'e kaydet

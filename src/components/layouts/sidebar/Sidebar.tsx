@@ -405,21 +405,32 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
               />
             ) : (
               <>
-                <h1
-                  {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
-                  style={mounted && autoColors ? { color: autoColors.textColor } : undefined}
-                >
-                  {company?.name || 'Omnex-Core'}
-                </h1>
-                <p
-                  {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}
-                  style={mounted && autoColors ? {
-                    color: autoColors.textColor,
-                    opacity: 0.8
-                  } : undefined}
-                >
-                  {company?.name ? 'Omnex-Core' : 'Agency OS'}
-                </p>
+                {(() => {
+                  // Split company name into two lines (first word on line 1, rest on line 2)
+                  const fullName = company?.name || 'Omnex-Core';
+                  const words = fullName.split(' ');
+                  const firstWord = words[0] || fullName;
+                  const restWords = words.slice(1).join(' ');
+                  return (
+                    <>
+                      <h1
+                        {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
+                        style={mounted && autoColors ? { color: autoColors.textColor } : undefined}
+                      >
+                        {firstWord}
+                      </h1>
+                      <p
+                        {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}
+                        style={mounted && autoColors ? {
+                          color: autoColors.textColor,
+                          opacity: 0.8
+                        } : undefined}
+                      >
+                        {restWords || 'Agency OS'}
+                      </p>
+                    </>
+                  );
+                })()}
               </>
             )}
           </div>
