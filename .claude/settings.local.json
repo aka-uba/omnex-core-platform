@@ -62,7 +62,8 @@
       "Bash(PGPASSWORD=postgres psql:*)",
       "Bash(npx tsx:*)",
       "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -d omnex_core -c \"SELECT id, name, slug, status, \"\"currentDb\"\" FROM \"\"Tenant\"\";\")",
-      "Bash(git cherry-pick:*)"
+      "Bash(git cherry-pick:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

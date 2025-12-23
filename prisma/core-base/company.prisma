@@ -12,6 +12,10 @@ model Company {
   // Kurumsal bilgiler (Template'ler için gerekli)
   logo             String? // Logo URL
   logoFile         String? // Logo dosya yolu
+  favicon          String? // Favicon URL
+  faviconFile      String? // Favicon dosya yolu
+  pwaIcon          String? // PWA icon URL
+  pwaIconFile      String? // PWA icon dosya yolu
   address          String? // Adres
   city             String?
   state            String?

@@ -8,12 +8,24 @@ import { verifyAuth } from '@/lib/auth/jwt';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
+
+type ImageType = 'logo' | 'favicon' | 'pwaIcon';
+
+interface UploadResponse {
+  logoUrl?: string;
+  logoFile?: string;
+  faviconUrl?: string;
+  faviconFile?: string;
+  pwaIconUrl?: string;
+  pwaIconFile?: string;
+}
+
 /**
  * POST /api/company/logo
- * Upload company logo
+ * Upload company logo, favicon, or PWA icon
  */
 export async function POST(request: NextRequest) {
-  return withTenant<ApiResponse<{ logoUrl: string; logoFile: string }>>(
+  return withTenant<ApiResponse<UploadResponse>>(
     request,
     async (tenantPrisma) => {
       try {
@@ -29,6 +41,7 @@ export async function POST(request: NextRequest) {
 
         const formData = await request.formData();
         const file = formData.get('file') as File;
+        const imageType = (formData.get('type') as ImageType) || 'logo';
         const companyIdFromForm = formData.get('companyId') as string | null;
         const companyId = companyIdFromForm || (await getCompanyIdFromBody({ companyId: companyIdFromForm }, tenantPrisma)) || undefined;
 
@@ -47,7 +60,6 @@ export async function POST(request: NextRequest) {
           const user = await tenantPrisma.user.findFirst({
             where: {
               id: authResult.payload.userId,
-              // companyId check removed - User model doesn't have companyId
             },
             select: { id: true },
           });
@@ -56,16 +68,23 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        // Validate file type
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
-        if (!allowedTypes.includes(file.type)) {
-          return errorResponse('Invalid file type', 'Only image files are allowed', 400);
+        // Validate file type based on image type
+        const allowedTypes: Record<ImageType, string[]> = {
+          logo: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
+          favicon: ['image/x-icon', 'image/vnd.microsoft.icon', 'image/png', 'image/svg+xml', 'image/gif'],
+          pwaIcon: ['image/png', 'image/svg+xml'],
+        };
+
+        // For .ico files, the type might be empty or application/octet-stream
+        const isIcoFile = file.name.toLowerCase().endsWith('.ico');
+        if (!isIcoFile && !allowedTypes[imageType].includes(file.type)) {
+          return errorResponse('Invalid file type', `Only ${imageType === 'favicon' ? 'ICO, PNG, SVG, GIF' : imageType === 'pwaIcon' ? 'PNG, SVG' : 'image'} files are allowed`, 400);
         }
 
-        // Validate file size (max 5MB)
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        // Validate file size (max 5MB for logo, 1MB for favicon/pwaIcon)
+        const maxSize = imageType === 'logo' ? 5 * 1024 * 1024 : 1 * 1024 * 1024;
         if (file.size > maxSize) {
-          return errorResponse('File too large', 'File size must be less than 5MB', 400);
+          return errorResponse('File too large', `File size must be less than ${imageType === 'logo' ? '5MB' : '1MB'}`, 400);
         }
 
         // Create upload directory
@@ -77,7 +96,7 @@ export async function POST(request: NextRequest) {
         // Generate unique filename
         const timestamp = Date.now();
         const extension = file.name.split('.').pop();
-        const filename = `logo-${timestamp}.${extension}`;
+        const filename = `${imageType}-${timestamp}.${extension}`;
         const filePath = join(uploadDir, filename);
 
         // Save file
@@ -86,24 +105,43 @@ export async function POST(request: NextRequest) {
         await writeFile(filePath, buffer);
 
         // Generate URL
-        const logoUrl = `/uploads/companies/${companyId}/${filename}`;
-        const logoFile = `uploads/companies/${companyId}/${filename}`;
+        const imageUrl = `/uploads/companies/${companyId}/${filename}`;
+        const imageFile = `uploads/companies/${companyId}/${filename}`;
 
-        // Update company logo
+        // Update company based on image type
+        const updateData: Record<string, string> = {};
+        if (imageType === 'logo') {
+          updateData.logo = imageUrl;
+          updateData.logoFile = imageFile;
+        } else if (imageType === 'favicon') {
+          updateData.favicon = imageUrl;
+          updateData.faviconFile = imageFile;
+        } else if (imageType === 'pwaIcon') {
+          updateData.pwaIcon = imageUrl;
+          updateData.pwaIconFile = imageFile;
+        }
+
         await tenantPrisma.company.update({
           where: { id: companyId },
-          data: {
-            logo: logoUrl,
-            logoFile: logoFile,
-          },
+          data: updateData,
         });
 
-        return successResponse({
-          logoUrl,
-          logoFile,
-        });
+        // Return response based on image type
+        const response: UploadResponse = {};
+        if (imageType === 'logo') {
+          response.logoUrl = imageUrl;
+          response.logoFile = imageFile;
+        } else if (imageType === 'favicon') {
+          response.faviconUrl = imageUrl;
+          response.faviconFile = imageFile;
+        } else if (imageType === 'pwaIcon') {
+          response.pwaIconUrl = imageUrl;
+          response.pwaIconFile = imageFile;
+        }
+
+        return successResponse(response);
       } catch (error: any) {
-        return errorResponse('Failed to upload logo', error.message || 'An error occurred', 500);
+        return errorResponse('Failed to upload image', error.message || 'An error occurred', 500);
       }
     },
     { required: true }
