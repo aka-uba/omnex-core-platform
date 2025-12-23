@@ -75,8 +75,8 @@ export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTab
           <Text fw={600} size="lg">{t('form.personal.userDetails')}</Text>
           <Text size="sm" c="dimmed">{t('form.personal.userDetailsDescription')}</Text>
         </div>
-        <Grid>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
             <TextInput
               label={t('form.personal.fullName')}
               placeholder={t('form.personal.fullNamePlaceholder')}
@@ -84,7 +84,7 @@ export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTab
               {...form.getInputProps('personal.fullName')}
             />
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
             <TextInput
               label={t('form.personal.email')}
               placeholder="john.doe@example.com"
@@ -93,7 +93,7 @@ export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTab
               {...form.getInputProps('personal.email')}
             />
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
             <TextInput
               label={t('form.personal.phone')}
               placeholder="+90 555 123 4567"
@@ -111,15 +111,15 @@ export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTab
           <Text fw={600} size="lg">{t('form.personal.credentials')}</Text>
           <Text size="sm" c="dimmed">{t('form.personal.credentialsDescription')}</Text>
         </div>
-        <Grid>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, sm: 6 }}>
             <PasswordInput
               label={t('form.personal.password')}
               required
               {...form.getInputProps('personal.password')}
             />
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+          <Grid.Col span={{ base: 12, sm: 6 }}>
             <PasswordInput
               label={t('form.personal.confirmPassword')}
               required

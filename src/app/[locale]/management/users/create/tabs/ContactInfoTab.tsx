@@ -28,46 +28,53 @@ export function ContactInfoTab({ form }: ContactInfoTabProps) {
 
       <Divider />
 
-      <Grid>
-        <Grid.Col span={{ base: 12 }}>
+      <Grid gutter="md">
+        {/* Row 1: Address (full width on small, 2/3 on large) */}
+        <Grid.Col span={{ base: 12, lg: 8 }}>
           <TextInput
             label={t('form.contact.address')}
             placeholder={t('form.contact.addressPlaceholder')}
             {...form.getInputProps('contact.address')}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <TextInput
-            label={t('form.contact.city')}
-            placeholder={t('form.contact.cityPlaceholder')}
-            {...form.getInputProps('contact.city')}
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <TextInput
-            label={t('form.contact.country')}
-            placeholder={t('form.contact.countryPlaceholder')}
-            {...form.getInputProps('contact.country')}
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
           <TextInput
             label={t('form.contact.postalCode')}
             placeholder={t('form.contact.postalCodePlaceholder')}
             {...form.getInputProps('contact.postalCode')}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12 }}>
-          <Divider my="md" />
+
+        {/* Row 2: City, Country */}
+        <Grid.Col span={{ base: 12, sm: 6, lg: 6 }}>
+          <TextInput
+            label={t('form.contact.city')}
+            placeholder={t('form.contact.cityPlaceholder')}
+            {...form.getInputProps('contact.city')}
+          />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 6 }}>
+          <TextInput
+            label={t('form.contact.country')}
+            placeholder={t('form.contact.countryPlaceholder')}
+            {...form.getInputProps('contact.country')}
+          />
+        </Grid.Col>
+
+        {/* Divider for Emergency Contact section */}
+        <Grid.Col span={{ base: 12 }}>
+          <Divider my="md" label={t('form.contact.emergencySection')} labelPosition="left" />
+        </Grid.Col>
+
+        {/* Row 3: Emergency Contact, Emergency Phone */}
+        <Grid.Col span={{ base: 12, sm: 6 }}>
           <TextInput
             label={t('form.contact.emergencyContact')}
             placeholder={t('form.contact.emergencyContactPlaceholder')}
             {...form.getInputProps('contact.emergencyContact')}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
           <TextInput
             label={t('form.contact.emergencyPhone')}
             placeholder={t('form.contact.emergencyPhonePlaceholder')}
