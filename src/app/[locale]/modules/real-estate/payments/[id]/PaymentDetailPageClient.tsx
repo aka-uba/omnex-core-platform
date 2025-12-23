@@ -234,7 +234,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                                   fw={600}
                                   size="md"
                                 >
-                                  {property.name || t('common.unnamed')}
+                                  {property.name || tGlobal('common.noData')}
                                 </Anchor>
                                 {(property.address || property.city) && (
                                   <Group gap="xs">
@@ -263,7 +263,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                                   fw={600}
                                   size="md"
                                 >
-                                  {t('apartments.unit')} {apartment.unitNumber}
+                                  {t('apartments.form.unit')} {apartment.unitNumber}
                                 </Anchor>
                               </Stack>
                             </Group>
@@ -284,7 +284,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                                   fw={600}
                                   size="md"
                                 >
-                                  {[contract.tenantRecord.firstName, contract.tenantRecord.lastName].filter(Boolean).join(' ') || t('common.unnamed')}
+                                  {[contract.tenantRecord.firstName, contract.tenantRecord.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
                                 </Anchor>
                                 {(contract.tenantRecord.email || contract.tenantRecord.phone) && (
                                   <Text size="sm" c="dimmed">
@@ -310,7 +310,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                                   fw={600}
                                   size="md"
                                 >
-                                  {contract.contractNumber || t('common.unnamed')}
+                                  {contract.contractNumber || tGlobal('common.noData')}
                                 </Anchor>
                               </Stack>
                             </Group>
