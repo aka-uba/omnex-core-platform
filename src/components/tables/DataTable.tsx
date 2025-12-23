@@ -773,7 +773,7 @@ export function DataTable({
         {/* Toolbar */}
         {searchable && (
           <Stack gap="sm" mb="md" {...(classes.toolbar ? { className: classes.toolbar } : {})}>
-            {/* First Row: Search + Export Icons (mobile: stacked, desktop: inline) */}
+            {/* First Row: Search + Filter + Export Icons (mobile: stacked, desktop: inline) */}
             <Group justify="space-between" wrap={isMobile ? 'wrap' : 'nowrap'} gap="sm" style={{ width: '100%' }}>
               <TextInput
                 placeholder={tGlobal('table.search.placeholder')}
@@ -786,30 +786,7 @@ export function DataTable({
                 {...(classes.searchInput ? { className: classes.searchInput } : {})}
                 style={{ flex: 1, minWidth: isMobile ? '100%' : 200 }}
               />
-              {/* Export Icons - Always visible on same row on desktop, separate row on mobile */}
-              {showExportIcons && !isMobile && (
-                <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
-                  {exportOptions.map((option) => {
-                    const Icon = option.icon;
-                    const isDisabled = !onExport && !exportHook;
-                    return (
-                      <ActionIcon
-                        key={option.value}
-                        variant={isDisabled ? "transparent" : "subtle"}
-                        color={isDisabled ? "gray" : option.color}
-                        size="lg"
-                        onClick={() => !isDisabled && handleExport(option.value)}
-                        title={isDisabled ? tGlobal('table.export.providerRequired') : `${option.label} (${exportScope === 'all' ? tGlobal('table.export.all') : exportScope === 'current-page' ? tGlobal('table.export.currentPage') : tGlobal('table.export.selected')})`}
-                        style={{ flexShrink: 0, opacity: isDisabled ? 0.5 : 1 }}
-                        disabled={isDisabled}
-                      >
-                        <Icon size={18} />
-                      </ActionIcon>
-                    );
-                  })}
-                </Group>
-              )}
-              {/* Filter & Column Settings - Desktop only inline */}
+              {/* Filter, Column Settings & Export Icons - Desktop only, right aligned */}
               {!isMobile && (
                 <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
                   {filters.length > 0 && (
@@ -839,6 +816,29 @@ export function DataTable({
                     >
                       <IconLayout size={20} />
                     </ActionIcon>
+                  )}
+                  {/* Export Icons - Right aligned next to filter button */}
+                  {showExportIcons && (
+                    <>
+                      {exportOptions.map((option) => {
+                        const Icon = option.icon;
+                        const isDisabled = !onExport && !exportHook;
+                        return (
+                          <ActionIcon
+                            key={option.value}
+                            variant={isDisabled ? "transparent" : "subtle"}
+                            color={isDisabled ? "gray" : option.color}
+                            size="lg"
+                            onClick={() => !isDisabled && handleExport(option.value)}
+                            title={isDisabled ? tGlobal('table.export.providerRequired') : `${option.label} (${exportScope === 'all' ? tGlobal('table.export.all') : exportScope === 'current-page' ? tGlobal('table.export.currentPage') : tGlobal('table.export.selected')})`}
+                            style={{ flexShrink: 0, opacity: isDisabled ? 0.5 : 1 }}
+                            disabled={isDisabled}
+                          >
+                            <Icon size={18} />
+                          </ActionIcon>
+                        );
+                      })}
+                    </>
                   )}
                 </Group>
               )}
