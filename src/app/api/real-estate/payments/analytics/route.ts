@@ -118,6 +118,8 @@ export async function GET(request: NextRequest) {
               tenantRecord: {
                 select: {
                   id: true,
+                  tenantType: true,
+                  companyName: true,
                   firstName: true,
                   lastName: true,
                 },
@@ -262,7 +264,9 @@ export async function GET(request: NextRequest) {
           const property = p.apartment?.property;
           const tenant = p.contract?.tenantRecord;
           const tenantName = tenant
-            ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+            ? (tenant.tenantType === 'company' && tenant.companyName
+                ? tenant.companyName
+                : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim()) || '-'
             : '-';
           const propertyAddress = property
             ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'
@@ -308,6 +312,8 @@ export async function GET(request: NextRequest) {
           tenantRecord: {
             select: {
               id: true,
+              tenantType: true,
+              companyName: true,
               firstName: true,
               lastName: true,
             },
@@ -385,7 +391,9 @@ export async function GET(request: NextRequest) {
             const property = contract.apartment?.property;
             const tenant = contract.tenantRecord;
             const tenantName = tenant
-              ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+              ? (tenant.tenantType === 'company' && tenant.companyName
+                  ? tenant.companyName
+                  : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim()) || '-'
               : '-';
             const propertyAddress = property
               ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'
@@ -440,7 +448,9 @@ export async function GET(request: NextRequest) {
           const property = p.apartment?.property;
           const tenant = p.contract?.tenantRecord;
           const tenantName = tenant
-            ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+            ? (tenant.tenantType === 'company' && tenant.companyName
+                ? tenant.companyName
+                : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim()) || '-'
             : '-';
           const propertyAddress = property
             ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'

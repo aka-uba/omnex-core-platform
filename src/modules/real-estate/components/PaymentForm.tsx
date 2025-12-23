@@ -188,10 +188,10 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
 
               return (
                 <Card withBorder p="sm" radius="md" bg="var(--mantine-color-default-hover)">
-                  <Group gap="lg" wrap="wrap">
+                  <Group gap="lg" wrap="wrap" align="flex-start">
                     {/* Property */}
                     {property && (
-                      <Group gap="xs">
+                      <Group gap="xs" align="flex-start">
                         <ThemeIcon variant="light" color="blue" size="sm">
                           <IconBuilding size={14} />
                         </ThemeIcon>
@@ -218,7 +218,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
 
                     {/* Apartment */}
                     {apartment && (
-                      <Group gap="xs">
+                      <Group gap="xs" align="flex-start">
                         <ThemeIcon variant="light" color="green" size="sm">
                           <IconHome size={14} />
                         </ThemeIcon>
@@ -237,7 +237,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
 
                     {/* Tenant */}
                     {tenant && (
-                      <Group gap="xs">
+                      <Group gap="xs" align="flex-start">
                         <ThemeIcon variant="light" color="orange" size="sm">
                           <IconUser size={14} />
                         </ThemeIcon>
@@ -248,7 +248,9 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
                             size="sm"
                             fw={500}
                           >
-                            {[tenant.firstName, tenant.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
+                            {tenant.tenantType === 'company' && tenant.companyName
+                              ? tenant.companyName
+                              : [tenant.firstName, tenant.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
                           </Anchor>
                           {(tenant.email || tenant.phone) && (
                             <Text size="xs" c="dimmed">

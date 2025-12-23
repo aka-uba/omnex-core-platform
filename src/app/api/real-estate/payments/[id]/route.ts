@@ -48,6 +48,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               tenantRecord: {
                 select: {
                   id: true,
+                  tenantType: true,
+                  companyName: true,
                   firstName: true,
                   lastName: true,
                   email: true,

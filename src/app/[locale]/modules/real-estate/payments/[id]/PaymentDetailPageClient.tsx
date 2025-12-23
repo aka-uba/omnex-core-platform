@@ -209,151 +209,159 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                   </Grid>
                 </Stack>
 
-                {/* Hierarchical Location & Tenant Information */}
-                {(apartment || contract || property) && (
-                  <>
-                    <Divider />
-                    <Stack gap="md">
-                      <Text fw={600} size="lg">{t('payments.detail.relatedInfo')}</Text>
-
-                      {/* Property -> Apartment -> Tenant hierarchy */}
-                      <Card withBorder p="md" radius="md" bg="var(--mantine-color-default-hover)">
-                        <Stack gap="sm">
-                          {/* Property (Building) */}
-                          {property && (
-                            <Group gap="sm" align="flex-start">
-                              <ThemeIcon variant="light" color="blue" size="lg">
-                                <IconBuilding size={18} />
-                              </ThemeIcon>
-                              <Stack gap={2} style={{ flex: 1 }}>
-                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-                                  {t('properties.title')}
-                                </Text>
-                                <Anchor
-                                  href={`/${currentLocale}/modules/real-estate/properties/${property.id}`}
-                                  fw={600}
-                                  size="md"
-                                >
-                                  {property.name || tGlobal('common.noData')}
-                                </Anchor>
-                                {(property.address || property.city) && (
-                                  <Group gap="xs">
-                                    <IconMapPin size={14} style={{ opacity: 0.7 }} />
-                                    <Text size="sm" c="dimmed">
-                                      {[property.address, property.city].filter(Boolean).join(', ')}
-                                    </Text>
-                                  </Group>
-                                )}
-                              </Stack>
-                            </Group>
-                          )}
-
-                          {/* Apartment (Unit) */}
-                          {apartment && (
-                            <Group gap="sm" align="flex-start" ml={property ? 'xl' : 0}>
-                              <ThemeIcon variant="light" color="green" size="lg">
-                                <IconHome size={18} />
-                              </ThemeIcon>
-                              <Stack gap={2} style={{ flex: 1 }}>
-                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-                                  {t('apartments.title')}
-                                </Text>
-                                <Anchor
-                                  href={`/${currentLocale}/modules/real-estate/apartments/${apartment.id}`}
-                                  fw={600}
-                                  size="md"
-                                >
-                                  {t('apartments.form.unit')} {apartment.unitNumber}
-                                </Anchor>
-                              </Stack>
-                            </Group>
-                          )}
-
-                          {/* Tenant (from contract) */}
-                          {contract?.tenantRecord && (
-                            <Group gap="sm" align="flex-start" ml={apartment ? 'xl' : 0}>
-                              <ThemeIcon variant="light" color="orange" size="lg">
-                                <IconUser size={18} />
-                              </ThemeIcon>
-                              <Stack gap={2} style={{ flex: 1 }}>
-                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-                                  {t('tenants.title')}
-                                </Text>
-                                <Anchor
-                                  href={`/${currentLocale}/modules/real-estate/tenants/${contract.tenantRecord.id}`}
-                                  fw={600}
-                                  size="md"
-                                >
-                                  {[contract.tenantRecord.firstName, contract.tenantRecord.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
-                                </Anchor>
-                                {(contract.tenantRecord.email || contract.tenantRecord.phone) && (
-                                  <Text size="sm" c="dimmed">
-                                    {[contract.tenantRecord.email, contract.tenantRecord.phone].filter(Boolean).join(' • ')}
-                                  </Text>
-                                )}
-                              </Stack>
-                            </Group>
-                          )}
-
-                          {/* Contract */}
-                          {contract && (
-                            <Group gap="sm" align="flex-start" ml={contract?.tenantRecord ? 'xl' : (apartment ? 'xl' : 0)}>
-                              <ThemeIcon variant="light" color="violet" size="lg">
-                                <IconFileText size={18} />
-                              </ThemeIcon>
-                              <Stack gap={2} style={{ flex: 1 }}>
-                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
-                                  {t('contracts.title')}
-                                </Text>
-                                <Anchor
-                                  href={`/${currentLocale}/modules/real-estate/contracts/${contract.id}`}
-                                  fw={600}
-                                  size="md"
-                                >
-                                  {contract.contractNumber || tGlobal('common.noData')}
-                                </Anchor>
-                              </Stack>
-                            </Group>
-                          )}
-                        </Stack>
-                      </Card>
-                    </Stack>
-                  </>
-                )}
-
-                {/* Notes */}
-                {payment.notes && (
-                  <>
-                    <Divider />
-                    <Stack gap="md">
-                      <Text fw={600} size="lg">{t('payments.detail.notes')}</Text>
-                      <Text>{payment.notes}</Text>
-                    </Stack>
-                  </>
-                )}
-
-                {/* System Information */}
+                {/* Two Column Layout: Related Info (left) + Notes & System Info (right) */}
                 <Divider />
-                <Stack gap="md">
-                  <Text fw={600} size="lg">{t('payments.detail.systemInfo')}</Text>
-                  <Grid>
-                    <Grid.Col span={{ base: 12, md: 6 }}>
-                      <Text size="sm" c="dimmed">{t('payments.detail.createdAt')}</Text>
-                      <Text fw={500}>{dayjs(payment.createdAt).format('DD.MM.YYYY HH:mm')}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 6 }}>
-                      <Text size="sm" c="dimmed">{t('payments.detail.updatedAt')}</Text>
-                      <Text fw={500}>{dayjs(payment.updatedAt).format('DD.MM.YYYY HH:mm')}</Text>
-                    </Grid.Col>
-                    {payment.reminderSent && (
-                      <Grid.Col span={{ base: 12, md: 6 }}>
-                        <Badge color="blue" variant="light">
-                          {t('payments.detail.reminderSent')}
-                        </Badge>
-                      </Grid.Col>
+                <Grid>
+                  {/* Left Column: Related Info */}
+                  <Grid.Col span={{ base: 12, md: 6 }}>
+                    {(apartment || contract || property) && (
+                      <Stack gap="md">
+                        <Text fw={600} size="lg">{t('payments.detail.relatedInfo')}</Text>
+
+                        {/* Property -> Apartment -> Tenant hierarchy */}
+                        <Card withBorder p="md" radius="md" bg="var(--mantine-color-default-hover)">
+                          <Stack gap="sm">
+                            {/* Property (Building) */}
+                            {property && (
+                              <Group gap="sm" align="flex-start">
+                                <ThemeIcon variant="light" color="blue" size="lg">
+                                  <IconBuilding size={18} />
+                                </ThemeIcon>
+                                <Stack gap={2} style={{ flex: 1 }}>
+                                  <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                    {t('properties.title')}
+                                  </Text>
+                                  <Anchor
+                                    href={`/${currentLocale}/modules/real-estate/properties/${property.id}`}
+                                    fw={600}
+                                    size="md"
+                                  >
+                                    {property.name || tGlobal('common.noData')}
+                                  </Anchor>
+                                  {(property.address || property.city) && (
+                                    <Group gap="xs">
+                                      <IconMapPin size={14} style={{ opacity: 0.7 }} />
+                                      <Text size="sm" c="dimmed">
+                                        {[property.address, property.city].filter(Boolean).join(', ')}
+                                      </Text>
+                                    </Group>
+                                  )}
+                                </Stack>
+                              </Group>
+                            )}
+
+                            {/* Apartment (Unit) */}
+                            {apartment && (
+                              <Group gap="sm" align="flex-start" ml={property ? 'xl' : 0}>
+                                <ThemeIcon variant="light" color="green" size="lg">
+                                  <IconHome size={18} />
+                                </ThemeIcon>
+                                <Stack gap={2} style={{ flex: 1 }}>
+                                  <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                    {t('apartments.title')}
+                                  </Text>
+                                  <Anchor
+                                    href={`/${currentLocale}/modules/real-estate/apartments/${apartment.id}`}
+                                    fw={600}
+                                    size="md"
+                                  >
+                                    {t('apartments.form.unit')} {apartment.unitNumber}
+                                  </Anchor>
+                                </Stack>
+                              </Group>
+                            )}
+
+                            {/* Tenant (from contract) */}
+                            {contract?.tenantRecord && (
+                              <Group gap="sm" align="flex-start" ml={apartment ? 'xl' : 0}>
+                                <ThemeIcon variant="light" color="orange" size="lg">
+                                  <IconUser size={18} />
+                                </ThemeIcon>
+                                <Stack gap={2} style={{ flex: 1 }}>
+                                  <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                    {t('tenants.title')}
+                                  </Text>
+                                  <Anchor
+                                    href={`/${currentLocale}/modules/real-estate/tenants/${contract.tenantRecord.id}`}
+                                    fw={600}
+                                    size="md"
+                                  >
+                                    {(contract.tenantRecord as any).tenantType === 'company' && (contract.tenantRecord as any).companyName
+                                      ? (contract.tenantRecord as any).companyName
+                                      : [contract.tenantRecord.firstName, contract.tenantRecord.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
+                                  </Anchor>
+                                  {(contract.tenantRecord.email || contract.tenantRecord.phone) && (
+                                    <Text size="sm" c="dimmed">
+                                      {[contract.tenantRecord.email, contract.tenantRecord.phone].filter(Boolean).join(' • ')}
+                                    </Text>
+                                  )}
+                                </Stack>
+                              </Group>
+                            )}
+
+                            {/* Contract */}
+                            {contract && (
+                              <Group gap="sm" align="flex-start" ml={contract?.tenantRecord ? 'xl' : (apartment ? 'xl' : 0)}>
+                                <ThemeIcon variant="light" color="violet" size="lg">
+                                  <IconFileText size={18} />
+                                </ThemeIcon>
+                                <Stack gap={2} style={{ flex: 1 }}>
+                                  <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                    {t('contracts.title')}
+                                  </Text>
+                                  <Anchor
+                                    href={`/${currentLocale}/modules/real-estate/contracts/${contract.id}`}
+                                    fw={600}
+                                    size="md"
+                                  >
+                                    {contract.contractNumber || tGlobal('common.noData')}
+                                  </Anchor>
+                                </Stack>
+                              </Group>
+                            )}
+                          </Stack>
+                        </Card>
+                      </Stack>
                     )}
-                  </Grid>
-                </Stack>
+                  </Grid.Col>
+
+                  {/* Right Column: Notes & System Info */}
+                  <Grid.Col span={{ base: 12, md: 6 }}>
+                    <Stack gap="md">
+                      {/* Notes */}
+                      {payment.notes && (
+                        <Stack gap="xs">
+                          <Text fw={600} size="lg">{t('payments.detail.notes')}</Text>
+                          <Card withBorder p="md" radius="md" bg="var(--mantine-color-default-hover)">
+                            <Text>{payment.notes}</Text>
+                          </Card>
+                        </Stack>
+                      )}
+
+                      {/* System Information */}
+                      <Stack gap="xs">
+                        <Text fw={600} size="lg">{t('payments.detail.systemInfo')}</Text>
+                        <Card withBorder p="md" radius="md" bg="var(--mantine-color-default-hover)">
+                          <Stack gap="sm">
+                            <Group justify="space-between">
+                              <Text size="sm" c="dimmed">{t('payments.detail.createdAt')}</Text>
+                              <Text fw={500}>{dayjs(payment.createdAt).format('DD.MM.YYYY HH:mm')}</Text>
+                            </Group>
+                            <Group justify="space-between">
+                              <Text size="sm" c="dimmed">{t('payments.detail.updatedAt')}</Text>
+                              <Text fw={500}>{dayjs(payment.updatedAt).format('DD.MM.YYYY HH:mm')}</Text>
+                            </Group>
+                            {payment.reminderSent && (
+                              <Badge color="blue" variant="light">
+                                {t('payments.detail.reminderSent')}
+                              </Badge>
+                            )}
+                          </Stack>
+                        </Card>
+                      </Stack>
+                    </Stack>
+                  </Grid.Col>
+                </Grid>
               </Stack>
             </Paper>
           );
