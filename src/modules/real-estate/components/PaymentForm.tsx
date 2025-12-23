@@ -15,10 +15,13 @@ import {
   Switch,
   Text,
   ActionIcon,
+  Card,
+  ThemeIcon,
+  Anchor,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
-import { IconArrowLeft, IconX, IconPlus } from '@tabler/icons-react';
+import { IconArrowLeft, IconX, IconPlus, IconBuilding, IconHome, IconUser, IconMapPin } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreatePayment, useUpdatePayment, usePayment } from '@/hooks/usePayments';
 import { useApartments } from '@/hooks/useApartments';
@@ -172,6 +175,94 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
               {isEdit ? t('payments.edit') : t('payments.create')}
             </Text>
           </Group>
+
+          {/* Hierarchical Info Card - Show related property/apartment/tenant when editing */}
+          {isEdit && paymentData && (
+            (() => {
+              const apartment = (paymentData as any).apartment;
+              const contract = (paymentData as any).contract;
+              const property = apartment?.property;
+              const tenant = contract?.tenantRecord;
+
+              if (!apartment && !property && !tenant) return null;
+
+              return (
+                <Card withBorder p="sm" radius="md" bg="var(--mantine-color-default-hover)">
+                  <Group gap="lg" wrap="wrap">
+                    {/* Property */}
+                    {property && (
+                      <Group gap="xs">
+                        <ThemeIcon variant="light" color="blue" size="sm">
+                          <IconBuilding size={14} />
+                        </ThemeIcon>
+                        <Stack gap={0}>
+                          <Text size="xs" c="dimmed">{t('properties.title')}</Text>
+                          <Anchor
+                            href={`/${locale}/modules/real-estate/properties/${property.id}`}
+                            size="sm"
+                            fw={500}
+                          >
+                            {property.name}
+                          </Anchor>
+                          {(property.address || property.city) && (
+                            <Group gap={4}>
+                              <IconMapPin size={10} style={{ opacity: 0.6 }} />
+                              <Text size="xs" c="dimmed">
+                                {[property.address, property.city].filter(Boolean).join(', ')}
+                              </Text>
+                            </Group>
+                          )}
+                        </Stack>
+                      </Group>
+                    )}
+
+                    {/* Apartment */}
+                    {apartment && (
+                      <Group gap="xs">
+                        <ThemeIcon variant="light" color="green" size="sm">
+                          <IconHome size={14} />
+                        </ThemeIcon>
+                        <Stack gap={0}>
+                          <Text size="xs" c="dimmed">{t('apartments.title')}</Text>
+                          <Anchor
+                            href={`/${locale}/modules/real-estate/apartments/${apartment.id}`}
+                            size="sm"
+                            fw={500}
+                          >
+                            {t('apartments.form.unit')} {apartment.unitNumber}
+                          </Anchor>
+                        </Stack>
+                      </Group>
+                    )}
+
+                    {/* Tenant */}
+                    {tenant && (
+                      <Group gap="xs">
+                        <ThemeIcon variant="light" color="orange" size="sm">
+                          <IconUser size={14} />
+                        </ThemeIcon>
+                        <Stack gap={0}>
+                          <Text size="xs" c="dimmed">{t('tenants.title')}</Text>
+                          <Anchor
+                            href={`/${locale}/modules/real-estate/tenants/${tenant.id}`}
+                            size="sm"
+                            fw={500}
+                          >
+                            {[tenant.firstName, tenant.lastName].filter(Boolean).join(' ') || tGlobal('common.noData')}
+                          </Anchor>
+                          {(tenant.email || tenant.phone) && (
+                            <Text size="xs" c="dimmed">
+                              {[tenant.email, tenant.phone].filter(Boolean).join(' • ')}
+                            </Text>
+                          )}
+                        </Stack>
+                      </Group>
+                    )}
+                  </Group>
+                </Card>
+              );
+            })()
+          )}
 
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
