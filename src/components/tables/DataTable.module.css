@@ -38,20 +38,6 @@
   overflow: hidden;
 }
 
-/* Header top border */
-.tableWrapper :global(.mantine-Table-thead) {
-  border-top: 1px solid var(--border-color);
-}
-
-.tableWrapper :global(.mantine-Table-thead tr:first-child th) {
-  border-top: none;
-}
-
-/* Last row bottom border */
-.tableWrapper :global(.mantine-Table-tbody tr:last-child td) {
-  border-bottom: 1px solid var(--border-color);
-}
-
 /* Header bottom border for better separation */
 .tableWrapper :global(.mantine-Table-thead tr th) {
   border-bottom: 1px solid var(--border-color);
@@ -61,8 +47,6 @@
   border-color: var(--border-color);
 }
 
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-thead),
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-tbody tr:last-child td),
 [data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-thead tr th) {
   border-color: var(--border-color);
 }
