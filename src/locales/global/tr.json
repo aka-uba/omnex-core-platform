@@ -727,6 +727,7 @@
       "userCreateFailed": "Kullanıcı oluşturulamadı",
       "userUpdateFailed": "Kullanıcı güncellenemedi",
       "userDeleteFailed": "Kullanıcı silinemedi",
+      "statusUpdateFailed": "Durum güncellenemedi",
       "roleSaveFailed": "Rol kaydedilemedi",
       "permissionSaveFailed": "İzin kaydedilemedi",
       "generic": "Bir hata oluştu"

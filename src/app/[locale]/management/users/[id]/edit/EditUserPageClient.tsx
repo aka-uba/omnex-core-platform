@@ -9,10 +9,14 @@ import {
   Tabs,
   Button,
   Group,
+  Badge,
+  Switch,
+  Text,
+  Divider,
 } from '@mantine/core';
 import { IconUser, IconBriefcase, IconPhone, IconFileText, IconFileDescription, IconSettings, IconUserEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
-import { useUser, useUpdateUser } from '@/hooks/useUsers';
+import { useUser, useUpdateUser, useToggleUserStatus } from '@/hooks/useUsers';
 import { useTranslation } from '@/lib/i18n/client';
 import { PersonalInfoTab } from '../../create/tabs/PersonalInfoTab';
 import { WorkInfoTab } from '../../create/tabs/WorkInfoTab';
@@ -29,8 +33,9 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
   const { t } = useTranslation('modules/users');
   const { t: tGlobal } = useTranslation('global');
   const [activeTab, setActiveTab] = useState<string | null>('personal');
-  const { data: user, isLoading } = useUser(userId);
+  const { data: user, isLoading, refetch } = useUser(userId);
   const updateUser = useUpdateUser();
+  const toggleStatus = useToggleUserStatus();
 
   const form = useForm({
     initialValues: {
@@ -250,6 +255,48 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
               {t('tabs.preferences')}
             </Tabs.Tab>
           </Tabs.List>
+
+          {/* User Status Section */}
+          <Paper p="md" mt="md" mb="md" radius="md" withBorder bg="var(--mantine-color-gray-0)">
+            <Group justify="space-between" align="center">
+              <Group gap="md">
+                <Text fw={500} size="sm">{t('edit.userStatus')}</Text>
+                <Badge
+                  color={user?.status === 'active' ? 'green' : user?.status === 'pending' ? 'yellow' : 'gray'}
+                  size="lg"
+                >
+                  {user?.status === 'active' ? t('status.active') : user?.status === 'pending' ? t('status.pending') : t('status.inactive')}
+                </Badge>
+              </Group>
+              <Group gap="xs">
+                <Text size="sm" c="dimmed">{t('edit.toggleStatus')}</Text>
+                <Switch
+                  checked={user?.status === 'active'}
+                  onChange={async () => {
+                    const newStatus = user?.status === 'active' ? 'inactive' : 'active';
+                    try {
+                      await toggleStatus.mutateAsync({ userId, status: newStatus });
+                      refetch();
+                      showToast({
+                        type: 'success',
+                        title: t('edit.statusUpdated'),
+                        message: newStatus === 'active' ? t('edit.userActivated') : t('edit.userDeactivated'),
+                      });
+                    } catch (error) {
+                      showToast({
+                        type: 'error',
+                        title: tGlobal('notifications.error.title'),
+                        message: error instanceof Error ? error.message : tGlobal('notifications.error.statusUpdateFailed'),
+                      });
+                    }
+                  }}
+                  disabled={toggleStatus.isPending}
+                  size="md"
+                  color="green"
+                />
+              </Group>
+            </Group>
+          </Paper>
 
           <Tabs.Panel value="personal" pt="md">
             <PersonalInfoTab form={form as any} {...(user?.profilePicture ? { currentProfilePicture: user.profilePicture } : {})} />

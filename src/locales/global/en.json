@@ -177,7 +177,8 @@
     },
     "error": {
       "title": "Error",
-      "generic": "An error occurred"
+      "generic": "An error occurred",
+      "statusUpdateFailed": "Failed to update status"
     }
   },
   "modal": {

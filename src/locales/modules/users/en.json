@@ -9,7 +9,12 @@
   "edit": {
     "title": "Edit User",
     "description": "Update user information.",
-    "button": "Save Changes"
+    "button": "Save Changes",
+    "userStatus": "User Status",
+    "toggleStatus": "Toggle Status",
+    "statusUpdated": "Status Updated",
+    "userActivated": "User has been activated",
+    "userDeactivated": "User has been deactivated"
   },
   "profile": {
     "title": "User Profile",
@@ -114,7 +119,14 @@
     "delete": "Delete",
     "activate": "Activate",
     "deactivate": "Deactivate",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "statusUpdated": "Status Updated",
+    "userActivated": "User has been activated",
+    "userDeactivated": "User has been deactivated"
+  },
+  "quickView": {
+    "title": "Quick View",
+    "createdAt": "Created At"
   },
   "validation": {
     "fullNameRequired": "Full name is required",

@@ -9,7 +9,12 @@
   "edit": {
     "title": "Kullanıcı Düzenle",
     "description": "Kullanıcı bilgilerini güncelleyin.",
-    "button": "Değişiklikleri Kaydet"
+    "button": "Değişiklikleri Kaydet",
+    "userStatus": "Kullanıcı Durumu",
+    "toggleStatus": "Durumu Değiştir",
+    "statusUpdated": "Durum Güncellendi",
+    "userActivated": "Kullanıcı aktif edildi",
+    "userDeactivated": "Kullanıcı pasif edildi"
   },
   "profile": {
     "title": "Kullanıcı Profili",
@@ -123,7 +128,14 @@
     "update": "Güncelle",
     "save": "Kaydet",
     "cancel": "İptal",
-    "back": "Geri"
+    "back": "Geri",
+    "statusUpdated": "Durum Güncellendi",
+    "userActivated": "Kullanıcı aktif edildi",
+    "userDeactivated": "Kullanıcı pasif edildi"
+  },
+  "quickView": {
+    "title": "Hızlı Görüntüleme",
+    "createdAt": "Oluşturulma Tarihi"
   },
   "validation": {
     "fullNameRequired": "Ad soyad gereklidir",
