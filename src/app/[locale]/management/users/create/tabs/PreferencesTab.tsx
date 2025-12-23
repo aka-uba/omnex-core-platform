@@ -23,13 +23,13 @@ export function PreferencesTab({ form }: PreferencesTabProps) {
     <Stack gap="xl" p="xl" {...(classes.container ? { className: classes.container } : {})}>
       <div>
         <Text fw={600} size="lg">{t('form.preferences.title')}</Text>
-        <Text size="sm" c="dimmed">Set default system preferences</Text>
+        <Text size="sm" c="dimmed">{t('form.preferences.description')}</Text>
       </div>
 
       <Divider />
 
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 4 }}>
+      <Grid gutter="md">
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
           <Select
             label={t('form.preferences.defaultLanguage')}
             data={[
@@ -41,24 +41,23 @@ export function PreferencesTab({ form }: PreferencesTabProps) {
             {...form.getInputProps('preferences.defaultLanguage')}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 4 }}>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
           <Select
             label={t('form.preferences.defaultTheme')}
             data={[
-              { value: 'auto', label: 'System' },
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
+              { value: 'auto', label: t('form.preferences.themeAuto') },
+              { value: 'light', label: t('form.preferences.themeLight') },
+              { value: 'dark', label: t('form.preferences.themeDark') },
             ]}
             {...form.getInputProps('preferences.defaultTheme')}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 4 }}>
+        <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
           <Select
             label={t('form.preferences.defaultLayout')}
             data={[
-              { value: 'compact', label: 'Compact' },
-              { value: 'comfortable', label: 'Comfortable' },
-              { value: 'spacious', label: 'Spacious' },
+              { value: 'sidebar', label: t('form.preferences.layoutSidebar') },
+              { value: 'top', label: t('form.preferences.layoutTopHeader') },
             ]}
             {...form.getInputProps('preferences.defaultLayout')}
           />
