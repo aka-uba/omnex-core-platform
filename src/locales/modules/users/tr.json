@@ -154,6 +154,23 @@
   "export": {
     "report": "Rapor"
   },
+  "departments": {
+    "management": "Yönetim",
+    "it": "Bilgi Teknolojileri",
+    "hr": "İnsan Kaynakları",
+    "finance": "Finans",
+    "realEstate": "Emlak",
+    "accounting": "Muhasebe",
+    "production": "Üretim",
+    "maintenance": "Bakım",
+    "sales": "Satış",
+    "marketing": "Pazarlama",
+    "logistics": "Lojistik",
+    "customerService": "Müşteri Hizmetleri",
+    "webDevelopment": "Web Geliştirme",
+    "ai": "Yapay Zeka",
+    "other": "Diğer"
+  },
   "notifications": {
     "error": {
       "title": "Hata",

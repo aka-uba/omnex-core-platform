@@ -33,6 +33,27 @@ export function WorkInfoTab({ form }: WorkInfoTabProps) {
     { value: '3', label: 'Cyberdyne Systems' },
   ];
 
+  // Departments based on modules
+  const departments = [
+    // Core/Management
+    { value: 'Management', label: t('departments.management') },
+    { value: 'IT', label: t('departments.it') },
+    { value: 'HR', label: t('departments.hr') },
+    { value: 'Finance', label: t('departments.finance') },
+    // Module-based departments
+    { value: 'RealEstate', label: t('departments.realEstate') },
+    { value: 'Accounting', label: t('departments.accounting') },
+    { value: 'Production', label: t('departments.production') },
+    { value: 'Maintenance', label: t('departments.maintenance') },
+    { value: 'Sales', label: t('departments.sales') },
+    { value: 'Marketing', label: t('departments.marketing') },
+    { value: 'Logistics', label: t('departments.logistics') },
+    { value: 'CustomerService', label: t('departments.customerService') },
+    { value: 'WebDevelopment', label: t('departments.webDevelopment') },
+    { value: 'AI', label: t('departments.ai') },
+    { value: 'Other', label: t('departments.other') },
+  ];
+
   return (
     <Stack gap="xl" p="xl" {...(classes.container ? { className: classes.container } : {})}>
       <div>
@@ -47,7 +68,9 @@ export function WorkInfoTab({ form }: WorkInfoTabProps) {
           <Select
             label={t('form.work.department')}
             placeholder={t('form.work.departmentPlaceholder')}
-            data={['Engineering', 'Marketing', 'Sales', 'HR', 'Finance']}
+            data={departments}
+            searchable
+            clearable
             {...form.getInputProps('work.department')}
           />
         </Grid.Col>
