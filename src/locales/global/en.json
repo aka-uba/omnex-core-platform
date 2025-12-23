@@ -131,6 +131,15 @@
       "hide": "Hide",
       "moveUp": "Move up",
       "moveDown": "Move down",
+      "columnsSection": "Columns",
+      "columnBackground": "Column Background",
+      "clearColor": "Clear Color",
+      "tableStyle": {
+        "title": "Table Style",
+        "verticalBorders": "Vertical Borders",
+        "headerBackground": "Header Background",
+        "selectColor": "Select color..."
+      },
       "badges": {
         "sortable": "Sortable",
         "searchable": "Searchable",

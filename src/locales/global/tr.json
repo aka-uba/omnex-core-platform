@@ -1403,6 +1403,15 @@
       "hide": "Gizle",
       "moveUp": "Yukarı taşı",
       "moveDown": "Aşağı taşı",
+      "columnsSection": "Sütunlar",
+      "columnBackground": "Sütun Arka Planı",
+      "clearColor": "Rengi Temizle",
+      "tableStyle": {
+        "title": "Tablo Stili",
+        "verticalBorders": "Dikey Çizgiler",
+        "headerBackground": "Başlık Arka Planı",
+        "selectColor": "Renk seçin..."
+      },
       "badges": {
         "sortable": "Sıralanabilir",
         "searchable": "Aranabilir",

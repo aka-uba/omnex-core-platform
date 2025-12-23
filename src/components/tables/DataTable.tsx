@@ -21,11 +21,12 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconSearch, IconChevronUp, IconChevronDown, IconArrowsSort, IconFilter, IconDotsVertical, IconFile, IconFileSpreadsheet, IconFileText, IconCode, IconPrinter, IconLayout } from '@tabler/icons-react';
 import classes from './DataTable.module.css';
 import { FilterModal, FilterOption } from './FilterModal';
-import { ColumnSettingsModal, ColumnSettingsColumn } from './ColumnSettingsModal';
+import { ColumnSettingsModal, ColumnSettingsColumn, TableStyleSettings } from './ColumnSettingsModal';
 import { useExport } from '@/lib/export/ExportProvider';
 import { useTranslation } from '@/lib/i18n/client';
 
 export type { FilterOption } from './FilterModal';
+export type { TableStyleSettings } from './ColumnSettingsModal';
 
 export interface DataTableColumn {
   key: string;
@@ -35,6 +36,7 @@ export interface DataTableColumn {
   filterable?: boolean;
   hidden?: boolean;
   align?: 'left' | 'right' | 'center';
+  backgroundColor?: string; // Column background color
   render?: (value: any, row: any) => React.ReactNode;
 }
 
@@ -114,12 +116,12 @@ export function DataTable({
       try {
         const saved = localStorage.getItem(`datatable-columns-${tableId}`);
         if (saved) {
-          const savedSettings = JSON.parse(saved) as Array<{ key: string; hidden?: boolean; order: number }>;
+          const savedSettings = JSON.parse(saved) as Array<{ key: string; hidden?: boolean; backgroundColor?: string; order: number }>;
           // Merge saved settings with current columns
           const merged = columns.map(col => {
             const savedCol = savedSettings.find(s => s.key === col.key);
             if (savedCol) {
-              return { ...col, hidden: savedCol.hidden };
+              return { ...col, hidden: savedCol.hidden, backgroundColor: savedCol.backgroundColor };
             }
             return col;
           });
@@ -138,6 +140,25 @@ export function DataTable({
     return columns;
   });
   const [columnsInitialized, setColumnsInitialized] = useState(false);
+
+  // Table style settings state
+  const [styleSettings, setStyleSettings] = useState<TableStyleSettings>(() => {
+    // Try to load saved style settings from localStorage
+    if (tableId && typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`datatable-style-${tableId}`);
+        if (saved) {
+          return JSON.parse(saved) as TableStyleSettings;
+        }
+      } catch (e) {
+        console.warn('Failed to load style settings from localStorage:', e);
+      }
+    }
+    return {
+      showVerticalBorders: false,
+      headerBackgroundColor: '',
+    };
+  });
 
   // Mobile detection for card view
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -210,6 +231,7 @@ export function DataTable({
       const settings = visibleColumns.map((col, index) => ({
         key: col.key,
         hidden: col.hidden,
+        backgroundColor: col.backgroundColor,
         order: index,
       }));
       localStorage.setItem(`datatable-columns-${tableId}`, JSON.stringify(settings));
@@ -217,6 +239,16 @@ export function DataTable({
       console.warn('Failed to save column settings to localStorage:', e);
     }
   }, [visibleColumns, tableId, columnsInitialized]);
+
+  // Save style settings to localStorage when they change
+  useEffect(() => {
+    if (!tableId || !columnsInitialized) return;
+    try {
+      localStorage.setItem(`datatable-style-${tableId}`, JSON.stringify(styleSettings));
+    } catch (e) {
+      console.warn('Failed to save style settings to localStorage:', e);
+    }
+  }, [styleSettings, tableId, columnsInitialized]);
 
   // Filter and sort data
   const processedData = useMemo(() => {
@@ -374,6 +406,11 @@ export function DataTable({
     );
     onColumnToggle?.(columnKey, visible);
   }, [onColumnToggle]);
+
+  // Handle style settings change
+  const handleStyleSettingsChange = useCallback((newSettings: TableStyleSettings) => {
+    setStyleSettings(newSettings);
+  }, []);
 
   // Get visible columns
   const displayColumns = visibleColumns.filter((col) => !col.hidden);
@@ -891,19 +928,39 @@ export function DataTable({
           </div>
         ) : (
           /* Desktop Table View */
-          <div {...(classes.tableWrapper ? { className: classes.tableWrapper } : {})}>
-          <Table highlightOnHover striped>
-            <Table.Thead>
+          <div
+            {...(classes.tableWrapper ? { className: classes.tableWrapper } : {})}
+            style={{
+              ['--table-vertical-border' as string]: styleSettings.showVerticalBorders
+                ? '1px solid var(--mantine-color-gray-3)'
+                : 'none',
+              ['--table-header-bg' as string]: styleSettings.headerBackgroundColor || 'transparent',
+            }}
+          >
+          <Table
+            highlightOnHover
+            striped
+            withColumnBorders={styleSettings.showVerticalBorders}
+          >
+            <Table.Thead style={{ backgroundColor: styleSettings.headerBackgroundColor || undefined }}>
               <Table.Tr>
                 {showRowNumbers && (
-                  <Table.Th style={{ width: 50, textAlign: 'center' }}>
+                  <Table.Th style={{
+                    width: 50,
+                    textAlign: 'center',
+                    backgroundColor: styleSettings.headerBackgroundColor || undefined,
+                  }}>
                     <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
                       #
                     </Text>
                   </Table.Th>
                 )}
                 {selectable && (
-                  <Table.Th style={{ width: 40, textAlign: 'center' }}>
+                  <Table.Th style={{
+                    width: 40,
+                    textAlign: 'center',
+                    backgroundColor: styleSettings.headerBackgroundColor || undefined,
+                  }}>
                     <Checkbox
                       checked={isAllSelected}
                       indeterminate={isIndeterminate}
@@ -933,6 +990,7 @@ export function DataTable({
                         userSelect: 'none',
                         transition: 'background-color 0.2s',
                         textAlign: align,
+                        backgroundColor: styleSettings.headerBackgroundColor || undefined,
                       }}
                       onClick={() => isSortable && handleSort(column.key)}
                     >
@@ -1021,7 +1079,10 @@ export function DataTable({
                       return (
                         <Table.Td
                           key={column.key}
-                          style={{ textAlign: align }}
+                          style={{
+                            textAlign: align,
+                            backgroundColor: column.backgroundColor || undefined,
+                          }}
                         >
                           <div style={{
                             display: 'flex',
@@ -1099,17 +1160,22 @@ export function DataTable({
             if (col.searchable !== undefined) column.searchable = col.searchable;
             if (col.filterable !== undefined) column.filterable = col.filterable;
             if (col.hidden !== undefined) column.hidden = col.hidden;
+            if (col.backgroundColor !== undefined) column.backgroundColor = col.backgroundColor;
             return column;
           })}
           onColumnReorder={handleColumnReorder}
           onColumnToggle={handleColumnToggle}
+          styleSettings={styleSettings}
+          onStyleSettingsChange={handleStyleSettingsChange}
           onReset={() => {
             setVisibleColumns(columns);
+            setStyleSettings({ showVerticalBorders: false, headerBackgroundColor: '' });
             onColumnReorder?.(columns);
             // Clear localStorage when reset
             if (tableId) {
               try {
                 localStorage.removeItem(`datatable-columns-${tableId}`);
+                localStorage.removeItem(`datatable-style-${tableId}`);
               } catch (e) {
                 console.warn('Failed to remove column settings from localStorage:', e);
               }
