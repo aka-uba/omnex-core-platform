@@ -67,7 +67,6 @@ export async function GET(
             position: true,
             employeeId: true,
             hireDate: true,
-            manager: true,
             address: true,
             city: true,
             country: true,
@@ -79,7 +78,7 @@ export async function GET(
             defaultLayout: true,
             createdAt: true,
             updatedAt: true,
-            lastActiveAt: true,
+            lastActive: true,
           },
         });
 
