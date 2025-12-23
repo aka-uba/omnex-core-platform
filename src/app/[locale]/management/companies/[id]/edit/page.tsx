@@ -51,6 +51,10 @@ interface CompanyData {
   status: string;
   logo: string | null;
   logoFile: string | null;
+  favicon: string | null;
+  faviconFile: string | null;
+  pwaIcon: string | null;
+  pwaIconFile: string | null;
   address: string | null;
   city: string | null;
   state: string | null;
@@ -141,27 +145,40 @@ export default function CompanyEditPage() {
     }
   };
 
-  const handleLogoUpload = async (file: File) => {
+  const handleImageUpload = async (file: File, type: 'logo' | 'favicon' | 'pwaIcon') => {
     setLoading(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      const uploadData = new FormData();
+      uploadData.append('file', file);
+      uploadData.append('type', type);
       if (companyId) {
-        formData.append('companyId', companyId);
+        uploadData.append('companyId', companyId);
       }
 
       const response = await fetchWithAuth('/api/company/logo', {
         method: 'POST',
-        body: formData,
+        body: uploadData,
       });
 
       const result = await response.json();
 
       if (result.success) {
+        // Immediately update formData with the new image URL
+        const urlField = type === 'logo' ? 'logo' : type === 'favicon' ? 'favicon' : 'pwaIcon';
+        const fileField = type === 'logo' ? 'logoFile' : type === 'favicon' ? 'faviconFile' : 'pwaIconFile';
+        setFormData(prev => ({
+          ...prev,
+          [urlField]: result.data[`${type}Url`] || result.data.logoUrl,
+          [fileField]: result.data[`${type}File`] || result.data.logoFile,
+        }));
+
+        const messageKey = type === 'logo' ? 'companies.logoUploaded' :
+                          type === 'favicon' ? 'companies.faviconUploaded' :
+                          'companies.pwaIconUploaded';
         showToast({
           type: 'success',
           title: t('success'),
-          message: t('companies.logoUploaded'),
+          message: t(messageKey),
         });
         refetch();
       } else {
@@ -177,6 +194,10 @@ export default function CompanyEditPage() {
       setLoading(false);
     }
   };
+
+  const handleLogoUpload = (file: File) => handleImageUpload(file, 'logo');
+  const handleFaviconUpload = (file: File) => handleImageUpload(file, 'favicon');
+  const handlePwaIconUpload = (file: File) => handleImageUpload(file, 'pwaIcon');
 
   if (isLoading) {
     return <MyCompanyPageSkeleton />;
@@ -302,6 +323,136 @@ export default function CompanyEditPage() {
                       </Group>
                       <Text size="xs" c="dimmed">
                         {t('companies.logoHint')}
+                      </Text>
+                    </Stack>
+                  </Group>
+                </Stack>
+              </Paper>
+
+              {/* Favicon Upload */}
+              <Paper p="md" withBorder>
+                <Stack gap="md">
+                  <Text size="sm" fw={500}>
+                    {t('companies.favicon')}
+                  </Text>
+                  <Group gap="md" align="flex-start">
+                    <Box>
+                      {formData.favicon ? (
+                        <Avatar
+                          src={formData.favicon}
+                          alt="Favicon"
+                          size={48}
+                          radius="sm"
+                          style={{
+                            border: '1px solid var(--mantine-color-gray-3)',
+                            backgroundColor: 'var(--mantine-color-gray-0)',
+                          }}
+                        />
+                      ) : (
+                        <Avatar
+                          size={48}
+                          radius="sm"
+                          style={{
+                            border: '1px solid var(--mantine-color-gray-3)',
+                            backgroundColor: 'var(--mantine-color-gray-0)',
+                          }}
+                        >
+                          <IconWorld size={24} color="var(--mantine-color-gray-5)" />
+                        </Avatar>
+                      )}
+                    </Box>
+                    <Stack gap="xs" style={{ flex: 1 }}>
+                      <Group gap="xs">
+                        <FileButton onChange={(file) => file && handleFaviconUpload(file)} accept="image/*,.ico">
+                          {(props) => (
+                            <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
+                              {formData.favicon
+                                ? t('companies.changeFavicon')
+                                : t('companies.uploadFavicon')
+                              }
+                            </Button>
+                          )}
+                        </FileButton>
+                        {formData.favicon && (
+                          <Button
+                            variant="subtle"
+                            color="red"
+                            size="xs"
+                            onClick={async () => {
+                              setFormData({ ...formData, favicon: null, faviconFile: null });
+                            }}
+                          >
+                            {t('companies.removeFavicon')}
+                          </Button>
+                        )}
+                      </Group>
+                      <Text size="xs" c="dimmed">
+                        {t('companies.faviconHint')}
+                      </Text>
+                    </Stack>
+                  </Group>
+                </Stack>
+              </Paper>
+
+              {/* PWA Icon Upload */}
+              <Paper p="md" withBorder>
+                <Stack gap="md">
+                  <Text size="sm" fw={500}>
+                    {t('companies.pwaIcon')}
+                  </Text>
+                  <Group gap="md" align="flex-start">
+                    <Box>
+                      {formData.pwaIcon ? (
+                        <Avatar
+                          src={formData.pwaIcon}
+                          alt="PWA Icon"
+                          size={64}
+                          radius="md"
+                          style={{
+                            border: '1px solid var(--mantine-color-gray-3)',
+                            backgroundColor: 'var(--mantine-color-gray-0)',
+                          }}
+                        />
+                      ) : (
+                        <Avatar
+                          size={64}
+                          radius="md"
+                          style={{
+                            border: '1px solid var(--mantine-color-gray-3)',
+                            backgroundColor: 'var(--mantine-color-gray-0)',
+                          }}
+                        >
+                          <IconDeviceFloppy size={32} color="var(--mantine-color-gray-5)" />
+                        </Avatar>
+                      )}
+                    </Box>
+                    <Stack gap="xs" style={{ flex: 1 }}>
+                      <Group gap="xs">
+                        <FileButton onChange={(file) => file && handlePwaIconUpload(file)} accept="image/png,image/svg+xml">
+                          {(props) => (
+                            <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
+                              {formData.pwaIcon
+                                ? t('companies.changePwaIcon')
+                                : t('companies.uploadPwaIcon')
+                              }
+                            </Button>
+                          )}
+                        </FileButton>
+                        {formData.pwaIcon && (
+                          <Button
+                            variant="subtle"
+                            color="red"
+                            size="xs"
+                            onClick={async () => {
+                              setFormData({ ...formData, pwaIcon: null, pwaIconFile: null });
+                            }}
+                          >
+                            {t('companies.removePwaIcon')}
+                          </Button>
+                        )}
+                      </Group>
+                      <Text size="xs" c="dimmed">
+                        {t('companies.pwaIconHint')}
                       </Text>
                     </Stack>
                   </Group>
