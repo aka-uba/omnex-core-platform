@@ -29,6 +29,7 @@ export interface CreateTenantInput {
     name?: string; // Default: tenant name
     logo?: File | string; // File or path
     favicon?: File | string;
+    pwaIcon?: File | string;
     address?: string;
     city?: string;
     state?: string;
@@ -232,9 +233,10 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       // Continue even if storage folder creation fails
     }
 
-    // 7. Logo/favicon yükle (YENİ)
+    // 7. Logo/favicon/pwaIcon yükle (YENİ)
     let logoUrl: string | undefined;
     let faviconUrl: string | undefined;
+    let pwaIconUrl: string | undefined;
 
     if (input.companyInfo?.logo) {
       try {
@@ -252,6 +254,14 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
       }
     }
 
+    if (input.companyInfo?.pwaIcon) {
+      try {
+        pwaIconUrl = await uploadCompanyAsset(input.slug, input.companyInfo.pwaIcon, 'pwa-icon');
+      } catch (error) {
+        logger.warn('PWA Icon upload failed', { error }, 'tenant-service');
+      }
+    }
+
     // 7.5. Update company with wizard data (NEW)
     // Seed creates a default company, now update it with actual wizard data
     let companyId: string | undefined;
@@ -261,6 +271,7 @@ export async function createTenant(input: CreateTenantInput): Promise<TenantCrea
           name: input.companyInfo.name,
           ...(logoUrl ? { logoUrl } : {}),
           ...(faviconUrl ? { faviconUrl } : {}),
+          ...(pwaIconUrl ? { pwaIconUrl } : {}),
           address: input.companyInfo.address,
           city: input.companyInfo.city,
           state: input.companyInfo.state,

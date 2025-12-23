@@ -78,6 +78,9 @@ export async function POST(request: NextRequest) {
     const favicon = formData.get('favicon') as File | null;
     if (favicon) companyInfo.favicon = favicon;
 
+    const pwaIcon = formData.get('pwaIcon') as File | null;
+    if (pwaIcon) companyInfo.pwaIcon = pwaIcon;
+
     const address = formData.get('address') as string | null;
     if (address) companyInfo.address = address;
 

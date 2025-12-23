@@ -40,13 +40,14 @@ function getSavedFormData(): Partial<TenantWizardFormData> | null {
 function saveFormData(data: TenantWizardFormData) {
     if (typeof window === 'undefined') return;
     try {
-        // Don't save file inputs (logo, favicon) as they can't be serialized
+        // Don't save file inputs (logo, favicon, pwaIcon) as they can't be serialized
         const dataToSave = {
             basicInfo: data.basicInfo,
             companyInfo: {
                 ...data.companyInfo,
                 logo: undefined,
                 favicon: undefined,
+                pwaIcon: undefined,
             },
             initialLocation: data.initialLocation,
         };
@@ -243,6 +244,9 @@ export function TenantCreationWizard({ locale }: TenantCreationWizardProps) {
             }
             if (form.values.companyInfo.favicon) {
                 formData.append('favicon', form.values.companyInfo.favicon);
+            }
+            if (form.values.companyInfo.pwaIcon) {
+                formData.append('pwaIcon', form.values.companyInfo.pwaIcon);
             }
             if (form.values.companyInfo.address) {
                 formData.append('address', form.values.companyInfo.address);

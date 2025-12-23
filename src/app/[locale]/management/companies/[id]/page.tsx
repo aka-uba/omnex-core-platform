@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Stack, Paper, Text, Alert, Group, Badge, SimpleGrid, Card, Divider, Avatar, Box } from '@mantine/core';
+import { Container, Stack, Paper, Text, Alert, Group, Badge, SimpleGrid, Card, Divider, Avatar, Box, Image } from '@mantine/core';
 import {
   IconBuilding,
   IconMail,
@@ -28,6 +28,10 @@ interface CompanyData {
   status: string;
   logo: string | null;
   logoFile: string | null;
+  favicon: string | null;
+  faviconFile: string | null;
+  pwaIcon: string | null;
+  pwaIconFile: string | null;
   address: string | null;
   city: string | null;
   state: string | null;
@@ -172,83 +176,165 @@ export default function CompanyViewPage() {
               </Badge>
             </Group>
             <Divider />
-            <Group gap="md" align="flex-start">
-              <Box>
-                {company.logo ? (
-                  <Avatar
-                    src={company.logo}
-                    alt={company.name}
-                    size={100}
-                    radius="md"
-                    style={{
-                      border: '1px solid var(--mantine-color-gray-3)',
-                      backgroundColor: 'var(--mantine-color-gray-0)',
-                    }}
-                  />
-                ) : (
-                  <Avatar
-                    size={100}
-                    radius="md"
-                    style={{
-                      border: '1px solid var(--mantine-color-gray-3)',
-                      backgroundColor: 'var(--mantine-color-gray-0)',
-                    }}
-                  >
-                    <IconBuilding size={50} color="var(--mantine-color-gray-5)" />
-                  </Avatar>
-                )}
-              </Box>
-              <Stack gap="xs" style={{ flex: 1 }}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-                  <div>
-                    <Text size="xs" c="dimmed" mb={4}>
-                      {t('companies.name')}
-                    </Text>
-                    <Text size="sm" fw={500}>{company.name}</Text>
-                  </div>
-                  {company.industry && (
-                    <div>
-                      <Text size="xs" c="dimmed" mb={4}>
-                        {t('companies.industry')}
-                      </Text>
-                      <Text size="sm" fw={500}>{company.industry}</Text>
-                    </div>
+
+            {/* Logo, Favicon, PWA Icon Section */}
+            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+              {/* Logo */}
+              <Paper p="sm" withBorder radius="md">
+                <Stack gap="xs" align="center">
+                  <Text size="xs" c="dimmed" fw={500}>{t('companies.logo')}</Text>
+                  {company.logo ? (
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 120,
+                        minWidth: 120,
+                      }}
+                    >
+                      <Image
+                        src={company.logo}
+                        alt={company.name}
+                        fit="contain"
+                        maw={200}
+                        mah={150}
+                      />
+                    </Box>
+                  ) : (
+                    <Avatar size={100} radius="md" style={{ border: '1px solid var(--mantine-color-gray-3)' }}>
+                      <IconBuilding size={50} color="var(--mantine-color-gray-5)" />
+                    </Avatar>
                   )}
-                  {company.foundedYear && (
-                    <div>
-                      <Text size="xs" c="dimmed" mb={4}>
-                        {t('companies.foundedYear')}
-                      </Text>
-                      <Text size="sm" fw={500}>{company.foundedYear}</Text>
-                    </div>
+                </Stack>
+              </Paper>
+
+              {/* Favicon */}
+              <Paper p="sm" withBorder radius="md">
+                <Stack gap="xs" align="center">
+                  <Text size="xs" c="dimmed" fw={500}>{t('companies.favicon')}</Text>
+                  {company.favicon ? (
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 80,
+                        minWidth: 80,
+                      }}
+                    >
+                      <Image
+                        src={company.favicon}
+                        alt="Favicon"
+                        fit="contain"
+                        maw={64}
+                        mah={64}
+                      />
+                    </Box>
+                  ) : (
+                    <Avatar size={64} radius="sm" style={{ border: '1px solid var(--mantine-color-gray-3)' }}>
+                      <IconWorld size={32} color="var(--mantine-color-gray-5)" />
+                    </Avatar>
                   )}
-                  {company.employeeCount && (
-                    <div>
-                      <Text size="xs" c="dimmed" mb={4}>
-                        {t('companies.employeeCount')}
-                      </Text>
-                      <Text size="sm" fw={500}>{company.employeeCount}</Text>
-                    </div>
+                  <Text size="xs" c="dimmed">{t('companies.faviconHint')}</Text>
+                </Stack>
+              </Paper>
+
+              {/* PWA Icon */}
+              <Paper p="sm" withBorder radius="md">
+                <Stack gap="xs" align="center">
+                  <Text size="xs" c="dimmed" fw={500}>{t('companies.pwaIcon')}</Text>
+                  {company.pwaIcon ? (
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 100,
+                        minWidth: 100,
+                      }}
+                    >
+                      <Image
+                        src={company.pwaIcon}
+                        alt="PWA Icon"
+                        fit="contain"
+                        maw={128}
+                        mah={128}
+                      />
+                    </Box>
+                  ) : (
+                    <Avatar size={80} radius="md" style={{ border: '1px solid var(--mantine-color-gray-3)' }}>
+                      <IconBuilding size={40} color="var(--mantine-color-gray-5)" />
+                    </Avatar>
                   )}
-                  {company.capital && (
-                    <div>
-                      <Text size="xs" c="dimmed" mb={4}>
-                        {t('companies.capital')}
-                      </Text>
-                      <Text size="sm" fw={500}>{company.capital}</Text>
-                    </div>
-                  )}
-                </SimpleGrid>
-                {company.description && (
-                  <div>
-                    <Text size="xs" c="dimmed" mb={4}>
-                      {t('companies.description')}
-                    </Text>
-                    <Text size="sm">{company.description}</Text>
-                  </div>
-                )}
-              </Stack>
-            </Group>
+                  <Text size="xs" c="dimmed">{t('companies.pwaIconHint')}</Text>
+                </Stack>
+              </Paper>
+            </SimpleGrid>
+
+            <Divider />
+
+            {/* Company Details */}
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+              <div>
+                <Text size="xs" c="dimmed" mb={4}>
+                  {t('companies.name')}
+                </Text>
+                <Text size="sm" fw={500}>{company.name}</Text>
+              </div>
+              {company.industry && (
+                <div>
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {t('companies.industry')}
+                  </Text>
+                  <Text size="sm" fw={500}>{company.industry}</Text>
+                </div>
+              )}
+              {company.foundedYear && (
+                <div>
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {t('companies.foundedYear')}
+                  </Text>
+                  <Text size="sm" fw={500}>{company.foundedYear}</Text>
+                </div>
+              )}
+              {company.employeeCount && (
+                <div>
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {t('companies.employeeCount')}
+                  </Text>
+                  <Text size="sm" fw={500}>{company.employeeCount}</Text>
+                </div>
+              )}
+              {company.capital && (
+                <div>
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {t('companies.capital')}
+                  </Text>
+                  <Text size="sm" fw={500}>{company.capital}</Text>
+                </div>
+              )}
+            </SimpleGrid>
+            {company.description && (
+              <div>
+                <Text size="xs" c="dimmed" mb={4}>
+                  {t('companies.description')}
+                </Text>
+                <Text size="sm">{company.description}</Text>
+              </div>
+            )}
           </Stack>
         </Paper>
 

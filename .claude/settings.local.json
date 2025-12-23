@@ -63,7 +63,11 @@
       "Bash(npx tsx:*)",
       "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -d omnex_core -c \"SELECT id, name, slug, status, \"\"currentDb\"\" FROM \"\"Tenant\"\";\")",
       "Bash(git cherry-pick:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\":*)",
+      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -d tenant_omnexcore_2025 -c \"SELECT id, name, email, role, status FROM \"\"User\"\" ORDER BY role, name LIMIT 20;\")",
+      "Bash(npx prisma:*)",
+      "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/17/bin/psql.exe\":*)"
     ],
     "deny": [],
     "ask": []

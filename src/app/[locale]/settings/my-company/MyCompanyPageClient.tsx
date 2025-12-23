@@ -16,8 +16,8 @@ import {
   SimpleGrid,
   Divider,
   Badge,
-  Avatar,
   Box,
+  Image,
 } from '@mantine/core';
 import {
   IconBuilding,
@@ -257,29 +257,29 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                     {t('companies.logo')}
                   </Text>
                   <Group gap="md" align="flex-start">
-                    <Box>
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 100,
+                        minWidth: 100,
+                      }}
+                    >
                       {formData.logo ? (
-                        <Avatar
+                        <Image
                           src={formData.logo}
                           alt={formData.name || 'Logo'}
-                          size={80}
-                          radius="md"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
+                          fit="contain"
+                          maw={150}
+                          mah={100}
                         />
                       ) : (
-                        <Avatar
-                          size={80}
-                          radius="md"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
-                        >
-                          <IconBuilding size={40} color="var(--mantine-color-gray-5)" />
-                        </Avatar>
+                        <IconBuilding size={40} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
                     <Stack gap="xs" style={{ flex: 1 }}>
@@ -323,29 +323,29 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                     {t('companies.favicon')}
                   </Text>
                   <Group gap="md" align="flex-start">
-                    <Box>
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-sm)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 64,
+                        minWidth: 64,
+                      }}
+                    >
                       {formData.favicon ? (
-                        <Avatar
+                        <Image
                           src={formData.favicon}
                           alt="Favicon"
-                          size={48}
-                          radius="sm"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
+                          fit="contain"
+                          maw={48}
+                          mah={48}
                         />
                       ) : (
-                        <Avatar
-                          size={48}
-                          radius="sm"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
-                        >
-                          <IconWorld size={24} color="var(--mantine-color-gray-5)" />
-                        </Avatar>
+                        <IconWorld size={24} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
                     <Stack gap="xs" style={{ flex: 1 }}>
@@ -388,29 +388,29 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                     {t('companies.pwaIcon')}
                   </Text>
                   <Group gap="md" align="flex-start">
-                    <Box>
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 80,
+                        minWidth: 80,
+                      }}
+                    >
                       {formData.pwaIcon ? (
-                        <Avatar
+                        <Image
                           src={formData.pwaIcon}
                           alt="PWA Icon"
-                          size={64}
-                          radius="md"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
+                          fit="contain"
+                          maw={72}
+                          mah={72}
                         />
                       ) : (
-                        <Avatar
-                          size={64}
-                          radius="md"
-                          style={{
-                            border: '1px solid var(--mantine-color-gray-3)',
-                            backgroundColor: 'var(--mantine-color-gray-0)',
-                          }}
-                        >
-                          <IconDeviceFloppy size={32} color="var(--mantine-color-gray-5)" />
-                        </Avatar>
+                        <IconDeviceFloppy size={32} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
                     <Stack gap="xs" style={{ flex: 1 }}>

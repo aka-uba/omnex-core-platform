@@ -155,6 +155,7 @@ export async function updateCompanyWithWizardData(
         name?: string;
         logoUrl?: string;
         faviconUrl?: string;
+        pwaIconUrl?: string;
         address?: string;
         city?: string;
         state?: string;
@@ -203,7 +204,8 @@ export async function updateCompanyWithWizardData(
             data: {
                 ...(companyInfo.name ? { name: companyInfo.name } : {}),
                 ...(companyInfo.logoUrl ? { logo: companyInfo.logoUrl } : {}),
-                ...(companyInfo.faviconUrl ? { logoFile: companyInfo.faviconUrl } : {}),
+                ...(companyInfo.faviconUrl ? { favicon: companyInfo.faviconUrl } : {}),
+                ...(companyInfo.pwaIconUrl ? { pwaIcon: companyInfo.pwaIconUrl } : {}),
                 ...(companyInfo.address ? { address: companyInfo.address } : {}),
                 ...(companyInfo.city ? { city: companyInfo.city } : {}),
                 ...(companyInfo.state ? { state: companyInfo.state } : {}),

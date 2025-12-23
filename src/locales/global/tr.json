@@ -591,6 +591,7 @@
             "favicon": "Favicon",
             "faviconPlaceholder": "Favicon yükle",
             "faviconDescription": "Tarayıcı sekmesinde gösterilen ikon (16x16 veya 32x32 px)",
+            "pwaIconPlaceholder": "PWA ikonu yükle (192x192 veya 512x512 px)",
             "address": "Adres",
             "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
             "phone": "Telefon",

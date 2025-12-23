@@ -3,7 +3,7 @@
 import { TextInput, Stack, FileInput, Text, Group, Image, Box, Textarea, SimpleGrid, NumberInput, Divider } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { TenantWizardFormData } from '@/lib/schemas/tenant';
-import { IconPhoto, IconBrandApple, IconInfoCircle, IconUsers, IconCalendar, IconMapPin, IconFileText, IconCreditCard } from '@tabler/icons-react';
+import { IconPhoto, IconBrandApple, IconDeviceMobile, IconInfoCircle, IconUsers, IconCalendar, IconMapPin, IconFileText, IconCreditCard } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from '@/lib/i18n/client';
 
@@ -15,6 +15,7 @@ export function CompanyInfoStep({ form }: CompanyInfoStepProps) {
     const { t } = useTranslation('global');
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
+    const [pwaIconPreview, setPwaIconPreview] = useState<string | null>(null);
 
     // Auto-fill company name from tenant name
     useEffect(() => {
@@ -48,6 +49,19 @@ export function CompanyInfoStep({ form }: CompanyInfoStepProps) {
             setFaviconPreview(null);
         }
     }, [form.values.companyInfo.favicon]);
+
+    // PWA Icon preview
+    useEffect(() => {
+        if (form.values.companyInfo.pwaIcon instanceof File) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPwaIconPreview(reader.result as string);
+            };
+            reader.readAsDataURL(form.values.companyInfo.pwaIcon);
+        } else {
+            setPwaIconPreview(null);
+        }
+    }, [form.values.companyInfo.pwaIcon]);
 
     return (
         <Stack>
@@ -106,6 +120,33 @@ export function CompanyInfoStep({ form }: CompanyInfoStepProps) {
                             alt={t('companies.wizard.step2.fields.logoPreview')}
                             w={32}
                             h={32}
+                            fit="contain"
+                        />
+                    </Box>
+                )}
+            </Group>
+
+            <Group align="start">
+                <Box style={{ flex: 1 }}>
+                    <FileInput
+                        label={t('companies.pwaIcon')}
+                        placeholder={t('companies.wizard.step2.fields.pwaIconPlaceholder')}
+                        accept="image/png,image/svg+xml"
+                        leftSection={<IconDeviceMobile size={16} />}
+                        {...form.getInputProps('companyInfo.pwaIcon')}
+                    />
+                    <Text size="xs" c="dimmed" mt={4}>
+                        {t('companies.pwaIconHint')}
+                    </Text>
+                </Box>
+                {pwaIconPreview && (
+                    <Box>
+                        <Text size="sm" fw={500} mb={4}>{t('companies.wizard.step2.fields.logoPreview')}</Text>
+                        <Image
+                            src={pwaIconPreview}
+                            alt="PWA Icon"
+                            w={64}
+                            h={64}
                             fit="contain"
                         />
                     </Box>

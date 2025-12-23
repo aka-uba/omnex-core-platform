@@ -15,6 +15,7 @@ export const companyInfoSchema = z.object({
     name: z.string().min(1, 'Company name is required'),
     logo: z.any().optional(), // File upload
     favicon: z.any().optional(), // File upload
+    pwaIcon: z.any().optional(), // File upload - PWA icon for mobile
     industry: z.string().optional(),
     description: z.string().optional(),
     foundedYear: z.number().int().min(1800).max(2100).optional().or(z.literal('')),

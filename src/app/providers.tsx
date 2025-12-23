@@ -9,6 +9,7 @@ import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeC
 import { ModuleProvider } from '@/context/ModuleContext';
 import { ExportProvider } from '@/lib/export/ExportProvider';
 import { DatesProviderWrapper } from '@/components/providers/DatesProvider';
+import { DynamicHeadMeta } from '@/components/DynamicHeadMeta';
 import { useEffect, useState } from 'react';
 
 // Default tenant for development (when no tenant context is available)
@@ -135,6 +136,7 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
     return (
         <QueryClientProvider client={queryClient}>
             <TenantCookieSetter />
+            <DynamicHeadMeta />
             <CustomThemeProvider>
                 <DirectionSync {...(dir ? { dir } : {})}>
                     <DirectionWrapper>
