@@ -1,7 +1,7 @@
 'use client';
 
-import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button } from '@mantine/core';
-import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye } from '@tabler/icons-react';
+import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert } from '@mantine/core';
+import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useRealEstateStaffMember } from '@/hooks/useRealEstateStaff';
 import { useTranslation } from '@/lib/i18n/client';
@@ -17,7 +17,11 @@ interface StaffDetailPageClientProps {
 export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClientProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
+  const { t: tUsers } = useTranslation('modules/users');
   const { data: staff, isLoading, error } = useRealEstateStaffMember(staffId);
+
+  // Get linked user data for internal staff
+  const linkedUser = staff?.linkedUser;
 
   const getStaffTypeBadge = (staffType: string) => {
     return (
@@ -188,8 +192,13 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
         </Paper>
 
         {/* Tabs for Assignments */}
-        <Tabs defaultValue="details" mt="md">
+        <Tabs defaultValue={linkedUser ? 'userInfo' : 'details'} mt="md">
           <Tabs.List>
+            {linkedUser && (
+              <Tabs.Tab value="userInfo" leftSection={<IconUserCircle size={16} />}>
+                {t('staff.tabs.userInfo')}
+              </Tabs.Tab>
+            )}
             <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
               {t('staff.tabs.details')}
             </Tabs.Tab>
@@ -204,6 +213,165 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
               </Tabs.Tab>
             )}
           </Tabs.List>
+
+          {/* User Info Tab for Internal Staff */}
+          {linkedUser && (
+            <Tabs.Panel value="userInfo" pt="md">
+              <Stack gap="md">
+                {/* Internal Staff Alert */}
+                <Alert icon={<IconInfoCircle size={16} />} color="blue" variant="light">
+                  {t('staff.internalStaffInfo')}
+                </Alert>
+
+                {/* Personal Information */}
+                <Paper shadow="xs" p="md">
+                  <Stack gap="md">
+                    <Group gap="xs">
+                      <IconUserCircle size={20} />
+                      <Text size="lg" fw={600}>{tUsers('tabs.personal')}</Text>
+                    </Group>
+                    <Divider />
+                    <Grid gutter="md">
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.personal.fullName')}</Text>
+                        <Text fw={500}>{linkedUser.name || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.personal.email')}</Text>
+                        <Text fw={500}>{linkedUser.email || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.personal.phone')}</Text>
+                        <Text fw={500}>{linkedUser.phone || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('table.role')}</Text>
+                        <Badge color="blue">{linkedUser.role || '-'}</Badge>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('table.status')}</Text>
+                        <Badge color={linkedUser.status === 'active' ? 'green' : 'gray'}>
+                          {linkedUser.status === 'active' ? tUsers('status.active') : tUsers('status.inactive')}
+                        </Badge>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('table.lastActive')}</Text>
+                        <Text fw={500}>{linkedUser.lastActiveAt ? dayjs(linkedUser.lastActiveAt).format('DD.MM.YYYY HH:mm') : '-'}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Paper>
+
+                {/* Work Information */}
+                <Paper shadow="xs" p="md">
+                  <Stack gap="md">
+                    <Group gap="xs">
+                      <IconBriefcase size={20} />
+                      <Text size="lg" fw={600}>{tUsers('tabs.work')}</Text>
+                    </Group>
+                    <Divider />
+                    <Grid gutter="md">
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.work.department')}</Text>
+                        <Text fw={500}>{linkedUser.department ? tUsers(`departments.${linkedUser.department.toLowerCase()}`) : '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.work.position')}</Text>
+                        <Text fw={500}>{linkedUser.position || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.work.employeeId')}</Text>
+                        <Text fw={500}>{linkedUser.employeeId || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.work.hireDate')}</Text>
+                        <Text fw={500}>{linkedUser.hireDate ? dayjs(linkedUser.hireDate).format('DD.MM.YYYY') : '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.work.manager')}</Text>
+                        <Text fw={500}>{linkedUser.manager || '-'}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Paper>
+
+                {/* Contact Information */}
+                <Paper shadow="xs" p="md">
+                  <Stack gap="md">
+                    <Group gap="xs">
+                      <IconPhone size={20} />
+                      <Text size="lg" fw={600}>{tUsers('tabs.contact')}</Text>
+                    </Group>
+                    <Divider />
+                    <Grid gutter="md">
+                      <Grid.Col span={{ base: 12, lg: 8 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.address')}</Text>
+                        <Text fw={500}>{linkedUser.address || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.postalCode')}</Text>
+                        <Text fw={500}>{linkedUser.postalCode || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.city')}</Text>
+                        <Text fw={500}>{linkedUser.city || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.country')}</Text>
+                        <Text fw={500}>{linkedUser.country || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12 }}>
+                        <Divider my="sm" label={tUsers('form.contact.emergencySection')} labelPosition="left" />
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.emergencyContact')}</Text>
+                        <Text fw={500}>{linkedUser.emergencyContact || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.contact.emergencyPhone')}</Text>
+                        <Text fw={500}>{linkedUser.emergencyPhone || '-'}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Paper>
+
+                {/* Preferences */}
+                <Paper shadow="xs" p="md">
+                  <Stack gap="md">
+                    <Group gap="xs">
+                      <IconSettings size={20} />
+                      <Text size="lg" fw={600}>{tUsers('tabs.preferences')}</Text>
+                    </Group>
+                    <Divider />
+                    <Grid gutter="md">
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.preferences.defaultLanguage')}</Text>
+                        <Text fw={500}>{linkedUser.defaultLanguage === 'tr' ? 'Türkçe' : linkedUser.defaultLanguage === 'en' ? 'English' : linkedUser.defaultLanguage || '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.preferences.defaultTheme')}</Text>
+                        <Text fw={500}>{linkedUser.defaultTheme === 'auto' ? tUsers('form.preferences.themeAuto') : linkedUser.defaultTheme === 'light' ? tUsers('form.preferences.themeLight') : linkedUser.defaultTheme === 'dark' ? tUsers('form.preferences.themeDark') : '-'}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                        <Text size="sm" c="dimmed">{tUsers('form.preferences.defaultLayout')}</Text>
+                        <Text fw={500}>{linkedUser.defaultLayout === 'sidebar' ? tUsers('form.preferences.layoutSidebar') : linkedUser.defaultLayout === 'top' ? tUsers('form.preferences.layoutTopHeader') : '-'}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Paper>
+
+                {/* Edit User Button */}
+                <Group justify="flex-end">
+                  <Button
+                    leftSection={<IconEdit size={16} />}
+                    onClick={() => router.push(`/${locale}/management/users/${linkedUser.id}/edit`)}
+                  >
+                    {t('staff.editUserInfo')}
+                  </Button>
+                </Group>
+              </Stack>
+            </Tabs.Panel>
+          )}
 
           <Tabs.Panel value="details" pt="md">
             <Paper shadow="xs" p="md">
