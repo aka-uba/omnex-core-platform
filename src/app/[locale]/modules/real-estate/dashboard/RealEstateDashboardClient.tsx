@@ -20,6 +20,7 @@ import { DashboardCharts } from '@/modules/real-estate/components/dashboard/Dash
 import { RecentActivity } from '@/modules/real-estate/components/dashboard/RecentActivity';
 import { DashboardSkeleton } from '@/modules/dashboard/components/DashboardSkeleton';
 import { PropertyMap } from '@/modules/real-estate/components/PropertyMap';
+import { PaymentQuickBoard } from '@/modules/real-estate/components/PaymentQuickBoard';
 import { useProperties } from '@/hooks/useProperties';
 import { useApartments } from '@/hooks/useApartments';
 import { useMemo } from 'react';
@@ -239,14 +240,19 @@ export function RealEstateDashboardClient() {
                         {t('dashboard.monthlyRevenue')}
                       </p>
                       <p className={`text-lg font-bold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {formatCurrency(data.revenue.currentMonth ?? 0)}
+                        {formatCurrency(data.revenue.thisMonth ?? 0)}
                       </p>
                       <div className="flex items-center gap-1 mt-1">
-                        {(data.revenue.changePercentage ?? 0) >= 0 ? (
-                          <span className="text-xs text-emerald-500">+{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
-                        ) : (
-                          <span className="text-xs text-red-500">{(data.revenue.changePercentage ?? 0).toFixed(1)}%</span>
-                        )}
+                        {(() => {
+                          const changePercentage = data.revenue.lastMonth > 0
+                            ? ((data.revenue.thisMonth - data.revenue.lastMonth) / data.revenue.lastMonth) * 100
+                            : 0;
+                          return changePercentage >= 0 ? (
+                            <span className="text-xs text-emerald-500">+{changePercentage.toFixed(1)}%</span>
+                          ) : (
+                            <span className="text-xs text-red-500">{changePercentage.toFixed(1)}%</span>
+                          );
+                        })()}
                       </div>
                     </div>
                     <IconCurrencyEuro className={`w-6 h-6 ${isDark ? 'text-violet-400' : 'text-violet-600'}`} />
@@ -256,6 +262,9 @@ export function RealEstateDashboardClient() {
                   </div>
                 </div>
               </div>
+
+              {/* Payment Quick Board - Upcoming & Overdue Payments */}
+              <PaymentQuickBoard locale={locale} />
 
               {/* Map Section - Full Width with Stats Overlay */}
               <div className={`rounded-xl overflow-hidden ${isDark ? 'bg-gray-800/50 border border-gray-700' : 'bg-white border border-gray-200'}`}>
