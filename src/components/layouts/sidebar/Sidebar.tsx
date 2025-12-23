@@ -7,10 +7,11 @@
 
 import { useState, useMemo, useEffect, useCallback, memo, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
-import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack } from '@mantine/core';
+import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack, Image } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconApps } from '@tabler/icons-react';
 import { useMenuItems, type MenuItem as MenuItemType } from '../hooks/useMenuItems';
 import { useModules } from '@/context/ModuleContext';
+import { useCompany } from '@/context/CompanyContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLayout } from '../core/LayoutProvider';
@@ -121,6 +122,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
   const pathname = usePathname();
   const { config } = useLayout();
   const { colorScheme } = useMantineColorScheme();
+  const { company } = useCompany();
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openedMenu, setOpenedMenu] = useState<string | null>(null);
@@ -369,29 +371,57 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
           {...(styles.logoIcon ? { className: styles.logoIcon } : {})}
           suppressHydrationWarning
           style={mounted && autoColors ? {
-            backgroundColor: autoColors.logoIconBg,
+            backgroundColor: (company?.pwaIcon || company?.logo) ? 'transparent' : autoColors.logoIconBg,
             color: autoColors.iconColor,
+            padding: (company?.pwaIcon || company?.logo) ? 0 : undefined,
+            overflow: 'hidden',
           } : undefined}
         >
-          {mounted && <IconApps size={24} />}
+          {mounted && (
+            (company?.pwaIcon || company?.logo) ? (
+              <Image
+                src={collapsed ? (company.pwaIcon || company.logo) : (company.pwaIcon || company.logo)}
+                alt={company?.name || 'Logo'}
+                fit="contain"
+                w={collapsed ? 32 : 36}
+                h={collapsed ? 32 : 36}
+                style={{ borderRadius: 'var(--mantine-radius-sm)' }}
+              />
+            ) : (
+              <IconApps size={24} />
+            )
+          )}
         </div>
         {!collapsed && (
           <div {...(styles.logoText ? { className: styles.logoText } : {})}>
-            <h1
-              {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
-              style={mounted && autoColors ? { color: autoColors.textColor } : undefined}
-            >
-              Omnex-Core
-            </h1>
-            <p
-              {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}
-              style={mounted && autoColors ? {
-                color: autoColors.textColor,
-                opacity: 0.8
-              } : undefined}
-            >
-              Agency OS
-            </p>
+            {/* Show company logo if available (wide view) */}
+            {company?.logo && !company?.pwaIcon ? (
+              <Image
+                src={company.logo}
+                alt={company.name || 'Company Logo'}
+                fit="contain"
+                maw={140}
+                mah={40}
+              />
+            ) : (
+              <>
+                <h1
+                  {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
+                  style={mounted && autoColors ? { color: autoColors.textColor } : undefined}
+                >
+                  {company?.name || 'Omnex-Core'}
+                </h1>
+                <p
+                  {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}
+                  style={mounted && autoColors ? {
+                    color: autoColors.textColor,
+                    opacity: 0.8
+                  } : undefined}
+                >
+                  {company?.name ? 'Omnex-Core' : 'Agency OS'}
+                </p>
+              </>
+            )}
           </div>
         )}
       </div>

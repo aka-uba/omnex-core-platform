@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { theme } from '@/theme';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { ModuleProvider } from '@/context/ModuleContext';
+import { CompanyProvider } from '@/context/CompanyContext';
 import { ExportProvider } from '@/lib/export/ExportProvider';
 import { DatesProviderWrapper } from '@/components/providers/DatesProvider';
 import { DynamicHeadMeta } from '@/components/DynamicHeadMeta';
@@ -146,9 +147,11 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
                                     <ModalsProvider modalProps={{ centered: true }}>
                                         <Notifications position="top-center" />
                                         <ExportProvider>
-                                            <ModuleProvider>
-                                                {children}
-                                            </ModuleProvider>
+                                            <CompanyProvider>
+                                                <ModuleProvider>
+                                                    {children}
+                                                </ModuleProvider>
+                                            </CompanyProvider>
                                         </ExportProvider>
                                     </ModalsProvider>
                                 </DatesProviderWrapper>

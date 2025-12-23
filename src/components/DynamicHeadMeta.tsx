@@ -47,12 +47,9 @@ export function DynamicHeadMeta() {
   useEffect(() => {
     if (!company) return;
 
-    // Update document title with company name
+    // Update document title with company name only (no Omnex-Core suffix)
     if (company.name) {
-      const currentTitle = document.title;
-      if (!currentTitle.includes(company.name)) {
-        document.title = `${company.name} | Omnex-Core`;
-      }
+      document.title = company.name;
     }
 
     // Update favicon

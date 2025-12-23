@@ -6,11 +6,12 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { ActionIcon, Avatar, Menu, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Menu, Text, Image } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IconSearch, IconSun, IconMoon, IconUser, IconLogout, IconLayoutSidebar, IconMaximize, IconMinimize } from '@tabler/icons-react';
 import { useLayout } from '../core/LayoutProvider';
 import { useAuth } from '@/hooks/useAuth';
+import { useCompany } from '@/context/CompanyContext';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 import { LanguageSelector } from '@/components/language/LanguageSelector';
@@ -40,6 +41,7 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
   const { colorScheme } = useMantineColorScheme();
   const { config, applyChanges, isMobile, isTablet } = useLayout();
   const { user, logout } = useAuth();
+  const { company } = useCompany();
   const router = useRouter();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -262,11 +264,22 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>
         {/* Logo */}
-        <div {...(styles.logoSection ? { className: styles.logoSection } : {})}>
-          <h2 
+        <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          {/* Company Logo */}
+          {mounted && (company?.logo || company?.pwaIcon) && (
+            <Image
+              src={company.logo || company.pwaIcon}
+              alt={company?.name || 'Logo'}
+              fit="contain"
+              h={36}
+              maw={120}
+              style={{ flexShrink: 0 }}
+            />
+          )}
+          <h2
             {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
           >
-            Omnex-Core
+            {company?.name || 'Omnex-Core'}
           </h2>
         </div>
 
