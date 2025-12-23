@@ -786,38 +786,10 @@ export function DataTable({
                 {...(classes.searchInput ? { className: classes.searchInput } : {})}
                 style={{ flex: 1, minWidth: isMobile ? '100%' : 200 }}
               />
-              {/* Filter, Column Settings & Export Icons - Desktop only, right aligned */}
+              {/* Export Icons, Filter & Column Settings - Desktop only, right aligned */}
               {!isMobile && (
                 <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
-                  {filters.length > 0 && (
-                    <Button
-                      variant="default"
-                      leftSection={<IconFilter size={16} />}
-                      rightSection={<IconDotsVertical size={16} />}
-                      onClick={() => setShowFilterModal(true)}
-                      size="sm"
-                      style={{ flexShrink: 0 }}
-                    >
-                      {tGlobal('table.filter.button')}
-                      {Object.keys(activeFilters).length > 0 && (
-                        <Badge size="xs" color="blue" variant="filled" ml="xs">
-                          {Object.keys(activeFilters).length}
-                        </Badge>
-                      )}
-                    </Button>
-                  )}
-                  {showColumnSettings && (
-                    <ActionIcon
-                      variant="default"
-                      size="lg"
-                      onClick={() => setShowColumnSettingsModal(true)}
-                      title={tGlobal('table.columnSettings.title')}
-                      style={{ flexShrink: 0 }}
-                    >
-                      <IconLayout size={20} />
-                    </ActionIcon>
-                  )}
-                  {/* Export Icons - Right aligned next to filter button */}
+                  {/* Export Icons - Left side (before filter button) */}
                   {showExportIcons && (
                     <>
                       {exportOptions.map((option) => {
@@ -839,6 +811,36 @@ export function DataTable({
                         );
                       })}
                     </>
+                  )}
+                  {/* Filter button - Right side */}
+                  {filters.length > 0 && (
+                    <Button
+                      variant="default"
+                      leftSection={<IconFilter size={16} />}
+                      rightSection={<IconDotsVertical size={16} />}
+                      onClick={() => setShowFilterModal(true)}
+                      size="sm"
+                      style={{ flexShrink: 0 }}
+                    >
+                      {tGlobal('table.filter.button')}
+                      {Object.keys(activeFilters).length > 0 && (
+                        <Badge size="xs" color="blue" variant="filled" ml="xs">
+                          {Object.keys(activeFilters).length}
+                        </Badge>
+                      )}
+                    </Button>
+                  )}
+                  {/* Column Settings - Right side */}
+                  {showColumnSettings && (
+                    <ActionIcon
+                      variant="default"
+                      size="lg"
+                      onClick={() => setShowColumnSettingsModal(true)}
+                      title={tGlobal('table.columnSettings.title')}
+                      style={{ flexShrink: 0 }}
+                    >
+                      <IconLayout size={20} />
+                    </ActionIcon>
                   )}
                 </Group>
               )}

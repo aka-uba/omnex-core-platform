@@ -135,6 +135,23 @@
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters",
     "passwordMismatch": "Passwords do not match"
+  },
+  "departments": {
+    "management": "Management",
+    "it": "Information Technology",
+    "hr": "Human Resources",
+    "finance": "Finance",
+    "realEstate": "Real Estate",
+    "accounting": "Accounting",
+    "production": "Production",
+    "maintenance": "Maintenance",
+    "sales": "Sales",
+    "marketing": "Marketing",
+    "logistics": "Logistics",
+    "customerService": "Customer Service",
+    "webDevelopment": "Web Development",
+    "ai": "Artificial Intelligence",
+    "other": "Other"
   }
 }
 

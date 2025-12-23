@@ -68,7 +68,11 @@
       "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -d tenant_omnexcore_2025 -c \"SELECT id, name, email, role, status FROM \"\"User\"\" ORDER BY role, name LIMIT 20;\")",
       "Bash(npx prisma:*)",
       "Bash(PGPASSWORD=postgres \"/c/Program Files/PostgreSQL/17/bin/psql.exe\":*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@104.248.80.247 \"cd /var/www/omnex-core && git pull origin main\")",
+      "Bash(sshpass -p 'onWind.1235APP' ssh -o StrictHostKeyChecking=no root@104.248.80.247 \"cd /var/www/omnex-core && git pull origin main\")",
+      "Bash(expect -c '\nspawn ssh -o StrictHostKeyChecking=no root@104.248.80.247 \"\"cd /var/www/omnex-core && git pull origin main\"\"\nexpect \"\"password:\"\"\nsend \"\"onWind.1235APP\\r\"\"\nexpect eof\n')",
+      "Bash(powershell -Command \"& {\n    $secpasswd = ConvertTo-SecureString ''onWind.1235APP'' -AsPlainText -Force\n    $cred = New-Object System.Management.Automation.PSCredential (''root'', $secpasswd)\n    ssh root@104.248.80.247 ''cd /var/www/omnex-core && git pull origin main''\n}\")"
     ],
     "deny": [],
     "ask": []
