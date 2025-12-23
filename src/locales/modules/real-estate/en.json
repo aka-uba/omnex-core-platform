@@ -231,8 +231,11 @@
       "details": "Details",
       "detailsDescription": "Detailed information about this staff member is displayed above.",
       "assignedProperties": "Assigned Properties",
-      "assignedApartments": "Assigned Apartments"
+      "assignedApartments": "Assigned Apartments",
+      "userInfo": "User Information"
     },
+    "internalStaffInfo": "This staff member is linked to an internal system user. You can view and edit all user information below.",
+    "editUserInfo": "Edit User Information",
     "create": {
       "title": "New Staff Member",
       "description": "Add a new staff member"

@@ -31,7 +31,7 @@ import { showToast } from '@/modules/notifications/components/ToastNotification'
 import type { StaffType, StaffRole } from '@/modules/real-estate/types/staff';
 import { useProperties } from '@/hooks/useProperties';
 import { useApartments } from '@/hooks/useApartments';
-import { useUsers } from '@/hooks/useUsers';
+import { useUsers, useUser } from '@/hooks/useUsers';
 import { useCoreFileManager } from '@/hooks/useCoreFileManager';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -53,12 +53,16 @@ export function RealEstateStaffForm({ locale, staffId }: RealEstateStaffFormProp
   const { data: usersData } = useUsers({ page: 1, pageSize: 1000 });
 
   // Map system users for select
-  const systemUsers = usersData?.users.map((user) => ({
-    value: user.id,
-    label: `${user.name || user.email} (${user.email})`,
+  const systemUsers = usersData?.users.map((u) => ({
+    value: u.id,
+    label: `${u.name || u.email} (${u.email})`,
   })) || [];
 
   const { user } = useAuth();
+
+  // Track selected user ID for fetching full user data
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const { data: selectedUserData } = useUser(selectedUserId);
   const [uploading, setUploading] = useState(false);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
 
@@ -117,8 +121,29 @@ export function RealEstateStaffForm({ locale, staffId }: RealEstateStaffFormProp
       if (staff.profileImage) {
         setProfileImagePreview(staff.profileImage);
       }
+      // Set selected user ID if internal staff
+      if (staff.staffType === 'internal' && staff.userId) {
+        setSelectedUserId(staff.userId);
+      }
     }
   }, [staff]);
+
+  // Auto-fill form when internal user is selected
+  useEffect(() => {
+    if (selectedUserData && form.values.staffType === 'internal') {
+      form.setValues({
+        ...form.values,
+        name: selectedUserData.name || '',
+        email: selectedUserData.email || '',
+        phone: selectedUserData.phone || '',
+      });
+      // Set profile image preview from user's profile picture
+      if (selectedUserData.profilePicture) {
+        setProfileImagePreview(selectedUserData.profilePicture);
+        form.setFieldValue('profileImage', selectedUserData.profilePicture);
+      }
+    }
+  }, [selectedUserData]);
 
   const handleProfileImageUpload = async (file: File | null) => {
     if (!file) return;
@@ -302,6 +327,10 @@ export function RealEstateStaffForm({ locale, staffId }: RealEstateStaffFormProp
                   searchable
                   data={systemUsers}
                   {...form.getInputProps('userId')}
+                  onChange={(value) => {
+                    form.setFieldValue('userId', value || '');
+                    setSelectedUserId(value || '');
+                  }}
                 />
                 <Text size="xs" c="dimmed" mt={4}>
                   {t('form.internalStaffHint')}

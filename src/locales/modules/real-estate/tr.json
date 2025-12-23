@@ -701,8 +701,11 @@
       "details": "Detaylar",
       "detailsDescription": "Personel üyesi hakkında detaylı bilgiler yukarıda görüntülenmektedir.",
       "assignedProperties": "Atanan Gayrimenkuller",
-      "assignedApartments": "Atanan Daireler"
+      "assignedApartments": "Atanan Daireler",
+      "userInfo": "Kullanıcı Bilgileri"
     },
+    "internalStaffInfo": "Bu personel dahili bir sistem kullanıcısına bağlıdır. Aşağıda kullanıcının tüm bilgilerini görüntüleyebilir ve düzenleyebilirsiniz.",
+    "editUserInfo": "Kullanıcı Bilgilerini Düzenle",
     "create": {
       "title": "Yeni Personel Üyesi",
       "description": "Yeni personel üyesi ekleyin",

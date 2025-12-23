@@ -23,7 +23,7 @@ export async function GET(
         return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
       }
 
-      // Get staff
+      // Get staff with properties
       const staff = await tenantPrisma.realEstateStaff.findUnique({
         where: { id },
         include: {
@@ -50,7 +50,48 @@ export async function GET(
         return errorResponse('Forbidden', 'Access denied', 403);
       }
 
-      return successResponse({ staff });
+      // If internal staff with userId, fetch user data
+      let staffWithUser = staff as any;
+      if (staff.staffType === 'internal' && staff.userId) {
+        const user = await tenantPrisma.user.findUnique({
+          where: { id: staff.userId },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            role: true,
+            status: true,
+            profilePicture: true,
+            department: true,
+            position: true,
+            employeeId: true,
+            hireDate: true,
+            manager: true,
+            address: true,
+            city: true,
+            country: true,
+            postalCode: true,
+            emergencyContact: true,
+            emergencyPhone: true,
+            defaultLanguage: true,
+            defaultTheme: true,
+            defaultLayout: true,
+            createdAt: true,
+            updatedAt: true,
+            lastActiveAt: true,
+          },
+        });
+
+        if (user) {
+          staffWithUser = {
+            ...staff,
+            linkedUser: user,
+          };
+        }
+      }
+
+      return successResponse({ staff: staffWithUser });
     }
   );
 }
