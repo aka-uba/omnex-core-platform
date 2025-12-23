@@ -230,15 +230,28 @@ export function ColumnSettingsModal({
                 <IconColorSwatch size={18} style={{ color: 'var(--mantine-color-gray-6)' }} />
                 <Text size="sm">{t('table.columnSettings.tableStyle.headerBackground')}</Text>
               </Group>
-              <ColorInput
-                value={localStyleSettings.headerBackgroundColor}
-                onChange={(color) => handleStyleSettingChange('headerBackgroundColor', color)}
-                placeholder={t('table.columnSettings.tableStyle.selectColor')}
-                size="xs"
-                style={{ width: 150 }}
-                swatches={['#228be6', '#40c057', '#fa5252', '#fab005', '#7950f2', '#fd7e14', '#20c997', '#868e96']}
-                swatchesPerRow={8}
-              />
+              <Group gap="xs" wrap="nowrap">
+                <ColorInput
+                  value={localStyleSettings.headerBackgroundColor}
+                  onChange={(color) => handleStyleSettingChange('headerBackgroundColor', color)}
+                  placeholder={t('table.columnSettings.tableStyle.selectColor')}
+                  size="xs"
+                  style={{ width: 150 }}
+                  swatches={['#228be6', '#40c057', '#fa5252', '#fab005', '#7950f2', '#fd7e14', '#20c997', '#868e96']}
+                  swatchesPerRow={8}
+                />
+                {localStyleSettings.headerBackgroundColor && (
+                  <ActionIcon
+                    variant="subtle"
+                    color="gray"
+                    size="sm"
+                    onClick={() => handleStyleSettingChange('headerBackgroundColor', '')}
+                    title={t('table.columnSettings.clearColor')}
+                  >
+                    <IconRefresh size={14} />
+                  </ActionIcon>
+                )}
+              </Group>
             </Group>
           </Stack>
         </Paper>
