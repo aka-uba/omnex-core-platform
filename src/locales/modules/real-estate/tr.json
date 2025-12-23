@@ -184,6 +184,9 @@
       "success": "Daire başarıyla silindi",
       "error": "Daire silinirken hata oluştu"
     },
+    "form": {
+      "unit": "Daire"
+    },
     "images": "Resimler",
     "contactForDetails": "Detaylar için iletişime geçin",
     "tenantHistory": "Kiracı Geçmişi",

@@ -79,7 +79,10 @@
     },
     "tenantHistory": "Tenant History",
     "maintenance": "Maintenance",
-    "maintenanceDescription": "Click 'View All' to see maintenance records for this apartment or create a new maintenance request."
+    "maintenanceDescription": "Click 'View All' to see maintenance records for this apartment or create a new maintenance request.",
+    "form": {
+      "unit": "Unit"
+    }
   },
   "tenants": {
     "title": "Tenants",
