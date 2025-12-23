@@ -7,6 +7,32 @@ import type { Property } from './property';
 export type StaffType = 'internal' | 'external';
 export type StaffRole = 'manager' | 'agent' | 'accountant' | 'maintenance' | 'observer';
 
+export interface LinkedUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  role?: string | null;
+  status?: string | null;
+  profilePicture?: string | null;
+  department?: string | null;
+  position?: string | null;
+  employeeId?: string | null;
+  hireDate?: Date | null;
+  address?: string | null;
+  city?: string | null;
+  country?: string | null;
+  postalCode?: string | null;
+  emergencyContact?: string | null;
+  emergencyPhone?: string | null;
+  defaultLanguage?: string | null;
+  defaultTheme?: string | null;
+  defaultLayout?: string | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+  lastActive?: Date | null;
+}
+
 export interface RealEstateStaff {
   id: string;
   tenantId: string;
@@ -36,6 +62,7 @@ export interface RealEstateStaff {
     status?: string;
     property?: { id: string; name: string };
   }>;
+  linkedUser?: LinkedUser | null;
 }
 
 export interface PropertyStaff {
