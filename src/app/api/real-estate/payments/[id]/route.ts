@@ -35,6 +35,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
                   id: true,
                   name: true,
                   address: true,
+                  city: true,
                 },
               },
             },
@@ -44,6 +45,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
               id: true,
               contractNumber: true,
               type: true,
+              tenantRecord: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                  phone: true,
+                },
+              },
             },
           },
         },

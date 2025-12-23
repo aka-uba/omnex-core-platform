@@ -41,6 +41,9 @@ export async function GET(request: NextRequest) {
     upcomingPayments: Array<{
       id: string;
       apartmentUnitNumber: string;
+      propertyName: string;
+      propertyAddress: string;
+      tenantName: string;
       amount: number;
       dueDate: string;
       daysUntilDue: number;
@@ -50,6 +53,9 @@ export async function GET(request: NextRequest) {
     overduePayments: Array<{
       id: string;
       apartmentUnitNumber: string;
+      propertyName: string;
+      propertyAddress: string;
+      tenantName: string;
       amount: number;
       dueDate: string;
       daysOverdue: number;
@@ -96,6 +102,26 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               unitNumber: true,
+              property: {
+                select: {
+                  id: true,
+                  name: true,
+                  address: true,
+                  city: true,
+                },
+              },
+            },
+          },
+          contract: {
+            select: {
+              id: true,
+              tenantRecord: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                },
+              },
             },
           },
         },
@@ -232,15 +258,29 @@ export async function GET(request: NextRequest) {
             dueDate.isBefore(next30Days)
           );
         })
-        .map((p) => ({
-          id: p.id,
-          apartmentUnitNumber: p.apartment?.unitNumber || 'N/A',
-          amount: Number(p.totalAmount || p.amount),
-          dueDate: p.dueDate.toISOString(),
-          daysUntilDue: dayjs(p.dueDate).diff(today, 'day'),
-          isProjected: false,
-          contractId: p.contractId || undefined,
-        }));
+        .map((p) => {
+          const property = p.apartment?.property;
+          const tenant = p.contract?.tenantRecord;
+          const tenantName = tenant
+            ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+            : '-';
+          const propertyAddress = property
+            ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'
+            : '-';
+
+          return {
+            id: p.id,
+            apartmentUnitNumber: p.apartment?.unitNumber || 'N/A',
+            propertyName: property?.name || '-',
+            propertyAddress,
+            tenantName,
+            amount: Number(p.totalAmount || p.amount),
+            dueDate: p.dueDate.toISOString(),
+            daysUntilDue: dayjs(p.dueDate).diff(today, 'day'),
+            isProjected: false,
+            contractId: p.contractId || undefined,
+          };
+        });
 
       // Get projected payments from active contracts
       const activeContracts = await tenantPrisma.contract.findMany({
@@ -255,6 +295,21 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               unitNumber: true,
+              property: {
+                select: {
+                  id: true,
+                  name: true,
+                  address: true,
+                  city: true,
+                },
+              },
+            },
+          },
+          tenantRecord: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
             },
           },
         },
@@ -264,6 +319,9 @@ export async function GET(request: NextRequest) {
       const projectedPayments: Array<{
         id: string;
         apartmentUnitNumber: string;
+        propertyName: string;
+        propertyAddress: string;
+        tenantName: string;
         amount: number;
         dueDate: string;
         daysUntilDue: number;
@@ -274,6 +332,9 @@ export async function GET(request: NextRequest) {
       const projectedOverduePayments: Array<{
         id: string;
         apartmentUnitNumber: string;
+        propertyName: string;
+        propertyAddress: string;
+        tenantName: string;
         amount: number;
         dueDate: string;
         daysOverdue: number;
@@ -321,11 +382,22 @@ export async function GET(request: NextRequest) {
           // If no existing payment record, add as projected
           if (!existingPayment) {
             const rentAmount = Number(contract.rentAmount);
+            const property = contract.apartment?.property;
+            const tenant = contract.tenantRecord;
+            const tenantName = tenant
+              ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+              : '-';
+            const propertyAddress = property
+              ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'
+              : '-';
 
             if (isOverdue) {
               projectedOverduePayments.push({
                 id: `projected-${contract.id}-${paymentDate.format('YYYY-MM')}`,
                 apartmentUnitNumber: contract.apartment?.unitNumber || 'N/A',
+                propertyName: property?.name || '-',
+                propertyAddress,
+                tenantName,
                 amount: rentAmount,
                 dueDate: paymentDate.toISOString(),
                 daysOverdue: today.diff(paymentDate, 'day'),
@@ -336,6 +408,9 @@ export async function GET(request: NextRequest) {
               projectedPayments.push({
                 id: `projected-${contract.id}-${paymentDate.format('YYYY-MM')}`,
                 apartmentUnitNumber: contract.apartment?.unitNumber || 'N/A',
+                propertyName: property?.name || '-',
+                propertyAddress,
+                tenantName,
                 amount: rentAmount,
                 dueDate: paymentDate.toISOString(),
                 daysUntilDue: paymentDate.diff(today, 'day'),
@@ -361,15 +436,29 @@ export async function GET(request: NextRequest) {
             dueDate.isBefore(today)
           );
         })
-        .map((p) => ({
-          id: p.id,
-          apartmentUnitNumber: p.apartment?.unitNumber || 'N/A',
-          amount: Number(p.totalAmount || p.amount),
-          dueDate: p.dueDate.toISOString(),
-          daysOverdue: today.diff(dayjs(p.dueDate), 'day'),
-          isProjected: false,
-          contractId: p.contractId || undefined,
-        }));
+        .map((p) => {
+          const property = p.apartment?.property;
+          const tenant = p.contract?.tenantRecord;
+          const tenantName = tenant
+            ? `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+            : '-';
+          const propertyAddress = property
+            ? `${property.address || ''}${property.city ? ', ' + property.city : ''}`.trim() || '-'
+            : '-';
+
+          return {
+            id: p.id,
+            apartmentUnitNumber: p.apartment?.unitNumber || 'N/A',
+            propertyName: property?.name || '-',
+            propertyAddress,
+            tenantName,
+            amount: Number(p.totalAmount || p.amount),
+            dueDate: p.dueDate.toISOString(),
+            daysOverdue: today.diff(dayjs(p.dueDate), 'day'),
+            isProjected: false,
+            contractId: p.contractId || undefined,
+          };
+        });
 
       // Combine existing and projected overdue payments
       const overduePayments = [...existingOverduePayments, ...projectedOverduePayments]

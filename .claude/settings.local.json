@@ -58,7 +58,11 @@
       "Bash(git branch:*)",
       "Bash(npm run prisma:generate:*)",
       "Bash(npx prisma db push:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(PGPASSWORD=postgres psql:*)",
+      "Bash(npx tsx:*)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -d omnex_core -c \"SELECT id, name, slug, status, \"\"currentDb\"\" FROM \"\"Tenant\"\";\")",
+      "Bash(git cherry-pick:*)"
     ],
     "deny": [],
     "ask": []
