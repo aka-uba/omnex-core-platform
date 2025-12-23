@@ -30,45 +30,57 @@
   overflow-x: auto;
 }
 
-/* Table Header Dark Mode */
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-thead) {
+/* Table Header Dark Mode - only apply default styles when no custom bg is set */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-thead:not([style*="background"])) {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th:not([style*="background"])) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
 }
 
 [data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th) {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
   border-bottom-color: var(--border-color);
 }
 
-/* Table Header Hover - Light Mode */
-.tableWrapper :global(.mantine-Table-th:hover) {
-  background-color: var(--mantine-color-gray-1) !important;
+/* Table Header Hover - Light Mode - only when no custom bg */
+.tableWrapper :global(.mantine-Table-th:not([style*="background"]):hover) {
+  background-color: var(--mantine-color-gray-1);
 }
 
-/* Table Header Hover - Dark Mode */
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th:hover) {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+/* Table Header Hover - Dark Mode - only when no custom bg */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th:not([style*="background"]):hover) {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Table Header Sorted - Light Mode */
-.tableWrapper :global(.mantine-Table-th.sorted) {
-  background-color: var(--mantine-color-blue-0) !important;
+/* Custom header background hover effect - uses filter for universal darkening/lightening */
+.tableWrapper :global(.mantine-Table-th[style*="background"]:hover) {
+  filter: brightness(0.95);
 }
 
-/* Table Header Sorted - Dark Mode */
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th.sorted) {
-  background-color: rgba(51, 154, 240, 0.18) !important;
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th[style*="background"]:hover) {
+  filter: brightness(1.1);
 }
 
-/* Table Header Sorted Hover - Light Mode */
-.tableWrapper :global(.mantine-Table-th.sorted:hover) {
-  background-color: var(--mantine-color-blue-1) !important;
+/* Table Header Sorted - Light Mode - only when no custom bg */
+.tableWrapper :global(.mantine-Table-th.sorted:not([style*="background"])) {
+  background-color: var(--mantine-color-blue-0);
 }
 
-/* Table Header Sorted Hover - Dark Mode */
-[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th.sorted:hover) {
-  background-color: rgba(51, 154, 240, 0.25) !important;
+/* Table Header Sorted - Dark Mode - only when no custom bg */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th.sorted:not([style*="background"])) {
+  background-color: rgba(51, 154, 240, 0.18);
+}
+
+/* Table Header Sorted Hover - Light Mode - only when no custom bg */
+.tableWrapper :global(.mantine-Table-th.sorted:not([style*="background"]):hover) {
+  background-color: var(--mantine-color-blue-1);
+}
+
+/* Table Header Sorted Hover - Dark Mode - only when no custom bg */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-th.sorted:not([style*="background"]):hover) {
+  background-color: rgba(51, 154, 240, 0.25);
 }
 
 /* Table Row Dark Mode */
@@ -76,9 +88,26 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+/* Table Cell - respect inline color styles */
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-td:not([style*="color"])) {
+  color: var(--text-primary);
+}
+
 [data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-td) {
   border-top-color: var(--border-color);
-  color: var(--text-primary);
+}
+
+/* Column background hover effect */
+.tableWrapper :global(.mantine-Table-td[style*="background"]) {
+  transition: filter 0.2s;
+}
+
+.tableWrapper :global(.mantine-Table-tr:hover) :global(.mantine-Table-td[style*="background"]) {
+  filter: brightness(0.95);
+}
+
+[data-mantine-color-scheme="dark"] .tableWrapper :global(.mantine-Table-tr:hover) :global(.mantine-Table-td[style*="background"]) {
+  filter: brightness(1.1);
 }
 
 .pagination {

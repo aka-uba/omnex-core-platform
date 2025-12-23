@@ -28,6 +28,67 @@ import { useTranslation } from '@/lib/i18n/client';
 export type { FilterOption } from './FilterModal';
 export type { TableStyleSettings } from './ColumnSettingsModal';
 
+// Utility function to calculate contrast color (black or white) based on background
+function getContrastColor(hexColor: string | undefined): string | undefined {
+  if (!hexColor) return undefined;
+
+  // Remove # if present
+  const hex = hexColor.replace('#', '');
+
+  // Parse RGB values
+  let r: number, g: number, b: number;
+
+  if (hex.length === 3) {
+    r = parseInt(hex[0] + hex[0], 16);
+    g = parseInt(hex[1] + hex[1], 16);
+    b = parseInt(hex[2] + hex[2], 16);
+  } else if (hex.length === 6) {
+    r = parseInt(hex.substring(0, 2), 16);
+    g = parseInt(hex.substring(2, 4), 16);
+    b = parseInt(hex.substring(4, 6), 16);
+  } else {
+    return undefined;
+  }
+
+  // Calculate relative luminance using sRGB
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  // Return black for light backgrounds, white for dark backgrounds
+  return luminance > 0.5 ? '#000000' : '#ffffff';
+}
+
+// Utility function to calculate hover color (slightly darker or lighter)
+function getHoverColor(hexColor: string | undefined): string | undefined {
+  if (!hexColor) return undefined;
+
+  const hex = hexColor.replace('#', '');
+
+  let r: number, g: number, b: number;
+
+  if (hex.length === 3) {
+    r = parseInt(hex[0] + hex[0], 16);
+    g = parseInt(hex[1] + hex[1], 16);
+    b = parseInt(hex[2] + hex[2], 16);
+  } else if (hex.length === 6) {
+    r = parseInt(hex.substring(0, 2), 16);
+    g = parseInt(hex.substring(2, 4), 16);
+    b = parseInt(hex.substring(4, 6), 16);
+  } else {
+    return undefined;
+  }
+
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  // Darken light colors, lighten dark colors
+  const factor = luminance > 0.5 ? 0.9 : 1.15;
+
+  r = Math.min(255, Math.max(0, Math.round(r * factor)));
+  g = Math.min(255, Math.max(0, Math.round(g * factor)));
+  b = Math.min(255, Math.max(0, Math.round(b * factor)));
+
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
 export interface DataTableColumn {
   key: string;
   label: string;
@@ -949,8 +1010,9 @@ export function DataTable({
                     width: 50,
                     textAlign: 'center',
                     backgroundColor: styleSettings.headerBackgroundColor || undefined,
+                    color: getContrastColor(styleSettings.headerBackgroundColor),
                   }}>
-                    <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
+                    <Text size="sm" fw={600} style={{ color: 'inherit' }}>
                       #
                     </Text>
                   </Table.Th>
@@ -960,6 +1022,7 @@ export function DataTable({
                     width: 40,
                     textAlign: 'center',
                     backgroundColor: styleSettings.headerBackgroundColor || undefined,
+                    color: getContrastColor(styleSettings.headerBackgroundColor),
                   }}>
                     <Checkbox
                       checked={isAllSelected}
@@ -981,6 +1044,7 @@ export function DataTable({
                   const align = isActionsColumn
                     ? (column.align || 'right')
                     : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+                  const headerTextColor = getContrastColor(styleSettings.headerBackgroundColor);
                   return (
                     <Table.Th
                       key={column.key}
@@ -988,14 +1052,15 @@ export function DataTable({
                       style={{
                         cursor: isSortable ? 'pointer' : 'default',
                         userSelect: 'none',
-                        transition: 'background-color 0.2s',
+                        transition: 'background-color 0.2s, color 0.2s',
                         textAlign: align,
                         backgroundColor: styleSettings.headerBackgroundColor || undefined,
+                        color: headerTextColor,
                       }}
                       onClick={() => isSortable && handleSort(column.key)}
                     >
                       <Group gap="xs" wrap="nowrap" justify={align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start'}>
-                        <Text size="sm" fw={600} className="text-text-primary-light dark:text-text-primary-dark">
+                        <Text size="sm" fw={600} style={{ color: 'inherit' }}>
                           {(() => {
                             // Eğer label bir i18n key ise (nokta içeriyorsa ve boşluk yoksa), çevir
                             const isI18nKey = column.label.includes('.') &&
@@ -1076,19 +1141,22 @@ export function DataTable({
                       const align = isActionsColumn
                         ? (column.align || 'right')
                         : (isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+                      const cellTextColor = getContrastColor(column.backgroundColor);
                       return (
                         <Table.Td
                           key={column.key}
                           style={{
                             textAlign: align,
                             backgroundColor: column.backgroundColor || undefined,
+                            color: cellTextColor,
                           }}
                         >
                           <div style={{
                             display: 'flex',
                             justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
                             alignItems: 'center',
-                            width: '100%'
+                            width: '100%',
+                            color: 'inherit',
                           }}>
                             {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
                           </div>
