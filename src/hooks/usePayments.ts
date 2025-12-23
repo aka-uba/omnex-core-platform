@@ -213,6 +213,9 @@ export function usePaymentAnalytics(params?: { companyId?: string; dateFrom?: st
         upcomingPayments: Array<{
           id: string;
           apartmentUnitNumber: string;
+          propertyName: string;
+          propertyAddress: string;
+          tenantName: string;
           amount: number;
           dueDate: string;
           daysUntilDue: number;
@@ -222,6 +225,9 @@ export function usePaymentAnalytics(params?: { companyId?: string; dateFrom?: st
         overduePayments: Array<{
           id: string;
           apartmentUnitNumber: string;
+          propertyName: string;
+          propertyAddress: string;
+          tenantName: string;
           amount: number;
           dueDate: string;
           daysOverdue: number;

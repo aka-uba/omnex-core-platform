@@ -17,6 +17,9 @@ interface PaymentQuickBoardProps {
 interface QuickPaymentItem {
   id: string;
   apartmentUnitNumber: string;
+  propertyName: string;
+  propertyAddress: string;
+  tenantName: string;
   amount: number;
   dueDate: string;
   daysUntilDue?: number;
@@ -108,21 +111,26 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
         onClick={() => handleViewPayment(payment)}
       >
         <div className={styles.rowContent}>
-          {/* Left: Apartment & Date */}
+          {/* Left: Property, Apartment & Tenant Info */}
           <div className={styles.leftSection}>
             <div className={styles.apartmentBadge}>
               <Text size="sm" fw={600} className={styles.apartmentText}>
-                {payment.apartmentUnitNumber}
+                {payment.propertyName} - {payment.apartmentUnitNumber}
               </Text>
             </div>
-            <Text size="xs" c="dimmed" className={styles.dateText}>
-              {dayjs(payment.dueDate).format('DD MMM')}
+            <Text size="xs" c="dimmed" className={styles.tenantText} lineClamp={1}>
+              {payment.tenantName}
             </Text>
-            {isProjected && (
-              <Badge size="xs" variant="outline" color="gray">
-                {t('payments.quickBoard.projected')}
-              </Badge>
-            )}
+            <div className={styles.metaRow}>
+              <Text size="xs" c="dimmed" className={styles.dateText}>
+                {dayjs(payment.dueDate).format('DD MMM')}
+              </Text>
+              {isProjected && (
+                <Badge size="xs" variant="outline" color="gray">
+                  {t('payments.quickBoard.projected')}
+                </Badge>
+              )}
+            </div>
           </div>
 
           {/* Center: Amount */}

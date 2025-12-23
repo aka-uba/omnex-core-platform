@@ -1,8 +1,8 @@
 'use client';
 
-import { Container, Paper, Group, Text, Badge, Stack, Grid, Divider } from '@mantine/core';
+import { Container, Paper, Group, Text, Badge, Stack, Grid, Divider, Anchor, ThemeIcon, Card } from '@mantine/core';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
-import { IconCurrencyDollar, IconEdit } from '@tabler/icons-react';
+import { IconCurrencyDollar, IconEdit, IconBuilding, IconHome, IconUser, IconFileText, IconMapPin } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { usePayment } from '@/hooks/usePayments';
 import { useParams, useRouter } from 'next/navigation';
@@ -209,34 +209,114 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                   </Grid>
                 </Stack>
 
-                {/* Related Information */}
-                {(apartment || contract) && (
+                {/* Hierarchical Location & Tenant Information */}
+                {(apartment || contract || property) && (
                   <>
                     <Divider />
                     <Stack gap="md">
                       <Text fw={600} size="lg">{t('payments.detail.relatedInfo')}</Text>
-                      <Grid>
-                        {apartment && (
-                          <>
-                            <Grid.Col span={{ base: 12, md: 6 }}>
-                              <Text size="sm" c="dimmed">{t('payments.detail.apartment')}</Text>
-                              <Text fw={500}>{apartment.unitNumber || tGlobal('common.noData')}</Text>
-                            </Grid.Col>
-                            {property && (
-                              <Grid.Col span={{ base: 12, md: 6 }}>
-                                <Text size="sm" c="dimmed">{t('payments.detail.property')}</Text>
-                                <Text fw={500}>{property.name || property.address || tGlobal('common.noData')}</Text>
-                              </Grid.Col>
-                            )}
-                          </>
-                        )}
-                        {contract && (
-                          <Grid.Col span={{ base: 12, md: 6 }}>
-                            <Text size="sm" c="dimmed">{t('payments.detail.contract')}</Text>
-                            <Text fw={500}>{contract.contractNumber || tGlobal('common.noData')}</Text>
-                          </Grid.Col>
-                        )}
-                      </Grid>
+
+                      {/* Property -> Apartment -> Tenant hierarchy */}
+                      <Card withBorder p="md" radius="md" bg="var(--mantine-color-default-hover)">
+                        <Stack gap="sm">
+                          {/* Property (Building) */}
+                          {property && (
+                            <Group gap="sm" align="flex-start">
+                              <ThemeIcon variant="light" color="blue" size="lg">
+                                <IconBuilding size={18} />
+                              </ThemeIcon>
+                              <Stack gap={2} style={{ flex: 1 }}>
+                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                  {t('properties.title')}
+                                </Text>
+                                <Anchor
+                                  href={`/${currentLocale}/modules/real-estate/properties/${property.id}`}
+                                  fw={600}
+                                  size="md"
+                                >
+                                  {property.name || t('common.unnamed')}
+                                </Anchor>
+                                {(property.address || property.city) && (
+                                  <Group gap="xs">
+                                    <IconMapPin size={14} style={{ opacity: 0.7 }} />
+                                    <Text size="sm" c="dimmed">
+                                      {[property.address, property.city].filter(Boolean).join(', ')}
+                                    </Text>
+                                  </Group>
+                                )}
+                              </Stack>
+                            </Group>
+                          )}
+
+                          {/* Apartment (Unit) */}
+                          {apartment && (
+                            <Group gap="sm" align="flex-start" ml={property ? 'xl' : 0}>
+                              <ThemeIcon variant="light" color="green" size="lg">
+                                <IconHome size={18} />
+                              </ThemeIcon>
+                              <Stack gap={2} style={{ flex: 1 }}>
+                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                  {t('apartments.title')}
+                                </Text>
+                                <Anchor
+                                  href={`/${currentLocale}/modules/real-estate/apartments/${apartment.id}`}
+                                  fw={600}
+                                  size="md"
+                                >
+                                  {t('apartments.unit')} {apartment.unitNumber}
+                                </Anchor>
+                              </Stack>
+                            </Group>
+                          )}
+
+                          {/* Tenant (from contract) */}
+                          {contract?.tenantRecord && (
+                            <Group gap="sm" align="flex-start" ml={apartment ? 'xl' : 0}>
+                              <ThemeIcon variant="light" color="orange" size="lg">
+                                <IconUser size={18} />
+                              </ThemeIcon>
+                              <Stack gap={2} style={{ flex: 1 }}>
+                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                  {t('tenants.title')}
+                                </Text>
+                                <Anchor
+                                  href={`/${currentLocale}/modules/real-estate/tenants/${contract.tenantRecord.id}`}
+                                  fw={600}
+                                  size="md"
+                                >
+                                  {[contract.tenantRecord.firstName, contract.tenantRecord.lastName].filter(Boolean).join(' ') || t('common.unnamed')}
+                                </Anchor>
+                                {(contract.tenantRecord.email || contract.tenantRecord.phone) && (
+                                  <Text size="sm" c="dimmed">
+                                    {[contract.tenantRecord.email, contract.tenantRecord.phone].filter(Boolean).join(' • ')}
+                                  </Text>
+                                )}
+                              </Stack>
+                            </Group>
+                          )}
+
+                          {/* Contract */}
+                          {contract && (
+                            <Group gap="sm" align="flex-start" ml={contract?.tenantRecord ? 'xl' : (apartment ? 'xl' : 0)}>
+                              <ThemeIcon variant="light" color="violet" size="lg">
+                                <IconFileText size={18} />
+                              </ThemeIcon>
+                              <Stack gap={2} style={{ flex: 1 }}>
+                                <Text size="xs" c="dimmed" tt="uppercase" fw={500}>
+                                  {t('contracts.title')}
+                                </Text>
+                                <Anchor
+                                  href={`/${currentLocale}/modules/real-estate/contracts/${contract.id}`}
+                                  fw={600}
+                                  size="md"
+                                >
+                                  {contract.contractNumber || t('common.unnamed')}
+                                </Anchor>
+                              </Stack>
+                            </Group>
+                          )}
+                        </Stack>
+                      </Card>
                     </Stack>
                   </>
                 )}
