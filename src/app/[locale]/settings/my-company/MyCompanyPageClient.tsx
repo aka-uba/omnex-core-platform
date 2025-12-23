@@ -251,23 +251,25 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
 
           <Tabs.Panel value="basic" pt="xl">
             <Stack gap="md">
-              <Paper p="md" withBorder>
-                <Stack gap="md">
-                  <Text size="sm" fw={500}>
-                    {t('companies.logo')}
-                  </Text>
-                  <Group gap="md" align="flex-start">
+              {/* Logo, Favicon, PWA Icon - Yan Yana Card'lar */}
+              <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+                {/* Logo Upload Card */}
+                <Paper p="md" withBorder>
+                  <Stack gap="md" align="center">
+                    <Text size="sm" fw={500}>
+                      {t('companies.logo')}
+                    </Text>
                     <Box
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
                         borderRadius: 'var(--mantine-radius-md)',
-                        padding: '8px',
+                        padding: '12px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        minHeight: 100,
-                        minWidth: 100,
+                        height: 100,
+                        width: '100%',
                       }}
                     >
                       {formData.logo ? (
@@ -275,19 +277,19 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                           src={formData.logo}
                           alt={formData.name || 'Logo'}
                           fit="contain"
-                          maw={150}
-                          mah={100}
+                          maw={120}
+                          mah={80}
                         />
                       ) : (
                         <IconBuilding size={40} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
-                    <Stack gap="xs" style={{ flex: 1 }}>
-                      <Group gap="xs">
+                    <Stack gap="xs" align="center" w="100%">
+                      <Group gap="xs" justify="center">
                         <FileButton onChange={(file) => file && handleLogoUpload(file)} accept="image/*">
                           {(props) => (
                             <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
-                              {formData.logo 
+                              {formData.logo
                                 ? t('companies.changeLogo')
                                 : t('companies.uploadLogo')
                               }
@@ -301,39 +303,36 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                             size="xs"
                             onClick={async () => {
                               setFormData({ ...formData, logo: null, logoFile: null });
-                              // Optionally call API to remove logo
                             }}
                           >
                             {t('companies.removeLogo')}
                           </Button>
                         )}
                       </Group>
-                      <Text size="xs" c="dimmed">
+                      <Text size="xs" c="dimmed" ta="center">
                         {t('companies.logoHint')}
                       </Text>
                     </Stack>
-                  </Group>
-                </Stack>
-              </Paper>
+                  </Stack>
+                </Paper>
 
-              {/* Favicon Upload */}
-              <Paper p="md" withBorder>
-                <Stack gap="md">
-                  <Text size="sm" fw={500}>
-                    {t('companies.favicon')}
-                  </Text>
-                  <Group gap="md" align="flex-start">
+                {/* Favicon Upload Card */}
+                <Paper p="md" withBorder>
+                  <Stack gap="md" align="center">
+                    <Text size="sm" fw={500}>
+                      {t('companies.favicon')}
+                    </Text>
                     <Box
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
-                        borderRadius: 'var(--mantine-radius-sm)',
-                        padding: '8px',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '12px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        minHeight: 64,
-                        minWidth: 64,
+                        height: 100,
+                        width: '100%',
                       }}
                     >
                       {formData.favicon ? (
@@ -345,11 +344,11 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                           mah={48}
                         />
                       ) : (
-                        <IconWorld size={24} color="var(--mantine-color-gray-5)" />
+                        <IconWorld size={32} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
-                    <Stack gap="xs" style={{ flex: 1 }}>
-                      <Group gap="xs">
+                    <Stack gap="xs" align="center" w="100%">
+                      <Group gap="xs" justify="center">
                         <FileButton onChange={(file) => file && handleFaviconUpload(file)} accept="image/*,.ico">
                           {(props) => (
                             <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
@@ -373,32 +372,30 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                           </Button>
                         )}
                       </Group>
-                      <Text size="xs" c="dimmed">
+                      <Text size="xs" c="dimmed" ta="center">
                         {t('companies.faviconHint')}
                       </Text>
                     </Stack>
-                  </Group>
-                </Stack>
-              </Paper>
+                  </Stack>
+                </Paper>
 
-              {/* PWA Icon Upload */}
-              <Paper p="md" withBorder>
-                <Stack gap="md">
-                  <Text size="sm" fw={500}>
-                    {t('companies.pwaIcon')}
-                  </Text>
-                  <Group gap="md" align="flex-start">
+                {/* PWA Icon Upload Card */}
+                <Paper p="md" withBorder>
+                  <Stack gap="md" align="center">
+                    <Text size="sm" fw={500}>
+                      {t('companies.pwaIcon')}
+                    </Text>
                     <Box
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
                         borderRadius: 'var(--mantine-radius-md)',
-                        padding: '8px',
+                        padding: '12px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        minHeight: 80,
-                        minWidth: 80,
+                        height: 100,
+                        width: '100%',
                       }}
                     >
                       {formData.pwaIcon ? (
@@ -413,8 +410,8 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                         <IconDeviceFloppy size={32} color="var(--mantine-color-gray-5)" />
                       )}
                     </Box>
-                    <Stack gap="xs" style={{ flex: 1 }}>
-                      <Group gap="xs">
+                    <Stack gap="xs" align="center" w="100%">
+                      <Group gap="xs" justify="center">
                         <FileButton onChange={(file) => file && handlePwaIconUpload(file)} accept="image/png,image/svg+xml">
                           {(props) => (
                             <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
@@ -438,13 +435,13 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                           </Button>
                         )}
                       </Group>
-                      <Text size="xs" c="dimmed">
+                      <Text size="xs" c="dimmed" ta="center">
                         {t('companies.pwaIconHint')}
                       </Text>
                     </Stack>
-                  </Group>
-                </Stack>
-              </Paper>
+                  </Stack>
+                </Paper>
+              </SimpleGrid>
 
               <TextInput
                 label={t('companies.form.name')}
