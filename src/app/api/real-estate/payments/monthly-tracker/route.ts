@@ -167,7 +167,6 @@ export async function GET(request: NextRequest) {
           status: true,
           amount: true,
           totalAmount: true,
-          paidAmount: true,
           paymentMethod: true,
         },
       });
@@ -222,8 +221,7 @@ export async function GET(request: NextRequest) {
 
           if (payment) {
             const isPastDue = dayjs(payment.dueDate).isBefore(today) && payment.status !== 'paid';
-            const isPartial = payment.status === 'partial' ||
-              (payment.paidAmount && Number(payment.paidAmount) > 0 && Number(payment.paidAmount) < Number(payment.totalAmount || payment.amount));
+            const isPartial = payment.status === 'partial';
 
             let status: MonthPaymentInfo['status'];
             if (payment.status === 'paid') {
@@ -241,7 +239,8 @@ export async function GET(request: NextRequest) {
             }
 
             const amount = Number(payment.totalAmount || payment.amount);
-            const paid = Number(payment.paidAmount || 0);
+            // If paid, the paid amount equals the total amount
+            const paid = status === 'paid' ? amount : 0;
 
             totalPayments++;
             totalAmount += amount;
@@ -249,9 +248,9 @@ export async function GET(request: NextRequest) {
             if (status === 'paid') {
               paidAmount += amount;
             } else if (status === 'overdue') {
-              overdueAmount += amount - paid;
+              overdueAmount += amount;
             } else {
-              pendingAmount += amount - paid;
+              pendingAmount += amount;
             }
 
             months[i] = {
