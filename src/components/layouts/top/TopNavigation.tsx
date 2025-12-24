@@ -421,6 +421,7 @@ export function TopNavigation() {
               position="bottom-start"
               opened={menuOpened}
               onChange={setMenuOpened}
+              closeOnItemClick={false}
             >
               <Menu.Target>
                 <button {...(styles.moreButton ? { className: styles.moreButton } : {})} aria-label={t('layout.moreMenuItems')} title={t('layout.moreMenuItems')}>
