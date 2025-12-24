@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               contractNumber: true,
-              monthlyRent: true,
+              rentAmount: true,
               status: true,
               tenantRecord: {
                 select: {
@@ -290,7 +290,7 @@ export async function GET(request: NextRequest) {
           tenantType: tenant?.tenantType as 'individual' | 'company' | null,
           contractId: contract?.id || null,
           contractNumber: contract?.contractNumber || null,
-          monthlyRent: Number(contract?.monthlyRent || 0),
+          monthlyRent: Number(contract?.rentAmount || 0),
           months,
         });
       }
