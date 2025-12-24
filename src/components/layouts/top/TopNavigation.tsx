@@ -39,9 +39,13 @@ export function TopNavigation() {
   }, []);
 
   // Navigate using router.push (soft navigation)
+  // Use setTimeout to allow menu to close before navigation to prevent removeChild errors
   const navigateTo = useCallback((href: string) => {
     setMenuOpened(false); // Close menu first
-    router.push(href);
+    // Small delay to let menu animations complete before navigation
+    setTimeout(() => {
+      router.push(href);
+    }, 10);
   }, [router]);
 
   const locale = pathname?.split('/')[1] || 'tr';
