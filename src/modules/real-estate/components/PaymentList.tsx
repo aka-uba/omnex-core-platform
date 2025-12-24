@@ -173,11 +173,11 @@ export function PaymentList({ locale }: PaymentListProps) {
   const tableData = useMemo(() => {
     if (!data) return [];
     return data.payments.map((payment) => {
-      const tenant = payment.contract?.tenant;
-      const tenantName = tenant
-        ? tenant.tenantType === 'company'
-          ? tenant.companyName || '-'
-          : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+      const tenantRecord = payment.contract?.tenantRecord;
+      const tenantName = tenantRecord
+        ? tenantRecord.tenantType === 'company'
+          ? tenantRecord.companyName || '-'
+          : `${tenantRecord.firstName || ''} ${tenantRecord.lastName || ''}`.trim() || '-'
         : '-';
 
       return {

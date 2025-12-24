@@ -33,7 +33,6 @@ import {
   IconRepeat,
   IconDots,
   IconCheck,
-  IconGripVertical,
 } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';

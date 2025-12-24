@@ -140,7 +140,26 @@
     "monthlyTracker": {
       "tab": "Monthly Tracker",
       "title": "Monthly Payment Tracker",
-      "description": "Track monthly payment status"
+      "description": "Track monthly payment status",
+      "monthView": "Month View",
+      "yearView": "Year View",
+      "totalPayments": "Total Payments",
+      "paidPayments": "Paid",
+      "pendingPayments": "Pending",
+      "overduePayments": "Overdue",
+      "collectionRate": "Collection Rate",
+      "weekdays": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "more": "more",
+      "total": "total",
+      "paid": "paid"
     },
     "create": {
       "title": "Create Payment",

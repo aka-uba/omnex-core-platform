@@ -349,7 +349,26 @@
     "monthlyTracker": {
       "tab": "Aylık Takip",
       "title": "Aylık Ödeme Takibi",
-      "description": "Aylık ödeme durumlarını takip edin"
+      "description": "Aylık ödeme durumlarını takip edin",
+      "monthView": "Aylık Görünüm",
+      "yearView": "Yıllık Görünüm",
+      "totalPayments": "Toplam Ödemeler",
+      "paidPayments": "Ödenen",
+      "pendingPayments": "Bekleyen",
+      "overduePayments": "Vadesi Geçmiş",
+      "collectionRate": "Tahsilat Oranı",
+      "weekdays": {
+        "sun": "Paz",
+        "mon": "Pzt",
+        "tue": "Sal",
+        "wed": "Çar",
+        "thu": "Per",
+        "fri": "Cum",
+        "sat": "Cmt"
+      },
+      "more": "daha",
+      "total": "toplam",
+      "paid": "ödendi"
     },
     "types": {
       "rent": "Kira",

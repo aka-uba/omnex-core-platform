@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               contractNumber: true,
-              tenant: {
+              tenantRecord: {
                 select: {
                   id: true,
                   firstName: true,
