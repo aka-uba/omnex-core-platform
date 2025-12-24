@@ -58,7 +58,7 @@ export function PropertyExpenseList({ locale, propertyId, propertyName }: Proper
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
   const [search, setSearch] = useState('');
-  const [yearFilter, setYearFilter] = useState<string | null>(String(new Date().getFullYear()));
+  const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null);

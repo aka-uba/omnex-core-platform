@@ -94,10 +94,16 @@ export function CalendarView({
   const [hoveredDayEvents, setHoveredDayEvents] = useState<CalendarEvent[]>([]);
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isCalendarHovered, setIsCalendarHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Ensure consistent isDark value between server and client
+  // Also detect touch devices to disable hover popovers on mobile
   useEffect(() => {
     setMounted(true);
+    // Check if device supports touch
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    setIsTouchDevice(hasTouch && hasCoarsePointer);
   }, []);
 
   // Use false on server, actual value on client to prevent hydration mismatch
@@ -341,8 +347,9 @@ export function CalendarView({
           const today = isToday(day);
 
           const dayEventsForHover = getEventsForDay(day);
-          const isDayHovered = hoveredDay === day && dayEventsForHover.length > 0;
-          const isDayHoveredForButton = hoveredDay === day;
+          // Disable hover popover on touch devices
+          const isDayHovered = !isTouchDevice && hoveredDay === day && dayEventsForHover.length > 0;
+          const isDayHoveredForButton = !isTouchDevice && hoveredDay === day;
 
           const handleMouseEnter = () => {
             // Clear any existing timeout

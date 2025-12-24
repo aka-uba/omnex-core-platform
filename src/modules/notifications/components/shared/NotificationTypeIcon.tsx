@@ -40,7 +40,7 @@ export function NotificationTypeIcon({ type, ...props }: NotificationTypeIconPro
     };
 
     return (
-        <ThemeIcon color={getColor()} variant="light" radius="md" {...props}>
+        <ThemeIcon color={getColor()} variant="filled" radius="md" {...props}>
             {getIcon()}
         </ThemeIcon>
     );

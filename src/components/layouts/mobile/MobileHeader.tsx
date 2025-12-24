@@ -8,7 +8,6 @@
 
 import { useState, useEffect } from 'react';
 import { ActionIcon, Group, Avatar, Menu, Text } from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
 import {
   IconMenu2,
   IconSearch,
@@ -32,7 +31,6 @@ interface MobileHeaderProps {
 }
 
 export function MobileHeader({ onMenuToggle, searchOpened, onSearchToggle }: MobileHeaderProps) {
-  const { colorScheme } = useMantineColorScheme();
   const { config, applyChanges } = useLayout();
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -47,26 +45,18 @@ export function MobileHeader({ onMenuToggle, searchOpened, onSearchToggle }: Mob
   const iconSize = config.mobile?.iconSize || 24;
   const headerHeight = config.mobile?.headerHeight || 56;
 
-  // Theme toggle - cycles through light -> dark -> auto -> light
+  // Theme toggle - simple light/dark toggle (no auto mode)
   const handleThemeToggle = (e?: React.MouseEvent) => {
     // Event propagation'ı durdur (menü tıklamalarıyla karışmasını önle)
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
-    
-    const currentMode = config.themeMode || 'auto';
-    let newThemeMode: 'light' | 'dark' | 'auto';
-    
-    // Döngü: light -> dark -> auto -> light
-    if (currentMode === 'light') {
-      newThemeMode = 'dark';
-    } else if (currentMode === 'dark') {
-      newThemeMode = 'auto';
-    } else {
-      newThemeMode = 'light';
-    }
-    
+
+    const currentMode = config.themeMode || 'light';
+    // Simple toggle: light <-> dark (auto is treated as light for toggle purposes)
+    const newThemeMode: 'light' | 'dark' = currentMode === 'dark' ? 'light' : 'dark';
+
     // Config'i güncelle - LayoutProvider'daki useEffect otomatik olarak tema değişikliğini uygulayacak
     applyChanges({
       themeMode: newThemeMode,
@@ -125,17 +115,11 @@ export function MobileHeader({ onMenuToggle, searchOpened, onSearchToggle }: Mob
             aria-label={t('layout.toggleTheme')}
             type="button"
           >
-            {mounted && (() => {
-              const currentMode = config.themeMode || 'auto';
-              if (currentMode === 'light') {
-                return <IconSun size={iconSize} />;
-              } else if (currentMode === 'dark') {
-                return <IconMoon size={iconSize} />;
-              } else {
-                // Auto mode - show icon based on current colorScheme
-                return colorScheme === 'dark' ? <IconMoon size={iconSize} /> : <IconSun size={iconSize} />;
-              }
-            })()}
+            {mounted && (
+              config.themeMode === 'dark'
+                ? <IconMoon size={iconSize} />
+                : <IconSun size={iconSize} />
+            )}
           </ActionIcon>
 
           {/* User Menu */}

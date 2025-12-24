@@ -584,9 +584,13 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                       {/* Apartment Cover Image - Sol tarafta */}
                       <Box
                         style={{
-                          width: 256,
-                          height: 256,
+                          width: 200,
+                          minWidth: 200,
+                          height: 200,
                           flexShrink: 0,
+                          borderRadius: 'var(--mantine-radius-md)',
+                          overflow: 'hidden',
+                          border: '2px solid var(--mantine-color-gray-3)',
                         }}
                       >
                         <Image
@@ -598,17 +602,10 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                               : undefined
                           }
                           alt={apartment.unitNumber}
-                          width={256}
-                          height={256}
-                          radius="md"
+                          w="100%"
+                          h="100%"
                           fit="cover"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            border: '2px solid var(--mantine-color-gray-3)',
-                            objectFit: 'cover',
-                          }}
-                          fallbackSrc="https://placehold.co/256x256?text=Apartment"
+                          fallbackSrc="https://placehold.co/200x200?text=Apartment"
                         />
                       </Box>
                       

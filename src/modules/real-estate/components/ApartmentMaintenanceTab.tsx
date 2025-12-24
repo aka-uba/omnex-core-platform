@@ -17,7 +17,6 @@ import {
   NumberInput,
   Loader,
   Center,
-  Menu,
   Pagination,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
@@ -26,7 +25,6 @@ import {
   IconPlus,
   IconEdit,
   IconTrash,
-  IconDotsVertical,
   IconTool,
   IconCalendar,
 } from '@tabler/icons-react';
@@ -287,7 +285,7 @@ export function ApartmentMaintenanceTab({
               leftSection={<IconPlus size={16} />}
               onClick={handleOpenCreate}
             >
-              {t('maintenance.create') || 'New Maintenance'}
+              {t('maintenance.create.title')}
             </Button>
           </Group>
 
@@ -341,29 +339,25 @@ export function ApartmentMaintenanceTab({
                             : '-'}
                         </Table.Td>
                         <Table.Td>
-                          <Group justify="center" gap="xs">
-                            <Menu position="bottom-end" withArrow>
-                              <Menu.Target>
-                                <ActionIcon variant="subtle" size="sm">
-                                  <IconDotsVertical size={16} />
-                                </ActionIcon>
-                              </Menu.Target>
-                              <Menu.Dropdown>
-                                <Menu.Item
-                                  leftSection={<IconEdit size={14} />}
-                                  onClick={() => handleOpenEdit(record)}
-                                >
-                                  {t('common.edit') || 'Edit'}
-                                </Menu.Item>
-                                <Menu.Item
-                                  leftSection={<IconTrash size={14} />}
-                                  color="red"
-                                  onClick={() => handleOpenDelete(record.id)}
-                                >
-                                  {t('common.delete') || 'Delete'}
-                                </Menu.Item>
-                              </Menu.Dropdown>
-                            </Menu>
+                          <Group justify="center" gap={4}>
+                            <ActionIcon
+                              variant="subtle"
+                              size="sm"
+                              color="blue"
+                              onClick={() => handleOpenEdit(record)}
+                              title={t('common.edit')}
+                            >
+                              <IconEdit size={16} />
+                            </ActionIcon>
+                            <ActionIcon
+                              variant="subtle"
+                              size="sm"
+                              color="red"
+                              onClick={() => handleOpenDelete(record.id)}
+                              title={t('common.delete')}
+                            >
+                              <IconTrash size={16} />
+                            </ActionIcon>
                           </Group>
                         </Table.Td>
                       </Table.Tr>

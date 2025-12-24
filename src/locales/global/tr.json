@@ -1454,7 +1454,16 @@
       "message": "Veri bulunamadı",
       "noResults": "Sonuç bulunamadı"
     },
-    "description": "description"
+    "description": "description",
+    "actions": "İşlemler"
+  },
+  "actions": {
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "create": "Oluştur",
+    "save": "Kaydet",
+    "cancel": "İptal"
   },
   "setup": {
     "title": "Veritabanı Kurulum Sihirbazı",

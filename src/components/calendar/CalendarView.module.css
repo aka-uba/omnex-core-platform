@@ -183,8 +183,26 @@
     padding: 0.25rem;
   }
 
+  /* Disable hover effects on mobile - use tap instead */
+  .calendarDay:hover {
+    background-color: var(--bg-card);
+    z-index: auto;
+  }
+
   .eventCard {
     padding: 0.25rem;
+  }
+
+  /* Disable hover effects on mobile */
+  .eventCard:hover {
+    transform: none;
+    box-shadow: none;
+    z-index: 1;
+  }
+
+  .addEventButton {
+    /* Hide hover-triggered button on mobile */
+    display: none;
   }
 
   .toolbar {
@@ -194,5 +212,28 @@
 
   .viewSelector {
     width: 100%;
+  }
+}
+
+/* Touch device specific - disable hover states */
+@media (hover: none) and (pointer: coarse) {
+  .calendarDay:hover {
+    background-color: var(--bg-card);
+    z-index: auto;
+  }
+
+  .eventCard:hover {
+    transform: none;
+    box-shadow: none;
+    z-index: 1;
+  }
+
+  .addEventButton {
+    display: none;
+  }
+
+  .navButton:hover {
+    color: var(--text-secondary);
+    background-color: transparent;
   }
 }
