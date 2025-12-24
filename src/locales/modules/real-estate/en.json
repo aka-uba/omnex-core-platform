@@ -152,6 +152,8 @@
       "collectedAmount": "Collected",
       "collectionRate": "Collection Rate",
       "noData": "No data found",
+      "noPayment": "No Payment",
+      "allProperties": "All Properties",
       "weekdays": {
         "sun": "Sun",
         "mon": "Mon",

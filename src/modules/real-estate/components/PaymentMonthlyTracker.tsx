@@ -12,7 +12,9 @@ import {
   ActionIcon,
   Loader,
   Select,
-  Progress,
+  Table,
+  ScrollArea,
+  Tooltip,
 } from '@mantine/core';
 import {
   IconChevronLeft,
@@ -21,10 +23,11 @@ import {
   IconClock,
   IconAlertCircle,
   IconCurrencyDollar,
+  IconX,
 } from '@tabler/icons-react';
 import { usePayments } from '@/hooks/usePayments';
+import { useApartments } from '@/hooks/useApartments';
 import { useTranslation } from '@/lib/i18n/client';
-import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/en';
@@ -33,39 +36,152 @@ interface PaymentMonthlyTrackerProps {
   locale: string;
 }
 
+interface MonthPaymentInfo {
+  status: 'paid' | 'pending' | 'overdue' | 'none';
+  amount: number;
+  dueDate: string | null;
+  paidDate: string | null;
+  paymentMethod: string | null;
+  paymentId: string | null;
+}
+
+interface ApartmentRow {
+  id: string;
+  propertyName: string;
+  unitNumber: string;
+  floor: string;
+  tenantName: string;
+  months: Record<number, MonthPaymentInfo>;
+}
+
 export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
 
   const [currentYear, setCurrentYear] = useState(dayjs().year());
+  const [propertyFilter, setPropertyFilter] = useState<string | null>(null);
 
-  const { data, isLoading, error } = usePayments({
+  const { data: paymentsData, isLoading: paymentsLoading } = usePayments({
     page: 1,
     pageSize: 1000,
   });
 
+  const { data: apartmentsData, isLoading: apartmentsLoading } = useApartments({
+    page: 1,
+    pageSize: 1000,
+  });
+
+  const isLoading = paymentsLoading || apartmentsLoading;
+
+  // Get unique properties for filter
+  const properties = useMemo(() => {
+    if (!apartmentsData?.apartments) return [];
+    const propertyMap = new Map<string, string>();
+    apartmentsData.apartments.forEach((apt: any) => {
+      if (apt.property?.id && apt.property?.name) {
+        propertyMap.set(apt.property.id, apt.property.name);
+      }
+    });
+    return Array.from(propertyMap.entries()).map(([id, name]) => ({
+      value: id,
+      label: name,
+    }));
+  }, [apartmentsData]);
+
   // Filter payments for current year
   const yearPayments = useMemo(() => {
-    if (!data?.payments) return [];
-    return data.payments.filter((payment) => {
+    if (!paymentsData?.payments) return [];
+    return paymentsData.payments.filter((payment: any) => {
       const dueDate = dayjs(payment.dueDate);
       return dueDate.year() === currentYear;
     });
-  }, [data, currentYear]);
+  }, [paymentsData, currentYear]);
+
+  // Build pivot table data
+  const tableData = useMemo(() => {
+    if (!apartmentsData?.apartments) return [];
+
+    const rows: ApartmentRow[] = [];
+
+    // Filter apartments by property if filter is set
+    const filteredApartments = propertyFilter
+      ? apartmentsData.apartments.filter((apt: any) => apt.property?.id === propertyFilter)
+      : apartmentsData.apartments;
+
+    filteredApartments.forEach((apartment: any) => {
+      // Get tenant from current contract
+      const activeContract = apartment.contracts?.find((c: any) => c.status === 'active');
+      const tenant = activeContract?.tenantRecord;
+      const tenantName = tenant
+        ? tenant.tenantType === 'company'
+          ? tenant.companyName || '-'
+          : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+        : '-';
+
+      // Initialize months
+      const months: Record<number, MonthPaymentInfo> = {};
+      for (let i = 0; i < 12; i++) {
+        months[i] = {
+          status: 'none',
+          amount: 0,
+          dueDate: null,
+          paidDate: null,
+          paymentMethod: null,
+          paymentId: null,
+        };
+      }
+
+      // Find payments for this apartment
+      const apartmentPayments = yearPayments.filter(
+        (p: any) => p.apartmentId === apartment.id
+      );
+
+      apartmentPayments.forEach((payment: any) => {
+        const month = dayjs(payment.dueDate).month();
+        const isPastDue = dayjs(payment.dueDate).isBefore(dayjs()) && payment.status === 'pending';
+
+        months[month] = {
+          status: payment.status === 'paid' ? 'paid' : isPastDue ? 'overdue' : payment.status,
+          amount: Number(payment.totalAmount || payment.amount),
+          dueDate: payment.dueDate,
+          paidDate: payment.paidDate,
+          paymentMethod: payment.paymentMethod,
+          paymentId: payment.id,
+        };
+      });
+
+      rows.push({
+        id: apartment.id,
+        propertyName: apartment.property?.name || '-',
+        unitNumber: apartment.unitNumber,
+        floor: apartment.floor || '-',
+        tenantName,
+        months,
+      });
+    });
+
+    // Sort by property name and unit number
+    rows.sort((a, b) => {
+      const propCompare = a.propertyName.localeCompare(b.propertyName);
+      if (propCompare !== 0) return propCompare;
+      return a.unitNumber.localeCompare(b.unitNumber);
+    });
+
+    return rows;
+  }, [apartmentsData, yearPayments, propertyFilter]);
 
   // Calculate summary statistics
   const summary = useMemo(() => {
     const total = yearPayments.length;
-    const paid = yearPayments.filter(p => p.status === 'paid').length;
-    const pending = yearPayments.filter(p => p.status === 'pending').length;
-    const overdue = yearPayments.filter(p => p.status === 'overdue' ||
-      (p.status === 'pending' && dayjs(p.dueDate).isBefore(dayjs()))).length;
+    const paid = yearPayments.filter((p: any) => p.status === 'paid').length;
+    const pending = yearPayments.filter((p: any) => p.status === 'pending').length;
+    const overdue = yearPayments.filter((p: any) =>
+      p.status === 'overdue' || (p.status === 'pending' && dayjs(p.dueDate).isBefore(dayjs()))
+    ).length;
 
-    const totalAmount = yearPayments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-    const paidAmount = yearPayments.filter(p => p.status === 'paid')
-      .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-    const pendingAmount = yearPayments.filter(p => p.status === 'pending')
-      .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
+    const totalAmount = yearPayments.reduce((sum: number, p: any) => sum + Number(p.totalAmount || p.amount), 0);
+    const paidAmount = yearPayments.filter((p: any) => p.status === 'paid')
+      .reduce((sum: number, p: any) => sum + Number(p.totalAmount || p.amount), 0);
 
     return {
       total,
@@ -74,50 +190,9 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       overdue,
       totalAmount,
       paidAmount,
-      pendingAmount,
       collectionRate: total > 0 ? (paid / total) * 100 : 0,
     };
   }, [yearPayments]);
-
-  // Generate monthly data for table
-  const monthlyData = useMemo(() => {
-    const months = [];
-    for (let i = 0; i < 12; i++) {
-      const monthDate = dayjs().year(currentYear).month(i);
-      const monthPayments = yearPayments.filter(p => dayjs(p.dueDate).month() === i);
-
-      const total = monthPayments.length;
-      const paid = monthPayments.filter(p => p.status === 'paid').length;
-      const pending = monthPayments.filter(p => p.status === 'pending').length;
-      const overdue = monthPayments.filter(p =>
-        p.status === 'overdue' || (p.status === 'pending' && dayjs(p.dueDate).isBefore(dayjs()))
-      ).length;
-
-      const totalAmount = monthPayments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-      const paidAmount = monthPayments.filter(p => p.status === 'paid')
-        .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-      const pendingAmount = monthPayments.filter(p => p.status === 'pending')
-        .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-
-      const collectionRate = total > 0 ? (paid / total) * 100 : 0;
-
-      months.push({
-        id: `month-${i}`,
-        month: i,
-        monthName: monthDate.locale(locale).format('MMMM'),
-        isCurrentMonth: monthDate.isSame(dayjs(), 'month'),
-        total,
-        paid,
-        pending,
-        overdue,
-        totalAmount,
-        paidAmount,
-        pendingAmount,
-        collectionRate,
-      });
-    }
-    return months;
-  }, [yearPayments, currentYear, locale]);
 
   // Format currency
   const formatCurrency = useCallback((amount: number) => {
@@ -138,101 +213,63 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     setCurrentYear(prev => prev + 1);
   }, []);
 
-  // Table columns
-  const columns: DataTableColumn[] = useMemo(() => [
-    {
-      key: 'monthName',
-      label: t('payments.monthlyTracker.month') || 'Ay',
-      sortable: true,
-      render: (value: string, row: any) => (
-        <Text fw={row.isCurrentMonth ? 700 : 400} c={row.isCurrentMonth ? 'blue' : undefined}>
-          {value}
-        </Text>
-      ),
-    },
-    {
-      key: 'total',
-      label: t('payments.monthlyTracker.totalPayments'),
-      sortable: true,
-      align: 'center' as const,
-      render: (value: number) => (
-        <Badge color="blue" variant="light" size="lg">
-          {value}
+  // Get month names
+  const monthNames = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) =>
+      dayjs().month(i).locale(locale).format('MMM')
+    );
+  }, [locale]);
+
+  // Render cell based on payment status
+  const renderCell = (info: MonthPaymentInfo, monthIndex: number) => {
+    if (info.status === 'none') {
+      return (
+        <Text size="xs" c="dimmed" ta="center">-</Text>
+      );
+    }
+
+    const statusColors = {
+      paid: 'green',
+      pending: 'yellow',
+      overdue: 'red',
+    };
+
+    const statusIcons = {
+      paid: <IconCheck size={12} />,
+      pending: <IconClock size={12} />,
+      overdue: <IconAlertCircle size={12} />,
+    };
+
+    const tooltipContent = (
+      <Stack gap={4}>
+        <Text size="xs">{formatCurrency(info.amount)}</Text>
+        <Text size="xs">{t(`payments.status.${info.status}`)}</Text>
+        {info.dueDate && (
+          <Text size="xs">{t('table.dueDate')}: {dayjs(info.dueDate).format('DD.MM.YYYY')}</Text>
+        )}
+        {info.paidDate && (
+          <Text size="xs">{t('table.paidDate')}: {dayjs(info.paidDate).format('DD.MM.YYYY')}</Text>
+        )}
+        {info.paymentMethod && (
+          <Text size="xs">{t('table.paymentMethod')}: {t(`payments.methods.${info.paymentMethod}`) || info.paymentMethod}</Text>
+        )}
+      </Stack>
+    );
+
+    return (
+      <Tooltip label={tooltipContent} multiline w={200}>
+        <Badge
+          size="sm"
+          color={statusColors[info.status]}
+          variant="filled"
+          leftSection={statusIcons[info.status]}
+          style={{ cursor: 'pointer', width: '100%' }}
+        >
+          {formatCurrency(info.amount).replace('₺', '').trim()}
         </Badge>
-      ),
-    },
-    {
-      key: 'paid',
-      label: t('payments.monthlyTracker.paidPayments'),
-      sortable: true,
-      align: 'center' as const,
-      render: (value: number) => (
-        <Badge color="green" variant="filled" size="lg">
-          {value}
-        </Badge>
-      ),
-    },
-    {
-      key: 'pending',
-      label: t('payments.monthlyTracker.pendingPayments'),
-      sortable: true,
-      align: 'center' as const,
-      render: (value: number) => (
-        <Badge color="yellow" variant="filled" size="lg">
-          {value}
-        </Badge>
-      ),
-    },
-    {
-      key: 'overdue',
-      label: t('payments.monthlyTracker.overduePayments'),
-      sortable: true,
-      align: 'center' as const,
-      render: (value: number) => (
-        <Badge color={value > 0 ? 'red' : 'gray'} variant="filled" size="lg">
-          {value}
-        </Badge>
-      ),
-    },
-    {
-      key: 'totalAmount',
-      label: t('payments.monthlyTracker.expectedAmount') || 'Beklenen Tutar',
-      sortable: true,
-      align: 'right' as const,
-      render: (value: number) => (
-        <Text fw={500}>{formatCurrency(value)}</Text>
-      ),
-    },
-    {
-      key: 'paidAmount',
-      label: t('payments.monthlyTracker.collectedAmount') || 'Tahsil Edilen',
-      sortable: true,
-      align: 'right' as const,
-      render: (value: number) => (
-        <Text fw={500} c="green">{formatCurrency(value)}</Text>
-      ),
-    },
-    {
-      key: 'collectionRate',
-      label: t('payments.monthlyTracker.collectionRate'),
-      sortable: true,
-      align: 'center' as const,
-      render: (value: number, row: any) => (
-        <Group gap="xs">
-          <Progress
-            value={value}
-            color={value >= 80 ? 'green' : value >= 50 ? 'yellow' : 'red'}
-            size="lg"
-            radius="xl"
-            style={{ width: 60 }}
-          />
-          <Text size="sm" fw={500}>
-            {value.toFixed(0)}%
-          </Text>
-        </Group>
-      ),
-    },
-  ], [t, formatCurrency]);
+      </Tooltip>
+    );
+  };
 
   if (isLoading) {
     return (
@@ -242,28 +279,30 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     );
   }
 
-  if (error) {
-    return (
-      <Paper shadow="xs" p="md">
-        <Text c="red">{tGlobal('common.errorLoading')}</Text>
-      </Paper>
-    );
-  }
-
   return (
     <Stack gap="md">
-      {/* Year Navigation */}
+      {/* Year Navigation and Filters */}
       <Paper shadow="xs" p="md">
-        <Group justify="center">
-          <ActionIcon variant="subtle" onClick={navigatePrevious} size="lg">
-            <IconChevronLeft size={24} />
-          </ActionIcon>
-          <Text size="xl" fw={700}>
-            {currentYear}
-          </Text>
-          <ActionIcon variant="subtle" onClick={navigateNext} size="lg">
-            <IconChevronRight size={24} />
-          </ActionIcon>
+        <Group justify="space-between">
+          <Group>
+            <ActionIcon variant="subtle" onClick={navigatePrevious} size="lg">
+              <IconChevronLeft size={24} />
+            </ActionIcon>
+            <Text size="xl" fw={700}>
+              {currentYear}
+            </Text>
+            <ActionIcon variant="subtle" onClick={navigateNext} size="lg">
+              <IconChevronRight size={24} />
+            </ActionIcon>
+          </Group>
+          <Select
+            placeholder={t('payments.monthlyTracker.allProperties') || 'Tüm Gayrimenkuller'}
+            value={propertyFilter}
+            onChange={setPropertyFilter}
+            data={properties}
+            clearable
+            w={250}
+          />
         </Group>
       </Paper>
 
@@ -317,9 +356,6 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
                 <Text size="xl" fw={700} mt="xs" c="yellow">
                   {summary.pending}
                 </Text>
-                <Text size="sm" c="dimmed">
-                  {formatCurrency(summary.pendingAmount)}
-                </Text>
               </div>
               <IconClock size={32} color="var(--mantine-color-yellow-6)" />
             </Group>
@@ -346,29 +382,80 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         </Grid.Col>
       </Grid>
 
-      {/* Monthly Table */}
-      <DataTable
-        tableId="payment-monthly-tracker"
-        columns={columns}
-        data={monthlyData}
-        searchable={false}
-        sortable={true}
-        pageable={false}
-        emptyMessage={t('payments.monthlyTracker.noData') || 'Veri bulunamadı'}
-        showColumnSettings={false}
-      />
+      {/* Pivot Table */}
+      <Paper shadow="xs" p="md">
+        <ScrollArea>
+          <Table striped highlightOnHover withTableBorder withColumnBorders style={{ minWidth: 1400 }}>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th style={{ position: 'sticky', left: 0, backgroundColor: 'var(--mantine-color-body)', zIndex: 1, minWidth: 150 }}>
+                  {t('table.property')}
+                </Table.Th>
+                <Table.Th style={{ position: 'sticky', left: 150, backgroundColor: 'var(--mantine-color-body)', zIndex: 1, minWidth: 80 }}>
+                  {t('table.unit')}
+                </Table.Th>
+                <Table.Th style={{ position: 'sticky', left: 230, backgroundColor: 'var(--mantine-color-body)', zIndex: 1, minWidth: 60 }}>
+                  {t('table.floor')}
+                </Table.Th>
+                <Table.Th style={{ position: 'sticky', left: 290, backgroundColor: 'var(--mantine-color-body)', zIndex: 1, minWidth: 150 }}>
+                  {t('table.tenant')}
+                </Table.Th>
+                {monthNames.map((month, index) => (
+                  <Table.Th key={index} ta="center" style={{ minWidth: 85 }}>
+                    {month}
+                  </Table.Th>
+                ))}
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {tableData.length === 0 ? (
+                <Table.Tr>
+                  <Table.Td colSpan={16} ta="center">
+                    <Text c="dimmed" py="xl">{t('payments.monthlyTracker.noData') || 'Veri bulunamadı'}</Text>
+                  </Table.Td>
+                </Table.Tr>
+              ) : (
+                tableData.map((row) => (
+                  <Table.Tr key={row.id}>
+                    <Table.Td style={{ position: 'sticky', left: 0, backgroundColor: 'var(--mantine-color-body)', zIndex: 1 }}>
+                      <Text size="sm" fw={500}>{row.propertyName}</Text>
+                    </Table.Td>
+                    <Table.Td style={{ position: 'sticky', left: 150, backgroundColor: 'var(--mantine-color-body)', zIndex: 1 }}>
+                      <Text size="sm">{row.unitNumber}</Text>
+                    </Table.Td>
+                    <Table.Td style={{ position: 'sticky', left: 230, backgroundColor: 'var(--mantine-color-body)', zIndex: 1 }}>
+                      <Text size="sm">{row.floor}</Text>
+                    </Table.Td>
+                    <Table.Td style={{ position: 'sticky', left: 290, backgroundColor: 'var(--mantine-color-body)', zIndex: 1 }}>
+                      <Text size="sm" lineClamp={1}>{row.tenantName}</Text>
+                    </Table.Td>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <Table.Td key={i} ta="center" p={4}>
+                        {renderCell(row.months[i], i)}
+                      </Table.Td>
+                    ))}
+                  </Table.Tr>
+                ))
+              )}
+            </Table.Tbody>
+          </Table>
+        </ScrollArea>
+      </Paper>
 
       {/* Legend */}
       <Paper shadow="xs" p="sm">
         <Group gap="md">
           <Group gap="xs">
-            <Badge color="green" size="sm">{t('payments.status.paid')}</Badge>
+            <Badge color="green" size="sm" leftSection={<IconCheck size={10} />}>{t('payments.status.paid')}</Badge>
           </Group>
           <Group gap="xs">
-            <Badge color="yellow" size="sm">{t('payments.status.pending')}</Badge>
+            <Badge color="yellow" size="sm" leftSection={<IconClock size={10} />}>{t('payments.status.pending')}</Badge>
           </Group>
           <Group gap="xs">
-            <Badge color="red" size="sm">{t('payments.status.overdue')}</Badge>
+            <Badge color="red" size="sm" leftSection={<IconAlertCircle size={10} />}>{t('payments.status.overdue')}</Badge>
+          </Group>
+          <Group gap="xs">
+            <Text size="sm" c="dimmed">- : {t('payments.monthlyTracker.noPayment') || 'Ödeme Yok'}</Text>
           </Group>
         </Group>
       </Paper>

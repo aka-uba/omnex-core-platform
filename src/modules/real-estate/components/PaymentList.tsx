@@ -219,6 +219,20 @@ export function PaymentList({ locale }: PaymentListProps) {
     return getStatusBadge(value, row.dueDate);
   }, [getStatusBadge]);
 
+  const renderPaymentMethod = useCallback((value: string) => {
+    if (!value || value === '-') return '-';
+    // Translate payment method codes
+    const methodTranslations: Record<string, string> = {
+      cash: t('payments.methods.cash'),
+      bank_transfer: t('payments.methods.bankTransfer'),
+      card: t('payments.methods.card'),
+      check: t('payments.methods.check'),
+      auto_debit: t('payments.methods.autoDebit'),
+      other: t('payments.methods.other') || value,
+    };
+    return methodTranslations[value] || value;
+  }, [t]);
+
   const renderActions = useCallback((value: any, row: any) => {
     const payment = row.payment;
     return (
@@ -344,6 +358,7 @@ export function PaymentList({ locale }: PaymentListProps) {
       label: t('table.paymentMethod'),
       sortable: true,
       searchable: false,
+      render: renderPaymentMethod,
     },
     {
       key: 'status',

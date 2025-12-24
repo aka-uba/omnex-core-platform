@@ -361,6 +361,8 @@
       "collectedAmount": "Tahsil Edilen",
       "collectionRate": "Tahsilat Oranı",
       "noData": "Veri bulunamadı",
+      "noPayment": "Ödeme Yok",
+      "allProperties": "Tüm Gayrimenkuller",
       "weekdays": {
         "sun": "Paz",
         "mon": "Pzt",
