@@ -286,9 +286,9 @@ export function TopNavigation() {
           shadow="md"
           width={200}
           position="right-start"
-          trigger="hover"
-          openDelay={100}
-          closeDelay={200}
+          trigger="click-hover"
+          openDelay={50}
+          closeDelay={150}
         >
           <Menu.Target>
             <Menu.Item
