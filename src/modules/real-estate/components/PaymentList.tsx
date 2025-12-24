@@ -172,22 +172,31 @@ export function PaymentList({ locale }: PaymentListProps) {
   // Prepare data for DataTable
   const tableData = useMemo(() => {
     if (!data) return [];
-    return data.payments.map((payment) => ({
-      id: payment.id,
-      type: payment.type,
-      property: payment.apartment?.property?.name || '-',
-      floor: payment.apartment?.floor || '-',
-      apartment: payment.apartment?.unitNumber || 'N/A',
-      tenant: payment.contract?.tenant?.name || '-',
-      contract: payment.contract?.contractNumber || '-',
-      amount: Number(payment.totalAmount),
-      currency: payment.currency || 'TRY',
-      dueDate: payment.dueDate,
-      paidDate: payment.paidDate,
-      status: payment.status,
-      paymentMethod: payment.paymentMethod || '-',
-      payment, // Keep full payment object for actions
-    }));
+    return data.payments.map((payment) => {
+      const tenantRecord = payment.contract?.tenantRecord;
+      const tenantName = tenantRecord
+        ? tenantRecord.tenantType === 'company'
+          ? tenantRecord.companyName || '-'
+          : `${tenantRecord.firstName || ''} ${tenantRecord.lastName || ''}`.trim() || '-'
+        : '-';
+
+      return {
+        id: payment.id,
+        type: payment.type,
+        property: payment.apartment?.property?.name || '-',
+        floor: payment.apartment?.floor || '-',
+        apartment: payment.apartment?.unitNumber || 'N/A',
+        tenant: tenantName,
+        contract: payment.contract?.contractNumber || '-',
+        amount: Number(payment.totalAmount),
+        currency: payment.currency || 'TRY',
+        dueDate: payment.dueDate,
+        paidDate: payment.paidDate,
+        status: payment.status,
+        paymentMethod: payment.paymentMethod || '-',
+        payment, // Keep full payment object for actions
+      };
+    });
   }, [data]);
 
   // Render functions

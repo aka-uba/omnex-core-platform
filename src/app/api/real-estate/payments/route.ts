@@ -62,6 +62,7 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               unitNumber: true,
+              floor: true,
               property: {
                 select: {
                   id: true,
@@ -74,6 +75,15 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               contractNumber: true,
+              tenantRecord: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  companyName: true,
+                  tenantType: true,
+                },
+              },
             },
           },
         },

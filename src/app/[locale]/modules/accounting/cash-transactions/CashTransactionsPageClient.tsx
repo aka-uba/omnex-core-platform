@@ -37,6 +37,7 @@ import {
   IconWallet,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
+import { AlertModal } from '@/components/modals/AlertModal';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 import {
@@ -544,17 +545,16 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Modal opened={deleteOpened} onClose={closeDelete} title={t('cashTransactions.deleteConfirm.title')} size="sm">
-        <Text>{t('cashTransactions.deleteConfirm.message')}</Text>
-        <Group justify="flex-end" mt="md">
-          <Button variant="outline" onClick={closeDelete}>
-            {t('common.cancel')}
-          </Button>
-          <Button color="red" onClick={handleDelete} loading={deleteMutation.isPending}>
-            {t('common.delete')}
-          </Button>
-        </Group>
-      </Modal>
+      <AlertModal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        title={t('cashTransactions.delete.title')}
+        message={t('cashTransactions.delete.confirm')}
+        confirmLabel={t('common.delete')}
+        cancelLabel={t('common.cancel')}
+        onConfirm={handleDelete}
+        variant="danger"
+      />
     </Container>
   );
 }
