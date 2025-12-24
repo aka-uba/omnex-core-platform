@@ -2,6 +2,88 @@
 // Accounting Module
 // ============================================
 
+// Ödeme Yöntemleri Yapılandırması
+model PaymentMethodConfig {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // Temel bilgiler
+  name        String // "Nakit", "Banka Havalesi", "Kredi Kartı" vb.
+  code        String // 'cash', 'bank_transfer', 'card', 'check', 'other'
+  description String?
+  icon        String? // Icon adı
+
+  // Banka hesap bilgileri (bank_transfer için)
+  bankName      String?
+  accountHolder String?
+  iban          String?
+  swiftCode     String?
+  branchCode    String?
+  accountNumber String?
+
+  // Varsayılan ve sıralama
+  isDefault  Boolean @default(false)
+  sortOrder  Int     @default(0)
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, companyId, code])
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, isActive])
+  @@index([isDefault])
+  @@index([sortOrder])
+}
+
+// Gelir-Gider İşlemleri (Kasa hareketleri)
+model CashTransaction {
+  id        String @id @default(uuid())
+  tenantId  String
+  companyId String
+
+  // İşlem bilgileri
+  type            String // 'income', 'expense'
+  category        String // 'rent', 'maintenance', 'salary', 'utility', 'other'
+  amount          Decimal  @db.Decimal(10, 2)
+  currency        String   @default("TRY")
+  transactionDate DateTime
+
+  // Ödeme yöntemi
+  paymentMethod String // PaymentMethodConfig.code
+
+  // İlişkili kayıtlar
+  paymentId   String? // Real estate Payment ID
+  expenseId   String? // Expense ID
+  invoiceId   String? // Invoice ID
+
+  // Açıklama ve notlar
+  description String?
+  reference   String? // Makbuz/Dekont numarası
+  notes       String?
+
+  // Durum
+  status String @default("completed") // 'pending', 'completed', 'cancelled'
+
+  // Metadata
+  createdBy String? // User ID
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, companyId])
+  @@index([tenantId, companyId, type])
+  @@index([tenantId, companyId, category])
+  @@index([tenantId, companyId, transactionDate])
+  @@index([paymentId])
+  @@index([expenseId])
+  @@index([invoiceId])
+  @@index([type])
+  @@index([category])
+  @@index([transactionDate])
+}
+
 model Subscription {
   id        String @id @default(uuid())
   tenantId  String

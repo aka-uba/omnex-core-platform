@@ -430,5 +430,119 @@
   "navigation": {
     "dashboard": "Panel"
   },
-  "loading": "Yükleniyor..."
+  "loading": "Yükleniyor...",
+  "paymentMethods": {
+    "title": "Ödeme Yöntemleri",
+    "description": "Ödeme yöntemlerini yapılandırın, banka hesaplarını ekleyin",
+    "create": "Yeni Ödeme Yöntemi",
+    "edit": "Ödeme Yöntemi Düzenle",
+    "empty": "Henüz ödeme yöntemi eklenmemiş.",
+    "createFirst": "İlk Ödeme Yöntemi Ekle",
+    "default": "Varsayılan",
+    "inactive": "Pasif",
+    "code": "Kod",
+    "created": "Ödeme yöntemi oluşturuldu",
+    "updated": "Ödeme yöntemi güncellendi",
+    "deleted": "Ödeme yöntemi silindi",
+    "companyRequired": "Şirket seçilmedi",
+    "delete": {
+      "title": "Ödeme Yöntemi Sil",
+      "confirm": "Bu ödeme yöntemini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    },
+    "form": {
+      "name": "Ad",
+      "namePlaceholder": "Örn: Nakit",
+      "code": "Kod",
+      "codePlaceholder": "Seçin veya yazın",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Opsiyonel açıklama",
+      "icon": "İkon",
+      "bankInfo": "Banka Bilgileri",
+      "bankName": "Banka Adı",
+      "bankNamePlaceholder": "Örn: Ziraat Bankası",
+      "accountHolder": "Hesap Sahibi",
+      "accountHolderPlaceholder": "Ad Soyad / Firma Adı",
+      "iban": "IBAN",
+      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
+      "swiftCode": "SWIFT Kodu",
+      "swiftCodePlaceholder": "TCZBTR2A",
+      "branchCode": "Şube Kodu",
+      "branchCodePlaceholder": "0000",
+      "accountNumber": "Hesap No",
+      "accountNumberPlaceholder": "0000000000",
+      "settings": "Ayarlar",
+      "sortOrder": "Sıralama",
+      "isDefault": "Varsayılan Yöntem",
+      "isActive": "Aktif"
+    },
+    "icons": {
+      "cash": "Nakit",
+      "bank": "Banka",
+      "card": "Kart",
+      "receipt": "Makbuz",
+      "repeat": "Tekrar",
+      "other": "Diğer"
+    }
+  },
+  "cashTransactions": {
+    "title": "Gelir-Gider",
+    "description": "Nakit akışı ve kasa hareketlerini takip edin",
+    "create": "Yeni İşlem",
+    "edit": "İşlem Düzenle",
+    "income": "Gelir",
+    "expense": "Gider",
+    "totalIncome": "Toplam Gelir",
+    "totalExpense": "Toplam Gider",
+    "balance": "Bakiye",
+    "filterByType": "Tip Filtrele",
+    "filterByCategory": "Kategori Filtrele",
+    "noData": "Kayıt bulunamadı",
+    "created": "İşlem başarıyla oluşturuldu",
+    "updated": "İşlem başarıyla güncellendi",
+    "deleted": "İşlem başarıyla silindi",
+    "table": {
+      "date": "Tarih",
+      "type": "Tip",
+      "category": "Kategori",
+      "description": "Açıklama",
+      "paymentMethod": "Ödeme Yöntemi",
+      "amount": "Tutar"
+    },
+    "form": {
+      "type": "İşlem Tipi",
+      "category": "Kategori",
+      "amount": "Tutar",
+      "date": "Tarih",
+      "paymentMethod": "Ödeme Yöntemi",
+      "reference": "Referans No",
+      "referencePlaceholder": "Makbuz/Dekont numarası",
+      "description": "Açıklama",
+      "notes": "Notlar"
+    },
+    "categories": {
+      "rent": "Kira",
+      "deposit": "Depozito",
+      "sale": "Satış",
+      "commission": "Komisyon",
+      "other_income": "Diğer Gelir",
+      "maintenance": "Bakım",
+      "repair": "Onarım",
+      "salary": "Maaş",
+      "utility": "Fatura",
+      "tax": "Vergi",
+      "insurance": "Sigorta",
+      "other_expense": "Diğer Gider"
+    },
+    "validation": {
+      "required": "Lütfen tüm gerekli alanları doldurun"
+    },
+    "deleteConfirm": {
+      "title": "İşlemi Sil",
+      "message": "Bu işlemi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    },
+    "delete": {
+      "title": "İşlemi Sil",
+      "confirm": "Bu işlemi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    }
+  }
 }

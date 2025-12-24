@@ -2,16 +2,18 @@
 
 import { useState } from 'react';
 import { Container, Tabs } from '@mantine/core';
-import { IconCurrencyDollar, IconChartBar, IconList } from '@tabler/icons-react';
+import { IconCurrencyDollar, IconChartBar, IconList, IconCalendarStats } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { PaymentList } from '@/modules/real-estate/components/PaymentList';
 import { PaymentAnalytics } from '@/modules/real-estate/components/PaymentAnalytics';
 import { PaymentQuickBoard } from '@/modules/real-estate/components/PaymentQuickBoard';
-import { useParams } from 'next/navigation';
+import { PaymentMonthlyTracker } from '@/modules/real-estate/components/PaymentMonthlyTracker';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 
 export function PaymentsPageClient({ locale }: { locale: string }) {
   const params = useParams();
+  const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/real-estate');
   const [activeTab, setActiveTab] = useState<string | null>('list');
@@ -33,7 +35,7 @@ export function PaymentsPageClient({ locale }: { locale: string }) {
             label: t('payments.create.title'),
             icon: <IconCurrencyDollar size={18} />,
             onClick: () => {
-              window.location.href = `/${currentLocale}/modules/real-estate/payments/create`;
+              router.push(`/${currentLocale}/modules/real-estate/payments/create`);
             },
             variant: 'filled',
           },
@@ -50,6 +52,9 @@ export function PaymentsPageClient({ locale }: { locale: string }) {
           <Tabs.Tab value="list" leftSection={<IconList size={16} />}>
             {t('payments.list')}
           </Tabs.Tab>
+          <Tabs.Tab value="monthly" leftSection={<IconCalendarStats size={16} />}>
+            {t('payments.monthlyTracker.tab')}
+          </Tabs.Tab>
           <Tabs.Tab value="analytics" leftSection={<IconChartBar size={16} />}>
             {t('payments.analytics')}
           </Tabs.Tab>
@@ -57,6 +62,10 @@ export function PaymentsPageClient({ locale }: { locale: string }) {
 
         <Tabs.Panel value="list" pt="md">
           <PaymentList locale={currentLocale} />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="monthly" pt="md">
+          <PaymentMonthlyTracker locale={currentLocale} />
         </Tabs.Panel>
 
         <Tabs.Panel value="analytics" pt="md">

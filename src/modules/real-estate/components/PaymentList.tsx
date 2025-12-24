@@ -9,18 +9,25 @@ import {
   Text,
   Tooltip,
   Alert,
+  Modal,
+  Stack,
+  Select,
+  Button,
 } from '@mantine/core';
 import {
   IconEdit,
   IconTrash,
   IconEye,
   IconCheck,
+  IconCash,
 } from '@tabler/icons-react';
 import { usePayments, useDeletePayment, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useApartments } from '@/hooks/useApartments';
 import { useContracts } from '@/hooks/useContracts';
+import { usePaymentMethods } from '@/hooks/usePaymentMethods';
+import { useCompany } from '@/context/CompanyContext';
 import { useTranslation } from '@/lib/i18n/client';
-import { notifications } from '@mantine/notifications';
+import { showToast } from '@/modules/notifications/components/ToastNotification';
 import type { PaymentType, PaymentStatus } from '@/modules/real-estate/types/payment';
 import dayjs from 'dayjs';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
@@ -35,6 +42,7 @@ export function PaymentList({ locale }: PaymentListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { selectedCompany } = useCompany();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [apartmentId, setApartmentId] = useState<string | undefined>();
@@ -43,6 +51,11 @@ export function PaymentList({ locale }: PaymentListProps) {
   const [statusFilter, setStatusFilter] = useState<PaymentStatus | undefined>();
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  // Ödeme tamamlama modalı state'leri
+  const [completionModalOpened, setCompletionModalOpened] = useState(false);
+  const [completingPaymentId, setCompletingPaymentId] = useState<string | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
 
   const { data, isLoading, error } = usePayments({
     page,
@@ -56,6 +69,10 @@ export function PaymentList({ locale }: PaymentListProps) {
   // Fetch apartments and contracts for filters
   const { data: apartmentsData } = useApartments({ page: 1, pageSize: 1000 });
   const { data: contractsData } = useContracts({ page: 1, pageSize: 1000 });
+  const { data: paymentMethodsData } = usePaymentMethods({
+    companyId: selectedCompany?.id,
+    activeOnly: true
+  });
 
   const deletePayment = useDeletePayment();
   const markAsPaid = useMarkPaymentAsPaid();
@@ -69,38 +86,55 @@ export function PaymentList({ locale }: PaymentListProps) {
     if (!deleteId) return;
     try {
       await deletePayment.mutateAsync(deleteId);
-      notifications.show({
+      showToast({
+        type: 'success',
         title: t('messages.success'),
         message: t('delete.success'),
-        color: 'green',
       });
       setDeleteModalOpened(false);
       setDeleteId(null);
     } catch (error) {
-      notifications.show({
+      showToast({
+        type: 'error',
         title: t('messages.error'),
         message: error instanceof Error ? error.message : t('delete.error'),
-        color: 'red',
       });
     }
   }, [deleteId, deletePayment, t]);
 
-  const handleMarkAsPaid = async (id: string) => {
+  // Ödeme tamamlama modalını aç
+  const handleOpenCompletionModal = useCallback((id: string) => {
+    setCompletingPaymentId(id);
+    setSelectedPaymentMethod(null);
+    setCompletionModalOpened(true);
+  }, []);
+
+  // Ödeme tamamla
+  const handleCompletePayment = useCallback(async () => {
+    if (!completingPaymentId || !selectedPaymentMethod) return;
+
     try {
-      await markAsPaid.mutateAsync({ id, paidDate: new Date() });
-      notifications.show({
+      await markAsPaid.mutateAsync({
+        id: completingPaymentId,
+        paidDate: new Date(),
+        paymentMethod: selectedPaymentMethod
+      });
+      showToast({
+        type: 'success',
         title: t('messages.success'),
         message: t('payments.markedAsPaid'),
-        color: 'green',
       });
+      setCompletionModalOpened(false);
+      setCompletingPaymentId(null);
+      setSelectedPaymentMethod(null);
     } catch (error) {
-      notifications.show({
+      showToast({
+        type: 'error',
         title: t('messages.error'),
         message: error instanceof Error ? error.message : t('payments.markAsPaidError'),
-        color: 'red',
       });
     }
-  };
+  }, [completingPaymentId, selectedPaymentMethod, markAsPaid, t]);
 
   const getTypeBadge = useCallback((type: PaymentType) => {
     const typeColors: Record<PaymentType, string> = {
@@ -138,18 +172,31 @@ export function PaymentList({ locale }: PaymentListProps) {
   // Prepare data for DataTable
   const tableData = useMemo(() => {
     if (!data) return [];
-    return data.payments.map((payment) => ({
-      id: payment.id,
-      type: payment.type,
-      apartment: payment.apartment?.unitNumber || 'N/A',
-      contract: payment.contract?.contractNumber || '-',
-      amount: Number(payment.totalAmount),
-      currency: payment.currency || 'TRY',
-      dueDate: payment.dueDate,
-      paidDate: payment.paidDate,
-      status: payment.status,
-      payment, // Keep full payment object for actions
-    }));
+    return data.payments.map((payment) => {
+      const tenant = payment.contract?.tenant;
+      const tenantName = tenant
+        ? tenant.tenantType === 'company'
+          ? tenant.companyName || '-'
+          : `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || '-'
+        : '-';
+
+      return {
+        id: payment.id,
+        type: payment.type,
+        property: payment.apartment?.property?.name || '-',
+        floor: payment.apartment?.floor || '-',
+        apartment: payment.apartment?.unitNumber || 'N/A',
+        tenant: tenantName,
+        contract: payment.contract?.contractNumber || '-',
+        amount: Number(payment.totalAmount),
+        currency: payment.currency || 'TRY',
+        dueDate: payment.dueDate,
+        paidDate: payment.paidDate,
+        status: payment.status,
+        paymentMethod: payment.paymentMethod || '-',
+        payment, // Keep full payment object for actions
+      };
+    });
   }, [data]);
 
   // Render functions
@@ -201,13 +248,13 @@ export function PaymentList({ locale }: PaymentListProps) {
           </ActionIcon>
         </Tooltip>
         {payment.status === 'pending' && (
-          <Tooltip label={t('payments.markedAsPaid')} withArrow>
+          <Tooltip label={t('payments.markAsPaid')} withArrow>
             <ActionIcon
               variant="subtle"
               color="green"
               onClick={(e) => {
                 e.stopPropagation();
-                handleMarkAsPaid(payment.id);
+                handleOpenCompletionModal(payment.id);
               }}
             >
               <IconCheck size={18} />
@@ -228,7 +275,7 @@ export function PaymentList({ locale }: PaymentListProps) {
         </Tooltip>
       </Group>
     );
-  }, [router, locale, handleDeleteClick, handleMarkAsPaid, t]);
+  }, [router, locale, handleDeleteClick, handleOpenCompletionModal, t]);
 
   // Define columns
   const columns: DataTableColumn[] = useMemo(() => [
@@ -240,8 +287,26 @@ export function PaymentList({ locale }: PaymentListProps) {
       render: renderType,
     },
     {
+      key: 'property',
+      label: t('table.property'),
+      sortable: true,
+      searchable: true,
+    },
+    {
+      key: 'floor',
+      label: t('table.floor'),
+      sortable: true,
+      searchable: false,
+    },
+    {
       key: 'apartment',
       label: t('table.apartment'),
+      sortable: true,
+      searchable: true,
+    },
+    {
+      key: 'tenant',
+      label: t('table.tenant'),
       sortable: true,
       searchable: true,
     },
@@ -250,6 +315,7 @@ export function PaymentList({ locale }: PaymentListProps) {
       label: t('table.contract'),
       sortable: true,
       searchable: true,
+      hidden: true,
     },
     {
       key: 'amount',
@@ -272,6 +338,12 @@ export function PaymentList({ locale }: PaymentListProps) {
       sortable: true,
       searchable: false,
       render: renderPaidDate,
+    },
+    {
+      key: 'paymentMethod',
+      label: t('table.paymentMethod'),
+      sortable: true,
+      searchable: false,
     },
     {
       key: 'status',
@@ -402,6 +474,64 @@ export function PaymentList({ locale }: PaymentListProps) {
         onConfirm={handleDeleteConfirm}
         variant="danger"
       />
+
+      {/* Ödeme Tamamlama Modalı */}
+      <Modal
+        opened={completionModalOpened}
+        onClose={() => {
+          setCompletionModalOpened(false);
+          setCompletingPaymentId(null);
+          setSelectedPaymentMethod(null);
+        }}
+        title={t('payments.completePayment.title')}
+        centered
+      >
+        <Stack gap="md">
+          <Text size="sm" c="dimmed">
+            {t('payments.completePayment.description')}
+          </Text>
+          <Select
+            label={t('payments.completePayment.paymentMethod')}
+            placeholder={t('payments.completePayment.selectMethod')}
+            value={selectedPaymentMethod}
+            onChange={setSelectedPaymentMethod}
+            data={
+              paymentMethodsData?.paymentMethods.map((method) => ({
+                value: method.code,
+                label: method.name,
+              })) || [
+                { value: 'cash', label: 'Nakit' },
+                { value: 'bank_transfer', label: 'Banka Havalesi' },
+                { value: 'card', label: 'Kredi/Banka Kartı' },
+              ]
+            }
+            leftSection={<IconCash size={16} />}
+            required
+          />
+          <Group justify="flex-end" mt="md">
+            <Button
+              variant="light"
+              onClick={() => {
+                setCompletionModalOpened(false);
+                setCompletingPaymentId(null);
+                setSelectedPaymentMethod(null);
+              }}
+            >
+              {t('actions.cancel') || tGlobal('common.cancel')}
+            </Button>
+            <Button
+              color="green"
+              onClick={handleCompletePayment}
+              disabled={!selectedPaymentMethod}
+              loading={markAsPaid.isPending}
+              leftSection={<IconCheck size={16} />}
+            >
+              {t('payments.completePayment.confirm')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+
       <DataTable
         tableId="real-estate-payments"
         columns={columns}

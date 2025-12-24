@@ -23,6 +23,7 @@ import { PropertyMap } from '@/modules/real-estate/components/PropertyMap';
 import { PaymentQuickBoard } from '@/modules/real-estate/components/PaymentQuickBoard';
 import { useProperties } from '@/hooks/useProperties';
 import { useApartments } from '@/hooks/useApartments';
+import { useCompany } from '@/context/CompanyContext';
 import { useMemo } from 'react';
 
 export function RealEstateDashboardClient() {
@@ -33,6 +34,7 @@ export function RealEstateDashboardClient() {
   const { t: tGlobal } = useTranslation('global');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const { formatCurrency: formatCurrencyFromContext } = useCompany();
 
   const { data, isLoading, error } = useRealEstateDashboard();
   const { data: propertiesData } = useProperties({ page: 1, pageSize: 1000 });
@@ -50,12 +52,7 @@ export function RealEstateDashboardClient() {
   }, [propertiesData, apartmentsData]);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
+    return formatCurrencyFromContext(value);
   };
 
   return (

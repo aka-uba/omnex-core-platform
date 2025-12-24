@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
       const type = searchParams.get('type') || undefined;
       const status = searchParams.get('status') || undefined;
       const apartmentId = searchParams.get('apartmentId') || undefined;
+      const propertyId = searchParams.get('propertyId') || undefined;
       const assignedStaffId = searchParams.get('assignedStaffId') || undefined;
       const scheduledDateFrom = searchParams.get('scheduledDateFrom') || undefined;
       const scheduledDateTo = searchParams.get('scheduledDateTo') || undefined;
@@ -50,6 +51,11 @@ export async function GET(request: NextRequest) {
         ...(type && { type }),
         ...(status && { status }),
         ...(apartmentId && { apartmentId }),
+        ...(propertyId && {
+          apartment: {
+            propertyId,
+          },
+        }),
         ...(assignedStaffId && { assignedStaffId }),
         ...(scheduledDateFrom && {
           scheduledDate: {

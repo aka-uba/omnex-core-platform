@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table } from '@mantine/core';
-import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin } from '@tabler/icons-react';
+import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin, IconTool } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';
@@ -13,6 +13,8 @@ import { PropertyDetailPageSkeleton } from './PropertyDetailPageSkeleton';
 import { PropertyExpenseList } from '@/modules/real-estate/components/PropertyExpenseList';
 import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
+import { PropertyMaintenanceTab } from '@/modules/real-estate/components/PropertyMaintenanceTab';
+import { useCompany } from '@/context/CompanyContext';
 
 export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -21,6 +23,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const { t: tGlobal } = useTranslation('global');
   const currentLocale = (params?.locale as string) || locale;
   const propertyId = params?.id as string;
+  const { formatCurrency } = useCompany();
 
   const { data: property, isLoading } = useProperty(propertyId);
 
@@ -207,6 +210,9 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
               <Tabs.Tab value="expenses" leftSection={<IconReceipt size={20} />}>
                 {t('propertyExpenses.title')}
               </Tabs.Tab>
+              <Tabs.Tab value="maintenance" leftSection={<IconTool size={20} />}>
+                {t('maintenance.title') || 'Maintenance'}
+              </Tabs.Tab>
             </Tabs.List>
 
         <Tabs.Panel value="details" pt="md">
@@ -334,10 +340,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                         {t('form.monthlyFee')}
                       </Text>
                       <Text fw={500}>
-                        {Number(property.monthlyFee).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
+                        {formatCurrency(Number(property.monthlyFee))}
                       </Text>
                     </Stack>
                   </Grid.Col>
@@ -433,10 +436,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                         <Stack gap="xs">
                           <Text size="sm" fw={500} c="dimmed">{t('form.purchasePrice')}</Text>
                           <Text fw={500}>
-                            {Number((property as any).purchasePrice).toLocaleString('tr-TR', {
-                              style: 'currency',
-                              currency: 'TRY',
-                            })}
+                            {formatCurrency(Number((property as any).purchasePrice))}
                           </Text>
                         </Stack>
                       </Grid.Col>
@@ -472,10 +472,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                         <Stack gap="xs">
                           <Text size="sm" fw={500} c="dimmed">{t('form.monthlyFinancingRate')}</Text>
                           <Text fw={500}>
-                            {Number((property as any).monthlyFinancingRate).toLocaleString('tr-TR', {
-                              style: 'currency',
-                              currency: 'TRY',
-                            })}
+                            {formatCurrency(Number((property as any).monthlyFinancingRate))}
                           </Text>
                         </Stack>
                       </Grid.Col>
@@ -644,25 +641,25 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                                   {apartment.coldRent && (
                                     <Text size="sm">
                                       <Text span fw={500}>{t('form.coldRent')}: </Text>
-                                      {Number(apartment.coldRent).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                      {formatCurrency(Number(apartment.coldRent))}
                                     </Text>
                                   )}
                                   {(apartment.additionalCosts || apartment.heatingCosts) && (
                                     <Text size="sm">
                                       <Text span fw={500}>{t('sideCosts.sideCosts')}: </Text>
-                                      {(Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                      {formatCurrency(Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0))}
                                     </Text>
                                   )}
                                   {(apartment.coldRent || apartment.additionalCosts || apartment.heatingCosts) && (
                                     <Text size="sm" fw={600} c="blue">
                                       <Text span fw={600}>{t('sideCosts.totalRent')}: </Text>
-                                      {(Number(apartment.coldRent || 0) + Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                      {formatCurrency(Number(apartment.coldRent || 0) + Number(apartment.additionalCosts || 0) + Number(apartment.heatingCosts || 0))}
                                     </Text>
                                   )}
                                   {apartment.deposit && (
                                     <Text size="sm">
                                       <Text span fw={500}>{t('form.deposit')}: </Text>
-                                      {Number(apartment.deposit).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                                      {formatCurrency(Number(apartment.deposit))}
                                     </Text>
                                   )}
                                 </Stack>
@@ -684,10 +681,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                                   {apartment.contracts[0].rentAmount && (
                                     <Text size="sm">
                                       <Text span fw={500}>{t('apartments.currentRent')}: </Text>
-                                      {Number(apartment.contracts[0].rentAmount).toLocaleString('tr-TR', {
-                                        style: 'currency',
-                                        currency: 'TRY',
-                                      })}
+                                      {formatCurrency(Number(apartment.contracts[0].rentAmount))}
                                     </Text>
                                   )}
                                   {apartment.contracts[0].payments && apartment.contracts[0].payments.length > 0 && (
@@ -762,7 +756,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Text size="sm" ta="right" fw={500}>
-                        {propertySideCostSummary.totalColdRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        {formatCurrency(propertySideCostSummary.totalColdRent)}
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={6}>
@@ -770,7 +764,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Text size="sm" ta="right" fw={500}>
-                        {propertySideCostSummary.totalAdditionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        {formatCurrency(propertySideCostSummary.totalAdditionalCosts)}
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={6}>
@@ -778,7 +772,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Text size="sm" ta="right" fw={500}>
-                        {propertySideCostSummary.totalHeatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        {formatCurrency(propertySideCostSummary.totalHeatingCosts)}
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={12}>
@@ -789,7 +783,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     </Grid.Col>
                     <Grid.Col span={6}>
                       <Text size="sm" ta="right" fw={700} c="blue">
-                        {propertySideCostSummary.totalWarmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                        {formatCurrency(propertySideCostSummary.totalWarmRent)}
                       </Text>
                     </Grid.Col>
                   </Grid>
@@ -821,16 +815,16 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                           <Table.Td>{apt.unitNumber}</Table.Td>
                           <Table.Td ta="right">{apt.area} m²</Table.Td>
                           <Table.Td ta="right">
-                            {apt.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            {formatCurrency(apt.coldRent)}
                           </Table.Td>
                           <Table.Td ta="right">
-                            {apt.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            {formatCurrency(apt.additionalCosts)}
                           </Table.Td>
                           <Table.Td ta="right">
-                            {apt.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            {formatCurrency(apt.heatingCosts)}
                           </Table.Td>
                           <Table.Td ta="right" fw={600} c="blue">
-                            {apt.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                            {formatCurrency(apt.warmRent)}
                           </Table.Td>
                         </Table.Tr>
                       ))}
@@ -860,6 +854,15 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
             locale={currentLocale}
             propertyId={propertyId}
             propertyName={property.name}
+          />
+        </Tabs.Panel>
+
+        {/* Bakım Yönetimi Sekmesi */}
+        <Tabs.Panel value="maintenance" pt="md">
+          <PropertyMaintenanceTab
+            propertyId={propertyId}
+            propertyName={property.name}
+            locale={currentLocale}
           />
         </Tabs.Panel>
       </Tabs>

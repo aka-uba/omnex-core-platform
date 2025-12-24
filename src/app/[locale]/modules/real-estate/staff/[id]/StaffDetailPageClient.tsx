@@ -1,7 +1,8 @@
 'use client';
 
-import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert } from '@mantine/core';
-import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle } from '@tabler/icons-react';
+import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress } from '@mantine/core';
+import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder } from '@tabler/icons-react';
+import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useRealEstateStaffMember } from '@/hooks/useRealEstateStaff';
 import { useTranslation } from '@/lib/i18n/client';
@@ -192,15 +193,18 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
         </Paper>
 
         {/* Tabs for Assignments */}
-        <Tabs defaultValue={linkedUser ? 'userInfo' : 'details'} mt="md">
+        <Tabs defaultValue={linkedUser ? 'userInfo' : 'performance'} mt="md">
           <Tabs.List>
             {linkedUser && (
               <Tabs.Tab value="userInfo" leftSection={<IconUserCircle size={16} />}>
                 {t('staff.tabs.userInfo')}
               </Tabs.Tab>
             )}
-            <Tabs.Tab value="details" leftSection={<IconFileText size={16} />}>
-              {t('staff.tabs.details')}
+            <Tabs.Tab value="performance" leftSection={<IconChartBar size={16} />}>
+              {t('staff.tabs.performance')}
+            </Tabs.Tab>
+            <Tabs.Tab value="documents" leftSection={<IconFolder size={16} />}>
+              {t('staff.tabs.documents')}
             </Tabs.Tab>
             {staff.properties && staff.properties.length > 0 && (
               <Tabs.Tab value="properties" leftSection={<IconBuilding size={16} />}>
@@ -369,9 +373,90 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
             </Tabs.Panel>
           )}
 
-          <Tabs.Panel value="details" pt="md">
+          {/* Performance Tab */}
+          <Tabs.Panel value="performance" pt="md">
+            <Stack gap="md">
+              <Paper shadow="xs" p="md">
+                <Stack gap="md">
+                  <Group gap="xs">
+                    <IconChartBar size={20} />
+                    <Text size="lg" fw={600}>{t('staff.performance.title')}</Text>
+                  </Group>
+                  <Divider />
+                  <Grid gutter="md">
+                    <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
+                      <Paper p="md" withBorder>
+                        <Text size="sm" c="dimmed">{t('table.assignedUnits')}</Text>
+                        <Text size="xl" fw={700}>{staff.assignedUnits || 0}</Text>
+                      </Paper>
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
+                      <Paper p="md" withBorder>
+                        <Text size="sm" c="dimmed">{t('table.collectionRate')}</Text>
+                        <Group gap="xs" align="flex-end">
+                          <Text size="xl" fw={700}>{staff.collectionRate ? Number(staff.collectionRate).toFixed(1) : 0}%</Text>
+                        </Group>
+                        <Progress
+                          value={staff.collectionRate ? Number(staff.collectionRate) : 0}
+                          color={Number(staff.collectionRate || 0) > 80 ? 'green' : Number(staff.collectionRate || 0) > 50 ? 'yellow' : 'red'}
+                          size="sm"
+                          mt="xs"
+                        />
+                      </Paper>
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
+                      <Paper p="md" withBorder>
+                        <Text size="sm" c="dimmed">{t('table.averageVacancyDays')}</Text>
+                        <Text size="xl" fw={700}>{staff.averageVacancyDays ? Number(staff.averageVacancyDays).toFixed(1) : '-'}</Text>
+                        <Text size="xs" c="dimmed">{t('staff.performance.days')}</Text>
+                      </Paper>
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
+                      <Paper p="md" withBorder>
+                        <Text size="sm" c="dimmed">{t('table.customerSatisfaction')}</Text>
+                        <Group gap="xs" align="flex-end">
+                          <Text size="xl" fw={700}>{staff.customerSatisfaction ? Number(staff.customerSatisfaction).toFixed(1) : '-'}</Text>
+                          <Text size="xs" c="dimmed">/100</Text>
+                        </Group>
+                        {staff.customerSatisfaction && (
+                          <Progress
+                            value={Number(staff.customerSatisfaction)}
+                            color={Number(staff.customerSatisfaction) > 80 ? 'green' : Number(staff.customerSatisfaction) > 50 ? 'yellow' : 'red'}
+                            size="sm"
+                            mt="xs"
+                          />
+                        )}
+                      </Paper>
+                    </Grid.Col>
+                  </Grid>
+                  {staff.notes && (
+                    <>
+                      <Divider />
+                      <div>
+                        <Text size="sm" c="dimmed" mb="xs">{t('form.notes')}</Text>
+                        <Text>{staff.notes}</Text>
+                      </div>
+                    </>
+                  )}
+                </Stack>
+              </Paper>
+            </Stack>
+          </Tabs.Panel>
+
+          {/* Documents Tab */}
+          <Tabs.Panel value="documents" pt="md">
             <Paper shadow="xs" p="md">
-              <Text c="dimmed">{t('staff.tabs.detailsDescription')}</Text>
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconFolder size={20} />
+                  <Text size="lg" fw={600}>{t('staff.tabs.documents')}</Text>
+                </Group>
+                <Divider />
+                <EntityFilesTab
+                  documents={staff.documents || []}
+                  entityName={staff.name}
+                />
+              </Stack>
             </Paper>
           </Tabs.Panel>
 

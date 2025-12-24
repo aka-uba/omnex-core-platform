@@ -135,7 +135,7 @@ export function showToast({
     title,
     message,
     color: type === 'error' ? 'red' : type === 'success' ? 'green' : type === 'warning' ? 'yellow' : 'blue',
-    icon: type === 'success' ? <IconCheck size={20} /> : 
+    icon: type === 'success' ? <IconCheck size={20} /> :
           type === 'error' ? <IconX size={20} /> :
           type === 'warning' ? <IconAlertTriangle size={20} /> :
           <IconInfoCircle size={20} />,
@@ -145,6 +145,20 @@ export function showToast({
       root: {
         backgroundColor: `var(--toast-${type}-bg)`,
         borderLeft: `4px solid var(--toast-${type}-border)`,
+        color: `var(--toast-${type}-text)`,
+      },
+      title: {
+        color: `var(--toast-${type}-text)`,
+        fontWeight: 600,
+      },
+      description: {
+        color: `var(--toast-${type}-text)`,
+        opacity: 0.85,
+      },
+      icon: {
+        color: `var(--toast-${type}-border)`,
+      },
+      closeButton: {
         color: `var(--toast-${type}-text)`,
       },
     },

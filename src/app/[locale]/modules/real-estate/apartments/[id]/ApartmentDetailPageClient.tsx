@@ -13,6 +13,8 @@ import type { ApartmentStatus } from '@/modules/real-estate/types/apartment';
 import { ApartmentDetailPageSkeleton } from './ApartmentDetailPageSkeleton';
 import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
+import { ApartmentMaintenanceTab } from '@/modules/real-estate/components/ApartmentMaintenanceTab';
+import { useCompany } from '@/context/CompanyContext';
 
 export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -21,6 +23,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const { t: tGlobal } = useTranslation('global');
   const currentLocale = (params?.locale as string) || locale;
   const apartmentId = params?.id as string;
+  const { formatCurrency, currency } = useCompany();
 
   const { data: apartment, isLoading } = useApartment(apartmentId);
 
@@ -339,10 +342,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                           {t('apartments.rentPrice')}
                         </Text>
                         <Text fw={500} size="lg" c="blue">
-                          {Number(apartment.rentPrice).toLocaleString('tr-TR', {
-                            style: 'currency',
-                            currency: 'TRY',
-                          })}
+                          {formatCurrency(Number(apartment.rentPrice))}
                         </Text>
                       </Stack>
                     )}
@@ -353,10 +353,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                           {t('apartments.salePrice')}
                         </Text>
                         <Text fw={500} size="lg" c="green">
-                          {Number(apartment.salePrice).toLocaleString('tr-TR', {
-                            style: 'currency',
-                            currency: 'TRY',
-                          })}
+                          {formatCurrency(Number(apartment.salePrice))}
                         </Text>
                       </Stack>
                     )}
@@ -459,7 +456,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <Text size="sm" ta="right" fw={500}>
-                      {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      {formatCurrency(sideCostSummary.coldRent)}
                     </Text>
                   </Grid.Col>
                   <Grid.Col span={6}>
@@ -467,7 +464,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <Text size="sm" ta="right" fw={500}>
-                      {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      {formatCurrency(sideCostSummary.additionalCosts)}
                     </Text>
                   </Grid.Col>
                   <Grid.Col span={6}>
@@ -475,7 +472,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <Text size="sm" ta="right" fw={500}>
-                      {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      {formatCurrency(sideCostSummary.heatingCosts)}
                     </Text>
                   </Grid.Col>
                   <Grid.Col span={12}>
@@ -486,7 +483,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <Text size="sm" ta="right" fw={700} c="blue">
-                      {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      {formatCurrency(sideCostSummary.warmRent)}
                     </Text>
                   </Grid.Col>
                   {sideCostSummary.deposit > 0 && (
@@ -496,7 +493,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       </Grid.Col>
                       <Grid.Col span={6}>
                         <Text size="sm" ta="right" fw={500}>
-                          {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                          {formatCurrency(sideCostSummary.deposit)}
                         </Text>
                       </Grid.Col>
                     </>
@@ -570,10 +567,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                           {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
                         </Table.Td>
                         <Table.Td>
-                          {contract.rentAmount ? Number(contract.rentAmount).toLocaleString('tr-TR', {
-                            style: 'currency',
-                            currency: 'TRY',
-                          }) : '-'}
+                          {contract.rentAmount ? formatCurrency(Number(contract.rentAmount)) : '-'}
                         </Table.Td>
                         <Table.Td>
                           <Badge
@@ -618,25 +612,11 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
         )}
 
         <Tabs.Panel value="maintenance" pt="md">
-          <Paper shadow="xs" p="md">
-            <Stack gap="md">
-              <Group justify="space-between">
-                <Text size="lg" fw={600}>
-                  {t('apartments.maintenance')}
-                </Text>
-                <Button
-                  size="sm"
-                  leftSection={<IconTool size={16} />}
-                  onClick={() => router.push(`/${currentLocale}/modules/real-estate/maintenance?apartmentId=${apartmentId}`)}
-                >
-                  {t('maintenance.viewAll')}
-                </Button>
-              </Group>
-              <Text c="dimmed" ta="center" py="xl">
-                {t('apartments.maintenanceDescription')}
-              </Text>
-            </Stack>
-          </Paper>
+          <ApartmentMaintenanceTab
+            apartmentId={apartmentId}
+            apartmentUnitNumber={apartment?.unitNumber}
+            locale={currentLocale}
+          />
         </Tabs.Panel>
       </Tabs>
     </Container>

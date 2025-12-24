@@ -47,10 +47,19 @@
         "level": 0
       },
       {
+        "title": "Cash Transactions",
+        "icon": "Cash",
+        "path": "/modules/accounting/cash-transactions",
+        "order": 6,
+        "visible": true,
+        "target": "_self",
+        "level": 0
+      },
+      {
         "title": "Reports",
         "icon": "ChartBar",
         "path": "/modules/accounting/reports",
-        "order": 6,
+        "order": 7,
         "visible": true,
         "target": "_self",
         "level": 0
