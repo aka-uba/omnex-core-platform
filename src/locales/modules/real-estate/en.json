@@ -498,6 +498,7 @@
     "status": "Status",
     "actions": "Actions",
     "unitNumber": "Unit Number",
+    "unit": "Unit",
     "property": "Property",
     "area": "Area",
     "rooms": "Rooms",

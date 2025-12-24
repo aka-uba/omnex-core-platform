@@ -88,7 +88,8 @@
       "Bash(scp:*)",
       "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -sI http://localhost:3000/tr\")",
       "Bash(npx next build:*)",
-      "Bash(TURBOPACK=0 npx next build:*)"
+      "Bash(TURBOPACK=0 npx next build:*)",
+      "Bash(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@146.190.224.121 \"echo ''SSH bağlantısı başarılı!'' && uptime && uname -a\")"
     ],
     "deny": [],
     "ask": []

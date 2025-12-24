@@ -243,6 +243,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         label: t('table.property'),
         sortable: true,
         searchable: true,
+        align: 'left',
         render: (value: string) => (
           <Text size="sm" fw={500} lineClamp={1}>{value}</Text>
         ),
@@ -258,12 +259,23 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         ),
       },
       {
+        key: 'floor',
+        label: t('table.floor'),
+        sortable: true,
+        searchable: false,
+        align: 'center',
+        render: (value: string) => (
+          <Text size="sm">{value || '-'}</Text>
+        ),
+      },
+      {
         key: 'tenantName',
         label: t('table.tenant'),
         sortable: true,
         searchable: true,
+        align: 'left',
         render: (value: string, row: any) => (
-          <Group gap={4} wrap="nowrap">
+          <Group gap={4} wrap="nowrap" justify="flex-start">
             {row.tenantType === 'company' && (
               <Badge size="xs" variant="light" color="blue">
                 {t('tenants.type.company')}
@@ -299,6 +311,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       id: row.id,
       propertyName: row.propertyName,
       unitNumber: row.unitNumber,
+      floor: row.floor,
       tenantName: row.tenantName,
       tenantType: row.tenantType,
       months: row.months,
