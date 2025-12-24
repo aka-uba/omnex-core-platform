@@ -260,8 +260,16 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   // Get payment method label
   const getPaymentMethodLabel = (code: string | null) => {
     if (!code) return '-';
+    // First check database
     const found = paymentMethodsData?.paymentMethods?.find((pm) => pm.code === code);
-    return found?.name || code;
+    if (found?.name) return found.name;
+    // Fallback to translations
+    const translationKey = `payments.methods.${code}`;
+    const translated = t(translationKey);
+    // If translation exists (not same as key), use it
+    if (translated !== translationKey) return translated;
+    // Otherwise return the code as-is
+    return code;
   };
 
   // Get source info
@@ -369,7 +377,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       <Paper p="md" withBorder mt="md">
         <Group>
           <TextInput
-            placeholder={t('common.search')}
+            placeholder={t('search.placeholder')}
             leftSection={<IconSearch size={16} />}
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
@@ -416,7 +424,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   <Table.Th>{t('cashTransactions.table.description')}</Table.Th>
                   <Table.Th>{t('cashTransactions.table.paymentMethod')}</Table.Th>
                   <Table.Th ta="right">{t('cashTransactions.table.amount')}</Table.Th>
-                  <Table.Th ta="center">{t('common.actions')}</Table.Th>
+                  <Table.Th ta="center">{t('table.actions')}</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
