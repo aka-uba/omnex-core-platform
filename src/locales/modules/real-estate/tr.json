@@ -737,7 +737,9 @@
       "detailsDescription": "Personel üyesi hakkında detaylı bilgiler yukarıda görüntülenmektedir.",
       "assignedProperties": "Atanan Gayrimenkuller",
       "assignedApartments": "Atanan Daireler",
-      "userInfo": "Kullanıcı Bilgileri"
+      "userInfo": "Kullanıcı Bilgileri",
+      "performance": "Performans",
+      "documents": "Belgeler"
     },
     "internalStaffInfo": "Bu personel dahili bir sistem kullanıcısına bağlıdır. Aşağıda kullanıcının tüm bilgilerini görüntüleyebilir ve düzenleyebilirsiniz.",
     "editUserInfo": "Kullanıcı Bilgilerini Düzenle",

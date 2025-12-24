@@ -267,7 +267,9 @@
       "detailsDescription": "Detailed information about this staff member is displayed above.",
       "assignedProperties": "Assigned Properties",
       "assignedApartments": "Assigned Apartments",
-      "userInfo": "User Information"
+      "userInfo": "User Information",
+      "performance": "Performance",
+      "documents": "Documents"
     },
     "internalStaffInfo": "This staff member is linked to an internal system user. You can view and edit all user information below.",
     "editUserInfo": "Edit User Information",
