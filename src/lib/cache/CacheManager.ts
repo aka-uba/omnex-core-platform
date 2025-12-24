@@ -81,6 +81,7 @@ export class CacheManager {
   private tagIndex = new Map<string, Set<string>>(); // tag -> keys
   private enabled: boolean;
   private debug: boolean;
+  private cleanupIntervalId: NodeJS.Timeout | null = null;
 
   private constructor() {
     this.store = new MemoryCacheStore(2000);
@@ -319,8 +320,21 @@ export class CacheManager {
    * Start periodic cleanup
    */
   private startCleanupInterval(): void {
-    // Run cleanup every 5 minutes
-    setInterval(() => this.cleanup(), 5 * 60 * 1000);
+    // Run cleanup every 5 minutes - prevent multiple intervals
+    if (!this.cleanupIntervalId) {
+      this.cleanupIntervalId = setInterval(() => this.cleanup(), 5 * 60 * 1000);
+    }
+  }
+
+  /**
+   * Stop cleanup interval for graceful shutdown
+   */
+  destroy(): void {
+    if (this.cleanupIntervalId) {
+      clearInterval(this.cleanupIntervalId);
+      this.cleanupIntervalId = null;
+    }
+    this.clear();
   }
 
   /**

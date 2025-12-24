@@ -18,8 +18,16 @@ interface Notification {
     read: boolean;
 }
 
-// Track shown browser notifications to prevent duplicates
+// Track shown browser notifications to prevent duplicates - with auto cleanup
 const shownBrowserNotifications = new Set<string>();
+const NOTIFICATION_CLEANUP_THRESHOLD = 500;
+
+// Cleanup old notifications periodically
+function cleanupShownNotifications() {
+    if (shownBrowserNotifications.size > NOTIFICATION_CLEANUP_THRESHOLD) {
+        shownBrowserNotifications.clear();
+    }
+}
 
 export function NotificationBell() {
     const router = useRouter();
@@ -126,13 +134,29 @@ export function NotificationBell() {
         }
     }, []);
 
-    // Poll for new notifications every 10 seconds for real-time updates
+    // Poll for new notifications every 30 seconds with visibility check
     useEffect(() => {
-        const interval = setInterval(() => {
+        const pollNotifications = () => {
+            // Skip polling if page is not visible
+            if (document.hidden) return;
             refetch();
-        }, 10000);
+            cleanupShownNotifications();
+        };
 
-        return () => clearInterval(interval);
+        const interval = setInterval(pollNotifications, 30000); // Changed from 10s to 30s
+
+        // Refresh when tab becomes visible
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+                pollNotifications();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
     }, [refetch]);
 
 

@@ -18,14 +18,28 @@ export class RateLimiter {
     private store: Map<string, RateLimitEntry>;
     private maxRequests: number;
     private windowMs: number;
+    private cleanupIntervalId: NodeJS.Timeout | null = null;
 
     constructor(maxRequests: number = 100, windowMs: number = 15 * 60 * 1000) {
         this.store = new Map();
         this.maxRequests = maxRequests;
         this.windowMs = windowMs;
 
-        // Cleanup expired entries every minute
-        setInterval(() => this.cleanup(), 60 * 1000);
+        // Cleanup expired entries every minute - only if not already running
+        if (!this.cleanupIntervalId) {
+            this.cleanupIntervalId = setInterval(() => this.cleanup(), 60 * 1000);
+        }
+    }
+
+    /**
+     * Stop cleanup interval for graceful shutdown
+     */
+    destroy(): void {
+        if (this.cleanupIntervalId) {
+            clearInterval(this.cleanupIntervalId);
+            this.cleanupIntervalId = null;
+        }
+        this.store.clear();
     }
 
     /**

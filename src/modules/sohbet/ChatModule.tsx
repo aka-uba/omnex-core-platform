@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMantineColorScheme } from '@mantine/core';
 import { useCoreFileManager } from '@/hooks/useCoreFileManager';
 import { useAuth } from '@/hooks/useAuth';
@@ -200,6 +200,7 @@ export function ChatModule() {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [recordingDuration, setRecordingDuration] = useState(0);
+    const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const [showCallModal, setShowCallModal] = useState<'video' | 'audio' | null>(null);
     const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
     const [showCreateDirectModal, setShowCreateDirectModal] = useState(false);
@@ -714,11 +715,13 @@ export function ChatModule() {
             setIsRecording(true);
             setRecordingDuration(0);
             
-            // Update recording duration
-            const interval = setInterval(() => {
+            // Update recording duration - using ref instead of window object
+            if (recordingIntervalRef.current) {
+                clearInterval(recordingIntervalRef.current);
+            }
+            recordingIntervalRef.current = setInterval(() => {
                 setRecordingDuration(prev => prev + 1);
             }, 1000);
-            (window as any).recordingInterval = interval;
         } catch (error) {
             console.error('Error starting recording:', error);
             showToast({
@@ -734,7 +737,10 @@ export function ChatModule() {
             mediaRecorder.stop();
         }
         setIsRecording(false);
-        clearInterval((window as any).recordingInterval);
+        if (recordingIntervalRef.current) {
+            clearInterval(recordingIntervalRef.current);
+            recordingIntervalRef.current = null;
+        }
         setRecordingDuration(0);
     };
 
@@ -743,10 +749,22 @@ export function ChatModule() {
             mediaRecorder.stop();
         }
         setIsRecording(false);
-        clearInterval((window as any).recordingInterval);
+        if (recordingIntervalRef.current) {
+            clearInterval(recordingIntervalRef.current);
+            recordingIntervalRef.current = null;
+        }
         setRecordingDuration(0);
         setAudioChunks([]);
     };
+
+    // Cleanup recording interval on unmount
+    useEffect(() => {
+        return () => {
+            if (recordingIntervalRef.current) {
+                clearInterval(recordingIntervalRef.current);
+            }
+        };
+    }, []);
 
     const [mounted, setMounted] = useState(false);
 

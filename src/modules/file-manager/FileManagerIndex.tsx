@@ -32,9 +32,12 @@ export function FileManagerIndex({ locale }: { locale: string }) {
         setMounted(true);
     }, []);
 
-    // Check server status periodically
+    // Check server status periodically - with visibility check
     useEffect(() => {
         const checkServerStatus = async () => {
+            // Skip if page is not visible
+            if (document.hidden) return;
+
             try {
                 const response = await fetch('/api/file-manager/share/status');
                 if (response.ok) {
@@ -47,9 +50,20 @@ export function FileManagerIndex({ locale }: { locale: string }) {
         };
 
         checkServerStatus();
-        const interval = setInterval(checkServerStatus, 2000); // Check every 2 seconds
+        const interval = setInterval(checkServerStatus, 10000); // Changed from 2s to 10s
 
-        return () => clearInterval(interval);
+        // Pause polling when tab is not visible
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+                checkServerStatus(); // Refresh immediately when tab becomes visible
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
     }, []);
 
     const createFolder = useCreateFolder();

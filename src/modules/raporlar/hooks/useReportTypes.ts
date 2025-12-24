@@ -32,15 +32,20 @@ export function useReportTypes() {
     };
 
     fetchTypes();
-    
-    // Listen for registry changes
+
+    // Listen for registry changes - reduced from 1s to 30s (registry rarely changes)
     const interval = setInterval(() => {
       const moduleTypes = reportTypeRegistry.getByCategory('module');
       setReportTypes(prev => {
         const coreTypes = prev.filter(t => t.category === 'core');
-        return [...coreTypes, ...moduleTypes];
+        const newTypes = [...coreTypes, ...moduleTypes];
+        // Only update if types actually changed
+        if (JSON.stringify(prev) !== JSON.stringify(newTypes)) {
+          return newTypes;
+        }
+        return prev;
       });
-    }, 1000);
+    }, 30000); // Changed from 1000ms to 30000ms
 
     return () => clearInterval(interval);
   }, []);

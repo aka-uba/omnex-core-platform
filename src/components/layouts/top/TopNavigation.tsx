@@ -8,7 +8,6 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { Menu, Group, Tooltip, Skeleton } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 import { useLayout } from '../core/LayoutProvider';
@@ -207,9 +206,16 @@ export function TopNavigation() {
     } as React.CSSProperties;
   }, [isDarkMode, backgroundColor, topConfig]);
 
+  // Handle navigation click - prevent default and use router.push for soft navigation
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    navigateTo(href);
+  }, [navigateTo]);
+
   // Render menu item with submenu support - SIMPLIFIED VERSION
   const renderMenuItem = (item: MenuItem, isInDropdown = false) => {
     const active = isActive(item.href) || (item.children && item.children.some(child => isActive(child.href)));
+    const itemHref = getHref(item.href);
 
     // Top-level menu item (visible in navigation bar)
     if (!isInDropdown) {
@@ -224,9 +230,9 @@ export function TopNavigation() {
               trigger="hover"
             >
               <Menu.Target>
-                <Link
-                  href={getHref(item.href)}
-                  prefetch={false}
+                <a
+                  href={itemHref}
+                  onClick={(e) => handleNavClick(e, itemHref)}
                   {...((`${styles.navLink} ${active ? styles.active : ''}`) ? { className: `${styles.navLink} ${active ? styles.active : ''}` } : {})}
                   title={item.label}
                 >
@@ -236,17 +242,17 @@ export function TopNavigation() {
                     </span>
                   )}
                   <span>{item.label}</span>
-                </Link>
+                </a>
               </Menu.Target>
               <Menu.Dropdown {...(styles.menuDropdown ? { className: styles.menuDropdown } : {})} style={dropdownStyle}>
                 {item.children.map((child) => renderDropdownItem(child))}
               </Menu.Dropdown>
             </Menu>
           ) : (
-            // Top-level item without children - simple Link
-            <Link
-              href={getHref(item.href)}
-              prefetch={false}
+            // Top-level item without children - use anchor with onClick for soft navigation
+            <a
+              href={itemHref}
+              onClick={(e) => handleNavClick(e, itemHref)}
               className={`${styles.navLink} ${active ? styles.active : ''}`}
               title={item.label}
             >
@@ -254,7 +260,7 @@ export function TopNavigation() {
                 <item.icon size={18} />
               </span>
               <span>{item.label}</span>
-            </Link>
+            </a>
           )}
         </Tooltip>
       );

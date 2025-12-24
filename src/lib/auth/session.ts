@@ -142,7 +142,17 @@ export function cleanupExpiredSessions(): void {
     }
 }
 
-// Run cleanup every hour
-if (typeof window === 'undefined') {
-    setInterval(cleanupExpiredSessions, 60 * 60 * 1000);
+// Run cleanup every hour - with singleton pattern to prevent multiple intervals
+let cleanupIntervalId: NodeJS.Timeout | null = null;
+
+if (typeof window === 'undefined' && !cleanupIntervalId) {
+    cleanupIntervalId = setInterval(cleanupExpiredSessions, 60 * 60 * 1000);
+}
+
+// Export for graceful shutdown
+export function stopSessionCleanup(): void {
+    if (cleanupIntervalId) {
+        clearInterval(cleanupIntervalId);
+        cleanupIntervalId = null;
+    }
 }

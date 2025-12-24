@@ -104,25 +104,52 @@ export function useAppointmentReminders() {
     }
   }, []);
 
-  // Check for upcoming appointments periodically
+  // Store interval ref to prevent recreation
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check for upcoming appointments periodically - with visibility check
   useEffect(() => {
+    const checkWithVisibility = () => {
+      // Skip if page is not visible
+      if (document.hidden) return;
+      checkUpcomingAppointments();
+    };
+
     // Initial check
-    checkUpcomingAppointments();
+    checkWithVisibility();
 
-    // Check every 30 seconds
-    const interval = setInterval(checkUpcomingAppointments, 30000);
+    // Clear existing interval before creating new one
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
 
-    return () => clearInterval(interval);
+    // Check every 60 seconds (reduced from 30s)
+    intervalRef.current = setInterval(checkWithVisibility, 60000);
+
+    // Refresh when tab becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        checkWithVisibility();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [checkUpcomingAppointments]);
 
-  // Clean up old reminders periodically (keep memory low)
+  // Clean up old reminders periodically (keep memory low) - reduced threshold
   useEffect(() => {
     const cleanup = setInterval(() => {
-      // Clear reminders if the set gets too big
-      if (shownReminders.size > 1000) {
+      // Clear reminders if the set gets too big - reduced from 1000 to 200
+      if (shownReminders.size > 200) {
         shownReminders.clear();
       }
-    }, 60 * 60 * 1000); // Clean up every hour
+    }, 30 * 60 * 1000); // Clean up every 30 minutes (reduced from 1 hour)
 
     return () => clearInterval(cleanup);
   }, []);
