@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface CompanyData {
@@ -52,22 +52,22 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<GeneralSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [initialFetchDone, setInitialFetchDone] = useState(false);
+  const hasFetched = useRef(false);
 
-  const fetchCompanyAndSettings = useCallback(async (force = false) => {
-    // Skip if already fetched and not forced
-    if (initialFetchDone && !force) {
-      return;
-    }
-
+  const fetchCompanyAndSettings = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Fetch company first (critical)
-      try {
-        const companyResponse = await fetchWithAuth('/api/company');
-        if (companyResponse.ok) {
+      // Fetch company and settings in parallel
+      const [companyResponse, settingsResponse] = await Promise.all([
+        fetchWithAuth('/api/company').catch(() => null),
+        fetchWithAuth('/api/general-settings').catch(() => null),
+      ]);
+
+      // Process company response
+      if (companyResponse?.ok) {
+        try {
           const result = await companyResponse.json();
           if (result.success && result.data) {
             setCompany({
@@ -83,15 +83,14 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
               address: result.data.address,
             });
           }
+        } catch (e) {
+          console.warn('Failed to parse company response:', e);
         }
-      } catch (companyErr) {
-        console.warn('Failed to fetch company:', companyErr);
       }
 
-      // Fetch settings separately (non-critical, don't block)
-      try {
-        const settingsResponse = await fetchWithAuth('/api/general-settings');
-        if (settingsResponse.ok) {
+      // Process settings response
+      if (settingsResponse?.ok) {
+        try {
           const result = await settingsResponse.json();
           if (result.success && result.data) {
             setSettings({
@@ -102,26 +101,25 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
               defaultLanguage: result.data.defaultLanguage || 'tr',
             });
           }
+        } catch (e) {
+          console.warn('Failed to parse settings response:', e);
         }
-      } catch (settingsErr) {
-        console.warn('Failed to fetch settings:', settingsErr);
-        // Don't set error - settings are optional
       }
-
-      setInitialFetchDone(true);
     } catch (err) {
       console.warn('Failed to fetch company/settings:', err);
       setError('Failed to fetch company data');
     } finally {
       setLoading(false);
     }
-  }, [initialFetchDone]);
+  }, []);
 
   useEffect(() => {
-    if (!initialFetchDone) {
+    // Only fetch once on mount
+    if (!hasFetched.current) {
+      hasFetched.current = true;
       fetchCompanyAndSettings();
     }
-  }, []);
+  }, [fetchCompanyAndSettings]);
 
   const currency = settings?.currency || DEFAULT_CURRENCY;
 
@@ -139,7 +137,7 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
     [settings?.currency]
   );
 
-  const refetch = useCallback(() => fetchCompanyAndSettings(true), [fetchCompanyAndSettings]);
+  const refetch = useCallback(() => fetchCompanyAndSettings(), [fetchCompanyAndSettings]);
 
   const contextValue = useMemo(
     () => ({
