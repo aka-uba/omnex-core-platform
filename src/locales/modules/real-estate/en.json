@@ -165,7 +165,9 @@
       },
       "more": "more",
       "total": "total",
-      "paid": "paid"
+      "paid": "paid",
+      "paidAmount": "Paid Amount",
+      "error": "Error loading data"
     },
     "create": {
       "title": "Create Payment",
@@ -201,6 +203,7 @@
       "pending": "Pending",
       "paid": "Paid",
       "overdue": "Overdue",
+      "partial": "Partial",
       "cancelled": "Cancelled"
     },
     "types": {
@@ -781,7 +784,9 @@
     "methods": {
       "cash": "Cash",
       "bankTransfer": "Bank Transfer",
+      "bank_transfer": "Bank Transfer",
       "card": "Card",
+      "credit_card": "Credit Card",
       "check": "Check"
     },
     "markedAsPaid": "Payment marked as paid",

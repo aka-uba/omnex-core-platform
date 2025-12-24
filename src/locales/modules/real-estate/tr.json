@@ -374,7 +374,9 @@
       },
       "more": "daha",
       "total": "toplam",
-      "paid": "ödendi"
+      "paid": "ödendi",
+      "paidAmount": "Ödenen Tutar",
+      "error": "Veri yüklenirken hata oluştu"
     },
     "types": {
       "rent": "Kira",
@@ -387,12 +389,15 @@
       "pending": "Beklemede",
       "paid": "Ödendi",
       "overdue": "Vadesi Geçmiş",
+      "partial": "Kısmi Ödeme",
       "cancelled": "İptal Edildi"
     },
     "methods": {
       "cash": "Nakit",
       "bankTransfer": "Banka Transferi",
+      "bank_transfer": "Banka Transferi",
       "card": "Kart",
+      "credit_card": "Kredi Kartı",
       "check": "Çek",
       "autoDebit": "Otomatik Ödeme"
     },
