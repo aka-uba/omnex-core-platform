@@ -2,7 +2,27 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const API_BASE = '/api/accounting/cash-transactions';
 
-// Types
+// Unified transaction type from aggregated sources
+export interface UnifiedTransaction {
+  id: string;
+  source: 'payment' | 'expense' | 'invoice' | 'property_expense' | 'manual';
+  type: 'income' | 'expense';
+  category: string;
+  amount: number;
+  currency: string;
+  transactionDate: string;
+  paymentMethod: string | null;
+  description: string | null;
+  reference: string | null;
+  status: string;
+  relatedEntity?: {
+    type: string;
+    id: string;
+    name?: string;
+  };
+}
+
+// Legacy type for backwards compatibility
 export interface CashTransaction {
   id: string;
   tenantId: string;
@@ -63,6 +83,7 @@ export interface CashTransactionListParams {
   search?: string;
   type?: 'income' | 'expense';
   category?: string;
+  source?: 'payment' | 'expense' | 'invoice' | 'property_expense' | 'manual';
   paymentMethod?: string;
   status?: string;
   startDate?: Date;
@@ -74,6 +95,8 @@ export interface CashTransactionSummary {
   totalIncome: number;
   totalExpense: number;
   balance: number;
+  byCategory: Record<string, { income: number; expense: number }>;
+  bySource: Record<string, { income: number; expense: number; count: number }>;
 }
 
 export function useCashTransactions(params?: CashTransactionListParams) {
@@ -86,6 +109,7 @@ export function useCashTransactions(params?: CashTransactionListParams) {
       if (params?.search) searchParams.set('search', params.search);
       if (params?.type) searchParams.set('type', params.type);
       if (params?.category) searchParams.set('category', params.category);
+      if (params?.source) searchParams.set('source', params.source);
       if (params?.paymentMethod) searchParams.set('paymentMethod', params.paymentMethod);
       if (params?.status) searchParams.set('status', params.status);
       if (params?.startDate) searchParams.set('startDate', params.startDate.toISOString());
@@ -98,7 +122,7 @@ export function useCashTransactions(params?: CashTransactionListParams) {
       }
       const data = await response.json();
       return data.data as {
-        transactions: CashTransaction[];
+        transactions: UnifiedTransaction[];
         total: number;
         page: number;
         pageSize: number;

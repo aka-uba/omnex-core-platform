@@ -21,6 +21,8 @@ import {
   Loader,
   Center,
   Menu,
+  Tooltip,
+  ThemeIcon,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
@@ -29,12 +31,16 @@ import {
   IconPlus,
   IconSearch,
   IconFilter,
-  IconEdit,
   IconTrash,
   IconArrowUp,
   IconArrowDown,
   IconDotsVertical,
   IconWallet,
+  IconHome,
+  IconReceipt,
+  IconFileInvoice,
+  IconBuildingBank,
+  IconHandClick,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { AlertModal } from '@/components/modals/AlertModal';
@@ -43,19 +49,31 @@ import { useTranslation } from '@/lib/i18n/client';
 import {
   useCashTransactions,
   useCreateCashTransaction,
-  useUpdateCashTransaction,
   useDeleteCashTransaction,
-  type CashTransaction,
+  type UnifiedTransaction,
   type CashTransactionCreateInput,
 } from '@/hooks/useCashTransactions';
 import { usePaymentMethods } from '@/hooks/usePaymentMethods';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import dayjs from 'dayjs';
 
+// Source icons and labels
+const SOURCE_CONFIG: Record<string, { icon: typeof IconHome; label: string; color: string }> = {
+  payment: { icon: IconHome, label: 'Kira Ödemesi', color: 'green' },
+  expense: { icon: IconReceipt, label: 'Gider', color: 'red' },
+  invoice: { icon: IconFileInvoice, label: 'Fatura', color: 'blue' },
+  property_expense: { icon: IconBuildingBank, label: 'Gayrimenkul Gideri', color: 'orange' },
+  manual: { icon: IconHandClick, label: 'Manuel Giriş', color: 'gray' },
+};
+
 const CATEGORIES = {
   income: [
     { value: 'rent', label: 'Kira' },
     { value: 'deposit', label: 'Depozito' },
+    { value: 'fee', label: 'Ücret' },
+    { value: 'maintenance', label: 'Bakım Geliri' },
+    { value: 'utility', label: 'Aidat' },
+    { value: 'invoice', label: 'Fatura' },
     { value: 'sale', label: 'Satış' },
     { value: 'commission', label: 'Komisyon' },
     { value: 'other_income', label: 'Diğer Gelir' },
@@ -63,10 +81,14 @@ const CATEGORIES = {
   expense: [
     { value: 'maintenance', label: 'Bakım' },
     { value: 'repair', label: 'Onarım' },
-    { value: 'salary', label: 'Maaş' },
-    { value: 'utility', label: 'Fatura' },
-    { value: 'tax', label: 'Vergi' },
+    { value: 'utilities', label: 'Faturalar' },
+    { value: 'cleaning', label: 'Temizlik' },
     { value: 'insurance', label: 'Sigorta' },
+    { value: 'taxes', label: 'Vergiler' },
+    { value: 'management', label: 'Yönetim' },
+    { value: 'heating', label: 'Isınma' },
+    { value: 'salary', label: 'Maaş' },
+    { value: 'other', label: 'Diğer' },
     { value: 'other_expense', label: 'Diğer Gider' },
   ],
 };
@@ -102,13 +124,12 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
 
   // State
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(25);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [sourceFilter, setSourceFilter] = useState<string | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
-  const [editingTransaction, setEditingTransaction] = useState<CashTransaction | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
@@ -118,14 +139,13 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     pageSize,
     search: search || undefined,
     type: typeFilter as 'income' | 'expense' | undefined,
-    category: categoryFilter || undefined,
+    source: sourceFilter as any,
   });
 
   const { data: paymentMethodsData } = usePaymentMethods();
 
   // Mutations
   const createMutation = useCreateCashTransaction();
-  const updateMutation = useUpdateCashTransaction();
   const deleteMutation = useDeleteCashTransaction();
 
   // Payment methods options
@@ -144,36 +164,29 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     return CATEGORIES[formData.type] || [];
   }, [formData.type]);
 
-  // All categories for filter
+  // All categories for display
   const allCategoryOptions = useMemo(() => {
     return [...CATEGORIES.income, ...CATEGORIES.expense];
   }, []);
 
+  // Source filter options
+  const sourceOptions = useMemo(() => {
+    return Object.entries(SOURCE_CONFIG).map(([value, config]) => ({
+      value,
+      label: config.label,
+    }));
+  }, []);
+
   // Handlers
   const handleOpenCreate = () => {
-    setEditingTransaction(null);
     setFormData(initialFormData);
     open();
   };
 
-  const handleOpenEdit = (transaction: CashTransaction) => {
-    setEditingTransaction(transaction);
-    setFormData({
-      type: transaction.type,
-      category: transaction.category,
-      amount: transaction.amount,
-      currency: transaction.currency,
-      transactionDate: new Date(transaction.transactionDate),
-      paymentMethod: transaction.paymentMethod,
-      description: transaction.description || '',
-      reference: transaction.reference || '',
-      notes: transaction.notes || '',
-    });
-    open();
-  };
-
   const handleOpenDelete = (id: string) => {
-    setDeletingId(id);
+    // Extract actual ID from prefixed ID (e.g., "manual_abc123" -> "abc123")
+    const actualId = id.replace(/^manual_/, '');
+    setDeletingId(actualId);
     openDelete();
   };
 
@@ -201,21 +214,12 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
         status: 'completed',
       };
 
-      if (editingTransaction) {
-        await updateMutation.mutateAsync({ id: editingTransaction.id, ...payload });
-        showToast({
-          type: 'success',
-          title: t('common.success'),
-          message: t('cashTransactions.updated'),
-        });
-      } else {
-        await createMutation.mutateAsync(payload);
-        showToast({
-          type: 'success',
-          title: t('common.success'),
-          message: t('cashTransactions.created'),
-        });
-      }
+      await createMutation.mutateAsync(payload);
+      showToast({
+        type: 'success',
+        title: t('common.success'),
+        message: t('cashTransactions.created'),
+      });
       close();
       refetch();
     } catch (error) {
@@ -254,9 +258,15 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   };
 
   // Get payment method label
-  const getPaymentMethodLabel = (code: string) => {
+  const getPaymentMethodLabel = (code: string | null) => {
+    if (!code) return '-';
     const found = paymentMethodsData?.paymentMethods?.find((pm) => pm.code === code);
     return found?.name || code;
+  };
+
+  // Get source info
+  const getSourceInfo = (source: string) => {
+    return SOURCE_CONFIG[source] || { icon: IconCash, label: source, color: 'gray' };
   };
 
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
@@ -293,7 +303,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.totalIncome')}
                 </Text>
                 <Text size="xl" fw={700} c="green">
-                  {data.summary.totalIncome.toLocaleString('tr-TR')} TRY
+                  {data.summary.totalIncome.toLocaleString('tr-TR')} ₺
                 </Text>
               </div>
               <IconArrowUp size={32} color="var(--mantine-color-green-6)" />
@@ -306,7 +316,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.totalExpense')}
                 </Text>
                 <Text size="xl" fw={700} c="red">
-                  {data.summary.totalExpense.toLocaleString('tr-TR')} TRY
+                  {data.summary.totalExpense.toLocaleString('tr-TR')} ₺
                 </Text>
               </div>
               <IconArrowDown size={32} color="var(--mantine-color-red-6)" />
@@ -319,13 +329,40 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.balance')}
                 </Text>
                 <Text size="xl" fw={700} c={data.summary.balance >= 0 ? 'green' : 'red'}>
-                  {data.summary.balance.toLocaleString('tr-TR')} TRY
+                  {data.summary.balance.toLocaleString('tr-TR')} ₺
                 </Text>
               </div>
               <IconWallet size={32} color="var(--mantine-color-blue-6)" />
             </Group>
           </Paper>
         </SimpleGrid>
+      )}
+
+      {/* Source Summary */}
+      {data?.summary?.bySource && Object.keys(data.summary.bySource).length > 0 && (
+        <Paper p="md" withBorder mt="md">
+          <Text size="sm" fw={600} mb="sm">Kaynak Bazında Özet</Text>
+          <Group gap="lg">
+            {Object.entries(data.summary.bySource).map(([source, info]) => {
+              const sourceConfig = getSourceInfo(source);
+              const SourceIcon = sourceConfig.icon;
+              return (
+                <Group key={source} gap="xs">
+                  <ThemeIcon size="sm" variant="light" color={sourceConfig.color}>
+                    <SourceIcon size={14} />
+                  </ThemeIcon>
+                  <Text size="sm">
+                    {sourceConfig.label}: <Text component="span" fw={600} c="green">{info.income.toLocaleString('tr-TR')} ₺</Text>
+                    {info.expense > 0 && (
+                      <Text component="span" c="red"> / -{info.expense.toLocaleString('tr-TR')} ₺</Text>
+                    )}
+                    <Text component="span" c="dimmed"> ({info.count} işlem)</Text>
+                  </Text>
+                </Group>
+              );
+            })}
+          </Group>
+        </Paper>
       )}
 
       {/* Filters */}
@@ -351,12 +388,12 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
             w={150}
           />
           <Select
-            placeholder={t('cashTransactions.filterByCategory')}
-            data={allCategoryOptions}
-            value={categoryFilter}
-            onChange={setCategoryFilter}
+            placeholder="Kaynak"
+            data={sourceOptions}
+            value={sourceFilter}
+            onChange={setSourceFilter}
             clearable
-            w={150}
+            w={180}
           />
         </Group>
       </Paper>
@@ -373,6 +410,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th>{t('cashTransactions.table.date')}</Table.Th>
+                  <Table.Th>Kaynak</Table.Th>
                   <Table.Th>{t('cashTransactions.table.type')}</Table.Th>
                   <Table.Th>{t('cashTransactions.table.category')}</Table.Th>
                   <Table.Th>{t('cashTransactions.table.description')}</Table.Th>
@@ -383,67 +421,83 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
               </Table.Thead>
               <Table.Tbody>
                 {data?.transactions && data.transactions.length > 0 ? (
-                  data.transactions.map((transaction) => (
-                    <Table.Tr key={transaction.id}>
-                      <Table.Td>{dayjs(transaction.transactionDate).format('DD.MM.YYYY')}</Table.Td>
-                      <Table.Td>
-                        <Badge
-                          color={transaction.type === 'income' ? 'green' : 'red'}
-                          leftSection={
-                            transaction.type === 'income' ? (
-                              <IconArrowUp size={12} />
-                            ) : (
-                              <IconArrowDown size={12} />
-                            )
-                          }
-                        >
-                          {transaction.type === 'income' ? t('cashTransactions.income') : t('cashTransactions.expense')}
-                        </Badge>
-                      </Table.Td>
-                      <Table.Td>{getCategoryLabel(transaction.category)}</Table.Td>
-                      <Table.Td>
-                        <Text size="sm" lineClamp={1}>
-                          {transaction.description || '-'}
-                        </Text>
-                      </Table.Td>
-                      <Table.Td>{getPaymentMethodLabel(transaction.paymentMethod)}</Table.Td>
-                      <Table.Td ta="right">
-                        <Text fw={600} c={transaction.type === 'income' ? 'green' : 'red'}>
-                          {transaction.type === 'income' ? '+' : '-'}
-                          {transaction.amount.toLocaleString('tr-TR')} {transaction.currency}
-                        </Text>
-                      </Table.Td>
-                      <Table.Td>
-                        <Group justify="center" gap="xs">
-                          <Menu position="bottom-end" withArrow>
-                            <Menu.Target>
-                              <ActionIcon variant="subtle" size="sm">
-                                <IconDotsVertical size={16} />
-                              </ActionIcon>
-                            </Menu.Target>
-                            <Menu.Dropdown>
-                              <Menu.Item
-                                leftSection={<IconEdit size={14} />}
-                                onClick={() => handleOpenEdit(transaction)}
-                              >
-                                {t('common.edit')}
-                              </Menu.Item>
-                              <Menu.Item
-                                leftSection={<IconTrash size={14} />}
-                                color="red"
-                                onClick={() => handleOpenDelete(transaction.id)}
-                              >
-                                {t('common.delete')}
-                              </Menu.Item>
-                            </Menu.Dropdown>
-                          </Menu>
-                        </Group>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))
+                  data.transactions.map((transaction: UnifiedTransaction) => {
+                    const sourceConfig = getSourceInfo(transaction.source);
+                    const SourceIcon = sourceConfig.icon;
+                    const isManual = transaction.source === 'manual';
+
+                    return (
+                      <Table.Tr key={transaction.id}>
+                        <Table.Td>{dayjs(transaction.transactionDate).format('DD.MM.YYYY')}</Table.Td>
+                        <Table.Td>
+                          <Tooltip label={sourceConfig.label}>
+                            <Badge
+                              color={sourceConfig.color}
+                              variant="light"
+                              leftSection={<SourceIcon size={12} />}
+                              size="sm"
+                            >
+                              {sourceConfig.label}
+                            </Badge>
+                          </Tooltip>
+                        </Table.Td>
+                        <Table.Td>
+                          <Badge
+                            color={transaction.type === 'income' ? 'green' : 'red'}
+                            leftSection={
+                              transaction.type === 'income' ? (
+                                <IconArrowUp size={12} />
+                              ) : (
+                                <IconArrowDown size={12} />
+                              )
+                            }
+                          >
+                            {transaction.type === 'income' ? t('cashTransactions.income') : t('cashTransactions.expense')}
+                          </Badge>
+                        </Table.Td>
+                        <Table.Td>{getCategoryLabel(transaction.category)}</Table.Td>
+                        <Table.Td>
+                          <Text size="sm" lineClamp={1}>
+                            {transaction.description || '-'}
+                          </Text>
+                        </Table.Td>
+                        <Table.Td>{getPaymentMethodLabel(transaction.paymentMethod)}</Table.Td>
+                        <Table.Td ta="right">
+                          <Text fw={600} c={transaction.type === 'income' ? 'green' : 'red'}>
+                            {transaction.type === 'income' ? '+' : '-'}
+                            {transaction.amount.toLocaleString('tr-TR')} {transaction.currency}
+                          </Text>
+                        </Table.Td>
+                        <Table.Td>
+                          {isManual ? (
+                            <Group justify="center" gap="xs">
+                              <Menu position="bottom-end" withArrow>
+                                <Menu.Target>
+                                  <ActionIcon variant="subtle" size="sm">
+                                    <IconDotsVertical size={16} />
+                                  </ActionIcon>
+                                </Menu.Target>
+                                <Menu.Dropdown>
+                                  <Menu.Item
+                                    leftSection={<IconTrash size={14} />}
+                                    color="red"
+                                    onClick={() => handleOpenDelete(transaction.id)}
+                                  >
+                                    {t('common.delete')}
+                                  </Menu.Item>
+                                </Menu.Dropdown>
+                              </Menu>
+                            </Group>
+                          ) : (
+                            <Text size="xs" c="dimmed" ta="center">-</Text>
+                          )}
+                        </Table.Td>
+                      </Table.Tr>
+                    );
+                  })
                 ) : (
                   <Table.Tr>
-                    <Table.Td colSpan={7} ta="center" py="xl">
+                    <Table.Td colSpan={8} ta="center" py="xl">
                       <Text c="dimmed">{t('cashTransactions.noData')}</Text>
                     </Table.Td>
                   </Table.Tr>
@@ -459,14 +513,17 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
         )}
       </Paper>
 
-      {/* Create/Edit Modal */}
+      {/* Create Modal (only for manual entries) */}
       <Modal
         opened={opened}
         onClose={close}
-        title={editingTransaction ? t('cashTransactions.edit') : t('cashTransactions.create')}
+        title={t('cashTransactions.create')}
         size="lg"
       >
         <Stack>
+          <Text size="sm" c="dimmed">
+            Manuel gelir/gider girişi yapabilirsiniz. Otomatik işlemler (kira ödemeleri, faturalar vb.) ilgili modüllerden gelir.
+          </Text>
           <Select
             label={t('cashTransactions.form.type')}
             data={[
@@ -497,12 +554,13 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
             min={0}
             decimalScale={2}
             thousandSeparator=","
+            suffix=" ₺"
             required
           />
           <DatePickerInput
             label={t('cashTransactions.form.date')}
             value={formData.transactionDate}
-            onChange={(value) => setFormData({ ...formData, transactionDate: value })}
+            onChange={(value) => setFormData({ ...formData, transactionDate: value as Date | null })}
             required
           />
           <Select
@@ -536,9 +594,9 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
             </Button>
             <Button
               onClick={handleSubmit}
-              loading={createMutation.isPending || updateMutation.isPending}
+              loading={createMutation.isPending}
             >
-              {editingTransaction ? t('common.save') : t('common.create')}
+              {t('common.create')}
             </Button>
           </Group>
         </Stack>
