@@ -33,6 +33,74 @@
       "collections": "Collections",
       "outgoing": "Outgoing Payments"
     }
+  },
+  "common": {
+    "search": "Search",
+    "error": "Error",
+    "success": "Success",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create"
+  },
+  "cashTransactions": {
+    "title": "Cash Transactions",
+    "description": "Track cash flow and ledger movements",
+    "create": "New Transaction",
+    "edit": "Edit Transaction",
+    "income": "Income",
+    "expense": "Expense",
+    "totalIncome": "Total Income",
+    "totalExpense": "Total Expense",
+    "balance": "Balance",
+    "filterByType": "Filter by Type",
+    "filterByCategory": "Filter by Category",
+    "noData": "No records found",
+    "created": "Transaction created successfully",
+    "updated": "Transaction updated successfully",
+    "deleted": "Transaction deleted successfully",
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "category": "Category",
+      "description": "Description",
+      "paymentMethod": "Payment Method",
+      "amount": "Amount"
+    },
+    "form": {
+      "type": "Transaction Type",
+      "category": "Category",
+      "amount": "Amount",
+      "date": "Date",
+      "paymentMethod": "Payment Method",
+      "reference": "Reference No",
+      "referencePlaceholder": "Receipt/Voucher number",
+      "description": "Description",
+      "notes": "Notes"
+    },
+    "categories": {
+      "rent": "Rent",
+      "deposit": "Deposit",
+      "sale": "Sale",
+      "commission": "Commission",
+      "other_income": "Other Income",
+      "maintenance": "Maintenance",
+      "repair": "Repair",
+      "salary": "Salary",
+      "utility": "Utility",
+      "tax": "Tax",
+      "insurance": "Insurance",
+      "other_expense": "Other Expense"
+    },
+    "validation": {
+      "required": "Please fill all required fields"
+    },
+    "deleteConfirm": {
+      "title": "Delete Transaction",
+      "message": "Are you sure you want to delete this transaction? This action cannot be undone."
+    }
   }
 }
 

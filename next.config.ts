@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Experimental: Router cache settings to prevent stale content
+  experimental: {
+    staleTimes: {
+      dynamic: 0, // Do not cache dynamic pages
+      static: 180, // Cache static pages for 3 minutes
+    },
+  },
   // Only process specific file types as pages (exclude README.md and other markdown files)
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   // Turbopack configuration for Prisma client paths

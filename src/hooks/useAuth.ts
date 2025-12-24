@@ -80,9 +80,10 @@ export function useAuth() {
       localStorage.removeItem('user');
       setUser(null);
       // Login sayfasına yönlendir (locale'i koru)
+      // Hard navigation kullan - cache sorunlarını önler
       const currentPath = window.location.pathname;
       const locale = currentPath.split('/')[1] || 'tr';
-      router.push(`/${locale}/auth/login`);
+      window.location.href = `/${locale}/auth/login`;
     }
   };
 

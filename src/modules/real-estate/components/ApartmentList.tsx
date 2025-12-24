@@ -381,6 +381,13 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       searchable: false,
     },
     {
+      key: 'unitNumber',
+      label: t('table.unitNumber'),
+      sortable: true,
+      searchable: true,
+      render: renderUnitNumber,
+    },
+    {
       key: 'area',
       label: t('table.area'),
       sortable: true,

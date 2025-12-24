@@ -430,5 +430,62 @@
   "navigation": {
     "dashboard": "Panel"
   },
-  "loading": "Yükleniyor..."
+  "loading": "Yükleniyor...",
+  "cashTransactions": {
+    "title": "Gelir-Gider",
+    "description": "Nakit akışı ve kasa hareketlerini takip edin",
+    "create": "Yeni İşlem",
+    "edit": "İşlem Düzenle",
+    "income": "Gelir",
+    "expense": "Gider",
+    "totalIncome": "Toplam Gelir",
+    "totalExpense": "Toplam Gider",
+    "balance": "Bakiye",
+    "filterByType": "Tip Filtrele",
+    "filterByCategory": "Kategori Filtrele",
+    "noData": "Kayıt bulunamadı",
+    "created": "İşlem başarıyla oluşturuldu",
+    "updated": "İşlem başarıyla güncellendi",
+    "deleted": "İşlem başarıyla silindi",
+    "table": {
+      "date": "Tarih",
+      "type": "Tip",
+      "category": "Kategori",
+      "description": "Açıklama",
+      "paymentMethod": "Ödeme Yöntemi",
+      "amount": "Tutar"
+    },
+    "form": {
+      "type": "İşlem Tipi",
+      "category": "Kategori",
+      "amount": "Tutar",
+      "date": "Tarih",
+      "paymentMethod": "Ödeme Yöntemi",
+      "reference": "Referans No",
+      "referencePlaceholder": "Makbuz/Dekont numarası",
+      "description": "Açıklama",
+      "notes": "Notlar"
+    },
+    "categories": {
+      "rent": "Kira",
+      "deposit": "Depozito",
+      "sale": "Satış",
+      "commission": "Komisyon",
+      "other_income": "Diğer Gelir",
+      "maintenance": "Bakım",
+      "repair": "Onarım",
+      "salary": "Maaş",
+      "utility": "Fatura",
+      "tax": "Vergi",
+      "insurance": "Sigorta",
+      "other_expense": "Diğer Gider"
+    },
+    "validation": {
+      "required": "Lütfen tüm gerekli alanları doldurun"
+    },
+    "deleteConfirm": {
+      "title": "İşlemi Sil",
+      "message": "Bu işlemi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    }
+  }
 }
