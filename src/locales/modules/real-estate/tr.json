@@ -234,6 +234,10 @@
       "person": "Kişi",
       "company": "Şirket"
     },
+    "type": {
+      "individual": "Bireysel",
+      "company": "Şirket"
+    },
     "salutations": {
       "mr": "Bay",
       "mrs": "Bayan",

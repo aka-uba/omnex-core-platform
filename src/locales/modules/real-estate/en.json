@@ -91,6 +91,10 @@
     "currentApartment": "Current Apartment",
     "noActiveContract": "No active contract found",
     "noActiveContractHint": "This tenant does not have an active rental contract",
+    "type": {
+      "individual": "Individual",
+      "company": "Company"
+    },
     "create": {
       "title": "New Tenant",
       "description": "Add a new tenant"
