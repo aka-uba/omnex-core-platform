@@ -7,16 +7,14 @@ import {
   Text,
   Group,
   Badge,
-  Stack,
   Card,
   ActionIcon,
   Select,
-  Table,
-  ScrollArea,
   Tooltip,
   Box,
   Loader,
   Center,
+  Stack,
 } from '@mantine/core';
 import {
   IconChevronLeft,
@@ -29,15 +27,10 @@ import {
   IconCreditCard,
   IconBuildingBank,
   IconReceipt,
-  IconFile,
-  IconFileSpreadsheet,
-  IconFileText,
-  IconCode,
-  IconPrinter,
 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/lib/i18n/client';
-import { useExport } from '@/lib/export/ExportProvider';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/en';
@@ -55,13 +48,45 @@ const paymentMethodIcons: Record<string, React.ReactNode> = {
   check: <IconReceipt size={12} />,
 };
 
-// Status colors for cell backgrounds
-const statusColors = {
-  paid: { bg: 'var(--mantine-color-green-1)', border: 'var(--mantine-color-green-5)', text: 'var(--mantine-color-green-8)' },
-  pending: { bg: 'var(--mantine-color-yellow-1)', border: 'var(--mantine-color-yellow-5)', text: 'var(--mantine-color-yellow-8)' },
-  overdue: { bg: 'var(--mantine-color-red-1)', border: 'var(--mantine-color-red-5)', text: 'var(--mantine-color-red-8)' },
-  partial: { bg: 'var(--mantine-color-orange-1)', border: 'var(--mantine-color-orange-5)', text: 'var(--mantine-color-orange-8)' },
-  none: { bg: 'transparent', border: 'transparent', text: 'var(--mantine-color-dimmed)' },
+// Status colors for cell backgrounds (dark mode compatible)
+const getStatusColors = (status: string) => {
+  switch (status) {
+    case 'paid':
+      return {
+        bg: 'var(--mantine-color-green-light)',
+        border: 'var(--mantine-color-green-6)',
+        text: 'var(--mantine-color-green-text)',
+        badgeColor: 'green',
+      };
+    case 'pending':
+      return {
+        bg: 'var(--mantine-color-yellow-light)',
+        border: 'var(--mantine-color-yellow-6)',
+        text: 'var(--mantine-color-yellow-text)',
+        badgeColor: 'yellow',
+      };
+    case 'overdue':
+      return {
+        bg: 'var(--mantine-color-red-light)',
+        border: 'var(--mantine-color-red-6)',
+        text: 'var(--mantine-color-red-text)',
+        badgeColor: 'red',
+      };
+    case 'partial':
+      return {
+        bg: 'var(--mantine-color-orange-light)',
+        border: 'var(--mantine-color-orange-6)',
+        text: 'var(--mantine-color-orange-text)',
+        badgeColor: 'orange',
+      };
+    default:
+      return {
+        bg: 'transparent',
+        border: 'transparent',
+        text: 'var(--mantine-color-dimmed)',
+        badgeColor: 'gray',
+      };
+  }
 };
 
 export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
@@ -85,14 +110,6 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       return json.data;
     },
   });
-
-  // Export hook
-  let exportHook: ReturnType<typeof useExport> | null = null;
-  try {
-    exportHook = useExport();
-  } catch {
-    // ExportProvider not available
-  }
 
   // Format currency
   const formatCurrency = useCallback((amount: number) => {
@@ -144,25 +161,13 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     return data.properties.map(p => ({ value: p.id, label: p.name }));
   }, [data?.properties]);
 
-  // Render cell content
-  const renderCell = useCallback((info: MonthPaymentInfo, monthIndex: number) => {
+  // Render month cell
+  const renderMonthCell = useCallback((info: MonthPaymentInfo, monthIndex: number) => {
     if (info.status === 'none') {
-      return (
-        <Box
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text size="xs" c="dimmed">-</Text>
-        </Box>
-      );
+      return <Text size="xs" c="dimmed" ta="center">-</Text>;
     }
 
-    const colors = statusColors[info.status];
+    const colors = getStatusColors(info.status);
     const methodIcon = info.paymentMethod ? paymentMethodIcons[info.paymentMethod] : null;
 
     const tooltipContent = (
@@ -176,7 +181,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             {t('payments.monthlyTracker.paidAmount')}: {formatCurrency(info.paidAmount)}
           </Text>
         )}
-        <Badge size="xs" color={info.status === 'paid' ? 'green' : info.status === 'overdue' ? 'red' : info.status === 'partial' ? 'orange' : 'yellow'}>
+        <Badge size="xs" color={colors.badgeColor}>
           {t(`payments.status.${info.status}`)}
         </Badge>
         {info.dueDate && (
@@ -204,24 +209,17 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       <Tooltip label={tooltipContent} multiline w={220} withArrow>
         <Box
           style={{
-            width: '100%',
-            height: '100%',
-            minHeight: 36,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: colors.bg,
             borderLeft: `3px solid ${colors.border}`,
+            padding: '4px 6px',
+            borderRadius: 4,
             cursor: 'pointer',
-            padding: '4px 2px',
+            minHeight: 32,
             transition: 'all 0.15s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.filter = 'brightness(0.95)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.filter = 'none';
           }}
         >
           <Text size="xs" fw={600} style={{ color: colors.text, lineHeight: 1.2 }}>
@@ -237,89 +235,90 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     );
   }, [formatCurrency, formatShortCurrency, fullMonthNames, currentYear, t]);
 
-  // Export handler
-  const handleExport = useCallback(async (format: 'csv' | 'excel' | 'pdf' | 'print' | 'html') => {
-    if (!exportHook || !data?.rows) return;
-
-    const monthHeaders = monthNames.map((m, i) => `${m} ${currentYear}`);
-    const columns = [
-      t('table.property'),
-      t('table.unit'),
-      t('table.tenant'),
-      ...monthHeaders,
+  // Build columns for DataTable
+  const columns: DataTableColumn[] = useMemo(() => {
+    const baseColumns: DataTableColumn[] = [
+      {
+        key: 'propertyName',
+        label: t('table.property'),
+        sortable: true,
+        searchable: true,
+        render: (value: string) => (
+          <Text size="sm" fw={500} lineClamp={1}>{value}</Text>
+        ),
+      },
+      {
+        key: 'unitNumber',
+        label: t('table.unit'),
+        sortable: true,
+        searchable: true,
+        align: 'center',
+        render: (value: string) => (
+          <Text size="sm">{value}</Text>
+        ),
+      },
+      {
+        key: 'tenantName',
+        label: t('table.tenant'),
+        sortable: true,
+        searchable: true,
+        render: (value: string, row: any) => (
+          <Group gap={4} wrap="nowrap">
+            {row.tenantType === 'company' && (
+              <Badge size="xs" variant="light" color="blue">
+                {t('tenants.type.company')}
+              </Badge>
+            )}
+            <Text size="sm" lineClamp={1}>{value}</Text>
+          </Group>
+        ),
+      },
     ];
 
-    const rows = data.rows.map(row => {
-      const monthCells = Array.from({ length: 12 }, (_, i) => {
-        const info = row.months[i];
-        if (info.status === 'none') return { html: '-', text: '-', raw: null };
-        const statusText = t(`payments.status.${info.status}`);
-        const amount = formatCurrency(info.amount);
-        return {
-          html: `<span style="background-color: ${statusColors[info.status].bg}; padding: 2px 6px; border-radius: 4px;">${amount}</span>`,
-          text: `${amount} (${statusText})`,
-          raw: info.amount,
-        };
-      });
-
-      return [
-        { html: row.propertyName, text: row.propertyName, raw: row.propertyName },
-        { html: row.unitNumber, text: row.unitNumber, raw: row.unitNumber },
-        { html: row.tenantName, text: row.tenantName, raw: row.tenantName },
-        ...monthCells,
-      ];
-    });
-
-    const exportData = {
-      columns,
-      columnAlignments: ['left', 'center', 'left', ...Array(12).fill('center')],
-      rows,
-      metadata: {
-        title: `${t('payments.monthlyTracker.tab')} - ${currentYear}`,
-        generatedAt: new Date().toISOString(),
-        totalRecords: data.rows.length,
-        exportedRecords: data.rows.length,
+    // Add month columns
+    const monthColumns: DataTableColumn[] = monthNames.map((month, index) => ({
+      key: `month_${index}`,
+      label: month,
+      sortable: false,
+      searchable: false,
+      align: 'center' as const,
+      render: (_: any, row: any) => {
+        const monthInfo = row.months?.[index];
+        if (!monthInfo) return <Text size="xs" c="dimmed">-</Text>;
+        return renderMonthCell(monthInfo, index);
       },
-    };
+    }));
 
-    const exportOptions = {
-      format,
-      title: `${t('payments.monthlyTracker.tab')} - ${currentYear}`,
-      includeHeader: true,
-      includeFooter: true,
-    };
+    return [...baseColumns, ...monthColumns];
+  }, [monthNames, renderMonthCell, t]);
 
-    try {
-      switch (format) {
-        case 'csv':
-          await exportHook.exportToCSV(exportData, exportOptions);
-          break;
-        case 'excel':
-          await exportHook.exportToExcel(exportData, exportOptions);
-          break;
-        case 'pdf':
-          await exportHook.exportToPDF(exportData, exportOptions);
-          break;
-        case 'html':
-          await exportHook.exportToHTML(exportData, exportOptions);
-          break;
-        case 'print':
-          await exportHook.printData(exportData, exportOptions);
-          break;
-      }
-    } catch (error) {
-      console.error('Export error:', error);
-    }
-  }, [exportHook, data, monthNames, currentYear, formatCurrency, t]);
+  // Transform data for DataTable
+  const tableData = useMemo(() => {
+    if (!data?.rows) return [];
+    return data.rows.map(row => ({
+      id: row.id,
+      propertyName: row.propertyName,
+      unitNumber: row.unitNumber,
+      tenantName: row.tenantName,
+      tenantType: row.tenantType,
+      months: row.months,
+    }));
+  }, [data?.rows]);
 
-  // Export options
-  const exportOptions = [
-    { value: 'pdf' as const, label: tGlobal('export.pdf'), icon: IconFile, color: 'red' },
-    { value: 'excel' as const, label: tGlobal('export.excel'), icon: IconFileSpreadsheet, color: 'green' },
-    { value: 'csv' as const, label: tGlobal('export.csv'), icon: IconFileText, color: 'blue' },
-    { value: 'html' as const, label: tGlobal('export.html'), icon: IconCode, color: 'orange' },
-    { value: 'print' as const, label: tGlobal('export.print'), icon: IconPrinter, color: 'gray' },
-  ];
+  // Filter options
+  const filterOptions: FilterOption[] = useMemo(() => {
+    if (!propertyOptions.length) return [];
+    return [
+      {
+        key: 'propertyName',
+        label: t('table.property'),
+        type: 'select',
+        options: propertyOptions,
+      },
+    ];
+  }, [propertyOptions, t]);
+
+  const { rows = [], summary, properties = [] } = data || {};
 
   if (isLoading) {
     return (
@@ -337,11 +336,9 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     );
   }
 
-  const { rows = [], summary, properties = [] } = data || {};
-
   return (
     <Stack gap="md">
-      {/* Year Navigation, Filters, and Export Icons */}
+      {/* Year Navigation and Property Filter */}
       <Paper shadow="xs" p="md">
         <Group justify="space-between" wrap="wrap" gap="md">
           <Group gap="xs">
@@ -356,39 +353,15 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             </ActionIcon>
           </Group>
 
-          <Group gap="sm">
-            <Select
-              placeholder={t('payments.monthlyTracker.allProperties')}
-              value={propertyFilter}
-              onChange={setPropertyFilter}
-              data={propertyOptions}
-              clearable
-              w={250}
-              size="sm"
-            />
-
-            {/* Export Icons */}
-            <Group gap={4}>
-              {exportOptions.map((option) => {
-                const Icon = option.icon;
-                const isDisabled = !exportHook;
-                return (
-                  <Tooltip key={option.value} label={option.label}>
-                    <ActionIcon
-                      variant="subtle"
-                      color={isDisabled ? 'gray' : option.color}
-                      size="lg"
-                      onClick={() => !isDisabled && handleExport(option.value)}
-                      disabled={isDisabled}
-                      style={{ opacity: isDisabled ? 0.5 : 1 }}
-                    >
-                      <Icon size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                );
-              })}
-            </Group>
-          </Group>
+          <Select
+            placeholder={t('payments.monthlyTracker.allProperties')}
+            value={propertyFilter}
+            onChange={setPropertyFilter}
+            data={propertyOptions}
+            clearable
+            w={250}
+            size="sm"
+          />
         </Group>
       </Paper>
 
@@ -471,126 +444,24 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         </Grid.Col>
       </Grid>
 
-      {/* Pivot Table */}
-      <Paper shadow="sm" p="md" radius="md">
-        <ScrollArea>
-          <Table
-            striped
-            highlightOnHover
-            withTableBorder
-            withColumnBorders
-            style={{ minWidth: 1200 }}
-          >
-            <Table.Thead>
-              <Table.Tr style={{ backgroundColor: 'var(--mantine-color-gray-1)' }}>
-                <Table.Th
-                  style={{
-                    position: 'sticky',
-                    left: 0,
-                    backgroundColor: 'var(--mantine-color-gray-1)',
-                    zIndex: 2,
-                    minWidth: 150,
-                  }}
-                >
-                  <Text size="sm" fw={600}>{t('table.property')}</Text>
-                </Table.Th>
-                <Table.Th
-                  style={{
-                    position: 'sticky',
-                    left: 150,
-                    backgroundColor: 'var(--mantine-color-gray-1)',
-                    zIndex: 2,
-                    minWidth: 80,
-                    textAlign: 'center',
-                  }}
-                >
-                  <Text size="sm" fw={600}>{t('table.unit')}</Text>
-                </Table.Th>
-                <Table.Th
-                  style={{
-                    position: 'sticky',
-                    left: 230,
-                    backgroundColor: 'var(--mantine-color-gray-1)',
-                    zIndex: 2,
-                    minWidth: 150,
-                  }}
-                >
-                  <Text size="sm" fw={600}>{t('table.tenant')}</Text>
-                </Table.Th>
-                {monthNames.map((month, index) => (
-                  <Table.Th
-                    key={index}
-                    style={{
-                      textAlign: 'center',
-                      minWidth: 75,
-                      padding: '8px 4px',
-                    }}
-                  >
-                    <Text size="xs" fw={600}>{month}</Text>
-                  </Table.Th>
-                ))}
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {rows.length === 0 ? (
-                <Table.Tr>
-                  <Table.Td colSpan={15} style={{ textAlign: 'center', padding: '2rem' }}>
-                    <Text c="dimmed">{t('payments.monthlyTracker.noData')}</Text>
-                  </Table.Td>
-                </Table.Tr>
-              ) : (
-                rows.map((row) => (
-                  <Table.Tr key={row.id}>
-                    <Table.Td
-                      style={{
-                        position: 'sticky',
-                        left: 0,
-                        backgroundColor: 'var(--mantine-color-body)',
-                        zIndex: 1,
-                      }}
-                    >
-                      <Text size="sm" fw={500} lineClamp={1}>{row.propertyName}</Text>
-                    </Table.Td>
-                    <Table.Td
-                      style={{
-                        position: 'sticky',
-                        left: 150,
-                        backgroundColor: 'var(--mantine-color-body)',
-                        zIndex: 1,
-                        textAlign: 'center',
-                      }}
-                    >
-                      <Text size="sm">{row.unitNumber}</Text>
-                    </Table.Td>
-                    <Table.Td
-                      style={{
-                        position: 'sticky',
-                        left: 230,
-                        backgroundColor: 'var(--mantine-color-body)',
-                        zIndex: 1,
-                      }}
-                    >
-                      <Group gap={4} wrap="nowrap">
-                        {row.tenantType === 'company' && (
-                          <Badge size="xs" variant="light" color="blue">
-                            {t('tenants.type.company')}
-                          </Badge>
-                        )}
-                        <Text size="sm" lineClamp={1}>{row.tenantName}</Text>
-                      </Group>
-                    </Table.Td>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <Table.Td key={i} style={{ padding: 0 }}>
-                        {renderCell(row.months[i], i)}
-                      </Table.Td>
-                    ))}
-                  </Table.Tr>
-                ))
-              )}
-            </Table.Tbody>
-          </Table>
-        </ScrollArea>
-      </Paper>
+      {/* Data Table */}
+      <DataTable
+        columns={columns}
+        data={tableData}
+        searchable={true}
+        sortable={true}
+        pageable={true}
+        defaultPageSize={25}
+        pageSizeOptions={[10, 25, 50, 100]}
+        showExportIcons={true}
+        showColumnSettings={true}
+        showRowNumbers={true}
+        filters={filterOptions}
+        emptyMessage={t('payments.monthlyTracker.noData')}
+        tableId="payment-monthly-tracker"
+        exportTitle={`${t('payments.monthlyTracker.tab')} - ${currentYear}`}
+        exportNamespace="modules/real-estate"
+      />
 
       {/* Legend */}
       <Paper shadow="xs" p="sm">
@@ -600,8 +471,8 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: statusColors.paid.bg,
-                borderLeft: `3px solid ${statusColors.paid.border}`,
+                backgroundColor: 'var(--mantine-color-green-light)',
+                borderLeft: '3px solid var(--mantine-color-green-6)',
                 borderRadius: 2,
               }}
             />
@@ -612,8 +483,8 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: statusColors.pending.bg,
-                borderLeft: `3px solid ${statusColors.pending.border}`,
+                backgroundColor: 'var(--mantine-color-yellow-light)',
+                borderLeft: '3px solid var(--mantine-color-yellow-6)',
                 borderRadius: 2,
               }}
             />
@@ -624,8 +495,8 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: statusColors.overdue.bg,
-                borderLeft: `3px solid ${statusColors.overdue.border}`,
+                backgroundColor: 'var(--mantine-color-red-light)',
+                borderLeft: '3px solid var(--mantine-color-red-6)',
                 borderRadius: 2,
               }}
             />
@@ -636,8 +507,8 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
               style={{
                 width: 16,
                 height: 16,
-                backgroundColor: statusColors.partial.bg,
-                borderLeft: `3px solid ${statusColors.partial.border}`,
+                backgroundColor: 'var(--mantine-color-orange-light)',
+                borderLeft: '3px solid var(--mantine-color-orange-6)',
                 borderRadius: 2,
               }}
             />
