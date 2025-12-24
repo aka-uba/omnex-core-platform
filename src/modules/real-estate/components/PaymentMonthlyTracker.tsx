@@ -31,6 +31,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
+import { useExport } from '@/lib/export/ExportProvider';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/en';
@@ -91,10 +92,17 @@ const getStatusColors = (status: string) => {
 
 export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   const { t } = useTranslation('modules/real-estate');
-  const { t: tGlobal } = useTranslation('global');
 
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const [propertyFilter, setPropertyFilter] = useState<string | null>(null);
+
+  // Export hook
+  let exportHook: ReturnType<typeof useExport> | null = null;
+  try {
+    exportHook = useExport();
+  } catch {
+    // ExportProvider not available
+  }
 
   // Fetch data from API
   const { data, isLoading, error } = useQuery<MonthlyTrackerResponse>({
@@ -331,7 +339,116 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     ];
   }, [propertyOptions, t]);
 
-  const { rows = [], summary, properties = [] } = data || {};
+  // Custom export handler to format month cells properly (avoid [object Object])
+  const handleExport = useCallback(async (format: 'csv' | 'excel' | 'word' | 'pdf' | 'print' | 'html') => {
+    if (!exportHook || !data?.rows) return;
+
+    // Format month payment info as readable text
+    const formatMonthForExport = (info: MonthPaymentInfo, monthIndex: number): string => {
+      if (info.status === 'none') return '-';
+
+      const parts: string[] = [];
+      parts.push(`${formatCurrency(info.amount)}`);
+      parts.push(`(${t(`payments.status.${info.status}`)})`);
+
+      if (info.dueDate) {
+        parts.push(`${t('table.dueDate')}: ${dayjs(info.dueDate).format('DD.MM.YYYY')}`);
+      }
+      if (info.paidDate) {
+        parts.push(`${t('table.paidDate')}: ${dayjs(info.paidDate).format('DD.MM.YYYY')}`);
+      }
+      if (info.paymentMethod) {
+        parts.push(`${t(`payments.methods.${info.paymentMethod}`)}`);
+      }
+
+      return parts.join(' | ');
+    };
+
+    // Build export columns
+    const baseColumnLabels = [
+      t('table.property'),
+      t('table.unit'),
+      t('table.floor'),
+      t('table.tenant'),
+    ];
+    const monthColumnLabels = monthNames.map(name => name);
+    const allColumns = [...baseColumnLabels, ...monthColumnLabels];
+
+    // Build export rows with formatted month data
+    const exportRows = data.rows.map(row => {
+      const tenantLabel = row.tenantType === 'company'
+        ? `[${t('tenants.type.company')}] ${row.tenantName}`
+        : row.tenantName;
+
+      const baseData = [
+        row.propertyName,
+        row.unitNumber,
+        row.floor || '-',
+        tenantLabel,
+      ];
+
+      // Format each month's data
+      const monthData = Array.from({ length: 12 }, (_, i) => {
+        const monthInfo = row.months[i];
+        if (!monthInfo) return '-';
+        return formatMonthForExport(monthInfo, i);
+      });
+
+      return [...baseData, ...monthData].map(value => ({
+        html: String(value),
+        text: String(value),
+        raw: value,
+      }));
+    });
+
+    const exportData = {
+      columns: allColumns,
+      columnAlignments: allColumns.map((_, i) => i < 4 ? 'left' : 'center'),
+      rows: exportRows,
+      metadata: {
+        title: `${t('payments.monthlyTracker.tab')} - ${currentYear}`,
+        generatedAt: new Date().toISOString(),
+        scope: 'all' as const,
+        totalRecords: data.rows.length,
+        exportedRecords: data.rows.length,
+      },
+    };
+
+    const exportOptions = {
+      format,
+      includeHeader: true,
+      includeFooter: true,
+      includePageNumbers: true,
+      title: `${t('payments.monthlyTracker.tab')} - ${currentYear}`,
+    };
+
+    try {
+      switch (format) {
+        case 'csv':
+          await exportHook.exportToCSV(exportData, exportOptions);
+          break;
+        case 'excel':
+          await exportHook.exportToExcel(exportData, exportOptions);
+          break;
+        case 'word':
+          await exportHook.exportToWord(exportData, exportOptions);
+          break;
+        case 'pdf':
+          await exportHook.exportToPDF(exportData, exportOptions);
+          break;
+        case 'html':
+          await exportHook.exportToHTML(exportData, exportOptions);
+          break;
+        case 'print':
+          await exportHook.printData(exportData, exportOptions);
+          break;
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+    }
+  }, [data, monthNames, formatCurrency, t, exportHook, currentYear]);
+
+  const { summary } = data || {};
 
   if (isLoading) {
     return (
@@ -474,6 +591,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         tableId="payment-monthly-tracker"
         exportTitle={`${t('payments.monthlyTracker.tab')} - ${currentYear}`}
         exportNamespace="modules/real-estate"
+        onExport={handleExport}
       />
 
       {/* Legend */}
