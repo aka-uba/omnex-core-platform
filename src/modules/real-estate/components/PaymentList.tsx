@@ -24,7 +24,7 @@ import {
 import { usePayments, useDeletePayment, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useApartments } from '@/hooks/useApartments';
 import { useContracts } from '@/hooks/useContracts';
-import { usePaymentMethods } from '@/hooks/usePaymentMethods';
+import { usePaymentMethods, DEFAULT_PAYMENT_METHOD_CODES } from '@/hooks/usePaymentMethods';
 import { useCompany } from '@/context/CompanyContext';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -42,7 +42,7 @@ export function PaymentList({ locale }: PaymentListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
-  const { selectedCompany } = useCompany();
+  const { company } = useCompany();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [apartmentId, setApartmentId] = useState<string | undefined>();
@@ -70,7 +70,7 @@ export function PaymentList({ locale }: PaymentListProps) {
   const { data: apartmentsData } = useApartments({ page: 1, pageSize: 1000 });
   const { data: contractsData } = useContracts({ page: 1, pageSize: 1000 });
   const { data: paymentMethodsData } = usePaymentMethods({
-    companyId: selectedCompany?.id,
+    companyId: company?.id,
     activeOnly: true
   });
 
@@ -496,14 +496,15 @@ export function PaymentList({ locale }: PaymentListProps) {
             value={selectedPaymentMethod}
             onChange={setSelectedPaymentMethod}
             data={
-              paymentMethodsData?.paymentMethods.map((method) => ({
-                value: method.code,
-                label: method.name,
-              })) || [
-                { value: 'cash', label: 'Nakit' },
-                { value: 'bank_transfer', label: 'Banka Havalesi' },
-                { value: 'card', label: 'Kredi/Banka Kartı' },
-              ]
+              paymentMethodsData?.paymentMethods && paymentMethodsData.paymentMethods.length > 0
+                ? paymentMethodsData.paymentMethods.map((method) => ({
+                    value: method.code,
+                    label: method.name,
+                  }))
+                : DEFAULT_PAYMENT_METHOD_CODES.map((method) => ({
+                    value: method.code,
+                    label: method.name,
+                  }))
             }
             leftSection={<IconCash size={16} />}
             required

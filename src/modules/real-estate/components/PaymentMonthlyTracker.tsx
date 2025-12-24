@@ -9,11 +9,10 @@ import {
   Badge,
   Stack,
   Card,
-  Title,
   ActionIcon,
-  Tooltip,
   Loader,
   Select,
+  Progress,
 } from '@mantine/core';
 import {
   IconChevronLeft,
@@ -25,6 +24,7 @@ import {
 } from '@tabler/icons-react';
 import { usePayments } from '@/hooks/usePayments';
 import { useTranslation } from '@/lib/i18n/client';
+import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/en';
@@ -37,51 +37,34 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
 
-  const [currentDate, setCurrentDate] = useState(dayjs());
-  const [viewMode, setViewMode] = useState<'month' | 'year'>('month');
-
-  // Calculate date range based on view mode
-  const dateRange = useMemo(() => {
-    if (viewMode === 'month') {
-      return {
-        start: currentDate.startOf('month'),
-        end: currentDate.endOf('month'),
-      };
-    } else {
-      return {
-        start: currentDate.startOf('year'),
-        end: currentDate.endOf('year'),
-      };
-    }
-  }, [currentDate, viewMode]);
+  const [currentYear, setCurrentYear] = useState(dayjs().year());
 
   const { data, isLoading, error } = usePayments({
     page: 1,
-    pageSize: 1000, // Get all payments for the period
+    pageSize: 1000,
   });
 
-  // Filter payments for current period
-  const periodPayments = useMemo(() => {
+  // Filter payments for current year
+  const yearPayments = useMemo(() => {
     if (!data?.payments) return [];
     return data.payments.filter((payment) => {
       const dueDate = dayjs(payment.dueDate);
-      return dueDate.isAfter(dateRange.start.subtract(1, 'day')) &&
-             dueDate.isBefore(dateRange.end.add(1, 'day'));
+      return dueDate.year() === currentYear;
     });
-  }, [data, dateRange]);
+  }, [data, currentYear]);
 
   // Calculate summary statistics
   const summary = useMemo(() => {
-    const total = periodPayments.length;
-    const paid = periodPayments.filter(p => p.status === 'paid').length;
-    const pending = periodPayments.filter(p => p.status === 'pending').length;
-    const overdue = periodPayments.filter(p => p.status === 'overdue' ||
+    const total = yearPayments.length;
+    const paid = yearPayments.filter(p => p.status === 'paid').length;
+    const pending = yearPayments.filter(p => p.status === 'pending').length;
+    const overdue = yearPayments.filter(p => p.status === 'overdue' ||
       (p.status === 'pending' && dayjs(p.dueDate).isBefore(dayjs()))).length;
 
-    const totalAmount = periodPayments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-    const paidAmount = periodPayments.filter(p => p.status === 'paid')
+    const totalAmount = yearPayments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
+    const paidAmount = yearPayments.filter(p => p.status === 'paid')
       .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
-    const pendingAmount = periodPayments.filter(p => p.status === 'pending')
+    const pendingAmount = yearPayments.filter(p => p.status === 'pending')
       .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
 
     return {
@@ -94,34 +77,47 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       pendingAmount,
       collectionRate: total > 0 ? (paid / total) * 100 : 0,
     };
-  }, [periodPayments]);
+  }, [yearPayments]);
 
-  // Group payments by day (for month view) or month (for year view)
-  const groupedPayments = useMemo(() => {
-    const groups: Record<string, typeof periodPayments> = {};
+  // Generate monthly data for table
+  const monthlyData = useMemo(() => {
+    const months = [];
+    for (let i = 0; i < 12; i++) {
+      const monthDate = dayjs().year(currentYear).month(i);
+      const monthPayments = yearPayments.filter(p => dayjs(p.dueDate).month() === i);
 
-    periodPayments.forEach((payment) => {
-      const key = viewMode === 'month'
-        ? dayjs(payment.dueDate).format('YYYY-MM-DD')
-        : dayjs(payment.dueDate).format('YYYY-MM');
+      const total = monthPayments.length;
+      const paid = monthPayments.filter(p => p.status === 'paid').length;
+      const pending = monthPayments.filter(p => p.status === 'pending').length;
+      const overdue = monthPayments.filter(p =>
+        p.status === 'overdue' || (p.status === 'pending' && dayjs(p.dueDate).isBefore(dayjs()))
+      ).length;
 
-      if (!groups[key]) {
-        groups[key] = [];
-      }
-      groups[key].push(payment);
-    });
+      const totalAmount = monthPayments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
+      const paidAmount = monthPayments.filter(p => p.status === 'paid')
+        .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
+      const pendingAmount = monthPayments.filter(p => p.status === 'pending')
+        .reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0);
 
-    return groups;
-  }, [periodPayments, viewMode]);
+      const collectionRate = total > 0 ? (paid / total) * 100 : 0;
 
-  // Navigate to previous/next period
-  const navigatePrevious = useCallback(() => {
-    setCurrentDate(prev => viewMode === 'month' ? prev.subtract(1, 'month') : prev.subtract(1, 'year'));
-  }, [viewMode]);
-
-  const navigateNext = useCallback(() => {
-    setCurrentDate(prev => viewMode === 'month' ? prev.add(1, 'month') : prev.add(1, 'year'));
-  }, [viewMode]);
+      months.push({
+        id: `month-${i}`,
+        month: i,
+        monthName: monthDate.locale(locale).format('MMMM'),
+        isCurrentMonth: monthDate.isSame(dayjs(), 'month'),
+        total,
+        paid,
+        pending,
+        overdue,
+        totalAmount,
+        paidAmount,
+        pendingAmount,
+        collectionRate,
+      });
+    }
+    return months;
+  }, [yearPayments, currentYear, locale]);
 
   // Format currency
   const formatCurrency = useCallback((amount: number) => {
@@ -133,66 +129,110 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     }).format(amount);
   }, [locale]);
 
-  // Get status color
-  const getStatusColor = (status: string, dueDate: string) => {
-    if (status === 'paid') return 'green';
-    if (status === 'overdue' || (status === 'pending' && dayjs(dueDate).isBefore(dayjs()))) return 'red';
-    if (status === 'pending') return 'yellow';
-    return 'gray';
-  };
+  // Navigate years
+  const navigatePrevious = useCallback(() => {
+    setCurrentYear(prev => prev - 1);
+  }, []);
 
-  // Generate calendar days for month view
-  const calendarDays = useMemo(() => {
-    if (viewMode !== 'month') return [];
+  const navigateNext = useCallback(() => {
+    setCurrentYear(prev => prev + 1);
+  }, []);
 
-    const days = [];
-    const startOfMonth = currentDate.startOf('month');
-    const endOfMonth = currentDate.endOf('month');
-    const startDay = startOfMonth.day(); // 0 = Sunday
-
-    // Add empty cells for days before the month starts
-    for (let i = 0; i < startDay; i++) {
-      days.push({ day: null, date: null });
-    }
-
-    // Add days of the month
-    let day = startOfMonth;
-    while (day.isBefore(endOfMonth) || day.isSame(endOfMonth, 'day')) {
-      const dateKey = day.format('YYYY-MM-DD');
-      const paymentsForDay = groupedPayments[dateKey] || [];
-      days.push({
-        day: day.date(),
-        date: dateKey,
-        payments: paymentsForDay,
-        isToday: day.isSame(dayjs(), 'day'),
-      });
-      day = day.add(1, 'day');
-    }
-
-    return days;
-  }, [currentDate, viewMode, groupedPayments]);
-
-  // Generate months for year view
-  const calendarMonths = useMemo(() => {
-    if (viewMode !== 'year') return [];
-
-    const months = [];
-    for (let i = 0; i < 12; i++) {
-      const monthDate = currentDate.startOf('year').add(i, 'month');
-      const monthKey = monthDate.format('YYYY-MM');
-      const paymentsForMonth = groupedPayments[monthKey] || [];
-
-      months.push({
-        month: i,
-        monthName: monthDate.locale(locale).format('MMMM'),
-        date: monthKey,
-        payments: paymentsForMonth,
-        isCurrentMonth: monthDate.isSame(dayjs(), 'month'),
-      });
-    }
-
-    return months;
-  }, [currentDate, viewMode, groupedPayments, locale]);
+  // Table columns
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'monthName',
+      label: t('payments.monthlyTracker.month') || 'Ay',
+      sortable: true,
+      render: (value: string, row: any) => (
+        <Text fw={row.isCurrentMonth ? 700 : 400} c={row.isCurrentMonth ? 'blue' : undefined}>
+          {value}
+        </Text>
+      ),
+    },
+    {
+      key: 'total',
+      label: t('payments.monthlyTracker.totalPayments'),
+      sortable: true,
+      align: 'center' as const,
+      render: (value: number) => (
+        <Badge color="blue" variant="light" size="lg">
+          {value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'paid',
+      label: t('payments.monthlyTracker.paidPayments'),
+      sortable: true,
+      align: 'center' as const,
+      render: (value: number) => (
+        <Badge color="green" variant="filled" size="lg">
+          {value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'pending',
+      label: t('payments.monthlyTracker.pendingPayments'),
+      sortable: true,
+      align: 'center' as const,
+      render: (value: number) => (
+        <Badge color="yellow" variant="filled" size="lg">
+          {value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'overdue',
+      label: t('payments.monthlyTracker.overduePayments'),
+      sortable: true,
+      align: 'center' as const,
+      render: (value: number) => (
+        <Badge color={value > 0 ? 'red' : 'gray'} variant="filled" size="lg">
+          {value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'totalAmount',
+      label: t('payments.monthlyTracker.expectedAmount') || 'Beklenen Tutar',
+      sortable: true,
+      align: 'right' as const,
+      render: (value: number) => (
+        <Text fw={500}>{formatCurrency(value)}</Text>
+      ),
+    },
+    {
+      key: 'paidAmount',
+      label: t('payments.monthlyTracker.collectedAmount') || 'Tahsil Edilen',
+      sortable: true,
+      align: 'right' as const,
+      render: (value: number) => (
+        <Text fw={500} c="green">{formatCurrency(value)}</Text>
+      ),
+    },
+    {
+      key: 'collectionRate',
+      label: t('payments.monthlyTracker.collectionRate'),
+      sortable: true,
+      align: 'center' as const,
+      render: (value: number, row: any) => (
+        <Group gap="xs">
+          <Progress
+            value={value}
+            color={value >= 80 ? 'green' : value >= 50 ? 'yellow' : 'red'}
+            size="lg"
+            radius="xl"
+            style={{ width: 60 }}
+          />
+          <Text size="sm" fw={500}>
+            {value.toFixed(0)}%
+          </Text>
+        </Group>
+      ),
+    },
+  ], [t, formatCurrency]);
 
   if (isLoading) {
     return (
@@ -212,31 +252,18 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
 
   return (
     <Stack gap="md">
-      {/* Navigation and View Mode */}
+      {/* Year Navigation */}
       <Paper shadow="xs" p="md">
-        <Group justify="space-between">
-          <Group>
-            <ActionIcon variant="subtle" onClick={navigatePrevious}>
-              <IconChevronLeft size={20} />
-            </ActionIcon>
-            <Title order={4}>
-              {viewMode === 'month'
-                ? currentDate.locale(locale).format('MMMM YYYY')
-                : currentDate.format('YYYY')}
-            </Title>
-            <ActionIcon variant="subtle" onClick={navigateNext}>
-              <IconChevronRight size={20} />
-            </ActionIcon>
-          </Group>
-          <Select
-            value={viewMode}
-            onChange={(value) => setViewMode(value as 'month' | 'year')}
-            data={[
-              { value: 'month', label: t('payments.monthlyTracker.monthView') },
-              { value: 'year', label: t('payments.monthlyTracker.yearView') },
-            ]}
-            w={150}
-          />
+        <Group justify="center">
+          <ActionIcon variant="subtle" onClick={navigatePrevious} size="lg">
+            <IconChevronLeft size={24} />
+          </ActionIcon>
+          <Text size="xl" fw={700}>
+            {currentYear}
+          </Text>
+          <ActionIcon variant="subtle" onClick={navigateNext} size="lg">
+            <IconChevronRight size={24} />
+          </ActionIcon>
         </Group>
       </Paper>
 
@@ -319,111 +346,17 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         </Grid.Col>
       </Grid>
 
-      {/* Calendar View */}
-      <Paper shadow="xs" p="md">
-        {viewMode === 'month' ? (
-          <>
-            {/* Weekday Headers */}
-            <Grid gutter="xs" mb="xs">
-              {[
-                t('payments.monthlyTracker.weekdays.sun'),
-                t('payments.monthlyTracker.weekdays.mon'),
-                t('payments.monthlyTracker.weekdays.tue'),
-                t('payments.monthlyTracker.weekdays.wed'),
-                t('payments.monthlyTracker.weekdays.thu'),
-                t('payments.monthlyTracker.weekdays.fri'),
-                t('payments.monthlyTracker.weekdays.sat'),
-              ].map((day) => (
-                <Grid.Col span={12 / 7} key={day}>
-                  <Text ta="center" fw={600} size="sm" c="dimmed">
-                    {day}
-                  </Text>
-                </Grid.Col>
-              ))}
-            </Grid>
-
-            {/* Calendar Days */}
-            <Grid gutter="xs">
-              {calendarDays.map((dayInfo, index) => (
-                <Grid.Col span={12 / 7} key={index}>
-                  {dayInfo.day !== null ? (
-                    <Card
-                      padding="xs"
-                      radius="sm"
-                      withBorder
-                      style={{
-                        minHeight: 80,
-                        backgroundColor: dayInfo.isToday ? 'var(--mantine-color-blue-light)' : undefined,
-                      }}
-                    >
-                      <Text size="sm" fw={dayInfo.isToday ? 700 : 400}>
-                        {dayInfo.day}
-                      </Text>
-                      <Stack gap={2} mt={4}>
-                        {dayInfo.payments?.slice(0, 3).map((payment) => (
-                          <Tooltip
-                            key={payment.id}
-                            label={`${payment.apartment?.unitNumber || '-'}: ${formatCurrency(Number(payment.totalAmount || payment.amount))}`}
-                          >
-                            <Badge
-                              size="xs"
-                              color={getStatusColor(payment.status, payment.dueDate)}
-                              variant="filled"
-                              style={{ cursor: 'pointer' }}
-                            >
-                              {payment.apartment?.unitNumber || '-'}
-                            </Badge>
-                          </Tooltip>
-                        ))}
-                        {dayInfo.payments && dayInfo.payments.length > 3 && (
-                          <Text size="xs" c="dimmed">
-                            +{dayInfo.payments.length - 3} {t('payments.monthlyTracker.more')}
-                          </Text>
-                        )}
-                      </Stack>
-                    </Card>
-                  ) : (
-                    <div style={{ minHeight: 80 }} />
-                  )}
-                </Grid.Col>
-              ))}
-            </Grid>
-          </>
-        ) : (
-          /* Year View - Monthly Cards */
-          <Grid>
-            {calendarMonths.map((monthInfo) => (
-              <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 3 }} key={monthInfo.month}>
-                <Card
-                  padding="md"
-                  radius="md"
-                  withBorder
-                  style={{
-                    backgroundColor: monthInfo.isCurrentMonth ? 'var(--mantine-color-blue-light)' : undefined,
-                  }}
-                >
-                  <Text fw={600} mb="xs">
-                    {monthInfo.monthName}
-                  </Text>
-                  <Group gap="xs">
-                    <Badge color="blue" size="sm">
-                      {monthInfo.payments.length} {t('payments.monthlyTracker.total')}
-                    </Badge>
-                    <Badge color="green" size="sm">
-                      {monthInfo.payments.filter(p => p.status === 'paid').length} {t('payments.monthlyTracker.paid')}
-                    </Badge>
-                  </Group>
-                  {monthInfo.payments.length > 0 && (
-                    <Text size="sm" mt="xs" c="dimmed">
-                      {formatCurrency(monthInfo.payments.reduce((sum, p) => sum + Number(p.totalAmount || p.amount), 0))}
-                    </Text>
-                  )}
-                </Card>
-              </Grid.Col>
-            ))}
-          </Grid>
-        )}
-      </Paper>
+      {/* Monthly Table */}
+      <DataTable
+        tableId="payment-monthly-tracker"
+        columns={columns}
+        data={monthlyData}
+        searchable={false}
+        sortable={true}
+        pageable={false}
+        emptyMessage={t('payments.monthlyTracker.noData') || 'Veri bulunamadı'}
+        showColumnSettings={false}
+      />
 
       {/* Legend */}
       <Paper shadow="xs" p="sm">
