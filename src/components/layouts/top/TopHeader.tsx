@@ -9,10 +9,12 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { ActionIcon, Avatar, Menu, Text, Image } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IconSearch, IconSun, IconMoon, IconUser, IconLogout, IconLayoutSidebar, IconMaximize, IconMinimize } from '@tabler/icons-react';
+import { BRANDING_PATHS } from '@/lib/branding/config';
 import { useLayout } from '../core/LayoutProvider';
 import { useAuth } from '@/hooks/useAuth';
 import { useCompany } from '@/context/CompanyContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from '@/lib/i18n/client';
 import { LanguageSelector } from '@/components/language/LanguageSelector';
 import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
@@ -43,6 +45,8 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
   const { user, logout } = useAuth();
   const { company } = useCompany();
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = pathname?.split('/')[1] || 'tr';
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
@@ -263,24 +267,23 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
       }}
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>
-        {/* Logo */}
+        {/* Logo - Sabit dosya yolundan geniş logo - Dashboard'a link */}
         <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {/* Company Logo */}
-          {mounted && (company?.logo || company?.pwaIcon) && (
-            <Image
-              src={company.logo || company.pwaIcon}
-              alt={company?.name || 'Logo'}
-              fit="contain"
-              h={36}
-              maw={120}
-              style={{ flexShrink: 0 }}
-            />
+          {mounted && (
+            <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none' }}>
+              <Image
+                src={BRANDING_PATHS.logo}
+                alt={company?.name || 'Logo'}
+                fit="contain"
+                h={36}
+                maw={180}
+                style={{ flexShrink: 0, cursor: 'pointer' }}
+                onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </Link>
           )}
-          <h2
-            {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
-          >
-            {company?.name || 'Omnex-Core'}
-          </h2>
         </div>
 
         {/* Navigation */}

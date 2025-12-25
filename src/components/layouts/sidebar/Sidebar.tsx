@@ -7,7 +7,7 @@
 
 import { useState, useMemo, useEffect, useCallback, memo, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
-import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack, Image } from '@mantine/core';
+import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack, Image, UnstyledButton } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight, IconApps } from '@tabler/icons-react';
 import { useMenuItems, type MenuItem as MenuItemType } from '../hooks/useMenuItems';
 import { useModules } from '@/context/ModuleContext';
@@ -352,61 +352,67 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       className={`${styles.sidebar}${collapsed ? ` ${styles.collapsed}` : ''}`}
       style={sidebarStyle}
     >
-      {/* Logo Section */}
-      <div
-        {...(styles.logoSection ? { className: styles.logoSection } : {})}
-        style={mounted && !isDarkMode && backgroundColor ? {
-          backgroundColor,
-        } : undefined}
-      >
+      {/* Logo Section - Icon + Firma Ismi (iki satir) - Dashboard'a link */}
+      <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div
-          {...(styles.logoIcon ? { className: styles.logoIcon } : {})}
-          suppressHydrationWarning
-          style={mounted && autoColors ? {
-            backgroundColor: 'transparent',
-            color: autoColors.iconColor,
-            padding: 0,
-            overflow: 'hidden',
-          } : undefined}
+          {...(styles.logoSection ? { className: styles.logoSection } : {})}
+          style={mounted && !isDarkMode && backgroundColor ? {
+            backgroundColor,
+            cursor: 'pointer',
+          } : { cursor: 'pointer' }}
         >
-          {mounted && (
-            <Image
-              src={BRANDING_PATHS.pwaIcon}
-              alt={company?.name || 'Logo'}
-              fit="contain"
-              w={collapsed ? 32 : 36}
-              h={collapsed ? 32 : 36}
-              style={{ borderRadius: 'var(--mantine-radius-sm)' }}
-              fallbackSrc={BRANDING_PATHS.logo}
-              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                // Eğer pwaIcon yoksa logo'yu dene, o da yoksa boş bırak
-                const target = e.currentTarget;
-                if (target.src.includes('pwa-icon')) {
-                  target.src = BRANDING_PATHS.logo;
-                } else {
-                  target.style.display = 'none';
-                }
-              }}
-            />
+          <div
+            {...(styles.logoIcon ? { className: styles.logoIcon } : {})}
+            suppressHydrationWarning
+            style={mounted && autoColors ? {
+              backgroundColor: 'transparent',
+              color: autoColors.iconColor,
+              padding: 0,
+              overflow: 'hidden',
+            } : undefined}
+          >
+            {mounted && (
+              <Image
+                src={BRANDING_PATHS.pwaIcon}
+                alt={company?.name || 'Logo'}
+                fit="contain"
+                w={collapsed ? 32 : 36}
+                h={collapsed ? 32 : 36}
+                style={{ borderRadius: 'var(--mantine-radius-sm)' }}
+                fallbackSrc={BRANDING_PATHS.logo}
+                onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                  // Eğer pwaIcon yoksa logo'yu dene, o da yoksa boş bırak
+                  const target = e.currentTarget;
+                  if (target.src.includes('pwa-icon')) {
+                    target.src = BRANDING_PATHS.logo;
+                  } else {
+                    target.style.display = 'none';
+                  }
+                }}
+              />
+            )}
+          </div>
+          {!collapsed && company?.name && (
+            <div {...(styles.logoText ? { className: styles.logoText } : {})}>
+              {/* Firma ismi iki satır olarak göster - CSS class'larını kullan */}
+              {company.name.split(' ').length > 1 ? (
+                <>
+                  <span {...(styles.logoTitle ? { className: styles.logoTitle } : {})}>
+                    {company.name.split(' ').slice(0, Math.ceil(company.name.split(' ').length / 2)).join(' ')}
+                  </span>
+                  <span {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}>
+                    {company.name.split(' ').slice(Math.ceil(company.name.split(' ').length / 2)).join(' ')}
+                  </span>
+                </>
+              ) : (
+                <span {...(styles.logoTitle ? { className: styles.logoTitle } : {})}>
+                  {company.name}
+                </span>
+              )}
+            </div>
           )}
         </div>
-        {!collapsed && (
-          <div {...(styles.logoText ? { className: styles.logoText } : {})}>
-            {/* Sabit dosya yolundan logo göster */}
-            <Image
-              src={BRANDING_PATHS.logo}
-              alt={company?.name || 'Company Logo'}
-              fit="contain"
-              maw={140}
-              mah={40}
-              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                // Logo dosyası yoksa gizle, firma adı gösterilmeyecek
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </div>
-        )}
-      </div>
+      </Link>
 
       {/* Collapse Toggle */}
       <div {...(styles.collapseButton ? { className: styles.collapseButton } : {})}

@@ -6,12 +6,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useMantineColorScheme, Menu, Avatar, Text } from '@mantine/core';
+import { useMantineColorScheme, Menu, Avatar, Text, Image } from '@mantine/core';
 import { IconSun, IconMoon, IconSearch, IconChevronLeft, IconChevronRight, IconUser, IconLogout, IconLayoutNavbar, IconMaximize, IconMinimize } from '@tabler/icons-react';
+import { BRANDING_PATHS } from '@/lib/branding/config';
 import { LanguageSelector } from '@/components/language/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
 import { useCompany } from '@/context/CompanyContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useLayout } from '../core/LayoutProvider';
 import { ThemeConfigurator } from '../configurator/ThemeConfigurator';
 import { Sidebar } from './Sidebar';
@@ -32,6 +34,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   const { user, logout, refreshUser } = useAuth();
   const { company } = useCompany();
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = pathname?.split('/')[1] || 'tr';
   const [mounted, setMounted] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(config.sidebar?.collapsed || false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -65,13 +69,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     }
   }, [user?.id, mounted]);
 
-  // Get company name from CompanyContext
-  const companyName = company?.name || 'Omnex-Core';
-
-  // Truncate company name if too long (max 30 characters)
-  const displayCompanyName = companyName.length > 30
-    ? `${companyName.substring(0, 27)}...`
-    : companyName;
+  // Get company name from CompanyContext - no fallback
+  const companyName = company?.name || '';
 
   // Sidebar collapse değişikliğini config'e kaydet
   useEffect(() => {
@@ -177,9 +176,22 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 {mounted && <IconChevronLeft size={20} className={styles.expandSidebarIcon} />}
               </button>
             )}
-            <h2 className={styles.headerTitle} title={companyName}>
-              {displayCompanyName}
-            </h2>
+            {/* Geniş logo göster - Dashboard'a link */}
+            {mounted && (
+              <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none', marginLeft: '8px' }}>
+                <Image
+                  src={BRANDING_PATHS.logo}
+                  alt={companyName || 'Logo'}
+                  fit="contain"
+                  h={36}
+                  maw={180}
+                  style={{ cursor: 'pointer' }}
+                  onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </Link>
+            )}
           </div>
           <div className={styles.headerRight}>
             <label className={styles.searchInput}>

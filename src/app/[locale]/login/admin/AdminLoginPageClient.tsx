@@ -186,13 +186,13 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
         <div className={classes.leftContent}>
           <div className={classes.headerSection}>
             <NextImage
-              src="/images/logo.png"
-              alt="Omnex Logo"
+              src="/branding/logo.png"
+              alt="Logo"
               width={40}
               height={40}
               className={classes.logoImage}
             />
-            <h1 className={classes.platformTitle}>Omnex Core Sass Platform</h1>
+            <h1 className={classes.platformTitle}>SaaS Platform</h1>
           </div>
           
           <div className={classes.modulesSection}>
