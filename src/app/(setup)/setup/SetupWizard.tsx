@@ -892,14 +892,28 @@ export function SetupWizard() {
 
   // Show access denied if not allowed
   if (accessAllowed === false) {
+    const requiresAuth = accessError?.includes('giriş') || accessError?.includes('SuperAdmin');
+
     return (
       <Paper p="xl" shadow="sm" radius="md">
         <Alert icon={<IconAlertCircle size={18} className="tabler-icon tabler-icon-alert-circle" />} title={t('setup.messages.accessDenied')} color="red">
           <Text mb="md">{accessError || t('setup.messages.noAccessPermission')}</Text>
-          <Text c="dimmed">
-            Production ortamında setup sayfası varsayılan olarak devre dışıdır.
-            Erişim için <Code>ALLOW_SETUP_PAGE=true</Code> environment variable'ını ayarlayın.
-          </Text>
+          {requiresAuth ? (
+            <Group mt="md">
+              <Button
+                component="a"
+                href="/tr/auth/login?redirect=/tr/setup"
+                variant="filled"
+                color="blue"
+              >
+                SuperAdmin Olarak Giriş Yap
+              </Button>
+            </Group>
+          ) : (
+            <Text c="dimmed">
+              Production ortamında setup sayfasına sadece SuperAdmin erişebilir.
+            </Text>
+          )}
         </Alert>
       </Paper>
     );
