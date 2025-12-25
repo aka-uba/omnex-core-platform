@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Container,
@@ -12,35 +12,34 @@ import {
   Avatar,
   Grid,
   Divider,
-  Button,
   Tabs,
-  Card,
   ActionIcon,
-  Tooltip,
-  Skeleton,
-  Alert,
+  Progress,
   Box,
+  Title,
+  Button,
 } from '@mantine/core';
 import {
   IconUsers,
   IconEdit,
   IconArrowLeft,
   IconUser,
-  IconMail,
-  IconPhone,
   IconBriefcase,
-  IconMapPin,
-  IconCalendar,
-  IconFileText,
-  IconDownload,
-  IconEye,
+  IconPhone,
   IconSettings,
+  IconFolder,
+  IconFileText,
+  IconEye,
+  IconDownload,
+  IconUserCircle,
+  IconChartBar,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { FilePreviewModal } from '@/modules/file-manager/components/FilePreviewModal';
 import { FileItem } from '@/modules/file-manager/types/file';
 import { useTranslation } from '@/lib/i18n/client';
 import { useUser } from '@/hooks/useUsers';
+import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 
 interface UserDetailPageClientProps {
@@ -57,6 +56,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
   // File preview modal state
   const [previewFile, setPreviewFile] = useState<FileItem | null>(null);
   const [previewModalOpened, setPreviewModalOpened] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState(false);
 
   // Convert document URL to FileItem for preview modal
   const openDocumentPreview = (title: string, url: string) => {
@@ -85,7 +85,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
     const fileItem: FileItem = {
       id: url,
       name: filename,
-      path: url, // The URL will be used as the path for preview
+      path: url,
       extension: extension,
       mimeType: mimeTypeMap[extension] || 'application/octet-stream',
       size: 0,
@@ -102,7 +102,6 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
   // Handle document download
   const handleDocumentDownload = (file: FileItem) => {
     const link = document.createElement('a');
-    // Use storage API for /storage/ paths
     link.href = file.path.startsWith('/storage/') ? `/api${file.path}` : file.path;
     link.download = file.name;
     document.body.appendChild(link);
@@ -110,392 +109,444 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
     document.body.removeChild(link);
   };
 
+  // Download all documents as ZIP
+  const handleDownloadAllDocs = useCallback(async () => {
+    if (!user) return;
+    const docs = [user.passportUrl, user.idCardUrl, user.contractUrl, user.cvUrl].filter(Boolean);
+    if (docs.length === 0) return;
+
+    setDownloadingDocs(true);
+    try {
+      // Extract file IDs from URLs
+      const fileIds = docs.map(url => {
+        if (url.includes('/api/core-files/')) {
+          return url.split('/api/core-files/')[1]?.split('/')[0];
+        }
+        return null;
+      }).filter(Boolean);
+
+      if (fileIds.length > 0) {
+        const response = await fetch('/api/core-files/download-zip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileIds, filename: `${user.name}-documents.zip` }),
+        });
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${user.name}-documents.zip`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }
+      }
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+    } finally {
+      setDownloadingDocs(false);
+    }
+  }, [user]);
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge color="green" size="lg">{t('status.active')}</Badge>;
+        return <Badge color="green">{t('status.active')}</Badge>;
       case 'inactive':
-        return <Badge color="gray" size="lg">{t('status.inactive')}</Badge>;
+        return <Badge color="gray">{t('status.inactive')}</Badge>;
       case 'pending':
-        return <Badge color="yellow" size="lg">{t('status.pending')}</Badge>;
+        return <Badge color="yellow">{t('status.pending')}</Badge>;
       default:
-        return <Badge size="lg">{status}</Badge>;
+        return <Badge>{status}</Badge>;
     }
   };
 
-  const renderDocumentCard = (title: string, url: string | null, icon: React.ReactNode) => {
-    if (!url) return null;
+  const getRoleBadge = (role: string) => {
+    const roleColors: Record<string, string> = {
+      SuperAdmin: 'red',
+      Admin: 'violet',
+      Manager: 'blue',
+      User: 'green',
+      Viewer: 'gray',
+    };
     return (
-      <Card withBorder p="sm">
-        <Group justify="space-between">
-          <Group gap="sm">
-            {icon}
-            <Text size="sm" fw={500}>{title}</Text>
-          </Group>
-          <Group gap="xs">
-            <Tooltip label={t('actions.view')}>
-              <ActionIcon
-                variant="light"
-                color="blue"
-                onClick={() => openDocumentPreview(title, url)}
-              >
-                <IconEye size={16} />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label={t('actions.download')}>
-              <ActionIcon
-                variant="light"
-                color="green"
-                component="a"
-                href={url.startsWith('/storage/') ? `/api${url}` : url}
-                download
-              >
-                <IconDownload size={16} />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-        </Group>
-      </Card>
+      <Badge color={roleColors[role] || 'gray'}>
+        {role}
+      </Badge>
     );
   };
 
+  // Get documents list
+  const getDocuments = () => {
+    if (!user) return [];
+    const docs = [];
+    if (user.passportUrl) docs.push({ name: t('form.documents.passport'), url: user.passportUrl, type: 'passport' });
+    if (user.idCardUrl) docs.push({ name: t('form.documents.idCard'), url: user.idCardUrl, type: 'id' });
+    if (user.contractUrl) docs.push({ name: t('form.documents.contract'), url: user.contractUrl, type: 'contract' });
+    if (user.cvUrl) docs.push({ name: t('form.documents.cv'), url: user.cvUrl, type: 'cv' });
+    return docs;
+  };
+
   if (isLoading) {
-    return (
-      <Container size="xl" pt="xl">
-        <CentralPageHeader
-          title={t('detail.title')}
-          description={t('detail.description')}
-          namespace="modules/users"
-          icon={<IconUsers size={32} />}
-          breadcrumbs={[
-            { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-            { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
-            { label: 'detail.title', namespace: 'modules/users' },
-          ]}
-        />
-        <Paper shadow="xs" p="xl" mt="lg">
-          <Stack gap="lg">
-            <Group gap="lg">
-              <Skeleton height={100} circle />
-              <Stack gap="xs">
-                <Skeleton height={24} width={200} />
-                <Skeleton height={16} width={150} />
-                <Skeleton height={24} width={80} />
-              </Stack>
-            </Group>
-            <Skeleton height={200} />
-          </Stack>
-        </Paper>
-      </Container>
-    );
+    return <DetailPageSkeleton />;
   }
 
   if (error || !user) {
     return (
       <Container size="xl" pt="xl">
-        <CentralPageHeader
-          title={t('detail.title')}
-          description={t('detail.description')}
-          namespace="modules/users"
-          icon={<IconUsers size={32} />}
-          breadcrumbs={[
-            { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-            { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
-            { label: 'detail.title', namespace: 'modules/users' },
-          ]}
-        />
-        <Alert color="red" title={tGlobal('common.errorLoading')} mt="lg">
-          {error instanceof Error ? error.message : t('detail.userNotFound')}
-        </Alert>
+        <Text c="red">{tGlobal('common.errorLoading')}</Text>
       </Container>
     );
   }
 
+  const documents = getDocuments();
+
   return (
     <Container size="xl" pt="xl">
       <CentralPageHeader
-        title={user.name || t('detail.title')}
+        title={t('detail.title')}
         description={t('detail.description')}
         namespace="modules/users"
         icon={<IconUsers size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
           { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
-          { label: user.name || t('detail.title'), namespace: 'modules/users' },
+          { label: 'detail.title', namespace: 'modules/users' },
         ]}
         actions={[
           {
             label: tGlobal('actions.back'),
-            icon: <IconArrowLeft size={18} />,
+            icon: <IconArrowLeft size={16} />,
             onClick: () => router.push(`/${locale}/management/users`),
-            variant: 'light',
+            variant: 'subtle',
           },
           {
             label: t('actions.edit'),
-            icon: <IconEdit size={18} />,
+            icon: <IconEdit size={16} />,
             onClick: () => router.push(`/${locale}/management/users/${userId}/edit`),
-            variant: 'filled',
           },
         ]}
       />
 
-      <Paper shadow="xs" p="xl" mt="lg">
-        {/* User Header */}
-        <Group gap="xl" align="flex-start" mb="xl">
-          <Avatar
-            src={user.profilePicture}
-            size={120}
-            radius="xl"
-            color="blue"
-          >
-            {user.name?.charAt(0)?.toUpperCase() || 'U'}
-          </Avatar>
-          <Stack gap="xs" style={{ flex: 1 }}>
-            <Group justify="space-between">
-              <Stack gap={4}>
-                <Text size="xl" fw={700}>{user.name}</Text>
-                <Text size="md" c="dimmed">{user.email}</Text>
-              </Stack>
-              {getStatusBadge(user.status)}
-            </Group>
-            <Group gap="lg" mt="xs">
-              <Badge variant="outline" size="lg">{user.role}</Badge>
-              {user.department && (
-                <Text size="sm" c="dimmed">
-                  <IconBriefcase size={14} style={{ marginRight: 4, verticalAlign: 'middle' }} />
-                  {user.department}
-                </Text>
-              )}
-              {user.position && (
-                <Text size="sm" c="dimmed">{user.position}</Text>
-              )}
+      <Stack gap="md">
+        {/* User Info */}
+        <Paper p="md" withBorder>
+          <Stack gap="md">
+            <Group align="flex-start" gap="xl">
+              {/* Profile Image */}
+              <Box>
+                <Avatar
+                  src={user.profilePicture || undefined}
+                  size={200}
+                  radius="md"
+                  style={{
+                    border: '4px solid var(--mantine-color-gray-3)',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <IconUser size={100} />
+                </Avatar>
+              </Box>
+
+              {/* User Details */}
+              <div style={{ flex: 1 }}>
+                <Group justify="space-between" align="flex-start" mb="md">
+                  <div>
+                    <Title order={3}>{user.name}</Title>
+                    <Text size="sm" c="dimmed" mt={4}>
+                      {t('quickView.createdAt')}: {dayjs(user.createdAt).format('DD.MM.YYYY HH:mm')}
+                    </Text>
+                  </div>
+                  <Group>
+                    {getRoleBadge(user.role)}
+                    {getStatusBadge(user.status)}
+                  </Group>
+                </Group>
+
+                <Divider />
+
+                <Grid mt="md">
+                  <Grid.Col span={6}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.personal.email')}
+                    </Text>
+                    <Text fw={500}>{user.email || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.personal.phone')}
+                    </Text>
+                    <Text fw={500}>{user.phone || '-'}</Text>
+                  </Grid.Col>
+                  {user.department && (
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.work.department')}
+                      </Text>
+                      <Text fw={500}>{user.department}</Text>
+                    </Grid.Col>
+                  )}
+                  {user.position && (
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.work.position')}
+                      </Text>
+                      <Text fw={500}>{user.position}</Text>
+                    </Grid.Col>
+                  )}
+                  {user.employeeId && (
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.work.employeeId')}
+                      </Text>
+                      <Text fw={500}>{user.employeeId}</Text>
+                    </Grid.Col>
+                  )}
+                  {user.hireDate && (
+                    <Grid.Col span={6}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.work.hireDate')}
+                      </Text>
+                      <Text fw={500}>{dayjs(user.hireDate).format('DD.MM.YYYY')}</Text>
+                    </Grid.Col>
+                  )}
+                </Grid>
+              </div>
             </Group>
           </Stack>
-        </Group>
+        </Paper>
 
-        <Divider my="lg" />
-
-        {/* Tabs for different sections */}
-        <Tabs defaultValue="info">
+        {/* Tabs for Details */}
+        <Tabs defaultValue="personal" mt="md">
           <Tabs.List>
-            <Tabs.Tab value="info" leftSection={<IconUser size={16} />}>
-              {t('detail.tabs.info')}
+            <Tabs.Tab value="personal" leftSection={<IconUserCircle size={16} />}>
+              {t('tabs.personal')}
             </Tabs.Tab>
-            <Tabs.Tab value="contact" leftSection={<IconMapPin size={16} />}>
-              {t('detail.tabs.contact')}
+            <Tabs.Tab value="work" leftSection={<IconBriefcase size={16} />}>
+              {t('tabs.work')}
             </Tabs.Tab>
-            <Tabs.Tab value="documents" leftSection={<IconFileText size={16} />}>
-              {t('detail.tabs.documents')}
+            <Tabs.Tab value="contact" leftSection={<IconPhone size={16} />}>
+              {t('tabs.contact')}
+            </Tabs.Tab>
+            <Tabs.Tab value="documents" leftSection={<IconFolder size={16} />}>
+              {t('detail.tabs.documents')} ({documents.length})
             </Tabs.Tab>
             <Tabs.Tab value="preferences" leftSection={<IconSettings size={16} />}>
-              {t('detail.tabs.preferences')}
+              {t('tabs.preferences')}
             </Tabs.Tab>
           </Tabs.List>
 
-          {/* Info Tab */}
-          <Tabs.Panel value="info" pt="lg">
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Card withBorder p="md">
-                  <Text size="sm" fw={600} c="dimmed" mb="sm">{t('form.personal.title')}</Text>
-                  <Stack gap="xs">
-                    <Group justify="space-between">
-                      <Group gap="xs">
-                        <IconUser size={16} color="gray" />
-                        <Text size="sm" c="dimmed">{t('form.personal.fullName')}</Text>
-                      </Group>
-                      <Text size="sm" fw={500}>{user.name || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Group gap="xs">
-                        <IconMail size={16} color="gray" />
-                        <Text size="sm" c="dimmed">{t('form.personal.email')}</Text>
-                      </Group>
-                      <Text size="sm" fw={500}>{user.email || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Group gap="xs">
-                        <IconPhone size={16} color="gray" />
-                        <Text size="sm" c="dimmed">{t('form.personal.phone')}</Text>
-                      </Group>
-                      <Text size="sm" fw={500}>{user.phone || '-'}</Text>
-                    </Group>
-                  </Stack>
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Card withBorder p="md">
-                  <Text size="sm" fw={600} c="dimmed" mb="sm">{t('form.work.title')}</Text>
-                  <Stack gap="xs">
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.work.role')}</Text>
-                      <Text size="sm" fw={500}>{user.role || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.work.department')}</Text>
-                      <Text size="sm" fw={500}>{user.department || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.work.position')}</Text>
-                      <Text size="sm" fw={500}>{user.position || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.work.employeeId')}</Text>
-                      <Text size="sm" fw={500}>{user.employeeId || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Group gap="xs">
-                        <IconCalendar size={16} color="gray" />
-                        <Text size="sm" c="dimmed">{t('form.work.hireDate')}</Text>
-                      </Group>
-                      <Text size="sm" fw={500}>
-                        {user.hireDate ? dayjs(user.hireDate).format('DD.MM.YYYY') : '-'}
-                      </Text>
-                    </Group>
-                  </Stack>
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Card withBorder p="md">
-                  <Text size="sm" fw={600} c="dimmed" mb="sm">{t('detail.systemInfo')}</Text>
-                  <Grid>
-                    <Grid.Col span={{ base: 12, md: 4 }}>
-                      <Group justify="space-between">
-                        <Text size="sm" c="dimmed">{t('quickView.createdAt')}</Text>
-                        <Text size="sm" fw={500}>
-                          {user.createdAt ? dayjs(user.createdAt).format('DD.MM.YYYY HH:mm') : '-'}
-                        </Text>
-                      </Group>
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 4 }}>
-                      <Group justify="space-between">
-                        <Text size="sm" c="dimmed">{t('detail.updatedAt')}</Text>
-                        <Text size="sm" fw={500}>
-                          {user.updatedAt ? dayjs(user.updatedAt).format('DD.MM.YYYY HH:mm') : '-'}
-                        </Text>
-                      </Group>
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 4 }}>
-                      <Group justify="space-between">
-                        <Text size="sm" c="dimmed">{t('table.lastActive')}</Text>
-                        <Text size="sm" fw={500}>
-                          {user.lastActive ? dayjs(user.lastActive).format('DD.MM.YYYY HH:mm') : '-'}
-                        </Text>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                </Card>
-              </Grid.Col>
-            </Grid>
+          {/* Personal Info Tab */}
+          <Tabs.Panel value="personal" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconUserCircle size={20} />
+                  <Text size="lg" fw={600}>{t('tabs.personal')}</Text>
+                </Group>
+                <Divider />
+                <Grid gutter="md">
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.personal.fullName')}</Text>
+                    <Text fw={500}>{user.name || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.personal.email')}</Text>
+                    <Text fw={500}>{user.email || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.personal.phone')}</Text>
+                    <Text fw={500}>{user.phone || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('table.role')}</Text>
+                    {getRoleBadge(user.role)}
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('table.status')}</Text>
+                    {getStatusBadge(user.status)}
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('table.lastActive')}</Text>
+                    <Text fw={500}>{user.lastActive ? dayjs(user.lastActive).format('DD.MM.YYYY HH:mm') : '-'}</Text>
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Paper>
           </Tabs.Panel>
 
-          {/* Contact Tab */}
-          <Tabs.Panel value="contact" pt="lg">
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Card withBorder p="md">
-                  <Text size="sm" fw={600} c="dimmed" mb="sm">{t('form.contact.title')}</Text>
-                  <Stack gap="xs">
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.address')}</Text>
-                      <Text size="sm" fw={500}>{user.address || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.city')}</Text>
-                      <Text size="sm" fw={500}>{user.city || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.country')}</Text>
-                      <Text size="sm" fw={500}>{user.country || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.postalCode')}</Text>
-                      <Text size="sm" fw={500}>{user.postalCode || '-'}</Text>
-                    </Group>
-                  </Stack>
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Card withBorder p="md">
-                  <Text size="sm" fw={600} c="dimmed" mb="sm">{t('form.contact.emergency')}</Text>
-                  <Stack gap="xs">
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.emergencyContact')}</Text>
-                      <Text size="sm" fw={500}>{user.emergencyContact || '-'}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">{t('form.contact.emergencyPhone')}</Text>
-                      <Text size="sm" fw={500}>{user.emergencyPhone || '-'}</Text>
-                    </Group>
-                  </Stack>
-                </Card>
-              </Grid.Col>
-            </Grid>
+          {/* Work Info Tab */}
+          <Tabs.Panel value="work" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconBriefcase size={20} />
+                  <Text size="lg" fw={600}>{t('tabs.work')}</Text>
+                </Group>
+                <Divider />
+                <Grid gutter="md">
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.work.department')}</Text>
+                    <Text fw={500}>{user.department ? t(`departments.${user.department.toLowerCase()}`) : '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.work.position')}</Text>
+                    <Text fw={500}>{user.position || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.work.employeeId')}</Text>
+                    <Text fw={500}>{user.employeeId || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.work.hireDate')}</Text>
+                    <Text fw={500}>{user.hireDate ? dayjs(user.hireDate).format('DD.MM.YYYY') : '-'}</Text>
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Paper>
+          </Tabs.Panel>
+
+          {/* Contact Info Tab */}
+          <Tabs.Panel value="contact" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconPhone size={20} />
+                  <Text size="lg" fw={600}>{t('tabs.contact')}</Text>
+                </Group>
+                <Divider />
+                <Grid gutter="md">
+                  <Grid.Col span={{ base: 12, lg: 8 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.address')}</Text>
+                    <Text fw={500}>{user.address || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.postalCode')}</Text>
+                    <Text fw={500}>{user.postalCode || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.city')}</Text>
+                    <Text fw={500}>{user.city || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.country')}</Text>
+                    <Text fw={500}>{user.country || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12 }}>
+                    <Divider my="sm" label={t('form.contact.emergencySection')} labelPosition="left" />
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.emergencyContact')}</Text>
+                    <Text fw={500}>{user.emergencyContact || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <Text size="sm" c="dimmed">{t('form.contact.emergencyPhone')}</Text>
+                    <Text fw={500}>{user.emergencyPhone || '-'}</Text>
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Paper>
           </Tabs.Panel>
 
           {/* Documents Tab */}
-          <Tabs.Panel value="documents" pt="lg">
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                {renderDocumentCard(
-                  t('form.documents.passport'),
-                  user.passportUrl,
-                  <IconFileText size={20} color="gray" />
-                )}
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                {renderDocumentCard(
-                  t('form.documents.idCard'),
-                  user.idCardUrl,
-                  <IconFileText size={20} color="gray" />
-                )}
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                {renderDocumentCard(
-                  t('form.documents.contract'),
-                  user.contractUrl,
-                  <IconFileText size={20} color="gray" />
-                )}
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                {renderDocumentCard(
-                  t('form.documents.cv'),
-                  user.cvUrl,
-                  <IconFileText size={20} color="gray" />
-                )}
-              </Grid.Col>
-              {!user.passportUrl && !user.idCardUrl && !user.contractUrl && !user.cvUrl && (
-                <Grid.Col span={12}>
+          <Tabs.Panel value="documents" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Group justify="space-between">
+                  <Group gap="xs">
+                    <IconFolder size={20} />
+                    <Text size="lg" fw={600}>{t('detail.tabs.documents')}</Text>
+                  </Group>
+                  {documents.length > 0 && (
+                    <Button
+                      variant="light"
+                      leftSection={<IconDownload size={16} />}
+                      onClick={handleDownloadAllDocs}
+                      loading={downloadingDocs}
+                      size="sm"
+                    >
+                      {tGlobal('actions.downloadAll') || 'Tümünü İndir (ZIP)'}
+                    </Button>
+                  )}
+                </Group>
+                <Divider />
+                {documents.length > 0 ? (
+                  <Grid>
+                    {documents.map((doc, index) => (
+                      <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={index}>
+                        <Paper p="md" withBorder>
+                          <Group justify="space-between">
+                            <Group gap="sm">
+                              <IconFileText size={24} color="gray" />
+                              <div>
+                                <Text size="sm" fw={500}>{doc.name}</Text>
+                                <Text size="xs" c="dimmed">{doc.type}</Text>
+                              </div>
+                            </Group>
+                            <Group gap="xs">
+                              <ActionIcon
+                                variant="light"
+                                color="blue"
+                                onClick={() => openDocumentPreview(doc.name, doc.url)}
+                                title={tGlobal('actions.view')}
+                              >
+                                <IconEye size={16} />
+                              </ActionIcon>
+                              <ActionIcon
+                                variant="light"
+                                color="green"
+                                component="a"
+                                href={doc.url.startsWith('/storage/') ? `/api${doc.url}` : doc.url}
+                                download
+                                title={tGlobal('actions.download')}
+                              >
+                                <IconDownload size={16} />
+                              </ActionIcon>
+                            </Group>
+                          </Group>
+                        </Paper>
+                      </Grid.Col>
+                    ))}
+                  </Grid>
+                ) : (
                   <Text c="dimmed" ta="center" py="xl">
                     {t('detail.noDocuments')}
                   </Text>
-                </Grid.Col>
-              )}
-            </Grid>
+                )}
+              </Stack>
+            </Paper>
           </Tabs.Panel>
 
           {/* Preferences Tab */}
-          <Tabs.Panel value="preferences" pt="lg">
-            <Card withBorder p="md">
-              <Text size="sm" fw={600} c="dimmed" mb="sm">{t('form.preferences.title')}</Text>
-              <Stack gap="xs">
-                <Group justify="space-between">
-                  <Text size="sm" c="dimmed">{t('form.preferences.language')}</Text>
-                  <Text size="sm" fw={500}>{user.defaultLanguage || 'tr'}</Text>
+          <Tabs.Panel value="preferences" pt="md">
+            <Paper shadow="xs" p="md">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <IconSettings size={20} />
+                  <Text size="lg" fw={600}>{t('tabs.preferences')}</Text>
                 </Group>
-                <Group justify="space-between">
-                  <Text size="sm" c="dimmed">{t('form.preferences.theme')}</Text>
-                  <Text size="sm" fw={500}>{user.defaultTheme || 'auto'}</Text>
-                </Group>
-                <Group justify="space-between">
-                  <Text size="sm" c="dimmed">{t('form.preferences.layout')}</Text>
-                  <Text size="sm" fw={500}>{user.defaultLayout || 'sidebar'}</Text>
-                </Group>
+                <Divider />
+                <Grid gutter="md">
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.preferences.defaultLanguage')}</Text>
+                    <Text fw={500}>{user.defaultLanguage === 'tr' ? 'Türkçe' : user.defaultLanguage === 'en' ? 'English' : user.defaultLanguage || '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.preferences.defaultTheme')}</Text>
+                    <Text fw={500}>{user.defaultTheme === 'auto' ? t('form.preferences.themeAuto') : user.defaultTheme === 'light' ? t('form.preferences.themeLight') : user.defaultTheme === 'dark' ? t('form.preferences.themeDark') : '-'}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6, lg: 4 }}>
+                    <Text size="sm" c="dimmed">{t('form.preferences.defaultLayout')}</Text>
+                    <Text fw={500}>{user.defaultLayout === 'sidebar' ? t('form.preferences.layoutSidebar') : user.defaultLayout === 'top' ? t('form.preferences.layoutTopHeader') : '-'}</Text>
+                  </Grid.Col>
+                </Grid>
               </Stack>
-            </Card>
+            </Paper>
           </Tabs.Panel>
         </Tabs>
-      </Paper>
+      </Stack>
 
       {/* File Preview Modal */}
       <FilePreviewModal

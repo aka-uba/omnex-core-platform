@@ -238,11 +238,30 @@ export class CoreFileService {
   }
 
   /**
+   * Türkçe karakterleri ASCII eşdeğerlerine çevir
+   */
+  private convertTurkishChars(str: string): string {
+    const turkishChars: Record<string, string> = {
+      'ç': 'c', 'Ç': 'C',
+      'ğ': 'g', 'Ğ': 'G',
+      'ı': 'i', 'İ': 'I',
+      'ö': 'o', 'Ö': 'O',
+      'ş': 's', 'Ş': 'S',
+      'ü': 'u', 'Ü': 'U',
+      'ä': 'a', 'Ä': 'A',
+      'ß': 'ss',
+    };
+    return str.replace(/[çÇğĞıİöÖşŞüÜäÄß]/g, (char) => turkishChars[char] || char);
+  }
+
+  /**
    * Dosya adını güvenli hale getir
    */
   private sanitizeFilename(filename: string): string {
+    // Önce Türkçe karakterleri çevir
+    const converted = this.convertTurkishChars(filename);
     // Tehlikeli karakterleri temizle
-    return filename
+    return converted
       .replace(/[^a-zA-Z0-9._-]/g, '_')
       .replace(/_{2,}/g, '_')
       .slice(0, 100); // Maksimum uzunluk

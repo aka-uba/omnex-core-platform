@@ -185,7 +185,7 @@ export function PermissionsPageClient({ locale }: { locale: string }) {
         icon={<IconShieldLock size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-          { label: 'title', href: `/${locale}/users`, namespace: 'modules/users' },
+          { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
           { label: 'title', namespace: 'modules/permissions' },
         ]}
         actions={[

@@ -9,6 +9,7 @@ import {
   Text,
   Alert,
   Tooltip,
+  Avatar,
 } from '@mantine/core';
 import {
   IconEdit,
@@ -111,6 +112,7 @@ export function RealEstateStaffList({ locale }: RealEstateStaffListProps) {
       staffMember: staffMember,
       name: staffMember.name,
       email: staffMember.email,
+      profileImage: staffMember.profileImage,
       staffType: staffMember.staffType,
       role: staffMember.role,
       assignedUnits: staffMember.assignedUnits,
@@ -121,8 +123,15 @@ export function RealEstateStaffList({ locale }: RealEstateStaffListProps) {
 
   // Memoized render functions
   const renderName = useCallback((value: string, row: any) => (
-    <Group gap="xs">
-      <IconUsers size={16} />
+    <Group gap="sm">
+      <Avatar
+        src={row.profileImage || undefined}
+        size={40}
+        radius="xl"
+        color="blue"
+      >
+        {value?.charAt(0)?.toUpperCase() || 'P'}
+      </Avatar>
       <div>
         <Text size="sm" fw={500}>
           {value}

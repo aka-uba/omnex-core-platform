@@ -124,7 +124,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
 
   // State
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(25);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [sourceFilter, setSourceFilter] = useState<string | null>(null);
@@ -512,9 +512,32 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                 )}
               </Table.Tbody>
             </Table>
-            {totalPages > 1 && (
-              <Group justify="center" p="md">
-                <Pagination total={totalPages} value={page} onChange={setPage} />
+            {totalPages > 0 && (
+              <Group justify="space-between" p="md">
+                <Group gap="xs">
+                  <Text size="sm" c="dimmed">Sayfa başına:</Text>
+                  <Select
+                    value={String(pageSize)}
+                    onChange={(v) => {
+                      setPageSize(Number(v) || 25);
+                      setPage(1);
+                    }}
+                    data={[
+                      { value: '10', label: '10' },
+                      { value: '25', label: '25' },
+                      { value: '50', label: '50' },
+                      { value: '100', label: '100' },
+                    ]}
+                    w={80}
+                    size="xs"
+                  />
+                  <Text size="sm" c="dimmed">
+                    ({data?.total || 0} toplam kayıt)
+                  </Text>
+                </Group>
+                {totalPages > 1 && (
+                  <Pagination total={totalPages} value={page} onChange={setPage} />
+                )}
               </Group>
             )}
           </>

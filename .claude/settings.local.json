@@ -96,7 +96,10 @@
       "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"pm2 list && pm2 restart all\")",
       "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -sI http://localhost:3000/tr/auth/login | head -5\")",
       "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -s -X POST http://localhost:3000/api/auth/login -H ''Content-Type: application/json'' -d ''{\"\"email\"\":\"\"test@test.com\"\",\"\"password\"\":\"\"test\"\"}'' | head -200\")",
-      "Bash(ssh:*)"
+      "Bash(ssh:*)",
+      "Bash(for i in 1 2 3 4 5)",
+      "Bash(do echo \"Deneme $i...\")",
+      "Bash(break)"
     ],
     "deny": [],
     "ask": []

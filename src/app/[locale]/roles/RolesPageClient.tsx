@@ -164,7 +164,7 @@ export function RolesPageClient({ locale }: { locale: string }) {
         icon={<IconUsersGroup size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-          { label: 'title', href: `/${locale}/users`, namespace: 'modules/users' },
+          { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
           { label: 'title', namespace: 'modules/roles' },
         ]}
         actions={[

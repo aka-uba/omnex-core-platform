@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress, ActionIcon } from '@mantine/core';
 import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder, IconDownload } from '@tabler/icons-react';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
@@ -27,6 +27,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
   // File preview modal state
   const [previewFile, setPreviewFile] = useState<FileItem | null>(null);
   const [previewModalOpened, setPreviewModalOpened] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState(false);
 
   // Get linked user data for internal staff
   const linkedUser = staff?.linkedUser;
@@ -81,6 +82,48 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
     link.click();
     document.body.removeChild(link);
   };
+
+  // Download all documents as ZIP
+  const handleDownloadAllDocs = useCallback(async () => {
+    if (!staff?.documents || staff.documents.length === 0) return;
+    setDownloadingDocs(true);
+    try {
+      // Extract file IDs from document URLs
+      const fileIds = staff.documents.map((doc: { url: string }) => {
+        if (doc.url.includes('/api/core-files/')) {
+          return doc.url.split('/api/core-files/')[1]?.split('/')[0];
+        }
+        if (doc.url.startsWith('/storage/')) {
+          const parts = doc.url.split('/');
+          return parts[parts.length - 1]?.split('.')[0];
+        }
+        return null;
+      }).filter(Boolean);
+
+      if (fileIds.length > 0) {
+        const response = await fetch('/api/core-files/download-zip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileIds, filename: `${staff.name}-documents.zip` }),
+        });
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${staff.name}-documents.zip`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }
+      }
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+    } finally {
+      setDownloadingDocs(false);
+    }
+  }, [staff?.documents, staff?.name]);
 
   const getStaffTypeBadge = (staffType: string) => {
     return (
@@ -505,9 +548,22 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
           <Tabs.Panel value="documents" pt="md">
             <Paper shadow="xs" p="md">
               <Stack gap="md">
-                <Group gap="xs">
-                  <IconFolder size={20} />
-                  <Text size="lg" fw={600}>{t('staff.tabs.documents')}</Text>
+                <Group justify="space-between">
+                  <Group gap="xs">
+                    <IconFolder size={20} />
+                    <Text size="lg" fw={600}>{t('staff.tabs.documents')}</Text>
+                  </Group>
+                  {staff.documents && staff.documents.length > 0 && (
+                    <Button
+                      variant="light"
+                      leftSection={<IconDownload size={16} />}
+                      onClick={handleDownloadAllDocs}
+                      loading={downloadingDocs}
+                      size="sm"
+                    >
+                      {t('actions.downloadAll') || 'Tümünü İndir (ZIP)'}
+                    </Button>
+                  )}
                 </Group>
                 <Divider />
                 {staff.documents && staff.documents.length > 0 ? (

@@ -220,7 +220,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
             <Stack gap="md">
               <Group align="flex-start" gap="xl">
                 {/* Cover Image */}
-                <Box>
+                <Box style={{ maxWidth: 300, maxHeight: 400 }}>
                   <Image
                     src={
                       property.coverImage
@@ -230,13 +230,13 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                         : undefined
                     }
                     alt={property.name}
-                    width={300}
-                    height={200}
                     radius="md"
                     fit="cover"
                     style={{
                       border: '4px solid var(--mantine-color-gray-3)',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      maxWidth: 300,
+                      maxHeight: 400,
                     }}
                     fallbackSrc="https://placehold.co/300x200?text=Property"
                   />
@@ -575,18 +575,17 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
             <Paper shadow="xs" p="md">
               <Stack gap="md">
                 {property.apartments.map((apartment) => (
-                  <Paper 
-                    key={apartment.id} 
-                    p="md" 
+                  <Paper
+                    key={apartment.id}
+                    p="md"
                     withBorder
                   >
-                    <Group align="flex-start" gap="md">
-                      {/* Apartment Cover Image - Sol tarafta */}
+                    <Group align="stretch" gap="md" wrap="nowrap">
+                      {/* Apartment Cover Image - Sol tarafta, sağ içerikle aynı yükseklikte */}
                       <Box
                         style={{
                           width: 200,
                           minWidth: 200,
-                          height: 200,
                           flexShrink: 0,
                           borderRadius: 'var(--mantine-radius-md)',
                           overflow: 'hidden',
