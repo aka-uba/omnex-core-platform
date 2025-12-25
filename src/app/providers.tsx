@@ -11,7 +11,16 @@ import { CompanyProvider } from '@/context/CompanyContext';
 import { ExportProvider } from '@/lib/export/ExportProvider';
 import { DatesProviderWrapper } from '@/components/providers/DatesProvider';
 import { DynamicHeadMeta } from '@/components/DynamicHeadMeta';
+import { useCompany } from '@/context/CompanyContext';
 import { useEffect, useState } from 'react';
+
+/**
+ * DynamicHeadMetaWithCompany - CompanyContext'ten firma adını alıp DynamicHeadMeta'ya geçirir
+ */
+function DynamicHeadMetaWithCompany() {
+    const { company } = useCompany();
+    return <DynamicHeadMeta companyName={company?.name || ''} />;
+}
 
 // Default tenant for development (when no tenant context is available)
 const DEFAULT_TENANT_SLUG = 'omnexcore';
@@ -137,7 +146,6 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
     return (
         <QueryClientProvider client={queryClient}>
             <TenantCookieSetter />
-            <DynamicHeadMeta />
             <CustomThemeProvider>
                 <DirectionSync {...(dir ? { dir } : {})}>
                     <DirectionWrapper>
@@ -148,6 +156,7 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
                                         <Notifications position="top-center" />
                                         <ExportProvider>
                                             <CompanyProvider>
+                                                <DynamicHeadMetaWithCompany />
                                                 <ModuleProvider>
                                                     {children}
                                                 </ModuleProvider>

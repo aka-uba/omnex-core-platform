@@ -2,7 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import { BRANDING_PATHS } from '@/lib/branding/config';
-import { useCompany } from '@/context/CompanyContext';
+
+interface DynamicHeadMetaProps {
+  companyName?: string;
+}
 
 /**
  * Dynamic Head Meta Component
@@ -10,9 +13,10 @@ import { useCompany } from '@/context/CompanyContext';
  * Sabit dosya yollarından favicon ve PWA icon ayarlar.
  * API'den veri beklemez, doğrudan dosya yollarını kullanır.
  * Bu sayede çift render sorunu ortadan kalkar.
+ *
+ * companyName prop olarak alır, CompanyContext'e bağımlı değil.
  */
-export function DynamicHeadMeta() {
-  const { company } = useCompany();
+export function DynamicHeadMeta({ companyName = '' }: DynamicHeadMetaProps) {
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -24,15 +28,15 @@ export function DynamicHeadMeta() {
     updateFavicon(BRANDING_PATHS.favicon);
 
     // PWA manifest oluştur
-    updatePWAManifest(company?.name || '');
+    updatePWAManifest(companyName);
   }, []);
 
   // Firma adı değişirse title güncelle
   useEffect(() => {
-    if (company?.name) {
-      document.title = company.name;
+    if (companyName) {
+      document.title = companyName;
     }
-  }, [company?.name]);
+  }, [companyName]);
 
   return null;
 }
