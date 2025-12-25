@@ -136,26 +136,55 @@ export function useUpdateUser() {
 
   return useMutation({
     mutationFn: async ({ userId, data }: { userId: string; data: Partial<UserFormData> }) => {
-      // Check if profile picture file exists - if so, use FormData
+      // Check if any file exists - if so, use FormData
       const hasProfilePicture = data.personal?.profilePicture instanceof File;
-      
-      if (hasProfilePicture) {
+      const hasPassport = data.documents?.passport instanceof File;
+      const hasIdCard = data.documents?.idCard instanceof File;
+      const hasContract = data.documents?.contract instanceof File;
+      const hasCv = data.cv?.cv instanceof File;
+      const hasAnyFile = hasProfilePicture || hasPassport || hasIdCard || hasContract || hasCv;
+
+      if (hasAnyFile) {
         // Use FormData for file upload
         const formData = new FormData();
-        
+
         // Add profile picture file
-        if (data.personal?.profilePicture) {
+        if (data.personal?.profilePicture instanceof File) {
           formData.append('profilePicture', data.personal.profilePicture);
         }
-        
+
+        // Add document files
+        if (data.documents?.passport instanceof File) {
+          formData.append('passport', data.documents.passport);
+        }
+        if (data.documents?.idCard instanceof File) {
+          formData.append('idCard', data.documents.idCard);
+        }
+        if (data.documents?.contract instanceof File) {
+          formData.append('contract', data.documents.contract);
+        }
+
+        // Add CV file
+        if (data.cv?.cv instanceof File) {
+          formData.append('cv', data.cv.cv);
+        }
+
         // Add other fields as JSON string for nested structure
-        const jsonData = { ...data };
-        // Remove file from JSON data
+        const jsonData = JSON.parse(JSON.stringify(data));
+        // Remove files from JSON data
         if (jsonData.personal) {
           delete jsonData.personal.profilePicture;
         }
+        if (jsonData.documents) {
+          delete jsonData.documents.passport;
+          delete jsonData.documents.idCard;
+          delete jsonData.documents.contract;
+        }
+        if (jsonData.cv) {
+          delete jsonData.cv.cv;
+        }
         formData.append('data', JSON.stringify(jsonData));
-        
+
         const response = await fetch(`${API_BASE}/${userId}`, {
           method: 'PATCH',
           body: formData,

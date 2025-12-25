@@ -38,8 +38,19 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
     useEffect(() => {
         if (opened && file && (isText || isMarkdown)) {
             setLoadingText(true);
-            const previewUrl = `/api/file-manager/download?path=${encodeURIComponent(file.path)}&inline=true`;
-            fetch(previewUrl.replace('&inline=true', ''))
+            // Determine fetch URL based on path type
+            let fetchUrl: string;
+            if (file.path.startsWith('/storage/')) {
+                // Use storage API for /storage/ paths
+                fetchUrl = `/api${file.path}`;
+            } else if (file.path.startsWith('http://') || file.path.startsWith('https://')) {
+                // Use direct URL for http/https
+                fetchUrl = file.path;
+            } else {
+                // Use file-manager API for other paths
+                fetchUrl = `/api/file-manager/download?path=${encodeURIComponent(file.path)}`;
+            }
+            fetch(fetchUrl)
                 .then(res => res.text())
                 .then(text => {
                     setTextContent(text);
@@ -77,7 +88,16 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
     // Get preview URL
     const getPreviewUrl = () => {
         if (!file) return '';
-        // Use inline parameter for preview
+        // If path starts with /storage/, use storage API
+        if (file.path.startsWith('/storage/')) {
+            // Convert /storage/tenants/... to /api/storage/tenants/...
+            return `/api${file.path}`;
+        }
+        // If path is already a full URL (http/https), use it directly
+        if (file.path.startsWith('http://') || file.path.startsWith('https://')) {
+            return file.path;
+        }
+        // Otherwise use file-manager download API
         const baseUrl = `/api/file-manager/download?path=${encodeURIComponent(file.path)}&inline=true`;
         return baseUrl;
     };

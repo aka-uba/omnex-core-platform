@@ -1,9 +1,12 @@
 'use client';
 
-import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress } from '@mantine/core';
-import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder } from '@tabler/icons-react';
+import { useState } from 'react';
+import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress, ActionIcon } from '@mantine/core';
+import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder, IconDownload } from '@tabler/icons-react';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
+import { FilePreviewModal } from '@/modules/file-manager/components/FilePreviewModal';
+import { FileItem } from '@/modules/file-manager/types/file';
 import { useRealEstateStaffMember } from '@/hooks/useRealEstateStaff';
 import { useTranslation } from '@/lib/i18n/client';
 import { useRouter } from 'next/navigation';
@@ -21,8 +24,63 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
   const { t: tUsers } = useTranslation('modules/users');
   const { data: staff, isLoading, error } = useRealEstateStaffMember(staffId);
 
+  // File preview modal state
+  const [previewFile, setPreviewFile] = useState<FileItem | null>(null);
+  const [previewModalOpened, setPreviewModalOpened] = useState(false);
+
   // Get linked user data for internal staff
   const linkedUser = staff?.linkedUser;
+
+  // Convert document to FileItem for preview modal
+  const openDocumentPreview = (doc: { name: string; url: string; type: string }) => {
+    // Extract extension from name or url
+    const extension = doc.name.split('.').pop()?.toLowerCase() || '';
+
+    // Determine mime type based on extension
+    const mimeTypeMap: Record<string, string> = {
+      'pdf': 'application/pdf',
+      'png': 'image/png',
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'gif': 'image/gif',
+      'webp': 'image/webp',
+      'svg': 'image/svg+xml',
+      'doc': 'application/msword',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'xls': 'application/vnd.ms-excel',
+      'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'txt': 'text/plain',
+      'mp4': 'video/mp4',
+      'mp3': 'audio/mpeg',
+    };
+
+    const fileItem: FileItem = {
+      id: doc.url,
+      name: doc.name,
+      path: doc.url, // The URL will be used as the path for preview
+      extension: extension,
+      mimeType: mimeTypeMap[extension] || 'application/octet-stream',
+      size: 0,
+      type: 'file',
+      isDirectory: false,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+    };
+
+    setPreviewFile(fileItem);
+    setPreviewModalOpened(true);
+  };
+
+  // Handle document download
+  const handleDocumentDownload = (file: FileItem) => {
+    const link = document.createElement('a');
+    // Use storage API for /storage/ paths
+    link.href = file.path.startsWith('/storage/') ? `/api${file.path}` : file.path;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const getStaffTypeBadge = (staffType: string) => {
     return (
@@ -99,7 +157,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
               {/* Profile Image */}
               <Box>
                 <Avatar
-                  {...(staff.profileImage ? { src: `/api/core-files/${staff.profileImage}/download?inline=true` } : {})}
+                  src={staff.profileImage || undefined}
                   size={200}
                   radius="md"
                   style={{
@@ -452,10 +510,49 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                   <Text size="lg" fw={600}>{t('staff.tabs.documents')}</Text>
                 </Group>
                 <Divider />
-                <EntityFilesTab
-                  documents={staff.documents || []}
-                  entityName={staff.name}
-                />
+                {staff.documents && staff.documents.length > 0 ? (
+                  <Grid>
+                    {staff.documents.map((doc: { name: string; url: string; type: string }, index: number) => (
+                      <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={index}>
+                        <Paper p="md" withBorder>
+                          <Group justify="space-between">
+                            <Group gap="sm">
+                              <IconFileText size={24} color="gray" />
+                              <div>
+                                <Text size="sm" fw={500}>{doc.name}</Text>
+                                <Text size="xs" c="dimmed">{doc.type}</Text>
+                              </div>
+                            </Group>
+                            <Group gap="xs">
+                              <ActionIcon
+                                variant="light"
+                                color="blue"
+                                onClick={() => openDocumentPreview(doc)}
+                                title={t('actions.view')}
+                              >
+                                <IconEye size={16} />
+                              </ActionIcon>
+                              <ActionIcon
+                                variant="light"
+                                color="green"
+                                component="a"
+                                href={doc.url.startsWith('/storage/') ? `/api${doc.url}` : doc.url}
+                                download
+                                title={t('actions.download')}
+                              >
+                                <IconDownload size={16} />
+                              </ActionIcon>
+                            </Group>
+                          </Group>
+                        </Paper>
+                      </Grid.Col>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Text c="dimmed" ta="center" py="xl">
+                    {t('staff.noDocuments')}
+                  </Text>
+                )}
               </Stack>
             </Paper>
           </Tabs.Panel>
@@ -563,6 +660,17 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
           )}
         </Tabs>
       </Stack>
+
+      {/* File Preview Modal */}
+      <FilePreviewModal
+        opened={previewModalOpened}
+        onClose={() => {
+          setPreviewModalOpened(false);
+          setPreviewFile(null);
+        }}
+        file={previewFile}
+        onDownload={handleDocumentDownload}
+      />
     </Container>
   );
 }

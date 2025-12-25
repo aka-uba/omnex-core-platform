@@ -48,6 +48,7 @@
   },
   "form": {
     "personal": {
+      "title": "Kişisel Bilgiler",
       "profilePicture": "Profil Resmi",
       "profilePictureDescription": "Yeni kullanıcı için bir profil resmi yükleyin.",
       "userDetails": "Kullanıcı Detayları",
@@ -92,6 +93,7 @@
       "postalCode": "Posta Kodu",
       "postalCodePlaceholder": "12345",
       "emergencySection": "Acil Durum İletişimi",
+      "emergency": "Acil Durum İletişimi",
       "emergencyContact": "İletişim Kişisi",
       "emergencyContactPlaceholder": "Acil durum iletişim adı",
       "emergencyPhone": "İletişim Telefonu",
@@ -103,6 +105,7 @@
       "passport": "Pasaport Kopyası",
       "idCard": "Kimlik Kartı",
       "contract": "Sözleşme",
+      "cv": "CV",
       "otherDocuments": "Diğer Belgeler"
     },
     "cv": {
@@ -120,13 +123,17 @@
       "themeDark": "Koyu",
       "defaultLayout": "Varsayılan Düzen",
       "layoutSidebar": "Sol Menü (Sidebar)",
-      "layoutTopHeader": "Üst Menü (Top Header)"
+      "layoutTopHeader": "Üst Menü (Top Header)",
+      "language": "Dil",
+      "theme": "Tema",
+      "layout": "Düzen"
     },
     "cancel": "İptal",
     "upload": "Yükle"
   },
   "actions": {
     "view": "Görüntüle",
+    "download": "İndir",
     "edit": "Düzenle",
     "delete": "Sil",
     "activate": "Aktifleştir",
@@ -144,6 +151,20 @@
   "quickView": {
     "title": "Hızlı Görüntüleme",
     "createdAt": "Oluşturulma Tarihi"
+  },
+  "detail": {
+    "title": "Kullanıcı Detayı",
+    "description": "Kullanıcı profil bilgilerini görüntüleyin.",
+    "userNotFound": "Kullanıcı bulunamadı",
+    "systemInfo": "Sistem Bilgileri",
+    "updatedAt": "Güncellenme Tarihi",
+    "noDocuments": "Henüz belge yüklenmemiş",
+    "tabs": {
+      "info": "Genel Bilgiler",
+      "contact": "İletişim",
+      "documents": "Belgeler",
+      "preferences": "Tercihler"
+    }
   },
   "validation": {
     "fullNameRequired": "Ad soyad gereklidir",

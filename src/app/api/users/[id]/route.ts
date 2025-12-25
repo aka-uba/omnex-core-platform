@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
+import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import bcrypt from 'bcryptjs';
 import { logger } from '@/lib/utils/logger';
+
+// Helper function to sanitize user name for folder
+function sanitizeUserNameForFolder(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ş/g, 's')
+    .replace(/ı/g, 'i')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c')
+    .replace(/Ğ/g, 'G')
+    .replace(/Ü/g, 'U')
+    .replace(/Ş/g, 'S')
+    .replace(/İ/g, 'I')
+    .replace(/Ö/g, 'O')
+    .replace(/Ç/g, 'C')
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 // GET /api/users/[id] - Get single user
 export async function GET(
@@ -173,28 +194,42 @@ export async function PATCH(
     } else {
       // Handle FormData for file uploads
       const formData = await request.formData();
-      
+
+      // Get tenant context for file storage
+      const tenant = await getTenantFromRequest(request);
+
       // Handle profile picture file upload
       const profilePictureFile = formData.get('profilePicture') as File | null;
-      if (profilePictureFile && profilePictureFile instanceof File) {
-        // Save file to public/uploads directory
+      if (profilePictureFile && profilePictureFile instanceof File && tenant) {
+        // Save file to tenant's user directory
         const { writeFile, mkdir } = await import('fs/promises');
         const { join } = await import('path');
         const { existsSync } = await import('fs');
-        
-        const uploadsDir = join(process.cwd(), 'public', 'uploads', 'profiles');
-        if (!existsSync(uploadsDir)) {
-          await mkdir(uploadsDir, { recursive: true });
+
+        // Get user name and sanitize for folder name
+        const userName = existingUser.name || id;
+        const sanitizedUserName = sanitizeUserNameForFolder(userName);
+
+        // Create user directory under tenant storage: storage/tenants/{slug}/users/{username}
+        const userDir = join(process.cwd(), 'storage', 'tenants', tenant.slug, 'users', sanitizedUserName);
+        if (!existsSync(userDir)) {
+          await mkdir(userDir, { recursive: true });
         }
-        
+
+        // Create profile subfolder
+        const profileDir = join(userDir, 'profile');
+        if (!existsSync(profileDir)) {
+          await mkdir(profileDir, { recursive: true });
+        }
+
         const sanitizedFileName = profilePictureFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const fileName = `${id}-${Date.now()}-${sanitizedFileName}`;
-        const filePath = join(uploadsDir, fileName);
+        const fileName = `${Date.now()}-${sanitizedFileName}`;
+        const filePath = join(profileDir, fileName);
         const bytes = await profilePictureFile.arrayBuffer();
         const buffer = Buffer.from(bytes);
         await writeFile(filePath, buffer);
-        
-        updateData.profilePicture = `/uploads/profiles/${fileName}`;
+
+        updateData.profilePicture = `/storage/tenants/${tenant.slug}/users/${sanitizedUserName}/profile/${fileName}`;
       }
       
       // Parse JSON data if exists (from nested form structure)
@@ -260,6 +295,63 @@ export async function PATCH(
         const hireDate = formData.get('hireDate') as string;
         updateData.hireDate = hireDate ? new Date(hireDate) : null;
       }
+
+      // Handle document file uploads (using tenant from line 199)
+      if (tenant) {
+        const userName = existingUser.name || id;
+        const sanitizedUserName = sanitizeUserNameForFolder(userName);
+        const { writeFile: writeDoc, mkdir: mkdirDoc } = await import('fs/promises');
+        const { join: joinDoc } = await import('path');
+        const { existsSync: existsSyncDoc } = await import('fs');
+
+        // Create documents folder
+        const userDocDir = joinDoc(process.cwd(), 'storage', 'tenants', tenant.slug, 'users', sanitizedUserName);
+        const docsDir = joinDoc(userDocDir, 'documents');
+
+        // Handle passport file
+        const passportFile = formData.get('passport') as File | null;
+        if (passportFile && passportFile instanceof File) {
+          if (!existsSyncDoc(docsDir)) await mkdirDoc(docsDir, { recursive: true });
+          const fileName = `passport-${Date.now()}-${passportFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          const docFilePath = joinDoc(docsDir, fileName);
+          const bytes = await passportFile.arrayBuffer();
+          await writeDoc(docFilePath, Buffer.from(bytes));
+          updateData.passportUrl = `/storage/tenants/${tenant.slug}/users/${sanitizedUserName}/documents/${fileName}`;
+        }
+
+        // Handle ID card file
+        const idCardFile = formData.get('idCard') as File | null;
+        if (idCardFile && idCardFile instanceof File) {
+          if (!existsSyncDoc(docsDir)) await mkdirDoc(docsDir, { recursive: true });
+          const fileName = `idcard-${Date.now()}-${idCardFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          const docFilePath = joinDoc(docsDir, fileName);
+          const bytes = await idCardFile.arrayBuffer();
+          await writeDoc(docFilePath, Buffer.from(bytes));
+          updateData.idCardUrl = `/storage/tenants/${tenant.slug}/users/${sanitizedUserName}/documents/${fileName}`;
+        }
+
+        // Handle contract file
+        const contractFile = formData.get('contract') as File | null;
+        if (contractFile && contractFile instanceof File) {
+          if (!existsSyncDoc(docsDir)) await mkdirDoc(docsDir, { recursive: true });
+          const fileName = `contract-${Date.now()}-${contractFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          const docFilePath = joinDoc(docsDir, fileName);
+          const bytes = await contractFile.arrayBuffer();
+          await writeDoc(docFilePath, Buffer.from(bytes));
+          updateData.contractUrl = `/storage/tenants/${tenant.slug}/users/${sanitizedUserName}/documents/${fileName}`;
+        }
+
+        // Handle CV file
+        const cvFile = formData.get('cv') as File | null;
+        if (cvFile && cvFile instanceof File) {
+          if (!existsSyncDoc(docsDir)) await mkdirDoc(docsDir, { recursive: true });
+          const fileName = `cv-${Date.now()}-${cvFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          const docFilePath = joinDoc(docsDir, fileName);
+          const bytes = await cvFile.arrayBuffer();
+          await writeDoc(docFilePath, Buffer.from(bytes));
+          updateData.cvUrl = `/storage/tenants/${tenant.slug}/users/${sanitizedUserName}/documents/${fileName}`;
+        }
+      }
     }
 
     // Update user
@@ -282,6 +374,41 @@ export async function PATCH(
         updatedAt: true,
       },
     });
+
+    // Sync profile picture and documents to linked RealEstateStaff
+    // This ensures changes made in users page are reflected in real-estate staff page
+    try {
+      // Find any real estate staff linked to this user
+      const linkedStaff = await tenantPrisma.realEstateStaff.findFirst({
+        where: { userId: id },
+      });
+
+      if (linkedStaff) {
+        const syncData: any = {};
+
+        // Sync profile picture
+        if (updateData.profilePicture !== undefined) {
+          syncData.profileImage = updateData.profilePicture || null;
+        }
+
+        // Sync document URLs (internal staff shares documents with user)
+        if (updateData.passportUrl !== undefined) syncData.passportUrl = updateData.passportUrl || null;
+        if (updateData.idCardUrl !== undefined) syncData.idCardUrl = updateData.idCardUrl || null;
+        if (updateData.contractUrl !== undefined) syncData.contractUrl = updateData.contractUrl || null;
+        if (updateData.cvUrl !== undefined) syncData.cvUrl = updateData.cvUrl || null;
+        if (updateData.otherDocuments !== undefined) syncData.otherDocuments = updateData.otherDocuments || null;
+
+        if (Object.keys(syncData).length > 0) {
+          await tenantPrisma.realEstateStaff.update({
+            where: { id: linkedStaff.id },
+            data: syncData,
+          });
+        }
+      }
+    } catch (syncError) {
+      console.warn('Failed to sync data to real estate staff:', syncError);
+      // Don't fail the request if sync fails
+    }
 
     return NextResponse.json({
       success: true,

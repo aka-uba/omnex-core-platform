@@ -15,7 +15,7 @@ import {
   Divider,
   Tooltip,
 } from '@mantine/core';
-import { IconPlus, IconEdit, IconTrash, IconUsers, IconEye, IconToggleLeft, IconToggleRight } from '@tabler/icons-react';
+import { IconPlus, IconEdit, IconTrash, IconUsers, IconEye, IconToggleLeft, IconToggleRight, IconExternalLink } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useUsers, useToggleUserStatus } from '@/hooks/useUsers';
 import { useTranslation } from '@/lib/i18n/client';
@@ -171,7 +171,7 @@ export function UsersPageClient({ locale }: { locale: string }) {
       render: (value, row: any) => (
         <Group justify="flex-end" gap="xs">
           {/* Quick View */}
-          <Tooltip label={t('actions.view')}>
+          <Tooltip label={t('quickView.title')}>
             <ActionIcon
               variant="subtle"
               color="blue"
@@ -182,6 +182,19 @@ export function UsersPageClient({ locale }: { locale: string }) {
               }}
             >
               <IconEye size={16} />
+            </ActionIcon>
+          </Tooltip>
+          {/* Full Profile View */}
+          <Tooltip label={t('detail.title')}>
+            <ActionIcon
+              variant="subtle"
+              color="teal"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/management/users/${row.id}`);
+              }}
+            >
+              <IconExternalLink size={16} />
             </ActionIcon>
           </Tooltip>
           {/* Toggle Status */}

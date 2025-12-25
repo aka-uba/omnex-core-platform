@@ -493,6 +493,13 @@ model RealEstateStaff {
   notes String?
   profileImage String? // Profil resmi (Merkezi Dosya Yönetimi'nden)
 
+  // Belgeler (sadece external personel için - internal personel User tablosundan alır)
+  passportUrl   String? // Pasaport
+  idCardUrl     String? // Kimlik kartı
+  contractUrl   String? // Sözleşme
+  cvUrl         String? // CV
+  otherDocuments Json? // Diğer belgeler [{name, url, type}]
+
   isActive Boolean @default(true)
 
   createdAt DateTime @default(now())

@@ -50,9 +50,12 @@ export async function GET(
         return errorResponse('Forbidden', 'Access denied', 403);
       }
 
-      // If internal staff with userId, fetch user data
+      // Build response with documents
       let staffWithUser = staff as any;
+      let documents: Array<{ name: string; url: string; type: string }> = [];
+
       if (staff.staffType === 'internal' && staff.userId) {
+        // Internal staff: Fetch user data and documents from User table
         const user = await tenantPrisma.user.findUnique({
           where: { id: staff.userId },
           select: {
@@ -79,15 +82,72 @@ export async function GET(
             createdAt: true,
             updatedAt: true,
             lastActive: true,
+            // Document fields for syncing
+            passportUrl: true,
+            idCardUrl: true,
+            contractUrl: true,
+            cvUrl: true,
+            otherDocuments: true,
           },
         });
 
         if (user) {
+          // Build documents list from user's documents
+          if (user.passportUrl) {
+            documents.push({ name: 'Pasaport', url: user.passportUrl, type: 'passport' });
+          }
+          if (user.idCardUrl) {
+            documents.push({ name: 'Kimlik Kartı', url: user.idCardUrl, type: 'idCard' });
+          }
+          if (user.contractUrl) {
+            documents.push({ name: 'Sözleşme', url: user.contractUrl, type: 'contract' });
+          }
+          if (user.cvUrl) {
+            documents.push({ name: 'CV', url: user.cvUrl, type: 'cv' });
+          }
+          // Handle other documents if present
+          if (user.otherDocuments && Array.isArray(user.otherDocuments)) {
+            for (const doc of user.otherDocuments as any[]) {
+              if (doc && doc.url) {
+                documents.push({ name: doc.name || 'Belge', url: doc.url, type: 'other' });
+              }
+            }
+          }
+
           staffWithUser = {
             ...staff,
             linkedUser: user,
+            documents, // Include documents from linked user
           };
         }
+      } else if (staff.staffType === 'external') {
+        // External staff: Get documents from staff's own document fields
+        const staffAny = staff as any;
+        if (staffAny.passportUrl) {
+          documents.push({ name: 'Pasaport', url: staffAny.passportUrl, type: 'passport' });
+        }
+        if (staffAny.idCardUrl) {
+          documents.push({ name: 'Kimlik Kartı', url: staffAny.idCardUrl, type: 'idCard' });
+        }
+        if (staffAny.contractUrl) {
+          documents.push({ name: 'Sözleşme', url: staffAny.contractUrl, type: 'contract' });
+        }
+        if (staffAny.cvUrl) {
+          documents.push({ name: 'CV', url: staffAny.cvUrl, type: 'cv' });
+        }
+        // Handle other documents if present
+        if (staffAny.otherDocuments && Array.isArray(staffAny.otherDocuments)) {
+          for (const doc of staffAny.otherDocuments as any[]) {
+            if (doc && doc.url) {
+              documents.push({ name: doc.name || 'Belge', url: doc.url, type: 'other' });
+            }
+          }
+        }
+
+        staffWithUser = {
+          ...staff,
+          documents,
+        };
       }
 
       return successResponse({ staff: staffWithUser });
@@ -160,8 +220,50 @@ export async function PATCH(
             ...(body.customerSatisfaction !== undefined && {
               customerSatisfaction: body.customerSatisfaction ? new Prisma.Decimal(body.customerSatisfaction) : null,
             }),
+            // Document fields for external staff
+            ...(body.passportUrl !== undefined && { passportUrl: body.passportUrl || null }),
+            ...(body.idCardUrl !== undefined && { idCardUrl: body.idCardUrl || null }),
+            ...(body.contractUrl !== undefined && { contractUrl: body.contractUrl || null }),
+            ...(body.cvUrl !== undefined && { cvUrl: body.cvUrl || null }),
+            ...(body.otherDocuments !== undefined && { otherDocuments: body.otherDocuments || null }),
           },
         });
+
+        // Sync profile image to linked User if internal staff
+        // This ensures changes made in real-estate staff page are reflected in users page
+        if (existing.staffType === 'internal' && existing.userId && validatedData.profileImage !== undefined) {
+          try {
+            await tenantPrisma.user.update({
+              where: { id: existing.userId },
+              data: { profilePicture: validatedData.profileImage || null },
+            });
+          } catch (syncError) {
+            console.warn('Failed to sync profile image to user:', syncError);
+            // Don't fail the request if sync fails
+          }
+        }
+
+        // Sync documents from staff to User if internal staff
+        if (existing.staffType === 'internal' && existing.userId) {
+          const docUpdates: any = {};
+          if (body.passportUrl !== undefined) docUpdates.passportUrl = body.passportUrl || null;
+          if (body.idCardUrl !== undefined) docUpdates.idCardUrl = body.idCardUrl || null;
+          if (body.contractUrl !== undefined) docUpdates.contractUrl = body.contractUrl || null;
+          if (body.cvUrl !== undefined) docUpdates.cvUrl = body.cvUrl || null;
+          if (body.otherDocuments !== undefined) docUpdates.otherDocuments = body.otherDocuments || null;
+
+          if (Object.keys(docUpdates).length > 0) {
+            try {
+              await tenantPrisma.user.update({
+                where: { id: existing.userId },
+                data: docUpdates,
+              });
+            } catch (syncError) {
+              console.warn('Failed to sync documents to user:', syncError);
+              // Don't fail the request if sync fails
+            }
+          }
+        }
 
         return successResponse({ staff });
       } catch (error) {

@@ -798,6 +798,7 @@
       "success": "Personel üyesi başarıyla silindi",
       "error": "Personel üyesi silinirken hata oluştu"
     },
+    "noDocuments": "Henüz belge yüklenmemiş",
     "profileImage": {
       "uploadSuccess": "Profil resmi başarıyla yüklendi",
       "uploadError": "Profil resmi yüklenirken hata oluştu"
