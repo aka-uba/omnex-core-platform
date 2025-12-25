@@ -13,9 +13,10 @@ const spaceGrotesk = Space_Grotesk({
   display: 'swap',
 });
 
+// Metadata boş bırakılıyor - DynamicHeadMeta tarafından firma adından dinamik olarak ayarlanacak
 export const metadata: Metadata = {
-  title: "Omnex-Core",
-  description: "Agency Operating System",
+  title: "",
+  description: "",
 };
 
 // Route segment config - optimize caching

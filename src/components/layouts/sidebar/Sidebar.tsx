@@ -12,6 +12,7 @@ import { IconChevronLeft, IconChevronRight, IconApps } from '@tabler/icons-react
 import { useMenuItems, type MenuItem as MenuItemType } from '../hooks/useMenuItems';
 import { useModules } from '@/context/ModuleContext';
 import { useCompany } from '@/context/CompanyContext';
+import { BRANDING_PATHS } from '@/lib/branding/config';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLayout } from '../core/LayoutProvider';
@@ -283,18 +284,14 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     setOpenedMenu(href);
   }, []);
 
-  // Aktif sayfa değiştiğinde, aktif child'ı olan parent menüyü otomatik açık tut
-  // Bu effect sadece pathname değiştiğinde çalışır (navigasyon sonrası)
+  // Pathname değiştiğinde aktif menüyü otomatik aç
+  // Tek bir effect'te tüm mantığı birleştirerek yarış durumunu önle
   useEffect(() => {
+    // Her pathname değişikliğinde manuel toggle'ı sıfırla (navigasyon tamamlandı)
+    setUserManuallyToggled(false);
+
     if (collapsed) {
       setOpenedMenu(null);
-      setUserManuallyToggled(false);
-      return;
-    }
-
-    // Kullanıcı manuel olarak toggle yaptıysa, otomatik değişiklik yapma
-    // Ama pathname değişince (yeni sayfaya gidince) manuel toggle'ı sıfırla
-    if (userManuallyToggled) {
       return;
     }
 
@@ -307,12 +304,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       // Aktif child varsa parent menüyü otomatik aç
       setOpenedMenu(activeMenuItem.href);
     }
-  }, [pathname, collapsed]);
-
-  // Pathname değişince (navigasyon) manuel toggle flag'ini sıfırla
-  useEffect(() => {
-    setUserManuallyToggled(false);
-  }, [pathname]);
+  }, [pathname, collapsed, menuItems]);
 
   // Sayfa ilk yüklendiğinde aktif menü görünür alanda değilse scroll et
   // Kullanıcı tıkladığında scroll yapmıyoruz - sadece ilk yüklemede
@@ -371,68 +363,47 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
           {...(styles.logoIcon ? { className: styles.logoIcon } : {})}
           suppressHydrationWarning
           style={mounted && autoColors ? {
-            backgroundColor: (company?.pwaIcon || company?.logo) ? 'transparent' : autoColors.logoIconBg,
+            backgroundColor: 'transparent',
             color: autoColors.iconColor,
-            padding: (company?.pwaIcon || company?.logo) ? 0 : undefined,
+            padding: 0,
             overflow: 'hidden',
           } : undefined}
         >
           {mounted && (
-            (company?.pwaIcon || company?.logo) ? (
-              <Image
-                src={collapsed ? (company.pwaIcon || company.logo) : (company.pwaIcon || company.logo)}
-                alt={company?.name || 'Logo'}
-                fit="contain"
-                w={collapsed ? 32 : 36}
-                h={collapsed ? 32 : 36}
-                style={{ borderRadius: 'var(--mantine-radius-sm)' }}
-              />
-            ) : (
-              <IconApps size={24} />
-            )
+            <Image
+              src={BRANDING_PATHS.pwaIcon}
+              alt={company?.name || 'Logo'}
+              fit="contain"
+              w={collapsed ? 32 : 36}
+              h={collapsed ? 32 : 36}
+              style={{ borderRadius: 'var(--mantine-radius-sm)' }}
+              fallbackSrc={BRANDING_PATHS.logo}
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                // Eğer pwaIcon yoksa logo'yu dene, o da yoksa boş bırak
+                const target = e.currentTarget;
+                if (target.src.includes('pwa-icon')) {
+                  target.src = BRANDING_PATHS.logo;
+                } else {
+                  target.style.display = 'none';
+                }
+              }}
+            />
           )}
         </div>
         {!collapsed && (
           <div {...(styles.logoText ? { className: styles.logoText } : {})}>
-            {/* Show company logo if available (wide view) */}
-            {company?.logo && !company?.pwaIcon ? (
-              <Image
-                src={company.logo}
-                alt={company.name || 'Company Logo'}
-                fit="contain"
-                maw={140}
-                mah={40}
-              />
-            ) : (
-              <>
-                {(() => {
-                  // Split company name into two lines (first word on line 1, rest on line 2)
-                  const fullName = company?.name || 'Omnex-Core';
-                  const words = fullName.split(' ');
-                  const firstWord = words[0] || fullName;
-                  const restWords = words.slice(1).join(' ');
-                  return (
-                    <>
-                      <h1
-                        {...(styles.logoTitle ? { className: styles.logoTitle } : {})}
-                        style={mounted && autoColors ? { color: autoColors.textColor } : undefined}
-                      >
-                        {firstWord}
-                      </h1>
-                      <p
-                        {...(styles.logoSubtitle ? { className: styles.logoSubtitle } : {})}
-                        style={mounted && autoColors ? {
-                          color: autoColors.textColor,
-                          opacity: 0.8
-                        } : undefined}
-                      >
-                        {restWords || 'Agency OS'}
-                      </p>
-                    </>
-                  );
-                })()}
-              </>
-            )}
+            {/* Sabit dosya yolundan logo göster */}
+            <Image
+              src={BRANDING_PATHS.logo}
+              alt={company?.name || 'Company Logo'}
+              fit="contain"
+              maw={140}
+              mah={40}
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                // Logo dosyası yoksa gizle, firma adı gösterilmeyecek
+                e.currentTarget.style.display = 'none';
+              }}
+            />
           </div>
         )}
       </div>

@@ -77,8 +77,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         data: {
-          name: 'Omnex Core',
-          logo: null,
+          name: '',
+          logo: '/branding/logo.png',
         },
       });
     }
@@ -191,8 +191,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        name: 'Omnex Core',
-        logo: null,
+        name: '',
+        logo: '/branding/logo.png',
       },
     });
   }

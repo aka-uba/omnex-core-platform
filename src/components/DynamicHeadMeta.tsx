@@ -1,67 +1,38 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
-
-interface CompanyMeta {
-  name: string;
-  favicon?: string | null;
-  pwaIcon?: string | null;
-  logo?: string | null;
-}
+import { useEffect, useRef } from 'react';
+import { BRANDING_PATHS } from '@/lib/branding/config';
+import { useCompany } from '@/context/CompanyContext';
 
 /**
  * Dynamic Head Meta Component
  *
- * Dynamically sets favicon and PWA manifest based on company settings.
- * This component injects favicon and PWA icons after the page loads
- * by fetching company data from the API.
+ * Sabit dosya yollarından favicon ve PWA icon ayarlar.
+ * API'den veri beklemez, doğrudan dosya yollarını kullanır.
+ * Bu sayede çift render sorunu ortadan kalkar.
  */
 export function DynamicHeadMeta() {
-  const [company, setCompany] = useState<CompanyMeta | null>(null);
+  const { company } = useCompany();
+  const initialized = useRef(false);
 
   useEffect(() => {
-    async function fetchCompanyMeta() {
-      try {
-        const response = await fetchWithAuth('/api/company');
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success && result.data) {
-            setCompany({
-              name: result.data.name,
-              favicon: result.data.favicon,
-              pwaIcon: result.data.pwaIcon,
-              logo: result.data.logo,
-            });
-          }
-        }
-      } catch (error) {
-        // Silently fail - use default icons
-        console.warn('Failed to fetch company meta:', error);
-      }
-    }
+    // Sadece bir kez çalıştır
+    if (initialized.current) return;
+    initialized.current = true;
 
-    fetchCompanyMeta();
+    // Sabit dosya yollarından favicon ayarla
+    updateFavicon(BRANDING_PATHS.favicon);
+
+    // PWA manifest oluştur
+    updatePWAManifest(company?.name || '');
   }, []);
 
+  // Firma adı değişirse title güncelle
   useEffect(() => {
-    if (!company) return;
-
-    // Update document title with company name only (no Omnex-Core suffix)
-    if (company.name) {
+    if (company?.name) {
       document.title = company.name;
     }
-
-    // Update favicon
-    if (company.favicon) {
-      updateFavicon(company.favicon);
-    }
-
-    // Update PWA manifest with dynamic icons
-    if (company.pwaIcon || company.logo) {
-      updatePWAManifest(company);
-    }
-  }, [company]);
+  }, [company?.name]);
 
   return null;
 }
@@ -97,11 +68,12 @@ function updateFavicon(faviconUrl: string) {
 }
 
 /**
- * Creates or updates a dynamic PWA manifest with company icons
+ * Creates or updates a dynamic PWA manifest with branding icons
+ * Sabit dosya yollarını kullanır - API'den veri beklemez
  */
-function updatePWAManifest(company: CompanyMeta) {
-  const iconUrl = company.pwaIcon || company.logo || company.favicon;
-  if (!iconUrl) return;
+function updatePWAManifest(companyName: string) {
+  // Sabit branding dosya yollarını kullan
+  const iconUrl = BRANDING_PATHS.pwaIcon;
 
   // Remove existing manifest link
   const existingManifest = document.querySelector("link[rel='manifest']");
@@ -109,11 +81,11 @@ function updatePWAManifest(company: CompanyMeta) {
     existingManifest.remove();
   }
 
-  // Create dynamic manifest
+  // Create dynamic manifest - Omnex metinleri kullanma
   const manifest = {
-    name: company.name || 'Omnex-Core',
-    short_name: company.name || 'Omnex',
-    description: 'Omnex-Core Platform',
+    name: companyName || '',
+    short_name: companyName || '',
+    description: '',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
@@ -174,7 +146,7 @@ function updatePWAManifest(company: CompanyMeta) {
   if (!appleTitleMeta) {
     appleTitleMeta = document.createElement('meta');
     (appleTitleMeta as HTMLMetaElement).name = 'apple-mobile-web-app-title';
-    (appleTitleMeta as HTMLMetaElement).content = company.name || 'Omnex-Core';
+    (appleTitleMeta as HTMLMetaElement).content = companyName || '';
     document.head.appendChild(appleTitleMeta);
   }
 }

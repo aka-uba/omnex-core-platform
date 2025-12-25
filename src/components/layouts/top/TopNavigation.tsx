@@ -39,13 +39,14 @@ export function TopNavigation() {
   }, []);
 
   // Navigate using router.push (soft navigation)
-  // Use setTimeout to allow menu to close before navigation to prevent removeChild errors
+  // Immediate navigation without delay to prevent timing issues
   const navigateTo = useCallback((href: string) => {
-    setMenuOpened(false); // Close menu first
-    // Small delay to let menu animations complete before navigation
-    setTimeout(() => {
-      router.push(href);
-    }, 10);
+    // First navigate, then close menu to prevent timing conflicts
+    router.push(href);
+    // Close menu after navigation starts
+    requestAnimationFrame(() => {
+      setMenuOpened(false);
+    });
   }, [router]);
 
   const locale = pathname?.split('/')[1] || 'tr';

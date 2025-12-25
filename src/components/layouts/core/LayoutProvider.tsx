@@ -378,6 +378,7 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
   }, [config.layoutType, config.themeMode, config.direction, config.layoutSource]);
 
   // Context value'yu memoize et - sadece gerçekten değişen değerlerde yeni referans oluştur
+  // Gereksiz re-render'ları önlemek için sadece gerekli dependency'ler
   const value: LayoutContextType = useMemo(() => {
     return {
       currentLayout,
@@ -394,8 +395,7 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
     };
   }, [
     currentLayout,
-    config, // Direct reference - React will handle shallow comparison
-    configKey, // Track key changes
+    config,
     setConfig,
     applyChanges,
     loadConfig,

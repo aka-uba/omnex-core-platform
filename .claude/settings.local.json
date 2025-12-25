@@ -89,7 +89,14 @@
       "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -sI http://localhost:3000/tr\")",
       "Bash(npx next build:*)",
       "Bash(TURBOPACK=0 npx next build:*)",
-      "Bash(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@146.190.224.121 \"echo ''SSH bağlantısı başarılı!'' && uptime && uname -a\")"
+      "Bash(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@146.190.224.121 \"echo ''SSH bağlantısı başarılı!'' && uptime && uname -a\")",
+      "Bash(ls:*)",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"sudo -u postgres psql -c \"\"GRANT ALL PRIVILEGES ON DATABASE omnex_core TO omnex_user;\"\" && sudo -u postgres psql -d omnex_core -c \"\"GRANT ALL ON SCHEMA public TO omnex_user;\"\" && sudo -u postgres psql -d omnex_core -c \"\"GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO omnex_user;\"\" && sudo -u postgres psql -d omnex_core -c \"\"GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO omnex_user;\"\" && echo ''Permissions granted successfully''\")",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"cd /var/www/omnex-core && pm2 restart omnex-core && pm2 status\")",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"pm2 list && pm2 restart all\")",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -sI http://localhost:3000/tr/auth/login | head -5\")",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"curl -s -X POST http://localhost:3000/api/auth/login -H ''Content-Type: application/json'' -d ''{\"\"email\"\":\"\"test@test.com\"\",\"\"password\"\":\"\"test\"\"}'' | head -200\")",
+      "Bash(ssh:*)"
     ],
     "deny": [],
     "ask": []

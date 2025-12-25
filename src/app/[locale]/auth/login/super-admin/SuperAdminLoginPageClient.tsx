@@ -214,13 +214,13 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
         <div className={classes.leftContent}>
           <div className={classes.headerSection}>
             <NextImage
-              src="/images/logo.png"
-              alt="Omnex Logo"
+              src="/branding/pwa-icon.png"
+              alt="Logo"
               width={40}
               height={40}
               className={classes.logoImage}
             />
-            <h1 className={classes.platformTitle}>Omnex Core Sass Platform</h1>
+            <h1 className={classes.platformTitle}></h1>
           </div>
           
           <div className={classes.modulesSection}>
