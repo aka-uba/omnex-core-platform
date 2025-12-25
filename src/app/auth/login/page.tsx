@@ -24,6 +24,7 @@ import {
 import { IconAlertCircle, IconUser, IconLock, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
 import Link from 'next/link';
 import classes from './LoginPage.module.css';
+import { BRANDING_PATHS } from '@/lib/branding/config';
 
 // Translations
 const translations: Record<string, Record<string, string>> = {
@@ -110,8 +111,8 @@ export default function LoginPage() {
   const [locale, setLocale] = useState('tr');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [companyInfo, setCompanyInfo] = useState<{ name: string; logo: string | null }>({ name: '', logo: null });
-  const [companyLoading, setCompanyLoading] = useState(true);
+  // Sabit branding yollarını kullan - API çağrısı yapma
+  const [logoExists, setLogoExists] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -119,30 +120,12 @@ export default function LoginPage() {
     const savedLocale = localStorage.getItem('preferred-locale') || 'tr';
     setLocale(savedLocale);
 
-    // Load company info
-    loadCompanyInfo();
+    // Logo dosyasının varlığını kontrol et
+    const img = new window.Image();
+    img.onload = () => setLogoExists(true);
+    img.onerror = () => setLogoExists(false);
+    img.src = BRANDING_PATHS.logo;
   }, []);
-
-  const loadCompanyInfo = async () => {
-    setCompanyLoading(true);
-    try {
-      const response = await fetch('/api/public/company-info');
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success && data.data) {
-          setCompanyInfo({
-            name: data.data.name || 'Omnex Core',
-            logo: data.data.logo || null,
-          });
-        }
-      }
-    } catch (err) {
-      // Use default values
-      setCompanyInfo({ name: 'Omnex Core', logo: null });
-    } finally {
-      setCompanyLoading(false);
-    }
-  };
 
   const t = (key: string): string => {
     return translations[locale]?.[key] ?? translations['tr']?.[key] ?? key;
@@ -252,16 +235,12 @@ export default function LoginPage() {
       <Container size="xs" className={classes.container}>
         <Paper className={classes.paper} p="xl" radius="md" withBorder>
           <Stack gap="lg">
-            {/* Logo and Company Name */}
+            {/* Logo - Sabit dosya yolundan */}
             <Box className={classes.logoSection}>
-              {companyLoading ? (
-                <Box className={classes.defaultLogo} style={{ opacity: 0.5 }}>
-                  <Text size="xl" fw={700} c="gray">...</Text>
-                </Box>
-              ) : companyInfo.logo ? (
+              {logoExists ? (
                 <Image
-                  src={companyInfo.logo}
-                  alt={companyInfo.name}
+                  src={BRANDING_PATHS.logo}
+                  alt="Logo"
                   h={60}
                   w="auto"
                   fit="contain"
@@ -270,13 +249,10 @@ export default function LoginPage() {
               ) : (
                 <Box className={classes.defaultLogo}>
                   <Text size="xl" fw={700} c="blue">
-                    {companyInfo.name ? companyInfo.name.charAt(0) : 'O'}
+                    ?
                   </Text>
                 </Box>
               )}
-              <Text size="lg" fw={600} ta="center" mt="xs">
-                {companyLoading ? '...' : companyInfo.name}
-              </Text>
             </Box>
 
             <div className={classes.header}>
@@ -360,7 +336,7 @@ export default function LoginPage() {
       {/* Footer */}
       <Box className={classes.footer}>
         <Text size="xs" c="dimmed">
-          Copyright {new Date().getFullYear()} Omnex Core. All rights reserved.
+          Copyright {new Date().getFullYear()}. All rights reserved.
         </Text>
       </Box>
     </div>
