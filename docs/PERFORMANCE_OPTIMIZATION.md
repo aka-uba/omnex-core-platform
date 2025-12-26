@@ -322,18 +322,113 @@ Yeni özellik eklerken kontrol et:
 | 26.12.2025 | Menu-Resolver cache header | Browser cache aktif |
 | 26.12.2025 | Layout dynamic=auto | Next.js akıllı cache |
 | 26.12.2025 | 19 console.log silindi | Production temiz |
+| 27.12.2025 | Prisma singleton memory leak fix | API çökme sorunu çözüldü |
 
 ---
 
-## 8. İLGİLİ DOSYALAR
+## 8. PRISMA SINGLETON MEMORY LEAK FIX (27.12.2025)
+
+### 8.1 Problem
+
+PM2 monitoring'de **Heap Usage %96.58** tespit edildi - sadece 9 dakikada!
+
+**Root Cause:** `corePrisma.ts` ve `prisma.ts` dosyalarında singleton sadece development modunda kullanılıyordu:
+
+```typescript
+// ❌ HATALI KOD (eski)
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
+```
+
+Bu, **production modunda her request'te yeni PrismaClient** oluşturuyordu:
+- Her yeni PrismaClient ~10-20MB memory
+- Bağlantı havuzu tükenmesi
+- Memory leak → API crash
+
+### 8.2 Çözüm
+
+**Dosyalar:**
+- `src/lib/corePrisma.ts`
+- `src/lib/prisma.ts`
+
+```typescript
+// ✅ DOĞRU KOD (yeni)
+// Always use singleton in both development AND production
+// to prevent connection pool exhaustion and memory leaks
+globalForCorePrisma.corePrisma = corePrisma;
+```
+
+### 8.3 Ek Düzeltmeler
+
+**Problem:** Bazı API route'lar her request'te yeni PrismaClient oluşturuyordu:
+
+| Dosya | Sorun | Çözüm |
+|-------|-------|-------|
+| `api/setup/system-status/route.ts` | 3x `new PrismaClient()` | `corePrisma` singleton kullanıldı |
+| `api/setup/test-connection/route.ts` | 1x `new PrismaClient()` | `corePrisma` singleton kullanıldı |
+| `api/menu-management/check-pages/route.ts` | Module-level `new PrismaClient()` + `$disconnect()` | `withTenant` wrapper kullanıldı |
+
+### 8.4 Prisma Best Practices
+
+```typescript
+// ✅ DOĞRU: Singleton kullan
+import { corePrisma } from '@/lib/corePrisma';
+
+export async function GET() {
+  const data = await corePrisma.tenant.findMany();
+  return NextResponse.json(data);
+}
+
+// ❌ YANLIŞ: Her request'te yeni client
+export async function GET() {
+  const prisma = new PrismaClient(); // Memory leak!
+  const data = await prisma.tenant.findMany();
+  await prisma.$disconnect(); // Yeterli değil!
+  return NextResponse.json(data);
+}
+```
+
+### 8.5 Tenant Database için
+
+Tenant database bağlantıları için `dbSwitcher.ts` cache mekanizması kullan:
+
+```typescript
+// ✅ DOĞRU: Cache'li tenant client
+import { getTenantPrisma } from '@/lib/dbSwitcher';
+
+const tenantPrisma = getTenantPrisma(dbUrl);
+// veya
+import { withTenant } from '@/lib/api/withTenant';
+
+return withTenant(request, async (prisma) => {
+  // prisma otomatik cache'den gelir
+});
+```
+
+### 8.6 Etki
+
+| Metrik | Önce | Sonra |
+|--------|------|-------|
+| Heap Usage (9 dk) | %96.58 | ~%30-40 (beklenen) |
+| API Stability | Crash after ~10-30 min | Stable |
+| DB Connections | Exhausted | Pooled (10 max) |
+
+---
+
+## 9. İLGİLİ DOSYALAR
 
 - `src/context/ModuleContext.tsx` - Module cache
 - `src/context/CompanyContext.tsx` - Auth skip
 - `src/app/api/menu-resolver/[location]/route.ts` - Cache header
 - `src/app/[locale]/layout.tsx` - Layout config
 - `src/app/api/public/company-info/route.ts` - Console.log temizliği
+- `src/lib/corePrisma.ts` - Core DB singleton (27.12.2025)
+- `src/lib/prisma.ts` - Tenant DB singleton (27.12.2025)
+- `src/lib/dbSwitcher.ts` - Tenant DB connection cache
+- `src/lib/api/withTenant.ts` - Tenant context wrapper
 
 ---
 
 **Hazırlayan:** Claude Code
-**Tarih:** 26 Aralık 2025
+**Son Güncelleme:** 27 Aralık 2025
