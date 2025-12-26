@@ -9,15 +9,40 @@ const ADMIN_TOKEN = process.env.SERVER_ADMIN_TOKEN || 'omnex-admin-2025';
 
 // Allowed commands whitelist
 const ALLOWED_COMMANDS: Record<string, string> = {
+  // PM2 Commands
   'pm2-status': 'pm2 jlist',
   'pm2-restart': 'pm2 restart omnex-core',
   'pm2-stop': 'pm2 stop omnex-core',
   'pm2-start': 'pm2 start omnex-core',
   'pm2-logs': 'pm2 logs omnex-core --lines 50 --nostream',
-  'system-info': 'echo "$(free -h)" && echo "---" && echo "$(df -h /)" && echo "---" && echo "$(uptime)"',
+
+  // Nginx Commands
+  'nginx-restart': 'systemctl restart nginx && systemctl status nginx --no-pager',
+  'nginx-reload': 'nginx -t && systemctl reload nginx && echo "Nginx reloaded successfully"',
+  'nginx-status': 'systemctl status nginx --no-pager',
+  'nginx-test': 'nginx -t',
+
+  // PostgreSQL Commands
+  'postgres-status': 'systemctl status postgresql --no-pager',
+  'postgres-restart': 'systemctl restart postgresql && systemctl status postgresql --no-pager',
+
+  // SSH/System Commands
+  'ssh-status': 'systemctl status sshd --no-pager || systemctl status ssh --no-pager',
+  'ssh-restart': 'systemctl restart sshd || systemctl restart ssh && echo "SSH restarted"',
+
+  // System Info
+  'system-info': 'echo "=== MEMORY ===" && free -h && echo "\\n=== DISK ===" && df -h / && echo "\\n=== UPTIME ===" && uptime && echo "\\n=== LOAD ===" && cat /proc/loadavg',
+  'system-processes': 'ps aux --sort=-%mem | head -15',
+  'network-status': 'ss -tlnp | grep -E "(3000|80|443|22|5432)"',
+
+  // Application Commands
   'prisma-generate': 'cd /var/www/omnex-core && npx prisma generate --schema=prisma/core.schema.prisma && npx prisma generate --schema=prisma/tenant.schema.prisma',
   'clear-cache': 'cd /var/www/omnex-core && rm -rf .next/cache && echo "Cache cleared"',
   'node-version': 'node -v && npm -v',
+
+  // Logs
+  'nginx-logs': 'tail -50 /var/log/nginx/error.log 2>/dev/null || echo "No nginx error logs"',
+  'system-logs': 'journalctl -n 50 --no-pager',
 };
 
 export async function GET(request: NextRequest) {
