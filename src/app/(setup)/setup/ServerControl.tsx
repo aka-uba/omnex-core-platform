@@ -119,7 +119,7 @@ export function ServerControl() {
       <Paper p="xl" withBorder>
         <Stack gap="md">
           <Group>
-            <IconKey size={24} />
+            <IconKey size={24} className="tabler-icon tabler-icon-key" />
             <Title order={3}>Sunucu Yönetimi - Kimlik Doğrulama</Title>
           </Group>
           <Text c="dimmed">
@@ -134,7 +134,7 @@ export function ServerControl() {
             type="password"
           />
           {error && (
-            <Alert color="red" icon={<IconX size={18} />}>
+            <Alert color="red" icon={<IconX size={18} className="tabler-icon tabler-icon-x" />}>
               {error}
             </Alert>
           )}
@@ -153,13 +153,13 @@ export function ServerControl() {
         <Paper p="md" withBorder>
           <Group mb="md" justify="space-between">
             <Group>
-              <IconServer size={20} />
+              <IconServer size={20} className="tabler-icon tabler-icon-server" />
               <Title order={4}>PM2 Süreçleri</Title>
             </Group>
             <Button
               variant="subtle"
               size="xs"
-              leftSection={<IconRefresh size={14} />}
+              leftSection={<IconRefresh size={14} className="tabler-icon tabler-icon-refresh" />}
               onClick={() => executeCommand('pm2-status')}
               loading={loading === 'pm2-status'}
             >
@@ -202,7 +202,7 @@ export function ServerControl() {
       {/* Command Buttons */}
       <Paper p="md" withBorder>
         <Group mb="md">
-          <IconTerminal size={20} />
+          <IconTerminal size={20} className="tabler-icon tabler-icon-terminal" />
           <Title order={4}>Sunucu Komutları</Title>
         </Group>
         <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="sm">
@@ -224,7 +224,7 @@ export function ServerControl() {
 
       {/* Error Alert */}
       {error && (
-        <Alert color="red" icon={<IconX size={18} />} withCloseButton onClose={() => setError(null)}>
+        <Alert color="red" icon={<IconX size={18} className="tabler-icon tabler-icon-x" />} withCloseButton onClose={() => setError(null)}>
           {error}
         </Alert>
       )}
@@ -234,7 +234,7 @@ export function ServerControl() {
         <Paper p="md" withBorder>
           <Group mb="md" justify="space-between">
             <Group>
-              <IconTerminal size={20} />
+              <IconTerminal size={20} className="tabler-icon tabler-icon-terminal" />
               <Title order={4}>Komut Çıktısı</Title>
             </Group>
             <Group>
