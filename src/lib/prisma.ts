@@ -14,7 +14,9 @@ export const prisma =
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// Always use singleton in both development AND production
+// to prevent connection pool exhaustion and memory leaks
+globalForPrisma.prisma = prisma;
 
 
 

@@ -18,8 +18,8 @@ export const corePrisma =
     log: process.env.NODE_ENV === 'development' ? ['error'] : ['error'], // Disabled query logging for performance
   });
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForCorePrisma.corePrisma = corePrisma;
-}
+// Always use singleton in both development AND production
+// to prevent connection pool exhaustion and memory leaks
+globalForCorePrisma.corePrisma = corePrisma;
 
 

@@ -1,18 +1,17 @@
 /**
  * Menu Pages Checker API
- * 
+ *
  * GET /api/menu-management/check-pages
- * 
+ *
  * Bu endpoint menülerdeki href değerlerini kontrol eder ve
  * [locale] klasöründe karşılık gelen sayfaların olup olmadığını kontrol eder.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '.prisma/tenant-client';
 import { verifyAuth } from '@/lib/auth/jwt';
+import { withTenant } from '@/lib/api/withTenant';
 import fs from 'fs';
 import path from 'path';
-const prisma = new PrismaClient();
 
 interface MenuItemCheck {
   id: string;
@@ -26,16 +25,16 @@ interface MenuItemCheck {
 }
 
 export async function GET(request: NextRequest) {
-  try {
-    // Verify authentication
-    const authResult = await verifyAuth(request);
-    if (!authResult.valid || !authResult.payload) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+  // Verify authentication first
+  const authResult = await verifyAuth(request);
+  if (!authResult.valid || !authResult.payload) {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
 
+  return withTenant(request, async (prisma) => {
     const appLocalePath = path.join(process.cwd(), 'src/app/[locale]');
     const results: MenuItemCheck[] = [];
 
@@ -70,7 +69,7 @@ export async function GET(request: NextRequest) {
     // Recursive function to check all menu items
     function checkMenuItem(item: any, menuName: string, menuId: string, locale: string = 'tr') {
       const href = item.href;
-      
+
       // Skip dynamic routes like [id], [slug]
       if (href.includes('[') && href.includes(']')) {
         return;
@@ -96,7 +95,7 @@ export async function GET(request: NextRequest) {
 
       // Remove leading slash for path construction
       const relativePath = cleanHref.startsWith('/') ? cleanHref.slice(1) : cleanHref;
-      
+
       // Check for page.tsx
       const pageFilePath = path.join(appLocalePath, relativePath, 'page.tsx');
       if (fs.existsSync(pageFilePath)) {
@@ -199,17 +198,5 @@ export async function GET(request: NextRequest) {
         allResults: results,
       },
     });
-  } catch (error) {
-    console.error('Error checking menu pages:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Failed to check menu pages',
-      },
-      { status: 500 }
-    );
-  } finally {
-    await prisma.$disconnect();
-  }
+  }, { required: true, module: 'menu-management' });
 }
-
