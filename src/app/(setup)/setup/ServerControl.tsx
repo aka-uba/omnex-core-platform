@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Paper, Stack, Title, Text, Badge, Group, Code, Alert, Button, Table, Progress, TextInput, SimpleGrid, Card, Loader } from '@mantine/core';
-import { IconServer, IconRefresh, IconPlayerPlay, IconPlayerStop, IconTerminal, IconCheck, IconX, IconKey } from '@tabler/icons-react';
+import { IconServer, IconRefresh, IconPlayerPlay, IconPlayerStop, IconTerminal, IconCheck, IconX, IconKey, IconNetwork, IconDatabase, IconFileText } from '@tabler/icons-react';
 
 interface PM2Process {
   name: string;
@@ -23,14 +23,50 @@ interface CommandResult {
   timestamp?: string;
 }
 
-const COMMANDS = [
-  { id: 'pm2-status', label: 'PM2 Durumu', icon: IconServer, color: 'blue' },
-  { id: 'pm2-restart', label: 'PM2 Restart', icon: IconRefresh, color: 'orange' },
-  { id: 'pm2-logs', label: 'PM2 Logları', icon: IconTerminal, color: 'gray' },
-  { id: 'system-info', label: 'Sistem Bilgisi', icon: IconServer, color: 'cyan' },
-  { id: 'prisma-generate', label: 'Prisma Generate', icon: IconRefresh, color: 'violet' },
-  { id: 'clear-cache', label: 'Cache Temizle', icon: IconX, color: 'red' },
-  { id: 'node-version', label: 'Node Versiyonu', icon: IconCheck, color: 'green' },
+const COMMAND_GROUPS = [
+  {
+    title: 'PM2 Yönetimi',
+    commands: [
+      { id: 'pm2-status', label: 'PM2 Durumu', icon: IconServer, color: 'blue' },
+      { id: 'pm2-restart', label: 'PM2 Restart', icon: IconRefresh, color: 'orange' },
+      { id: 'pm2-logs', label: 'PM2 Logları', icon: IconTerminal, color: 'gray' },
+    ]
+  },
+  {
+    title: 'Nginx',
+    commands: [
+      { id: 'nginx-status', label: 'Nginx Durumu', icon: IconNetwork, color: 'blue' },
+      { id: 'nginx-restart', label: 'Nginx Restart', icon: IconRefresh, color: 'orange' },
+      { id: 'nginx-reload', label: 'Nginx Reload', icon: IconRefresh, color: 'green' },
+      { id: 'nginx-logs', label: 'Nginx Logları', icon: IconFileText, color: 'gray' },
+    ]
+  },
+  {
+    title: 'Veritabanı & SSH',
+    commands: [
+      { id: 'postgres-status', label: 'PostgreSQL Durumu', icon: IconDatabase, color: 'blue' },
+      { id: 'postgres-restart', label: 'PostgreSQL Restart', icon: IconRefresh, color: 'orange' },
+      { id: 'ssh-status', label: 'SSH Durumu', icon: IconTerminal, color: 'blue' },
+      { id: 'ssh-restart', label: 'SSH Restart', icon: IconRefresh, color: 'orange' },
+    ]
+  },
+  {
+    title: 'Sistem',
+    commands: [
+      { id: 'system-info', label: 'Sistem Bilgisi', icon: IconServer, color: 'cyan' },
+      { id: 'system-processes', label: 'Süreçler', icon: IconServer, color: 'gray' },
+      { id: 'network-status', label: 'Port Durumu', icon: IconNetwork, color: 'teal' },
+      { id: 'system-logs', label: 'Sistem Logları', icon: IconFileText, color: 'gray' },
+    ]
+  },
+  {
+    title: 'Uygulama',
+    commands: [
+      { id: 'prisma-generate', label: 'Prisma Generate', icon: IconRefresh, color: 'violet' },
+      { id: 'clear-cache', label: 'Cache Temizle', icon: IconX, color: 'red' },
+      { id: 'node-version', label: 'Node Versiyonu', icon: IconCheck, color: 'green' },
+    ]
+  },
 ];
 
 export function ServerControl() {
@@ -199,28 +235,30 @@ export function ServerControl() {
         </Paper>
       )}
 
-      {/* Command Buttons */}
-      <Paper p="md" withBorder>
-        <Group mb="md">
-          <IconTerminal size={20} className="tabler-icon tabler-icon-terminal" />
-          <Title order={4}>Sunucu Komutları</Title>
-        </Group>
-        <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="sm">
-          {COMMANDS.map((cmd) => (
-            <Button
-              key={cmd.id}
-              variant="light"
-              color={cmd.color}
+      {/* Command Buttons - Grouped */}
+      {COMMAND_GROUPS.map((group) => (
+        <Paper key={group.title} p="md" withBorder>
+          <Group mb="md">
+            <IconTerminal size={20} className="tabler-icon tabler-icon-terminal" />
+            <Title order={4}>{group.title}</Title>
+          </Group>
+          <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="sm">
+            {group.commands.map((cmd) => (
+              <Button
+                key={cmd.id}
+                variant="light"
+                color={cmd.color}
               leftSection={loading === cmd.id ? <Loader size={16} /> : <cmd.icon size={16} />}
               onClick={() => executeCommand(cmd.id)}
               disabled={loading !== null}
               fullWidth
             >
-              {cmd.label}
-            </Button>
-          ))}
-        </SimpleGrid>
-      </Paper>
+                {cmd.label}
+              </Button>
+            ))}
+          </SimpleGrid>
+        </Paper>
+      ))}
 
       {/* Error Alert */}
       {error && (
