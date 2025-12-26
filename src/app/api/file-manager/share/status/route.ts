@@ -166,7 +166,6 @@ export async function startHttpServer(port: number, folderId: string | null, nex
             // Listen to stdout/stderr for both Windows and Unix
             serverProcess.stdout?.on('data', (data) => {
                 const output = data.toString();
-                console.log('[Share Server] stdout:', output);
                 // Check for both "Server started" and "SERVER_STARTED" messages
                 if ((output.includes('Server started') || output.includes('SERVER_STARTED') || output.includes('listening')) && !hasResolved) {
                     hasResolved = true;
@@ -220,7 +219,6 @@ export async function startHttpServer(port: number, folderId: string | null, nex
                     // Check if process is still alive
                     if (serverProcess && !serverProcess.killed && serverProcess.exitCode === null) {
                         // Process is still running, assume it started successfully
-                        console.log('[Share Server] Process is running (timeout reached, assuming started)');
                         hasResolved = true;
                         // On Windows, unref the process AFTER we've confirmed it started
                         if (isWindows && serverProcess) {

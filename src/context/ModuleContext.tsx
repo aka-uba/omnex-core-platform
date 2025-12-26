@@ -5,11 +5,15 @@ import type { ModuleContextValue, ModuleRecord, ModuleEvent } from '@/lib/module
 
 const ModuleContext = createContext<ModuleContextValue | undefined>(undefined);
 
+// Cache duration: 5 minutes (modules rarely change)
+const MODULE_CACHE_DURATION = 5 * 60 * 1000;
+
 export function ModuleProvider({ children }: { children: React.ReactNode }) {
   const [modules, setModules] = useState<ModuleRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [eventListeners, setEventListeners] = useState<Set<(event: ModuleEvent) => void>>(new Set());
+  const lastFetchTime = React.useRef<number>(0);
 
   const emitEvent = useCallback((event: ModuleEvent) => {
     eventListeners.forEach((listener) => {
@@ -21,7 +25,13 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
     });
   }, [eventListeners]);
 
-  const refreshModules = useCallback(async () => {
+  const refreshModules = useCallback(async (force = false) => {
+    // Skip if cache is still valid (unless forced)
+    const now = Date.now();
+    if (!force && lastFetchTime.current > 0 && (now - lastFetchTime.current) < MODULE_CACHE_DURATION) {
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -31,6 +41,7 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
       }
       const data = await response.json();
       setModules(data.modules || []);
+      lastFetchTime.current = now;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
@@ -45,20 +56,9 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
         method: 'POST',
       });
       
-      // Always refresh modules, even on error, because backend might have succeeded
-      // This ensures UI is in sync with actual state
-      // Use a silent refresh that doesn't show loading state
-      try {
-        const refreshResponse = await fetch('/api/modules');
-        if (refreshResponse.ok) {
-          const data = await refreshResponse.json();
-          setModules(data.modules || []);
-        }
-      } catch (refreshError) {
-        // Silently fail refresh - not critical
-        console.warn('Failed to refresh modules after activation:', refreshError);
-      }
-      
+      // Force refresh modules after activation
+      await refreshModules(true);
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || error.error || 'Failed to activate module');
@@ -88,20 +88,9 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
         method: 'POST',
       });
       
-      // Always refresh modules, even on error, because backend might have succeeded
-      // This ensures UI is in sync with actual state
-      // Use a silent refresh that doesn't show loading state
-      try {
-        const refreshResponse = await fetch('/api/modules');
-        if (refreshResponse.ok) {
-          const data = await refreshResponse.json();
-          setModules(data.modules || []);
-        }
-      } catch (refreshError) {
-        // Silently fail refresh - not critical
-        console.warn('Failed to refresh modules after deactivation:', refreshError);
-      }
-      
+      // Force refresh modules after deactivation
+      await refreshModules(true);
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || error.error || 'Failed to deactivate module');
@@ -141,7 +130,7 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
       }
 
       const data = await response.json();
-      await refreshModules();
+      await refreshModules(true);
       emitEvent({
         type: 'install',
         module: data.module.slug,
@@ -164,7 +153,7 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
         const error = await response.json();
         throw new Error(error.message || 'Failed to uninstall module');
       }
-      await refreshModules();
+      await refreshModules(true);
       emitEvent({
         type: 'uninstall',
         module: slug,
@@ -199,7 +188,7 @@ export function ModuleProvider({ children }: { children: React.ReactNode }) {
   // Listen for modules-updated event (e.g., when module icon changes)
   useEffect(() => {
     const handleModulesUpdated = () => {
-      refreshModules();
+      refreshModules(true); // Force refresh on explicit event
     };
 
     window.addEventListener('modules-updated', handleModulesUpdated);

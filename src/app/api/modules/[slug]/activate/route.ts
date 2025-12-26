@@ -24,7 +24,6 @@ async function createModuleDirectoriesForTenants(moduleSlug: string): Promise<vo
       // Create directory if it doesn't exist
       if (!fs.existsSync(moduleDir)) {
         fs.mkdirSync(moduleDir, { recursive: true });
-        console.log(`Created module directory: ${moduleDir}`);
       }
     }
   } catch (error) {

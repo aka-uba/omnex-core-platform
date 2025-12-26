@@ -54,7 +54,6 @@ export async function GET(
                         if (role) {
                             roleId = role.id;
                         }
-                        console.log('[menu-resolver] Role lookup:', { roleName, roleId, found: !!role });
                     } catch (roleError) {
                         // If role lookup fails, continue without roleId
                         console.warn('Failed to lookup role ID from role name:', roleError);
@@ -95,8 +94,6 @@ export async function GET(
                 let location = await tenantPrisma.menuLocation.findFirst({
                     where: locationWhere,
                 });
-
-                console.log('[menu-resolver] Location lookup:', { locationName, found: !!location, locationId: location?.id });
 
         // If location doesn't exist, try to create default locations
         if (!location) {
@@ -181,8 +178,6 @@ export async function GET(
                     assignmentWhere.tenantId = null;
                 }
 
-                console.log('[menu-resolver] Assignment query:', { locationId: location.id, tenantId, assignmentWhere });
-
                 const assignments = await tenantPrisma.menuLocationAssignment.findMany({
                     where: assignmentWhere,
             include: {
@@ -214,23 +209,11 @@ export async function GET(
         // Find the best matching assignment based on priority
         let selectedAssignment = null;
 
-        // Debug log all assignments
-        console.log('[menu-resolver] All assignments:', assignments.map(a => ({
-            type: a.assignmentType,
-            assignmentId: a.assignmentId,
-            menuId: a.menuId,
-            menuName: a.menu?.name
-        })));
-        console.log('[menu-resolver] Looking for:', { userId, roleId, branchId });
-
         // 1. Check for user-specific assignment
         if (userId) {
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'user' && a.assignmentId === userId
             );
-            if (selectedAssignment) {
-                console.log('[menu-resolver] Found user assignment');
-            }
         }
 
         // 2. Check for role-specific assignment
@@ -238,9 +221,6 @@ export async function GET(
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'role' && a.assignmentId === roleId
             );
-            if (selectedAssignment) {
-                console.log('[menu-resolver] Found role assignment by roleId');
-            }
         }
 
         // 2b. Fallback: Check for role-specific assignment by role name (for backwards compatibility)
@@ -248,9 +228,6 @@ export async function GET(
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'role' && a.assignmentId === roleName
             );
-            if (selectedAssignment) {
-                console.log('[menu-resolver] Found role assignment by roleName');
-            }
         }
 
         // 3. Check for branch-specific assignment
@@ -265,9 +242,6 @@ export async function GET(
             selectedAssignment = assignments.find(
                 a => a.assignmentType === 'default'
             );
-            if (selectedAssignment) {
-                console.log('[menu-resolver] Falling back to default assignment');
-            }
         }
 
                 if (!selectedAssignment || !selectedAssignment.menu) {
@@ -340,7 +314,7 @@ export async function GET(
                 // Enrich filtered items with current module icons
                 const enrichedItems = enrichWithModuleIcons(filteredItems);
 
-                return successResponse({
+                const response = successResponse({
                     menu: {
                         ...selectedAssignment.menu,
                         items: enrichedItems,
@@ -358,6 +332,11 @@ export async function GET(
                         priority: selectedAssignment.priority,
                     },
                 });
+
+                // Add cache headers - menu data rarely changes (5 minutes cache)
+                response.headers.set('Cache-Control', 'private, max-age=300, stale-while-revalidate=60');
+
+                return response;
             } catch (error) {
                 const errorMessage = error instanceof Error ? error.message : 'Failed to resolve menu';
                 const isTenantError = errorMessage.includes('Tenant') || errorMessage.includes('tenant');

@@ -20,8 +20,10 @@ export const metadata: Metadata = {
 };
 
 // Route segment config - optimize caching
-export const dynamic = 'force-dynamic'; // Layout needs to be dynamic for tenant resolution
-export const revalidate = 0; // Disable static generation for layout
+// Use 'auto' to allow Next.js to determine best caching strategy
+// The layout itself is mostly static, dynamic data comes from client components
+export const dynamic = 'auto';
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function RootLayout({
   children,
