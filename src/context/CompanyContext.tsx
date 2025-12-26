@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface CompanyData {
@@ -53,6 +54,13 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const hasFetched = useRef(false);
+  const pathname = usePathname();
+
+  // Skip fetching on auth pages (login, register, welcome)
+  const isAuthPage = pathname?.includes('/login') ||
+                     pathname?.includes('/register') ||
+                     pathname?.includes('/welcome') ||
+                     pathname?.includes('/auth/');
 
   const fetchCompanyAndSettings = useCallback(async () => {
     try {
@@ -114,12 +122,18 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Only fetch once on mount
+    // Skip fetching on auth pages - no need for company data there
+    if (isAuthPage) {
+      setLoading(false);
+      return;
+    }
+
+    // Only fetch once on mount (for non-auth pages)
     if (!hasFetched.current) {
       hasFetched.current = true;
       fetchCompanyAndSettings();
     }
-  }, [fetchCompanyAndSettings]);
+  }, [fetchCompanyAndSettings, isAuthPage]);
 
   const currency = settings?.currency || DEFAULT_CURRENCY;
 

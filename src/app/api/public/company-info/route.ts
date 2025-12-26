@@ -73,7 +73,6 @@ export async function GET(request: NextRequest) {
     }
 
     if (!tenant) {
-      console.log('[company-info] No tenant found');
       return NextResponse.json({
         success: true,
         data: {
@@ -82,8 +81,6 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-
-    console.log('[company-info] Tenant found:', { id: tenant.id, name: tenant.name, slug: tenant.slug });
 
     // Try to get company logo from tenant database
     let logo = null;
@@ -99,7 +96,6 @@ export async function GET(request: NextRequest) {
       });
 
       if (!fullTenant || !fullTenant.dbName) {
-        console.log('[company-info] Could not get tenant dbName');
         throw new Error('Tenant dbName not found');
       }
 
@@ -144,7 +140,6 @@ export async function GET(request: NextRequest) {
                 const logoFile = files.find(f => f.startsWith('logo-') && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(f));
                 if (logoFile) {
                   logo = `/uploads/companies/${company.id}/${logoFile}`;
-                  console.log('[company-info] Logo found on disk (by company ID):', logo);
                 }
               } catch (fsErr) {
                 console.error('[company-info] Error reading upload dir:', fsErr);
@@ -162,7 +157,6 @@ export async function GET(request: NextRequest) {
                 const logoFile = files.find(f => f.startsWith('logo-') && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(f));
                 if (logoFile) {
                   logo = `/uploads/companies/${folder}/${logoFile}`;
-                  console.log('[company-info] Logo found on disk (scanned folders):', logo);
                   break;
                 }
               }
@@ -171,14 +165,12 @@ export async function GET(request: NextRequest) {
             }
           }
         }
-        console.log('[company-info] Company found:', { id: company.id, name: company.name, logo: company.logo, logoFile: company.logoFile, resolvedLogo: logo });
       }
     } catch (err) {
       // If tenant DB access fails, use tenant name
       console.error('Failed to fetch company from tenant DB:', err);
     }
 
-    console.log('[company-info] Returning:', { name: companyName, logo: logo });
     return NextResponse.json({
       success: true,
       data: {
