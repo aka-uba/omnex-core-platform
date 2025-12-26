@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/core-client';
+import { corePrisma } from '@/lib/corePrisma';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,21 +13,33 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Test connection
-    const prisma = new PrismaClient({
-      datasources: {
-        db: { url: databaseUrl },
-      },
-    });
+    // Parse database name from URL
+    const match = databaseUrl.match(/postgresql:\/\/[^/]+\/([^?]+)/);
+    const dbName = match?.[1] || '';
 
-    await prisma.$connect();
-    await prisma.$queryRaw`SELECT 1`;
-    await prisma.$disconnect();
+    if (!dbName) {
+      return NextResponse.json({
+        success: false,
+        error: 'Invalid database URL format',
+      }, { status: 400 });
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: `${type} database connection successful`,
-    });
+    // Test connection by checking if database exists
+    const result = await corePrisma.$queryRaw<Array<{ exists: boolean }>>`
+      SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = ${dbName}) as exists
+    `;
+
+    if (result[0]?.exists) {
+      return NextResponse.json({
+        success: true,
+        message: `${type} database connection successful`,
+      });
+    } else {
+      return NextResponse.json({
+        success: false,
+        error: `Database '${dbName}' does not exist`,
+      }, { status: 400 });
+    }
   } catch (error: any) {
     return NextResponse.json({
       success: false,
@@ -36,21 +48,3 @@ export async function POST(request: NextRequest) {
     }, { status: 500 });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

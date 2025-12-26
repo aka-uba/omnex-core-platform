@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/core-client';
-
+import { corePrisma } from '@/lib/corePrisma';
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,31 +44,25 @@ export async function GET(request: NextRequest) {
     // Database status
     const databases: any[] = [];
 
-    // Check core database
+    // Check core database using singleton
     if (coreDatabaseUrl) {
       try {
-        const prisma = new PrismaClient({
-          datasources: {
-            db: { url: coreDatabaseUrl },
-          },
-        });
-        await prisma.$connect();
-        const result = await prisma.$queryRaw<Array<{ count: bigint }>>`
-          SELECT COUNT(*) as count FROM information_schema.tables 
+        const result = await corePrisma.$queryRaw<Array<{ count: bigint }>>`
+          SELECT COUNT(*) as count FROM information_schema.tables
           WHERE table_schema = 'public'
         `;
         const tableCount = Number(result[0]?.count || 0);
-        
+
         // Get tenant count and total record count
         let tenantCount = 0;
         let totalRecords = 0;
         try {
-          tenantCount = await prisma.$queryRaw<Array<{ count: bigint }>>`
+          tenantCount = await corePrisma.$queryRaw<Array<{ count: bigint }>>`
             SELECT COUNT(*) as count FROM "Tenant"
           `.then(r => Number(r[0]?.count || 0));
-          
+
           // Get total record count from all tables
-          const recordCountResult = await prisma.$queryRaw<Array<{ count: bigint }>>`
+          const recordCountResult = await corePrisma.$queryRaw<Array<{ count: bigint }>>`
             SELECT SUM(n_tup_ins - n_tup_del) as count
             FROM pg_stat_user_tables
             WHERE schemaname = 'public'
@@ -78,8 +71,6 @@ export async function GET(request: NextRequest) {
         } catch (e) {
           // Table might not exist yet
         }
-
-        await prisma.$disconnect();
 
         databases.push({
           name: 'Core Database',
@@ -102,64 +93,41 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Check tenant database
+    // Check tenant database - use raw query from core since we're just checking connectivity
     if (tenantDatabaseUrl) {
       try {
-        const prisma = new PrismaClient({
-          datasources: {
-            db: { url: tenantDatabaseUrl },
-          },
-        });
-        await prisma.$connect();
-        const result = await prisma.$queryRaw<Array<{ count: bigint }>>`
-          SELECT COUNT(*) as count FROM information_schema.tables 
-          WHERE table_schema = 'public'
+        // Parse tenant database name from URL
+        const tenantDbName = tenantDbInfo?.database?.split('?')[0] || 'tenant_omnexcore_2025';
+
+        // Check if database exists and get table count
+        const dbCheck = await corePrisma.$queryRaw<Array<{ exists: boolean }>>`
+          SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = ${tenantDbName}) as exists
         `;
-        const tableCount = Number(result[0]?.count || 0);
-        
-        // Check if database has any data by querying key tables directly
-        let hasData = false;
-        let totalRecords = 0;
 
-        // Check User table (most reliable indicator)
-        try {
-          const userCount = await prisma.$queryRaw<Array<{ count: bigint }>>`
-            SELECT COUNT(*) as count FROM "User"
-          `;
-          const count = Number(userCount[0]?.count || 0);
-          if (count > 0) {
-            hasData = true;
-            totalRecords += count;
-          }
-        } catch (e) {
-          // Table might not exist
+        if (dbCheck[0]?.exists) {
+          // Get table count from tenant database
+          const tableResult = await corePrisma.$queryRawUnsafe<Array<{ count: bigint }>>(
+            `SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema = 'public' AND table_catalog = '${tenantDbName}'`
+          );
+          const tableCount = Number(tableResult[0]?.count || 0);
+
+          databases.push({
+            name: 'Tenant Database',
+            status: 'connected',
+            url: tenantDatabaseUrl.replace(/:[^:@]+@/, ':****@'),
+            info: tenantDbInfo,
+            tables: tableCount,
+            isEmpty: tableCount === 0,
+          });
+        } else {
+          databases.push({
+            name: 'Tenant Database',
+            status: 'error',
+            error: 'Database does not exist',
+            url: tenantDatabaseUrl.replace(/:[^:@]+@/, ':****@'),
+            info: tenantDbInfo,
+          });
         }
-
-        // Also check Company table
-        try {
-          const companyCount = await prisma.$queryRaw<Array<{ count: bigint }>>`
-            SELECT COUNT(*) as count FROM "Company"
-          `;
-          const count = Number(companyCount[0]?.count || 0);
-          if (count > 0) {
-            hasData = true;
-            totalRecords += count;
-          }
-        } catch (e) {
-          // Table might not exist
-        }
-        
-        await prisma.$disconnect();
-
-        databases.push({
-          name: 'Tenant Database',
-          status: 'connected',
-          url: tenantDatabaseUrl.replace(/:[^:@]+@/, ':****@'), // Hide password
-          info: tenantDbInfo,
-          tables: tableCount,
-          totalRecords: totalRecords > 0 ? totalRecords : undefined,
-          isEmpty: !hasData && tableCount > 0, // Tables exist but no data
-        });
       } catch (error: any) {
         databases.push({
           name: 'Tenant Database',
@@ -171,21 +139,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // PostgreSQL version (if available)
+    // PostgreSQL version
     let postgresVersion = 'Unknown';
     if (coreDatabaseUrl) {
       try {
-        const prisma = new PrismaClient({
-          datasources: {
-            db: { url: coreDatabaseUrl },
-          },
-        });
-        await prisma.$connect();
-        const result = await prisma.$queryRaw<Array<{ version: string }>>`
+        const result = await corePrisma.$queryRaw<Array<{ version: string }>>`
           SELECT version()
         `;
         postgresVersion = result[0]?.version || 'Unknown';
-        await prisma.$disconnect();
       } catch (e) {
         // Ignore
       }
@@ -214,5 +175,3 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-
-
