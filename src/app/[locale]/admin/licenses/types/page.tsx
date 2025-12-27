@@ -22,6 +22,7 @@ import {
     IconTrash,
     IconDotsVertical,
     IconStar,
+    IconShieldCheck,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -147,6 +148,13 @@ export default function LicenseTypesPage() {
             <CentralPageHeader
                 title={t('licenses.types.title')}
                 description={t('licenses.types.description')}
+                namespace="global"
+                icon={<IconShieldCheck size={32} />}
+                breadcrumbs={[
+                    { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+                    { label: 'licenses.title', href: `/${locale}/admin/licenses`, namespace: 'global' },
+                    { label: 'licenses.types.title', namespace: 'global' },
+                ]}
                 actions={[
                     {
                         label: t('licenses.types.newType'),

@@ -124,7 +124,7 @@ export function CreateUserPageClient({ locale }: { locale: string }) {
         title: t('create.title'),
         message: tGlobal('notifications.success.userCreated'),
       });
-      router.push(`/${locale}/users`);
+      router.push(`/${locale}/management/users`);
     } catch (error) {
       showToast({
         type: 'error',

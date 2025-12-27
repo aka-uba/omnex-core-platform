@@ -156,7 +156,7 @@ export function showToast({
         opacity: 0.85,
       },
       icon: {
-        color: `var(--toast-${type}-border)`,
+        color: `var(--toast-${type}-icon)`,
       },
       closeButton: {
         color: `var(--toast-${type}-text)`,

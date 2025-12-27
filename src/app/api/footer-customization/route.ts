@@ -31,9 +31,14 @@ export async function GET(request: NextRequest) {
                 });
 
                 if (!footer) {
+                    // Get company name from company table for default settings
+                    const company = await tenantPrisma.company.findFirst({
+                        select: { name: true },
+                        orderBy: { createdAt: 'asc' },
+                    });
                     // Return default settings if not found
                     return successResponse({
-                        companyName: tenantContext.name || '',
+                        companyName: company?.name || tenantContext.name || '',
                         companyNameMode: 'dynamic',
                         logo: '',
                         description: '',
@@ -48,10 +53,15 @@ export async function GET(request: NextRequest) {
                     });
                 }
 
-                // If companyNameMode is dynamic and companyName is empty, use tenant name
+                // If companyNameMode is dynamic, get company name from company table
                 const footerData = { ...footer };
-                if (footerData.companyNameMode === 'dynamic' && !footerData.companyName) {
-                    footerData.companyName = tenantContext.name || '';
+                if (footerData.companyNameMode === 'dynamic') {
+                    // Try to get company name from company table first
+                    const company = await tenantPrisma.company.findFirst({
+                        select: { name: true },
+                        orderBy: { createdAt: 'asc' },
+                    });
+                    footerData.companyName = company?.name || tenantContext.name || '';
                 }
 
                 // Convert old format (object) to new format (string) if needed

@@ -267,6 +267,11 @@ model Tenant {
   notes    String?
   analysis Json? // Analiz notları
 
+  // Dosya yönetimi (Merkezi Dosya Yönetimi'nden)
+  images     String[] // Resimler
+  coverImage String?  // Kapak resmi
+  documents  String[] // Belgeler
+
   isActive Boolean @default(true)
 
   createdAt DateTime @default(now())

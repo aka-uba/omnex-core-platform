@@ -19,7 +19,7 @@ export function SecurityTab({ settings, onSave, saving }: SecurityTabProps) {
         sessionTimeout: settings.sessionTimeout || 30,
         maxConcurrentSessions: settings.maxConcurrentSessions || 5,
         rememberMeDuration: settings.rememberMeDuration || 30,
-        
+
         // Password Policy
         passwordMinLength: settings.passwordMinLength || 8,
         passwordRequireUppercase: settings.passwordRequireUppercase ?? true,
@@ -27,20 +27,42 @@ export function SecurityTab({ settings, onSave, saving }: SecurityTabProps) {
         passwordRequireNumbers: settings.passwordRequireNumbers ?? true,
         passwordRequireSpecial: settings.passwordRequireSpecial ?? false,
         passwordExpirationDays: settings.passwordExpirationDays || null,
-        
+
         // Two-Factor Authentication
         twoFactorEnabled: settings.twoFactorEnabled ?? false,
         twoFactorRequiredForAdmins: settings.twoFactorRequiredForAdmins ?? false,
-        
+
         // Login Security
         maxLoginAttempts: settings.maxLoginAttempts || 5,
         lockoutDuration: settings.lockoutDuration || 15,
         ipWhitelist: Array.isArray(settings.ipWhitelist) ? settings.ipWhitelist.join('\n') : '',
-        
+
         // API Security
         apiRateLimit: settings.apiRateLimit || 100,
         apiKeyExpiration: settings.apiKeyExpiration || null,
     });
+
+    // Update formData when settings prop changes (e.g., after API fetch)
+    React.useEffect(() => {
+        setFormData({
+            sessionTimeout: settings.sessionTimeout || 30,
+            maxConcurrentSessions: settings.maxConcurrentSessions || 5,
+            rememberMeDuration: settings.rememberMeDuration || 30,
+            passwordMinLength: settings.passwordMinLength || 8,
+            passwordRequireUppercase: settings.passwordRequireUppercase ?? true,
+            passwordRequireLowercase: settings.passwordRequireLowercase ?? true,
+            passwordRequireNumbers: settings.passwordRequireNumbers ?? true,
+            passwordRequireSpecial: settings.passwordRequireSpecial ?? false,
+            passwordExpirationDays: settings.passwordExpirationDays || null,
+            twoFactorEnabled: settings.twoFactorEnabled ?? false,
+            twoFactorRequiredForAdmins: settings.twoFactorRequiredForAdmins ?? false,
+            maxLoginAttempts: settings.maxLoginAttempts || 5,
+            lockoutDuration: settings.lockoutDuration || 15,
+            ipWhitelist: Array.isArray(settings.ipWhitelist) ? settings.ipWhitelist.join('\n') : '',
+            apiRateLimit: settings.apiRateLimit || 100,
+            apiKeyExpiration: settings.apiKeyExpiration || null,
+        });
+    }, [settings]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

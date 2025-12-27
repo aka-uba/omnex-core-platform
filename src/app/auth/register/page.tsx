@@ -147,6 +147,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
   // Sabit branding yollarını kullan - API çağrısı yapma
   const [logoExists, setLogoExists] = useState(true);
+  const [companyName, setCompanyName] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -158,6 +159,16 @@ export default function RegisterPage() {
     img.onload = () => setLogoExists(true);
     img.onerror = () => setLogoExists(false);
     img.src = BRANDING_PATHS.logo;
+
+    // Firma adını API'den al
+    fetch('/api/public/company-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.name) {
+          setCompanyName(data.data.name);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const t = (key: string): string => {
@@ -274,7 +285,7 @@ export default function RegisterPage() {
 
         <Box className={classes.footer}>
           <Text size="xs" c="dimmed">
-            Copyright {new Date().getFullYear()}. All rights reserved.
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
           </Text>
         </Box>
       </div>
@@ -418,7 +429,7 @@ export default function RegisterPage() {
 
       <Box className={classes.footer}>
         <Text size="xs" c="dimmed">
-          Copyright {new Date().getFullYear()}. All rights reserved.
+          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
         </Text>
       </Box>
     </div>

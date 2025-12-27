@@ -17,7 +17,6 @@ import {
     SimpleGrid,
     Progress,
     Tabs,
-    Loader,
 } from '@mantine/core';
 import {
     IconServer,
@@ -36,6 +35,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { authenticatedPost, authenticatedFetchJSON } from '@/lib/api/authenticatedFetch';
 import { useQuery } from '@tanstack/react-query';
 import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
+import { CachePageSkeleton } from './CachePageSkeleton';
 
 interface CacheDirectory {
     name: string;
@@ -374,6 +374,11 @@ export default function CacheManagementPage() {
         },
     ];
 
+    // Initial loading - show full page skeleton
+    if (isLoading) {
+        return <CachePageSkeleton />;
+    }
+
     return (
         <Container py="xl">
             <CentralPageHeader
@@ -466,9 +471,7 @@ export default function CacheManagementPage() {
                     </Tabs.List>
 
                     <Tabs.Panel value="directories" pt="md">
-                        {isLoading ? (
-                            <Loader />
-                        ) : error ? (
+                        {error ? (
                             <Alert color="red" title={t('common.error')}>
                                 {error instanceof Error ? error.message : t('optimization.cache.loadError')}
                             </Alert>
@@ -513,9 +516,7 @@ export default function CacheManagementPage() {
                             </Button>
                         </Group>
 
-                        {isLoading ? (
-                            <Loader />
-                        ) : error ? (
+                        {error ? (
                             <Alert color="red" title={t('common.error')}>
                                 {error instanceof Error ? error.message : t('optimization.cache.loadError')}
                             </Alert>

@@ -1,6 +1,6 @@
 /**
  * Tenant Rotation API
- * 
+ *
  * POST /api/tenants/[id]/rotate - Rotate tenant to new year database
  */
 
@@ -8,6 +8,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { corePrisma } from '@/lib/corePrisma';
 import { getTenantConfig, generateTenantDbName, getTenantDatabaseUrl } from '@/config/tenant.config';
 import { execSync } from 'child_process';
+
+/**
+ * Sanitize name to prevent command injection
+ * Only allows alphanumeric characters and underscores
+ */
+function sanitizeName(name: string): string {
+  const sanitized = name.replace(/[^a-zA-Z0-9_]/g, '');
+  if (!/^[a-zA-Z_]/.test(sanitized)) {
+    return `db_${sanitized}`;
+  }
+  return sanitized.substring(0, 63);
+}
 
 /**
  * POST /api/tenants/[id]/rotate
@@ -20,7 +32,19 @@ export async function POST(
   try {
     const resolvedParams = await params;
     const body = await request.json();
-    const year = body.year || new Date().getFullYear() + 1;
+    const rawYear = body.year || new Date().getFullYear() + 1;
+
+    // SECURITY: Validate year is a number
+    const year = typeof rawYear === 'number' ? rawYear : parseInt(String(rawYear), 10);
+    if (isNaN(year) || year < 2000 || year > 2100) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid year value',
+        },
+        { status: 400 }
+      );
+    }
 
     // Get tenant from core DB
     const tenant = await corePrisma.tenant.findUnique({
@@ -49,8 +73,11 @@ export async function POST(
 
     const config = getTenantConfig();
 
-    // Generate new DB name
-    const newDbName = generateTenantDbName(tenant.slug, year);
+    // SECURITY: Sanitize tenant slug before generating DB name
+    const safeSlug = sanitizeName(tenant.slug);
+
+    // Generate new DB name (and sanitize again for extra safety)
+    const newDbName = sanitizeName(generateTenantDbName(safeSlug, year));
 
     // Check if new DB already exists
     const existingDbs = tenant.allDatabases || [];

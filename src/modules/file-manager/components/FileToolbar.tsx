@@ -141,7 +141,7 @@ export function FileToolbar({
             />
 
             {/* Filter Chips & Controls */}
-            <Group gap="md" wrap="wrap">
+            <Group gap="xs" wrap="wrap" style={{ rowGap: '0.5rem' }}>
                 {/* File Type Filter */}
                 <Menu position="bottom-start" withinPortal>
                     <Menu.Target>
@@ -247,8 +247,8 @@ export function FileToolbar({
                     </Menu.Dropdown>
                 </Menu>
 
-                {/* Spacer */}
-                <div style={{ flex: 1 }} />
+                {/* Spacer - hidden on mobile */}
+                <div style={{ flex: 1, minWidth: 0 }} className="hide-on-mobile" />
 
                 {/* Bulk Actions */}
                 {selectedCount > 0 && (

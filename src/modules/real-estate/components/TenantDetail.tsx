@@ -19,6 +19,7 @@ import {
   Image,
   Button,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   IconUser,
   IconCalendar,
@@ -53,6 +54,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
   const { data: tenant, isLoading, error } = useTenant(tenantId);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [downloadingImages, setDownloadingImages] = useState(false);
   const [downloadingDocs, setDownloadingDocs] = useState(false);
@@ -581,28 +583,28 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                 <Divider />
 
                 <Grid>
-                  <Grid.Col span={8}>
+                  <Grid.Col span={{ base: 6, sm: 8 }}>
                     <Text size="sm" c="dimmed">{t('form.coldRent')}</Text>
                   </Grid.Col>
-                  <Grid.Col span={4}>
+                  <Grid.Col span={{ base: 6, sm: 4 }}>
                     <Text size="sm" ta="right" fw={500}>
                       {sideCostSummary.coldRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                     </Text>
                   </Grid.Col>
 
-                  <Grid.Col span={8}>
+                  <Grid.Col span={{ base: 6, sm: 8 }}>
                     <Text size="sm" c="dimmed">{t('form.additionalCosts')}</Text>
                   </Grid.Col>
-                  <Grid.Col span={4}>
+                  <Grid.Col span={{ base: 6, sm: 4 }}>
                     <Text size="sm" ta="right" fw={500}>
                       {sideCostSummary.additionalCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                     </Text>
                   </Grid.Col>
 
-                  <Grid.Col span={8}>
+                  <Grid.Col span={{ base: 6, sm: 8 }}>
                     <Text size="sm" c="dimmed">{t('form.heatingCosts')}</Text>
                   </Grid.Col>
-                  <Grid.Col span={4}>
+                  <Grid.Col span={{ base: 6, sm: 4 }}>
                     <Text size="sm" ta="right" fw={500}>
                       {sideCostSummary.heatingCosts.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                     </Text>
@@ -612,10 +614,10 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                     <Divider my="xs" />
                   </Grid.Col>
 
-                  <Grid.Col span={8}>
+                  <Grid.Col span={{ base: 6, sm: 8 }}>
                     <Text size="sm" fw={600}>{t('sideCosts.totalRent')}</Text>
                   </Grid.Col>
-                  <Grid.Col span={4}>
+                  <Grid.Col span={{ base: 6, sm: 4 }}>
                     <Text size="sm" ta="right" fw={700} c="blue">
                       {sideCostSummary.warmRent.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                     </Text>
@@ -623,10 +625,10 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
 
                   {sideCostSummary.deposit > 0 && (
                     <>
-                      <Grid.Col span={8}>
+                      <Grid.Col span={{ base: 6, sm: 8 }}>
                         <Text size="sm" c="dimmed">{t('form.deposit')}</Text>
                       </Grid.Col>
-                      <Grid.Col span={4}>
+                      <Grid.Col span={{ base: 6, sm: 4 }}>
                         <Text size="sm" ta="right" fw={500}>
                           {sideCostSummary.deposit.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                         </Text>
@@ -654,29 +656,19 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
         <Tabs.Panel value="contracts" pt="md">
           <Paper shadow="xs" p="md">
             {tenant.contracts && tenant.contracts.length > 0 ? (
-              <Table striped highlightOnHover>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>{t('table.contractNumber')}</Table.Th>
-                    <Table.Th>{t('form.type')}</Table.Th>
-                    <Table.Th>{t('table.status')}</Table.Th>
-                    <Table.Th>{t('form.startDate')}</Table.Th>
-                    <Table.Th>{t('form.endDate')}</Table.Th>
-                    <Table.Th>{t('form.rentAmount')}</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
+              isMobile ? (
+                <Stack gap="md">
                   {tenant.contracts.map((contract: any) => (
-                    <Table.Tr
+                    <Card
                       key={contract.id}
+                      withBorder
+                      p="md"
+                      radius="md"
                       style={{ cursor: 'pointer' }}
                       onClick={() => router.push(`/${locale}/modules/real-estate/contracts/${contract.id}`)}
                     >
-                      <Table.Td>{contract.contractNumber}</Table.Td>
-                      <Table.Td>
-                        <Badge variant="light">{contract.type}</Badge>
-                      </Table.Td>
-                      <Table.Td>
+                      <Group justify="space-between" mb="xs">
+                        <Text fw={600}>{contract.contractNumber}</Text>
                         <Badge
                           color={
                             contract.status === 'active'
@@ -691,23 +683,89 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                         >
                           {contract.status}
                         </Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        {contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}
-                      </Table.Td>
-                      <Table.Td>
-                        {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
-                      </Table.Td>
-                      <Table.Td>
-                        {Number(contract.rentAmount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
-                      </Table.Td>
-                    </Table.Tr>
+                      </Group>
+                      <SimpleGrid cols={2} spacing="xs">
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.type')}</Text>
+                          <Badge variant="light" size="sm">{contract.type}</Badge>
+                        </div>
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.rentAmount')}</Text>
+                          <Text size="sm" fw={500}>
+                            {Number(contract.rentAmount).toLocaleString('tr-TR', {
+                              style: 'currency',
+                              currency: 'TRY',
+                            })}
+                          </Text>
+                        </div>
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.startDate')}</Text>
+                          <Text size="sm">{contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}</Text>
+                        </div>
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.endDate')}</Text>
+                          <Text size="sm">{contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}</Text>
+                        </div>
+                      </SimpleGrid>
+                    </Card>
                   ))}
-                </Table.Tbody>
-              </Table>
+                </Stack>
+              ) : (
+                <Table striped highlightOnHover>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>{t('table.contractNumber')}</Table.Th>
+                      <Table.Th>{t('form.type')}</Table.Th>
+                      <Table.Th>{t('table.status')}</Table.Th>
+                      <Table.Th>{t('form.startDate')}</Table.Th>
+                      <Table.Th>{t('form.endDate')}</Table.Th>
+                      <Table.Th>{t('form.rentAmount')}</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {tenant.contracts.map((contract: any) => (
+                      <Table.Tr
+                        key={contract.id}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => router.push(`/${locale}/modules/real-estate/contracts/${contract.id}`)}
+                      >
+                        <Table.Td>{contract.contractNumber}</Table.Td>
+                        <Table.Td>
+                          <Badge variant="light">{contract.type}</Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          <Badge
+                            color={
+                              contract.status === 'active'
+                                ? 'green'
+                                : contract.status === 'expired'
+                                ? 'gray'
+                                : contract.status === 'terminated'
+                                ? 'red'
+                                : 'yellow'
+                            }
+                            variant="light"
+                          >
+                            {contract.status}
+                          </Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          {contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          {Number(contract.rentAmount).toLocaleString('tr-TR', {
+                            style: 'currency',
+                            currency: 'TRY',
+                          })}
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              )
             ) : (
               <Text c="dimmed" ta="center" py="xl">
                 {t('messages.noContracts')}
@@ -719,29 +777,12 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
         <Tabs.Panel value="payments" pt="md">
           <Paper shadow="xs" p="md">
             {tenant.payments && tenant.payments.length > 0 ? (
-              <Table striped highlightOnHover>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>{t('form.type')}</Table.Th>
-                    <Table.Th>{t('form.amount')}</Table.Th>
-                    <Table.Th>{t('table.status')}</Table.Th>
-                    <Table.Th>{t('form.dueDate')}</Table.Th>
-                    <Table.Th>{t('form.paidDate')}</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
+              isMobile ? (
+                <Stack gap="md">
                   {tenant.payments.map((payment: any) => (
-                    <Table.Tr key={payment.id}>
-                      <Table.Td>
+                    <Card key={payment.id} withBorder p="md" radius="md">
+                      <Group justify="space-between" mb="xs">
                         <Badge variant="light">{payment.type}</Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        {Number(payment.amount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
-                      </Table.Td>
-                      <Table.Td>
                         <Badge
                           color={
                             payment.status === 'paid'
@@ -754,17 +795,74 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                         >
                           {payment.status}
                         </Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        {payment.dueDate ? dayjs(payment.dueDate).format('DD.MM.YYYY') : '-'}
-                      </Table.Td>
-                      <Table.Td>
-                        {payment.paidDate ? dayjs(payment.paidDate).format('DD.MM.YYYY') : '-'}
-                      </Table.Td>
-                    </Table.Tr>
+                      </Group>
+                      <Text size="lg" fw={600} mb="xs">
+                        {Number(payment.amount).toLocaleString('tr-TR', {
+                          style: 'currency',
+                          currency: 'TRY',
+                        })}
+                      </Text>
+                      <SimpleGrid cols={2} spacing="xs">
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.dueDate')}</Text>
+                          <Text size="sm">{payment.dueDate ? dayjs(payment.dueDate).format('DD.MM.YYYY') : '-'}</Text>
+                        </div>
+                        <div>
+                          <Text size="xs" c="dimmed">{t('form.paidDate')}</Text>
+                          <Text size="sm">{payment.paidDate ? dayjs(payment.paidDate).format('DD.MM.YYYY') : '-'}</Text>
+                        </div>
+                      </SimpleGrid>
+                    </Card>
                   ))}
-                </Table.Tbody>
-              </Table>
+                </Stack>
+              ) : (
+                <Table striped highlightOnHover>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>{t('form.type')}</Table.Th>
+                      <Table.Th>{t('form.amount')}</Table.Th>
+                      <Table.Th>{t('table.status')}</Table.Th>
+                      <Table.Th>{t('form.dueDate')}</Table.Th>
+                      <Table.Th>{t('form.paidDate')}</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {tenant.payments.map((payment: any) => (
+                      <Table.Tr key={payment.id}>
+                        <Table.Td>
+                          <Badge variant="light">{payment.type}</Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          {Number(payment.amount).toLocaleString('tr-TR', {
+                            style: 'currency',
+                            currency: 'TRY',
+                          })}
+                        </Table.Td>
+                        <Table.Td>
+                          <Badge
+                            color={
+                              payment.status === 'paid'
+                                ? 'green'
+                                : payment.status === 'overdue'
+                                ? 'red'
+                                : 'yellow'
+                            }
+                            variant="light"
+                          >
+                            {payment.status}
+                          </Badge>
+                        </Table.Td>
+                        <Table.Td>
+                          {payment.dueDate ? dayjs(payment.dueDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                        <Table.Td>
+                          {payment.paidDate ? dayjs(payment.paidDate).format('DD.MM.YYYY') : '-'}
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              )
             ) : (
               <Text c="dimmed" ta="center" py="xl">
                 {t('messages.noPayments')}

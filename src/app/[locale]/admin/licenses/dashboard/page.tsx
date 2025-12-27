@@ -21,6 +21,7 @@ import {
     IconCreditCard,
     IconClock,
     IconCheck,
+    IconChartPie,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useTranslation } from '@/lib/i18n/client';
@@ -127,6 +128,13 @@ export default function LicenseDashboardPage() {
             <CentralPageHeader
                 title={t('licenses.dashboard.title')}
                 description={t('licenses.dashboard.description')}
+                namespace="global"
+                icon={<IconChartPie size={32} />}
+                breadcrumbs={[
+                    { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+                    { label: 'licenses.title', href: `/${locale}/admin/licenses`, namespace: 'global' },
+                    { label: 'licenses.dashboard.title', namespace: 'global' },
+                ]}
             />
 
             {isLoading ? (

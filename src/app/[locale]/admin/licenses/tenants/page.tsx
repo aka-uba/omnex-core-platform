@@ -28,6 +28,7 @@ import {
     IconEye,
     IconCreditCard,
     IconRefresh,
+    IconBuilding,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -167,6 +168,13 @@ export default function TenantLicensesPage() {
             <CentralPageHeader
                 title={t('licenses.tenants.title')}
                 description={t('licenses.tenants.description')}
+                namespace="global"
+                icon={<IconBuilding size={32} />}
+                breadcrumbs={[
+                    { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+                    { label: 'licenses.title', href: `/${locale}/admin/licenses`, namespace: 'global' },
+                    { label: 'licenses.tenants.title', namespace: 'global' },
+                ]}
                 actions={[
                     {
                         label: t('licenses.tenants.assignLicense'),

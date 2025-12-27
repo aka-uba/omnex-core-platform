@@ -49,14 +49,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
                   id: true,
                   unitNumber: true,
                   area: true,
+                  floor: true,
+                  roomCount: true,
+                  status: true,
                   coldRent: true,
                   additionalCosts: true,
                   heatingCosts: true,
                   deposit: true,
+                  images: true,
+                  coverImage: true,
                   property: {
                     select: {
                       id: true,
                       name: true,
+                      address: true,
                     },
                   },
                 },
@@ -173,6 +179,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         updateData.analysis = validatedData.analysis ? (validatedData.analysis as Prisma.InputJsonValue) : Prisma.JsonNull;
       }
       if (validatedData.isActive !== undefined) updateData.isActive = validatedData.isActive;
+      if (validatedData.images !== undefined) updateData.images = validatedData.images;
+      if (validatedData.documents !== undefined) updateData.documents = validatedData.documents;
+      if (validatedData.coverImage !== undefined) updateData.coverImage = validatedData.coverImage || null;
 
       // Update tenant
       const updatedTenant = await tenantPrisma.tenant.update({

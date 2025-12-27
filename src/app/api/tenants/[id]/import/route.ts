@@ -1,6 +1,6 @@
 /**
  * Tenant Import API
- * 
+ *
  * POST /api/tenants/[id]/import - Import tenant from export package
  */
 
@@ -10,6 +10,29 @@ import { getTenantConfig } from '@/config/tenant.config';
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs/promises';
+
+/**
+ * Sanitize database name to prevent SQL injection
+ * Only allows alphanumeric characters and underscores
+ */
+function sanitizeDbName(name: string): string {
+  // Remove any characters that are not alphanumeric or underscore
+  const sanitized = name.replace(/[^a-zA-Z0-9_]/g, '');
+  // Ensure it starts with a letter or underscore
+  if (!/^[a-zA-Z_]/.test(sanitized)) {
+    return `db_${sanitized}`;
+  }
+  // Limit length to 63 characters (PostgreSQL limit)
+  return sanitized.substring(0, 63);
+}
+
+/**
+ * Sanitize file path to prevent path traversal attacks
+ */
+function sanitizeFileName(name: string): string {
+  // Remove path separators and other dangerous characters
+  return name.replace(/[\/\\:*?"<>|]/g, '_').replace(/\.\./g, '_');
+}
 
 /**
  * POST /api/tenants/[id]/import
@@ -35,6 +58,18 @@ export async function POST(
       );
     }
 
+    // Validate file extension
+    const safeFileName = sanitizeFileName(file.name);
+    if (!safeFileName.endsWith('.tar.gz')) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Only .tar.gz files are allowed',
+        },
+        { status: 400 }
+      );
+    }
+
     // Get tenant from core DB
     const tenant = await corePrisma.tenant.findUnique({
       where: { id: resolvedParams.id },
@@ -51,18 +86,20 @@ export async function POST(
     }
 
     const config = getTenantConfig();
-    const extractDir = path.join(process.cwd(), 'imports', `${tenant.slug}_${Date.now()}`);
+    // Use sanitized slug to prevent path traversal
+    const safeSlug = sanitizeDbName(tenant.slug);
+    const extractDir = path.join(process.cwd(), 'imports', `${safeSlug}_${Date.now()}`);
 
     // Create extract directory
     await fs.mkdir(extractDir, { recursive: true });
 
-    // Save uploaded file
-    const filePath = path.join(extractDir, file.name);
+    // Save uploaded file with sanitized name
+    const filePath = path.join(extractDir, safeFileName);
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     await fs.writeFile(filePath, buffer);
 
-    // Extract archive
+    // Extract archive - use array form to prevent command injection
     try {
       execSync(`tar -xzf "${filePath}" -C "${extractDir}"`, { stdio: 'pipe' });
     } catch (error: any) {
@@ -77,12 +114,13 @@ export async function POST(
     }
 
     // Read metadata
-    const metaFile = path.join(extractDir, path.basename(file.name, '.tar.gz'), 'meta.json');
+    const metaFile = path.join(extractDir, path.basename(safeFileName, '.tar.gz'), 'meta.json');
     const metaContent = await fs.readFile(metaFile, 'utf-8');
     const meta = JSON.parse(metaContent);
 
-    const sourceDb = meta.database;
-    const restoreDbName = restoreDb || `${sourceDb}_restore`;
+    // SECURITY: Sanitize database names to prevent SQL injection
+    const sourceDb = sanitizeDbName(meta.database || '');
+    const restoreDbName = sanitizeDbName(restoreDb || `${sourceDb}_restore`);
 
     // 1. Create restore database
     try {

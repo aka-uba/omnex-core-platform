@@ -28,12 +28,6 @@ export function ContractTemplateDetailPageClient({ locale, templateId }: { local
         ]}
         actions={[
           {
-            label: t('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.back(),
-            variant: 'subtle',
-          },
-          {
             label: t('actions.edit'),
             icon: <IconEdit size={16} />,
             onClick: () => router.push(`/${currentLocale}/modules/real-estate/contract-templates/${templateId}/edit`),

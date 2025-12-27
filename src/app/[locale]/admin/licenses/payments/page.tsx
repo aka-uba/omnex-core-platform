@@ -26,6 +26,7 @@ import {
     IconEye,
     IconFileInvoice,
     IconClock,
+    IconCreditCard,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -181,6 +182,13 @@ export default function LicensePaymentsPage() {
             <CentralPageHeader
                 title={t('licenses.payments.title')}
                 description={t('licenses.payments.description')}
+                namespace="global"
+                icon={<IconCreditCard size={32} />}
+                breadcrumbs={[
+                    { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+                    { label: 'licenses.title', href: `/${locale}/admin/licenses`, namespace: 'global' },
+                    { label: 'licenses.payments.title', namespace: 'global' },
+                ]}
             />
 
             {isLoading ? (

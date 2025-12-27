@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table } from '@mantine/core';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table, SimpleGrid } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin, IconTool } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
@@ -26,6 +27,7 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
   const { formatCurrency } = useCompany();
 
   const { data: property, isLoading } = useProperty(propertyId);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [downloadingImages, setDownloadingImages] = useState(false);
   const [downloadingDocs, setDownloadingDocs] = useState(false);
@@ -218,9 +220,9 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
         <Tabs.Panel value="details" pt="md">
           <Paper shadow="xs" p="md">
             <Stack gap="md">
-              <Group align="flex-start" gap="xl">
+              <Group align="flex-start" gap="xl" wrap="wrap" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
                 {/* Cover Image */}
-                <Box style={{ maxWidth: 300, maxHeight: 400 }}>
+                <Box style={{ maxWidth: isMobile ? '100%' : 300, maxHeight: 400, width: isMobile ? '100%' : 'auto' }}>
                   <Image
                     src={
                       property.coverImage
@@ -235,8 +237,10 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     style={{
                       border: '4px solid var(--mantine-color-gray-3)',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      maxWidth: 300,
+                      maxWidth: isMobile ? '100%' : 300,
                       maxHeight: 400,
+                      margin: isMobile ? '0 auto' : undefined,
+                      display: 'block',
                     }}
                     fallbackSrc="https://placehold.co/300x200?text=Property"
                   />
@@ -580,12 +584,12 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     p="md"
                     withBorder
                   >
-                    <Group align="stretch" gap="md" wrap="nowrap">
+                    <Group align="stretch" gap="md" wrap={isMobile ? 'wrap' : 'nowrap'} style={{ flexDirection: isMobile ? 'column' : 'row' }}>
                       {/* Apartment Cover Image - Sol tarafta, sağ içerikle aynı yükseklikte */}
                       <Box
                         style={{
-                          width: 200,
-                          minWidth: 200,
+                          width: isMobile ? '100%' : 200,
+                          minWidth: isMobile ? undefined : 200,
                           flexShrink: 0,
                           borderRadius: 'var(--mantine-radius-md)',
                           overflow: 'hidden',
@@ -602,14 +606,14 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                           }
                           alt={apartment.unitNumber}
                           w="100%"
-                          h="100%"
+                          h={isMobile ? 200 : '100%'}
                           fit="cover"
                           fallbackSrc="https://placehold.co/200x200?text=Apartment"
                         />
                       </Box>
-                      
+
                       {/* Açıklama ve Butonlar - Sağ tarafta */}
-                      <div style={{ flex: 1 }}>
+                      <div style={{ flex: 1, width: isMobile ? '100%' : 'auto' }}>
                         <Stack gap="xs">
                           <Group justify="space-between" align="flex-start">
                             <div>
@@ -790,42 +794,80 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
               <Paper shadow="xs" p="md">
                 <Stack gap="md">
                   <Title order={5}>{t('sideCosts.apartmentBreakdown')}</Title>
-                  <Table striped highlightOnHover>
-                    <Table.Thead>
-                      <Table.Tr>
-                        <Table.Th>{t('table.unitNumber')}</Table.Th>
-                        <Table.Th ta="right">{t('apartments.area')}</Table.Th>
-                        <Table.Th ta="right">{t('form.coldRent')}</Table.Th>
-                        <Table.Th ta="right">{t('form.additionalCosts')}</Table.Th>
-                        <Table.Th ta="right">{t('form.heatingCosts')}</Table.Th>
-                        <Table.Th ta="right">{t('sideCosts.totalRent')}</Table.Th>
-                      </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
+                  {isMobile ? (
+                    <Stack gap="md">
                       {propertySideCostSummary.apartmentDetails.map((apt: any) => (
-                        <Table.Tr
+                        <Card
                           key={apt.id}
+                          withBorder
+                          p="md"
+                          radius="md"
                           style={{ cursor: 'pointer' }}
                           onClick={() => router.push(`/${currentLocale}/modules/real-estate/apartments/${apt.id}`)}
                         >
-                          <Table.Td>{apt.unitNumber}</Table.Td>
-                          <Table.Td ta="right">{apt.area} m²</Table.Td>
-                          <Table.Td ta="right">
-                            {formatCurrency(apt.coldRent)}
-                          </Table.Td>
-                          <Table.Td ta="right">
-                            {formatCurrency(apt.additionalCosts)}
-                          </Table.Td>
-                          <Table.Td ta="right">
-                            {formatCurrency(apt.heatingCosts)}
-                          </Table.Td>
-                          <Table.Td ta="right" fw={600} c="blue">
-                            {formatCurrency(apt.warmRent)}
-                          </Table.Td>
-                        </Table.Tr>
+                          <Group justify="space-between" mb="xs">
+                            <Text fw={600}>{apt.unitNumber}</Text>
+                            <Text size="sm" c="dimmed">{apt.area} m²</Text>
+                          </Group>
+                          <SimpleGrid cols={2} spacing="xs">
+                            <div>
+                              <Text size="xs" c="dimmed">{t('form.coldRent')}</Text>
+                              <Text size="sm">{formatCurrency(apt.coldRent)}</Text>
+                            </div>
+                            <div>
+                              <Text size="xs" c="dimmed">{t('form.additionalCosts')}</Text>
+                              <Text size="sm">{formatCurrency(apt.additionalCosts)}</Text>
+                            </div>
+                            <div>
+                              <Text size="xs" c="dimmed">{t('form.heatingCosts')}</Text>
+                              <Text size="sm">{formatCurrency(apt.heatingCosts)}</Text>
+                            </div>
+                            <div>
+                              <Text size="xs" c="dimmed">{t('sideCosts.totalRent')}</Text>
+                              <Text size="sm" fw={600} c="blue">{formatCurrency(apt.warmRent)}</Text>
+                            </div>
+                          </SimpleGrid>
+                        </Card>
                       ))}
-                    </Table.Tbody>
-                  </Table>
+                    </Stack>
+                  ) : (
+                    <Table striped highlightOnHover>
+                      <Table.Thead>
+                        <Table.Tr>
+                          <Table.Th>{t('table.unitNumber')}</Table.Th>
+                          <Table.Th ta="right">{t('apartments.area')}</Table.Th>
+                          <Table.Th ta="right">{t('form.coldRent')}</Table.Th>
+                          <Table.Th ta="right">{t('form.additionalCosts')}</Table.Th>
+                          <Table.Th ta="right">{t('form.heatingCosts')}</Table.Th>
+                          <Table.Th ta="right">{t('sideCosts.totalRent')}</Table.Th>
+                        </Table.Tr>
+                      </Table.Thead>
+                      <Table.Tbody>
+                        {propertySideCostSummary.apartmentDetails.map((apt: any) => (
+                          <Table.Tr
+                            key={apt.id}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => router.push(`/${currentLocale}/modules/real-estate/apartments/${apt.id}`)}
+                          >
+                            <Table.Td>{apt.unitNumber}</Table.Td>
+                            <Table.Td ta="right">{apt.area} m²</Table.Td>
+                            <Table.Td ta="right">
+                              {formatCurrency(apt.coldRent)}
+                            </Table.Td>
+                            <Table.Td ta="right">
+                              {formatCurrency(apt.additionalCosts)}
+                            </Table.Td>
+                            <Table.Td ta="right">
+                              {formatCurrency(apt.heatingCosts)}
+                            </Table.Td>
+                            <Table.Td ta="right" fw={600} c="blue">
+                              {formatCurrency(apt.warmRent)}
+                            </Table.Td>
+                          </Table.Tr>
+                        ))}
+                      </Table.Tbody>
+                    </Table>
+                  )}
                 </Stack>
               </Paper>
             </Stack>

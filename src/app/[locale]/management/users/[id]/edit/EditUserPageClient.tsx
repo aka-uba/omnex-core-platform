@@ -205,7 +205,7 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
         title: t('edit.title'),
         message: tGlobal('notifications.success.userUpdated'),
       });
-      router.push(`/${locale}/users`);
+      router.push(`/${locale}/management/users`);
     } catch (error) {
       showToast({
         type: 'error',

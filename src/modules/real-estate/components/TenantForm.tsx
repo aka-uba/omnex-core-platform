@@ -15,8 +15,8 @@ import {
   Title,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
-import { notifications } from '@mantine/notifications';
 import { IconArrowLeft, IconUser, IconBuilding, IconMapPin, IconPhone, IconId } from '@tabler/icons-react';
+import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useRouter } from 'next/navigation';
 import { useCreateTenant, useUpdateTenant, useTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
@@ -165,26 +165,26 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
           id: tenantId,
           input: validatedData as any,
         });
-        notifications.show({
+        showToast({
+          type: 'success',
           title: t('messages.success'),
           message: t('messages.updateSuccess'),
-          color: 'green',
         });
       } else {
         await createTenant.mutateAsync(validatedData as any);
-        notifications.show({
+        showToast({
+          type: 'success',
           title: t('messages.success'),
           message: t('messages.createSuccess'),
-          color: 'green',
         });
       }
 
       router.push(`/${locale}/modules/real-estate/tenants`);
     } catch (error) {
-      notifications.show({
+      showToast({
+        type: 'error',
         title: t('messages.error'),
         message: error instanceof Error ? error.message : t('messages.createError'),
-        color: 'red',
       });
     }
   };

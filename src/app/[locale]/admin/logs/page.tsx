@@ -1,14 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
     Container,
     Paper,
-    Table,
     Group,
     TextInput,
     Select,
-    Pagination,
     Badge,
     ActionIcon,
     Text,
@@ -16,8 +14,6 @@ import {
     Code,
     Modal,
     Alert,
-    Skeleton,
-    Stack,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { IconDownload, IconRefresh, IconEye, IconFileText, IconAlertCircle } from '@tabler/icons-react';
@@ -27,6 +23,8 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams } from 'next/navigation';
 import { authenticatedFetchJSON, getAccessToken, getTenantSlug } from '@/lib/api/authenticatedFetch';
 import { useTranslation } from '@/lib/i18n/client';
+import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
+import { LogsPageSkeleton } from './LogsPageSkeleton';
 
 interface AuditLog {
     id: string;
@@ -46,9 +44,7 @@ export default function SystemLogsPage() {
     const locale = (params?.locale as string) || 'tr';
     const { t } = useTranslation('global');
     const [logs, setLogs] = useState<AuditLog[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({
         action: '',
         module: '',
@@ -66,22 +62,21 @@ export default function SystemLogsPage() {
         setLoading(true);
         setError(null);
         try {
-            const params = new URLSearchParams({
-                page: page.toString(),
-                limit: '20',
+            const urlParams = new URLSearchParams({
+                page: '1',
+                limit: '1000', // DataTable handles pagination
                 ...Object.fromEntries(
                     Object.entries(filters).filter(([_, v]) => v !== '' && v !== null)
                 ),
             });
 
-            if (filters.startDate) params.append('startDate', filters.startDate.toISOString());
-            if (filters.endDate) params.append('endDate', filters.endDate.toISOString());
+            if (filters.startDate) urlParams.append('startDate', filters.startDate.toISOString());
+            if (filters.endDate) urlParams.append('endDate', filters.endDate.toISOString());
 
-            const data = await authenticatedFetchJSON(`/api/admin/logs?${params}`);
+            const data = await authenticatedFetchJSON(`/api/admin/logs?${urlParams}`);
 
             if (data.success) {
                 setLogs(data.data || []);
-                setTotal((data.data as any)?.meta?.total || 0);
             } else {
                 setError(data.error?.message || t('setup.logs.systemLogs.errors.loadFailed'));
             }
@@ -99,28 +94,27 @@ export default function SystemLogsPage() {
 
     useEffect(() => {
         fetchLogs();
-    }, [page, filters]); // Re-fetch when page or filters change
+    }, [filters]);
 
     const handleExport = async (format: 'csv' | 'json') => {
         try {
-            const params = new URLSearchParams({
+            const urlParams = new URLSearchParams({
                 format,
                 ...Object.fromEntries(
                     Object.entries(filters).filter(([_, v]) => v !== '' && v !== null)
                 ),
             });
 
-            // Token'ı URL'e ekle (geçici çözüm - download için)
             const token = getAccessToken();
             if (token) {
-                params.append('token', token);
+                urlParams.append('token', token);
             }
             const tenantSlug = getTenantSlug();
             if (tenantSlug) {
-                params.append('tenantSlug', tenantSlug);
+                urlParams.append('tenantSlug', tenantSlug);
             }
 
-            window.open(`/api/admin/logs/export?${params}`, '_blank');
+            window.open(`/api/admin/logs/export?${urlParams}`, '_blank');
         } catch (err) {
             showToast({
                 type: 'error',
@@ -138,6 +132,102 @@ export default function SystemLogsPage() {
             default: return 'gray';
         }
     };
+
+    // Transform data for DataTable
+    const tableData = useMemo(() => {
+        return logs.map((log) => ({
+            id: log.id,
+            time: log.createdAt,
+            action: log.action,
+            module: log.module,
+            userId: log.userId || '-',
+            tenantSlug: log.tenantSlug || '-',
+            status: log.status,
+            ipAddress: log.ipAddress || '-',
+            details: log.details,
+            errorMessage: log.errorMessage,
+            _raw: log,
+        }));
+    }, [logs]);
+
+    // DataTable columns
+    const columns: DataTableColumn[] = useMemo(() => [
+        {
+            key: 'time',
+            label: t('setup.logs.systemLogs.table.time'),
+            sortable: true,
+            searchable: false,
+            render: (value: string) => (
+                <Text size="sm">{new Date(value).toLocaleString()}</Text>
+            ),
+        },
+        {
+            key: 'action',
+            label: t('setup.logs.systemLogs.table.action'),
+            sortable: true,
+            searchable: true,
+            render: (value: string) => <Code>{value}</Code>,
+        },
+        {
+            key: 'module',
+            label: t('setup.logs.systemLogs.table.module'),
+            sortable: true,
+            searchable: true,
+            render: (value: string) => <Text size="sm">{value}</Text>,
+        },
+        {
+            key: 'userId',
+            label: t('setup.logs.systemLogs.table.user'),
+            sortable: true,
+            searchable: true,
+            render: (value: string) => <Text size="sm">{value}</Text>,
+        },
+        {
+            key: 'tenantSlug',
+            label: t('setup.logs.systemLogs.table.tenant'),
+            sortable: true,
+            searchable: true,
+            render: (value: string) => <Text size="sm">{value}</Text>,
+        },
+        {
+            key: 'status',
+            label: t('setup.logs.systemLogs.table.status'),
+            sortable: true,
+            searchable: false,
+            render: (value: string) => (
+                <Badge color={getStatusColor(value)}>{value}</Badge>
+            ),
+        },
+        {
+            key: 'ipAddress',
+            label: t('setup.logs.systemLogs.table.ipAddress'),
+            sortable: true,
+            searchable: true,
+            render: (value: string) => <Text size="sm">{value}</Text>,
+        },
+        {
+            key: 'actions',
+            label: t('setup.logs.systemLogs.table.details'),
+            sortable: false,
+            searchable: false,
+            render: (_: any, row: any) => (
+                <ActionIcon
+                    variant="subtle"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedLog(row._raw);
+                        openDetails();
+                    }}
+                >
+                    <IconEye size={16} />
+                </ActionIcon>
+            ),
+        },
+    ], [t, openDetails]);
+
+    if (loading) {
+        return <LogsPageSkeleton />;
+    }
 
     return (
         <Container py="xl">
@@ -173,12 +263,13 @@ export default function SystemLogsPage() {
             )}
 
             <Paper p="md" mb="lg" withBorder>
-                <Group align="end">
+                <Group align="end" wrap="wrap" gap="md">
                     <TextInput
                         label={t('setup.logs.systemLogs.filters.userId')}
                         placeholder={t('setup.logs.systemLogs.filters.userIdPlaceholder')}
                         value={filters.userId}
                         onChange={(e) => setFilters({ ...filters, userId: e.target.value })}
+                        style={{ minWidth: 150 }}
                     />
                     <Select
                         label={t('setup.logs.systemLogs.filters.status')}
@@ -191,6 +282,7 @@ export default function SystemLogsPage() {
                         value={filters.status}
                         onChange={(val) => setFilters({ ...filters, status: val || '' })}
                         clearable
+                        style={{ minWidth: 150 }}
                     />
                     <Select
                         label={t('setup.logs.systemLogs.filters.module')}
@@ -199,6 +291,7 @@ export default function SystemLogsPage() {
                         value={filters.module}
                         onChange={(val) => setFilters({ ...filters, module: val || '' })}
                         clearable
+                        style={{ minWidth: 150 }}
                     />
                     <DatePickerInput
                         label={t('setup.logs.systemLogs.filters.startDate')}
@@ -206,6 +299,7 @@ export default function SystemLogsPage() {
                         value={filters.startDate}
                         onChange={(date) => { setFilters({ ...filters, startDate: date as Date | null }); }}
                         clearable
+                        style={{ minWidth: 150 }}
                     />
                     <DatePickerInput
                         label={t('setup.logs.systemLogs.filters.endDate')}
@@ -213,99 +307,31 @@ export default function SystemLogsPage() {
                         value={filters.endDate}
                         onChange={(date) => { setFilters({ ...filters, endDate: date as Date | null }); }}
                         clearable
+                        style={{ minWidth: 150 }}
                     />
                 </Group>
             </Paper>
 
-            <Paper withBorder>
-                {loading ? (
-                    <Stack gap="md" p="md">
-                        {/* Table Header */}
-                        <Group>
-                            <Skeleton height={20} width={120} />
-                            <Skeleton height={20} width={100} />
-                            <Skeleton height={20} width={100} />
-                            <Skeleton height={20} width={120} />
-                            <Skeleton height={20} width={100} />
-                            <Skeleton height={20} width={100} />
-                            <Skeleton height={20} width={120} />
-                            <Skeleton height={20} width={80} />
-                        </Group>
-
-                        {/* Table Rows */}
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                            <Group key={i} gap="md">
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                                <Skeleton height={40} width="12%" />
-                            </Group>
-                        ))}
-                    </Stack>
-                ) : (
-                    <>
-                        <Table striped highlightOnHover>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>{t('setup.logs.systemLogs.table.time')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.action')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.module')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.user')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.tenant')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.status')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.ipAddress')}</Table.Th>
-                            <Table.Th>{t('setup.logs.systemLogs.table.details')}</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {logs.map((log) => (
-                            <Table.Tr key={log.id}>
-                                <Table.Td>{new Date(log.createdAt).toLocaleString()}</Table.Td>
-                                <Table.Td><Code>{log.action}</Code></Table.Td>
-                                <Table.Td>{log.module}</Table.Td>
-                                <Table.Td>{log.userId || '-'}</Table.Td>
-                                <Table.Td>{log.tenantSlug || '-'}</Table.Td>
-                                <Table.Td>
-                                    <Badge color={getStatusColor(log.status)}>{log.status}</Badge>
-                                </Table.Td>
-                                <Table.Td>{log.ipAddress || '-'}</Table.Td>
-                                <Table.Td>
-                                    <ActionIcon variant="subtle" onClick={() => {
-                                        setSelectedLog(log);
-                                        openDetails();
-                                    }}>
-                                        <IconEye size={16} />
-                                    </ActionIcon>
-                                </Table.Td>
-                            </Table.Tr>
-                        ))}
-                        {logs.length === 0 && (
-                            <Table.Tr>
-                                <Table.Td colSpan={8} align="center">{t('setup.logs.systemLogs.table.noLogs')}</Table.Td>
-                            </Table.Tr>
-                        )}
-                    </Table.Tbody>
-                </Table>
-
-                        <Group justify="center" p="md">
-                            <Pagination
-                                total={Math.ceil(total / 20)}
-                                value={page}
-                                onChange={setPage}
-                            />
-                        </Group>
-                    </>
-                )}
-            </Paper>
+            <DataTable
+                columns={columns}
+                data={tableData}
+                searchable
+                sortable
+                pageable
+                defaultPageSize={25}
+                showExportIcons
+                showColumnSettings
+                exportTitle={t('setup.logs.systemLogs.title')}
+                exportNamespace="global"
+                tableId="admin-logs-table"
+                emptyMessage={t('setup.logs.systemLogs.table.noLogs')}
+            />
 
             <Modal
                 opened={detailsOpen}
                 onClose={closeDetails}
                 title={t('setup.logs.systemLogs.modal.title')}
+                size="lg"
             >
                 {selectedLog && (
                     <Box>

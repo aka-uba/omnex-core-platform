@@ -1,6 +1,6 @@
 /**
  * Tenant Export API
- * 
+ *
  * POST /api/tenants/[id]/export - Export tenant database and files
  */
 
@@ -10,6 +10,18 @@ import { getTenantConfig, getTenantDatabaseUrl } from '@/config/tenant.config';
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs/promises';
+
+/**
+ * Sanitize name to prevent command injection
+ * Only allows alphanumeric characters and underscores
+ */
+function sanitizeName(name: string): string {
+  const sanitized = name.replace(/[^a-zA-Z0-9_]/g, '');
+  if (!/^[a-zA-Z_]/.test(sanitized)) {
+    return `db_${sanitized}`;
+  }
+  return sanitized.substring(0, 63);
+}
 
 /**
  * POST /api/tenants/[id]/export
@@ -22,7 +34,19 @@ export async function POST(
   try {
     const resolvedParams = await params;
     const body = await request.json();
-    const year = body.year || new Date().getFullYear();
+    const rawYear = body.year || new Date().getFullYear();
+
+    // SECURITY: Validate year is a number
+    const year = typeof rawYear === 'number' ? rawYear : parseInt(String(rawYear), 10);
+    if (isNaN(year) || year < 2000 || year > 2100) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid year value',
+        },
+        { status: 400 }
+      );
+    }
 
     // Get tenant from core DB
     const tenant = await corePrisma.tenant.findUnique({
@@ -40,9 +64,11 @@ export async function POST(
     }
 
     const config = getTenantConfig();
-    const dbName = `tenant_${tenant.slug}_${year}`;
-    const exportDir = path.join(process.cwd(), 'exports', `${tenant.slug}_${year}`);
-    const exportFile = path.join(process.cwd(), 'exports', `${tenant.slug}_${year}.tar.gz`);
+    // SECURITY: Sanitize tenant slug to prevent command injection
+    const safeSlug = sanitizeName(tenant.slug);
+    const dbName = `tenant_${safeSlug}_${year}`;
+    const exportDir = path.join(process.cwd(), 'exports', `${safeSlug}_${year}`);
+    const exportFile = path.join(process.cwd(), 'exports', `${safeSlug}_${year}.tar.gz`);
 
     // Create export directory
     await fs.mkdir(exportDir, { recursive: true });

@@ -9,12 +9,14 @@ import {
   Text,
   Alert,
   Tooltip,
+  Avatar,
 } from '@mantine/core';
 import {
   IconEdit,
   IconTrash,
   IconEye,
   IconUser,
+  IconBuilding,
 } from '@tabler/icons-react';
 import { useTenants, useDeleteTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
@@ -112,11 +114,36 @@ export function TenantList({ locale }: TenantListProps) {
         address: address,
         tenantNumber: tenant.tenantNumber || '-',
         moveInDate: tenant.moveInDate,
+        coverImage: tenant.coverImage,
+        images: tenant.images || [],
       };
     });
   }, [data]);
 
   // Memoized render functions
+  const renderAvatar = useCallback((value: any, row: any) => {
+    const imageUrl = row.coverImage
+      ? `/api/core-files/${row.coverImage}/download?inline=true`
+      : row.images && row.images.length > 0
+      ? `/api/core-files/${row.images[0]}/download?inline=true`
+      : null;
+
+    const initials = row.tenantType === 'company'
+      ? (row.companyName || 'C').substring(0, 2).toUpperCase()
+      : `${(row.firstName || '').charAt(0)}${(row.lastName || '').charAt(0)}`.toUpperCase() || 'T';
+
+    return (
+      <Avatar
+        src={imageUrl}
+        size="sm"
+        radius="xl"
+        color={row.tenantType === 'company' ? 'blue' : 'grape'}
+      >
+        {row.tenantType === 'company' ? <IconBuilding size={14} /> : initials}
+      </Avatar>
+    );
+  }, []);
+
   const renderTenantNumber = useCallback((value: string) => (
     <Group gap="xs">
       <IconUser size={16} />
@@ -201,6 +228,14 @@ export function TenantList({ locale }: TenantListProps) {
   // #(rowNumber) is handled by DataTable automatically
   const columns: DataTableColumn[] = useMemo(() => [
     {
+      key: 'avatar',
+      label: '',
+      sortable: false,
+      searchable: false,
+      render: renderAvatar,
+      width: 50,
+    },
+    {
       key: 'isActive',
       label: t('table.active'),
       sortable: true,
@@ -280,7 +315,7 @@ export function TenantList({ locale }: TenantListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderStatus, renderTenantType, renderSalutation, renderDate, renderAddress, renderActions]);
+  ], [t, renderAvatar, renderStatus, renderTenantType, renderSalutation, renderDate, renderAddress, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [

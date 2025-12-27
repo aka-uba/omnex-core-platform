@@ -110,7 +110,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
       {/* Filters */}
       <Paper p="md" withBorder>
         <Grid>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 4 }}>
             <Select
               label={t('reports.reportType')}
               value={reportType}
@@ -123,7 +123,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
               ]}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 4 }}>
             <DatePickerInput label={t('reports.startDate')}
               value={startDate}
               onChange={(value: Date | string | null) => {
@@ -139,7 +139,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
               leftSection={<IconCalendar size={16} />}
             />
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, sm: 4 }}>
       <DatePickerInput label={t('reports.endDate')}
               value={endDate}
               onChange={(value: Date | string | null) => {
@@ -160,28 +160,32 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
 
       {/* Report Content */}
       <Paper p="md" withBorder>
-        <Group justify="space-between" mb="md">
-          <Text size="lg" fw={600}>
-            {t('reports.title')}
-          </Text>
-          <Group>
-            <Button
-              leftSection={<IconDownload size={16} />}
-              onClick={() => handleExportReport('excel')}
-              loading={isExporting}
-            >
-              {t('reports.exportExcel')}
-            </Button>
-            <Button
-              leftSection={<IconDownload size={16} />}
-              onClick={() => handleExportReport('pdf')}
-              loading={isExporting}
-              variant="outline"
-            >
-              {t('reports.exportPDF')}
-            </Button>
+        <Stack gap="sm" mb="md">
+          <Group justify="space-between" wrap="wrap" gap="sm">
+            <Text size="lg" fw={600}>
+              {t('reports.title')}
+            </Text>
+            <Group gap="xs" wrap="wrap">
+              <Button
+                leftSection={<IconDownload size={16} />}
+                onClick={() => handleExportReport('excel')}
+                loading={isExporting}
+                size="sm"
+              >
+                {t('reports.exportExcel')}
+              </Button>
+              <Button
+                leftSection={<IconDownload size={16} />}
+                onClick={() => handleExportReport('pdf')}
+                loading={isExporting}
+                variant="outline"
+                size="sm"
+              >
+                {t('reports.exportPDF')}
+              </Button>
+            </Group>
           </Group>
-        </Group>
+        </Stack>
 
         <Tabs value={reportType} onChange={(value) => setReportType(value || 'financial')}>
           <Tabs.List>
@@ -201,7 +205,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
 
           <Tabs.Panel value="financial" pt="md">
             <Grid>
-              <Grid.Col span={4}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
                 <Card withBorder p="md">
                   <Text size="sm" c="dimmed" mb="xs">
                     {t('reports.totalRevenue')}
@@ -214,7 +218,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
                   </Text>
                 </Card>
               </Grid.Col>
-              <Grid.Col span={4}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
                 <Card withBorder p="md">
                   <Text size="sm" c="dimmed" mb="xs">
                     {t('reports.totalExpenses')}
@@ -227,7 +231,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
                   </Text>
                 </Card>
               </Grid.Col>
-              <Grid.Col span={4}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
                 <Card withBorder p="md">
                   <Text size="sm" c="dimmed" mb="xs">
                     {t('reports.netProfit')}

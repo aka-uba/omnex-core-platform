@@ -21,6 +21,7 @@ import {
     IconTrash,
     IconDotsVertical,
     IconStar,
+    IconPackage,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -141,6 +142,13 @@ export default function LicensePackagesPage() {
             <CentralPageHeader
                 title={t('licenses.packages.title')}
                 description={t('licenses.packages.description')}
+                namespace="global"
+                icon={<IconPackage size={32} />}
+                breadcrumbs={[
+                    { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
+                    { label: 'licenses.title', href: `/${locale}/admin/licenses`, namespace: 'global' },
+                    { label: 'licenses.packages.title', namespace: 'global' },
+                ]}
                 actions={[
                     {
                         label: t('licenses.packages.newPackage'),

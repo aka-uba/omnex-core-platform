@@ -11,11 +11,13 @@ import {
   ActionIcon,
   Select,
   Tooltip,
+  Popover,
   Box,
   Loader,
   Center,
   Stack,
 } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -89,6 +91,116 @@ const getStatusColors = (status: string) => {
       };
   }
 };
+
+// Mobile-friendly Month Cell Component
+function MonthCellWithPopover({
+  info,
+  monthIndex,
+  colors,
+  methodIcon,
+  fullMonthNames,
+  currentYear,
+  formatCurrency,
+  formatShortCurrency,
+  t,
+}: {
+  info: MonthPaymentInfo;
+  monthIndex: number;
+  colors: ReturnType<typeof getStatusColors>;
+  methodIcon: React.ReactNode;
+  fullMonthNames: string[];
+  currentYear: number;
+  formatCurrency: (amount: number) => string;
+  formatShortCurrency: (amount: number) => string;
+  t: (key: string) => string;
+}) {
+  const [opened, { close, toggle }] = useDisclosure(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const tooltipContent = (
+    <Stack gap={4} p={4}>
+      <Group gap={4}>
+        <Text size="xs" fw={600}>{fullMonthNames[monthIndex]} {currentYear}</Text>
+      </Group>
+      <Text size="xs" fw={500}>{formatCurrency(info.amount)}</Text>
+      {info.status === 'partial' && info.paidAmount > 0 && (
+        <Text size="xs" c="green">
+          {t('payments.monthlyTracker.paidAmount')}: {formatCurrency(info.paidAmount)}
+        </Text>
+      )}
+      <Badge size="xs" color={colors.badgeColor}>
+        {t(`payments.status.${info.status}`)}
+      </Badge>
+      {info.dueDate && (
+        <Text size="xs">
+          {t('table.dueDate')}: {dayjs(info.dueDate).format('DD.MM.YYYY')}
+        </Text>
+      )}
+      {info.paidDate && (
+        <Text size="xs">
+          {t('table.paidDate')}: {dayjs(info.paidDate).format('DD.MM.YYYY')}
+        </Text>
+      )}
+      {info.paymentMethod && (
+        <Group gap={4}>
+          {methodIcon}
+          <Text size="xs">
+            {t(`payments.methods.${info.paymentMethod}`)}
+          </Text>
+        </Group>
+      )}
+    </Stack>
+  );
+
+  const cellContent = (
+    <Box
+      onClick={isMobile ? toggle : undefined}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.bg,
+        borderLeft: `3px solid ${colors.border}`,
+        padding: '4px 6px',
+        borderRadius: 4,
+        cursor: 'pointer',
+        minHeight: 32,
+        transition: 'all 0.15s ease',
+      }}
+    >
+      <Text size="xs" fw={600} style={{ color: colors.text, lineHeight: 1.2 }}>
+        {formatShortCurrency(info.amount)}
+      </Text>
+      {info.paymentMethod && (
+        <Box style={{ color: colors.text, opacity: 0.7, marginTop: 2 }}>
+          {methodIcon}
+        </Box>
+      )}
+    </Box>
+  );
+
+  // Mobile: Use Popover with click
+  if (isMobile) {
+    return (
+      <Popover opened={opened} onClose={close} position="bottom" withArrow shadow="md" width={220}>
+        <Popover.Target>
+          {cellContent}
+        </Popover.Target>
+        <Popover.Dropdown>
+          {tooltipContent}
+        </Popover.Dropdown>
+      </Popover>
+    );
+  }
+
+  // Desktop: Use Tooltip with hover
+  return (
+    <Tooltip label={tooltipContent} multiline w={220} withArrow>
+      {cellContent}
+    </Tooltip>
+  );
+}
 
 export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   const { t } = useTranslation('modules/real-estate');
@@ -178,68 +290,18 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     const colors = getStatusColors(info.status);
     const methodIcon = info.paymentMethod ? paymentMethodIcons[info.paymentMethod] : null;
 
-    const tooltipContent = (
-      <Stack gap={4} p={4}>
-        <Group gap={4}>
-          <Text size="xs" fw={600}>{fullMonthNames[monthIndex]} {currentYear}</Text>
-        </Group>
-        <Text size="xs" fw={500}>{formatCurrency(info.amount)}</Text>
-        {info.status === 'partial' && info.paidAmount > 0 && (
-          <Text size="xs" c="green">
-            {t('payments.monthlyTracker.paidAmount')}: {formatCurrency(info.paidAmount)}
-          </Text>
-        )}
-        <Badge size="xs" color={colors.badgeColor}>
-          {t(`payments.status.${info.status}`)}
-        </Badge>
-        {info.dueDate && (
-          <Text size="xs">
-            {t('table.dueDate')}: {dayjs(info.dueDate).format('DD.MM.YYYY')}
-          </Text>
-        )}
-        {info.paidDate && (
-          <Text size="xs">
-            {t('table.paidDate')}: {dayjs(info.paidDate).format('DD.MM.YYYY')}
-          </Text>
-        )}
-        {info.paymentMethod && (
-          <Group gap={4}>
-            {methodIcon}
-            <Text size="xs">
-              {t(`payments.methods.${info.paymentMethod}`)}
-            </Text>
-          </Group>
-        )}
-      </Stack>
-    );
-
     return (
-      <Tooltip label={tooltipContent} multiline w={220} withArrow>
-        <Box
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: colors.bg,
-            borderLeft: `3px solid ${colors.border}`,
-            padding: '4px 6px',
-            borderRadius: 4,
-            cursor: 'pointer',
-            minHeight: 32,
-            transition: 'all 0.15s ease',
-          }}
-        >
-          <Text size="xs" fw={600} style={{ color: colors.text, lineHeight: 1.2 }}>
-            {formatShortCurrency(info.amount)}
-          </Text>
-          {info.paymentMethod && (
-            <Box style={{ color: colors.text, opacity: 0.7, marginTop: 2 }}>
-              {methodIcon}
-            </Box>
-          )}
-        </Box>
-      </Tooltip>
+      <MonthCellWithPopover
+        info={info}
+        monthIndex={monthIndex}
+        colors={colors}
+        methodIcon={methodIcon}
+        fullMonthNames={fullMonthNames}
+        currentYear={currentYear}
+        formatCurrency={formatCurrency}
+        formatShortCurrency={formatShortCurrency}
+        t={t}
+      />
     );
   }, [formatCurrency, formatShortCurrency, fullMonthNames, currentYear, t]);
 

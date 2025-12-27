@@ -59,15 +59,19 @@
   --toast-info-bg: #e7f5ff;
   --toast-info-border: #339af0;
   --toast-info-text: #1864ab;
+  --toast-info-icon: #1c7ed6;
   --toast-success-bg: #d1fae5;
   --toast-success-border: #10b981;
   --toast-success-text: #065f46;
+  --toast-success-icon: #087f5b;
   --toast-warning-bg: #fef3c7;
   --toast-warning-border: #f59e0b;
   --toast-warning-text: #92400e;
+  --toast-warning-icon: #d97706;
   --toast-error-bg: #fee2e2;
   --toast-error-border: #ef4444;
   --toast-error-text: #991b1b;
+  --toast-error-icon: #dc2626;
 
   /* ============================================
      Spacing Scale
@@ -149,15 +153,19 @@
   --toast-info-bg: rgba(51, 154, 240, 0.15);
   --toast-info-border: #339af0;
   --toast-info-text: #a5d8ff;
+  --toast-info-icon: #74c0fc;
   --toast-success-bg: rgba(16, 185, 129, 0.15);
   --toast-success-border: #10b981;
   --toast-success-text: #6ee7b7;
+  --toast-success-icon: #6ee7b7;
   --toast-warning-bg: rgba(245, 158, 11, 0.15);
   --toast-warning-border: #f59e0b;
   --toast-warning-text: #fcd34d;
+  --toast-warning-icon: #fcd34d;
   --toast-error-bg: rgba(239, 68, 68, 0.15);
   --toast-error-border: #ef4444;
   --toast-error-text: #fca5a5;
+  --toast-error-icon: #fca5a5;
 
   /* ============================================
      Shadows - Dark Mode

@@ -99,3 +99,23 @@
 [data-mantine-color-scheme='dark'] .viewModeButtonInactive:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .filterChip {
+        padding-left: 0.75rem;
+        padding-right: 0.5rem;
+        font-size: 0.8125rem;
+    }
+
+    .viewModeToggle {
+        display: none;
+    }
+}
+
+/* Global mobile hide class */
+@media (max-width: 768px) {
+    :global(.hide-on-mobile) {
+        display: none !important;
+    }
+}
