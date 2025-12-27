@@ -354,3 +354,77 @@
   border-top: none !important;
 }
 
+/* Overflow menu accordion-style items */
+.overflowMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  direction: ltr;
+}
+
+.overflowMenuItem:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.overflowMenuItem.menuItemActive {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 500;
+}
+
+/* Light mode - overflow menu items with custom background */
+:not([data-mantine-color-scheme="dark"]) .overflowMenuItem {
+  color: var(--menu-text, var(--text-primary));
+}
+
+:not([data-mantine-color-scheme="dark"]) .overflowMenuItem:hover {
+  background-color: var(--menu-hover-bg, rgba(0, 0, 0, 0.05));
+}
+
+:not([data-mantine-color-scheme="dark"]) .overflowMenuItem.menuItemActive {
+  background-color: var(--menu-hover-bg, rgba(0, 0, 0, 0.08));
+}
+
+/* Dark mode - overflow menu items */
+[data-mantine-color-scheme="dark"] .overflowMenuItem {
+  color: var(--text-primary-dark);
+}
+
+[data-mantine-color-scheme="dark"] .overflowMenuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-mantine-color-scheme="dark"] .overflowMenuItem.menuItemActive {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Overflow sub-items container */
+.overflowSubItems {
+  background-color: rgba(0, 0, 0, 0.02);
+  direction: ltr;
+}
+
+[data-mantine-color-scheme="dark"] .overflowSubItems {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Expand icon for accordion items */
+.expandIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+
+.overflowMenuItem:hover .expandIcon {
+  opacity: 1;
+}
+

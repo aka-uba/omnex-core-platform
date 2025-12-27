@@ -116,3 +116,5 @@ echo "[BILGI] PostgreSQL kontrolu tamamlandi."
 exit 0
 
 
+
+

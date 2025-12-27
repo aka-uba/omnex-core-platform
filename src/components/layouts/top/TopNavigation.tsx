@@ -6,13 +6,13 @@
 'use client';
 
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
-import { Menu, Group, Tooltip, Skeleton } from '@mantine/core';
+import { Menu, Group, Tooltip, Skeleton, Collapse, UnstyledButton, Box } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 import { useLayout } from '../core/LayoutProvider';
 import { useMenuItems, MenuItem } from '../hooks/useMenuItems';
-import { IconDots, IconChevronRight } from '@tabler/icons-react';
+import { IconDots, IconChevronRight, IconChevronDown } from '@tabler/icons-react';
 import {
   getBackgroundColor,
   isDarkBackground
@@ -34,20 +34,37 @@ export function TopNavigation() {
   // Menu state for controlling open/close
   const [menuOpened, setMenuOpened] = useState(false);
 
+  // Track expanded items in overflow menu (for accordion-style submenus)
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   // Navigate using router.push (soft navigation)
-  // Immediate navigation without delay to prevent timing issues
+  // Close menu first, then navigate to ensure proper state cleanup
   const navigateTo = useCallback((href: string) => {
-    // First navigate, then close menu to prevent timing conflicts
-    router.push(href);
-    // Close menu after navigation starts
-    requestAnimationFrame(() => {
-      setMenuOpened(false);
-    });
+    // Close all menus first
+    setMenuOpened(false);
+    setExpandedItems(new Set());
+    // Use setTimeout to ensure menu closes before navigation
+    setTimeout(() => {
+      router.push(href);
+    }, 10);
   }, [router]);
+
+  // Toggle expanded state for overflow menu items with children
+  const toggleExpanded = useCallback((href: string) => {
+    setExpandedItems(prev => {
+      const next = new Set(prev);
+      if (next.has(href)) {
+        next.delete(href);
+      } else {
+        next.add(href);
+      }
+      return next;
+    });
+  }, []);
 
   const locale = pathname?.split('/')[1] || 'tr';
   const getHref = (href: string) => {
@@ -233,6 +250,8 @@ export function TopNavigation() {
               width={200}
               position="bottom-start"
               trigger="hover"
+              openDelay={100}
+              closeDelay={200}
             >
               <Menu.Target>
                 <a
@@ -250,7 +269,7 @@ export function TopNavigation() {
                 </a>
               </Menu.Target>
               <Menu.Dropdown {...(styles.menuDropdown ? { className: styles.menuDropdown } : {})} style={dropdownStyle}>
-                {item.children.map((child) => renderDropdownItem(child))}
+                {item.children.map((child) => renderDropdownItem(child, 0))}
               </Menu.Dropdown>
             </Menu>
           ) : (
@@ -271,13 +290,81 @@ export function TopNavigation() {
       );
     }
 
-    // Dropdown menu item (inside overflow menu)
-    return renderDropdownItem(item);
+    // Dropdown menu item (inside overflow menu) - use expandable accordion style
+    return renderOverflowItem(item, 0);
   };
 
-  // Render dropdown item (used in both top-level dropdowns and overflow menu)
-  const renderDropdownItem = (item: MenuItem): React.ReactNode => {
+  // Render overflow item with accordion-style expansion for nested items
+  // This avoids nesting Menu components which causes issues
+  const renderOverflowItem = (item: MenuItem, depth: number = 0): React.ReactNode => {
     const active = isActive(item.href) || (item.children && item.children.some(child => isActive(child.href)));
+    const IconComponent = item.icon;
+    const itemHref = getHref(item.href);
+    const isExpanded = expandedItems.has(item.href);
+    const hasChildren = item.children && item.children.length > 0;
+
+    // Item with children - use accordion-style expansion
+    if (hasChildren) {
+      return (
+        <Box key={item.href}>
+          <UnstyledButton
+            className={`${styles.overflowMenuItem} ${active ? styles.menuItemActive : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleExpanded(item.href);
+            }}
+            style={{ paddingLeft: depth * 12 + 12 }}
+          >
+            {mounted && (
+              <span className={styles.menuItemIcon}>
+                <IconComponent size={16} />
+              </span>
+            )}
+            <span style={{ flex: 1 }}>{item.label}</span>
+            {mounted && (
+              <span className={styles.expandIcon} style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}>
+                <IconChevronDown size={14} />
+              </span>
+            )}
+          </UnstyledButton>
+          <Collapse in={isExpanded}>
+            <Box className={styles.overflowSubItems}>
+              {item.children!.map((child) => renderOverflowItem(child, depth + 1))}
+            </Box>
+          </Collapse>
+        </Box>
+      );
+    }
+
+    // Item without children - simple clickable item
+    return (
+      <UnstyledButton
+        key={item.href}
+        className={`${styles.overflowMenuItem} ${active ? styles.menuItemActive : ''}`}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigateTo(itemHref);
+        }}
+        style={{ paddingLeft: depth * 12 + 12 }}
+      >
+        {mounted && (
+          <span className={styles.menuItemIcon}>
+            <IconComponent size={16} />
+          </span>
+        )}
+        <span>{item.label}</span>
+      </UnstyledButton>
+    );
+  };
+
+  // Render dropdown item (used in top-level dropdowns only - NOT overflow menu)
+  // Recursive function to handle deeply nested menus
+  const renderDropdownItem = (item: MenuItem, depth: number = 0): React.ReactNode => {
+    const active = isActive(item.href) || (item.children && item.children.some(child => isActive(child.href)));
+    const IconComponent = item.icon;
+    const itemHref = getHref(item.href);
 
     // Item with children - create nested menu (opens to the right)
     if (item.children && item.children.length > 0) {
@@ -287,9 +374,9 @@ export function TopNavigation() {
           shadow="md"
           width={200}
           position="right-start"
-          trigger="click-hover"
-          openDelay={50}
-          closeDelay={150}
+          trigger="hover"
+          openDelay={100}
+          closeDelay={200}
         >
           <Menu.Target>
             <Menu.Item
@@ -298,7 +385,7 @@ export function TopNavigation() {
               leftSection={
                 mounted ? (
                   <span {...(styles.menuItemIcon ? { className: styles.menuItemIcon } : {})}>
-                    <item.icon size={16} />
+                    <IconComponent size={16} />
                   </span>
                 ) : null
               }
@@ -307,35 +394,13 @@ export function TopNavigation() {
             </Menu.Item>
           </Menu.Target>
           <Menu.Dropdown {...(styles.menuDropdown ? { className: styles.menuDropdown } : {})} style={dropdownStyle}>
-            {item.children.map((child) => {
-              const childActive = isActive(child.href);
-              const childHref = getHref(child.href);
-              const ChildIcon = child.icon;
-              return (
-                <Menu.Item
-                  key={child.href}
-                  {...((childActive ? styles.menuItemActive : '') ? { className: (childActive ? styles.menuItemActive : '') } : {})}
-                  leftSection={
-                    mounted ? (
-                      <span {...(styles.menuItemIcon ? { className: styles.menuItemIcon } : {})}>
-                        <ChildIcon size={16} />
-                      </span>
-                    ) : null
-                  }
-                  onClick={() => navigateTo(childHref)}
-                >
-                  {child.label}
-                </Menu.Item>
-              );
-            })}
+            {item.children.map((child) => renderDropdownItem(child, depth + 1))}
           </Menu.Dropdown>
         </Menu>
       );
     }
 
     // Item without children - simple clickable item
-    const IconComponent = item.icon;
-    const itemHref = getHref(item.href);
     return (
       <Menu.Item
         key={item.href}
@@ -347,7 +412,11 @@ export function TopNavigation() {
             </span>
           ) : null
         }
-        onClick={() => navigateTo(itemHref)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigateTo(itemHref);
+        }}
       >
         {item.label}
       </Menu.Item>

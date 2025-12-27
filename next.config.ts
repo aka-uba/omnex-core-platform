@@ -9,6 +9,19 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Rewrite /uploads/* and /storage/* to API routes for production file serving
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: '/api/uploads/:path*',
+      },
+      {
+        source: '/storage/:path*',
+        destination: '/api/storage/:path*',
+      },
+    ];
+  },
   // Experimental: Router cache settings to prevent stale content
   experimental: {
     staleTimes: {
