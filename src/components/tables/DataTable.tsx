@@ -933,7 +933,7 @@ export function DataTable({
                     {/* Card Header - İlk sütun (başlık) */}
                     {firstColumn && (
                       <Box className={classes.cardHeader}>
-                        <Text fw={600} size="md" lineClamp={2}>
+                        <Text component="div" fw={600} size="md" lineClamp={2}>
                           {firstColumn.render
                             ? firstColumn.render((row as Record<string, any>)[firstColumn.key], row)
                             : String((row as Record<string, any>)[firstColumn.key] ?? '-')}
