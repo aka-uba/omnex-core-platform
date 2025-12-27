@@ -69,7 +69,8 @@
   transition: background-color 0.2s ease;
 }
 
-.calendarDay:hover {
+.calendarDay:hover,
+.calendarDay:active {
   background-color: var(--bg-surface);
   z-index: 5;
 }
@@ -149,7 +150,8 @@
   z-index: 1;
 }
 
-.eventCard:hover {
+.eventCard:hover,
+.eventCard:active {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -159,7 +161,8 @@
   opacity: 0.95;
 }
 
-[data-mantine-color-scheme="dark"] .eventCard:hover {
+[data-mantine-color-scheme="dark"] .eventCard:hover,
+[data-mantine-color-scheme="dark"] .eventCard:active {
   opacity: 1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   background-color: #3c4043;
@@ -189,6 +192,12 @@
     z-index: auto;
   }
 
+  /* Enable active state for tap feedback on mobile */
+  .calendarDay:active {
+    background-color: var(--bg-surface);
+    z-index: 5;
+  }
+
   .eventCard {
     padding: 0.25rem;
   }
@@ -198,6 +207,13 @@
     transform: none;
     box-shadow: none;
     z-index: 1;
+  }
+
+  /* Enable active state for tap feedback on mobile */
+  .eventCard:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
   }
 
   .addEventButton {
@@ -215,17 +231,30 @@
   }
 }
 
-/* Touch device specific - disable hover states */
+/* Touch device specific - disable hover states but enable active for tap */
 @media (hover: none) and (pointer: coarse) {
   .calendarDay:hover {
     background-color: var(--bg-card);
     z-index: auto;
   }
 
+  /* Enable active state for tap feedback */
+  .calendarDay:active {
+    background-color: var(--bg-surface);
+    z-index: 5;
+  }
+
   .eventCard:hover {
     transform: none;
     box-shadow: none;
     z-index: 1;
+  }
+
+  /* Enable active state for tap feedback */
+  .eventCard:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
   }
 
   .addEventButton {
@@ -235,5 +264,10 @@
   .navButton:hover {
     color: var(--text-secondary);
     background-color: transparent;
+  }
+
+  .navButton:active {
+    color: var(--color-primary-600);
+    background-color: var(--bg-surface);
   }
 }
