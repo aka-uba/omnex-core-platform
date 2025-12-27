@@ -197,6 +197,7 @@ export function Dashboard() {
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${currentLocale}/dashboard`, namespace: 'global' },
         ]}
+        showBackButton={false}
         actions={[
           {
             label: tGlobal('common.actions.refresh') || 'Yenile',

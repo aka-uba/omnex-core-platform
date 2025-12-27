@@ -93,6 +93,103 @@ export function CentralPageHeader({
     const desktopIconSize = iconHeight || 32;
     const currentIconSize = isMobile ? mobileIconSize : desktopIconSize;
 
+    // Mobile layout: 3 rows (icon+title, description, buttons)
+    // Desktop layout: single row with icon+title+description on left, buttons on right
+    if (isMobile) {
+        return (
+            <Box
+                style={{
+                    backgroundColor: mounted && isDarkMode ? 'rgba(32, 33, 36, 0.8)' : 'var(--bg-primary)',
+                }}
+                {...(styles.centralPageHeader ? { className: styles.centralPageHeader } : {})}
+            >
+                {breadcrumbs && <BreadcrumbNav items={breadcrumbs} namespace={namespace} />}
+
+                {/* Row 1: Icon + Title */}
+                <Group gap="sm" align="center" mt="xs">
+                    {icon && (
+                        <Box
+                            c={mounted && isDarkMode ? "gray" : "blue"}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexShrink: 0,
+                            }}
+                        >
+                            <ClientIcon
+                                fallback={
+                                    <div style={{
+                                        width: `${mobileIconSize}px`,
+                                        height: `${mobileIconSize}px`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }} />
+                                }
+                            >
+                                {isValidElement(icon) ? (
+                                    cloneElement(icon as React.ReactElement<any>, {
+                                        size: mobileIconSize
+                                    })
+                                ) : (
+                                    <div style={{
+                                        width: `${mobileIconSize}px`,
+                                        height: `${mobileIconSize}px`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        {icon}
+                                    </div>
+                                )}
+                            </ClientIcon>
+                        </Box>
+                    )}
+                    <Title order={4} style={{ wordBreak: 'break-word', flex: 1 }}>
+                        {translate(title)}
+                    </Title>
+                </Group>
+
+                {/* Row 2: Description */}
+                {description && (
+                    <Text c="dimmed" size="sm" mt={4}>
+                        {translate(description)}
+                    </Text>
+                )}
+
+                {/* Row 3: Buttons */}
+                {(showBackButton || filteredActions.length > 0) && (
+                    <Group gap="xs" mt="sm" wrap="wrap">
+                        {showBackButton && !hasExistingBackButton && (
+                            <Button
+                                leftSection={<IconArrowLeft size={16} />}
+                                onClick={handleBack}
+                                variant="subtle"
+                                color={isDarkMode ? 'gray' : 'blue'}
+                                size="xs"
+                            >
+                                {backButtonLabel || tGlobal('common.actions.back')}
+                            </Button>
+                        )}
+                        {filteredActions.map((action, index) => (
+                            <Button
+                                key={index}
+                                {...(action.icon ? { leftSection: action.icon } : {})}
+                                {...(action.onClick ? { onClick: action.onClick } : {})}
+                                variant={action.variant || 'filled'}
+                                {...((action.color || (isDarkMode ? 'gray' : undefined)) ? { color: (action.color || (isDarkMode ? 'gray' : undefined))! } : {})}
+                                size="xs"
+                            >
+                                {translate(action.label)}
+                            </Button>
+                        ))}
+                    </Group>
+                )}
+            </Box>
+        );
+    }
+
+    // Desktop layout
     return (
         <Box
             style={{
@@ -107,7 +204,7 @@ export function CentralPageHeader({
                 align="flex-start"
                 mt="xs"
                 wrap="nowrap"
-                gap={isMobile ? 'xs' : 'md'}
+                gap="md"
             >
                 <Group gap="sm" align="flex-start" style={{ flex: 1, minWidth: 0 }}>
                     {icon && (
@@ -116,7 +213,7 @@ export function CentralPageHeader({
                             style={{
                                 display: 'flex',
                                 alignItems: 'flex-end',
-                                height: isMobile ? 'auto' : (iconHeight ? `${iconHeight}px` : 'auto'),
+                                height: iconHeight ? `${iconHeight}px` : 'auto',
                                 paddingLeft: '7px',
                                 flexShrink: 0,
                             }}
@@ -124,8 +221,8 @@ export function CentralPageHeader({
                             <ClientIcon
                                 fallback={
                                     <div style={{
-                                        width: `${currentIconSize}px`,
-                                        height: `${currentIconSize}px`,
+                                        width: `${desktopIconSize}px`,
+                                        height: `${desktopIconSize}px`,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
@@ -134,12 +231,12 @@ export function CentralPageHeader({
                             >
                                 {isValidElement(icon) ? (
                                     cloneElement(icon as React.ReactElement<any>, {
-                                        size: currentIconSize
+                                        size: desktopIconSize
                                     })
                                 ) : (
                                     <div style={{
-                                        width: `${currentIconSize}px`,
-                                        height: `${currentIconSize}px`,
+                                        width: `${desktopIconSize}px`,
+                                        height: `${desktopIconSize}px`,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
@@ -160,7 +257,7 @@ export function CentralPageHeader({
                             flex: 1,
                         }}
                     >
-                        <Title order={isMobile ? 4 : 2} style={{ wordBreak: 'break-word' }}>
+                        <Title order={2} style={{ wordBreak: 'break-word' }}>
                             {translate(title)}
                         </Title>
                         {description && (
@@ -185,9 +282,9 @@ export function CentralPageHeader({
                                 onClick={handleBack}
                                 variant="subtle"
                                 color={isDarkMode ? 'gray' : 'blue'}
-                                size={isMobile ? 'xs' : 'md'}
+                                size="md"
                             >
-                                {backButtonLabel || tGlobal('actions.back')}
+                                {backButtonLabel || tGlobal('common.actions.back')}
                             </Button>
                         )}
                         {/* Other actions */}
@@ -198,7 +295,7 @@ export function CentralPageHeader({
                                 {...(action.onClick ? { onClick: action.onClick } : {})}
                                 variant={action.variant || 'filled'}
                                 {...((action.color || (isDarkMode ? 'gray' : undefined)) ? { color: (action.color || (isDarkMode ? 'gray' : undefined))! } : {})}
-                                size={isMobile ? 'xs' : 'md'}
+                                size="md"
                             >
                                 {translate(action.label)}
                             </Button>
