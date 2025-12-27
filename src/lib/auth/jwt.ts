@@ -21,10 +21,15 @@ export interface JWTPayload {
 }
 
 /**
- * Generate access token (short-lived)
+ * Generate access token
+ * @param payload - JWT payload
+ * @param expiresInMinutes - Optional custom expiration in minutes (from security settings sessionTimeout)
  */
-export function generateAccessToken(payload: JWTPayload): string {
-    const expiresIn = typeof JWT_EXPIRES_IN === 'string' ? JWT_EXPIRES_IN : `${JWT_EXPIRES_IN}s`;
+export function generateAccessToken(payload: JWTPayload, expiresInMinutes?: number): string {
+    // Use custom expiration if provided, otherwise use default from env
+    const expiresIn = expiresInMinutes
+        ? `${expiresInMinutes}m`
+        : (typeof JWT_EXPIRES_IN === 'string' ? JWT_EXPIRES_IN : `${JWT_EXPIRES_IN}s`);
     return jwt.sign(payload, JWT_SECRET, {
         expiresIn: expiresIn as string,
         issuer: 'omnex-core',
@@ -34,9 +39,14 @@ export function generateAccessToken(payload: JWTPayload): string {
 
 /**
  * Generate refresh token (long-lived)
+ * @param payload - JWT payload
+ * @param expiresInDays - Optional custom expiration in days (from security settings rememberMeDuration)
  */
-export function generateRefreshToken(payload: JWTPayload): string {
-    const expiresIn = typeof JWT_REFRESH_EXPIRES_IN === 'string' ? JWT_REFRESH_EXPIRES_IN : `${JWT_REFRESH_EXPIRES_IN}s`;
+export function generateRefreshToken(payload: JWTPayload, expiresInDays?: number): string {
+    // Use custom expiration if provided, otherwise use default from env
+    const expiresIn = expiresInDays
+        ? `${expiresInDays}d`
+        : (typeof JWT_REFRESH_EXPIRES_IN === 'string' ? JWT_REFRESH_EXPIRES_IN : `${JWT_REFRESH_EXPIRES_IN}s`);
     return jwt.sign(
         {
             userId: payload.userId,

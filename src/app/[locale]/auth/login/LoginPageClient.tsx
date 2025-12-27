@@ -62,6 +62,7 @@ export function LoginPageClient({ locale }: { locale: string }) {
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          rememberMe: values.rememberMe,
         }),
       });
 
@@ -123,13 +124,16 @@ export function LoginPageClient({ locale }: { locale: string }) {
               </Alert>
             )}
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit(handleSubmit)} id="login-form" name="login-form" autoComplete="on">
               <Stack gap="md">
                 <TextInput
                   label={t('login.username')}
                   placeholder={t('login.usernamePlaceholder')}
                   leftSection={<IconUser size={16} className="tabler-icon tabler-icon-user" />}
                   required
+                  name="username"
+                  id="username"
+                  autoComplete="username"
                   {...form.getInputProps('username')}
                 />
 
@@ -138,6 +142,9 @@ export function LoginPageClient({ locale }: { locale: string }) {
                   placeholder={t('login.passwordPlaceholder')}
                   leftSection={<IconLock size={16} className="tabler-icon tabler-icon-lock" />}
                   required
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
                   {...form.getInputProps('password')}
                 />
 

@@ -7,6 +7,23 @@ import { getTenantDbUrl } from '@/lib/services/tenantService';
 import { generateAccessToken, generateRefreshToken, type JWTPayload } from '@/lib/auth/jwt';
 import { createSession } from '@/lib/auth/session';
 import { successResponse, errorResponse, unauthorizedResponse } from '@/lib/api/response';
+
+// Helper to get security settings from tenant's general settings
+async function getSecuritySettings(tenantPrisma: any): Promise<{
+  sessionTimeout: number;
+  rememberMeDuration: number;
+}> {
+  try {
+    const settings = await tenantPrisma.generalSettings.findFirst();
+    return {
+      sessionTimeout: settings?.sessionTimeout || 30, // default 30 minutes
+      rememberMeDuration: settings?.rememberMeDuration || 30, // default 30 days
+    };
+  } catch {
+    return { sessionTimeout: 30, rememberMeDuration: 30 };
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -173,16 +190,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Son aktif zamanı güncelle
+    // Get security settings and update last active
+    let securitySettings = { sessionTimeout: 30, rememberMeDuration: 30 };
     if (tenantContext) {
       const tenantPrisma = getTenantPrisma(tenantContext.dbUrl);
+
+      // Get security settings for token expiration
+      securitySettings = await getSecuritySettings(tenantPrisma);
+
+      // Update last active time
       await tenantPrisma.user.update({
         where: { id: user.id },
         data: { lastActive: new Date() },
       });
     }
 
-    // Generate JWT tokens
+    // Check if rememberMe is enabled
+    const rememberMe = body.rememberMe === true;
+
+    // Generate JWT tokens with dynamic expiration from security settings
     const tokenPayload: JWTPayload = {
       userId: user.id,
       tenantSlug: tenantContext?.slug || '',
@@ -191,11 +217,21 @@ export async function POST(request: NextRequest) {
       ...(user.username ? { username: user.username } : {}),
     };
 
-    const accessToken = generateAccessToken(tokenPayload);
-    const refreshToken = generateRefreshToken(tokenPayload);
+    // If rememberMe is true, use rememberMeDuration (days), otherwise use sessionTimeout (minutes)
+    const accessToken = rememberMe
+      ? generateAccessToken(tokenPayload, securitySettings.rememberMeDuration * 24 * 60) // convert days to minutes
+      : generateAccessToken(tokenPayload, securitySettings.sessionTimeout);
+
+    const refreshToken = generateRefreshToken(tokenPayload, securitySettings.rememberMeDuration);
 
     // Create session
     const sessionId = await createSession(user.id, tenantContext?.slug || '');
+
+    // Calculate cookie maxAge based on rememberMe and security settings
+    const accessTokenMaxAge = rememberMe
+      ? 60 * 60 * 24 * securitySettings.rememberMeDuration // rememberMeDuration in days
+      : 60 * securitySettings.sessionTimeout; // sessionTimeout in minutes
+    const refreshTokenMaxAge = 60 * 60 * 24 * securitySettings.rememberMeDuration;
 
     // Başarılı giriş - kullanıcı bilgilerini ve token'ları döndür
     const response = successResponse({
@@ -212,14 +248,15 @@ export async function POST(request: NextRequest) {
       accessToken,
       refreshToken,
       sessionId,
+      expiresIn: rememberMe ? securitySettings.rememberMeDuration * 24 * 60 : securitySettings.sessionTimeout, // in minutes
     });
 
-    // Set accessToken cookie for server-side auth (required for setup page access)
+    // Set accessToken cookie for server-side auth
     response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: accessTokenMaxAge,
       path: '/',
     });
 
@@ -228,7 +265,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: refreshTokenMaxAge,
       path: '/',
     });
 
