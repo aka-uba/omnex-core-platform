@@ -268,20 +268,20 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
                 <Divider />
 
                 <Grid mt="md">
-                  <Grid.Col span={6}>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
                     <Text size="sm" c="dimmed">
                       {t('form.personal.email')}
                     </Text>
-                    <Text fw={500}>{user.email || '-'}</Text>
+                    <Text fw={500} style={{ wordBreak: 'break-word' }}>{user.email || '-'}</Text>
                   </Grid.Col>
-                  <Grid.Col span={6}>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
                     <Text size="sm" c="dimmed">
                       {t('form.personal.phone')}
                     </Text>
                     <Text fw={500}>{user.phone || '-'}</Text>
                   </Grid.Col>
                   {user.department && (
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
                       <Text size="sm" c="dimmed">
                         {t('form.work.department')}
                       </Text>
@@ -289,7 +289,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
                     </Grid.Col>
                   )}
                   {user.position && (
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
                       <Text size="sm" c="dimmed">
                         {t('form.work.position')}
                       </Text>
@@ -297,7 +297,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
                     </Grid.Col>
                   )}
                   {user.employeeId && (
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
                       <Text size="sm" c="dimmed">
                         {t('form.work.employeeId')}
                       </Text>
@@ -305,7 +305,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
                     </Grid.Col>
                   )}
                   {user.hireDate && (
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
                       <Text size="sm" c="dimmed">
                         {t('form.work.hireDate')}
                       </Text>

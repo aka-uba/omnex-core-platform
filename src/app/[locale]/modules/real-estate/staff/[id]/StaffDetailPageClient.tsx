@@ -232,31 +232,31 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
 
                 <Divider />
 
-                <Grid>
+                <Grid mt="md">
               {staff.email && (
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <Text size="sm" c="dimmed">
                     {t('form.email')}
                   </Text>
-                  <Text fw={500}>{staff.email}</Text>
+                  <Text fw={500} style={{ wordBreak: 'break-word' }}>{staff.email}</Text>
                 </Grid.Col>
               )}
               {staff.phone && (
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <Text size="sm" c="dimmed">
                     {t('form.phone')}
                   </Text>
                   <Text fw={500}>{staff.phone}</Text>
                 </Grid.Col>
               )}
-              <Grid.Col span={6}>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
                 <Text size="sm" c="dimmed">
                   {t('table.assignedUnits')}
                 </Text>
                 <Text fw={500}>{staff.assignedUnits}</Text>
               </Grid.Col>
               {staff.collectionRate !== null && staff.collectionRate !== undefined && (
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <Text size="sm" c="dimmed">
                     {t('table.collectionRate')}
                   </Text>
@@ -264,7 +264,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                 </Grid.Col>
               )}
               {staff.averageVacancyDays !== null && staff.averageVacancyDays !== undefined && (
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <Text size="sm" c="dimmed">
                     {t('table.averageVacancyDays')}
                   </Text>
@@ -272,7 +272,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                 </Grid.Col>
               )}
               {staff.customerSatisfaction !== null && staff.customerSatisfaction !== undefined && (
-                <Grid.Col span={6}>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
                   <Text size="sm" c="dimmed">
                     {t('table.customerSatisfaction')}
                   </Text>

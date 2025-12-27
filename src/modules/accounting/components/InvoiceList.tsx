@@ -4,35 +4,25 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Paper,
-  TextInput,
-  Button,
-  Table,
   Badge,
   ActionIcon,
   Group,
   Text,
-  Pagination,
-  Select,
-  Menu,
   Loader,
   Tooltip,
 } from '@mantine/core';
 import {
-  IconSearch,
-  IconPlus,
   IconEdit,
   IconTrash,
   IconEye,
-  IconDownload,
 } from '@tabler/icons-react';
 import { useInvoices, useDeleteInvoice } from '@/hooks/useInvoices';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { useExport } from '@/lib/export/ExportProvider';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import type { InvoiceStatus } from '@/modules/accounting/types/subscription';
-import type { ExportFormat } from '@/lib/export/types';
 import dayjs from 'dayjs';
 
 interface InvoiceListProps {
@@ -43,17 +33,14 @@ export function InvoiceList({ locale }: InvoiceListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
-  const { exportToExcel, exportToPDF, exportToCSV, isExporting } = useExport();
   const [page, setPage] = useState(1);
-  const [pageSize] = useState<number>(10);
-  const [search, setSearch] = useState<string>('');
+  const [pageSize] = useState<number>(25);
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | undefined>();
   const [subscriptionId, setSubscriptionId] = useState<string | undefined>();
 
   const { data, isLoading, error } = useInvoices({
     page,
-    pageSize,
-    ...(search ? { search } : {}),
+    pageSize: 1000, // Get all for client-side filtering
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(subscriptionId ? { subscriptionId } : {}),
   });
@@ -90,71 +77,142 @@ export function InvoiceList({ locale }: InvoiceListProps) {
     }
   };
 
-  const handleExport = async (format: ExportFormat) => {
-    if (!data) return;
-
-    try {
-      const exportData = {
-        columns: [
-          t('invoices.table.invoiceNumber'),
-          t('invoices.table.invoiceDate'),
-          t('invoices.table.dueDate'),
-          t('invoices.table.totalAmount'),
-          t('invoices.table.status'),
-          t('invoices.table.paidDate'),
-        ],
-        rows: data.invoices.map((invoice) => [
-          invoice.invoiceNumber,
-          dayjs(invoice.invoiceDate).format('DD.MM.YYYY'),
-          dayjs(invoice.dueDate).format('DD.MM.YYYY'),
-          Number(invoice.totalAmount).toLocaleString('tr-TR', {
-            style: 'currency',
-            currency: invoice.currency || 'TRY',
-          }),
-          t(`invoices.status.${invoice.status}`) || invoice.status,
-          invoice.paidDate ? dayjs(invoice.paidDate).format('DD.MM.YYYY') : '-',
-        ]),
-        metadata: {
-          title: t('invoices.title'),
-          description: t('invoices.exportDescription'),
-          generatedAt: new Date().toISOString(),
-        },
-      };
-
-      const options = {
-        title: t('invoices.title'),
-        description: t('invoices.exportDescription'),
-        includeHeader: true,
-        includeFooter: true,
-        includePageNumbers: true,
-        filename: `invoices_${dayjs().format('YYYY-MM-DD')}`,
-      };
-
-      switch (format) {
-        case 'excel':
-          await exportToExcel(exportData, options);
-          break;
-        case 'pdf':
-          await exportToPDF(exportData, options);
-          break;
-        case 'csv':
-          await exportToCSV(exportData, options);
-          break;
-      }
-
-      showToast({
-        type: 'success',
-        title: t('messages.success'),
-        message: t('invoices.exportSuccess'),
-      });
-    } catch (error) {
-      showToast({
-        type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('invoices.exportError'),
-      });
-    }
+  const getStatusBadge = (status: InvoiceStatus) => {
+    const statusColors: Record<InvoiceStatus, string> = {
+      draft: 'gray',
+      sent: 'blue',
+      paid: 'green',
+      overdue: 'red',
+      cancelled: 'gray',
+    };
+    return (
+      <Badge color={statusColors[status] || 'gray'}>
+        {t(`invoices.status.${status}`) || status}
+      </Badge>
+    );
   };
+
+  // DataTable columns
+  const columns: DataTableColumn[] = [
+    {
+      key: 'invoiceNumber',
+      label: t('invoices.table.invoiceNumber'),
+      sortable: true,
+      searchable: true,
+      render: (value) => <Text fw={500}>{value}</Text>,
+    },
+    {
+      key: 'invoiceDate',
+      label: t('invoices.table.invoiceDate'),
+      sortable: true,
+      render: (value) => dayjs(value).format('DD.MM.YYYY'),
+    },
+    {
+      key: 'dueDate',
+      label: t('invoices.table.dueDate'),
+      sortable: true,
+      render: (value) => dayjs(value).format('DD.MM.YYYY'),
+    },
+    {
+      key: 'totalAmount',
+      label: t('invoices.table.totalAmount'),
+      sortable: true,
+      render: (value, row) => Number(value).toLocaleString('tr-TR', {
+        style: 'currency',
+        currency: row.currency || 'TRY',
+      }),
+    },
+    {
+      key: 'status',
+      label: t('invoices.table.status'),
+      sortable: true,
+      render: (value) => getStatusBadge(value as InvoiceStatus),
+    },
+    {
+      key: 'paidDate',
+      label: t('invoices.table.paidDate'),
+      sortable: true,
+      render: (value) => value ? dayjs(value).format('DD.MM.YYYY') : '-',
+    },
+    {
+      key: 'actions',
+      label: t('table.actions'),
+      sortable: false,
+      searchable: false,
+      render: (_, row) => (
+        <Group gap="xs" justify="flex-end">
+          <Tooltip label={t('actions.view')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="blue"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/accounting/invoices/${row.id}`);
+              }}
+            >
+              <IconEye size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.edit')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/accounting/invoices/${row.id}/edit`);
+              }}
+            >
+              <IconEdit size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.delete')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row.id);
+              }}
+            >
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
+      ),
+    },
+  ];
+
+  // Filter options
+  const filters: FilterOption[] = [
+    {
+      key: 'status',
+      label: t('invoices.filter.status'),
+      type: 'select',
+      options: [
+        { value: 'draft', label: t('invoices.status.draft') },
+        { value: 'sent', label: t('invoices.status.sent') },
+        { value: 'paid', label: t('invoices.status.paid') },
+        { value: 'overdue', label: t('invoices.status.overdue') },
+        { value: 'cancelled', label: t('invoices.status.cancelled') },
+      ],
+    },
+    {
+      key: 'subscriptionId',
+      label: t('invoices.filter.subscription'),
+      type: 'select',
+      options: subscriptionsData?.subscriptions.map(s => ({ value: s.id, label: s.name })) || [],
+    },
+    {
+      key: 'invoiceDate',
+      label: t('invoices.table.invoiceDate'),
+      type: 'date',
+    },
+    {
+      key: 'dueDate',
+      label: t('invoices.table.dueDate'),
+      type: 'date',
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -180,184 +238,28 @@ export function InvoiceList({ locale }: InvoiceListProps) {
     );
   }
 
-  const getStatusBadge = (status: InvoiceStatus) => {
-    const statusColors: Record<InvoiceStatus, string> = {
-      draft: 'gray',
-      sent: 'blue',
-      paid: 'green',
-      overdue: 'red',
-      cancelled: 'gray',
-    };
-    return (
-      <Badge color={statusColors[status] || 'gray'}>
-        {t(`invoices.status.${status}`) || status}
-      </Badge>
-    );
-  };
-
   return (
-    <Paper shadow="xs" p="md">
-      <Group justify="space-between" mb="md">
-        <TextInput
-          placeholder={t('search.placeholder')}
-          leftSection={<IconSearch size={16} />}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          style={{ flex: 1, maxWidth: 400 }}
-        />
-        <Group>
-          <Select
-            placeholder={t('invoices.filter.subscription')}
-            data={[
-              { value: '', label: t('filter.all') },
-              ...(subscriptionsData?.subscriptions.map(s => ({ value: s.id, label: s.name })) || []),
-            ]}
-            value={subscriptionId || ''}
-            onChange={(value) => setSubscriptionId(value || undefined)}
-            clearable
-            searchable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={t('invoices.filter.status')}
-            data={[
-              { value: '', label: t('filter.all') },
-              { value: 'draft', label: t('invoices.status.draft') },
-              { value: 'sent', label: t('invoices.status.sent') },
-              { value: 'paid', label: t('invoices.status.paid') },
-              { value: 'overdue', label: t('invoices.status.overdue') },
-              { value: 'cancelled', label: t('invoices.status.cancelled') },
-            ]}
-            value={statusFilter || ''}
-            onChange={(value) => setStatusFilter(value as InvoiceStatus | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Menu>
-            <Menu.Target>
-              <Button
-                leftSection={<IconDownload size={16} />}
-                variant="light"
-                loading={isExporting}
-              >
-                {t('export.title')}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => handleExport('excel')}>
-                {t('export.excel')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('pdf')}>
-                {t('export.pdf')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('csv')}>
-                {t('export.csv')}
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => router.push(`/${locale}/modules/accounting/invoices/create`)}
-          >
-            {t('actions.newInvoice')}
-          </Button>
-        </Group>
-      </Group>
-
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t('invoices.table.invoiceNumber')}</Table.Th>
-            <Table.Th>{t('invoices.table.invoiceDate')}</Table.Th>
-            <Table.Th>{t('invoices.table.dueDate')}</Table.Th>
-            <Table.Th>{t('invoices.table.totalAmount')}</Table.Th>
-            <Table.Th>{t('invoices.table.status')}</Table.Th>
-            <Table.Th>{t('invoices.table.paidDate')}</Table.Th>
-            <Table.Th>{t('table.actions')}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {data.invoices.map((invoice) => (
-            <Table.Tr key={invoice.id}>
-              <Table.Td>
-                <Text fw={500}>{invoice.invoiceNumber}</Text>
-              </Table.Td>
-              <Table.Td>
-                {dayjs(invoice.invoiceDate).format('DD.MM.YYYY')}
-              </Table.Td>
-              <Table.Td>
-                {dayjs(invoice.dueDate).format('DD.MM.YYYY')}
-              </Table.Td>
-              <Table.Td>
-                {Number(invoice.totalAmount).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: invoice.currency || 'TRY',
-                })}
-              </Table.Td>
-              <Table.Td>{getStatusBadge(invoice.status)}</Table.Td>
-              <Table.Td>
-                {invoice.paidDate ? dayjs(invoice.paidDate).format('DD.MM.YYYY') : '-'}
-              </Table.Td>
-              <Table.Td>
-                <Group gap="xs" justify="flex-end">
-                  <Tooltip label={t('actions.view')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="blue"
-                      onClick={() => router.push(`/${locale}/modules/accounting/invoices/${invoice.id}`)}
-                    >
-                      <IconEye size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.edit')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="gray"
-                      onClick={() => router.push(`/${locale}/modules/accounting/invoices/${invoice.id}/edit`)}
-                    >
-                      <IconEdit size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.delete')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="red"
-                      onClick={() => handleDelete(invoice.id)}
-                    >
-                      <IconTrash size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Group>
-              </Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-
-      {data.total > 0 && (
-        <Group justify="space-between" mt="md">
-          <Text size="sm" c="dimmed">
-            {t('pagination.showing')} {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, data.total)} {t('pagination.of')} {data.total}
-          </Text>
-          <Pagination
-            value={page}
-            onChange={setPage}
-            total={Math.ceil(data.total / pageSize)}
-          />
-        </Group>
-      )}
+    <>
+      <DataTable
+        columns={columns}
+        data={data.invoices}
+        searchable
+        sortable
+        pageable
+        defaultPageSize={25}
+        filters={filters}
+        onFilter={(activeFilters) => {
+          setStatusFilter(activeFilters.status as InvoiceStatus | undefined);
+          setSubscriptionId(activeFilters.subscriptionId as string | undefined);
+        }}
+        showColumnSettings
+        showExportIcons
+        exportTitle={t('invoices.title')}
+        exportNamespace="modules/accounting"
+        tableId="accounting-invoices"
+        onRowClick={(row) => router.push(`/${locale}/modules/accounting/invoices/${row.id}`)}
+      />
       <ConfirmDialog />
-    </Paper>
+    </>
   );
 }
-
-
-
-
-
-
-
-
