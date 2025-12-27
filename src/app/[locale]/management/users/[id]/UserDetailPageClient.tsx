@@ -234,7 +234,84 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
         {/* User Info */}
         <Paper p="md" withBorder>
           <Stack gap="md">
-            <Group align="flex-start" gap="xl">
+            {/* Mobile: Stack layout, Desktop: Group layout */}
+            <Box hiddenFrom="sm">
+              {/* Mobile Layout - Image on top */}
+              <Stack align="center" gap="md">
+                <Avatar
+                  src={user.profilePicture || undefined}
+                  size={150}
+                  radius="md"
+                  style={{
+                    border: '4px solid var(--mantine-color-gray-3)',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <IconUser size={75} />
+                </Avatar>
+                <Stack align="center" gap={4}>
+                  <Title order={3} ta="center">{user.name}</Title>
+                  <Text size="sm" c="dimmed">
+                    {t('quickView.createdAt')}: {dayjs(user.createdAt).format('DD.MM.YYYY HH:mm')}
+                  </Text>
+                  <Group gap="xs" mt="xs">
+                    {getRoleBadge(user.role)}
+                    {getStatusBadge(user.status)}
+                  </Group>
+                </Stack>
+              </Stack>
+              <Divider my="md" />
+              {/* Mobile Grid */}
+              <Grid>
+                <Grid.Col span={12}>
+                  <Text size="sm" c="dimmed">
+                    {t('form.personal.email')}
+                  </Text>
+                  <Text fw={500} style={{ wordBreak: 'break-word' }}>{user.email || '-'}</Text>
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <Text size="sm" c="dimmed">
+                    {t('form.personal.phone')}
+                  </Text>
+                  <Text fw={500}>{user.phone || '-'}</Text>
+                </Grid.Col>
+                {user.department && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.work.department')}
+                    </Text>
+                    <Text fw={500}>{user.department}</Text>
+                  </Grid.Col>
+                )}
+                {user.position && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.work.position')}
+                    </Text>
+                    <Text fw={500}>{user.position}</Text>
+                  </Grid.Col>
+                )}
+                {user.employeeId && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.work.employeeId')}
+                    </Text>
+                    <Text fw={500}>{user.employeeId}</Text>
+                  </Grid.Col>
+                )}
+                {user.hireDate && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.work.hireDate')}
+                    </Text>
+                    <Text fw={500}>{dayjs(user.hireDate).format('DD.MM.YYYY')}</Text>
+                  </Grid.Col>
+                )}
+              </Grid>
+            </Box>
+
+            {/* Desktop Layout - Side by side */}
+            <Group align="flex-start" gap="xl" visibleFrom="sm">
               {/* Profile Image */}
               <Box>
                 <Avatar

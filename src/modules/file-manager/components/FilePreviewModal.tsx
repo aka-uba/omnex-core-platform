@@ -74,11 +74,16 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
 
     // Determine other file types (after early return check)
     const isImage = mimeType.startsWith('image/') || /\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(fileName);
-    const isPdf = mimeType === 'application/pdf' || fileExtension === 'pdf' || fileName.endsWith('.pdf');
+    const isPdf = mimeType === 'application/pdf' || fileExtension === 'pdf' || fileName.endsWith('.pdf') || /\.pdf$/i.test(file.path);
     const isVideo = mimeType.startsWith('video/') || /\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i.test(fileName);
     const isAudio = mimeType.startsWith('audio/') || /\.(mp3|wav|ogg|aac|flac|m4a|wma)$/i.test(fileName);
     const isWord = /\.(doc|docx)$/i.test(fileName) || mimeType.includes('word') || mimeType.includes('msword');
     const isExcel = /\.(xls|xlsx)$/i.test(fileName) || mimeType.includes('excel') || mimeType.includes('spreadsheet');
+
+    // Debug log for PDF detection
+    if (process.env.NODE_ENV === 'development') {
+        console.log('FilePreviewModal debug:', { fileName, fileExtension, mimeType, isPdf, path: file.path });
+    }
 
     const formatFileSize = (bytes?: number) => {
         if (!bytes) return '-';
@@ -153,7 +158,7 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
                         />
                     ) : isPdf ? (
                         <iframe
-                            src={getPreviewUrl() + '#toolbar=1'}
+                            src={getPreviewUrl()}
                             style={{
                                 width: '100%',
                                 height: '70vh',
@@ -161,6 +166,9 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
                                 borderRadius: '8px',
                             }}
                             title={file.name}
+                            onError={(e) => {
+                                console.error('PDF iframe load error:', e);
+                            }}
                         />
                     ) : isVideo ? (
                         <video

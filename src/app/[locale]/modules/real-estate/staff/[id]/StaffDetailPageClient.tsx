@@ -34,8 +34,10 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
 
   // Convert document to FileItem for preview modal
   const openDocumentPreview = (doc: { name: string; url: string; type: string }) => {
-    // Extract extension from name or url
-    const extension = doc.name.split('.').pop()?.toLowerCase() || '';
+    // Extract extension from URL first, then from name as fallback
+    const urlExtension = doc.url.split('.').pop()?.toLowerCase().split('?')[0] || '';
+    const nameExtension = doc.name.split('.').pop()?.toLowerCase() || '';
+    const extension = urlExtension || nameExtension;
 
     // Determine mime type based on extension
     const mimeTypeMap: Record<string, string> = {
@@ -55,9 +57,13 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
       'mp3': 'audio/mpeg',
     };
 
+    // Get filename from URL if name doesn't have extension
+    const urlFilename = doc.url.split('/').pop()?.split('?')[0] || doc.name;
+    const displayName = doc.name.includes('.') ? doc.name : urlFilename;
+
     const fileItem: FileItem = {
       id: doc.url,
-      name: doc.name,
+      name: displayName,
       path: doc.url, // The URL will be used as the path for preview
       extension: extension,
       mimeType: mimeTypeMap[extension] || 'application/octet-stream',
@@ -67,6 +73,8 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
       createdAt: new Date(),
       modifiedAt: new Date(),
     };
+
+    console.log('Opening document preview:', { doc, fileItem, extension, mimeType: mimeTypeMap[extension] });
 
     setPreviewFile(fileItem);
     setPreviewModalOpened(true);
@@ -196,7 +204,40 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
         {/* Staff Info */}
         <Paper p="md" withBorder>
           <Stack gap="md">
-            <Group align="flex-start" gap="xl">
+            {/* Mobile: Stack layout, Desktop: Group layout */}
+            <Box hiddenFrom="sm">
+              {/* Mobile Layout - Image on top */}
+              <Stack align="center" gap="md">
+                <Avatar
+                  src={staff.profileImage || undefined}
+                  size={150}
+                  radius="md"
+                  style={{
+                    border: '4px solid var(--mantine-color-gray-3)',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <IconUser size={75} />
+                </Avatar>
+                <Stack align="center" gap={4}>
+                  <Title order={3} ta="center">{staff.name}</Title>
+                  <Text size="sm" c="dimmed">
+                    {t('staff.detail.createdAt')}: {dayjs(staff.createdAt).format('DD.MM.YYYY HH:mm')}
+                  </Text>
+                  <Group gap="xs" mt="xs">
+                    {getStaffTypeBadge(staff.staffType)}
+                    {getRoleBadge(staff.role)}
+                    <Badge color={staff.isActive ? 'green' : 'gray'}>
+                      {staff.isActive ? t('common.active') : t('common.inactive')}
+                    </Badge>
+                  </Group>
+                </Stack>
+              </Stack>
+              <Divider my="md" />
+            </Box>
+
+            {/* Desktop Layout - Side by side */}
+            <Group align="flex-start" gap="xl" visibleFrom="sm">
               {/* Profile Image */}
               <Box>
                 <Avatar
@@ -233,63 +274,123 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                 <Divider />
 
                 <Grid mt="md">
-              {staff.email && (
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <Text size="sm" c="dimmed">
-                    {t('form.email')}
-                  </Text>
-                  <Text fw={500} style={{ wordBreak: 'break-word' }}>{staff.email}</Text>
-                </Grid.Col>
-              )}
-              {staff.phone && (
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <Text size="sm" c="dimmed">
-                    {t('form.phone')}
-                  </Text>
-                  <Text fw={500}>{staff.phone}</Text>
-                </Grid.Col>
-              )}
-              <Grid.Col span={{ base: 12, sm: 6 }}>
-                <Text size="sm" c="dimmed">
-                  {t('table.assignedUnits')}
-                </Text>
-                <Text fw={500}>{staff.assignedUnits}</Text>
-              </Grid.Col>
-              {staff.collectionRate !== null && staff.collectionRate !== undefined && (
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <Text size="sm" c="dimmed">
-                    {t('table.collectionRate')}
-                  </Text>
-                  <Text fw={500}>{Number(staff.collectionRate).toFixed(1)}%</Text>
-                </Grid.Col>
-              )}
-              {staff.averageVacancyDays !== null && staff.averageVacancyDays !== undefined && (
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <Text size="sm" c="dimmed">
-                    {t('table.averageVacancyDays')}
-                  </Text>
-                  <Text fw={500}>{Number(staff.averageVacancyDays).toFixed(1)} days</Text>
-                </Grid.Col>
-              )}
-              {staff.customerSatisfaction !== null && staff.customerSatisfaction !== undefined && (
-                <Grid.Col span={{ base: 12, sm: 6 }}>
-                  <Text size="sm" c="dimmed">
-                    {t('table.customerSatisfaction')}
-                  </Text>
-                  <Text fw={500}>{Number(staff.customerSatisfaction).toFixed(1)}/100</Text>
-                </Grid.Col>
-              )}
-              {staff.notes && (
-                <Grid.Col span={12}>
-                  <Text size="sm" c="dimmed">
-                    {t('form.notes')}
-                  </Text>
-                  <Text fw={500}>{staff.notes}</Text>
-                </Grid.Col>
-              )}
+                  {staff.email && (
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.email')}
+                      </Text>
+                      <Text fw={500} style={{ wordBreak: 'break-word' }}>{staff.email}</Text>
+                    </Grid.Col>
+                  )}
+                  {staff.phone && (
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.phone')}
+                      </Text>
+                      <Text fw={500}>{staff.phone}</Text>
+                    </Grid.Col>
+                  )}
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <Text size="sm" c="dimmed">
+                      {t('table.assignedUnits')}
+                    </Text>
+                    <Text fw={500}>{staff.assignedUnits}</Text>
+                  </Grid.Col>
+                  {staff.collectionRate !== null && staff.collectionRate !== undefined && (
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <Text size="sm" c="dimmed">
+                        {t('table.collectionRate')}
+                      </Text>
+                      <Text fw={500}>{Number(staff.collectionRate).toFixed(1)}%</Text>
+                    </Grid.Col>
+                  )}
+                  {staff.averageVacancyDays !== null && staff.averageVacancyDays !== undefined && (
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <Text size="sm" c="dimmed">
+                        {t('table.averageVacancyDays')}
+                      </Text>
+                      <Text fw={500}>{Number(staff.averageVacancyDays).toFixed(1)} days</Text>
+                    </Grid.Col>
+                  )}
+                  {staff.customerSatisfaction !== null && staff.customerSatisfaction !== undefined && (
+                    <Grid.Col span={{ base: 12, sm: 6 }}>
+                      <Text size="sm" c="dimmed">
+                        {t('table.customerSatisfaction')}
+                      </Text>
+                      <Text fw={500}>{Number(staff.customerSatisfaction).toFixed(1)}/100</Text>
+                    </Grid.Col>
+                  )}
+                  {staff.notes && (
+                    <Grid.Col span={12}>
+                      <Text size="sm" c="dimmed">
+                        {t('form.notes')}
+                      </Text>
+                      <Text fw={500}>{staff.notes}</Text>
+                    </Grid.Col>
+                  )}
                 </Grid>
               </div>
             </Group>
+
+            {/* Mobile Grid - shown below image */}
+            <Box hiddenFrom="sm">
+              <Grid>
+                {staff.email && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.email')}
+                    </Text>
+                    <Text fw={500} style={{ wordBreak: 'break-word' }}>{staff.email}</Text>
+                  </Grid.Col>
+                )}
+                {staff.phone && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.phone')}
+                    </Text>
+                    <Text fw={500}>{staff.phone}</Text>
+                  </Grid.Col>
+                )}
+                <Grid.Col span={12}>
+                  <Text size="sm" c="dimmed">
+                    {t('table.assignedUnits')}
+                  </Text>
+                  <Text fw={500}>{staff.assignedUnits}</Text>
+                </Grid.Col>
+                {staff.collectionRate !== null && staff.collectionRate !== undefined && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('table.collectionRate')}
+                    </Text>
+                    <Text fw={500}>{Number(staff.collectionRate).toFixed(1)}%</Text>
+                  </Grid.Col>
+                )}
+                {staff.averageVacancyDays !== null && staff.averageVacancyDays !== undefined && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('table.averageVacancyDays')}
+                    </Text>
+                    <Text fw={500}>{Number(staff.averageVacancyDays).toFixed(1)} days</Text>
+                  </Grid.Col>
+                )}
+                {staff.customerSatisfaction !== null && staff.customerSatisfaction !== undefined && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('table.customerSatisfaction')}
+                    </Text>
+                    <Text fw={500}>{Number(staff.customerSatisfaction).toFixed(1)}/100</Text>
+                  </Grid.Col>
+                )}
+                {staff.notes && (
+                  <Grid.Col span={12}>
+                    <Text size="sm" c="dimmed">
+                      {t('form.notes')}
+                    </Text>
+                    <Text fw={500}>{staff.notes}</Text>
+                  </Grid.Col>
+                )}
+              </Grid>
+            </Box>
           </Stack>
         </Paper>
 
