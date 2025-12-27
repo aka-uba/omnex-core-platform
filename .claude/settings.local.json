@@ -99,7 +99,16 @@
       "Bash(ssh:*)",
       "Bash(for i in 1 2 3 4 5)",
       "Bash(do echo \"Deneme $i...\")",
-      "Bash(break)"
+      "Bash(break)",
+      "Bash('C:/Program Files/PostgreSQL/17/bin/psql.exe':*)",
+      "Bash(PGPASSWORD=postgres \"C:/Program Files/PostgreSQL/17/bin/psql.exe\":*)",
+      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -h localhost -U postgres -c \"SELECT version();\")",
+      "Bash(psql:*)",
+      "Bash(ssh -o ConnectTimeout=10 root@146.190.224.121 \"echo ''=== Services ==='' && systemctl is-active nginx postgresql@17-main && pm2 status && echo ''=== Nginx Health ==='' && curl -s http://localhost/health && echo '''' && echo ''=== App Check ==='' && curl -sI http://localhost:3000 | head -3\")",
+      "Bash(pm2 list:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr \"node\")",
+      "Bash(powershell -Command \"Stop-Process -Name node -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; Set-Location ''C:\\xampp\\htdocs\\omnex-core-platform''; Start-Process -FilePath ''cmd'' -ArgumentList ''/c npm run start'' -WindowStyle Hidden\")"
     ],
     "deny": [],
     "ask": []

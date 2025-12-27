@@ -43,6 +43,9 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
             if (file.path.startsWith('/storage/')) {
                 // Use storage API for /storage/ paths
                 fetchUrl = `/api${file.path}`;
+            } else if (file.path.startsWith('/api/')) {
+                // Already an API path, use directly
+                fetchUrl = file.path;
             } else if (file.path.startsWith('http://') || file.path.startsWith('https://')) {
                 // Use direct URL for http/https
                 fetchUrl = file.path;
@@ -92,6 +95,10 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
         if (file.path.startsWith('/storage/')) {
             // Convert /storage/tenants/... to /api/storage/tenants/...
             return `/api${file.path}`;
+        }
+        // If path is already an API path (/api/...), use it directly
+        if (file.path.startsWith('/api/')) {
+            return file.path;
         }
         // If path is already a full URL (http/https), use it directly
         if (file.path.startsWith('http://') || file.path.startsWith('https://')) {
