@@ -143,6 +143,7 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          rememberMe: values.rememberMe,
           periodId: values.periodId || undefined,
         }),
       });
@@ -285,7 +286,7 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
                 </Alert>
               )}
 
-              <form onSubmit={form.onSubmit(handleSubmit)}>
+              <form onSubmit={form.onSubmit(handleSubmit)} id="admin-login-form" name="admin-login-form" autoComplete="on">
                 <Stack gap="md">
                   <Button
                     variant="subtle"
@@ -314,6 +315,9 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
                     placeholder={t('login.usernamePlaceholder')}
                     leftSection={<IconUser size={16} />}
                     required
+                    name="username"
+                    id="admin-username"
+                    autoComplete="username"
                     {...form.getInputProps('username')}
                   />
 
@@ -322,6 +326,9 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
                     placeholder={t('login.passwordPlaceholder')}
                     leftSection={<IconLock size={16} />}
                     required
+                    name="password"
+                    id="admin-password"
+                    autoComplete="current-password"
                     {...form.getInputProps('password')}
                   />
 

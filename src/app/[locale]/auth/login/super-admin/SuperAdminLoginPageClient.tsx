@@ -169,6 +169,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          rememberMe: values.rememberMe,
           tenantSlug: selectedTenant?.slug,
           periodId: values.periodId || undefined,
         }),
@@ -313,7 +314,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
                 </Alert>
               )}
 
-              <form onSubmit={form.onSubmit(handleSubmit)}>
+              <form onSubmit={form.onSubmit(handleSubmit)} id="super-admin-login-form" name="super-admin-login-form" autoComplete="on">
                 <Stack gap="md">
                   <Select
                     label={t('labels.firma.secin')}
@@ -343,6 +344,9 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
                     placeholder={t('login.usernamePlaceholder')}
                     leftSection={<IconUser size={16} />}
                     required
+                    name="username"
+                    id="super-admin-username"
+                    autoComplete="username"
                     {...form.getInputProps('username')}
                   />
 
@@ -351,6 +355,9 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
                     placeholder={t('login.passwordPlaceholder')}
                     leftSection={<IconLock size={16} />}
                     required
+                    name="password"
+                    id="super-admin-password"
+                    autoComplete="current-password"
                     {...form.getInputProps('password')}
                   />
 
