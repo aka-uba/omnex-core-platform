@@ -81,7 +81,8 @@
   transform: translateX(-10px);
 }
 
-.paymentRow:hover {
+.paymentRow:hover,
+.paymentRow:active {
   border-color: var(--mantine-color-blue-5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
@@ -194,7 +195,8 @@
   transition: opacity 0.2s ease;
 }
 
-.paymentRow:hover .actions {
+.paymentRow:hover .actions,
+.paymentRow:active .actions {
   opacity: 1;
 }
 
@@ -234,7 +236,8 @@
   transition: background 0.2s ease;
 }
 
-.viewAllLink:hover {
+.viewAllLink:hover,
+.viewAllLink:active {
   background: var(--mantine-color-default-hover);
 }
 
@@ -253,7 +256,8 @@
   background: var(--mantine-color-dark-6);
 }
 
-:global([data-mantine-color-scheme="dark"]) .paymentRow:hover {
+:global([data-mantine-color-scheme="dark"]) .paymentRow:hover,
+:global([data-mantine-color-scheme="dark"]) .paymentRow:active {
   background: var(--mantine-color-dark-5);
 }
 
@@ -263,4 +267,57 @@
 
 :global([data-mantine-color-scheme="dark"]) .panelHeader {
   background: var(--mantine-color-dark-7);
+}
+
+/* Touch device specific - show actions on mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effect, use active instead */
+  .paymentRow:hover {
+    border-color: var(--mantine-color-default-border);
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Enable active state for tap feedback */
+  .paymentRow:active {
+    border-color: var(--mantine-color-blue-5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+  }
+
+  /* Always show actions on mobile */
+  .actions {
+    opacity: 1;
+  }
+
+  /* Disable hover on viewAllLink, use active */
+  .viewAllLink:hover {
+    background: transparent;
+  }
+
+  .viewAllLink:active {
+    background: var(--mantine-color-default-hover);
+  }
+}
+
+/* Responsive mobile adjustments */
+@media (max-width: 768px) {
+  /* Disable hover effect, use active instead */
+  .paymentRow:hover {
+    border-color: var(--mantine-color-default-border);
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Enable active state for tap feedback */
+  .paymentRow:active {
+    border-color: var(--mantine-color-blue-5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+  }
+
+  /* Always show actions on mobile */
+  .actions {
+    opacity: 1;
+  }
 }
