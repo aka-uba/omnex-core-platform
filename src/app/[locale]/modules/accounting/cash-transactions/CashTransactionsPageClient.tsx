@@ -8,29 +8,23 @@ import {
   Text,
   Badge,
   ActionIcon,
-  Table,
-  Pagination,
-  Select,
-  TextInput,
-  Button,
   Modal,
   Stack,
   NumberInput,
   Textarea,
   SimpleGrid,
-  Loader,
-  Center,
-  Menu,
+  Select,
+  TextInput,
+  Button,
   Tooltip,
   ThemeIcon,
+  Menu,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconCash,
   IconPlus,
-  IconSearch,
-  IconFilter,
   IconTrash,
   IconArrowUp,
   IconArrowDown,
@@ -55,6 +49,7 @@ import {
 } from '@/hooks/useCashTransactions';
 import { usePaymentMethods } from '@/hooks/usePaymentMethods';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 
 // Source icons and labels
@@ -123,9 +118,6 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const { t } = useTranslation('modules/accounting');
 
   // State
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-  const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [sourceFilter, setSourceFilter] = useState<string | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -135,9 +127,8 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
 
   // Queries
   const { data, isLoading, refetch } = useCashTransactions({
-    page,
-    pageSize,
-    search: search || undefined,
+    page: 1,
+    pageSize: 1000,
     type: typeFilter as 'income' | 'expense' | undefined,
     source: sourceFilter as any,
   });
@@ -184,7 +175,6 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   };
 
   const handleOpenDelete = (id: string) => {
-    // Extract actual ID from prefixed ID (e.g., "manual_abc123" -> "abc123")
     const actualId = id.replace(/^manual_/, '');
     setDeletingId(actualId);
     openDelete();
@@ -260,15 +250,11 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   // Get payment method label
   const getPaymentMethodLabel = (code: string | null) => {
     if (!code) return '-';
-    // First check database
     const found = paymentMethodsData?.paymentMethods?.find((pm) => pm.code === code);
     if (found?.name) return found.name;
-    // Fallback to translations
     const translationKey = `payments.methods.${code}`;
     const translated = t(translationKey);
-    // If translation exists (not same as key), use it
     if (translated !== translationKey) return translated;
-    // Otherwise return the code as-is
     return code;
   };
 
@@ -277,7 +263,142 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     return SOURCE_CONFIG[source] || { icon: IconCash, label: source, color: 'gray' };
   };
 
-  const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
+  // DataTable columns
+  const columns: DataTableColumn[] = [
+    {
+      key: 'transactionDate',
+      label: t('cashTransactions.table.date'),
+      sortable: true,
+      render: (value) => dayjs(value).format('DD.MM.YYYY'),
+    },
+    {
+      key: 'source',
+      label: 'Kaynak',
+      sortable: true,
+      render: (value) => {
+        const sourceConfig = getSourceInfo(value);
+        const SourceIcon = sourceConfig.icon;
+        return (
+          <Tooltip label={sourceConfig.label}>
+            <Badge
+              color={sourceConfig.color}
+              variant="light"
+              leftSection={<SourceIcon size={12} />}
+              size="sm"
+            >
+              {sourceConfig.label}
+            </Badge>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      key: 'type',
+      label: t('cashTransactions.table.type'),
+      sortable: true,
+      render: (value) => (
+        <Badge
+          color={value === 'income' ? 'green' : 'red'}
+          leftSection={value === 'income' ? <IconArrowUp size={12} /> : <IconArrowDown size={12} />}
+        >
+          {value === 'income' ? t('cashTransactions.income') : t('cashTransactions.expense')}
+        </Badge>
+      ),
+    },
+    {
+      key: 'category',
+      label: t('cashTransactions.table.category'),
+      sortable: true,
+      render: (value) => getCategoryLabel(value),
+    },
+    {
+      key: 'description',
+      label: t('cashTransactions.table.description'),
+      sortable: false,
+      searchable: true,
+      render: (value) => (
+        <Text size="sm" lineClamp={1}>
+          {value || '-'}
+        </Text>
+      ),
+    },
+    {
+      key: 'paymentMethod',
+      label: t('cashTransactions.table.paymentMethod'),
+      sortable: true,
+      render: (value) => getPaymentMethodLabel(value),
+    },
+    {
+      key: 'amount',
+      label: t('cashTransactions.table.amount'),
+      sortable: true,
+      render: (value, row) => (
+        <Text fw={600} c={row.type === 'income' ? 'green' : 'red'}>
+          {row.type === 'income' ? '+' : '-'}
+          {Number(value).toLocaleString('tr-TR')} {row.currency}
+        </Text>
+      ),
+    },
+    {
+      key: 'actions',
+      label: t('table.actions'),
+      sortable: false,
+      searchable: false,
+      render: (_, row) => {
+        const isManual = row.source === 'manual';
+        if (!isManual) {
+          return <Text size="xs" c="dimmed" ta="center">-</Text>;
+        }
+        return (
+          <Group justify="center" gap="xs">
+            <Menu position="bottom-end" withArrow>
+              <Menu.Target>
+                <ActionIcon variant="subtle" size="sm" onClick={(e) => e.stopPropagation()}>
+                  <IconDotsVertical size={16} />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconTrash size={14} />}
+                  color="red"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenDelete(row.id);
+                  }}
+                >
+                  {t('common.delete')}
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+        );
+      },
+    },
+  ];
+
+  // Filter options
+  const filters: FilterOption[] = [
+    {
+      key: 'type',
+      label: t('cashTransactions.filterByType'),
+      type: 'select',
+      options: [
+        { value: 'income', label: t('cashTransactions.income') },
+        { value: 'expense', label: t('cashTransactions.expense') },
+      ],
+    },
+    {
+      key: 'source',
+      label: 'Kaynak',
+      type: 'select',
+      options: sourceOptions,
+    },
+    {
+      key: 'transactionDate',
+      label: t('cashTransactions.table.date'),
+      type: 'date',
+    },
+  ];
 
   return (
     <Container size="xl" pt="xl">
@@ -373,175 +494,27 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
         </Paper>
       )}
 
-      {/* Filters */}
-      <Paper p="md" withBorder mt="md">
-        <Group>
-          <TextInput
-            placeholder={t('search.placeholder')}
-            leftSection={<IconSearch size={16} />}
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-            style={{ flex: 1 }}
-          />
-          <Select
-            placeholder={t('cashTransactions.filterByType')}
-            leftSection={<IconFilter size={16} />}
-            data={[
-              { value: 'income', label: t('cashTransactions.income') },
-              { value: 'expense', label: t('cashTransactions.expense') },
-            ]}
-            value={typeFilter}
-            onChange={setTypeFilter}
-            clearable
-            w={150}
-          />
-          <Select
-            placeholder="Kaynak"
-            data={sourceOptions}
-            value={sourceFilter}
-            onChange={setSourceFilter}
-            clearable
-            w={180}
-          />
-        </Group>
-      </Paper>
-
-      {/* Table */}
-      <Paper withBorder mt="md">
-        {isLoading ? (
-          <Center py="xl">
-            <Loader />
-          </Center>
-        ) : (
-          <>
-            <Table striped highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>{t('cashTransactions.table.date')}</Table.Th>
-                  <Table.Th>Kaynak</Table.Th>
-                  <Table.Th>{t('cashTransactions.table.type')}</Table.Th>
-                  <Table.Th>{t('cashTransactions.table.category')}</Table.Th>
-                  <Table.Th>{t('cashTransactions.table.description')}</Table.Th>
-                  <Table.Th>{t('cashTransactions.table.paymentMethod')}</Table.Th>
-                  <Table.Th ta="right">{t('cashTransactions.table.amount')}</Table.Th>
-                  <Table.Th ta="center">{t('table.actions')}</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {data?.transactions && data.transactions.length > 0 ? (
-                  data.transactions.map((transaction: UnifiedTransaction) => {
-                    const sourceConfig = getSourceInfo(transaction.source);
-                    const SourceIcon = sourceConfig.icon;
-                    const isManual = transaction.source === 'manual';
-
-                    return (
-                      <Table.Tr key={transaction.id}>
-                        <Table.Td>{dayjs(transaction.transactionDate).format('DD.MM.YYYY')}</Table.Td>
-                        <Table.Td>
-                          <Tooltip label={sourceConfig.label}>
-                            <Badge
-                              color={sourceConfig.color}
-                              variant="light"
-                              leftSection={<SourceIcon size={12} />}
-                              size="sm"
-                            >
-                              {sourceConfig.label}
-                            </Badge>
-                          </Tooltip>
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge
-                            color={transaction.type === 'income' ? 'green' : 'red'}
-                            leftSection={
-                              transaction.type === 'income' ? (
-                                <IconArrowUp size={12} />
-                              ) : (
-                                <IconArrowDown size={12} />
-                              )
-                            }
-                          >
-                            {transaction.type === 'income' ? t('cashTransactions.income') : t('cashTransactions.expense')}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td>{getCategoryLabel(transaction.category)}</Table.Td>
-                        <Table.Td>
-                          <Text size="sm" lineClamp={1}>
-                            {transaction.description || '-'}
-                          </Text>
-                        </Table.Td>
-                        <Table.Td>{getPaymentMethodLabel(transaction.paymentMethod)}</Table.Td>
-                        <Table.Td ta="right">
-                          <Text fw={600} c={transaction.type === 'income' ? 'green' : 'red'}>
-                            {transaction.type === 'income' ? '+' : '-'}
-                            {transaction.amount.toLocaleString('tr-TR')} {transaction.currency}
-                          </Text>
-                        </Table.Td>
-                        <Table.Td>
-                          {isManual ? (
-                            <Group justify="center" gap="xs">
-                              <Menu position="bottom-end" withArrow>
-                                <Menu.Target>
-                                  <ActionIcon variant="subtle" size="sm">
-                                    <IconDotsVertical size={16} />
-                                  </ActionIcon>
-                                </Menu.Target>
-                                <Menu.Dropdown>
-                                  <Menu.Item
-                                    leftSection={<IconTrash size={14} />}
-                                    color="red"
-                                    onClick={() => handleOpenDelete(transaction.id)}
-                                  >
-                                    {t('common.delete')}
-                                  </Menu.Item>
-                                </Menu.Dropdown>
-                              </Menu>
-                            </Group>
-                          ) : (
-                            <Text size="xs" c="dimmed" ta="center">-</Text>
-                          )}
-                        </Table.Td>
-                      </Table.Tr>
-                    );
-                  })
-                ) : (
-                  <Table.Tr>
-                    <Table.Td colSpan={8} ta="center" py="xl">
-                      <Text c="dimmed">{t('cashTransactions.noData')}</Text>
-                    </Table.Td>
-                  </Table.Tr>
-                )}
-              </Table.Tbody>
-            </Table>
-            {totalPages > 0 && (
-              <Group justify="space-between" p="md">
-                <Group gap="xs">
-                  <Text size="sm" c="dimmed">Sayfa başına:</Text>
-                  <Select
-                    value={String(pageSize)}
-                    onChange={(v) => {
-                      setPageSize(Number(v) || 25);
-                      setPage(1);
-                    }}
-                    data={[
-                      { value: '10', label: '10' },
-                      { value: '25', label: '25' },
-                      { value: '50', label: '50' },
-                      { value: '100', label: '100' },
-                    ]}
-                    w={80}
-                    size="xs"
-                  />
-                  <Text size="sm" c="dimmed">
-                    ({data?.total || 0} toplam kayıt)
-                  </Text>
-                </Group>
-                {totalPages > 1 && (
-                  <Pagination total={totalPages} value={page} onChange={setPage} />
-                )}
-              </Group>
-            )}
-          </>
-        )}
+      {/* Data Table */}
+      <Paper mt="md">
+        <DataTable
+          columns={columns}
+          data={data?.transactions || []}
+          searchable
+          sortable
+          pageable
+          defaultPageSize={25}
+          filters={filters}
+          onFilter={(activeFilters) => {
+            setTypeFilter(activeFilters.type as string | null);
+            setSourceFilter(activeFilters.source as string | null);
+          }}
+          showColumnSettings
+          showExportIcons
+          exportTitle={t('cashTransactions.title')}
+          exportNamespace="modules/accounting"
+          tableId="accounting-cash-transactions"
+          emptyMessage={t('cashTransactions.noData')}
+        />
       </Paper>
 
       {/* Create Modal (only for manual entries) */}
@@ -566,7 +539,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
               setFormData({
                 ...formData,
                 type: value as 'income' | 'expense',
-                category: '', // Reset category when type changes
+                category: '',
               });
             }}
             required

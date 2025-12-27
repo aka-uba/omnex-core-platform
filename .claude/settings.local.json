@@ -108,7 +108,8 @@
       "Bash(pm2 list:*)",
       "Bash(tasklist:*)",
       "Bash(findstr \"node\")",
-      "Bash(powershell -Command \"Stop-Process -Name node -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; Set-Location ''C:\\xampp\\htdocs\\omnex-core-platform''; Start-Process -FilePath ''cmd'' -ArgumentList ''/c npm run start'' -WindowStyle Hidden\")"
+      "Bash(powershell -Command \"Stop-Process -Name node -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; Set-Location ''C:\\xampp\\htdocs\\omnex-core-platform''; Start-Process -FilePath ''cmd'' -ArgumentList ''/c npm run start'' -WindowStyle Hidden\")",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [],
     "ask": []
