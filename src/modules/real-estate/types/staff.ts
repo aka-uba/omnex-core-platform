@@ -52,6 +52,7 @@ export interface RealEstateStaff {
   customerSatisfaction?: number | null;
   notes?: string | null;
   profileImage?: string | null;
+  documents?: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

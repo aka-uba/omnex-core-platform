@@ -12,8 +12,8 @@ interface ApartmentData {
     endDate?: Date | null;
     tenantRecord?: {
       id: string;
-      firstName?: string;
-      lastName?: string;
+      firstName?: string | null;
+      lastName?: string | null;
     } | null;
   }>;
 }

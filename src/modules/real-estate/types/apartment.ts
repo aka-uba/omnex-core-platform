@@ -42,6 +42,10 @@ export interface Apartment {
   deliveryDate?: Date | null;
   rentPrice?: number | null;
   salePrice?: number | null;
+  coldRent?: number | null;
+  additionalCosts?: number | null;
+  heatingCosts?: number | null;
+  deposit?: number | null;
   inventory?: InventoryItem[] | null;
   keys?: KeyInfo[] | null;
   description?: string | null;

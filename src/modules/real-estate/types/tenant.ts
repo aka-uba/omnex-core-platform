@@ -9,6 +9,8 @@ export interface Tenant {
   userId?: string | null;
   contactId?: string | null;
   tenantNumber?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   moveInDate?: Date | null;
   moveOutDate?: Date | null;
   paymentScore?: number | null;
@@ -17,6 +19,9 @@ export interface Tenant {
   overallScore?: number | null;
   notes?: string | null;
   analysis?: Record<string, any> | null;
+  images?: string[];
+  coverImage?: string | null;
+  documents?: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

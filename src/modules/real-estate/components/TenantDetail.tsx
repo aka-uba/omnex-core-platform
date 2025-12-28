@@ -9,7 +9,6 @@ import {
   Stack,
   Grid,
   Badge,
-  Table,
   Tabs,
   Card,
   Title,
@@ -18,8 +17,8 @@ import {
   Box,
   Image,
   Button,
+  ActionIcon,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import {
   IconUser,
   IconCalendar,
@@ -32,9 +31,9 @@ import {
   IconBuilding,
   IconMapPin,
   IconPhone,
-  IconMail,
   IconId,
   IconEye,
+  IconEdit,
 } from '@tabler/icons-react';
 import { useTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
@@ -42,6 +41,7 @@ import { TenantAnalytics } from './TenantAnalytics';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
+import { DataTable } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 
 interface TenantDetailProps {
@@ -54,7 +54,6 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
   const { data: tenant, isLoading, error } = useTenant(tenantId);
-  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [downloadingImages, setDownloadingImages] = useState(false);
   const [downloadingDocs, setDownloadingDocs] = useState(false);
@@ -654,221 +653,230 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
         </Tabs.Panel>
 
         <Tabs.Panel value="contracts" pt="md">
-          <Paper shadow="xs" p="md">
-            {tenant.contracts && tenant.contracts.length > 0 ? (
-              isMobile ? (
-                <Stack gap="md">
-                  {tenant.contracts.map((contract: any) => (
-                    <Card
-                      key={contract.id}
-                      withBorder
-                      p="md"
-                      radius="md"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => router.push(`/${locale}/modules/real-estate/contracts/${contract.id}`)}
+          <DataTable
+            columns={[
+              {
+                key: 'contractNumber',
+                label: t('table.contractNumber'),
+                sortable: true,
+                searchable: true,
+                render: (value: string) => <Text size="sm" fw={500}>{value}</Text>,
+              },
+              {
+                key: 'type',
+                label: t('form.type'),
+                sortable: true,
+                render: (value: string) => (
+                  <Badge variant="light">{t(`types.${value}`) || value}</Badge>
+                ),
+              },
+              {
+                key: 'status',
+                label: t('table.status'),
+                sortable: true,
+                render: (value: string) => (
+                  <Badge
+                    color={
+                      value === 'active'
+                        ? 'green'
+                        : value === 'expired'
+                        ? 'gray'
+                        : value === 'terminated'
+                        ? 'red'
+                        : 'yellow'
+                    }
+                    variant="light"
+                  >
+                    {t(`contracts.status.${value}`) || value}
+                  </Badge>
+                ),
+              },
+              {
+                key: 'startDate',
+                label: t('form.startDate'),
+                sortable: true,
+                render: (value: string) => (
+                  <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+                ),
+              },
+              {
+                key: 'endDate',
+                label: t('form.endDate'),
+                sortable: true,
+                render: (value: string) => (
+                  <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+                ),
+              },
+              {
+                key: 'rentAmount',
+                label: t('form.rentAmount'),
+                sortable: true,
+                align: 'right' as const,
+                render: (value: number) => (
+                  <Text size="sm">
+                    {Number(value).toLocaleString('tr-TR', {
+                      style: 'currency',
+                      currency: 'TRY',
+                    })}
+                  </Text>
+                ),
+              },
+              {
+                key: 'actions',
+                label: tGlobal('table.actions'),
+                sortable: false,
+                align: 'right' as const,
+                render: (_: any, row: any) => (
+                  <Group gap="xs" justify="flex-end">
+                    <ActionIcon
+                      variant="subtle"
+                      color="blue"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/${locale}/modules/real-estate/contracts/${row.id}`);
+                      }}
+                      title={tGlobal('buttons.view')}
                     >
-                      <Group justify="space-between" mb="xs">
-                        <Text fw={600}>{contract.contractNumber}</Text>
-                        <Badge
-                          color={
-                            contract.status === 'active'
-                              ? 'green'
-                              : contract.status === 'expired'
-                              ? 'gray'
-                              : contract.status === 'terminated'
-                              ? 'red'
-                              : 'yellow'
-                          }
-                          variant="light"
-                        >
-                          {contract.status}
-                        </Badge>
-                      </Group>
-                      <SimpleGrid cols={2} spacing="xs">
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.type')}</Text>
-                          <Badge variant="light" size="sm">{contract.type}</Badge>
-                        </div>
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.rentAmount')}</Text>
-                          <Text size="sm" fw={500}>
-                            {Number(contract.rentAmount).toLocaleString('tr-TR', {
-                              style: 'currency',
-                              currency: 'TRY',
-                            })}
-                          </Text>
-                        </div>
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.startDate')}</Text>
-                          <Text size="sm">{contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}</Text>
-                        </div>
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.endDate')}</Text>
-                          <Text size="sm">{contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}</Text>
-                        </div>
-                      </SimpleGrid>
-                    </Card>
-                  ))}
-                </Stack>
-              ) : (
-                <Table striped highlightOnHover>
-                  <Table.Thead>
-                    <Table.Tr>
-                      <Table.Th>{t('table.contractNumber')}</Table.Th>
-                      <Table.Th>{t('form.type')}</Table.Th>
-                      <Table.Th>{t('table.status')}</Table.Th>
-                      <Table.Th>{t('form.startDate')}</Table.Th>
-                      <Table.Th>{t('form.endDate')}</Table.Th>
-                      <Table.Th>{t('form.rentAmount')}</Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>
-                    {tenant.contracts.map((contract: any) => (
-                      <Table.Tr
-                        key={contract.id}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => router.push(`/${locale}/modules/real-estate/contracts/${contract.id}`)}
-                      >
-                        <Table.Td>{contract.contractNumber}</Table.Td>
-                        <Table.Td>
-                          <Badge variant="light">{contract.type}</Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge
-                            color={
-                              contract.status === 'active'
-                                ? 'green'
-                                : contract.status === 'expired'
-                                ? 'gray'
-                                : contract.status === 'terminated'
-                                ? 'red'
-                                : 'yellow'
-                            }
-                            variant="light"
-                          >
-                            {contract.status}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          {contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          {Number(contract.rentAmount).toLocaleString('tr-TR', {
-                            style: 'currency',
-                            currency: 'TRY',
-                          })}
-                        </Table.Td>
-                      </Table.Tr>
-                    ))}
-                  </Table.Tbody>
-                </Table>
-              )
-            ) : (
-              <Text c="dimmed" ta="center" py="xl">
-                {t('messages.noContracts')}
-              </Text>
-            )}
-          </Paper>
+                      <IconEye size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                      variant="subtle"
+                      color="yellow"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/${locale}/modules/real-estate/contracts/${row.id}/edit`);
+                      }}
+                      title={tGlobal('buttons.edit')}
+                    >
+                      <IconEdit size={16} />
+                    </ActionIcon>
+                  </Group>
+                ),
+              },
+            ]}
+            data={tenant.contracts || []}
+            loading={false}
+            searchable={true}
+            sortable={true}
+            pageable={true}
+            defaultPageSize={10}
+            pageSizeOptions={[5, 10, 25]}
+            emptyMessage={t('messages.noContracts')}
+            showColumnSettings={false}
+            mobileCardView={true}
+            mobileCardTitle={(row: Record<string, any>) => row.contractNumber}
+            mobileCardSubtitle={(row: Record<string, any>) => `${t(`types.${row.type}`) || row.type} - ${t(`contracts.status.${row.status}`) || row.status}`}
+            onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/contracts/${row.id}`)}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="payments" pt="md">
-          <Paper shadow="xs" p="md">
-            {tenant.payments && tenant.payments.length > 0 ? (
-              isMobile ? (
-                <Stack gap="md">
-                  {tenant.payments.map((payment: any) => (
-                    <Card key={payment.id} withBorder p="md" radius="md">
-                      <Group justify="space-between" mb="xs">
-                        <Badge variant="light">{payment.type}</Badge>
-                        <Badge
-                          color={
-                            payment.status === 'paid'
-                              ? 'green'
-                              : payment.status === 'overdue'
-                              ? 'red'
-                              : 'yellow'
-                          }
-                          variant="light"
-                        >
-                          {payment.status}
-                        </Badge>
-                      </Group>
-                      <Text size="lg" fw={600} mb="xs">
-                        {Number(payment.amount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: 'TRY',
-                        })}
-                      </Text>
-                      <SimpleGrid cols={2} spacing="xs">
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.dueDate')}</Text>
-                          <Text size="sm">{payment.dueDate ? dayjs(payment.dueDate).format('DD.MM.YYYY') : '-'}</Text>
-                        </div>
-                        <div>
-                          <Text size="xs" c="dimmed">{t('form.paidDate')}</Text>
-                          <Text size="sm">{payment.paidDate ? dayjs(payment.paidDate).format('DD.MM.YYYY') : '-'}</Text>
-                        </div>
-                      </SimpleGrid>
-                    </Card>
-                  ))}
-                </Stack>
-              ) : (
-                <Table striped highlightOnHover>
-                  <Table.Thead>
-                    <Table.Tr>
-                      <Table.Th>{t('form.type')}</Table.Th>
-                      <Table.Th>{t('form.amount')}</Table.Th>
-                      <Table.Th>{t('table.status')}</Table.Th>
-                      <Table.Th>{t('form.dueDate')}</Table.Th>
-                      <Table.Th>{t('form.paidDate')}</Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>
-                    {tenant.payments.map((payment: any) => (
-                      <Table.Tr key={payment.id}>
-                        <Table.Td>
-                          <Badge variant="light">{payment.type}</Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          {Number(payment.amount).toLocaleString('tr-TR', {
-                            style: 'currency',
-                            currency: 'TRY',
-                          })}
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge
-                            color={
-                              payment.status === 'paid'
-                                ? 'green'
-                                : payment.status === 'overdue'
-                                ? 'red'
-                                : 'yellow'
-                            }
-                            variant="light"
-                          >
-                            {payment.status}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          {payment.dueDate ? dayjs(payment.dueDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          {payment.paidDate ? dayjs(payment.paidDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                      </Table.Tr>
-                    ))}
-                  </Table.Tbody>
-                </Table>
-              )
-            ) : (
-              <Text c="dimmed" ta="center" py="xl">
-                {t('messages.noPayments')}
-              </Text>
-            )}
-          </Paper>
+          <DataTable
+            columns={[
+              {
+                key: 'type',
+                label: t('form.type'),
+                sortable: true,
+                render: (value: string) => (
+                  <Badge variant="light">{t(`payments.types.${value}`) || value}</Badge>
+                ),
+              },
+              {
+                key: 'amount',
+                label: t('form.amount'),
+                sortable: true,
+                align: 'right' as const,
+                render: (value: number) => (
+                  <Text size="sm" fw={500}>
+                    {Number(value).toLocaleString('tr-TR', {
+                      style: 'currency',
+                      currency: 'TRY',
+                    })}
+                  </Text>
+                ),
+              },
+              {
+                key: 'status',
+                label: t('table.status'),
+                sortable: true,
+                render: (value: string) => (
+                  <Badge
+                    color={
+                      value === 'paid'
+                        ? 'green'
+                        : value === 'overdue'
+                        ? 'red'
+                        : 'yellow'
+                    }
+                    variant="light"
+                  >
+                    {t(`payments.status.${value}`) || value}
+                  </Badge>
+                ),
+              },
+              {
+                key: 'dueDate',
+                label: t('form.dueDate'),
+                sortable: true,
+                render: (value: string) => (
+                  <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+                ),
+              },
+              {
+                key: 'paidDate',
+                label: t('form.paidDate'),
+                sortable: true,
+                render: (value: string) => (
+                  <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+                ),
+              },
+              {
+                key: 'actions',
+                label: tGlobal('table.actions'),
+                sortable: false,
+                align: 'right' as const,
+                render: (_: any, row: any) => (
+                  <Group gap="xs" justify="flex-end">
+                    <ActionIcon
+                      variant="subtle"
+                      color="blue"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/${locale}/modules/real-estate/payments/${row.id}`);
+                      }}
+                      title={tGlobal('buttons.view')}
+                    >
+                      <IconEye size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                      variant="subtle"
+                      color="yellow"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/${locale}/modules/real-estate/payments/${row.id}/edit`);
+                      }}
+                      title={tGlobal('buttons.edit')}
+                    >
+                      <IconEdit size={16} />
+                    </ActionIcon>
+                  </Group>
+                ),
+              },
+            ]}
+            data={tenant.payments || []}
+            loading={false}
+            searchable={true}
+            sortable={true}
+            pageable={true}
+            defaultPageSize={10}
+            pageSizeOptions={[5, 10, 25]}
+            emptyMessage={t('messages.noPayments')}
+            showColumnSettings={false}
+            mobileCardView={true}
+            mobileCardTitle={(row: Record<string, any>) => Number(row.amount).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}
+            mobileCardSubtitle={(row: Record<string, any>) => `${t(`payments.types.${row.type}`) || row.type} - ${t(`payments.status.${row.status}`) || row.status}`}
+            onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/payments/${row.id}`)}
+          />
         </Tabs.Panel>
       </Tabs>
     </Stack>

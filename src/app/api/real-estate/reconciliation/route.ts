@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       if (!validationResult.success) {
         return errorResponse(
           'Validation error',
-          validationResult.error.errors.map(e => e.message).join(', '),
+          validationResult.error.issues.map((e: { message: string }) => e.message).join(', '),
           400
         );
       }
