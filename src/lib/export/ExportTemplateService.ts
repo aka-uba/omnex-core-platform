@@ -239,6 +239,78 @@ export class ExportTemplateService {
   }
 
   /**
+   * Process placeholders in text
+   * Replaces {{companyName}}, {{companyAddress}}, etc. with actual values
+   */
+  private processPlaceholders(
+    text: string | null | undefined,
+    companySettings: {
+      logo?: string;
+      name: string;
+      address?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      taxId?: string;
+    }
+  ): string {
+    if (!text) return '';
+
+    return text
+      .replace(/\{\{companyName\}\}/g, companySettings.name || '')
+      .replace(/\{\{companyAddress\}\}/g, companySettings.address || '')
+      .replace(/\{\{companyPhone\}\}/g, companySettings.phone || '')
+      .replace(/\{\{companyEmail\}\}/g, companySettings.email || '')
+      .replace(/\{\{companyWebsite\}\}/g, companySettings.website || '')
+      .replace(/\{\{companyTaxId\}\}/g, companySettings.taxId || '')
+      .replace(/\{\{companyLogo\}\}/g, companySettings.logo || '')
+      .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
+      .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
+  }
+
+  /**
+   * Process placeholders in customFields (headers, footers, logos arrays)
+   */
+  private processCustomFieldsPlaceholders(
+    customFields: Record<string, any> | undefined,
+    companySettings: {
+      logo?: string;
+      name: string;
+      address?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      taxId?: string;
+    }
+  ): Record<string, any> | undefined {
+    if (!customFields) return undefined;
+
+    const processed: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(customFields)) {
+      if (Array.isArray(value)) {
+        // Process arrays (headers, footers, logos)
+        processed[key] = value.map((item: any) => {
+          if (typeof item === 'object' && item !== null) {
+            const processedItem: any = { ...item };
+            if (item.text) {
+              processedItem.text = this.processPlaceholders(item.text, companySettings);
+            }
+            return processedItem;
+          }
+          return item;
+        });
+      } else if (typeof value === 'string') {
+        processed[key] = this.processPlaceholders(value, companySettings);
+      } else {
+        processed[key] = value;
+      }
+    }
+
+    return processed;
+  }
+
+  /**
    * Merge template data with company settings
    */
   mergeWithCompanySettings(
@@ -266,17 +338,26 @@ export class ExportTemplateService {
       };
     }
 
+    // Process placeholders in template fields
+    const processedTitle = this.processPlaceholders(template.title, companySettings);
+    const processedSubtitle = this.processPlaceholders(template.subtitle, companySettings);
+    const processedAddress = this.processPlaceholders(template.address, companySettings);
+    const processedCustomFields = this.processCustomFieldsPlaceholders(
+      template.customFields as Record<string, any> | undefined,
+      companySettings
+    );
+
     // Merge template with company settings (template takes precedence)
     return {
       ...(template.logoUrl || companySettings.logo ? { logoUrl: template.logoUrl || companySettings.logo } : {}),
-      title: template.title || companySettings.name,
-      ...(template.subtitle ? { subtitle: template.subtitle } : {}),
-      ...(template.address || companySettings.address ? { address: template.address || companySettings.address } : {}),
+      title: processedTitle || companySettings.name,
+      ...(processedSubtitle ? { subtitle: processedSubtitle } : {}),
+      ...(processedAddress || companySettings.address ? { address: processedAddress || companySettings.address } : {}),
       ...(template.phone || companySettings.phone ? { phone: template.phone || companySettings.phone } : {}),
       ...(template.email || companySettings.email ? { email: template.email || companySettings.email } : {}),
       ...(template.website || companySettings.website ? { website: template.website || companySettings.website } : {}),
       ...(template.taxNumber || companySettings.taxId ? { taxNumber: template.taxNumber || companySettings.taxId } : {}),
-      ...(template.customFields ? { customFields: template.customFields as Record<string, any> } : {}),
+      ...(processedCustomFields ? { customFields: processedCustomFields } : {}),
       ...(template.layout ? { layout: template.layout as Record<string, any> } : {}),
       ...(template.styles ? { styles: template.styles as Record<string, any> } : {}),
     };
