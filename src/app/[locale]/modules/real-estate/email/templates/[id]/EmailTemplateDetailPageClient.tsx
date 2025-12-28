@@ -38,6 +38,22 @@ export function EmailTemplateDetailPageClient({ locale, templateId }: { locale: 
     );
   }
 
+  // Parse variables - could be JSON string, array, or undefined
+  const parseVariables = (): Array<{ key: string; type: string; label: string; description?: string }> => {
+    if (!template?.variables) return [];
+    if (Array.isArray(template.variables)) return template.variables;
+    if (typeof template.variables === 'string') {
+      try {
+        const parsed = JSON.parse(template.variables);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  };
+  const variables = parseVariables();
+
   const getCategoryBadge = (category: EmailTemplateCategory) => {
     const categoryColors: Record<EmailTemplateCategory, string> = {
       promotion: 'blue',
@@ -123,13 +139,13 @@ export function EmailTemplateDetailPageClient({ locale, templateId }: { locale: 
             </Stack>
 
             {/* Variables Section */}
-            {template.variables && template.variables.length > 0 && (
+            {variables.length > 0 && (
               <>
                 <Divider />
                 <Stack gap="md">
                   <Text fw={600} size="lg">{t('emailTemplates.detail.variables')}</Text>
                   <Grid>
-                    {template.variables.map((variable, index) => (
+                    {variables.map((variable, index) => (
                       <Grid.Col key={index} span={{ base: 12, md: 6 }}>
                         <Paper withBorder p="sm">
                           <Group justify="space-between">
