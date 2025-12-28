@@ -72,7 +72,21 @@ export function AgreementReportDetailPageClient({ locale, reportId }: AgreementR
     );
   }
 
-  const recipients = report.recipients as Array<{ email: string; name?: string; type?: string }> || [];
+  // Parse recipients - could be JSON string, array, or undefined
+  const parseRecipients = (): Array<{ email: string; name?: string; type?: string }> => {
+    if (!report.recipients) return [];
+    if (Array.isArray(report.recipients)) return report.recipients;
+    if (typeof report.recipients === 'string') {
+      try {
+        const parsed = JSON.parse(report.recipients);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  };
+  const recipients = parseRecipients();
 
   return (
     <Container size="xl" pt="xl">
