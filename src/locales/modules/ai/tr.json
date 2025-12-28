@@ -1,4 +1,7 @@
 {
+  "common": {
+    "comingSoon": "Bu özellik çok yakında..."
+  },
   "title": "AI Stüdyo",
   "description": "Gelişmiş yapay zeka modelleri kullanarak içerik oluşturun",
   "menu": {

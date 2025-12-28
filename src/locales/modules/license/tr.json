@@ -1,4 +1,7 @@
 {
+  "common": {
+    "comingSoon": "Bu özellik çok yakında..."
+  },
   "title": "Lisans Servisi",
   "description": "Lisans paket yönetimi ve tenant lisans takip sistemi",
   "menu": {

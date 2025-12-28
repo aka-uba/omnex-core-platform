@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Paper, Stack, Title, Text, SimpleGrid, Card, Group, Button } from '@mantine/core';
+import { Container, Paper, SimpleGrid, Card, Group, Button, Stack, Title, Text } from '@mantine/core';
 import { IconChartBar, IconServer, IconDatabase, IconArrowRight } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams, useRouter } from 'next/navigation';
@@ -50,11 +50,7 @@ export default function OptimizationPage() {
             />
 
             <Paper p="xl" withBorder mt="xl">
-                <Stack gap="lg">
-                    <Title order={3}>{t('optimization.title')}</Title>
-                    <Text c="dimmed">{t('optimization.description')}</Text>
-
-                    <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
                         {optimizationCards.map((card) => (
                             <Card
                                 key={card.title}
@@ -84,8 +80,7 @@ export default function OptimizationPage() {
                                 </Group>
                             </Card>
                         ))}
-                    </SimpleGrid>
-                </Stack>
+                </SimpleGrid>
             </Paper>
         </Container>
     );

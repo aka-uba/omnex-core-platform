@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Paper, Title, Text, Stack } from '@mantine/core';
+import { Container, Paper, Text } from '@mantine/core';
 import { IconVideo } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams } from 'next/navigation';
@@ -26,11 +26,7 @@ export default function AIVideoPage() {
       />
 
       <Paper shadow="sm" p="xl" withBorder>
-        <Stack gap="md">
-          <Title order={3}>{t('page.videoGenerator.title')}</Title>
-          <Text c="dimmed">{t('page.videoGenerator.description')}</Text>
-          <Text c="dimmed" size="sm">This feature is coming soon...</Text>
-        </Stack>
+        <Text c="dimmed" size="sm">{t('common.comingSoon')}</Text>
       </Paper>
     </Container>
   );
