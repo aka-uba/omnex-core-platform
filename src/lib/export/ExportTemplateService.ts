@@ -240,7 +240,7 @@ export class ExportTemplateService {
 
   /**
    * Process placeholders in text
-   * Replaces {{companyName}}, {{companyAddress}}, etc. with actual values
+   * Replaces {{companyName}}, {{companyAddress}}, {{pageTitle}}, etc. with actual values
    */
   private processPlaceholders(
     text: string | null | undefined,
@@ -252,6 +252,9 @@ export class ExportTemplateService {
       email?: string;
       website?: string;
       taxId?: string;
+    },
+    dynamicData?: {
+      pageTitle?: string;
     }
   ): string {
     if (!text) return '';
@@ -264,6 +267,7 @@ export class ExportTemplateService {
       .replace(/\{\{companyWebsite\}\}/g, companySettings.website || '')
       .replace(/\{\{companyTaxId\}\}/g, companySettings.taxId || '')
       .replace(/\{\{companyLogo\}\}/g, companySettings.logo || '')
+      .replace(/\{\{pageTitle\}\}/g, dynamicData?.pageTitle || '')
       .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
       .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
   }
@@ -281,6 +285,9 @@ export class ExportTemplateService {
       email?: string;
       website?: string;
       taxId?: string;
+    },
+    dynamicData?: {
+      pageTitle?: string;
     }
   ): Record<string, any> | undefined {
     if (!customFields) return undefined;
@@ -294,14 +301,14 @@ export class ExportTemplateService {
           if (typeof item === 'object' && item !== null) {
             const processedItem: any = { ...item };
             if (item.text) {
-              processedItem.text = this.processPlaceholders(item.text, companySettings);
+              processedItem.text = this.processPlaceholders(item.text, companySettings, dynamicData);
             }
             return processedItem;
           }
           return item;
         });
       } else if (typeof value === 'string') {
-        processed[key] = this.processPlaceholders(value, companySettings);
+        processed[key] = this.processPlaceholders(value, companySettings, dynamicData);
       } else {
         processed[key] = value;
       }
@@ -323,6 +330,9 @@ export class ExportTemplateService {
       email?: string;
       website?: string;
       taxId?: string;
+    },
+    dynamicData?: {
+      pageTitle?: string;
     }
   ): ExportTemplateData {
     if (!template) {
@@ -339,12 +349,13 @@ export class ExportTemplateService {
     }
 
     // Process placeholders in template fields
-    const processedTitle = this.processPlaceholders(template.title, companySettings);
-    const processedSubtitle = this.processPlaceholders(template.subtitle, companySettings);
-    const processedAddress = this.processPlaceholders(template.address, companySettings);
+    const processedTitle = this.processPlaceholders(template.title, companySettings, dynamicData);
+    const processedSubtitle = this.processPlaceholders(template.subtitle, companySettings, dynamicData);
+    const processedAddress = this.processPlaceholders(template.address, companySettings, dynamicData);
     const processedCustomFields = this.processCustomFieldsPlaceholders(
       template.customFields as Record<string, any> | undefined,
-      companySettings
+      companySettings,
+      dynamicData
     );
 
     // Merge template with company settings (template takes precedence)

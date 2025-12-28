@@ -5,6 +5,7 @@ export interface ExportOptions {
   filename?: string;
   title?: string;
   description?: string;
+  pageTitle?: string; // Dynamic page title for {{pageTitle}} placeholder
   dateRange?: {
     from: string;
     to: string;

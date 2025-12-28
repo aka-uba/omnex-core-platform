@@ -80,7 +80,11 @@ export function ExportProvider({ children }: ExportProviderProps) {
   }, []);
 
   // Process placeholders in text
-  const processPlaceholders = useCallback((text: string | null | undefined, settings: typeof companySettings): string => {
+  const processPlaceholders = useCallback((
+    text: string | null | undefined,
+    settings: typeof companySettings,
+    dynamicData?: { pageTitle?: string }
+  ): string => {
     if (!text) return '';
 
     return text
@@ -91,6 +95,7 @@ export function ExportProvider({ children }: ExportProviderProps) {
       .replace(/\{\{companyWebsite\}\}/g, settings?.website || '')
       .replace(/\{\{companyTaxId\}\}/g, settings?.taxId || '')
       .replace(/\{\{companyLogo\}\}/g, settings?.logo || '')
+      .replace(/\{\{pageTitle\}\}/g, dynamicData?.pageTitle || '')
       .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
       .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
   }, []);
@@ -98,7 +103,8 @@ export function ExportProvider({ children }: ExportProviderProps) {
   // Process placeholders in customFields (headers, footers, logos arrays)
   const processCustomFieldsPlaceholders = useCallback((
     customFields: Record<string, any> | undefined,
-    settings: typeof companySettings
+    settings: typeof companySettings,
+    dynamicData?: { pageTitle?: string }
   ): Record<string, any> | undefined => {
     if (!customFields) return undefined;
 
@@ -111,14 +117,14 @@ export function ExportProvider({ children }: ExportProviderProps) {
           if (typeof item === 'object' && item !== null) {
             const processedItem: any = { ...item };
             if (item.text) {
-              processedItem.text = processPlaceholders(item.text, settings);
+              processedItem.text = processPlaceholders(item.text, settings, dynamicData);
             }
             return processedItem;
           }
           return item;
         });
       } else if (typeof value === 'string') {
-        processed[key] = processPlaceholders(value, settings);
+        processed[key] = processPlaceholders(value, settings, dynamicData);
       } else {
         processed[key] = value;
       }
@@ -128,7 +134,11 @@ export function ExportProvider({ children }: ExportProviderProps) {
   }, [processPlaceholders]);
 
   // Merge template with company settings
-  const mergeTemplateWithSettings = useCallback((template: any, settings: typeof companySettings) => {
+  const mergeTemplateWithSettings = useCallback((
+    template: any,
+    settings: typeof companySettings,
+    dynamicData?: { pageTitle?: string }
+  ) => {
     if (!template) {
       return {
         logoUrl: settings?.logo,
@@ -147,10 +157,10 @@ export function ExportProvider({ children }: ExportProviderProps) {
       : template.customFields || {};
 
     // Process placeholders in all text fields
-    const processedTitle = processPlaceholders(template.title, settings);
-    const processedSubtitle = processPlaceholders(template.subtitle, settings);
-    const processedAddress = processPlaceholders(template.address, settings);
-    const processedCustomFields = processCustomFieldsPlaceholders(rawCustomFields, settings);
+    const processedTitle = processPlaceholders(template.title, settings, dynamicData);
+    const processedSubtitle = processPlaceholders(template.subtitle, settings, dynamicData);
+    const processedAddress = processPlaceholders(template.address, settings, dynamicData);
+    const processedCustomFields = processCustomFieldsPlaceholders(rawCustomFields, settings, dynamicData);
 
     return {
       logoUrl: template.logoUrl || settings?.logo,
@@ -173,7 +183,9 @@ export function ExportProvider({ children }: ExportProviderProps) {
       try {
         // Fetch template data if templateId provided or try default
         const template = await fetchTemplateData(options.templateId);
-        const templateData = mergeTemplateWithSettings(template, companySettings);
+        // Pass pageTitle from options to process {{pageTitle}} placeholder
+        const dynamicData = { pageTitle: options.pageTitle };
+        const templateData = mergeTemplateWithSettings(template, companySettings, dynamicData);
 
         const defaultOptions: ExportOptions = {
           includeHeader: true,

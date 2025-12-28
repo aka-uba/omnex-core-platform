@@ -143,6 +143,25 @@
     "empty": "Preview is empty",
     "emptyHint": "Add logo, header or contact information"
   },
+  "placeholders": {
+    "title": "Available Placeholders",
+    "description": "You can use the following placeholders in text fields. They can also be combined with regular text.",
+    "example": "Example: \"Report - {{pageTitle}} - {{date}}\"",
+    "placeholder": "Placeholder",
+    "value": "Value",
+    "items": {
+      "pageTitle": "Current page title",
+      "companyName": "Company name",
+      "companyAddress": "Company address",
+      "companyPhone": "Company phone",
+      "companyEmail": "Company email",
+      "companyWebsite": "Company website",
+      "companyTaxId": "Tax ID number",
+      "companyLogo": "Company logo URL",
+      "date": "Today's date",
+      "year": "Current year"
+    }
+  },
   "navigation": {
     "dashboard": "Dashboard",
     "settings": "Settings"

@@ -143,6 +143,25 @@
     "empty": "Önizleme boş",
     "emptyHint": "Logo, başlık veya iletişim bilgisi ekleyin"
   },
+  "placeholders": {
+    "title": "Kullanılabilir Placeholder'lar",
+    "description": "Aşağıdaki placeholder'ları metin alanlarında kullanabilirsiniz. Metin ile birlikte de kullanılabilir.",
+    "example": "Örnek: \"Rapor - {{pageTitle}} - {{date}}\"",
+    "placeholder": "Placeholder",
+    "value": "Değer",
+    "items": {
+      "pageTitle": "Bulunduğu sayfanın başlığı",
+      "companyName": "Şirket adı",
+      "companyAddress": "Şirket adresi",
+      "companyPhone": "Şirket telefonu",
+      "companyEmail": "Şirket e-postası",
+      "companyWebsite": "Şirket web sitesi",
+      "companyTaxId": "Vergi numarası",
+      "companyLogo": "Şirket logosu URL'i",
+      "date": "Bugünün tarihi",
+      "year": "Bu yıl"
+    }
+  },
   "navigation": {
     "dashboard": "Panel",
     "settings": "Ayarlar"

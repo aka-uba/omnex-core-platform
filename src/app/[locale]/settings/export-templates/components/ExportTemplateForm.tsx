@@ -21,9 +21,12 @@ import {
     Box,
     Divider,
     Center,
+    Table,
+    Code,
+    Alert,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconPhoto, IconPlus, IconTrash, IconBuilding, IconMapPin, IconRefresh } from '@tabler/icons-react';
+import { IconPhoto, IconPlus, IconTrash, IconBuilding, IconMapPin, IconRefresh, IconInfoCircle } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useTranslation } from '@/lib/i18n/client';
 import { useQuery } from '@tanstack/react-query';
@@ -86,6 +89,59 @@ interface ExportTemplateFormProps {
     onSubmit: (data: ExportTemplateFormData) => Promise<void>;
     onCancel: () => void;
     isEdit?: boolean;
+}
+
+// Placeholder Info Table Component
+function PlaceholderInfoTable({ t }: { t: (key: string) => string }) {
+    const placeholders = [
+        { code: '{{pageTitle}}', key: 'pageTitle' },
+        { code: '{{companyName}}', key: 'companyName' },
+        { code: '{{companyAddress}}', key: 'companyAddress' },
+        { code: '{{companyPhone}}', key: 'companyPhone' },
+        { code: '{{companyEmail}}', key: 'companyEmail' },
+        { code: '{{companyWebsite}}', key: 'companyWebsite' },
+        { code: '{{companyTaxId}}', key: 'companyTaxId' },
+        { code: '{{companyLogo}}', key: 'companyLogo' },
+        { code: '{{date}}', key: 'date' },
+        { code: '{{year}}', key: 'year' },
+    ];
+
+    return (
+        <Paper p="md" withBorder>
+            <Group gap="xs" mb="sm">
+                <IconInfoCircle size={20} color="var(--mantine-color-blue-6)" />
+                <Title order={5}>{t('placeholders.title')}</Title>
+            </Group>
+            <Text size="sm" c="dimmed" mb="xs">
+                {t('placeholders.description')}
+            </Text>
+            <Alert variant="light" color="blue" mb="md" p="xs">
+                <Text size="xs">
+                    <Code>{t('placeholders.example')}</Code>
+                </Text>
+            </Alert>
+            <Table striped highlightOnHover withTableBorder withColumnBorders>
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>{t('placeholders.placeholder')}</Table.Th>
+                        <Table.Th>{t('placeholders.value')}</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                    {placeholders.map((item) => (
+                        <Table.Tr key={item.code}>
+                            <Table.Td>
+                                <Code>{item.code}</Code>
+                            </Table.Td>
+                            <Table.Td>
+                                <Text size="sm">{t(`placeholders.items.${item.key}`)}</Text>
+                            </Table.Td>
+                        </Table.Tr>
+                    ))}
+                </Table.Tbody>
+            </Table>
+        </Paper>
+    );
 }
 
 // Template Preview Component
@@ -752,21 +808,24 @@ export function ExportTemplateForm({
                         </Stack>
                     </Grid.Col>
 
-                    {/* Right Column - Live Preview */}
+                    {/* Right Column - Live Preview & Placeholder Info */}
                     <Grid.Col span={{ base: 12, lg: 5 }}>
-                        <Paper p="md" withBorder style={{ position: 'sticky', top: 20 }}>
-                            <Title order={4} mb="md">
-                                {t('preview.title')}
-                            </Title>
-                            <Text size="sm" c="dimmed" mb="md">
-                                {t('preview.description')}
-                            </Text>
-                            <TemplatePreview
-                                formValues={form.values}
-                                templateType={form.values.type}
-                                t={t}
-                            />
-                        </Paper>
+                        <Stack gap="md" style={{ position: 'sticky', top: 20 }}>
+                            <Paper p="md" withBorder>
+                                <Title order={4} mb="md">
+                                    {t('preview.title')}
+                                </Title>
+                                <Text size="sm" c="dimmed" mb="md">
+                                    {t('preview.description')}
+                                </Text>
+                                <TemplatePreview
+                                    formValues={form.values}
+                                    templateType={form.values.type}
+                                    t={t}
+                                />
+                            </Paper>
+                            <PlaceholderInfoTable t={t} />
+                        </Stack>
                     </Grid.Col>
                 </Grid>
             </form>
