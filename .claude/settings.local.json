@@ -114,7 +114,9 @@
       "Bash(ssh root@146.190.224.121 \"echo ''Onwind.1235APP'' | sudo -S journalctl -u omnex-core --since ''1 hour ago'' --no-pager -n 200\")",
       "Bash(ssh root@146.190.224.121 \"systemctl list-units --type=service | grep -E ''(omnex|node|pm2|next)''\")",
       "Bash(ssh root@146.190.224.121 \"cd /var/www/omnex-core && pm2 stop omnex-core && rm -rf .next && unzip -q .next.zip && pm2 start omnex-core && pm2 status\")",
-      "Bash(ssh omnex-server:*)"
+      "Bash(ssh omnex-server:*)",
+      "Bash(git revert:*)",
+      "Bash(npm run typecheck:*)"
     ],
     "deny": [],
     "ask": []

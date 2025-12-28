@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Yükleniyor..."
+  },
   "title": "Sohbet",
   "description": "Gerçek zamanlı sohbet ve mesajlaşma modülü",
   "menu": {

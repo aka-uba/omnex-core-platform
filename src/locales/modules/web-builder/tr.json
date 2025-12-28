@@ -1,4 +1,7 @@
 {
+  "common": {
+    "comingSoon": "Bu özellik çok yakında..."
+  },
   "title": "Web Oluşturucu",
   "description": "Sürükle-bırak web sitesi oluşturucu modülü",
   "menu": {

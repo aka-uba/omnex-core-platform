@@ -1,21 +1,23 @@
 'use client';
 
-import { Container, Paper, Title, Text, Stack } from '@mantine/core';
+import { Container, Paper, Text } from '@mantine/core';
 import { IconMessageCircle } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ChatRoomList } from '@/modules/sohbet/components/ChatRoomList';
 import { useChatRooms } from '@/hooks/useChatRooms';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
 
 export default function SohbetRoomsPage() {
   const params = useParams();
   const currentLocale = (params?.locale as string) || 'tr';
+  const { t } = useTranslation('modules/sohbet');
   const [searchQuery, setSearchQuery] = useState('');
-  const { data: roomsData, isLoading } = useChatRooms({ 
-    page: 1, 
-    pageSize: 50, 
-    isActive: true 
+  const { data: roomsData, isLoading } = useChatRooms({
+    page: 1,
+    pageSize: 50,
+    isActive: true
   });
 
   return (
@@ -33,25 +35,19 @@ export default function SohbetRoomsPage() {
       />
 
       <Paper shadow="sm" p="xl" withBorder>
-        <Stack gap="md">
-          <Title order={3}>Chat Rooms</Title>
-          <Text c="dimmed">Browse and join available chat rooms</Text>
-          
-          {isLoading ? (
-            <Text c="dimmed">Loading rooms...</Text>
-          ) : (
-            <ChatRoomList
-              rooms={roomsData?.rooms || []}
-              isLoading={isLoading}
-              onRoomSelect={(roomId) => {
-                // Navigate to dashboard with selected room
-                window.location.href = `/${currentLocale}/modules/sohbet/dashboard?roomId=${roomId}`;
-              }}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-            />
-          )}
-        </Stack>
+        {isLoading ? (
+          <Text c="dimmed">{t('common.loading')}</Text>
+        ) : (
+          <ChatRoomList
+            rooms={roomsData?.rooms || []}
+            isLoading={isLoading}
+            onRoomSelect={(roomId) => {
+              window.location.href = `/${currentLocale}/modules/sohbet/dashboard?roomId=${roomId}`;
+            }}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        )}
       </Paper>
     </Container>
   );
