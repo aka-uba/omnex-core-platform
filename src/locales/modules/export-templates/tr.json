@@ -73,6 +73,8 @@
     "defaultError": "Varsayılan şablon ayarlanırken bir hata oluştu",
     "deleteError": "Şablon silinirken bir hata oluştu",
     "submitError": "Şablon kaydedilirken bir hata oluştu",
+    "autoFilled": "Otomatik Dolduruldu",
+    "autoFilledDesc": "Firma bilgileri forma aktarıldı",
     "seeded": "{{count}} şablon başarıyla oluşturuldu",
     "seedError": "Şablonlar oluşturulurken bir hata oluştu",
     "exported": "Şablon başarıyla dışa aktarıldı",
@@ -131,7 +133,15 @@
     "positionRight": "Sağ",
     "cancel": "İptal",
     "create": "Şablon Oluştur",
-    "update": "Şablonu Güncelle"
+    "update": "Şablonu Güncelle",
+    "refillFromCompany": "Firma bilgilerini yeniden doldur"
+  },
+  "preview": {
+    "title": "Canlı Önizleme",
+    "description": "Form değişikliklerinizi anlık olarak görüntüleyin",
+    "sampleContent": "Örnek İçerik Alanı",
+    "empty": "Önizleme boş",
+    "emptyHint": "Logo, başlık veya iletişim bilgisi ekleyin"
   },
   "navigation": {
     "dashboard": "Panel",

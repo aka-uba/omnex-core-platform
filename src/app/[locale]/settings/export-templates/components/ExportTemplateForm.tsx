@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
     Container,
     Paper,
@@ -17,9 +17,13 @@ import {
     Image,
     ActionIcon,
     Badge,
+    Grid,
+    Box,
+    Divider,
+    Center,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconPhoto, IconPlus, IconTrash, IconBuilding, IconMapPin } from '@tabler/icons-react';
+import { IconPhoto, IconPlus, IconTrash, IconBuilding, IconMapPin, IconRefresh } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useTranslation } from '@/lib/i18n/client';
 import { useQuery } from '@tanstack/react-query';
@@ -41,6 +45,23 @@ interface FooterItem {
     id: string;
     text: string;
     position?: 'left' | 'center' | 'right';
+}
+
+interface CompanyData {
+    id: string;
+    name: string;
+    logo?: string;
+    logoFile?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
+    taxNumber?: string;
+    taxOffice?: string;
 }
 
 interface ExportTemplateFormData {
@@ -67,6 +88,154 @@ interface ExportTemplateFormProps {
     isEdit?: boolean;
 }
 
+// Template Preview Component
+function TemplatePreview({
+    formValues,
+    templateType,
+    t
+}: {
+    formValues: ExportTemplateFormData;
+    templateType: 'header' | 'footer' | 'full';
+    t: (key: string) => string;
+}) {
+    const renderLogo = (logo: LogoItem, index: number) => {
+        if (!logo.url) return null;
+        return (
+            <Box
+                key={logo.id || index}
+                style={{
+                    textAlign: logo.position || 'left',
+                    flex: logo.position === 'center' ? 1 : 'none'
+                }}
+            >
+                <Image
+                    src={logo.url}
+                    alt={`Logo ${index + 1}`}
+                    h={50}
+                    w="auto"
+                    fit="contain"
+                    style={{ display: 'inline-block' }}
+                />
+            </Box>
+        );
+    };
+
+    const renderTextItem = (item: HeaderItem | FooterItem, index: number) => {
+        if (!item.text) return null;
+        return (
+            <Text
+                key={item.id || index}
+                size="sm"
+                style={{
+                    textAlign: item.position || 'left',
+                    flex: item.position === 'center' ? 1 : 'none'
+                }}
+            >
+                {item.text}
+            </Text>
+        );
+    };
+
+    const renderHeader = () => (
+        <Box p="md" style={{ borderBottom: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
+            {/* Logos */}
+            {formValues.logos.length > 0 && (
+                <Group justify="space-between" mb="xs">
+                    {formValues.logos.map((logo, idx) => renderLogo(logo, idx))}
+                </Group>
+            )}
+            {/* Headers */}
+            {formValues.headers.length > 0 && (
+                <Stack gap={4}>
+                    {formValues.headers.map((header, idx) => renderTextItem(header, idx))}
+                </Stack>
+            )}
+            {/* Company Info */}
+            {(formValues.address || formValues.phone || formValues.email) && (
+                <Group gap="md" mt="xs">
+                    {formValues.address && <Text size="xs" c="dimmed">{formValues.address}</Text>}
+                    {formValues.phone && <Text size="xs" c="dimmed">{formValues.phone}</Text>}
+                    {formValues.email && <Text size="xs" c="dimmed">{formValues.email}</Text>}
+                </Group>
+            )}
+        </Box>
+    );
+
+    const renderFooter = () => (
+        <Box p="md" style={{ borderTop: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
+            {formValues.footers.length > 0 && (
+                <Stack gap={4}>
+                    {formValues.footers.map((footer, idx) => renderTextItem(footer, idx))}
+                </Stack>
+            )}
+            {(formValues.website || formValues.taxNumber) && (
+                <Group gap="md" mt="xs">
+                    {formValues.website && <Text size="xs" c="dimmed">{formValues.website}</Text>}
+                    {formValues.taxNumber && <Text size="xs" c="dimmed">VKN: {formValues.taxNumber}</Text>}
+                </Group>
+            )}
+        </Box>
+    );
+
+    const renderContent = () => (
+        <Box p="md" style={{ minHeight: 100, backgroundColor: '#fff' }}>
+            <Text size="sm" c="dimmed" ta="center" py="xl">
+                {t('preview.sampleContent')}
+            </Text>
+            <Box style={{ border: '1px dashed #ccc', borderRadius: 4, padding: 16, margin: '0 auto', maxWidth: 400 }}>
+                <Stack gap="xs">
+                    <Group justify="space-between">
+                        <Text size="xs" c="dimmed">Column 1</Text>
+                        <Text size="xs" c="dimmed">Column 2</Text>
+                        <Text size="xs" c="dimmed">Column 3</Text>
+                    </Group>
+                    <Divider />
+                    <Group justify="space-between">
+                        <Text size="xs">Sample Data 1</Text>
+                        <Text size="xs">Sample Data 2</Text>
+                        <Text size="xs">Sample Data 3</Text>
+                    </Group>
+                    <Group justify="space-between">
+                        <Text size="xs">Sample Data 4</Text>
+                        <Text size="xs">Sample Data 5</Text>
+                        <Text size="xs">Sample Data 6</Text>
+                    </Group>
+                </Stack>
+            </Box>
+        </Box>
+    );
+
+    const isEmpty = formValues.logos.length === 0 &&
+                    formValues.headers.length === 0 &&
+                    formValues.footers.length === 0 &&
+                    !formValues.address && !formValues.phone && !formValues.email &&
+                    !formValues.website && !formValues.taxNumber;
+
+    if (isEmpty) {
+        return (
+            <Center h={300}>
+                <Stack align="center" gap="xs">
+                    <Text size="sm" c="dimmed">{t('preview.empty')}</Text>
+                    <Text size="xs" c="dimmed">{t('preview.emptyHint')}</Text>
+                </Stack>
+            </Center>
+        );
+    }
+
+    return (
+        <Box style={{ border: '1px solid #e0e0e0', borderRadius: 8, overflow: 'hidden', backgroundColor: '#fff' }}>
+            {/* Header - show for 'header' and 'full' types */}
+            {(templateType === 'header' || templateType === 'full') && renderHeader()}
+
+            {/* Content area - only for 'full' type */}
+            {templateType === 'full' && renderContent()}
+
+            {/* Footer - show for 'footer' and 'full' types */}
+            {(templateType === 'footer' || templateType === 'full') && renderFooter()}
+        </Box>
+    );
+}
+
 export function ExportTemplateForm({
     initialData,
     onSubmit,
@@ -75,9 +244,10 @@ export function ExportTemplateForm({
 }: ExportTemplateFormProps) {
     const { t } = useTranslation('modules/export-templates');
     const [loading, setLoading] = useState(false);
+    const [autoFillLoading, setAutoFillLoading] = useState(false);
 
     // Fetch companies and locations
-    const { data: companiesData } = useQuery({
+    const { data: companiesData } = useQuery<CompanyData[]>({
         queryKey: ['companies'],
         queryFn: async () => {
             const response = await fetch('/api/companies?page=1&pageSize=1000');
@@ -119,6 +289,68 @@ export function ExportTemplateForm({
             type: (value) => (value ? null : t('validation.typeRequired')),
         },
     });
+
+    // Auto-fill form when company is selected
+    const fillFromCompany = useCallback((companyId: string | null) => {
+        if (!companyId || !companiesData) return;
+
+        const company = companiesData.find((c: CompanyData) => c.id === companyId);
+        if (!company) return;
+
+        setAutoFillLoading(true);
+
+        // Build full address
+        const addressParts = [
+            company.address,
+            company.city,
+            company.state,
+            company.postalCode,
+            company.country
+        ].filter(Boolean);
+        const fullAddress = addressParts.join(', ');
+
+        // Add company logo if available and no logos exist yet
+        if ((company.logo || company.logoFile) && form.values.logos.length === 0) {
+            form.setFieldValue('logos', [{
+                id: `logo-${Date.now()}`,
+                url: company.logo || company.logoFile,
+                position: 'left' as const
+            }]);
+        }
+
+        // Add company name as header if no headers exist
+        if (form.values.headers.length === 0) {
+            form.setFieldValue('headers', [{
+                id: `header-${Date.now()}`,
+                text: company.name,
+                position: 'center' as const
+            }]);
+        }
+
+        // Fill contact info
+        if (fullAddress) form.setFieldValue('address', fullAddress);
+        if (company.phone) form.setFieldValue('phone', company.phone);
+        if (company.email) form.setFieldValue('email', company.email);
+        if (company.website) form.setFieldValue('website', company.website);
+        if (company.taxNumber) form.setFieldValue('taxNumber', company.taxNumber);
+
+        setAutoFillLoading(false);
+
+        showToast({
+            type: 'success',
+            title: t('notifications.autoFilled'),
+            message: t('notifications.autoFilledDesc'),
+        });
+    }, [companiesData, form, t]);
+
+    // Handle company selection change
+    const handleCompanyChange = (value: string | null) => {
+        form.setFieldValue('companyId', value);
+        // Only auto-fill on new templates or when explicitly requested
+        if (!isEdit && value) {
+            fillFromCompany(value);
+        }
+    };
 
     const addLogo = () => {
         form.insertListItem('logos', {
@@ -219,69 +451,89 @@ export function ExportTemplateForm({
     };
 
     return (
-        <Container size="lg">
+        <Container size="xl">
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stack gap="md">
-                    <Paper p="md" withBorder>
-                        <Title order={4} mb="md">
-                            {t('form.basicInfo')}
-                        </Title>
+                <Grid gutter="lg">
+                    {/* Left Column - Form */}
+                    <Grid.Col span={{ base: 12, lg: 7 }}>
+                        <Stack gap="md">
+                            <Paper p="md" withBorder>
+                                <Title order={4} mb="md">
+                                    {t('form.basicInfo')}
+                                </Title>
 
-                        <Stack>
-                            <TextInput
-                                label={t('form.name')}
-                                placeholder={t('form.namePlaceholder')}
-                                required
-                                {...form.getInputProps('name')}
-                            />
+                                <Stack>
+                                    <TextInput
+                                        label={t('form.name')}
+                                        placeholder={t('form.namePlaceholder')}
+                                        required
+                                        {...form.getInputProps('name')}
+                                    />
 
-                            <Select
-                                label={t('form.type')}
-                                placeholder={t('form.typePlaceholder')}
-                                required
-                                data={[
-                                    { value: 'header', label: t('types.header') },
-                                    { value: 'footer', label: t('types.footer') },
-                                    { value: 'full', label: t('types.full') },
-                                ]}
-                                {...form.getInputProps('type')}
-                            />
+                                    <Select
+                                        label={t('form.type')}
+                                        placeholder={t('form.typePlaceholder')}
+                                        required
+                                        data={[
+                                            { value: 'header', label: t('types.header') },
+                                            { value: 'footer', label: t('types.footer') },
+                                            { value: 'full', label: t('types.full') },
+                                        ]}
+                                        {...form.getInputProps('type')}
+                                    />
 
-                            <Group grow>
-                                <Select
-                                    label={t('form.company')}
-                                    placeholder={t('form.companyPlaceholder')}
-                                    data={companiesData?.map((c: any) => ({ value: c.id, label: c.name })) || []}
-                                    leftSection={<IconBuilding size={16} />}
-                                    clearable
-                                    {...form.getInputProps('companyId')}
-                                />
+                                    <Group grow>
+                                        <Box style={{ position: 'relative' }}>
+                                            <Select
+                                                label={t('form.company')}
+                                                placeholder={t('form.companyPlaceholder')}
+                                                data={companiesData?.map((c: CompanyData) => ({ value: c.id, label: c.name })) || []}
+                                                leftSection={<IconBuilding size={16} />}
+                                                rightSection={
+                                                    isEdit && form.values.companyId ? (
+                                                        <ActionIcon
+                                                            size="sm"
+                                                            variant="subtle"
+                                                            onClick={() => fillFromCompany(form.values.companyId || null)}
+                                                            loading={autoFillLoading}
+                                                            title={t('form.refillFromCompany')}
+                                                        >
+                                                            <IconRefresh size={14} />
+                                                        </ActionIcon>
+                                                    ) : undefined
+                                                }
+                                                clearable
+                                                value={form.values.companyId}
+                                                onChange={handleCompanyChange}
+                                                error={form.errors.companyId}
+                                            />
+                                        </Box>
 
-                                <Select
-                                    label={t('form.location')}
-                                    placeholder={t('form.locationPlaceholder')}
-                                    data={locationsData?.map((l: any) => ({ value: l.id, label: l.name })) || []}
-                                    leftSection={<IconMapPin size={16} />}
-                                    clearable
-                                    {...form.getInputProps('locationId')}
-                                />
-                            </Group>
+                                        <Select
+                                            label={t('form.location')}
+                                            placeholder={t('form.locationPlaceholder')}
+                                            data={locationsData?.map((l: any) => ({ value: l.id, label: l.name })) || []}
+                                            leftSection={<IconMapPin size={16} />}
+                                            clearable
+                                            {...form.getInputProps('locationId')}
+                                        />
+                                    </Group>
 
-                            <Group grow>
-                                <Switch
-                                    label={t('form.isDefault')}
-                                    description={t('form.isDefaultDesc')}
-                                    {...form.getInputProps('isDefault', { type: 'checkbox' })}
-                                />
+                                    <Group grow>
+                                        <Switch
+                                            label={t('form.isDefault')}
+                                            description={t('form.isDefaultDesc')}
+                                            {...form.getInputProps('isDefault', { type: 'checkbox' })}
+                                        />
 
-                                <Switch
-                                    label={t('form.isActive')}
-                                    description={t('form.isActiveDesc')}
-                                    {...form.getInputProps('isActive', { type: 'checkbox' })}
-                                />
-                            </Group>
-                        </Stack>
-                    </Paper>
+                                        <Switch
+                                            label={t('form.isActive')}
+                                            description={t('form.isActiveDesc')}
+                                            {...form.getInputProps('isActive', { type: 'checkbox' })}
+                                        />
+                                    </Group>
+                                </Stack>
+                            </Paper>
 
                     <Paper p="md" withBorder>
                         <Group justify="space-between" mb="md">
@@ -497,7 +749,26 @@ export function ExportTemplateForm({
                             {isEdit ? t('form.update') : t('form.create')}
                         </Button>
                     </Group>
-                </Stack>
+                        </Stack>
+                    </Grid.Col>
+
+                    {/* Right Column - Live Preview */}
+                    <Grid.Col span={{ base: 12, lg: 5 }}>
+                        <Paper p="md" withBorder style={{ position: 'sticky', top: 20 }}>
+                            <Title order={4} mb="md">
+                                {t('preview.title')}
+                            </Title>
+                            <Text size="sm" c="dimmed" mb="md">
+                                {t('preview.description')}
+                            </Text>
+                            <TemplatePreview
+                                formValues={form.values}
+                                templateType={form.values.type}
+                                t={t}
+                            />
+                        </Paper>
+                    </Grid.Col>
+                </Grid>
             </form>
         </Container>
     );

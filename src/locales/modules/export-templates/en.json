@@ -1,0 +1,156 @@
+{
+  "title": "Export Templates",
+  "description": "Create and manage custom header and footer templates for export documents",
+  "create": "New Template",
+  "search": "Search templates...",
+  "refresh": "Refresh",
+  "filterType": "Filter Type",
+  "filterScope": "Filter Scope",
+  "filterAll": "All",
+  "error": "Error",
+  "loadError": "An error occurred while loading templates",
+  "noTemplates": "No templates found",
+  "confirmDelete": "Are you sure you want to delete this template?",
+  "delete": {
+    "title": "Delete Template",
+    "confirm": "Delete"
+  },
+  "bulkDelete": {
+    "title": "Bulk Delete",
+    "message": "Are you sure you want to delete {{count}} templates?",
+    "confirm": "Delete All",
+    "button": "Delete {{count}} Selected"
+  },
+  "types": {
+    "header": "Header",
+    "footer": "Footer",
+    "full": "Full"
+  },
+  "scope": {
+    "global": "Global",
+    "company": "Company",
+    "location": "Location"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "setDefault": "Set as default",
+    "unsetDefault": "Remove from default",
+    "preview": "Preview",
+    "export": "Export",
+    "create": "Create",
+    "update": "Update",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "table": {
+    "name": "Template Name",
+    "type": "Type",
+    "scope": "Scope",
+    "description": "Description",
+    "title": "Title",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions"
+  },
+  "seed": {
+    "title": "Load Ready Templates",
+    "confirm": "Load"
+  },
+  "seedConfirm": "20 ready templates will be created. Do you want to continue?",
+  "notifications": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "deleted": "Template successfully deleted",
+    "defaultUpdated": "Default template updated",
+    "defaultError": "An error occurred while setting default template",
+    "deleteError": "An error occurred while deleting template",
+    "submitError": "An error occurred while saving template",
+    "autoFilled": "Auto Filled",
+    "autoFilledDesc": "Company information has been transferred to the form",
+    "seeded": "{{count}} templates successfully created",
+    "seedError": "An error occurred while creating templates",
+    "exported": "Template successfully exported",
+    "exportError": "An error occurred while exporting template",
+    "bulkDeleted": "{{count}} templates successfully deleted",
+    "bulkDeleteError": "Error occurred while deleting {{count}} templates",
+    "cannotDeleteDefault": "Default template cannot be deleted. Remove from default first.",
+    "defaultRemoved": "Default status removed"
+  },
+  "validation": {
+    "nameRequired": "Template name is required",
+    "typeRequired": "Type is required"
+  },
+  "form": {
+    "basicInfo": "Basic Information",
+    "name": "Template Name",
+    "namePlaceholder": "Company Header Template",
+    "type": "Template Type",
+    "typePlaceholder": "Select type",
+    "company": "Company",
+    "companyPlaceholder": "Select company (optional)",
+    "location": "Location",
+    "locationPlaceholder": "Select location (optional)",
+    "isDefault": "Set as Default",
+    "isDefaultDesc": "Use this template as default",
+    "isActive": "Active",
+    "isActiveDesc": "Template is active and usable",
+    "logos": "Logos",
+    "addLogo": "Add Logo",
+    "logo": "Logo",
+    "logoFile": "Logo File",
+    "logoFilePlaceholder": "Upload logo",
+    "noLogos": "No logos added yet",
+    "headers": "Headers",
+    "addHeader": "Add Header",
+    "header": "Header",
+    "headerText": "Header Text",
+    "headerTextPlaceholder": "Enter header text",
+    "noHeaders": "No headers added yet",
+    "footers": "Footers",
+    "addFooter": "Add Footer",
+    "footer": "Footer",
+    "footerText": "Footer Text",
+    "footerTextPlaceholder": "Enter footer text",
+    "noFooters": "No footers added yet",
+    "contactInfo": "Contact Information",
+    "address": "Address",
+    "addressPlaceholder": "123 Main Street, City, Country",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "taxNumber": "Tax Number",
+    "position": "Position",
+    "positionLeft": "Left",
+    "positionCenter": "Center",
+    "positionRight": "Right",
+    "cancel": "Cancel",
+    "create": "Create Template",
+    "update": "Update Template",
+    "refillFromCompany": "Refill from company info"
+  },
+  "preview": {
+    "title": "Live Preview",
+    "description": "View your form changes in real-time",
+    "sampleContent": "Sample Content Area",
+    "empty": "Preview is empty",
+    "emptyHint": "Add logo, header or contact information"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  },
+  "edit": {
+    "title": "Title",
+    "description": "Description"
+  },
+  "export": "Export",
+  "exportComingSoon": "Export in {{format}} format coming soon"
+}
