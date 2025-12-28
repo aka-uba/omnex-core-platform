@@ -4,7 +4,7 @@
   "menu": {
     "label": "İnsan Kaynakları",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "employees": "Personeller",
       "leaves": "İzinler",
       "payrolls": "Bordrolar",
@@ -63,9 +63,9 @@
       "currency": "Para Birimi",
       "currencyPlaceholder": "Para birimi seçin",
       "isActive": "Aktif",
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone"
+      "name": "Ad",
+      "email": "E-posta",
+      "phone": "Telefon"
     },
     "filter": {
       "department": "Departman",

@@ -4,7 +4,7 @@
   "menu": {
     "label": "AI Studio",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "text": "Metin Oluşturucu",
       "image": "Görsel Oluşturucu",
       "code": "Kod Oluşturucu",

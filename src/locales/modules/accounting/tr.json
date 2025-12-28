@@ -4,7 +4,7 @@
   "menu": {
     "label": "Muhasebe",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "subscriptions": "Abonelikler",
       "invoices": "Faturalar",
       "payments": "Ödemeler",
@@ -13,7 +13,7 @@
     }
   },
   "dashboard": {
-    "title": "Muhasebe Dashboard",
+    "title": "Muhasebe Paneli",
     "description": "Muhasebe ve finansal yönetiminize genel bakış",
     "totalRevenue": "Toplam Gelir",
     "activeSubscriptions": "Aktif Abonelikler",
@@ -415,7 +415,7 @@
   },
   "filter": {
     "all": "Tümü",
-    "status": "Status"
+    "status": "Durum"
   },
   "table": {
     "actions": "İşlemler"

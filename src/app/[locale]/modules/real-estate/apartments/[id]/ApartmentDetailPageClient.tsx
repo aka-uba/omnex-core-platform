@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button, Divider, Title } from '@mantine/core';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Button, Divider, Title, ActionIcon } from '@mantine/core';
 import { IconHome, IconQrcode, IconFileText, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash, IconFile, IconCheck, IconX } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
@@ -15,6 +15,7 @@ import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 import { ApartmentMaintenanceTab } from '@/modules/real-estate/components/ApartmentMaintenanceTab';
 import { useCompany } from '@/context/CompanyContext';
+import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 
 export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const params = useParams();
@@ -100,6 +101,112 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
 
     return { coldRent, additionalCosts, heatingCosts, warmRent, deposit };
   }, [apartment]);
+
+  // Tenant history columns for DataTable
+  const tenantHistoryColumns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'tenant',
+      label: t('tenants.title'),
+      sortable: true,
+      searchable: true,
+      render: (_: any, row: any) => (
+        row.tenantRecord ? (
+          <Stack gap={2}>
+            <Text size="sm" fw={500}>
+              {row.tenantRecord.firstName} {row.tenantRecord.lastName}
+            </Text>
+            {row.tenantRecord.email && (
+              <Text size="xs" c="dimmed">{row.tenantRecord.email}</Text>
+            )}
+          </Stack>
+        ) : (
+          <Text size="sm" c="dimmed">{tGlobal('common.notApplicable')}</Text>
+        )
+      ),
+    },
+    {
+      key: 'startDate',
+      label: t('form.startDate'),
+      sortable: true,
+      render: (value: string) => (
+        <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+      ),
+    },
+    {
+      key: 'endDate',
+      label: t('form.endDate'),
+      sortable: true,
+      render: (value: string) => (
+        <Text size="sm">{value ? dayjs(value).format('DD.MM.YYYY') : '-'}</Text>
+      ),
+    },
+    {
+      key: 'rentAmount',
+      label: t('form.rentAmount'),
+      sortable: true,
+      align: 'right' as const,
+      render: (value: any) => (
+        <Text size="sm">{value ? formatCurrency(Number(value)) : '-'}</Text>
+      ),
+    },
+    {
+      key: 'status',
+      label: t('table.status'),
+      sortable: true,
+      render: (value: string) => (
+        <Badge
+          color={
+            value === 'active' ? 'green' :
+            value === 'expired' ? 'gray' :
+            value === 'terminated' ? 'red' : 'yellow'
+          }
+        >
+          {t(`contracts.status.${value}`) || value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'actions',
+      label: tGlobal('table.actions'),
+      align: 'right' as const,
+      sortable: false,
+      render: (_: any, row: any) => (
+        <Group gap="xs" justify="flex-end">
+          <ActionIcon
+            variant="subtle"
+            size="sm"
+            color="blue"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/${currentLocale}/modules/real-estate/contracts/${row.id}`);
+            }}
+            title={tGlobal('actions.view')}
+          >
+            <IconEye size={16} />
+          </ActionIcon>
+          {row.tenantRecord && (
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              color="teal"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${currentLocale}/modules/real-estate/tenants/${row.tenantRecord.id}`);
+              }}
+              title={t('tenants.detail.title')}
+            >
+              <IconUsers size={16} />
+            </ActionIcon>
+          )}
+        </Group>
+      ),
+    },
+  ], [t, tGlobal, formatCurrency, currentLocale, router]);
+
+  // Tenant history data
+  const tenantHistoryData = useMemo(() => {
+    return apartment?.contracts || [];
+  }, [apartment?.contracts]);
 
   if (isLoading) {
     return <ApartmentDetailPageSkeleton />;
@@ -521,87 +628,26 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
 
         {apartment.contracts && apartment.contracts.length > 0 && (
           <Tabs.Panel value="tenantHistory" pt="md">
-            <Paper shadow="xs" p="md">
-              <Stack gap="md">
+            <Stack gap="md">
+              <Group gap="xs">
+                <IconUsers size={24} />
                 <Text size="lg" fw={600}>
                   {t('apartments.tenantHistory')}
                 </Text>
-                <Table striped highlightOnHover>
-                  <Table.Thead>
-                    <Table.Tr>
-                      <Table.Th>{t('tenants.title')}</Table.Th>
-                      <Table.Th>{t('form.startDate')}</Table.Th>
-                      <Table.Th>{t('form.endDate')}</Table.Th>
-                      <Table.Th>{t('form.rentAmount')}</Table.Th>
-                      <Table.Th>{t('table.status')}</Table.Th>
-                      <Table.Th>{tGlobal('table.actions')}</Table.Th>
-                    </Table.Tr>
-                  </Table.Thead>
-                  <Table.Tbody>
-                    {apartment.contracts.map((contract: any) => (
-                      <Table.Tr key={contract.id}>
-                        <Table.Td>
-                          {contract.tenantRecord ? (
-                            <Group gap="xs">
-                              <Text size="sm" fw={500}>
-                                {contract.tenantRecord.firstName} {contract.tenantRecord.lastName}
-                              </Text>
-                              {contract.tenantRecord.email && (
-                                <Text size="xs" c="dimmed">({contract.tenantRecord.email})</Text>
-                              )}
-                            </Group>
-                          ) : (
-                            <Text size="sm" c="dimmed">{tGlobal('common.notApplicable')}</Text>
-                          )}
-                        </Table.Td>
-                        <Table.Td>
-                          {contract.startDate ? dayjs(contract.startDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          {contract.endDate ? dayjs(contract.endDate).format('DD.MM.YYYY') : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          {contract.rentAmount ? formatCurrency(Number(contract.rentAmount)) : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge
-                            color={
-                              contract.status === 'active' ? 'green' :
-                              contract.status === 'expired' ? 'gray' :
-                              contract.status === 'terminated' ? 'red' : 'yellow'
-                            }
-                          >
-                            {t(`contracts.status.${contract.status}`) || contract.status}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          <Group gap="xs">
-                            <Button
-                              size="xs"
-                              variant="subtle"
-                              leftSection={<IconEye size={14} />}
-                              onClick={() => router.push(`/${currentLocale}/modules/real-estate/contracts/${contract.id}`)}
-                            >
-                              {tGlobal('actions.view')}
-                            </Button>
-                            {contract.tenantRecord && (
-                              <Button
-                                size="xs"
-                                variant="subtle"
-                                leftSection={<IconUsers size={14} />}
-                                onClick={() => router.push(`/${currentLocale}/modules/real-estate/tenants/${contract.tenantRecord.id}`)}
-                              >
-                                {t('tenants.detail.title')}
-                              </Button>
-                            )}
-                          </Group>
-                        </Table.Td>
-                      </Table.Tr>
-                    ))}
-                  </Table.Tbody>
-                </Table>
-              </Stack>
-            </Paper>
+              </Group>
+              <DataTable
+                columns={tenantHistoryColumns}
+                data={tenantHistoryData}
+                searchable={true}
+                sortable={true}
+                pageable={true}
+                defaultPageSize={10}
+                pageSizeOptions={[10, 25, 50]}
+                emptyMessage={t('contracts.noData')}
+                showColumnSettings={false}
+                showRowNumbers={false}
+              />
+            </Stack>
           </Tabs.Panel>
         )}
 

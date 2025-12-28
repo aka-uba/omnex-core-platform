@@ -21,7 +21,7 @@
   },
   "comingSoon": "Yakında eklenecek...",
   "tabs": {
-    "email": "Email",
+    "email": "E-posta",
     "sms": "SMS",
     "push": "Push",
     "whatsapp": "WhatsApp",
@@ -200,7 +200,7 @@
   },
   "dashboard": {
     "description": "Bildirim şablonlarına genel bakış ve istatistikler",
-    "title": "Dashboard"
+    "title": "Panel"
   },
   "navigation": {
     "dashboard": "Panel",

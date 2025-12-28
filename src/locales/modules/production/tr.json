@@ -4,7 +4,7 @@
   "menu": {
     "label": "Üretim",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "products": "Ürünler",
       "bom": "Malzeme Listesi",
       "orders": "Üretim Emirleri",
@@ -13,7 +13,7 @@
     }
   },
   "dashboard": {
-    "title": "Üretim Dashboard",
+    "title": "Üretim Paneli",
     "description": "Üretim faaliyetleri ve analizlerine genel bakış",
     "dateFrom": "Başlangıç Tarihi",
     "dateTo": "Bitiş Tarihi",
