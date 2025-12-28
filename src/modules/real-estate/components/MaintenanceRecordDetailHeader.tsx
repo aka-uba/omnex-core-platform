@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
-import { IconTools, IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconTools, IconEdit } from '@tabler/icons-react';
 import { useRealEstateMaintenanceRecord } from '@/hooks/useRealEstateMaintenanceRecords';
 import { useTranslation } from '@/lib/i18n/client';
 
@@ -39,12 +39,6 @@ export function MaintenanceRecordDetailHeader({ locale, recordId }: MaintenanceR
         { label: 'maintenance.detail.title', namespace: 'modules/real-estate' },
       ]}
       actions={[
-        {
-          label: t('actions.back'),
-          icon: <IconArrowLeft size={16} />,
-          onClick: () => router.back(),
-          variant: 'subtle',
-        },
         {
           label: t('actions.edit'),
           icon: <IconEdit size={16} />,
