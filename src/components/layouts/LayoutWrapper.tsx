@@ -2,12 +2,13 @@
  * LayoutWrapper v2
  * Ana layout wrapper - responsive layout seçimi
  * Login/Register/Welcome sayfaları layoutsuz
+ * Authentication kontrolü burada yapılır
  */
 
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutProvider, useLayout } from './core/LayoutProvider';
 import { MobileLayout } from './mobile/MobileLayout';
 import { SidebarLayout } from './sidebar/SidebarLayout';
@@ -18,15 +19,49 @@ interface LayoutWrapperProps {
   children: React.ReactNode;
 }
 
+// Auth gerektirmeyen public sayfalar
+const PUBLIC_PATHS = [
+  '/auth/login',
+  '/auth/register',
+  '/login',
+  '/register',
+  '/welcome',
+  '/setup',
+  '/public/',
+  '/share-files',
+];
+
+// Path'in public olup olmadığını kontrol et
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.some(path => pathname.includes(path));
+}
+
 function LayoutContent({ children }: LayoutWrapperProps) {
   const { currentLayout } = useLayout();
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   // Client-side mount
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Auth kontrolü - login olmamış kullanıcıları login sayfasına yönlendir
+  useEffect(() => {
+    if (!mounted || loading) return;
+
+    const isPublic = isPublicPath(pathname || '');
+
+    // Login olmamış ve public sayfa değilse -> login'e yönlendir
+    if (!user && !isPublic) {
+      const locale = pathname?.split('/')[1] || 'tr';
+      // Mevcut URL'i returnUrl olarak kaydet
+      const returnUrl = encodeURIComponent(pathname || '/');
+      router.replace(`/${locale}/auth/login?returnUrl=${returnUrl}`);
+    }
+  }, [mounted, loading, user, pathname, router]);
 
   // Login, Register, Welcome sayfaları layoutsuz
   const isAuthPage =
@@ -41,6 +76,16 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   // Server-side: render nothing to prevent hydration mismatch
   // Client-side: render correct layout from localStorage
   if (!mounted) {
+    return null;
+  }
+
+  // Loading state - auth henüz kontrol ediliyor
+  if (loading) {
+    return null;
+  }
+
+  // Login olmamış ve public sayfa değilse -> hiçbir şey gösterme (redirect olacak)
+  if (!user && !isPublicPath(pathname || '')) {
     return null;
   }
 
