@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { authenticatedFetch } from '@/lib/api/authenticatedFetch';
 import type { CompanySettings } from './types';
 
 // Default fallback settings - used only when API fails or during initial load
@@ -24,9 +25,7 @@ export function useCompanySettings() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/company', {
-          credentials: 'include', // Include cookies for authentication
-        });
+        const response = await authenticatedFetch('/api/company');
         if (!response.ok) {
           throw new Error('Failed to fetch company settings');
         }

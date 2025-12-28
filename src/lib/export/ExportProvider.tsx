@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useCallback } from 'react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import { authenticatedFetch } from '@/lib/api/authenticatedFetch';
 import { useCompanySettings } from './useCompanySettings';
 import {
   exportToCSV,
@@ -52,7 +53,7 @@ export function ExportProvider({ children }: ExportProviderProps) {
     try {
       // If specific templateId provided, fetch that template
       if (templateId) {
-        const response = await fetch(`/api/export-templates/${templateId}`);
+        const response = await authenticatedFetch(`/api/export-templates/${templateId}`);
         if (response.ok) {
           const result = await response.json();
           // API returns { data: template } directly
@@ -63,7 +64,7 @@ export function ExportProvider({ children }: ExportProviderProps) {
       }
 
       // Otherwise try to get default template
-      const defaultResponse = await fetch('/api/export-templates/default?type=full');
+      const defaultResponse = await authenticatedFetch('/api/export-templates/default?type=full');
       if (defaultResponse.ok) {
         const defaultResult = await defaultResponse.json();
         // Default API returns { data: template } directly
