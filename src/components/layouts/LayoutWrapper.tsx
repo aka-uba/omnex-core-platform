@@ -13,6 +13,7 @@ import { MobileLayout } from './mobile/MobileLayout';
 import { SidebarLayout } from './sidebar/SidebarLayout';
 import { TopLayout } from './top/TopLayout';
 import { useAuth } from '@/hooks/useAuth';
+import { SessionTimeoutWarning } from '@/components/auth/SessionTimeoutWarning';
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -66,6 +67,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       {...(user?.id ? { userId: user.id } : {})}
       {...(user?.role ? { userRole: user.role } : {})}
     >
+      <SessionTimeoutWarning />
       <LayoutContent>{children}</LayoutContent>
     </LayoutProvider>
   );
