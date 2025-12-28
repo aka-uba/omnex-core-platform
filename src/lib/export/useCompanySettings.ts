@@ -3,39 +3,64 @@
 import { useState, useEffect } from 'react';
 import type { CompanySettings } from './types';
 
-// Placeholder company settings - will be replaced with API call when settings page is ready
-const PLACEHOLDER_SETTINGS: CompanySettings = {
-  name: 'Omnex-Core',
-  address: '123 Business Street, City, Country',
-  phone: '+1 (555) 123-4567',
-  email: 'info@omnex-core.com',
-  website: 'www.omnex-core.com',
-  taxId: 'TAX-123456',
-  registrationNumber: 'REG-789012',
+// Default fallback settings - used only when API fails or during initial load
+const DEFAULT_SETTINGS: CompanySettings = {
+  name: '',
+  address: '',
+  phone: '',
+  email: '',
+  website: '',
+  taxId: '',
+  registrationNumber: '',
 };
 
 export function useCompanySettings() {
-  const [settings] = useState<CompanySettings>(PLACEHOLDER_SETTINGS);
-  const [loading] = useState(false);
+  const [settings, setSettings] = useState<CompanySettings>(DEFAULT_SETTINGS);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO: Replace with actual API call when settings page is ready
-    // const fetchSettings = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const response = await fetch('/api/settings/company');
-    //     const data = await response.json();
-    //     setSettings(data);
-    //   } catch (error) {
-    //     setSettings(PLACEHOLDER_SETTINGS);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchSettings();
+    const fetchSettings = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/company');
+        if (!response.ok) {
+          throw new Error('Failed to fetch company settings');
+        }
+        const result = await response.json();
+
+        if (result.data) {
+          // Map API response to CompanySettings
+          setSettings({
+            name: result.data.name || '',
+            logo: result.data.logo || result.data.logoFile || undefined,
+            address: [
+              result.data.address,
+              result.data.city,
+              result.data.state,
+              result.data.postalCode,
+              result.data.country,
+            ].filter(Boolean).join(', ') || '',
+            phone: result.data.phone || '',
+            email: result.data.email || '',
+            website: result.data.website || '',
+            taxId: result.data.taxNumber || '',
+            registrationNumber: result.data.registrationNumber || '',
+          });
+        }
+      } catch (err: any) {
+        console.warn('Failed to fetch company settings:', err);
+        setError(err.message || 'Failed to fetch company settings');
+        // Keep current settings on error
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSettings();
   }, []);
 
-  return { settings, loading };
+  return { settings, loading, error };
 }
 
 

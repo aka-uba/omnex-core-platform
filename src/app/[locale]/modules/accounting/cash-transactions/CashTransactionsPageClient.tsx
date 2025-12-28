@@ -48,6 +48,7 @@ import {
   type CashTransactionCreateInput,
 } from '@/hooks/useCashTransactions';
 import { usePaymentMethods } from '@/hooks/usePaymentMethods';
+import { useExportTemplates, useDefaultExportTemplate } from '@/hooks/useExportTemplates';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
@@ -124,6 +125,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | undefined>(undefined);
 
   // Queries
   const { data, isLoading, refetch } = useCashTransactions({
@@ -134,6 +136,22 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   });
 
   const { data: paymentMethodsData } = usePaymentMethods();
+
+  // Export templates
+  const { data: exportTemplates } = useExportTemplates({ type: 'full' });
+  const { data: defaultTemplate } = useDefaultExportTemplate('full');
+
+  // Use default template if no template selected
+  const activeTemplateId = selectedTemplateId || defaultTemplate?.id;
+
+  // Template options for selector
+  const templateOptions = useMemo(() => {
+    if (!exportTemplates) return [];
+    return exportTemplates.map((template) => ({
+      value: template.id,
+      label: template.isDefault ? `${template.name} (Varsayılan)` : template.name,
+    }));
+  }, [exportTemplates]);
 
   // Mutations
   const createMutation = useCreateCashTransaction();
@@ -494,6 +512,24 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
         </Paper>
       )}
 
+      {/* Export Template Selector */}
+      {templateOptions.length > 0 && (
+        <Paper p="sm" withBorder mt="md">
+          <Group justify="space-between" align="center">
+            <Text size="sm" c="dimmed">Export Şablonu:</Text>
+            <Select
+              size="xs"
+              placeholder="Şablon seçin..."
+              data={templateOptions}
+              value={selectedTemplateId || defaultTemplate?.id || null}
+              onChange={(value) => setSelectedTemplateId(value || undefined)}
+              clearable
+              style={{ minWidth: 200 }}
+            />
+          </Group>
+        </Paper>
+      )}
+
       {/* Data Table */}
       <Paper mt="md">
         <DataTable
@@ -510,6 +546,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
           }}
           showColumnSettings
           showExportIcons
+          exportTemplateId={activeTemplateId}
           exportTitle={t('cashTransactions.title')}
           exportNamespace="modules/accounting"
           tableId="accounting-cash-transactions"

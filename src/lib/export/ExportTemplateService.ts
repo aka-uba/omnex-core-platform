@@ -363,52 +363,161 @@ export class ExportTemplateService {
 
     // Generate HTML preview based on template design
     const styles = template.styles as Record<string, any> || {};
+    const customFields = template.customFields as Record<string, any> || {};
+    const logos = customFields.logos || [];
+    const headers = customFields.headers || [];
+    const footers = customFields.footers || [];
 
-    // This is a simplified preview - in production, use a proper template engine
-    let html = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
-    html += '<style>';
-    html += 'body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }';
+    // Build CSS styles
+    let css = `
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #fff; }
+      .preview-container { max-width: 800px; margin: 0 auto; border: 1px solid #e0e0e0; min-height: 500px; display: flex; flex-direction: column; }
+      .header { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-bottom: 2px solid #dee2e6; }
+      .header-logos { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+      .header-logos img { max-height: 50px; max-width: 150px; object-fit: contain; }
+      .header-logos .left { text-align: left; }
+      .header-logos .center { text-align: center; flex: 1; }
+      .header-logos .right { text-align: right; }
+      .header-text { text-align: center; }
+      .header-text .left { text-align: left; }
+      .header-text .center { text-align: center; }
+      .header-text .right { text-align: right; }
+      .header-text h1 { font-size: 24px; color: #212529; margin-bottom: 4px; font-weight: 600; }
+      .header-text h2 { font-size: 16px; color: #6c757d; font-weight: 400; }
+      .header-contact { display: flex; gap: 16px; justify-content: center; margin-top: 12px; font-size: 12px; color: #6c757d; flex-wrap: wrap; }
+      .header-contact span { display: flex; align-items: center; gap: 4px; }
+      .content { flex: 1; padding: 24px; background: #fff; }
+      .content-placeholder { border: 2px dashed #dee2e6; border-radius: 8px; padding: 40px; text-align: center; color: #adb5bd; }
+      .content-placeholder h3 { font-size: 14px; margin-bottom: 8px; }
+      .content-placeholder p { font-size: 12px; }
+      .sample-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+      .sample-table th, .sample-table td { border: 1px solid #dee2e6; padding: 8px 12px; text-align: left; font-size: 12px; }
+      .sample-table th { background: #f8f9fa; font-weight: 600; color: #495057; }
+      .sample-table td { color: #6c757d; }
+      .footer { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 16px 20px; border-top: 2px solid #dee2e6; }
+      .footer-text { margin-bottom: 8px; }
+      .footer-text p { font-size: 12px; color: #6c757d; margin-bottom: 4px; }
+      .footer-text .left { text-align: left; }
+      .footer-text .center { text-align: center; }
+      .footer-text .right { text-align: right; }
+      .footer-contact { display: flex; gap: 16px; justify-content: center; font-size: 11px; color: #868e96; flex-wrap: wrap; }
+    `;
+
+    // Apply custom colors if defined
     if (styles.colors) {
       Object.entries(styles.colors).forEach(([key, value]) => {
-        html += `.${key} { color: ${value}; }`;
+        css += `.${key} { color: ${value}; }`;
       });
     }
-    html += '</style></head><body>';
 
-    // Header
+    let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Template Preview</title><style>${css}</style></head><body>`;
+    html += '<div class="preview-container">';
+
+    // Header section
     if (template.type === 'header' || template.type === 'full') {
       html += '<div class="header">';
-      if (template.logoUrl) {
-        html += `<img src="${template.logoUrl}" alt="Logo" style="max-height: 60px;" />`;
+
+      // Logos row
+      if (logos.length > 0 || template.logoUrl) {
+        html += '<div class="header-logos">';
+        if (logos.length > 0) {
+          logos.forEach((logo: any) => {
+            const pos = logo.position || 'left';
+            if (logo.url) {
+              html += `<div class="${pos}"><img src="${logo.url}" alt="Logo" /></div>`;
+            }
+          });
+        } else if (template.logoUrl) {
+          html += `<div class="left"><img src="${template.logoUrl}" alt="Logo" /></div>`;
+        }
+        html += '</div>';
       }
-      if (template.title) {
-        html += `<h1>${template.title}</h1>`;
+
+      // Header texts
+      if (headers.length > 0 || template.title) {
+        html += '<div class="header-text">';
+        if (headers.length > 0) {
+          headers.forEach((header: any, idx: number) => {
+            const pos = header.position || 'center';
+            if (header.text) {
+              if (idx === 0) {
+                html += `<h1 class="${pos}">${header.text}</h1>`;
+              } else {
+                html += `<h2 class="${pos}">${header.text}</h2>`;
+              }
+            }
+          });
+        } else {
+          if (template.title) html += `<h1>${template.title}</h1>`;
+          if (template.subtitle) html += `<h2>${template.subtitle}</h2>`;
+        }
+        html += '</div>';
       }
-      if (template.subtitle) {
-        html += `<h2>${template.subtitle}</h2>`;
+
+      // Contact info in header
+      if (template.address || template.phone || template.email) {
+        html += '<div class="header-contact">';
+        if (template.address) html += `<span>${template.address}</span>`;
+        if (template.phone) html += `<span>${template.phone}</span>`;
+        if (template.email) html += `<span>${template.email}</span>`;
+        html += '</div>';
       }
+
       html += '</div>';
     }
 
-    // Body (sample data)
-    if (sampleData) {
-      html += '<div class="body">';
-      Object.entries(sampleData).forEach(([key, value]) => {
-        html += `<p><strong>${key}:</strong> ${value}</p>`;
+    // Content section
+    html += '<div class="content">';
+    if (sampleData && Object.keys(sampleData).length > 0) {
+      html += '<table class="sample-table"><thead><tr>';
+      Object.keys(sampleData).forEach(key => {
+        html += `<th>${key}</th>`;
       });
+      html += '</tr></thead><tbody><tr>';
+      Object.values(sampleData).forEach(value => {
+        html += `<td>${value}</td>`;
+      });
+      html += '</tr></tbody></table>';
+    } else {
+      html += '<div class="content-placeholder">';
+      html += '<h3>Sample Content Area</h3>';
+      html += '<p>Your exported data will appear here</p>';
+      html += '<table class="sample-table"><thead><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr></thead>';
+      html += '<tbody><tr><td>Sample Data 1</td><td>Sample Data 2</td><td>Sample Data 3</td></tr>';
+      html += '<tr><td>Sample Data 4</td><td>Sample Data 5</td><td>Sample Data 6</td></tr></tbody></table>';
       html += '</div>';
     }
+    html += '</div>';
 
-    // Footer
+    // Footer section
     if (template.type === 'footer' || template.type === 'full') {
       html += '<div class="footer">';
-      if (template.address) html += `<p>${template.address}</p>`;
-      if (template.phone) html += `<p>Phone: ${template.phone}</p>`;
-      if (template.email) html += `<p>Email: ${template.email}</p>`;
+
+      // Footer texts
+      if (footers.length > 0) {
+        html += '<div class="footer-text">';
+        footers.forEach((footer: any) => {
+          const pos = footer.position || 'center';
+          if (footer.text) {
+            html += `<p class="${pos}">${footer.text}</p>`;
+          }
+        });
+        html += '</div>';
+      }
+
+      // Footer contact
+      if (template.website || template.taxNumber) {
+        html += '<div class="footer-contact">';
+        if (template.website) html += `<span>${template.website}</span>`;
+        if (template.taxNumber) html += `<span>Tax No: ${template.taxNumber}</span>`;
+        html += '</div>';
+      }
+
       html += '</div>';
     }
 
-    html += '</body></html>';
+    html += '</div></body></html>';
     return html;
   }
 

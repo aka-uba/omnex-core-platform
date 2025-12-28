@@ -71,12 +71,13 @@ export const exportToCSV = async (
   tenantPrisma?: TenantPrismaClient,
   tenantId?: string,
   companyId?: string,
-  locationId?: string
+  locationId?: string,
+  preloadedTemplateData?: ExportTemplateData
 ) => {
   const { columns, rows } = data;
-  
-  // Get template data
-  const templateData = await getExportTemplateData(
+
+  // Use preloaded template data or fetch from service
+  const templateData = preloadedTemplateData || await getExportTemplateData(
     options,
     companySettings,
     tenantPrisma,
@@ -138,10 +139,11 @@ export const exportToExcel = async (
   tenantPrisma?: TenantPrismaClient,
   tenantId?: string,
   companyId?: string,
-  locationId?: string
+  locationId?: string,
+  preloadedTemplateData?: ExportTemplateData
 ) => {
-  // Get template data
-  const templateData = await getExportTemplateData(
+  // Use preloaded template data or fetch from service
+  const templateData = preloadedTemplateData || await getExportTemplateData(
     options,
     companySettings,
     tenantPrisma,
@@ -152,13 +154,13 @@ export const exportToExcel = async (
 
   // Create Excel workbook with UTF-8 support
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = companySettings.name || 'OMNEX Platform';
+  workbook.creator = templateData.title || companySettings.name || 'Export';
   workbook.created = new Date();
   // ExcelJS automatically handles UTF-8 encoding for all languages including Turkish
   const worksheet = workbook.addWorksheet('Report');
-  
+
   let currentRow = 1;
-  
+
   // Add header section from template
   if (options.includeHeader) {
     // Logo row (if available)
@@ -329,16 +331,54 @@ export const exportToExcel = async (
 };
 
 // Export to Word
-export const exportToWord = async (data: ExportData, options: ExportOptions, companySettings: CompanySettings) => {
+export const exportToWord = async (
+  data: ExportData,
+  options: ExportOptions,
+  companySettings: CompanySettings,
+  preloadedTemplateData?: ExportTemplateData
+) => {
+  // Use preloaded template data or fallback to company settings
+  const templateData = preloadedTemplateData || {
+    title: companySettings.name,
+    address: companySettings.address,
+    phone: companySettings.phone,
+    email: companySettings.email,
+    website: companySettings.website,
+    taxNumber: companySettings.taxId,
+  };
+
   const children: (Paragraph | Table)[] = [];
-  
+
   // Add header
   if (options.includeHeader) {
-    if (companySettings.name) {
+    if (templateData.title) {
       children.push(
         new Paragraph({
-          text: companySettings.name,
+          text: templateData.title,
           heading: 'Heading1',
+          alignment: AlignmentType.CENTER,
+        })
+      );
+    }
+
+    if (templateData.subtitle) {
+      children.push(
+        new Paragraph({
+          text: templateData.subtitle,
+          alignment: AlignmentType.CENTER,
+        })
+      );
+    }
+
+    // Contact info
+    const contactParts = [];
+    if (templateData.address) contactParts.push(templateData.address);
+    if (templateData.phone) contactParts.push(`Tel: ${templateData.phone}`);
+    if (templateData.email) contactParts.push(templateData.email);
+    if (contactParts.length > 0) {
+      children.push(
+        new Paragraph({
+          text: contactParts.join(' | '),
           alignment: AlignmentType.CENTER,
         })
       );
@@ -453,7 +493,22 @@ export const exportToWord = async (data: ExportData, options: ExportOptions, com
 };
 
 // Export to PDF
-export const exportToPDF = async (data: ExportData, options: ExportOptions, companySettings: CompanySettings) => {
+export const exportToPDF = async (
+  data: ExportData,
+  options: ExportOptions,
+  companySettings: CompanySettings,
+  preloadedTemplateData?: ExportTemplateData
+) => {
+  // Use preloaded template data or fallback to company settings
+  const templateData = preloadedTemplateData || {
+    title: companySettings.name,
+    address: companySettings.address,
+    phone: companySettings.phone,
+    email: companySettings.email,
+    website: companySettings.website,
+    taxNumber: companySettings.taxId,
+  };
+
   // Create PDF with UTF-8 support for Turkish and other languages
   const doc = new jsPDF({
     orientation: options.pdf?.orientation || 'portrait',
@@ -461,22 +516,44 @@ export const exportToPDF = async (data: ExportData, options: ExportOptions, comp
     format: options.pdf?.paperSize || 'a4',
     compress: true,
   });
-  
+
   // Enable UTF-8 support (jsPDF supports UTF-8 by default, but we ensure proper encoding)
   // Note: For full Unicode support including Turkish characters, we may need to use a custom font
   // For now, standard fonts should work for most Turkish characters
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   let yPosition = 20;
-  
-  // Add header
+
+  // Add header from template
   if (options.includeHeader) {
-    if (companySettings.name) {
+    if (templateData.title) {
       doc.setFontSize(18);
       doc.setFont('helvetica', 'bold');
-      const nameWidth = doc.getTextWidth(companySettings.name);
-      doc.text(companySettings.name, (pageWidth - nameWidth) / 2, yPosition);
+      const nameWidth = doc.getTextWidth(templateData.title);
+      doc.text(templateData.title, (pageWidth - nameWidth) / 2, yPosition);
       yPosition += 10;
+    }
+
+    if (templateData.subtitle) {
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      const subtitleWidth = doc.getTextWidth(templateData.subtitle);
+      doc.text(templateData.subtitle, (pageWidth - subtitleWidth) / 2, yPosition);
+      yPosition += 6;
+    }
+
+    // Contact info
+    const contactParts = [];
+    if (templateData.address) contactParts.push(templateData.address);
+    if (templateData.phone) contactParts.push(`Tel: ${templateData.phone}`);
+    if (templateData.email) contactParts.push(templateData.email);
+    if (contactParts.length > 0) {
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      const contactText = contactParts.join(' | ');
+      const contactWidth = doc.getTextWidth(contactText);
+      doc.text(contactText, (pageWidth - contactWidth) / 2, yPosition);
+      yPosition += 8;
     }
     
     if (options.title) {
@@ -605,10 +682,11 @@ export const exportToHTML = async (
   tenantPrisma?: TenantPrismaClient,
   tenantId?: string,
   companyId?: string,
-  locationId?: string
+  locationId?: string,
+  preloadedTemplateData?: ExportTemplateData
 ) => {
-  // Get template data
-  const templateData = await getExportTemplateData(
+  // Use preloaded template data or fetch from service
+  const templateData = preloadedTemplateData || await getExportTemplateData(
     options,
     companySettings,
     tenantPrisma,
@@ -802,10 +880,11 @@ export const printData = async (
   tenantPrisma?: TenantPrismaClient,
   tenantId?: string,
   companyId?: string,
-  locationId?: string
+  locationId?: string,
+  preloadedTemplateData?: ExportTemplateData
 ) => {
-  // Get template data
-  const templateData = await getExportTemplateData(
+  // Use preloaded template data or fetch from service
+  const templateData = preloadedTemplateData || await getExportTemplateData(
     options,
     companySettings,
     tenantPrisma,
@@ -995,7 +1074,7 @@ const generateCSVContent = async (data: ExportData, options: ExportOptions, comp
 const generateExcelBuffer = async (data: ExportData, options: ExportOptions, companySettings: CompanySettings): Promise<Blob> => {
   // Create Excel workbook with UTF-8 support
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = companySettings.name || 'OMNEX Platform';
+  workbook.creator = companySettings.name || 'Export';
   workbook.created = new Date();
   // ExcelJS automatically handles UTF-8 encoding for all languages including Turkish
   const worksheet = workbook.addWorksheet('Report');
