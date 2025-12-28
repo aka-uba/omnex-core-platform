@@ -18,7 +18,7 @@ import {
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { IconArrowLeft, IconX, IconPlus } from '@tabler/icons-react';
+import { IconX, IconPlus } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateAppointment, useUpdateAppointment, useAppointment } from '@/hooks/useAppointments';
 import { useApartments } from '@/hooks/useApartments';
@@ -167,19 +167,6 @@ export function AppointmentForm({ locale, appointmentId }: AppointmentFormProps)
     <Paper shadow="xs" p="md">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
-          <Group justify="space-between">
-            <Button
-              variant="subtle"
-              leftSection={<IconArrowLeft size={18} />}
-              onClick={() => router.push(`/${locale}/modules/real-estate/appointments`)}
-            >
-              {tGlobal('common.back')}
-            </Button>
-            <Text size="lg" fw={500}>
-              {isEdit ? t('appointments.edit') : t('appointments.create')}
-            </Text>
-          </Group>
-
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Select
