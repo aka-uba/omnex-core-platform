@@ -729,6 +729,7 @@ export function DataTable({
       includeFooter: true,
       includePageNumbers: true,
       title: exportTitle || tGlobal('export.report'),
+      pageTitle: exportTitle || tGlobal('export.report'), // For {{pageTitle}} placeholder
     };
 
     try {
