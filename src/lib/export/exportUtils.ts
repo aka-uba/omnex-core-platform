@@ -154,13 +154,13 @@ export const exportToExcel = async (
 
   // Create Excel workbook with UTF-8 support
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = companySettings.name || 'OMNEX Platform';
+  workbook.creator = templateData.title || companySettings.name || 'Export';
   workbook.created = new Date();
   // ExcelJS automatically handles UTF-8 encoding for all languages including Turkish
   const worksheet = workbook.addWorksheet('Report');
-  
+
   let currentRow = 1;
-  
+
   // Add header section from template
   if (options.includeHeader) {
     // Logo row (if available)
@@ -1074,7 +1074,7 @@ const generateCSVContent = async (data: ExportData, options: ExportOptions, comp
 const generateExcelBuffer = async (data: ExportData, options: ExportOptions, companySettings: CompanySettings): Promise<Blob> => {
   // Create Excel workbook with UTF-8 support
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = companySettings.name || 'OMNEX Platform';
+  workbook.creator = companySettings.name || 'Export';
   workbook.created = new Date();
   // ExcelJS automatically handles UTF-8 encoding for all languages including Turkish
   const worksheet = workbook.addWorksheet('Report');

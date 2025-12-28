@@ -33,7 +33,8 @@ export function useExportTemplates(options: UseExportTemplatesOptions = {}) {
       }
 
       const result = await response.json();
-      return result.data?.templates || [];
+      // API returns { data: templates[] } directly
+      return result.data || [];
     },
     enabled,
   });
@@ -53,7 +54,8 @@ export function useDefaultExportTemplate(type?: 'header' | 'footer' | 'full') {
       }
 
       const result = await response.json();
-      return result.data?.template || null;
+      // API returns { data: template } directly
+      return result.data || null;
     },
   });
 }

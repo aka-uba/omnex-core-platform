@@ -55,8 +55,9 @@ export function ExportProvider({ children }: ExportProviderProps) {
         const response = await fetch(`/api/export-templates/${templateId}`);
         if (response.ok) {
           const result = await response.json();
-          if (result.data?.template) {
-            return result.data.template;
+          // API returns { data: template } directly
+          if (result.data) {
+            return result.data;
           }
         }
       }
@@ -65,8 +66,9 @@ export function ExportProvider({ children }: ExportProviderProps) {
       const defaultResponse = await fetch('/api/export-templates/default?type=full');
       if (defaultResponse.ok) {
         const defaultResult = await defaultResponse.json();
-        if (defaultResult.data?.template) {
-          return defaultResult.data.template;
+        // Default API returns { data: template } directly
+        if (defaultResult.data) {
+          return defaultResult.data;
         }
       }
 
