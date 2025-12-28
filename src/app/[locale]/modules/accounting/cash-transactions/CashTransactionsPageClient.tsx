@@ -44,7 +44,6 @@ import {
   useCashTransactions,
   useCreateCashTransaction,
   useDeleteCashTransaction,
-  type UnifiedTransaction,
   type CashTransactionCreateInput,
 } from '@/hooks/useCashTransactions';
 import { usePaymentMethods } from '@/hooks/usePaymentMethods';
@@ -128,7 +127,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | undefined>(undefined);
 
   // Queries
-  const { data, isLoading, refetch } = useCashTransactions({
+  const { data, refetch } = useCashTransactions({
     page: 1,
     pageSize: 1000,
     type: typeFilter as 'income' | 'expense' | undefined,

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Paper, Stack, Title, Text, Badge, Group, Code, Alert, Button, Table, Progress, TextInput, SimpleGrid, Card, Loader } from '@mantine/core';
-import { IconServer, IconRefresh, IconPlayerPlay, IconPlayerStop, IconTerminal, IconCheck, IconX, IconKey, IconNetwork, IconDatabase, IconFileText } from '@tabler/icons-react';
+import { Paper, Stack, Title, Text, Badge, Group, Code, Alert, Button, Table, TextInput, SimpleGrid, Loader } from '@mantine/core';
+import { IconServer, IconRefresh, IconTerminal, IconCheck, IconX, IconKey, IconNetwork, IconDatabase, IconFileText } from '@tabler/icons-react';
 
 interface PM2Process {
   name: string;

@@ -1,36 +1,29 @@
-import { NextRequest } from 'next/server';
-import { successResponse, errorResponse } from '@/lib/api/errorHandler';
-import type { ApiResponse } from '@/lib/api/errorHandler';
+import { NextRequest, NextResponse } from 'next/server';
 import { verifyAuth } from '@/lib/auth/jwt';
 import { writeFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
-import { existsSync, readdirSync } from 'fs';
+import { existsSync } from 'fs';
 import { BRANDING_PATHS } from '@/lib/branding/config';
 
 type BrandingType = 'logo' | 'favicon' | 'pwaIcon';
-
-interface UploadResponse {
-  url: string;
-  type: BrandingType;
-}
 
 /**
  * POST /api/branding/upload
  * Upload branding files (logo, favicon, pwaIcon)
  * Files are saved with fixed names, overwriting existing files
  */
-export async function POST(request: NextRequest): Promise<ApiResponse<UploadResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     // Verify authentication
     const authResult = await verifyAuth(request);
     if (!authResult.valid || !authResult.payload) {
-      return errorResponse('Unauthorized', 'Authentication required', 401);
+      return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
 
     // Only SuperAdmin or Admin can upload branding
     const userRole = authResult.payload.role;
     if (userRole !== 'SuperAdmin' && userRole !== 'Admin') {
-      return errorResponse('Forbidden', 'Only administrators can update branding', 403);
+      return NextResponse.json({ success: false, error: 'Only administrators can update branding' }, { status: 403 });
     }
 
     const formData = await request.formData();
@@ -38,7 +31,7 @@ export async function POST(request: NextRequest): Promise<ApiResponse<UploadResp
     const brandingType = (formData.get('type') as BrandingType) || 'logo';
 
     if (!file) {
-      return errorResponse('File required', 'No file provided', 400);
+      return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 });
     }
 
     // Validate file type based on branding type
@@ -56,13 +49,13 @@ export async function POST(request: NextRequest): Promise<ApiResponse<UploadResp
         : brandingType === 'pwaIcon'
           ? 'PNG, SVG'
           : 'JPEG, PNG, GIF, WEBP, SVG';
-      return errorResponse('Invalid file type', `Only ${allowedFormats} files are allowed`, 400);
+      return NextResponse.json({ success: false, error: `Only ${allowedFormats} files are allowed` }, { status: 400 });
     }
 
     // Validate file size (max 5MB for logo, 1MB for favicon/pwaIcon)
     const maxSize = brandingType === 'logo' ? 5 * 1024 * 1024 : 1 * 1024 * 1024;
     if (file.size > maxSize) {
-      return errorResponse('File too large', `File size must be less than ${brandingType === 'logo' ? '5MB' : '1MB'}`, 400);
+      return NextResponse.json({ success: false, error: `File size must be less than ${brandingType === 'logo' ? '5MB' : '1MB'}` }, { status: 400 });
     }
 
     // Create branding directory if not exists
@@ -98,13 +91,16 @@ export async function POST(request: NextRequest): Promise<ApiResponse<UploadResp
     // Generate URL
     const imageUrl = `${BRANDING_PATHS.directory}/${filename}`;
 
-    return successResponse({
-      url: imageUrl,
-      type: brandingType,
+    return NextResponse.json({
+      success: true,
+      data: {
+        url: imageUrl,
+        type: brandingType,
+      },
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'An error occurred';
-    return errorResponse('Failed to upload branding', message, 500);
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
 
@@ -112,7 +108,7 @@ export async function POST(request: NextRequest): Promise<ApiResponse<UploadResp
  * GET /api/branding/upload
  * Check which branding files exist
  */
-export async function GET(): Promise<ApiResponse<Record<string, boolean>>> {
+export async function GET(): Promise<NextResponse> {
   try {
     const brandingDir = join(process.cwd(), 'public', 'branding');
 
@@ -122,12 +118,15 @@ export async function GET(): Promise<ApiResponse<Record<string, boolean>>> {
       pwaIcon: existsSync(join(brandingDir, 'pwa-icon.png')),
     };
 
-    return successResponse(exists);
+    return NextResponse.json({ success: true, data: exists });
   } catch {
-    return successResponse({
-      logo: false,
-      favicon: false,
-      pwaIcon: false,
+    return NextResponse.json({
+      success: true,
+      data: {
+        logo: false,
+        favicon: false,
+        pwaIcon: false,
+      },
     });
   }
 }
@@ -136,25 +135,25 @@ export async function GET(): Promise<ApiResponse<Record<string, boolean>>> {
  * DELETE /api/branding/upload
  * Delete a branding file
  */
-export async function DELETE(request: NextRequest): Promise<ApiResponse<{ deleted: boolean }>> {
+export async function DELETE(request: NextRequest): Promise<NextResponse> {
   try {
     // Verify authentication
     const authResult = await verifyAuth(request);
     if (!authResult.valid || !authResult.payload) {
-      return errorResponse('Unauthorized', 'Authentication required', 401);
+      return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 });
     }
 
     // Only SuperAdmin or Admin can delete branding
     const userRole = authResult.payload.role;
     if (userRole !== 'SuperAdmin' && userRole !== 'Admin') {
-      return errorResponse('Forbidden', 'Only administrators can delete branding', 403);
+      return NextResponse.json({ success: false, error: 'Only administrators can delete branding' }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);
     const brandingType = searchParams.get('type') as BrandingType;
 
     if (!brandingType || !['logo', 'favicon', 'pwaIcon'].includes(brandingType)) {
-      return errorResponse('Invalid type', 'Type must be logo, favicon, or pwaIcon', 400);
+      return NextResponse.json({ success: false, error: 'Type must be logo, favicon, or pwaIcon' }, { status: 400 });
     }
 
     const fixedFilenames: Record<BrandingType, string> = {
@@ -170,9 +169,9 @@ export async function DELETE(request: NextRequest): Promise<ApiResponse<{ delete
       await unlink(filePath);
     }
 
-    return successResponse({ deleted: true });
+    return NextResponse.json({ success: true, data: { deleted: true } });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'An error occurred';
-    return errorResponse('Failed to delete branding', message, 500);
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

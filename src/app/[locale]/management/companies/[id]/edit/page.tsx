@@ -16,7 +16,6 @@ import {
   SimpleGrid,
   Divider,
   Badge,
-  Avatar,
   Box,
   NumberInput,
   Image,

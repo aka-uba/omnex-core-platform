@@ -863,7 +863,7 @@ export class RealEstateSeeder implements ModuleSeeder {
             successCount: bo.status === 'completed' ? contracts.length - 1 : 0,
             failedCount: bo.status === 'completed' ? 1 : 0,
             parameters: { increaseRate: 0.25, sendEmail: true, year: 2024 },
-            results: bo.status === 'completed' ? { message: 'İşlem başarıyla tamamlandı', processedContracts: contracts.length } : null,
+            results: bo.status === 'completed' ? { message: 'İşlem başarıyla tamamlandı', processedContracts: contracts.length } : undefined,
             startedAt: bo.status === 'completed' ? randomDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()) : null,
             completedAt: bo.status === 'completed' ? new Date() : null,
           },

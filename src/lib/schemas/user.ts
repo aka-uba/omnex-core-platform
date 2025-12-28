@@ -103,6 +103,22 @@ export interface User {
   lastActive?: string;
   createdAt: string;
   updatedAt: string;
+  // Contact Info
+  address?: string;
+  city?: string;
+  country?: string;
+  postalCode?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  // Preferences
+  defaultLanguage?: string;
+  defaultTheme?: string;
+  defaultLayout?: string;
+  // Documents
+  passportUrl?: string;
+  idCardUrl?: string;
+  contractUrl?: string;
+  cvUrl?: string;
 }
 
 // User List Response

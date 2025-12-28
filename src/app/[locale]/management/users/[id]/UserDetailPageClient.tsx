@@ -14,7 +14,6 @@ import {
   Divider,
   Tabs,
   ActionIcon,
-  Progress,
   Box,
   Title,
   Button,
@@ -31,7 +30,6 @@ import {
   IconEye,
   IconDownload,
   IconUserCircle,
-  IconChartBar,
 } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { FilePreviewModal } from '@/modules/file-manager/components/FilePreviewModal';
@@ -89,7 +87,7 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
       mimeType: mimeTypeMap[extension] || 'application/octet-stream',
       size: 0,
       type: 'file',
-      isDirectory: false,
+      parentId: null,
       createdAt: new Date(),
       modifiedAt: new Date(),
     };
@@ -111,13 +109,13 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
   // Download all documents as ZIP
   const handleDownloadAllDocs = useCallback(async () => {
     if (!user) return;
-    const docs = [user.passportUrl, user.idCardUrl, user.contractUrl, user.cvUrl].filter(Boolean);
+    const docs = [user.passportUrl, user.idCardUrl, user.contractUrl, user.cvUrl].filter((url): url is string => Boolean(url));
     if (docs.length === 0) return;
 
     setDownloadingDocs(true);
     try {
       // Extract file IDs from URLs
-      const fileIds = docs.map(url => {
+      const fileIds = docs.map((url: string) => {
         if (url.includes('/api/core-files/')) {
           return url.split('/api/core-files/')[1]?.split('/')[0];
         }

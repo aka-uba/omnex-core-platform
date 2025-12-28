@@ -12,7 +12,6 @@ import {
   Badge,
   Switch,
   Text,
-  Divider,
 } from '@mantine/core';
 import { IconUser, IconBriefcase, IconPhone, IconFileText, IconFileDescription, IconSettings, IconUserEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
