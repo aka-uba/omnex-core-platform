@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Paper,
   Table,
@@ -17,22 +17,18 @@ import {
   Modal,
   NumberFormatter,
   Alert,
-  Skeleton,
   ActionIcon,
-  Menu,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconCalculator,
   IconCheck,
-  IconCash,
   IconAlertCircle,
   IconPlus,
-  IconDotsVertical,
   IconEye,
   IconTrash,
-  IconFileExport,
 } from '@tabler/icons-react';
+import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import {
   useReconciliations,
   useReconciliation,
@@ -85,6 +81,120 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
 
   const reconciliations = reconciliationsData?.reconciliations || [];
   const properties = propertiesData?.properties || [];
+
+  // DataTable columns
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'property',
+      label: t('properties.title'),
+      sortable: true,
+      searchable: true,
+      render: (_: any, row: any) => (
+        <Text size="sm" fw={500}>{row.property?.name || '-'}</Text>
+      ),
+    },
+    {
+      key: 'year',
+      label: t('reconciliation.year'),
+      sortable: true,
+      render: (value: number) => (
+        <Badge variant="outline">{value}</Badge>
+      ),
+    },
+    {
+      key: 'distributionMethod',
+      label: t('reconciliation.distributionMethod'),
+      sortable: true,
+      render: (value: string) => (
+        <Text size="sm">{t(`reconciliation.distributionMethods.${value}`)}</Text>
+      ),
+    },
+    {
+      key: 'totalExpenses',
+      label: t('reconciliation.totalExpenses'),
+      sortable: true,
+      align: 'right' as const,
+      render: (value: number) => (
+        <NumberFormatter
+          value={value}
+          thousandSeparator=","
+          decimalScale={2}
+          suffix=" ₺"
+        />
+      ),
+    },
+    {
+      key: 'perApartmentShare',
+      label: t('reconciliation.perApartmentShare'),
+      sortable: true,
+      align: 'right' as const,
+      render: (value: number) => (
+        <NumberFormatter
+          value={value}
+          thousandSeparator=","
+          decimalScale={2}
+          suffix=" ₺"
+        />
+      ),
+    },
+    {
+      key: 'status',
+      label: t('reconciliation.status'),
+      sortable: true,
+      render: (value: string) => (
+        <Badge color={STATUS_COLORS[value] || 'gray'}>
+          {t(`reconciliation.statuses.${value}`)}
+        </Badge>
+      ),
+    },
+    {
+      key: 'actions',
+      label: '',
+      sortable: false,
+      align: 'right' as const,
+      render: (_: any, row: any) => (
+        <Group gap="xs" justify="flex-end">
+          <ActionIcon
+            variant="subtle"
+            color="blue"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewDetail(row.id);
+            }}
+            title={t('reconciliation.viewDetails')}
+          >
+            <IconEye size={16} />
+          </ActionIcon>
+          {row.status === 'calculated' && (
+            <ActionIcon
+              variant="subtle"
+              color="green"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFinalize(row.id);
+              }}
+              title={t('reconciliation.finalize')}
+            >
+              <IconCheck size={16} />
+            </ActionIcon>
+          )}
+          {row.status !== 'finalized' && (
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row.id);
+              }}
+              title={tGlobal('buttons.delete')}
+            >
+              <IconTrash size={16} />
+            </ActionIcon>
+          )}
+        </Group>
+      ),
+    },
+  ], [t, tGlobal]);
 
   const propertyOptions = properties.map(p => ({
     value: p.id,
@@ -190,112 +300,21 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
       </Paper>
 
       {/* Reconciliations List */}
-      <Paper shadow="xs" p="md">
-        {isLoading ? (
-          <Stack gap="md">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Group key={i} gap="md">
-                <Skeleton height={20} width="20%" radius="sm" />
-                <Skeleton height={20} width="10%" radius="sm" />
-                <Skeleton height={20} width="15%" radius="sm" />
-                <Skeleton height={20} width="15%" radius="sm" />
-                <Skeleton height={20} width="15%" radius="sm" />
-                <Skeleton height={20} width="10%" radius="sm" />
-                <Skeleton height={20} width="5%" radius="sm" />
-              </Group>
-            ))}
-          </Stack>
-        ) : reconciliations.length === 0 ? (
-          <Text ta="center" py="xl" c="dimmed">{t('reconciliation.noReconciliations')}</Text>
-        ) : (
-          <Table striped highlightOnHover>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>{t('properties.title')}</Table.Th>
-                <Table.Th>{t('reconciliation.year')}</Table.Th>
-                <Table.Th>{t('reconciliation.distributionMethod')}</Table.Th>
-                <Table.Th ta="right">{t('reconciliation.totalExpenses')}</Table.Th>
-                <Table.Th ta="right">{t('reconciliation.perApartmentShare')}</Table.Th>
-                <Table.Th>{t('reconciliation.status')}</Table.Th>
-                <Table.Th w={60}></Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {reconciliations.map((rec) => (
-                <Table.Tr key={rec.id}>
-                  <Table.Td>
-                    <Text size="sm" fw={500}>{rec.property?.name || '-'}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Badge variant="outline">{rec.year}</Badge>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="sm">
-                      {t(`reconciliation.distributionMethods.${rec.distributionMethod}`)}
-                    </Text>
-                  </Table.Td>
-                  <Table.Td ta="right">
-                    <NumberFormatter
-                      value={rec.totalExpenses}
-                      thousandSeparator=","
-                      decimalScale={2}
-                      suffix=" ₺"
-                    />
-                  </Table.Td>
-                  <Table.Td ta="right">
-                    <NumberFormatter
-                      value={rec.perApartmentShare}
-                      thousandSeparator=","
-                      decimalScale={2}
-                      suffix=" ₺"
-                    />
-                  </Table.Td>
-                  <Table.Td>
-                    <Badge color={STATUS_COLORS[rec.status] || 'gray'}>
-                      {t(`reconciliation.statuses.${rec.status}`)}
-                    </Badge>
-                  </Table.Td>
-                  <Table.Td>
-                    <Menu position="bottom-end" withinPortal>
-                      <Menu.Target>
-                        <ActionIcon variant="subtle" color="gray">
-                          <IconDotsVertical size={16} />
-                        </ActionIcon>
-                      </Menu.Target>
-                      <Menu.Dropdown>
-                        <Menu.Item
-                          leftSection={<IconEye size={14} />}
-                          onClick={() => handleViewDetail(rec.id)}
-                        >
-                          {t('reconciliation.viewDetails')}
-                        </Menu.Item>
-                        {rec.status === 'calculated' && (
-                          <Menu.Item
-                            leftSection={<IconCheck size={14} />}
-                            color="green"
-                            onClick={() => handleFinalize(rec.id)}
-                          >
-                            {t('reconciliation.finalize')}
-                          </Menu.Item>
-                        )}
-                        {rec.status !== 'finalized' && (
-                          <Menu.Item
-                            leftSection={<IconTrash size={14} />}
-                            color="red"
-                            onClick={() => handleDelete(rec.id)}
-                          >
-                            {tGlobal('buttons.delete')}
-                          </Menu.Item>
-                        )}
-                      </Menu.Dropdown>
-                    </Menu>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-        )}
-      </Paper>
+      <DataTable
+        columns={columns}
+        data={reconciliations}
+        loading={isLoading}
+        searchable={true}
+        sortable={true}
+        pageable={true}
+        defaultPageSize={10}
+        pageSizeOptions={[10, 25, 50]}
+        emptyMessage={t('reconciliation.noReconciliations')}
+        showColumnSettings={false}
+        mobileCardView={true}
+        mobileCardTitle={(row) => row.property?.name || '-'}
+        mobileCardSubtitle={(row) => `${row.year} - ${t(`reconciliation.statuses.${row.status}`)}`}
+      />
 
       {/* Create Modal */}
       <Modal
