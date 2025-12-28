@@ -259,22 +259,28 @@ export async function GET(
                 });
 
                 // Enrich module GROUP icons with current module icons from module.config.yaml
-                // Only apply to parent items (module groups), not to sub-menu items
-                // Sub-menu items should keep their own icons from the database
-                const enrichWithModuleIcons = (items: any[], isTopLevel: boolean = true): any[] => {
+                // Only apply to module group items (items that have children AND moduleSlug)
+                // Individual pages (even if top-level) should keep their own icons from the database
+                const enrichWithModuleIcons = (items: any[]): any[] => {
                     return items.map(item => {
                         let enrichedItem = { ...item };
 
-                        // Only enrich module group icons (top-level items with moduleSlug)
-                        // Sub-menu items (children) should keep their database icons
-                        if (isTopLevel && item.moduleSlug && moduleIconMap.has(item.moduleSlug)) {
+                        // Only enrich module group icons:
+                        // - Item must have moduleSlug
+                        // - Item must have children (meaning it's a group, not an individual page)
+                        // - If item has no children, it's a standalone page and should keep its own icon
+                        const isModuleGroup = item.moduleSlug &&
+                                              moduleIconMap.has(item.moduleSlug) &&
+                                              item.children &&
+                                              item.children.length > 0;
+
+                        if (isModuleGroup) {
                             enrichedItem.icon = moduleIconMap.get(item.moduleSlug);
                         }
 
-                        // Recursively process children but mark them as not top-level
-                        // so their icons won't be overwritten
+                        // Recursively process children
                         if (item.children && item.children.length > 0) {
-                            enrichedItem.children = enrichWithModuleIcons(item.children, false);
+                            enrichedItem.children = enrichWithModuleIcons(item.children);
                         }
 
                         return enrichedItem;
@@ -333,8 +339,8 @@ export async function GET(
                     },
                 });
 
-                // Add cache headers - menu data rarely changes (5 minutes cache)
-                response.headers.set('Cache-Control', 'private, max-age=300, stale-while-revalidate=60');
+                // No cache - menu updates should reflect immediately
+                response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
 
                 return response;
             } catch (error) {
