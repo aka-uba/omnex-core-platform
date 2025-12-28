@@ -185,7 +185,15 @@ export function ExportProvider({ children }: ExportProviderProps) {
         const template = await fetchTemplateData(options.templateId);
         // Pass pageTitle from options to process {{pageTitle}} placeholder
         const dynamicData = { pageTitle: options.pageTitle };
+
+        // Debug: Log company settings and template for troubleshooting
+        console.log('[ExportProvider] companySettings:', companySettings);
+        console.log('[ExportProvider] template customFields:', template?.customFields);
+
         const templateData = mergeTemplateWithSettings(template, companySettings, dynamicData);
+
+        // Debug: Log processed template data
+        console.log('[ExportProvider] processedTemplateData:', templateData);
 
         const defaultOptions: ExportOptions = {
           includeHeader: true,

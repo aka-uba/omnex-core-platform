@@ -849,6 +849,10 @@ export const exportToHTML = async (
     html += '</script>';
   }
 
+  // Add timestamp at top right
+  const generatedTimestamp = new Date().toLocaleString();
+  html += `<div style="text-align: right; font-size: 11px; color: #888; margin-bottom: 10px;">${generatedTimestamp}</div>`;
+
   // Add header
   if (options.includeHeader) {
     // Get custom headers and logos from template
@@ -948,12 +952,14 @@ export const exportToHTML = async (
         }
       });
     } else {
-      // Default footer
-      html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
+      // Default footer - show company info
       if (templateData.title || companySettings.name) {
         html += `<p>Company: ${templateData.title || companySettings.name}</p>`;
       }
     }
+
+    // Always add timestamp at footer
+    html += `<p style="font-size: 10px; color: #999; margin-top: 10px;">Generated: ${generatedTimestamp}</p>`;
     html += '</div>';
   }
 
@@ -1012,6 +1018,10 @@ export const printData = async (
   html += '.footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }';
   html += '@media print { @page { margin: 1cm; } body { margin: 0; } }';
   html += '</style></head><body>';
+
+  // Add timestamp at top right
+  const generatedTimestamp = new Date().toLocaleString();
+  html += `<div style="text-align: right; font-size: 11px; color: #888; margin-bottom: 10px;">${generatedTimestamp}</div>`;
 
   // Add header
   if (options.includeHeader) {
@@ -1112,12 +1122,14 @@ export const printData = async (
         }
       });
     } else {
-      // Default footer
-      html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
+      // Default footer - show company info
       if (companySettings.name) {
         html += `<p>Company: ${companySettings.name}</p>`;
       }
     }
+
+    // Always add timestamp at footer
+    html += `<p style="font-size: 10px; color: #999; margin-top: 10px;">Generated: ${generatedTimestamp}</p>`;
     html += '</div>';
   }
 
