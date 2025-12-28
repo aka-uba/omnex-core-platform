@@ -218,63 +218,62 @@ export function ImageUpload({
           </Text>
         </Box>
       ) : (
-        <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="md">
+        <SimpleGrid cols={{ base: 3, sm: 4, md: 5, lg: 6 }} spacing="xs">
           {images.map((imageId) => (
-            <Card key={imageId} padding="xs" radius="md" withBorder pos="relative">
-              <Card.Section>
-                <Box pos="relative" style={{ aspectRatio: '16/9' }}>
-                  <Image
-                    src={getImageUrl(imageId)}
-                    alt="Property image"
-                    height={150}
-                    fit="cover"
-                    fallbackSrc="https://placehold.co/300x200?text=Image"
-                  />
-                  <Box
-                    pos="absolute"
-                    top={8}
-                    right={8}
-                    style={{ zIndex: 1 }}
-                  >
-                    <Group gap="xs">
-                      <Tooltip label={coverImage === imageId ? t('form.coverImage') : t('form.setAsCover')}>
-                        <ActionIcon
-                          variant="filled"
-                          color={coverImage === imageId ? 'yellow' : 'dark'}
-                          size="sm"
-                          onClick={() => handleSetCover(imageId)}
-                        >
-                          {coverImage === imageId ? (
-                            <IconStarFilled size={16} />
-                          ) : (
-                            <IconStar size={16} />
-                          )}
-                        </ActionIcon>
-                      </Tooltip>
+            <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden', aspectRatio: '1/1' }}>
+              <Box pos="relative" style={{ width: '100%', height: '100%' }}>
+                <Image
+                  src={getImageUrl(imageId)}
+                  alt="Property image"
+                  h="100%"
+                  w="100%"
+                  fit="cover"
+                  fallbackSrc="https://placehold.co/100x100?text=Img"
+                />
+                <Box
+                  pos="absolute"
+                  top={4}
+                  right={4}
+                  style={{ zIndex: 1 }}
+                >
+                  <Group gap={2}>
+                    <Tooltip label={coverImage === imageId ? t('form.coverImage') : t('form.setAsCover')}>
                       <ActionIcon
                         variant="filled"
-                        color="red"
-                        size="sm"
-                        onClick={() => handleRemoveImage(imageId)}
+                        color={coverImage === imageId ? 'yellow' : 'dark'}
+                        size="xs"
+                        onClick={() => handleSetCover(imageId)}
                       >
-                        <IconX size={16} />
+                        {coverImage === imageId ? (
+                          <IconStarFilled size={12} />
+                        ) : (
+                          <IconStar size={12} />
+                        )}
                       </ActionIcon>
-                    </Group>
-                  </Box>
-                  {coverImage === imageId && (
-                    <Badge
-                      pos="absolute"
-                      bottom={8}
-                      left={8}
-                      color="yellow"
+                    </Tooltip>
+                    <ActionIcon
                       variant="filled"
-                      size="sm"
+                      color="red"
+                      size="xs"
+                      onClick={() => handleRemoveImage(imageId)}
                     >
-                      {t('form.coverImage')}
-                    </Badge>
-                  )}
+                      <IconX size={12} />
+                    </ActionIcon>
+                  </Group>
                 </Box>
-              </Card.Section>
+                {coverImage === imageId && (
+                  <Badge
+                    pos="absolute"
+                    bottom={4}
+                    left={4}
+                    color="yellow"
+                    variant="filled"
+                    size="xs"
+                  >
+                    {t('form.coverImage')}
+                  </Badge>
+                )}
+              </Box>
             </Card>
           ))}
         </SimpleGrid>
