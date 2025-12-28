@@ -12,11 +12,9 @@ import {
   Stack,
   Grid,
   Group,
-  Title,
   NumberInput,
 } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
-import { IconArrowLeft } from '@tabler/icons-react';
 import {
   useRealEstateMaintenanceRecord,
   useCreateRealEstateMaintenanceRecord,
@@ -156,21 +154,6 @@ export function MaintenanceRecordForm({ locale, recordId, apartmentId }: Mainten
     <Paper shadow="xs" p="xl">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
-          <Group justify="space-between">
-            <Title order={3}>
-              {recordId
-                ? (t('maintenance.edit.title'))
-                : (t('maintenance.create.title'))}
-            </Title>
-            <Button
-              variant="subtle"
-              leftSection={<IconArrowLeft size={16} />}
-              onClick={() => router.back()}
-            >
-              {t('actions.back')}
-            </Button>
-          </Group>
-
           <Grid>
             <Grid.Col span={12}>
               <Select
