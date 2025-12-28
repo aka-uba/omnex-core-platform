@@ -4,7 +4,7 @@
   "menu": {
     "label": "Lisans",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "packages": "Lisans Paketleri",
       "tenants": "Tenant Lisansları",
       "my-license": "Lisansım"
@@ -202,7 +202,7 @@
     "create": "Oluştur",
     "edit": "Düzenle",
     "inactive": "Pasif",
-    "modules": "Modules",
+    "modules": "Modüller",
     "of": "toplam",
     "required": "Gerekli",
     "search": "Ara",

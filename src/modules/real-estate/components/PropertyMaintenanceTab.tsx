@@ -7,7 +7,6 @@ import {
   Group,
   Text,
   Button,
-  Table,
   Badge,
   ActionIcon,
   Modal,
@@ -17,7 +16,6 @@ import {
   NumberInput,
   Loader,
   Center,
-  Pagination,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
@@ -31,6 +29,7 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import { AlertModal } from '@/components/modals/AlertModal';
+import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import {
   useRealEstateMaintenanceRecords,
   useCreateRealEstateMaintenance,
@@ -90,8 +89,6 @@ export function PropertyMaintenanceTab({
   const { formatCurrency } = useCompany();
 
   // State
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(10);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] = useDisclosure(false);
   const [editingRecord, setEditingRecord] = useState<RealEstateMaintenanceRecord | null>(null);
@@ -101,8 +98,8 @@ export function PropertyMaintenanceTab({
   // Queries - get all maintenance records for this property
   const { data, isLoading, refetch } = useRealEstateMaintenanceRecords({
     propertyId,
-    page,
-    pageSize,
+    page: 1,
+    pageSize: 1000, // Let DataTable handle pagination
   });
 
   // Get apartments for this property
@@ -119,9 +116,9 @@ export function PropertyMaintenanceTab({
     if (!apartmentsData?.apartments) return [];
     return apartmentsData.apartments.map((a) => ({
       value: a.id,
-      label: `${a.unitNumber}${a.floor ? ` (Kat: ${a.floor})` : ''}`,
+      label: `${a.unitNumber}${a.floor ? ` (${t('form.floor')}: ${a.floor})` : ''}`,
     }));
-  }, [apartmentsData]);
+  }, [apartmentsData, t]);
 
   // Staff options for select
   const staffOptions = useMemo(() => {
@@ -134,17 +131,17 @@ export function PropertyMaintenanceTab({
 
   // Type options
   const typeOptions = [
-    { value: 'preventive', label: t('maintenance.types.preventive') || 'Preventive' },
-    { value: 'corrective', label: t('maintenance.types.corrective') || 'Corrective' },
-    { value: 'emergency', label: t('maintenance.types.emergency') || 'Emergency' },
+    { value: 'preventive', label: t('maintenance.types.preventive') },
+    { value: 'corrective', label: t('maintenance.types.corrective') },
+    { value: 'emergency', label: t('maintenance.types.emergency') },
   ];
 
   // Status options
   const statusOptions = [
-    { value: 'scheduled', label: t('maintenance.status.scheduled') || 'Scheduled' },
-    { value: 'in_progress', label: t('maintenance.status.in_progress') || 'In Progress' },
-    { value: 'completed', label: t('maintenance.status.completed') || 'Completed' },
-    { value: 'cancelled', label: t('maintenance.status.cancelled') || 'Cancelled' },
+    { value: 'scheduled', label: t('maintenance.status.scheduled') },
+    { value: 'in_progress', label: t('maintenance.status.in_progress') },
+    { value: 'completed', label: t('maintenance.status.completed') },
+    { value: 'cancelled', label: t('maintenance.status.cancelled') },
   ];
 
   // Handlers
@@ -183,7 +180,7 @@ export function PropertyMaintenanceTab({
       showToast({
         type: 'error',
         title: t('common.error'),
-        message: t('maintenance.validation.required') || 'Please fill required fields',
+        message: t('maintenance.validation.required'),
       });
       return;
     }
@@ -209,14 +206,14 @@ export function PropertyMaintenanceTab({
         showToast({
           type: 'success',
           title: t('common.success'),
-          message: t('maintenance.updated') || 'Maintenance record updated',
+          message: t('maintenance.updated'),
         });
       } else {
         await createMutation.mutateAsync(payload);
         showToast({
           type: 'success',
           title: t('common.success'),
-          message: t('maintenance.created') || 'Maintenance record created',
+          message: t('maintenance.created'),
         });
       }
       close();
@@ -237,7 +234,7 @@ export function PropertyMaintenanceTab({
       showToast({
         type: 'success',
         title: t('common.success'),
-        message: t('maintenance.deleted') || 'Maintenance record deleted',
+        message: t('maintenance.deleted'),
       });
       closeDelete();
       refetch();
@@ -280,206 +277,238 @@ export function PropertyMaintenanceTab({
     }
   };
 
-  const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
+  // DataTable columns
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'title',
+      label: t('maintenance.table.title'),
+      sortable: true,
+      searchable: true,
+      render: (value: string) => (
+        <Text size="sm" fw={500} lineClamp={1}>
+          {value}
+        </Text>
+      ),
+    },
+    {
+      key: 'apartment',
+      label: t('apartments.title'),
+      sortable: true,
+      render: (_: any, row: RealEstateMaintenanceRecord) => (
+        <Group gap={4}>
+          <IconHome size={14} />
+          <Text size="sm">{row.apartment?.unitNumber || '-'}</Text>
+        </Group>
+      ),
+    },
+    {
+      key: 'scheduledDate',
+      label: t('maintenance.table.date'),
+      sortable: true,
+      render: (value: string) => (
+        <Group gap={4}>
+          <IconCalendar size={14} />
+          <Text size="sm">{dayjs(value).format('DD.MM.YYYY')}</Text>
+        </Group>
+      ),
+    },
+    {
+      key: 'type',
+      label: t('maintenance.table.type'),
+      sortable: true,
+      render: (value: string) => (
+        <Badge color={getTypeColor(value)} size="sm">
+          {typeOptions.find((opt) => opt.value === value)?.label || value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'status',
+      label: t('maintenance.table.status'),
+      sortable: true,
+      render: (value: string) => (
+        <Badge color={getStatusColor(value)} size="sm">
+          {statusOptions.find((opt) => opt.value === value)?.label || value}
+        </Badge>
+      ),
+    },
+    {
+      key: 'cost',
+      label: t('maintenance.table.cost'),
+      align: 'right' as const,
+      render: (_: any, row: RealEstateMaintenanceRecord) => (
+        <Text size="sm">
+          {row.actualCost
+            ? formatCurrency(row.actualCost)
+            : row.estimatedCost
+            ? `~${formatCurrency(row.estimatedCost)}`
+            : '-'}
+        </Text>
+      ),
+    },
+    {
+      key: 'actions',
+      label: t('table.actions'),
+      align: 'right' as const,
+      sortable: false,
+      render: (_: any, row: RealEstateMaintenanceRecord) => (
+        <Group justify="flex-end" gap={4}>
+          <ActionIcon
+            variant="subtle"
+            size="sm"
+            color="blue"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenEdit(row);
+            }}
+            title={t('actions.edit')}
+          >
+            <IconEdit size={16} />
+          </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            size="sm"
+            color="red"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenDelete(row.id);
+            }}
+            title={t('actions.delete')}
+          >
+            <IconTrash size={16} />
+          </ActionIcon>
+        </Group>
+      ),
+    },
+  ], [t, formatCurrency, typeOptions, statusOptions]);
+
+  // Table data
+  const tableData = useMemo(() => {
+    return data?.records || [];
+  }, [data]);
 
   return (
     <>
-      <Paper shadow="xs" p="md">
-        <Stack gap="md">
-          <Group justify="space-between">
-            <Group gap="xs">
-              <IconTool size={24} />
-              <Text size="lg" fw={600}>
-                {t('maintenance.title') || 'Maintenance Records'}
-              </Text>
-              {propertyName && (
-                <Badge variant="light">{propertyName}</Badge>
-              )}
-            </Group>
-            <Button
-              size="sm"
-              leftSection={<IconPlus size={16} />}
-              onClick={handleOpenCreate}
-            >
-              {t('maintenance.create.title')}
-            </Button>
+      <Stack gap="md">
+        <Group justify="space-between">
+          <Group gap="xs">
+            <IconTool size={24} />
+            <Text size="lg" fw={600}>
+              {t('maintenance.title')}
+            </Text>
+            {propertyName && (
+              <Badge variant="light">{propertyName}</Badge>
+            )}
           </Group>
+          <Button
+            size="sm"
+            leftSection={<IconPlus size={16} />}
+            onClick={handleOpenCreate}
+          >
+            {t('maintenance.create.title')}
+          </Button>
+        </Group>
 
-          {isLoading ? (
-            <Center py="xl">
-              <Loader />
-            </Center>
-          ) : (
-            <>
-              <Table striped highlightOnHover>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>{t('maintenance.table.date') || 'Date'}</Table.Th>
-                    <Table.Th>{t('apartments.title') || 'Apartment'}</Table.Th>
-                    <Table.Th>{t('maintenance.table.type') || 'Type'}</Table.Th>
-                    <Table.Th>{t('maintenance.table.title') || 'Title'}</Table.Th>
-                    <Table.Th>{t('maintenance.table.status') || 'Status'}</Table.Th>
-                    <Table.Th ta="right">{t('maintenance.table.cost') || 'Cost'}</Table.Th>
-                    <Table.Th ta="center">{t('common.actions') || 'Actions'}</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {data?.records && data.records.length > 0 ? (
-                    data.records.map((record) => (
-                      <Table.Tr key={record.id}>
-                        <Table.Td>
-                          <Group gap={4}>
-                            <IconCalendar size={14} />
-                            {dayjs(record.scheduledDate).format('DD.MM.YYYY')}
-                          </Group>
-                        </Table.Td>
-                        <Table.Td>
-                          <Group gap={4}>
-                            <IconHome size={14} />
-                            {record.apartment?.unitNumber || '-'}
-                          </Group>
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge color={getTypeColor(record.type)} size="sm">
-                            {typeOptions.find((t) => t.value === record.type)?.label || record.type}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td>
-                          <Text size="sm" lineClamp={1}>
-                            {record.title}
-                          </Text>
-                        </Table.Td>
-                        <Table.Td>
-                          <Badge color={getStatusColor(record.status)} size="sm">
-                            {statusOptions.find((s) => s.value === record.status)?.label || record.status}
-                          </Badge>
-                        </Table.Td>
-                        <Table.Td ta="right">
-                          {record.actualCost
-                            ? formatCurrency(record.actualCost)
-                            : record.estimatedCost
-                            ? `~${formatCurrency(record.estimatedCost)}`
-                            : '-'}
-                        </Table.Td>
-                        <Table.Td>
-                          <Group justify="center" gap={4}>
-                            <ActionIcon
-                              variant="subtle"
-                              size="sm"
-                              color="blue"
-                              onClick={() => handleOpenEdit(record)}
-                              title={t('common.edit')}
-                            >
-                              <IconEdit size={16} />
-                            </ActionIcon>
-                            <ActionIcon
-                              variant="subtle"
-                              size="sm"
-                              color="red"
-                              onClick={() => handleOpenDelete(record.id)}
-                              title={t('common.delete')}
-                            >
-                              <IconTrash size={16} />
-                            </ActionIcon>
-                          </Group>
-                        </Table.Td>
-                      </Table.Tr>
-                    ))
-                  ) : (
-                    <Table.Tr>
-                      <Table.Td colSpan={7} ta="center" py="xl">
-                        <Stack align="center" gap="sm">
-                          <IconTool size={48} color="gray" />
-                          <Text c="dimmed">{t('maintenance.noData') || 'No maintenance records'}</Text>
-                          <Button
-                            variant="light"
-                            size="xs"
-                            leftSection={<IconPlus size={14} />}
-                            onClick={handleOpenCreate}
-                          >
-                            {t('maintenance.createFirst') || 'Create first record'}
-                          </Button>
-                        </Stack>
-                      </Table.Td>
-                    </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
-              {totalPages > 1 && (
-                <Group justify="center">
-                  <Pagination total={totalPages} value={page} onChange={setPage} />
-                </Group>
-              )}
-            </>
-          )}
-        </Stack>
-      </Paper>
+        {isLoading ? (
+          <Center py="xl">
+            <Loader />
+          </Center>
+        ) : tableData.length === 0 ? (
+          <Paper shadow="xs" p="xl">
+            <Stack align="center" gap="sm">
+              <IconTool size={48} color="gray" />
+              <Text c="dimmed">{t('maintenance.noData')}</Text>
+              <Button
+                variant="light"
+                size="xs"
+                leftSection={<IconPlus size={14} />}
+                onClick={handleOpenCreate}
+              >
+                {t('maintenance.createFirst')}
+              </Button>
+            </Stack>
+          </Paper>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={tableData}
+            searchable={true}
+            sortable={true}
+            pageable={true}
+            defaultPageSize={10}
+            pageSizeOptions={[10, 25, 50]}
+            emptyMessage={t('maintenance.noData')}
+            showColumnSettings={false}
+            showRowNumbers={false}
+          />
+        )}
+      </Stack>
 
       {/* Create/Edit Modal */}
       <Modal
         opened={opened}
         onClose={close}
-        title={editingRecord ? t('maintenance.edit') || 'Edit Maintenance' : t('maintenance.create') || 'New Maintenance'}
+        title={editingRecord ? t('maintenance.edit') : t('maintenance.create')}
         size="lg"
       >
         <Stack>
           <Select
-            label={t('apartments.title') || 'Apartment'}
+            label={t('apartments.title')}
             data={apartmentOptions}
             value={formData.apartmentId}
             onChange={(value) => setFormData({ ...formData, apartmentId: value })}
             searchable
             required
-            placeholder={t('maintenance.form.selectApartment') || 'Select apartment'}
+            placeholder={t('maintenance.form.selectApartment')}
           />
           <Select
-            label={t('maintenance.form.type') || 'Type'}
+            label={t('maintenance.form.type')}
             data={typeOptions}
             value={formData.type}
             onChange={(value) => setFormData({ ...formData, type: value as FormData['type'] })}
             required
           />
           <TextInput
-            label={t('maintenance.form.title') || 'Title'}
+            label={t('maintenance.form.title')}
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.currentTarget.value })}
             required
           />
           <Textarea
-            label={t('maintenance.form.description') || 'Description'}
+            label={t('maintenance.form.description')}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.currentTarget.value })}
             rows={2}
           />
           <Select
-            label={t('maintenance.form.status') || 'Status'}
+            label={t('maintenance.form.status')}
             data={statusOptions}
             value={formData.status}
             onChange={(value) => setFormData({ ...formData, status: value as FormData['status'] })}
             required
           />
           <DatePickerInput
-            label={t('maintenance.form.scheduledDate') || 'Scheduled Date'}
+            label={t('maintenance.form.scheduledDate')}
             value={formData.scheduledDate}
             onChange={(value) => setFormData({ ...formData, scheduledDate: value })}
             required
           />
           <Group grow>
             <DatePickerInput
-              label={t('maintenance.form.startDate') || 'Start Date'}
+              label={t('maintenance.form.startDate')}
               value={formData.startDate}
               onChange={(value) => setFormData({ ...formData, startDate: value })}
               clearable
             />
             <DatePickerInput
-              label={t('maintenance.form.endDate') || 'End Date'}
+              label={t('maintenance.form.endDate')}
               value={formData.endDate}
               onChange={(value) => setFormData({ ...formData, endDate: value })}
               clearable
             />
           </Group>
           <Select
-            label={t('maintenance.form.assignedStaff') || 'Assigned Staff'}
+            label={t('maintenance.form.assignedStaff')}
             data={staffOptions}
             value={formData.assignedStaffId}
             onChange={(value) => setFormData({ ...formData, assignedStaffId: value })}
@@ -488,14 +517,14 @@ export function PropertyMaintenanceTab({
           />
           <Group grow>
             <NumberInput
-              label={t('maintenance.form.estimatedCost') || 'Estimated Cost'}
+              label={t('maintenance.form.estimatedCost')}
               value={formData.estimatedCost || ''}
               onChange={(value) => setFormData({ ...formData, estimatedCost: Number(value) || null })}
               min={0}
               decimalScale={2}
             />
             <NumberInput
-              label={t('maintenance.form.actualCost') || 'Actual Cost'}
+              label={t('maintenance.form.actualCost')}
               value={formData.actualCost || ''}
               onChange={(value) => setFormData({ ...formData, actualCost: Number(value) || null })}
               min={0}
@@ -503,20 +532,20 @@ export function PropertyMaintenanceTab({
             />
           </Group>
           <Textarea
-            label={t('maintenance.form.notes') || 'Notes'}
+            label={t('maintenance.form.notes')}
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.currentTarget.value })}
             rows={2}
           />
           <Group justify="flex-end" mt="md">
             <Button variant="outline" onClick={close}>
-              {t('common.cancel') || 'Cancel'}
+              {t('actions.cancel')}
             </Button>
             <Button
               onClick={handleSubmit}
               loading={createMutation.isPending || updateMutation.isPending}
             >
-              {editingRecord ? t('common.save') || 'Save' : t('common.create') || 'Create'}
+              {editingRecord ? t('actions.save') : t('actions.create')}
             </Button>
           </Group>
         </Stack>
@@ -526,10 +555,10 @@ export function PropertyMaintenanceTab({
       <AlertModal
         opened={deleteOpened}
         onClose={closeDelete}
-        title={t('maintenance.delete.title') || 'Delete Maintenance Record'}
-        message={t('maintenance.delete.confirm') || 'Are you sure you want to delete this record?'}
-        confirmLabel={t('actions.delete') || 'Delete'}
-        cancelLabel={t('actions.cancel') || 'Cancel'}
+        title={t('maintenance.delete.title')}
+        message={t('maintenance.delete.confirm')}
+        confirmLabel={t('actions.delete')}
+        cancelLabel={t('actions.cancel')}
         onConfirm={handleDelete}
         variant="danger"
       />
