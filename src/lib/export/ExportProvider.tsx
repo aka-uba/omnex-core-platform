@@ -79,6 +79,54 @@ export function ExportProvider({ children }: ExportProviderProps) {
     }
   }, []);
 
+  // Process placeholders in text
+  const processPlaceholders = useCallback((text: string | null | undefined, settings: typeof companySettings): string => {
+    if (!text) return '';
+
+    return text
+      .replace(/\{\{companyName\}\}/g, settings?.name || '')
+      .replace(/\{\{companyAddress\}\}/g, settings?.address || '')
+      .replace(/\{\{companyPhone\}\}/g, settings?.phone || '')
+      .replace(/\{\{companyEmail\}\}/g, settings?.email || '')
+      .replace(/\{\{companyWebsite\}\}/g, settings?.website || '')
+      .replace(/\{\{companyTaxId\}\}/g, settings?.taxId || '')
+      .replace(/\{\{companyLogo\}\}/g, settings?.logo || '')
+      .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
+      .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
+  }, []);
+
+  // Process placeholders in customFields (headers, footers, logos arrays)
+  const processCustomFieldsPlaceholders = useCallback((
+    customFields: Record<string, any> | undefined,
+    settings: typeof companySettings
+  ): Record<string, any> | undefined => {
+    if (!customFields) return undefined;
+
+    const processed: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(customFields)) {
+      if (Array.isArray(value)) {
+        // Process arrays (headers, footers, logos)
+        processed[key] = value.map((item: any) => {
+          if (typeof item === 'object' && item !== null) {
+            const processedItem: any = { ...item };
+            if (item.text) {
+              processedItem.text = processPlaceholders(item.text, settings);
+            }
+            return processedItem;
+          }
+          return item;
+        });
+      } else if (typeof value === 'string') {
+        processed[key] = processPlaceholders(value, settings);
+      } else {
+        processed[key] = value;
+      }
+    }
+
+    return processed;
+  }, [processPlaceholders]);
+
   // Merge template with company settings
   const mergeTemplateWithSettings = useCallback((template: any, settings: typeof companySettings) => {
     if (!template) {
@@ -94,22 +142,30 @@ export function ExportProvider({ children }: ExportProviderProps) {
     }
 
     // Parse customFields if needed
-    const customFields = typeof template.customFields === 'string'
+    const rawCustomFields = typeof template.customFields === 'string'
       ? JSON.parse(template.customFields)
       : template.customFields || {};
 
+    // Process placeholders in all text fields
+    const processedTitle = processPlaceholders(template.title, settings);
+    const processedSubtitle = processPlaceholders(template.subtitle, settings);
+    const processedAddress = processPlaceholders(template.address, settings);
+    const processedCustomFields = processCustomFieldsPlaceholders(rawCustomFields, settings);
+
     return {
       logoUrl: template.logoUrl || settings?.logo,
-      title: template.title || settings?.name,
-      subtitle: template.subtitle,
-      address: template.address || settings?.address,
+      title: processedTitle || settings?.name,
+      subtitle: processedSubtitle,
+      address: processedAddress || settings?.address,
       phone: template.phone || settings?.phone,
       email: template.email || settings?.email,
       website: template.website || settings?.website,
       taxNumber: template.taxNumber || settings?.taxId,
-      customFields,
+      customFields: processedCustomFields,
+      layout: template.layout,
+      styles: template.styles,
     };
-  }, []);
+  }, [processPlaceholders, processCustomFieldsPlaceholders]);
 
   const exportData = useCallback(
     async (data: ExportData, options: ExportOptions) => {
