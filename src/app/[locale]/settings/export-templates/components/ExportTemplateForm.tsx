@@ -606,7 +606,7 @@ export function ExportTemplateForm({
 
                         <Stack gap="md">
                             {form.values.logos.map((logo, index) => (
-                                <Paper key={logo.id} p="sm" withBorder>
+                                <Paper key={logo.id || `logo-${index}`} p="sm" withBorder>
                                     <Group justify="space-between" mb="sm">
                                         <Badge>{t('form.logo')} {index + 1}</Badge>
                                         <ActionIcon
@@ -663,7 +663,7 @@ export function ExportTemplateForm({
 
                         <Stack gap="md">
                             {form.values.headers.map((header, index) => (
-                                <Paper key={header.id} p="sm" withBorder>
+                                <Paper key={header.id || `header-${index}`} p="sm" withBorder>
                                     <Group justify="space-between" mb="sm">
                                         <Badge>{t('form.header')} {index + 1}</Badge>
                                         <ActionIcon
@@ -715,7 +715,7 @@ export function ExportTemplateForm({
 
                         <Stack gap="md">
                             {form.values.footers.map((footer, index) => (
-                                <Paper key={footer.id} p="sm" withBorder>
+                                <Paper key={footer.id || `footer-${index}`} p="sm" withBorder>
                                     <Group justify="space-between" mb="sm">
                                         <Badge>{t('form.footer')} {index + 1}</Badge>
                                         <ActionIcon
