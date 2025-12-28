@@ -25,7 +25,8 @@
     "searchPlaceholder": "İsim veya anahtar ile ara...",
     "categoryFilter": "Kategori",
     "moduleFilter": "Modül",
-    "clearFilters": "Filtreleri Temizle"
+    "clearFilters": "Filtreleri Temizle",
+    "empty": "Henüz izin tanımlanmamış"
   },
   "form": {
     "permissionKey": "İzin Anahtarı",
