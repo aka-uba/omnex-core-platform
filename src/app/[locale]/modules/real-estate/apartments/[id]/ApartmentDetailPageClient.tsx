@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Table, Button, Divider, Title } from '@mantine/core';
-import { IconHome, IconQrcode, IconFileText, IconArrowLeft, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash, IconFile, IconCheck, IconX } from '@tabler/icons-react';
+import { IconHome, IconQrcode, IconFileText, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash, IconFile, IconCheck, IconX } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
 import { useApartment } from '@/hooks/useApartments';
@@ -141,12 +141,6 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
           { label: apartment.unitNumber, namespace: 'modules/real-estate' },
         ]}
         actions={[
-          {
-            label: t('actions.back') || tGlobal('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.push(`/${currentLocale}/modules/real-estate/apartments`),
-            variant: 'subtle',
-          },
           {
             label: t('actions.edit') || tGlobal('actions.edit'),
             icon: <IconEdit size={16} />,

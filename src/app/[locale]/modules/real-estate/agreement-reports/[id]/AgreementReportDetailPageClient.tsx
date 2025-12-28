@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider } from '@mantine/core';
-import { IconFileText, IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconFileText, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useAgreementReport } from '@/hooks/useAgreementReports';
 import { useTranslation } from '@/lib/i18n/client';
@@ -87,12 +87,6 @@ export function AgreementReportDetailPageClient({ locale, reportId }: AgreementR
           { label: 'agreementReport.detail.title', namespace: 'modules/real-estate' },
         ]}
         actions={[
-          {
-            label: t('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.push(`/${locale}/modules/real-estate/agreement-reports`),
-            variant: 'subtle',
-          },
           {
             label: t('actions.edit'),
             icon: <IconEdit size={16} />,

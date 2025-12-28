@@ -3,7 +3,7 @@
 import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table, SimpleGrid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconBuilding, IconFileText, IconHome, IconArrowLeft, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin, IconTool } from '@tabler/icons-react';
+import { IconBuilding, IconFileText, IconHome, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin, IconTool } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';
@@ -174,12 +174,6 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
           { label: property.name, namespace: 'modules/real-estate' },
         ]}
         actions={[
-          {
-            label: t('actions.back') || tGlobal('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.push(`/${currentLocale}/modules/real-estate/properties`),
-            variant: 'subtle',
-          },
           {
             label: t('actions.edit') || tGlobal('actions.edit'),
             icon: <IconEdit size={16} />,

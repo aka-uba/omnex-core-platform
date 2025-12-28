@@ -15,7 +15,7 @@ import {
   Switch,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconArrowLeft, IconMapPin } from '@tabler/icons-react';
+import { IconMapPin } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useCreateLocation, useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
@@ -100,14 +100,7 @@ export function CreateLocationPageClient({ locale }: { locale: string }) {
           { label: 'title', href: `/${locale}/locations`, namespace: 'modules/locations' },
           { label: 'create.title', namespace: 'modules/locations' },
         ]}
-        actions={[
-          {
-            label: tGlobal('common.cancel'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${locale}/locations`),
-            variant: 'default',
-          },
-        ]}
+        actions={[]}
       />
 
       <Paper shadow="sm" p="md" radius="md" mt="md">

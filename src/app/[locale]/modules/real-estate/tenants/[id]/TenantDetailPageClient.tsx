@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@mantine/core';
-import { IconUser, IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconUser, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { TenantDetail } from '@/modules/real-estate/components/TenantDetail';
 import { useParams, useRouter } from 'next/navigation';
@@ -28,12 +28,6 @@ export function TenantDetailPageClient({ locale }: { locale: string }) {
           { label: t('tenants.detail.title'), namespace: 'modules/real-estate' },
         ]}
         actions={[
-          {
-            label: t('actions.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${currentLocale}/modules/real-estate/tenants`),
-            variant: 'subtle',
-          },
           {
             label: t('actions.edit'),
             icon: <IconEdit size={18} />,

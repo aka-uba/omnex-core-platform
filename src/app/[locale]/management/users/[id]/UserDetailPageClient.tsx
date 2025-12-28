@@ -22,7 +22,6 @@ import {
 import {
   IconUsers,
   IconEdit,
-  IconArrowLeft,
   IconUser,
   IconBriefcase,
   IconPhone,
@@ -216,12 +215,6 @@ export function UserDetailPageClient({ locale, userId }: UserDetailPageClientPro
           { label: 'detail.title', namespace: 'modules/users' },
         ]}
         actions={[
-          {
-            label: tGlobal('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.push(`/${locale}/management/users`),
-            variant: 'subtle',
-          },
           {
             label: t('actions.edit'),
             icon: <IconEdit size={16} />,

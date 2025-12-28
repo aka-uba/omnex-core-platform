@@ -1,8 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Container, Paper, Stack, Group, Text, Grid, Title, Button, Progress, Card, Badge } from '@mantine/core';
-import { IconChartBar, IconArrowLeft, IconUsers, IconCurrencyDollar, IconHome, IconTools } from '@tabler/icons-react';
+import { Container, Paper, Stack, Group, Text, Grid, Title, Progress, Card, Badge } from '@mantine/core';
+import { IconChartBar, IconUsers, IconCurrencyDollar, IconHome, IconTools } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { StaffPerformancePageSkeleton } from './StaffPerformancePageSkeleton';
 import { useRealEstateStaffMember, useStaffPerformance } from '@/hooks/useRealEstateStaff';
@@ -547,15 +547,6 @@ export function StaffPerformancePageClient({ locale, staffId }: StaffPerformance
           </Grid>
         </Paper>
 
-        <Group>
-          <Button
-            variant="subtle"
-            leftSection={<IconArrowLeft size={16} />}
-            onClick={() => router.push(`/${locale}/modules/real-estate/staff/${staffId}`)}
-          >
-            {t('actions.back')}
-          </Button>
-        </Group>
       </Stack>
     </Container>
   );

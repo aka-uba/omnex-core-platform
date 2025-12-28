@@ -17,7 +17,7 @@ import {
   Text,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconArrowLeft, IconMapPin } from '@tabler/icons-react';
+import { IconMapPin } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useLocation, useUpdateLocation, useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
@@ -140,14 +140,7 @@ export function EditLocationPageClient({ locale }: { locale: string }) {
           { label: locationData?.location.name || '', href: `/${locale}/locations/${id}` },
           { label: 'edit.title', namespace: 'modules/locations' },
         ]}
-        actions={[
-          {
-            label: tGlobal('common.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${locale}/locations/${id}`),
-            variant: 'default',
-          },
-        ]}
+        actions={[]}
       />
 
       <Paper shadow="sm" p="md" radius="md" mt="md">

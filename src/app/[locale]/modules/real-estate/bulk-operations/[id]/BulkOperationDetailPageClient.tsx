@@ -2,7 +2,7 @@
 
 import { Container, Paper, Group, Text, Badge, Stack, Grid, Divider, Progress, Code } from '@mantine/core';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
-import { IconPackage, IconArrowLeft } from '@tabler/icons-react';
+import { IconPackage } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useBulkOperation } from '@/hooks/useBulkOperations';
 import { useParams, useRouter } from 'next/navigation';
@@ -89,14 +89,7 @@ export function BulkOperationDetailPageClient({ locale, operationId }: { locale:
           { label: t('bulkOperations.title'), href: `/${currentLocale}/modules/real-estate/bulk-operations`, namespace: 'modules/real-estate' },
           { label: t('bulkOperations.detail.title'), namespace: 'modules/real-estate' },
         ]}
-        actions={[
-          {
-            label: tGlobal('actions.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${currentLocale}/modules/real-estate/bulk-operations`),
-            variant: 'light',
-          },
-        ]}
+        actions={[]}
       />
 
       {isLoading ? (

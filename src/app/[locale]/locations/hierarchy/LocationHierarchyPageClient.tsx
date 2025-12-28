@@ -15,7 +15,6 @@ import {
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import {
-  IconArrowLeft,
   IconMapPin,
   IconChevronRight,
   IconChevronDown,
@@ -217,12 +216,6 @@ export function LocationHierarchyPageClient({ locale }: { locale: string }) {
           { label: 'hierarchy.title', namespace: 'modules/locations' },
         ]}
         actions={[
-          {
-            label: tGlobal('common.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${locale}/locations`),
-            variant: 'default',
-          },
           {
             label: t('create.button'),
             icon: <IconPlus size={18} />,

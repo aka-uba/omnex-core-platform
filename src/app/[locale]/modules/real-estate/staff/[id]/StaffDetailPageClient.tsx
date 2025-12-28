@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress, ActionIcon } from '@mantine/core';
-import { IconUsers, IconArrowLeft, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder, IconDownload } from '@tabler/icons-react';
+import { IconUsers, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder, IconDownload } from '@tabler/icons-react';
 import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { FilePreviewModal } from '@/modules/file-manager/components/FilePreviewModal';
@@ -181,12 +181,6 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
           { label: 'staff.detail.title', namespace: 'modules/real-estate' },
         ]}
         actions={[
-          {
-            label: t('actions.back'),
-            icon: <IconArrowLeft size={16} />,
-            onClick: () => router.push(`/${locale}/modules/real-estate/staff`),
-            variant: 'subtle',
-          },
           {
             label: t('staff.performance.title'),
             icon: <IconChartBar size={16} />,

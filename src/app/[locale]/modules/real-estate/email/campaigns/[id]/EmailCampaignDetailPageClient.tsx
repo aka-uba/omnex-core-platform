@@ -1,12 +1,10 @@
 'use client';
 
 import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Skeleton } from '@mantine/core';
-import { IconMail, IconArrowLeft } from '@tabler/icons-react';
+import { IconMail } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useEmailCampaign } from '@/hooks/useEmailCampaigns';
 import { useTranslation } from '@/lib/i18n/client';
-import { useRouter } from 'next/navigation';
-import { Button } from '@mantine/core';
 import { DataTable } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 
@@ -16,7 +14,6 @@ interface EmailCampaignDetailPageClientProps {
 }
 
 export function EmailCampaignDetailPageClient({ locale, campaignId }: EmailCampaignDetailPageClientProps) {
-  const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { data: campaign, isLoading, error } = useEmailCampaign(campaignId);
 
@@ -232,15 +229,6 @@ export function EmailCampaignDetailPageClient({ locale, campaignId }: EmailCampa
           />
         </Paper>
 
-        <Group>
-          <Button
-            variant="subtle"
-            leftSection={<IconArrowLeft size={16} />}
-            onClick={() => router.push(`/${locale}/modules/real-estate/email/campaigns`)}
-          >
-            {t('actions.back')}
-          </Button>
-        </Group>
       </Stack>
     </Container>
   );

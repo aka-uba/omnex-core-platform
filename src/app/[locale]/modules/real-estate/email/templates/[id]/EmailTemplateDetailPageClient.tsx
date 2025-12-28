@@ -2,7 +2,7 @@
 
 import { Container, Paper, Group, Text, Badge, Stack, Grid, Divider, Code, Box } from '@mantine/core';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
-import { IconMail, IconEdit, IconArrowLeft } from '@tabler/icons-react';
+import { IconMail, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useEmailTemplate } from '@/hooks/useEmailTemplates';
 import { useParams, useRouter } from 'next/navigation';
@@ -68,12 +68,6 @@ export function EmailTemplateDetailPageClient({ locale, templateId }: { locale: 
         ]}
         actions={
           !isLoading && template ? [
-            {
-              label: tGlobal('actions.back'),
-              icon: <IconArrowLeft size={18} />,
-              onClick: () => router.push(`/${currentLocale}/modules/real-estate/email/templates`),
-              variant: 'light',
-            },
             {
               label: t('actions.edit'),
               icon: <IconEdit size={18} />,

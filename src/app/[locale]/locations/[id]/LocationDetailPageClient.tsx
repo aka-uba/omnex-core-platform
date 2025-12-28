@@ -15,7 +15,6 @@ import {
   Table,
 } from '@mantine/core';
 import {
-  IconArrowLeft,
   IconEdit,
   IconTrash,
   IconMapPin,
@@ -103,12 +102,6 @@ export function LocationDetailPageClient({ locale }: { locale: string }) {
           { label: location.name },
         ]}
         actions={[
-          {
-            label: tGlobal('common.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${locale}/locations`),
-            variant: 'default',
-          },
           {
             label: tGlobal('common.edit'),
             icon: <IconEdit size={18} />,

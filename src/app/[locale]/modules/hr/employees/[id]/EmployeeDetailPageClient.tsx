@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@mantine/core';
-import { IconUsers, IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconUsers, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { EmployeeDetail } from '@/modules/hr/components/EmployeeDetail';
 import { useParams, useRouter } from 'next/navigation';
@@ -28,12 +28,6 @@ export function EmployeeDetailPageClient({ locale, employeeId }: { locale: strin
           { label: 'employees.detail', namespace: 'modules/hr' },
         ]}
         actions={[
-          {
-            label: tGlobal('common.back'),
-            icon: <IconArrowLeft size={18} />,
-            onClick: () => router.push(`/${currentLocale}/modules/hr/employees`),
-            variant: 'subtle',
-          },
           {
             label: tGlobal('common.edit'),
             icon: <IconEdit size={18} />,
