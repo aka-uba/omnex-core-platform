@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconEdit } from '@tabler/icons-react';
 import { ContractDetail } from '@/modules/real-estate/components/ContractDetail';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { IconContract } from '@tabler/icons-react';
