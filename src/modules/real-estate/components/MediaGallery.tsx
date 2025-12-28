@@ -604,15 +604,15 @@ export function MediaGallery({
             ) : (
               <SimpleGrid cols={{ base: 3, sm: 4, md: 5, lg: 6 }} spacing="xs">
                 {safeImages.map((imageId) => (
-                  <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden' }}>
-                    <Box pos="relative" h={80}>
+                  <Card key={imageId} padding={0} radius="sm" withBorder pos="relative" style={{ overflow: 'hidden', aspectRatio: '1/1' }}>
+                    <Box pos="relative" style={{ width: '100%', height: '100%' }}>
                       <Image
                         src={getImageUrl(imageId)}
                         alt="Property image"
-                        h={80}
+                        h="100%"
                         w="100%"
                         fit="cover"
-                        fallbackSrc="https://placehold.co/100x80?text=Img"
+                        fallbackSrc="https://placehold.co/100x100?text=Img"
                         style={{ cursor: 'pointer' }}
                         onClick={() => handlePreview(imageId)}
                       />
