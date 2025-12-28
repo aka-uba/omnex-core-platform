@@ -116,7 +116,12 @@
       "Bash(ssh root@146.190.224.121 \"cd /var/www/omnex-core && pm2 stop omnex-core && rm -rf .next && unzip -q .next.zip && pm2 start omnex-core && pm2 status\")",
       "Bash(ssh omnex-server:*)",
       "Bash(git revert:*)",
-      "Bash(npm run typecheck:*)"
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run lint:*)",
+      "Bash(node_modules.bintsc:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add {{pageTitle}} placeholder support for export templates\n\n- Added pageTitle to ExportOptions type\n- Updated processPlaceholders functions in ExportTemplateService and ExportProvider\n- Added PlaceholderInfoTable component to template form\n- Added translations for placeholder descriptions (TR/EN)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git stash pop:*)",
+      "Bash(./node_modules/.bin/tsc:*)"
     ],
     "deny": [],
     "ask": []

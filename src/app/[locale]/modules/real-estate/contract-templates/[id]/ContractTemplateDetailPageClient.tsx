@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@mantine/core';
-import { IconFileText, IconArrowLeft, IconEdit } from '@tabler/icons-react';
+import { IconFileText, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ContractTemplateDetail } from '@/modules/real-estate/components/ContractTemplateDetail';
 import { useParams, useRouter } from 'next/navigation';
