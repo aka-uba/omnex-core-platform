@@ -24,7 +24,9 @@ export function useCompanySettings() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/company');
+        const response = await fetch('/api/company', {
+          credentials: 'include', // Include cookies for authentication
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch company settings');
         }
