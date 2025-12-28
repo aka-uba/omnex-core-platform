@@ -932,19 +932,33 @@ export const exportToHTML = async (
   });
   
   html += '</tbody></table>';
-  
+
   // Add footer
   if (options.includeFooter) {
     html += '<div class="footer">';
-    html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
-    if (templateData.title || companySettings.name) {
-      html += `<p>Company: ${templateData.title || companySettings.name}</p>`;
+
+    // Get custom footers from template
+    const customFooters = templateData.customFields?.footers || [];
+
+    if (customFooters.length > 0) {
+      customFooters.forEach((footer: any) => {
+        if (footer.text) {
+          const position = footer.position || 'center';
+          html += `<p style="text-align: ${position};">${footer.text}</p>`;
+        }
+      });
+    } else {
+      // Default footer
+      html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
+      if (templateData.title || companySettings.name) {
+        html += `<p>Company: ${templateData.title || companySettings.name}</p>`;
+      }
     }
     html += '</div>';
   }
-  
+
   html += '</body></html>';
-  
+
   // HTML yeni sekmede açılır, indirilmez
   const htmlWindow = window.open('', '_blank');
   if (!htmlWindow) {
@@ -1086,15 +1100,29 @@ export const printData = async (
   // Add footer
   if (options.includeFooter) {
     html += '<div class="footer">';
-    html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
-    if (companySettings.name) {
-      html += `<p>Company: ${companySettings.name}</p>`;
+
+    // Get custom footers from template
+    const customFooters = templateData.customFields?.footers || [];
+
+    if (customFooters.length > 0) {
+      customFooters.forEach((footer: any) => {
+        if (footer.text) {
+          const position = footer.position || 'center';
+          html += `<p style="text-align: ${position};">${footer.text}</p>`;
+        }
+      });
+    } else {
+      // Default footer
+      html += `<p>Generated: ${new Date().toLocaleString()}</p>`;
+      if (companySettings.name) {
+        html += `<p>Company: ${companySettings.name}</p>`;
+      }
     }
     html += '</div>';
   }
-  
+
   html += '</body></html>';
-  
+
   printWindow.document.write(html);
   printWindow.document.close();
   printWindow.focus();
