@@ -243,12 +243,19 @@ async function main() {
     ];
 
     for (const roleData of roles) {
-      await tenantPrisma.role.upsert({
-        where: { id: roleData.id },
-        update: {},
-        create: roleData,
+      // Check if role with same name exists first to avoid unique constraint error
+      const existingRole = await tenantPrisma.role.findFirst({
+        where: { name: roleData.name },
       });
-      console.log(`✅ Role created: ${roleData.name}`);
+
+      if (existingRole) {
+        console.log(`⚠️  Role already exists: ${roleData.name}`);
+      } else {
+        await tenantPrisma.role.create({
+          data: roleData,
+        });
+        console.log(`✅ Role created: ${roleData.name}`);
+      }
     }
 
     // ============================================
