@@ -1,0 +1,48 @@
+# Dependabot configuration for automated dependency updates and security patches
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Istanbul"
+    # Auto-merge security patches
+    open-pull-requests-limit: 10
+    # Grouping updates
+    groups:
+      security-patches:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      minor-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+    # Labels for PRs
+    labels:
+      - "dependencies"
+      - "automated"
+    # Commit message configuration
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Reviewers (opsiyonel - GitHub kullanıcı adlarınızı ekleyin)
+    # reviewers:
+    #   - "your-github-username"
+    # assignees:
+    #   - "your-github-username"
+    # Allow version updates
+    allow:
+      - dependency-type: "all"
+    # Ignore specific dependencies (gerekirse)
+    # ignore:
+    #   - dependency-name: "package-name"
+    #     versions: ["1.x"]
