@@ -2,9 +2,10 @@
 
 import { useState, useEffect, Fragment, useCallback } from 'react';
 import { Paper, Button, Group, TextInput, Textarea, Alert, Progress, Code, Badge, Checkbox, Modal, Stack, Title, Text, Card, Box, Loader, ScrollArea, Divider, ThemeIcon, Tabs, PasswordInput, NumberInput, Select, CopyButton, ActionIcon, Tooltip, Collapse } from '@mantine/core';
-import { IconCheck, IconX, IconAlertCircle, IconRefresh, IconDownload, IconDatabase, IconTrash, IconServer, IconRocket, IconTerminal, IconBrandGithub, IconCopy, IconSettings, IconKey, IconWorld, IconChevronDown, IconChevronUp, IconFileCode, IconNetwork } from '@tabler/icons-react';
+import { IconCheck, IconX, IconAlertCircle, IconRefresh, IconDownload, IconDatabase, IconTrash, IconServer, IconRocket, IconTerminal, IconBrandGithub, IconCopy, IconSettings, IconKey, IconWorld, IconChevronDown, IconChevronUp, IconFileCode, IconNetwork, IconShieldCheck, IconShieldExclamation, IconPackage } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useTranslation } from '@/lib/i18n/client';
+import { SecurityAudit as SecurityAuditPanel } from './SecurityAudit';
 
 interface StepStatus {
   status: 'pending' | 'running' | 'success' | 'error';
@@ -943,6 +944,9 @@ export function SetupWizard() {
             <Tabs.Tab value="deploy" leftSection={<IconRocket size={16} className="tabler-icon" />}>
               Production Deploy
             </Tabs.Tab>
+            <Tabs.Tab value="security" leftSection={<IconShieldCheck size={16} className="tabler-icon" />}>
+              Güvenlik
+            </Tabs.Tab>
           </Tabs.List>
 
           {/* Database Setup Tab */}
@@ -1810,6 +1814,11 @@ export function SetupWizard() {
                 </Paper>
               )}
             </Stack>
+          </Tabs.Panel>
+
+          {/* Security Tab */}
+          <Tabs.Panel value="security" pt="xl">
+            <SecurityAuditPanel />
           </Tabs.Panel>
         </Tabs>
       </Paper>
