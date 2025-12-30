@@ -76,8 +76,11 @@ function updateFavicon(faviconUrl: string) {
  * Sabit dosya yollarını kullanır - API'den veri beklemez
  */
 function updatePWAManifest(companyName: string) {
-  // Sabit branding dosya yollarını kullan
-  const iconUrl = BRANDING_PATHS.pwaIcon;
+  // Get base URL for absolute paths (required for blob manifest)
+  const baseUrl = window.location.origin;
+
+  // Sabit branding dosya yollarını mutlak URL olarak kullan
+  const iconUrl = `${baseUrl}${BRANDING_PATHS.pwaIcon}`;
 
   // Remove existing manifest link
   const existingManifest = document.querySelector("link[rel='manifest']");
@@ -90,7 +93,7 @@ function updatePWAManifest(companyName: string) {
     name: companyName || '',
     short_name: companyName || '',
     description: '',
-    start_url: '/',
+    start_url: baseUrl,
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#228be6',
@@ -129,13 +132,13 @@ function updatePWAManifest(companyName: string) {
   }
   themeColorMeta.content = '#228be6';
 
-  // Add Apple mobile web app meta tags
-  let appleCapableMeta = document.querySelector("meta[name='apple-mobile-web-app-capable']");
-  if (!appleCapableMeta) {
-    appleCapableMeta = document.createElement('meta');
-    (appleCapableMeta as HTMLMetaElement).name = 'apple-mobile-web-app-capable';
-    (appleCapableMeta as HTMLMetaElement).content = 'yes';
-    document.head.appendChild(appleCapableMeta);
+  // Add mobile web app meta tags (modern standard)
+  let mobileCapableMeta = document.querySelector("meta[name='mobile-web-app-capable']");
+  if (!mobileCapableMeta) {
+    mobileCapableMeta = document.createElement('meta');
+    (mobileCapableMeta as HTMLMetaElement).name = 'mobile-web-app-capable';
+    (mobileCapableMeta as HTMLMetaElement).content = 'yes';
+    document.head.appendChild(mobileCapableMeta);
   }
 
   let appleStatusBarMeta = document.querySelector("meta[name='apple-mobile-web-app-status-bar-style']");
