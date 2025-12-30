@@ -209,11 +209,13 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   ];
 
   // Group apartments by property name
-  const apartmentOptions = apartmentsData?.apartments?.map((apt) => ({
-    value: apt.id,
-    label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
-    group: apt.property?.name || t('form.unknownProperty'),
-  })) || [];
+  const apartmentOptions = Array.isArray(apartmentsData?.apartments)
+    ? apartmentsData.apartments.map((apt) => ({
+        value: apt.id,
+        label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
+        group: apt.property?.name || t('form.unknownProperty'),
+      }))
+    : [];
 
   return (
     <Paper shadow="xs" p="md">
