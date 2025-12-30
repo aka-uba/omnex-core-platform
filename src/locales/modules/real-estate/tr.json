@@ -2030,6 +2030,14 @@
     "nationalityPlaceholder": "Vatandaşlık bilgisini girin",
     "taxNumber": "Vergi Numarası",
     "taxNumberPlaceholder": "Vergi numarasını girin",
-    "systemFields": "Sistem Alanları"
+    "systemFields": "Sistem Alanları",
+    "apartmentAssignment": "Daire Ataması"
+  },
+  "form": {
+    "apartment": "Daire",
+    "selectApartment": "Daire seçin",
+    "noApartmentsFound": "Daire bulunamadı",
+    "unknownProperty": "Bilinmeyen Bina",
+    "floor": "Kat"
   }
 }

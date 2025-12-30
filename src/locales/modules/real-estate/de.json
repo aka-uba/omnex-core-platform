@@ -671,5 +671,38 @@
     "videoNotSupported": "Ihr Browser unterstützt das Video-Tag nicht.",
     "audioNotSupported": "Ihr Browser unterstützt das Audio-Tag nicht.",
     "previewNotAvailable": "Vorschau für diesen Dateityp nicht verfügbar"
+  },
+  "tenantForm": {
+    "basicInfo": "Grundinformationen",
+    "tenantType": "Mietertyp",
+    "selectType": "Typ auswählen",
+    "typePerson": "Person",
+    "typeCompany": "Unternehmen",
+    "personalInfo": "Persönliche Informationen",
+    "companyInfo": "Unternehmensinformationen",
+    "salutation": "Anrede",
+    "selectSalutation": "Anrede auswählen",
+    "salutationMr": "Herr",
+    "salutationMs": "Frau",
+    "birthDate": "Geburtsdatum",
+    "birthDatePlaceholder": "Geburtsdatum auswählen",
+    "birthPlace": "Geburtsort",
+    "birthPlacePlaceholder": "Geburtsort eingeben",
+    "address": "Adresse",
+    "contactInfo": "Kontaktinformationen",
+    "additionalInfo": "Zusätzliche Informationen",
+    "nationality": "Staatsangehörigkeit",
+    "nationalityPlaceholder": "Staatsangehörigkeit eingeben",
+    "taxNumber": "Steuernummer",
+    "taxNumberPlaceholder": "Steuernummer eingeben",
+    "systemFields": "Systemfelder",
+    "apartmentAssignment": "Wohnungszuweisung"
+  },
+  "form": {
+    "apartment": "Wohnung",
+    "selectApartment": "Wohnung auswählen",
+    "noApartmentsFound": "Keine Wohnungen gefunden",
+    "unknownProperty": "Unbekannte Immobilie",
+    "floor": "Etage"
   }
 }

@@ -572,5 +572,38 @@
     "address": "العنوان",
     "city": "المدينة",
     "actions": "الإجراءات"
+  },
+  "tenantForm": {
+    "basicInfo": "المعلومات الأساسية",
+    "tenantType": "نوع المستأجر",
+    "selectType": "اختر النوع",
+    "typePerson": "شخص",
+    "typeCompany": "شركة",
+    "personalInfo": "المعلومات الشخصية",
+    "companyInfo": "معلومات الشركة",
+    "salutation": "اللقب",
+    "selectSalutation": "اختر اللقب",
+    "salutationMr": "السيد",
+    "salutationMs": "السيدة",
+    "birthDate": "تاريخ الميلاد",
+    "birthDatePlaceholder": "اختر تاريخ الميلاد",
+    "birthPlace": "مكان الميلاد",
+    "birthPlacePlaceholder": "أدخل مكان الميلاد",
+    "address": "العنوان",
+    "contactInfo": "معلومات الاتصال",
+    "additionalInfo": "معلومات إضافية",
+    "nationality": "الجنسية",
+    "nationalityPlaceholder": "أدخل الجنسية",
+    "taxNumber": "الرقم الضريبي",
+    "taxNumberPlaceholder": "أدخل الرقم الضريبي",
+    "systemFields": "حقول النظام",
+    "apartmentAssignment": "تعيين الشقة"
+  },
+  "form": {
+    "apartment": "الشقة",
+    "selectApartment": "اختر شقة",
+    "noApartmentsFound": "لم يتم العثور على شقق",
+    "unknownProperty": "عقار غير معروف",
+    "floor": "الطابق"
   }
 }

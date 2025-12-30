@@ -2327,6 +2327,7 @@ model Apartment {
 
   // Relations
   property         Property                      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  tenants          Tenant[]
   contracts        Contract[]
   appointments     Appointment[]
   payments         Payment[]
@@ -2351,6 +2352,9 @@ model Tenant {
   // Kişi bilgileri (Merkezi Contact/User servisinden)
   userId    String? // Sistem kullanıcısı ID (opsiyonel)
   contactId String? // Merkezi Contact ID
+
+  // Daire ataması
+  apartmentId String? // Atanmış daire ID
 
   // Kiracı özel bilgileri
   tenantNumber String? // Kiracı numarası / Mieter Number
@@ -2404,6 +2408,7 @@ model Tenant {
   updatedAt DateTime @updatedAt
 
   // Relations
+  apartment    Apartment?    @relation(fields: [apartmentId], references: [id])
   contracts    Contract[]
   payments     Payment[]
   appointments Appointment[]
@@ -2412,6 +2417,7 @@ model Tenant {
   @@index([tenantId, companyId, isActive])
   @@index([userId])
   @@index([contactId])
+  @@index([apartmentId])
 }
 
 model Contract {

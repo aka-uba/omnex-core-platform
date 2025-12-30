@@ -4,6 +4,7 @@ export const tenantSchema = z.object({
   // System fields
   userId: z.string().optional().nullable(),
   contactId: z.string().optional().nullable(),
+  apartmentId: z.string().uuid().optional().nullable(),
   tenantNumber: z.string().optional().nullable(),
 
   // Type

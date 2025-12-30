@@ -8,6 +8,7 @@ export interface Tenant {
   companyId: string;
   userId?: string | null;
   contactId?: string | null;
+  apartmentId?: string | null;
   tenantNumber?: string | null;
   firstName?: string | null;
   lastName?: string | null;
@@ -46,6 +47,7 @@ export interface Tenant {
 export interface TenantCreateInput {
   userId?: string;
   contactId?: string;
+  apartmentId?: string;
   tenantNumber?: string;
   moveInDate?: Date;
   moveOutDate?: Date;

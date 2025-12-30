@@ -15,10 +15,11 @@ import {
   Title,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
-import { IconArrowLeft, IconUser, IconBuilding, IconMapPin, IconPhone, IconId } from '@tabler/icons-react';
+import { IconArrowLeft, IconUser, IconBuilding, IconMapPin, IconPhone, IconId, IconHome } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useRouter } from 'next/navigation';
 import { useCreateTenant, useUpdateTenant, useTenant } from '@/hooks/useTenants';
+import { useApartments } from '@/hooks/useApartments';
 import { useTranslation } from '@/lib/i18n/client';
 import { tenantCreateSchema } from '@/modules/real-estate/schemas/tenant.schema';
 import { MediaGallery } from './MediaGallery';
@@ -36,6 +37,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   const createTenant = useCreateTenant();
   const updateTenant = useUpdateTenant();
   const { data: tenantData, isLoading: isLoadingTenant } = useTenant(tenantId || '');
+  const { data: apartmentsData } = useApartments({ pageSize: 1000 });
   const { user } = useAuth();
 
   const isEdit = !!tenantId;
@@ -45,6 +47,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
       // System fields
       userId: null as string | null,
       contactId: null as string | null,
+      apartmentId: null as string | null,
       tenantNumber: '',
 
       // Type
@@ -100,6 +103,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
         form.setValues({
           userId: tenantData.userId ?? null,
           contactId: tenantData.contactId ?? null,
+          apartmentId: tenantData.apartmentId ?? null,
           tenantNumber: tenantData.tenantNumber || '',
           tenantType: (tenantData as any).tenantType || 'person',
           companyName: (tenantData as any).companyName || '',
@@ -133,6 +137,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
       const formData = {
         userId: values.userId || undefined,
         contactId: values.contactId || undefined,
+        apartmentId: values.apartmentId || undefined,
         tenantNumber: values.tenantNumber || undefined,
         tenantType: values.tenantType || undefined,
         companyName: values.tenantType === 'company' ? values.companyName || undefined : undefined,
@@ -203,6 +208,13 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     { value: 'Frau', label: t('tenantForm.salutationMs') || 'Ms.' },
   ];
 
+  // Group apartments by property name
+  const apartmentOptions = apartmentsData?.apartments?.map((apt) => ({
+    value: apt.id,
+    label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
+    group: apt.property?.name || t('form.unknownProperty'),
+  })) || [];
+
   return (
     <Paper shadow="xs" p="md">
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -228,6 +240,29 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
                   placeholder={t('tenantForm.selectType') || 'Select type'}
                   data={tenantTypeOptions}
                   {...form.getInputProps('tenantType')}
+                />
+              </Grid.Col>
+            </Grid>
+          </div>
+
+          <Divider />
+
+          {/* Apartment Assignment Section */}
+          <div>
+            <Group gap="xs" mb="md">
+              <IconHome size={20} />
+              <Title order={5}>{t('tenantForm.apartmentAssignment') || 'Apartment Assignment'}</Title>
+            </Group>
+            <Grid>
+              <Grid.Col span={12}>
+                <Select
+                  label={t('form.apartment') || 'Apartment'}
+                  placeholder={t('form.selectApartment') || 'Select apartment'}
+                  data={apartmentOptions}
+                  searchable
+                  clearable
+                  nothingFoundMessage={t('form.noApartmentsFound') || 'No apartments found'}
+                  {...form.getInputProps('apartmentId')}
                 />
               </Grid.Col>
             </Grid>
