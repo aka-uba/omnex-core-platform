@@ -45,9 +45,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   const form = useForm({
     initialValues: {
       // System fields
-      userId: null as string | null,
-      contactId: null as string | null,
-      apartmentId: null as string | null,
+      userId: '',
+      contactId: '',
+      apartmentId: '',
       tenantNumber: '',
 
       // Type
@@ -101,9 +101,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     if (isEdit && tenantData && !isLoadingTenant) {
       if (form.values.tenantNumber === '') {
         form.setValues({
-          userId: tenantData.userId ?? null,
-          contactId: tenantData.contactId ?? null,
-          apartmentId: tenantData.apartmentId ?? null,
+          userId: tenantData.userId ?? '',
+          contactId: tenantData.contactId ?? '',
+          apartmentId: tenantData.apartmentId ?? '',
           tenantNumber: tenantData.tenantNumber || '',
           tenantType: (tenantData as any).tenantType || 'person',
           companyName: (tenantData as any).companyName || '',
