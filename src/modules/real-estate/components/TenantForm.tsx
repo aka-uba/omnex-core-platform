@@ -208,14 +208,14 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     { value: 'Frau', label: t('tenantForm.salutationMs') || 'Ms.' },
   ];
 
-  // Group apartments by property name
-  const apartmentOptions = Array.isArray(apartmentsData?.apartments)
-    ? apartmentsData.apartments.map((apt) => ({
-        value: apt.id,
-        label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
-        group: apt.property?.name || t('form.unknownProperty'),
-      }))
-    : [];
+  // Group apartments by property name - with safe filtering
+  const apartmentOptions = (apartmentsData?.apartments ?? [])
+    .filter((apt): apt is NonNullable<typeof apt> => apt != null && apt.id != null)
+    .map((apt) => ({
+      value: apt.id,
+      label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber || ''}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
+      group: apt.property?.name || t('form.unknownProperty'),
+    }));
 
   return (
     <Paper shadow="xs" p="md">
@@ -260,7 +260,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
                 <Select
                   label={t('form.apartment') || 'Apartment'}
                   placeholder={t('form.selectApartment') || 'Select apartment'}
-                  data={apartmentOptions || []}
+                  data={apartmentOptions}
                   searchable
                   clearable
                   nothingFoundMessage={t('form.noApartmentsFound') || 'No apartments found'}
