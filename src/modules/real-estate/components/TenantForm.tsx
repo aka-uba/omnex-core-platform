@@ -260,7 +260,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
                 <Select
                   label={t('form.apartment') || 'Apartment'}
                   placeholder={t('form.selectApartment') || 'Select apartment'}
-                  data={apartmentOptions}
+                  data={apartmentOptions || []}
                   searchable
                   clearable
                   nothingFoundMessage={t('form.noApartmentsFound') || 'No apartments found'}
