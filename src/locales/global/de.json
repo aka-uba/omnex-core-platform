@@ -1,6 +1,85 @@
-{}
-
-
-
-
-
+{
+  "management": {
+    "title": "Verwaltung",
+    "users": {
+      "title": "Benutzer",
+      "description": "Systembenutzer verwalten"
+    },
+    "roles": {
+      "title": "Rollen",
+      "description": "Benutzerrollen und Berechtigungen verwalten"
+    },
+    "permissions": {
+      "title": "Berechtigungen",
+      "description": "Systemweite Berechtigungen und Zugriffsebenen verwalten"
+    }
+  },
+  "roles": {
+    "items": {
+      "superAdmin": {
+        "name": "Super-Administrator",
+        "description": "Vollzugriff auf alle Systemfunktionen"
+      },
+      "agencyUser": {
+        "name": "Agenturbenutzer",
+        "description": "Agenturbenutzer mit eingeschränktem Zugriff"
+      },
+      "clientUser": {
+        "name": "Kundenbenutzer",
+        "description": "Kundenbenutzer mit Basiszugriff"
+      }
+    }
+  },
+  "permissions": {
+    "categories": {
+      "userManagement": "Benutzerverwaltung",
+      "notifications": "Benachrichtigungen",
+      "reports": "Berichte"
+    },
+    "modules": {
+      "users": "Benutzer",
+      "notifications": "Benachrichtigungen",
+      "reports": "Berichte"
+    },
+    "items": {
+      "user": {
+        "create": {
+          "name": "Benutzer erstellen",
+          "description": "Erlaubt das Erstellen neuer Benutzer"
+        },
+        "read": {
+          "name": "Benutzer anzeigen",
+          "description": "Erlaubt das Anzeigen von Benutzern"
+        },
+        "update": {
+          "name": "Benutzer aktualisieren",
+          "description": "Erlaubt das Aktualisieren von Benutzern"
+        },
+        "delete": {
+          "name": "Benutzer löschen",
+          "description": "Erlaubt das Löschen von Benutzern"
+        }
+      },
+      "notification": {
+        "read": {
+          "name": "Benachrichtigung anzeigen",
+          "description": "Erlaubt das Anzeigen von Benachrichtigungen"
+        },
+        "create": {
+          "name": "Benachrichtigung erstellen",
+          "description": "Erlaubt das Erstellen von Benachrichtigungen"
+        }
+      },
+      "report": {
+        "read": {
+          "name": "Bericht anzeigen",
+          "description": "Erlaubt das Anzeigen von Berichten"
+        },
+        "create": {
+          "name": "Bericht erstellen",
+          "description": "Erlaubt das Erstellen von Berichten"
+        }
+      }
+    }
+  }
+}

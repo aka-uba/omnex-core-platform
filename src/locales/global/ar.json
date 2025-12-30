@@ -1,6 +1,85 @@
-{}
-
-
-
-
-
+{
+  "management": {
+    "title": "الإدارة",
+    "users": {
+      "title": "المستخدمون",
+      "description": "إدارة مستخدمي النظام"
+    },
+    "roles": {
+      "title": "الأدوار",
+      "description": "إدارة أدوار المستخدمين والصلاحيات"
+    },
+    "permissions": {
+      "title": "الصلاحيات",
+      "description": "إدارة الصلاحيات ومستويات الوصول على مستوى النظام"
+    }
+  },
+  "roles": {
+    "items": {
+      "superAdmin": {
+        "name": "المدير الأعلى",
+        "description": "وصول كامل لجميع ميزات النظام"
+      },
+      "agencyUser": {
+        "name": "مستخدم الوكالة",
+        "description": "مستخدم وكالة بصلاحيات محدودة"
+      },
+      "clientUser": {
+        "name": "مستخدم العميل",
+        "description": "مستخدم عميل بصلاحيات أساسية"
+      }
+    }
+  },
+  "permissions": {
+    "categories": {
+      "userManagement": "إدارة المستخدمين",
+      "notifications": "الإشعارات",
+      "reports": "التقارير"
+    },
+    "modules": {
+      "users": "المستخدمون",
+      "notifications": "الإشعارات",
+      "reports": "التقارير"
+    },
+    "items": {
+      "user": {
+        "create": {
+          "name": "إنشاء مستخدم",
+          "description": "يسمح بإنشاء مستخدمين جدد"
+        },
+        "read": {
+          "name": "عرض المستخدم",
+          "description": "يسمح بعرض المستخدمين"
+        },
+        "update": {
+          "name": "تحديث المستخدم",
+          "description": "يسمح بتحديث المستخدمين"
+        },
+        "delete": {
+          "name": "حذف المستخدم",
+          "description": "يسمح بحذف المستخدمين"
+        }
+      },
+      "notification": {
+        "read": {
+          "name": "عرض الإشعار",
+          "description": "يسمح بعرض الإشعارات"
+        },
+        "create": {
+          "name": "إنشاء إشعار",
+          "description": "يسمح بإنشاء الإشعارات"
+        }
+      },
+      "report": {
+        "read": {
+          "name": "عرض التقرير",
+          "description": "يسمح بعرض التقارير"
+        },
+        "create": {
+          "name": "إنشاء تقرير",
+          "description": "يسمح بإنشاء التقارير"
+        }
+      }
+    }
+  }
+}

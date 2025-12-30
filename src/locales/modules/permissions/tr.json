@@ -32,7 +32,7 @@
     "permissionKey": "İzin Anahtarı",
     "permissionKeyPlaceholder": "Örn: client.create",
     "name": "İsim",
-    "namePlaceholder": "Örn: Create Client",
+    "namePlaceholder": "Örn: Müşteri Oluştur",
     "description": "Açıklama",
     "descriptionPlaceholder": "İzin açıklamasını girin",
     "category": "Kategori",
@@ -64,6 +64,12 @@
     "scheduling": "Planlama",
     "finance": "Finans",
     "general": "Genel"
+  },
+  "modules": {
+    "crm": "CRM",
+    "contentAI": "İçerik AI",
+    "scheduler": "Planlayıcı",
+    "finance": "Finans"
   },
   "navigation": {
     "dashboard": "Panel"

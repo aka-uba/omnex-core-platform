@@ -25,7 +25,8 @@
     "searchPlaceholder": "البحث بالاسم أو المفتاح...",
     "categoryFilter": "الفئة",
     "moduleFilter": "الوحدة",
-    "clearFilters": "مسح المرشحات"
+    "clearFilters": "مسح المرشحات",
+    "empty": "لم يتم تحديد صلاحيات بعد"
   },
   "form": {
     "permissionKey": "مفتاح الصلاحية",
@@ -57,9 +58,25 @@
     "scheduling": "الجدولة",
     "finance": "المالية",
     "general": "عام"
+  },
+  "modules": {
+    "crm": "إدارة علاقات العملاء",
+    "contentAI": "محتوى الذكاء الاصطناعي",
+    "scheduler": "المجدول",
+    "finance": "المالية"
+  },
+  "notifications": {
+    "error": {
+      "permissionSaveFailed": "فشل في حفظ الصلاحية",
+      "title": "خطأ"
+    },
+    "success": {
+      "permissionCreated": "تم إنشاء الصلاحية بنجاح",
+      "permissionUpdated": "تم تحديث الصلاحية بنجاح"
+    },
+    "validation": {
+      "requiredFields": "يرجى ملء الحقول المطلوبة",
+      "title": "خطأ في التحقق"
+    }
   }
 }
-
-
-
-

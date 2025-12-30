@@ -215,47 +215,46 @@ async function main() {
     // ============================================
     console.log('🔐 Creating default roles...');
 
+    // Roles with i18n keys - translated on frontend
     const roles = [
       {
         id: `${tenantSlug}-role-superadmin`,
         tenantId: realTenantId,
         companyId: company.id,
-        name: 'SuperAdmin',
-        description: 'Has full access to all system features',
+        name: 'roles.items.superAdmin.name',
+        description: 'roles.items.superAdmin.description',
         permissions: ['*'], // All permissions
       },
       {
         id: `${tenantSlug}-role-agency`,
         tenantId: realTenantId,
         companyId: company.id,
-        name: 'AgencyUser',
-        description: 'Agency user with limited access',
+        name: 'roles.items.agencyUser.name',
+        description: 'roles.items.agencyUser.description',
         permissions: ['user.read', 'user.create', 'notification.read'],
       },
       {
         id: `${tenantSlug}-role-client`,
         tenantId: realTenantId,
         companyId: company.id,
-        name: 'ClientUser',
-        description: 'Client user with basic access',
+        name: 'roles.items.clientUser.name',
+        description: 'roles.items.clientUser.description',
         permissions: ['notification.read', 'report.read'],
       },
     ];
 
     for (const roleData of roles) {
-      // Check if role with same name exists first to avoid unique constraint error
-      const existingRole = await tenantPrisma.role.findFirst({
-        where: { name: roleData.name },
+      // Use upsert to update existing roles with new i18n keys
+      await tenantPrisma.role.upsert({
+        where: { id: roleData.id },
+        update: {
+          name: roleData.name,
+          description: roleData.description,
+          permissions: roleData.permissions,
+        },
+        create: roleData,
       });
-
-      if (existingRole) {
-        console.log(`⚠️  Role already exists: ${roleData.name}`);
-      } else {
-        await tenantPrisma.role.create({
-          data: roleData,
-        });
-        console.log(`✅ Role created: ${roleData.name}`);
-      }
+      console.log(`✅ Role upserted: ${roleData.name}`);
     }
 
     // ============================================
@@ -263,69 +262,75 @@ async function main() {
     // ============================================
     console.log('🔑 Creating default permission definitions...');
 
+    // Permissions with i18n keys - translated on frontend
     const permissions = [
       {
         permissionKey: 'user.create',
-        permissionName: 'Create User',
-        description: 'Allows user to create new users',
-        category: 'User Management',
-        module: 'Users',
+        permissionName: 'permissions.items.user.create.name',
+        description: 'permissions.items.user.create.description',
+        category: 'permissions.categories.userManagement',
+        module: 'permissions.modules.users',
       },
       {
         permissionKey: 'user.read',
-        permissionName: 'Read User',
-        description: 'Allows user to view users',
-        category: 'User Management',
-        module: 'Users',
+        permissionName: 'permissions.items.user.read.name',
+        description: 'permissions.items.user.read.description',
+        category: 'permissions.categories.userManagement',
+        module: 'permissions.modules.users',
       },
       {
         permissionKey: 'user.update',
-        permissionName: 'Update User',
-        description: 'Allows user to update users',
-        category: 'User Management',
-        module: 'Users',
+        permissionName: 'permissions.items.user.update.name',
+        description: 'permissions.items.user.update.description',
+        category: 'permissions.categories.userManagement',
+        module: 'permissions.modules.users',
       },
       {
         permissionKey: 'user.delete',
-        permissionName: 'Delete User',
-        description: 'Allows user to delete users',
-        category: 'User Management',
-        module: 'Users',
+        permissionName: 'permissions.items.user.delete.name',
+        description: 'permissions.items.user.delete.description',
+        category: 'permissions.categories.userManagement',
+        module: 'permissions.modules.users',
       },
       {
         permissionKey: 'notification.read',
-        permissionName: 'Read Notification',
-        description: 'Allows user to view notifications',
-        category: 'Notifications',
-        module: 'Notifications',
+        permissionName: 'permissions.items.notification.read.name',
+        description: 'permissions.items.notification.read.description',
+        category: 'permissions.categories.notifications',
+        module: 'permissions.modules.notifications',
       },
       {
         permissionKey: 'notification.create',
-        permissionName: 'Create Notification',
-        description: 'Allows user to create notifications',
-        category: 'Notifications',
-        module: 'Notifications',
+        permissionName: 'permissions.items.notification.create.name',
+        description: 'permissions.items.notification.create.description',
+        category: 'permissions.categories.notifications',
+        module: 'permissions.modules.notifications',
       },
       {
         permissionKey: 'report.read',
-        permissionName: 'Read Report',
-        description: 'Allows user to view reports',
-        category: 'Reports',
-        module: 'Reports',
+        permissionName: 'permissions.items.report.read.name',
+        description: 'permissions.items.report.read.description',
+        category: 'permissions.categories.reports',
+        module: 'permissions.modules.reports',
       },
       {
         permissionKey: 'report.create',
-        permissionName: 'Create Report',
-        description: 'Allows user to create reports',
-        category: 'Reports',
-        module: 'Reports',
+        permissionName: 'permissions.items.report.create.name',
+        description: 'permissions.items.report.create.description',
+        category: 'permissions.categories.reports',
+        module: 'permissions.modules.reports',
       },
     ];
 
     for (const permData of permissions) {
       await tenantPrisma.permissionDefinition.upsert({
         where: { permissionKey: permData.permissionKey },
-        update: {},
+        update: {
+          permissionName: permData.permissionName,
+          description: permData.description,
+          category: permData.category,
+          module: permData.module,
+        },
         create: {
           ...permData,
           tenantId: realTenantId,

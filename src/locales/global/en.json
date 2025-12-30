@@ -562,7 +562,88 @@
       "riskHigh": "High Risk",
       "highRiskWarning": "This operation may lock the database and take a long time. It's recommended to run during off-peak hours in production."
     }
+  },
+  "management": {
+    "title": "Management",
+    "users": {
+      "title": "Users",
+      "description": "Manage system users"
+    },
+    "roles": {
+      "title": "Roles",
+      "description": "Manage user roles and permissions"
+    },
+    "permissions": {
+      "title": "Permissions",
+      "description": "Manage system-wide permissions and access levels"
+    }
+  },
+  "roles": {
+    "items": {
+      "superAdmin": {
+        "name": "Super Admin",
+        "description": "Has full access to all system features"
+      },
+      "agencyUser": {
+        "name": "Agency User",
+        "description": "Agency user with limited access"
+      },
+      "clientUser": {
+        "name": "Client User",
+        "description": "Client user with basic access"
+      }
+    }
+  },
+  "permissions": {
+    "categories": {
+      "userManagement": "User Management",
+      "notifications": "Notifications",
+      "reports": "Reports"
+    },
+    "modules": {
+      "users": "Users",
+      "notifications": "Notifications",
+      "reports": "Reports"
+    },
+    "items": {
+      "user": {
+        "create": {
+          "name": "Create User",
+          "description": "Allows user to create new users"
+        },
+        "read": {
+          "name": "Read User",
+          "description": "Allows user to view users"
+        },
+        "update": {
+          "name": "Update User",
+          "description": "Allows user to update users"
+        },
+        "delete": {
+          "name": "Delete User",
+          "description": "Allows user to delete users"
+        }
+      },
+      "notification": {
+        "read": {
+          "name": "Read Notification",
+          "description": "Allows user to view notifications"
+        },
+        "create": {
+          "name": "Create Notification",
+          "description": "Allows user to create notifications"
+        }
+      },
+      "report": {
+        "read": {
+          "name": "Read Report",
+          "description": "Allows user to view reports"
+        },
+        "create": {
+          "name": "Create Report",
+          "description": "Allows user to create reports"
+        }
+      }
+    }
   }
 }
-
-

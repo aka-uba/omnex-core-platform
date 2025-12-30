@@ -25,7 +25,8 @@
     "searchPlaceholder": "Search by name or key...",
     "categoryFilter": "Category",
     "moduleFilter": "Module",
-    "clearFilters": "Clear Filters"
+    "clearFilters": "Clear Filters",
+    "empty": "No permissions defined yet"
   },
   "form": {
     "permissionKey": "Permission Key",
@@ -57,9 +58,25 @@
     "scheduling": "Scheduling",
     "finance": "Finance",
     "general": "General"
+  },
+  "modules": {
+    "crm": "CRM",
+    "contentAI": "Content AI",
+    "scheduler": "Scheduler",
+    "finance": "Finance"
+  },
+  "notifications": {
+    "error": {
+      "permissionSaveFailed": "Failed to save permission",
+      "title": "Error"
+    },
+    "success": {
+      "permissionCreated": "Permission created successfully",
+      "permissionUpdated": "Permission updated successfully"
+    },
+    "validation": {
+      "requiredFields": "Please fill in required fields",
+      "title": "Validation Error"
+    }
   }
 }
-
-
-
-

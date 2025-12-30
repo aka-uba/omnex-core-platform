@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Container,
   ActionIcon,
@@ -16,8 +16,20 @@ import { PermissionsPageSkeleton } from './PermissionsPageSkeleton';
 import { PermissionModal } from './PermissionModal';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 
+// Helper function to translate i18n keys from database
+function translateKey(t: (key: string) => string, key: string): string {
+  // If key starts with 'permissions.' or 'roles.', it's an i18n key
+  if (key && (key.startsWith('permissions.') || key.startsWith('roles.'))) {
+    const translated = t(key);
+    // If translation returns the key itself, it means translation not found
+    return translated !== key ? translated : key.split('.').pop() || key;
+  }
+  return key;
+}
+
 export function PermissionsPageClient({ locale }: { locale: string }) {
   const { t } = useTranslation('modules/permissions');
+  const { t: tGlobal } = useTranslation('global');
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState<string | null>(null);
 
@@ -26,31 +38,37 @@ export function PermissionsPageClient({ locale }: { locale: string }) {
     pageSize: 1000, // DataTable handles pagination internally
   });
 
-  // Get unique categories and modules for filters
+  // Get unique categories and modules for filters with translations
   const categories = useMemo(() => {
     if (!data?.permissions) return [];
     const uniqueCategories = [...new Set(data.permissions.map(p => p.category).filter(Boolean))];
-    return uniqueCategories.map(cat => ({ value: cat, label: cat }));
-  }, [data?.permissions]);
+    return uniqueCategories.map(cat => ({
+      value: cat,
+      label: translateKey(tGlobal, cat)
+    }));
+  }, [data?.permissions, tGlobal]);
 
   const modules = useMemo(() => {
     if (!data?.permissions) return [];
     const uniqueModules = [...new Set(data.permissions.map(p => p.module).filter(Boolean))];
-    return uniqueModules.map(mod => ({ value: mod as string, label: mod as string }));
-  }, [data?.permissions]);
+    return uniqueModules.map(mod => ({
+      value: mod as string,
+      label: translateKey(tGlobal, mod as string)
+    }));
+  }, [data?.permissions, tGlobal]);
 
-  // Transform data for DataTable
+  // Transform data for DataTable with i18n translation
   const tableData = useMemo(() => {
     if (!data?.permissions) return [];
     return data.permissions.map((permission) => ({
       id: permission.id,
       permissionKey: permission.permissionKey,
-      name: permission.name,
-      description: permission.description || '',
-      category: permission.category,
-      module: permission.module || '',
+      name: translateKey(tGlobal, permission.name),
+      description: translateKey(tGlobal, permission.description || ''),
+      category: translateKey(tGlobal, permission.category),
+      module: translateKey(tGlobal, permission.module || ''),
     }));
-  }, [data?.permissions]);
+  }, [data?.permissions, tGlobal]);
 
   // DataTable columns
   const columns: DataTableColumn[] = useMemo(() => [
@@ -175,14 +193,14 @@ export function PermissionsPageClient({ locale }: { locale: string }) {
   return (
     <Container size="xl" pt="xl">
       <CentralPageHeader
-        title="title"
-        description="description"
-        namespace="modules/permissions"
+        title="management.permissions.title"
+        description="management.permissions.description"
+        namespace="global"
         icon={<IconShieldLock size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-          { label: 'title', href: `/${locale}/management/users`, namespace: 'modules/users' },
-          { label: 'title', namespace: 'modules/permissions' },
+          { label: 'management.users.title', href: `/${locale}/management/users`, namespace: 'global' },
+          { label: 'management.permissions.title', namespace: 'global' },
         ]}
         actions={[
           {

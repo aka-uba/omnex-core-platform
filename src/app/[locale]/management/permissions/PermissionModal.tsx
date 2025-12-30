@@ -101,7 +101,7 @@ export function PermissionModal({ opened, onClose, permissionId }: PermissionMod
     }
   };
 
-  // Mock categories and modules - should come from API
+  // Categories and modules from i18n
   const categories = [
     t('categories.clientManagement'),
     t('categories.contentAI'),
@@ -111,10 +111,10 @@ export function PermissionModal({ opened, onClose, permissionId }: PermissionMod
   ];
 
   const modules = [
-    'CRM',
-    'Content AI',
-    'Scheduler',
-    'Finance',
+    t('modules.crm'),
+    t('modules.contentAI'),
+    t('modules.scheduler'),
+    t('modules.finance'),
   ];
 
   return (
@@ -173,7 +173,3 @@ export function PermissionModal({ opened, onClose, permissionId }: PermissionMod
     </Modal>
   );
 }
-
-
-
-

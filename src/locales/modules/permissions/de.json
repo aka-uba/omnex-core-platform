@@ -25,7 +25,8 @@
     "searchPlaceholder": "Nach Name oder Schlüssel suchen...",
     "categoryFilter": "Kategorie",
     "moduleFilter": "Modul",
-    "clearFilters": "Filter löschen"
+    "clearFilters": "Filter löschen",
+    "empty": "Noch keine Berechtigungen definiert"
   },
   "form": {
     "permissionKey": "Berechtigungsschlüssel",
@@ -57,9 +58,25 @@
     "scheduling": "Planung",
     "finance": "Finanzen",
     "general": "Allgemein"
+  },
+  "modules": {
+    "crm": "CRM",
+    "contentAI": "Content AI",
+    "scheduler": "Planer",
+    "finance": "Finanzen"
+  },
+  "notifications": {
+    "error": {
+      "permissionSaveFailed": "Berechtigung konnte nicht gespeichert werden",
+      "title": "Fehler"
+    },
+    "success": {
+      "permissionCreated": "Berechtigung erfolgreich erstellt",
+      "permissionUpdated": "Berechtigung erfolgreich aktualisiert"
+    },
+    "validation": {
+      "requiredFields": "Bitte füllen Sie die erforderlichen Felder aus",
+      "title": "Validierungsfehler"
+    }
   }
 }
-
-
-
-

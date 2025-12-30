@@ -32,8 +32,13 @@ function getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
 }
 
-const WARNING_TIME = 60; // Show warning 60 seconds before expiry
+// Activity tracking constants
+const ACTIVITY_EVENTS = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'click'];
+const ACTIVITY_THROTTLE = 30000; // Throttle activity detection to every 30 seconds
+const TOKEN_REFRESH_THRESHOLD = 300; // Refresh token if less than 5 minutes left and user is active
+const WARNING_TIME = 60; // Show warning 60 seconds before expiry (only if inactive)
 const COUNTDOWN_INTERVAL = 1000; // Update countdown every second
+const INACTIVE_THRESHOLD = 120000; // Consider user inactive after 2 minutes
 
 export function SessionTimeoutWarning() {
     const { logout, isAuthenticated } = useAuth();
@@ -44,41 +49,85 @@ export function SessionTimeoutWarning() {
     const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasLoggedOutRef = useRef(false);
+    const lastActivityRef = useRef<number>(Date.now());
+    const lastActivityCheckRef = useRef<number>(0);
+    const isRefreshingRef = useRef(false);
 
     // Check if on auth page
     const isAuthPage = pathname?.includes('/login') ||
                        pathname?.includes('/register') ||
                        pathname?.includes('/welcome');
 
-    // Check token expiration
-    const checkTokenExpiration = useCallback(() => {
-        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current) return;
+    // Handle session expired - defined first as it has no dependencies
+    const handleSessionExpired = useCallback(() => {
+        if (hasLoggedOutRef.current) return;
+        hasLoggedOutRef.current = true;
 
-        const accessToken = getAccessToken();
-        if (!accessToken) {
-            // No token - session might have ended
-            return;
+        // Clear intervals
+        if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
+        if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+
+        setShowWarning(false);
+        logout();
+    }, [logout]);
+
+    // Silent token refresh (no UI, just extend session)
+    const silentRefreshToken = useCallback(async () => {
+        if (isRefreshingRef.current) return false;
+        isRefreshingRef.current = true;
+
+        try {
+            const refreshToken = getRefreshToken();
+            if (!refreshToken) return false;
+
+            const response = await fetch('/api/auth/refresh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refreshToken }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.data?.accessToken) {
+                    localStorage.setItem('accessToken', data.data.accessToken);
+                    return true;
+                }
+            }
+            return false;
+        } catch {
+            return false;
+        } finally {
+            isRefreshingRef.current = false;
         }
+    }, []);
 
-        const payload = decodeJWT(accessToken);
-        if (!payload?.exp) return;
+    // Track user activity
+    const handleUserActivity = useCallback(() => {
+        const now = Date.now();
+        // Throttle activity updates
+        if (now - lastActivityCheckRef.current < ACTIVITY_THROTTLE) return;
+        lastActivityCheckRef.current = now;
+        lastActivityRef.current = now;
 
-        const now = Math.floor(Date.now() / 1000);
-        const timeLeft = payload.exp - now;
-
-        // If token expired, logout immediately
-        if (timeLeft <= 0) {
-            handleSessionExpired();
-            return;
+        // If warning is showing and user is active, auto-extend session
+        if (showWarning) {
+            silentRefreshToken().then((success) => {
+                if (success) {
+                    if (countdownIntervalRef.current) {
+                        clearInterval(countdownIntervalRef.current);
+                    }
+                    setShowWarning(false);
+                    setCountdown(WARNING_TIME);
+                }
+            });
         }
+    }, [showWarning, silentRefreshToken]);
 
-        // If less than WARNING_TIME seconds left, show warning
-        if (timeLeft <= WARNING_TIME && !showWarning) {
-            setShowWarning(true);
-            setCountdown(timeLeft);
-            startCountdown(timeLeft);
-        }
-    }, [isAuthenticated, isAuthPage, showWarning]);
+    // Check if user has been active recently
+    const isUserActive = useCallback(() => {
+        const inactiveTime = Date.now() - lastActivityRef.current;
+        return inactiveTime < INACTIVE_THRESHOLD;
+    }, []);
 
     // Start countdown timer
     const startCountdown = useCallback((initialSeconds: number) => {
@@ -98,22 +147,42 @@ export function SessionTimeoutWarning() {
                 handleSessionExpired();
             }
         }, COUNTDOWN_INTERVAL);
-    }, []);
+    }, [handleSessionExpired]);
 
-    // Handle session expired
-    const handleSessionExpired = useCallback(() => {
-        if (hasLoggedOutRef.current) return;
-        hasLoggedOutRef.current = true;
+    // Check token expiration with activity awareness
+    const checkTokenExpiration = useCallback(() => {
+        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current) return;
 
-        // Clear intervals
-        if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
-        if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+        const accessToken = getAccessToken();
+        if (!accessToken) return;
 
-        setShowWarning(false);
-        logout();
-    }, [logout]);
+        const payload = decodeJWT(accessToken);
+        if (!payload?.exp) return;
 
-    // Extend session by refreshing token
+        const now = Math.floor(Date.now() / 1000);
+        const timeLeft = payload.exp - now;
+
+        // If token expired, logout immediately
+        if (timeLeft <= 0) {
+            handleSessionExpired();
+            return;
+        }
+
+        // If user is active and token is about to expire, silently refresh
+        if (timeLeft <= TOKEN_REFRESH_THRESHOLD && isUserActive()) {
+            silentRefreshToken();
+            return;
+        }
+
+        // Only show warning if user has been INACTIVE and token is about to expire
+        if (timeLeft <= WARNING_TIME && !showWarning && !isUserActive()) {
+            setShowWarning(true);
+            setCountdown(timeLeft);
+            startCountdown(timeLeft);
+        }
+    }, [isAuthenticated, isAuthPage, showWarning, isUserActive, silentRefreshToken, startCountdown, handleSessionExpired]);
+
+    // Extend session by refreshing token (manual button click)
     const handleExtendSession = async () => {
         setIsRefreshing(true);
 
@@ -147,6 +216,8 @@ export function SessionTimeoutWarning() {
                 setShowWarning(false);
                 setCountdown(WARNING_TIME);
                 hasLoggedOutRef.current = false;
+                // Reset activity timestamp
+                lastActivityRef.current = Date.now();
             } else {
                 // Refresh failed - logout
                 handleSessionExpired();
@@ -158,6 +229,23 @@ export function SessionTimeoutWarning() {
             setIsRefreshing(false);
         }
     };
+
+    // Set up activity tracking
+    useEffect(() => {
+        if (!isAuthenticated || isAuthPage) return;
+
+        // Add activity event listeners
+        const activityHandler = () => handleUserActivity();
+        ACTIVITY_EVENTS.forEach(event => {
+            window.addEventListener(event, activityHandler, { passive: true });
+        });
+
+        return () => {
+            ACTIVITY_EVENTS.forEach(event => {
+                window.removeEventListener(event, activityHandler);
+            });
+        };
+    }, [isAuthenticated, isAuthPage, handleUserActivity]);
 
     // Set up token expiration check
     useEffect(() => {
@@ -171,6 +259,8 @@ export function SessionTimeoutWarning() {
 
         // Reset logout flag when authenticated
         hasLoggedOutRef.current = false;
+        // Reset activity timestamp on mount
+        lastActivityRef.current = Date.now();
 
         // Check immediately
         checkTokenExpiration();

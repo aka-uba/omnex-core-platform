@@ -252,13 +252,13 @@ export function UsersPageClient({ locale }: { locale: string }) {
   return (
     <Container size="xl" pt="xl">
       <CentralPageHeader
-        title={t('title')}
-        description={t('description')}
-        namespace="modules/users"
+        title="management.users.title"
+        description="management.users.description"
+        namespace="global"
         icon={<IconUsers size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-          { label: 'title', namespace: 'modules/users' },
+          { label: 'management.users.title', namespace: 'global' },
         ]}
         actions={[
           {

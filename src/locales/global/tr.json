@@ -101,8 +101,26 @@
     "updatedAt": "Güncellenme Tarihi",
     "notApplicable": "Belirtilmemiş"
   },
-  "calendar": "Takvim",
-  "list": "Liste",
+  "calendar": {
+    "title": "Takvim",
+    "description": "Takvim yönetimi ve etkinlikler"
+  },
+  "list": {
+    "subscription": "subscription",
+    "raporu": {
+      "silinecek": {
+        "bu": {
+          "islem": {
+            "geri": {
+              "alinamaz": {
+                "": " raporu silinecek. Bu işlem geri alınamaz. Emin misiniz?"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "form": {
     "upload": "Yükle",
     "cancel": "İptal",
@@ -122,8 +140,23 @@
   "save": "Kaydet",
   "cancel": "İptal",
   "buttons": {
+    "refresh": "Yenile",
     "save": "Kaydet",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "view": "Görüntüle",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "submit": "Gönder",
+    "reset": "Sıfırla",
+    "close": "Kapat",
+    "confirm": "Onayla",
+    "add": "Ekle",
+    "remove": "Kaldır"
   },
   "navigation": {
     "dashboard": "Panel",
@@ -385,16 +418,16 @@
         "status": "Durum"
       },
       "form": {
-    "upload": "Yükle",
-    "cancel": "İptal",
-    "save": "Kaydet",
-    "submit": "Gönder",
-    "reset": "Sıfırla",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "close": "Kapat",
+        "upload": "Yükle",
+        "cancel": "İptal",
+        "save": "Kaydet",
+        "submit": "Gönder",
+        "reset": "Sıfırla",
+        "create": "Oluştur",
+        "update": "Güncelle",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        "close": "Kapat",
         "name": "Ad",
         "code": "Kod",
         "type": "Türü",
@@ -426,7 +459,6 @@
         "postalCodePlaceholder": "Posta kodu",
         "subAreaNamePlaceholder": "Örn: Koridor A",
         "subAreaCodePlaceholder": "Örn: KOR-A",
-        "save": "Kaydet",
         "nameRequired": "NameRequired",
         "typeRequired": "TypeRequired"
       },
@@ -544,14 +576,18 @@
     }
   },
   "management": {
+    "title": "Yönetim",
     "users": {
-      "title": "Kullanıcılar"
+      "title": "Kullanıcılar",
+      "description": "Sistem kullanıcılarını yönetin"
     },
     "roles": {
-      "title": "Roller"
+      "title": "Roller",
+      "description": "Kullanıcı rollerini ve yetkilerini yönetin"
     },
     "permissions": {
-      "title": "İzinler"
+      "title": "İzinler",
+      "description": "Sistem genelindeki izinleri ve erişim seviyelerini yönetin"
     },
     "companies": {
       "title": "Şirketler",
@@ -842,13 +878,13 @@
   },
   "layout": {
     "menu": "Menü",
-    "search": "Ara...",
+    "search": "Ara",
     "searchPlaceholder": "Ara...",
     "expandSidebar": "Kenar çubuğunu genişlet",
     "collapseSidebar": "Kenar çubuğunu daralt",
     "switchToSidebar": "Kenar Çubuğu Düzenine Geç",
     "switchToTop": "Üst Düzen'e Geç",
-    "toggleTheme": "Tema değiştir",
+    "toggleTheme": "Temayı değiştir",
     "enterFullscreen": "Tam Ekran",
     "exitFullscreen": "Tam Ekrandan Çık",
     "moreMenuItems": "Daha fazla menü öğesi",
@@ -917,8 +953,6 @@
       }
     },
     "toggleMenu": "Menüyü aç/kapat",
-    "search": "Ara",
-    "toggleTheme": "Temayı değiştir",
     "userMenu": "Kullanıcı menüsü"
   },
   "menu": {
@@ -1180,16 +1214,16 @@
       "legal": "Yasal Bilgiler"
     },
     "form": {
-    "upload": "Yükle",
-    "cancel": "İptal",
-    "save": "Kaydet",
-    "submit": "Gönder",
-    "reset": "Sıfırla",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "close": "Kapat",
+      "upload": "Yükle",
+      "cancel": "İptal",
+      "save": "Kaydet",
+      "submit": "Gönder",
+      "reset": "Sıfırla",
+      "create": "Oluştur",
+      "update": "Güncelle",
+      "delete": "Sil",
+      "edit": "Düzenle",
+      "close": "Kapat",
       "name": "Firma Adı",
       "namePlaceholder": "Firma adını girin",
       "industry": "Sektör",
@@ -1655,10 +1689,6 @@
   "create": {
     "title": "Oluştur"
   },
-  "calendar": {
-    "title": "Takvim",
-    "description": "Takvim yönetimi ve etkinlikler"
-  },
   "edit": {
     "title": "Düzenle"
   },
@@ -1965,22 +1995,6 @@
       "found": "not found"
     }
   },
-  "list": {
-    "subscription": "subscription",
-    "raporu": {
-      "silinecek": {
-        "bu": {
-          "islem": {
-            "geri": {
-              "alinamaz": {
-                "": " raporu silinecek. Bu işlem geri alınamaz. Emin misiniz?"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "labels": {
     "description": "description",
     "edit": "Düzenle",
@@ -2017,25 +2031,6 @@
       "ok": "Tamam",
       "cancel": "İptal"
     }
-  },
-  "buttons": {
-    "refresh": "Yenile",
-    "save": "Kaydet",
-    "cancel": "İptal",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "view": "Görüntüle",
-    "back": "Geri",
-    "next": "İleri",
-    "previous": "Önceki",
-    "submit": "Gönder",
-    "reset": "Sıfırla",
-    "close": "Kapat",
-    "confirm": "Onayla",
-    "add": "Ekle",
-    "remove": "Kaldır"
   },
   "licenses": {
     "dashboard": {
@@ -2220,6 +2215,74 @@
       "approveFailed": "Onaylama işlemi başarısız",
       "rejected": "Ödeme reddedildi",
       "rejectFailed": "Reddetme işlemi başarısız"
+    }
+  },
+  "roles": {
+    "items": {
+      "superAdmin": {
+        "name": "Süper Yönetici",
+        "description": "Tüm sistem özelliklerine tam erişim"
+      },
+      "agencyUser": {
+        "name": "Ajans Kullanıcısı",
+        "description": "Sınırlı erişimli ajans kullanıcısı"
+      },
+      "clientUser": {
+        "name": "Müşteri Kullanıcısı",
+        "description": "Temel erişimli müşteri kullanıcısı"
+      }
+    }
+  },
+  "permissions": {
+    "categories": {
+      "userManagement": "Kullanıcı Yönetimi",
+      "notifications": "Bildirimler",
+      "reports": "Raporlar"
+    },
+    "modules": {
+      "users": "Kullanıcılar",
+      "notifications": "Bildirimler",
+      "reports": "Raporlar"
+    },
+    "items": {
+      "user": {
+        "create": {
+          "name": "Kullanıcı Oluştur",
+          "description": "Yeni kullanıcı oluşturma izni"
+        },
+        "read": {
+          "name": "Kullanıcı Görüntüle",
+          "description": "Kullanıcıları görüntüleme izni"
+        },
+        "update": {
+          "name": "Kullanıcı Güncelle",
+          "description": "Kullanıcıları güncelleme izni"
+        },
+        "delete": {
+          "name": "Kullanıcı Sil",
+          "description": "Kullanıcıları silme izni"
+        }
+      },
+      "notification": {
+        "read": {
+          "name": "Bildirim Görüntüle",
+          "description": "Bildirimleri görüntüleme izni"
+        },
+        "create": {
+          "name": "Bildirim Oluştur",
+          "description": "Bildirim oluşturma izni"
+        }
+      },
+      "report": {
+        "read": {
+          "name": "Rapor Görüntüle",
+          "description": "Raporları görüntüleme izni"
+        },
+        "create": {
+          "name": "Rapor Oluştur",
+          "description": "Rapor oluşturma izni"
+        }
+      }
     }
   }
 }
