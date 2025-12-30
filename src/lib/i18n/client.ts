@@ -6,14 +6,15 @@ import { Locale, defaultLocale } from './config';
 
 type TranslationObject = Record<string, any>;
 
-// Cache for loaded translations
+// Cache for loaded translations - disabled in dev mode to ensure fresh translations
 const translationCache: Record<string, TranslationObject> = {};
+const isDev = process.env.NODE_ENV === 'development';
 
 function loadTranslation(namespace: string, locale: Locale): TranslationObject {
     const cacheKey = `${namespace}:${locale}`;
-    
-    // Return cached translation if available
-    if (translationCache[cacheKey]) {
+
+    // Return cached translation if available (skip cache in dev mode)
+    if (!isDev && translationCache[cacheKey]) {
         return translationCache[cacheKey];
     }
 
