@@ -5,7 +5,6 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { realEstateMaintenanceRecordUpdateSchema } from '@/modules/real-estate/schemas/maintenance-record.schema';
 import { Prisma } from '@prisma/tenant-client';
-import { z } from 'zod';
 
 // GET /api/real-estate/maintenance/[id] - Get single maintenance record
 export async function GET(
@@ -80,10 +79,13 @@ export async function PATCH(
           return errorResponse('Record not found', 'Maintenance record not found', 404);
         }
 
-        // Note: withTenant already provides tenant isolation via per-tenant database
-
         // Validate input
-        const validatedData = realEstateMaintenanceRecordUpdateSchema.parse(body);
+        const validationResult = realEstateMaintenanceRecordUpdateSchema.safeParse(body);
+        if (!validationResult.success) {
+          const firstError = validationResult.error.issues[0];
+          return errorResponse('Validation error', firstError?.message || 'Invalid input', 400);
+        }
+        const validatedData = validationResult.data;
 
         // Update record
         const record = await tenantPrisma.realEstateMaintenanceRecord.update({
@@ -119,11 +121,6 @@ export async function PATCH(
 
         return successResponse({ record });
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          const firstError = error.issues[0];
-          return errorResponse('Validation error', firstError?.message || 'Invalid input', 400);
-        }
-        console.error('Error updating maintenance record:', error);
         return errorResponse(
           'Failed to update maintenance record',
           error instanceof Error ? error.message : 'Unknown error',

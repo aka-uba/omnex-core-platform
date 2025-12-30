@@ -170,29 +170,43 @@ export function ApartmentMaintenanceTab({
     }
 
     try {
-      const payload: MaintenanceRecordCreateInput = {
-        apartmentId,
-        type: formData.type,
-        title: formData.title,
-        description: formData.description || null,
-        status: formData.status,
-        scheduledDate: formData.scheduledDate.toISOString(),
-        startDate: formData.startDate?.toISOString() || null,
-        endDate: formData.endDate?.toISOString() || null,
-        assignedStaffId: formData.assignedStaffId || null,
-        estimatedCost: formData.estimatedCost || null,
-        actualCost: formData.actualCost || null,
-        notes: formData.notes || null,
-      };
-
       if (editingRecord) {
-        await updateMutation.mutateAsync({ id: editingRecord.id, ...payload });
+        // For update, don't include apartmentId (it can't change)
+        await updateMutation.mutateAsync({
+          id: editingRecord.id,
+          type: formData.type,
+          title: formData.title,
+          description: formData.description || null,
+          status: formData.status,
+          scheduledDate: formData.scheduledDate.toISOString(),
+          startDate: formData.startDate?.toISOString() || null,
+          endDate: formData.endDate?.toISOString() || null,
+          assignedStaffId: formData.assignedStaffId || null,
+          estimatedCost: formData.estimatedCost || null,
+          actualCost: formData.actualCost || null,
+          notes: formData.notes || null,
+        });
         showToast({
           type: 'success',
           title: t('common.success'),
           message: t('maintenance.updated'),
         });
       } else {
+        // For create, include apartmentId
+        const payload: MaintenanceRecordCreateInput = {
+          apartmentId,
+          type: formData.type,
+          title: formData.title,
+          description: formData.description || null,
+          status: formData.status,
+          scheduledDate: formData.scheduledDate.toISOString(),
+          startDate: formData.startDate?.toISOString() || null,
+          endDate: formData.endDate?.toISOString() || null,
+          assignedStaffId: formData.assignedStaffId || null,
+          estimatedCost: formData.estimatedCost || null,
+          actualCost: formData.actualCost || null,
+          notes: formData.notes || null,
+        };
         await createMutation.mutateAsync(payload);
         showToast({
           type: 'success',

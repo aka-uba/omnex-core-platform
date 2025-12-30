@@ -153,7 +153,7 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
                             <MantineThemeWrapper>
                                 <DatesProviderWrapper>
                                     <ModalsProvider modalProps={{ centered: true }}>
-                                        <Notifications position="top-center" />
+                                        <Notifications position="top-center" zIndex={10000} />
                                         <ExportProvider>
                                             <CompanyProvider>
                                                 <DynamicHeadMetaWithCompany />
