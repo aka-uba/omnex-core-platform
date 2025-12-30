@@ -27,13 +27,14 @@ jobs:
           port: 2222
           command_timeout: 15m
           script: |
-            cd /opt/omnex
+            cd /opt/omnex/deploy
             echo "Starting deployment at $(date)"
 
             # Pull latest code
-            git pull origin main
+            cd /opt/omnex && git pull origin main
 
             # Build and restart app container only
+            cd /opt/omnex/deploy
             docker compose build --no-cache app
             docker compose up -d app
 
