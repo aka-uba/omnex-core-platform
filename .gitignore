@@ -73,3 +73,22 @@ node_modules/.prisma/**/*.tmp
 
 # Windows reserved filenames
 nul
+
+# Deploy folder (server-specific configs)
+/deploy/
+
+# Temp folder (local backups)
+/temp/
+
+# Downloaded packages
+*.tgz
+
+# Screenshots and images
+*.jpg
+*.jpeg
+!public/**/*.jpg
+!public/**/*.jpeg
+
+# Public uploads (user generated)
+/public/uploads/
+/public/storage/

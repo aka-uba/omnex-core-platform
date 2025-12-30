@@ -90,10 +90,11 @@ async function getSecuritySummary() {
 
   // CVE-2025-55182 affects Next.js < 16.0.10, < 15.5.9, etc.
   let nextSecure = false;
-  if (nextMajor === 16 && nextMinor === 0 && nextPatch >= 10) nextSecure = true;
+  if (nextMajor === 16 && nextMinor === 0 && nextPatch >= 10) nextSecure = true;  // 16.0.10+
+  if (nextMajor === 16 && nextMinor >= 1) nextSecure = true;  // 16.1.0+
   if (nextMajor === 15 && nextMinor === 5 && nextPatch >= 9) nextSecure = true;
   if (nextMajor === 15 && nextMinor === 4 && nextPatch >= 10) nextSecure = true;
-  if (nextMajor > 16) nextSecure = true;
+  if (nextMajor > 16) nextSecure = true;  // 17+
 
   checks.push({
     id: 'nextjs-version',
@@ -113,10 +114,11 @@ async function getSecuritySummary() {
 
   // React 19.2.3+ is safe
   let reactSecure = false;
-  if (reactMajor === 19 && reactMinor === 2 && reactPatch >= 3) reactSecure = true;
+  if (reactMajor === 19 && reactMinor === 2 && reactPatch >= 3) reactSecure = true;  // 19.2.3+
+  if (reactMajor === 19 && reactMinor > 2) reactSecure = true;  // 19.3.0+
   if (reactMajor === 19 && reactMinor === 1 && reactPatch >= 4) reactSecure = true;
   if (reactMajor === 19 && reactMinor === 0 && reactPatch >= 3) reactSecure = true;
-  if (reactMajor > 19) reactSecure = true;
+  if (reactMajor > 19) reactSecure = true;  // 20+
 
   checks.push({
     id: 'react-version',

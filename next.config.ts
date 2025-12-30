@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Docker deployment - standalone output
+  output: 'standalone',
   // Skip TypeScript errors during production builds
   typescript: {
     ignoreBuildErrors: true,
