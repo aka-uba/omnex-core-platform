@@ -208,14 +208,19 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     { value: 'Frau', label: t('tenantForm.salutationMs') || 'Ms.' },
   ];
 
-  // Group apartments by property name - with safe filtering
-  const apartmentOptions = (apartmentsData?.apartments ?? [])
-    .filter((apt): apt is NonNullable<typeof apt> => apt != null && apt.id != null)
-    .map((apt) => ({
-      value: apt.id,
-      label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber || ''}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
-      group: apt.property?.name || t('form.unknownProperty'),
-    }));
+  // Apartment options for select - simple array without grouping
+  const apartments = apartmentsData?.apartments;
+  const apartmentOptions: { value: string; label: string }[] = [];
+  if (Array.isArray(apartments)) {
+    for (const apt of apartments) {
+      if (apt && apt.id) {
+        apartmentOptions.push({
+          value: apt.id,
+          label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber || ''}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
+        });
+      }
+    }
+  }
 
   return (
     <Paper shadow="xs" p="md">
