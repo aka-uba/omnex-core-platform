@@ -54,24 +54,28 @@
   --interactive-dark: #253341;
 
   /* ============================================
-     Toast Notification Colors - Light Mode
+     Toast Notification Colors - Light Mode (Vibrant)
      ============================================ */
-  --toast-info-bg: #e7f5ff;
-  --toast-info-border: #339af0;
-  --toast-info-text: #1864ab;
-  --toast-info-icon: #1c7ed6;
-  --toast-success-bg: #d1fae5;
-  --toast-success-border: #10b981;
-  --toast-success-text: #065f46;
-  --toast-success-icon: #087f5b;
-  --toast-warning-bg: #fef3c7;
-  --toast-warning-border: #f59e0b;
-  --toast-warning-text: #92400e;
-  --toast-warning-icon: #d97706;
-  --toast-error-bg: #fee2e2;
-  --toast-error-border: #ef4444;
-  --toast-error-text: #991b1b;
-  --toast-error-icon: #dc2626;
+  --toast-info-bg: #0ea5e9;
+  --toast-info-border: #0284c7;
+  --toast-info-text: #ffffff;
+  --toast-info-icon: #1a1a1a;
+  --toast-info-icon-bg: #ffffff;
+  --toast-success-bg: #22c55e;
+  --toast-success-border: #16a34a;
+  --toast-success-text: #ffffff;
+  --toast-success-icon: #1a1a1a;
+  --toast-success-icon-bg: #ffffff;
+  --toast-warning-bg: #f59e0b;
+  --toast-warning-border: #d97706;
+  --toast-warning-text: #1a1a1a;
+  --toast-warning-icon: #1a1a1a;
+  --toast-warning-icon-bg: #ffffff;
+  --toast-error-bg: #ef4444;
+  --toast-error-border: #dc2626;
+  --toast-error-text: #ffffff;
+  --toast-error-icon: #1a1a1a;
+  --toast-error-icon-bg: #ffffff;
 
   /* ============================================
      Spacing Scale
@@ -154,18 +158,22 @@
   --toast-info-border: #339af0;
   --toast-info-text: #a5d8ff;
   --toast-info-icon: #74c0fc;
+  --toast-info-icon-bg: transparent;
   --toast-success-bg: rgba(16, 185, 129, 0.15);
   --toast-success-border: #10b981;
   --toast-success-text: #6ee7b7;
   --toast-success-icon: #6ee7b7;
+  --toast-success-icon-bg: transparent;
   --toast-warning-bg: rgba(245, 158, 11, 0.15);
   --toast-warning-border: #f59e0b;
   --toast-warning-text: #fcd34d;
   --toast-warning-icon: #fcd34d;
+  --toast-warning-icon-bg: transparent;
   --toast-error-bg: rgba(239, 68, 68, 0.15);
   --toast-error-border: #ef4444;
   --toast-error-text: #fca5a5;
   --toast-error-icon: #fca5a5;
+  --toast-error-icon-bg: transparent;
 
   /* ============================================
      Shadows - Dark Mode

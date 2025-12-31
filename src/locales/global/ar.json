@@ -1,4 +1,22 @@
 {
+  "success": "نجاح",
+  "error": "خطأ",
+  "warning": "تحذير",
+  "info": "معلومات",
+  "notifications": {
+    "success": {
+      "title": "نجاح"
+    },
+    "error": {
+      "title": "خطأ"
+    },
+    "warning": {
+      "title": "تحذير"
+    },
+    "info": {
+      "title": "معلومات"
+    }
+  },
   "management": {
     "title": "الإدارة",
     "users": {

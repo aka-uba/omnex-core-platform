@@ -190,15 +190,14 @@ export function DynamicFooter({ locale = 'tr' }: DynamicFooterProps) {
                 borderTop: '1px solid var(--border-color)',
             }}
         >
-            <Container 
-                size="xl"
+            <Container
+                fluid
                 className="dynamic-footer-container"
-                style={{ 
-                    paddingInlineStart: '10px', 
-                    paddingInlineEnd: '30px', 
-                    paddingTop: 'inherit', 
+                style={{
+                    paddingInlineStart: '10px',
+                    paddingInlineEnd: '30px',
+                    paddingTop: 'inherit',
                     paddingBottom: 'inherit',
-                    maxWidth: '100%',
                     overflow: 'hidden',
                 }}
             >

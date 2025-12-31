@@ -1,4 +1,22 @@
 {
+  "success": "Erfolg",
+  "error": "Fehler",
+  "warning": "Warnung",
+  "info": "Information",
+  "notifications": {
+    "success": {
+      "title": "Erfolg"
+    },
+    "error": {
+      "title": "Fehler"
+    },
+    "warning": {
+      "title": "Warnung"
+    },
+    "info": {
+      "title": "Info"
+    }
+  },
   "management": {
     "title": "Verwaltung",
     "users": {

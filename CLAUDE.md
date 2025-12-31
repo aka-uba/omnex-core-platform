@@ -419,7 +419,50 @@ await exportData(data, { format: 'pdf', includeHeader: true });
 - Excel: Hücre birleştirme ile kolon span
 - Word: Table layout ile grid yapısı
 
-### 4.5 Session Timeout Sistemi
+### 4.5 Toast Bildirim Sistemi
+**Dosyalar**:
+- `src/hooks/useNotification.tsx` - Merkezi bildirim hook'u
+- `src/modules/notifications/components/ToastNotification.tsx` - Toast bileşeni
+- `src/styles/_tokens.css` - Toast renk değişkenleri
+
+**Kullanım:**
+```typescript
+import { useNotification } from '@/hooks/useNotification';
+
+const { showSuccess, showError, showWarning, showInfo, showConfirm } = useNotification();
+
+// Tek parametre - sadece mesaj (başlık global çeviriden gelir)
+showSuccess('Kayıt başarıyla oluşturuldu');
+showError('Bir hata oluştu');
+
+// İki parametre - geriye uyumlu (ilk parametre göz ardı edilir)
+showSuccess('Eski başlık', 'Mesaj içeriği');
+```
+
+**Başlıklar:**
+Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
+- `notifications.success.title` → "Başarılı"
+- `notifications.error.title` → "Hata"
+- `notifications.warning.title` → "Uyarı"
+- `notifications.info.title` → "Bilgi"
+
+**CSS Değişkenleri (Light Mode):**
+```css
+--toast-info-bg: #228be6;
+--toast-success-bg: #12b886;
+--toast-warning-bg: #fab005;
+--toast-error-bg: #fa5252;
+--toast-{type}-icon-bg: #ffffff;  /* Beyaz oval ikon arka planı */
+--toast-{type}-icon: #1a1a1a;     /* Siyah ikon */
+```
+
+**Dark Mode:**
+```css
+--toast-{type}-icon-bg: transparent;  /* Şeffaf arka plan */
+--toast-{type}-icon: currentColor;    /* Miras alınan renk */
+```
+
+### 4.7 Session Timeout Sistemi
 **Dosya**: `src/components/providers/SessionTimeoutProvider.tsx`
 
 **Özellikler:**
@@ -434,7 +477,7 @@ await exportData(data, { format: 'pdf', includeHeader: true });
 - `session.timeoutWarning.extend`
 - `session.timeoutWarning.logout`
 
-### 4.6 Layout Sistemi
+### 4.8 Layout Sistemi
 **Dosya**: `src/components/layouts/`
 
 **Layout Tipleri:**
@@ -590,8 +633,8 @@ const { items, loading } = useItems();
 - **YANLIŞ**: Kendi tablo tasarımı oluşturmak
 - **DOĞRU**: `DataTable` bileşenini kullanmak
 
-- **YANLIŞ**: Mantine notifications kullanmak
-- **DOĞRU**: `AlertModal` kullanmak
+- **YANLIŞ**: Doğrudan Mantine notifications kullanmak
+- **DOĞRU**: `useNotification` hook'unu kullanmak (toast için), `AlertModal` kullanmak (onay için)
 
 - **YANLIŞ**: Paper içinde Paper kullanmak
 - **DOĞRU**: Tek Paper, içinde Tabs
@@ -630,6 +673,7 @@ Yeni sayfa/özellik eklerken:
 |------|-------|
 | Merkezi Tablo | `src/components/tables/DataTable.tsx` |
 | Merkezi Modal | `src/components/modals/AlertModal.tsx` |
+| Toast Bildirim | `src/hooks/useNotification.tsx` |
 | Sayfa Header | `src/components/headers/CentralPageHeader.tsx` |
 | Skeleton'lar | `src/components/skeletons/` |
 | API withTenant | `src/lib/api/withTenant.ts` |

@@ -21,6 +21,19 @@
 .toastIcon {
   flex-shrink: 0;
   margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+[data-mantine-color-scheme="dark"] .toastIcon {
+  background-color: transparent;
+  color: inherit;
 }
 
 .toastText {

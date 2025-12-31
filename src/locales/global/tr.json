@@ -1,4 +1,8 @@
 {
+  "success": "Başarılı",
+  "error": "Hata",
+  "warning": "Uyarı",
+  "info": "Bilgi",
   "common": {
     "actions": {
       "save": "Kaydet",
@@ -768,6 +772,12 @@
       "roleSaveFailed": "Rol kaydedilemedi",
       "permissionSaveFailed": "İzin kaydedilemedi",
       "generic": "Bir hata oluştu"
+    },
+    "warning": {
+      "title": "Uyarı"
+    },
+    "info": {
+      "title": "Bilgi"
     },
     "validation": {
       "title": "Doğrulama Hatası",
@@ -1566,7 +1576,9 @@
       "nextStep": "Sonraki Adıma Geç →",
       "resetStep": "Adımı Sıfırla",
       "autoAdvance": "Otomatik ilerle",
-      "clearLogs": "Logları Temizle"
+      "clearLogs": "Logları Temizle",
+      "success": "Başarılı",
+      "error": "Hata"
     },
     "logs": {
       "title": "Loglar",

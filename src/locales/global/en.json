@@ -1,4 +1,8 @@
 {
+  "success": "Success",
+  "error": "Error",
+  "warning": "Warning",
+  "info": "Information",
   "buttons": {
     "save": "Save",
     "cancel": "Cancel",
@@ -179,6 +183,12 @@
       "title": "Error",
       "generic": "An error occurred",
       "statusUpdateFailed": "Failed to update status"
+    },
+    "warning": {
+      "title": "Warning"
+    },
+    "info": {
+      "title": "Info"
     }
   },
   "modal": {

@@ -135,10 +135,10 @@ export function showToast({
     title,
     message,
     color: type === 'error' ? 'red' : type === 'success' ? 'green' : type === 'warning' ? 'yellow' : 'blue',
-    icon: type === 'success' ? <IconCheck size={20} /> :
-          type === 'error' ? <IconX size={20} /> :
-          type === 'warning' ? <IconAlertTriangle size={20} /> :
-          <IconInfoCircle size={20} />,
+    icon: type === 'success' ? <IconCheck size={18} /> :
+          type === 'error' ? <IconX size={18} /> :
+          type === 'warning' ? <IconAlertTriangle size={18} /> :
+          <IconInfoCircle size={18} />,
     autoClose: duration,
     withCloseButton: true,
     styles: {
@@ -156,6 +156,13 @@ export function showToast({
         opacity: 0.85,
       },
       icon: {
+        backgroundColor: `var(--toast-${type}-icon-bg)`,
+        borderRadius: '50%',
+        width: '32px',
+        height: '32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         color: `var(--toast-${type}-icon)`,
       },
       closeButton: {

@@ -4,45 +4,51 @@ import { useCallback } from 'react';
 
 import { modals } from '@mantine/modals';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import { useTranslation } from '@/lib/i18n/client';
 
 export function useNotification() {
-  const showSuccess = useCallback((title: string, message: string) => {
+  const { t } = useTranslation('global');
+
+  // Geriye uyumlu API - tek parametre verilirse mesaj, iki parametre verilirse eski title göz ardı edilir
+  // Yeni kullanım: showSuccess('Mesaj')
+  // Eski kullanım: showSuccess('Başlık', 'Mesaj') - hala çalışır, başlık merkezi çeviriden gelir
+  const showSuccess = useCallback((messageOrTitle: string, message?: string) => {
     showToast({
       type: 'success',
-      title,
-      message,
+      title: t('notifications.success.title'),
+      message: message || messageOrTitle,
     });
-  }, []);
+  }, [t]);
 
-  const showError = useCallback((title: string, message: string) => {
+  const showError = useCallback((messageOrTitle: string, message?: string) => {
     showToast({
       type: 'error',
-      title,
-      message,
+      title: t('notifications.error.title'),
+      message: message || messageOrTitle,
     });
-  }, []);
+  }, [t]);
 
-  const showWarning = useCallback((title: string, message: string) => {
+  const showWarning = useCallback((messageOrTitle: string, message?: string) => {
     showToast({
       type: 'warning',
-      title,
-      message,
+      title: t('notifications.warning.title'),
+      message: message || messageOrTitle,
     });
-  }, []);
+  }, [t]);
 
-  const showInfo = useCallback((title: string, message: string) => {
+  const showInfo = useCallback((messageOrTitle: string, message?: string) => {
     showToast({
       type: 'info',
-      title,
-      message,
+      title: t('notifications.info.title'),
+      message: message || messageOrTitle,
     });
-  }, []);
+  }, [t]);
 
   const showConfirm = useCallback((title: string, message: string, onConfirm: () => void) => {
     modals.openConfirmModal({
       title,
       children: message,
-      labels: { confirm: 'Onayla', cancel: 'İptal' },
+      labels: { confirm: t('common.actions.confirm'), cancel: t('common.actions.cancel') },
       confirmProps: { color: 'red' },
       onConfirm,
       size: 'md',
@@ -69,7 +75,7 @@ export function useNotification() {
         },
       },
     });
-  }, []);
+  }, [t]);
 
   return {
     showSuccess,
@@ -79,6 +85,3 @@ export function useNotification() {
     showConfirm,
   };
 }
-
-
-

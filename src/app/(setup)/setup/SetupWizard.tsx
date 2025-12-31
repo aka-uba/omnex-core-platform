@@ -393,7 +393,7 @@ export function SetupWizard() {
       addLog(t('setup.messages.stepCompleted'));
       showToast({
         type: 'success',
-        title: t('actions.success'),
+        title: t('setup.actions.success'),
         message: `${STEPS[step]?.label || t('setup.steps.unknown')} ${t('setup.status.completed')}`,
       });
 
@@ -419,7 +419,7 @@ export function SetupWizard() {
       addLog(t('setup.messages.stepFailed'));
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: `${STEPS[step]?.label || t('setup.steps.unknown')} ${t('setup.status.error')}: ${errorMessage}`,
       });
     } finally {
@@ -553,7 +553,7 @@ export function SetupWizard() {
       const status = stepStatuses[index];
       report += `${index + 1}. ${step.label}\n`;
       report += `   Açıklama: ${step.description}\n`;
-      report += `   Durum: ${status?.status === 'success' ? t('actions.success') : status?.status === 'error' ? t('actions.error') : status?.status === 'running' ? 'Çalışıyor' : t('metrics.pending')}\n`;
+      report += `   Durum: ${status?.status === 'success' ? t('setup.actions.success') : status?.status === 'error' ? t('setup.actions.error') : status?.status === 'running' ? 'Çalışıyor' : t('metrics.pending')}\n`;
       if (status?.message) {
         report += `   Mesaj: ${status?.message}\n`;
       }
@@ -628,14 +628,14 @@ export function SetupWizard() {
 
       showToast({
         type: 'success',
-        title: t('actions.success'),
+        title: t('setup.actions.success'),
         message: `${type === 'both' ? t('common.labels.all') : type === 'core' ? 'Core' : 'Tenant'} ${t('setup.messages.databaseResetSuccess')}`,
       });
       addLog(`${type === 'both' ? t('common.labels.all') : type === 'core' ? 'Core' : 'Tenant'} ${t('setup.messages.databaseResetComplete')}`);
     } catch (error: any) {
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: t('setup.messages.resetFailed'),
       });
     } finally {
@@ -675,7 +675,7 @@ export function SetupWizard() {
       console.error('Error loading demo modules:', error);
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: 'Demo modülleri yüklenemedi',
       });
     } finally {
@@ -722,7 +722,7 @@ export function SetupWizard() {
         const count = demoModalMode === 'seed' ? result.data.totalCreated : result.data.totalDeleted;
         showToast({
           type: 'success',
-          title: t('actions.success'),
+          title: t('setup.actions.success'),
           message: demoModalMode === 'seed'
             ? `${count} demo kayıt başarıyla eklendi`
             : `${count} demo kayıt başarıyla silindi`,
@@ -749,7 +749,7 @@ export function SetupWizard() {
     } catch (error: unknown) {
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: error instanceof Error ? error.message : 'Beklenmeyen bir hata oluştu',
       });
       addLog(`Demo işlem hatası: ${error instanceof Error ? error.message : 'Bilinmeyen hata'}`);
@@ -807,7 +807,7 @@ export function SetupWizard() {
         setGeneratedScripts(result.data);
         showToast({
           type: 'success',
-          title: t('actions.success'),
+          title: t('setup.actions.success'),
           message: 'Deploy scriptleri başarıyla oluşturuldu',
         });
       }
@@ -815,7 +815,7 @@ export function SetupWizard() {
       console.error('Error generating scripts:', error);
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: 'Script oluşturma başarısız',
       });
     } finally {
@@ -853,7 +853,7 @@ export function SetupWizard() {
         addLog('SSH bağlantı testi başarılı');
         showToast({
           type: 'success',
-          title: t('actions.success'),
+          title: t('setup.actions.success'),
           message: 'SSH bağlantısı başarılı',
         });
       } else {
@@ -864,7 +864,7 @@ export function SetupWizard() {
       addLog(`SSH bağlantı hatası: ${error instanceof Error ? error.message : 'Bilinmeyen hata'}`);
       showToast({
         type: 'error',
-        title: t('actions.error'),
+        title: t('setup.actions.error'),
         message: error instanceof Error ? error.message : 'Bağlantı başarısız',
       });
     } finally {
@@ -1179,7 +1179,7 @@ export function SetupWizard() {
             </Title>
             
             {stepStatuses[activeStep]?.status === 'error' && (
-              <Alert icon={<IconAlertCircle size={18} className="tabler-icon tabler-icon-alert-circle" />} title={t('actions.error')} color="red" mb="md" radius="md">
+              <Alert icon={<IconAlertCircle size={18} className="tabler-icon tabler-icon-alert-circle" />} title={t('setup.actions.error')} color="red" mb="md" radius="md">
                 <p>{stepStatuses[activeStep]?.error}</p>
                 {stepStatuses[activeStep]?.solution && (
                       <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>
@@ -1190,7 +1190,7 @@ export function SetupWizard() {
                 )}
             
             {stepStatuses[activeStep]?.status === 'success' && (
-              <Alert icon={<IconCheck size={18} className="tabler-icon tabler-icon-check" />} title={t('actions.success')} color="green" mb="md" radius="md">
+              <Alert icon={<IconCheck size={18} className="tabler-icon tabler-icon-check" />} title={t('setup.actions.success')} color="green" mb="md" radius="md">
                 {stepStatuses[activeStep]?.message}
                   </Alert>
                 )}
@@ -1839,7 +1839,7 @@ export function SetupWizard() {
         keepMounted={false}
       >
         <Stack gap="md">
-          <Alert icon={<IconCheck size={18} className="tabler-icon tabler-icon-check" />} title={t('actions.success')} color="green">
+          <Alert icon={<IconCheck size={18} className="tabler-icon tabler-icon-check" />} title={t('setup.actions.success')} color="green">
             {t('setup.completion.message')}
           </Alert>
           
