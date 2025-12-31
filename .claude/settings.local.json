@@ -125,7 +125,19 @@
       "Bash(dir \"C:\\xampp\\htdocs\\omnex-core-platform\\docs\")",
       "Bash(node:*)",
       "Bash(dir /b \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\locales\\modules\")",
-      "Bash(dir \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\locales\\modules\\export-templates\")"
+      "Bash(dir \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\locales\\modules\\export-templates\")",
+      "Bash(for file in /c/xampp/htdocs/omnex-core-platform/src/app/[locale]/modules/accounting/{expenses,invoices,subscriptions}/[id]/*DetailPageClient.tsx /c/xampp/htdocs/omnex-core-platform/src/app/[locale]/modules/hr/employees/[id]/*DetailPageClient.tsx /c/xampp/htdocs/omnex-core-platform/src/app/[locale]/modules/production/{orders,products}/[id]/*DetailPageClient.tsx)",
+      "Bash(do if [ -f $file ])",
+      "Bash(then echo '=== $(basename $file) ===' grep -A 8 actions=[ $file)",
+      "Bash(__NEW_LINE__ cd \"C:/xampp/htdocs/omnex-core-platform\" echo \"=== Files with ListPageSkeleton ===\" find \"src/app\" -name \"*PageClient.tsx\" -exec grep -l \"ListPageSkeleton\" {})",
+      "Bash(echo \"=== Files with DetailPageSkeleton ===\" find \"src/app\" -name \"*PageClient.tsx\" -exec grep -l \"DetailPageSkeleton\" {})",
+      "Bash(echo \"=== Files with FormPageSkeleton ===\" find \"src/app\" -name \"*PageClient.tsx\" -exec grep -l \"FormPageSkeleton\" {})",
+      "Bash(echo \"=== Files with custom PageSkeleton ===\" find \"src/app\" -name \"*PageClient.tsx\" -exec grep -l \"PageSkeleton\" {})",
+      "Bash(echo \"=== Files with LoadingOverlay ===\" find \"src/app\" -name \"*PageClient.tsx\" -exec grep -l \"LoadingOverlay\" {})",
+      "Bash(__NEW_LINE__ find \"C:/xampp/htdocs/omnex-core-platform/src/app\" -name \"*PageClient.tsx\" -type f)",
+      "Bash(while read file)",
+      "Bash(do grep -q \"ListPageSkeleton\" \"$file\")",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
