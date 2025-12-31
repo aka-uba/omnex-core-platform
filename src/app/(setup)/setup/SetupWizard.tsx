@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Fragment, useCallback } from 'react';
 import { Paper, Button, Group, TextInput, Textarea, Alert, Progress, Code, Badge, Checkbox, Modal, Stack, Title, Text, Card, Box, Loader, ScrollArea, Divider, ThemeIcon, Tabs, PasswordInput, NumberInput, Select, CopyButton, ActionIcon, Tooltip, Collapse } from '@mantine/core';
-import { IconCheck, IconX, IconAlertCircle, IconRefresh, IconDownload, IconDatabase, IconTrash, IconServer, IconRocket, IconTerminal, IconBrandGithub, IconCopy, IconSettings, IconKey, IconWorld, IconChevronDown, IconChevronUp, IconFileCode, IconNetwork, IconShieldCheck, IconShieldExclamation, IconPackage } from '@tabler/icons-react';
+import { IconCheck, IconX, IconAlertCircle, IconRefresh, IconDownload, IconDatabase, IconTrash, IconServer, IconRocket, IconTerminal, IconBrandGithub, IconCopy, IconSettings, IconKey, IconWorld, IconChevronDown, IconChevronUp, IconFileCode, IconNetwork, IconShieldCheck } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useTranslation } from '@/lib/i18n/client';
 import { SecurityAudit as SecurityAuditPanel } from './SecurityAudit';

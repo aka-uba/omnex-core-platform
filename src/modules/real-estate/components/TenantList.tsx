@@ -15,7 +15,6 @@ import {
   IconEdit,
   IconTrash,
   IconEye,
-  IconUser,
   IconBuilding,
 } from '@tabler/icons-react';
 import { useTenants, useDeleteTenant } from '@/hooks/useTenants';
@@ -143,13 +142,6 @@ export function TenantList({ locale }: TenantListProps) {
       </Avatar>
     );
   }, []);
-
-  const renderTenantNumber = useCallback((value: string) => (
-    <Group gap="xs">
-      <IconUser size={16} />
-      <Text fw={500}>{value}</Text>
-    </Group>
-  ), []);
 
   const renderStatus = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
 

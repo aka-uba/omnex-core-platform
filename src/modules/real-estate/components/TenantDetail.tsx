@@ -755,7 +755,6 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
               },
             ]}
             data={tenant.contracts || []}
-            loading={false}
             searchable={true}
             sortable={true}
             pageable={true}
@@ -763,9 +762,6 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
             pageSizeOptions={[5, 10, 25]}
             emptyMessage={t('messages.noContracts')}
             showColumnSettings={false}
-            mobileCardView={true}
-            mobileCardTitle={(row: Record<string, any>) => row.contractNumber}
-            mobileCardSubtitle={(row: Record<string, any>) => `${t(`types.${row.type}`) || row.type} - ${t(`contracts.status.${row.status}`) || row.status}`}
             onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/contracts/${row.id}`)}
           />
         </Tabs.Panel>
@@ -864,7 +860,6 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
               },
             ]}
             data={tenant.payments || []}
-            loading={false}
             searchable={true}
             sortable={true}
             pageable={true}
@@ -872,9 +867,6 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
             pageSizeOptions={[5, 10, 25]}
             emptyMessage={t('messages.noPayments')}
             showColumnSettings={false}
-            mobileCardView={true}
-            mobileCardTitle={(row: Record<string, any>) => Number(row.amount).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}
-            mobileCardSubtitle={(row: Record<string, any>) => `${t(`payments.types.${row.type}`) || row.type} - ${t(`payments.status.${row.status}`) || row.status}`}
             onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/payments/${row.id}`)}
           />
         </Tabs.Panel>

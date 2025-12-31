@@ -91,7 +91,6 @@ export function CentralPageHeader({
     // Determine icon size for mobile
     const mobileIconSize = 24;
     const desktopIconSize = iconHeight || 32;
-    const currentIconSize = isMobile ? mobileIconSize : desktopIconSize;
 
     // Mobile layout: 3 rows (icon+title, description, buttons)
     // Desktop layout: single row with icon+title+description on left, buttons on right

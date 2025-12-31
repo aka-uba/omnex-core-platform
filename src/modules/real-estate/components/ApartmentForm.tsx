@@ -131,8 +131,9 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
         } as any);
 
         // Load usage rights from apartment data
-        if (apartmentData.usageRights && Array.isArray(apartmentData.usageRights)) {
-          setUsageRights(apartmentData.usageRights as ApartmentUsageRight[]);
+        const apartmentWithRights = apartmentData as any;
+        if (apartmentWithRights.usageRights && Array.isArray(apartmentWithRights.usageRights)) {
+          setUsageRights(apartmentWithRights.usageRights as ApartmentUsageRight[]);
         }
       }
     }

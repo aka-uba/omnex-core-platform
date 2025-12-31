@@ -7,8 +7,8 @@
 
 import { useState, useMemo, useEffect, useCallback, memo, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
-import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack, Image, UnstyledButton } from '@mantine/core';
-import { IconChevronLeft, IconChevronRight, IconApps } from '@tabler/icons-react';
+import { NavLink, ScrollArea, Divider, ActionIcon, useMantineColorScheme, Skeleton, Stack, Image } from '@mantine/core';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useMenuItems, type MenuItem as MenuItemType } from '../hooks/useMenuItems';
 import { useModules } from '@/context/ModuleContext';
 import { useCompany } from '@/context/CompanyContext';
@@ -127,7 +127,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openedMenu, setOpenedMenu] = useState<string | null>(null);
-  const [userManuallyToggled, setUserManuallyToggled] = useState(false);
+  const [_userManuallyToggled, setUserManuallyToggled] = useState(false);
 
   // Ref for scrolling to active menu item
   const activeMenuRef = useRef<HTMLDivElement>(null);

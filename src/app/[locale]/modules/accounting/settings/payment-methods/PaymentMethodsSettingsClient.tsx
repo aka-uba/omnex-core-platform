@@ -76,16 +76,16 @@ interface PaymentMethodFormValues {
 }
 
 export function PaymentMethodsSettingsClient({ locale }: { locale: string }) {
-  const { t } = useTranslation('modules/accounting');
+  const { t: _t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
-  const { selectedCompany } = useCompany();
+  const { company } = useCompany();
   const [modalOpened, setModalOpened] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const { data, isLoading, error } = usePaymentMethods({
-    companyId: selectedCompany?.id,
+  const { data, isLoading, error: _error } = usePaymentMethods({
+    companyId: company?.id,
   });
 
   const createMutation = useCreatePaymentMethod();
@@ -137,7 +137,7 @@ export function PaymentMethodsSettingsClient({ locale }: { locale: string }) {
   }, [form]);
 
   const handleSubmit = useCallback(async (values: PaymentMethodFormValues) => {
-    if (!selectedCompany) {
+    if (!company) {
       showToast({
         type: 'error',
         title: tGlobal('common.error'),
@@ -160,7 +160,7 @@ export function PaymentMethodsSettingsClient({ locale }: { locale: string }) {
       } else {
         await createMutation.mutateAsync({
           ...values,
-          companyId: selectedCompany.id,
+          companyId: company.id,
         });
         showToast({
           type: 'success',
@@ -178,7 +178,7 @@ export function PaymentMethodsSettingsClient({ locale }: { locale: string }) {
         message: error instanceof Error ? error.message : 'Bir hata oluştu',
       });
     }
-  }, [editingId, selectedCompany, createMutation, updateMutation, form, tGlobal]);
+  }, [editingId, company, createMutation, updateMutation, form, tGlobal]);
 
   const handleDelete = useCallback(async () => {
     if (!deleteId) return;

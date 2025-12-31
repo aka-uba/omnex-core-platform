@@ -124,17 +124,17 @@ export function PropertyExpenseForm({
 
       if (isEdit && expenseId) {
         await updateExpense.mutateAsync({ id: expenseId, data: payload });
-        showToast.success(t('propertyExpenses.updateSuccess'));
+        showToast({ type: 'success', title: tGlobal('common.success'), message: t('propertyExpenses.updateSuccess') });
       } else {
         await createExpense.mutateAsync(payload);
-        showToast.success(t('propertyExpenses.createSuccess'));
+        showToast({ type: 'success', title: tGlobal('common.success'), message: t('propertyExpenses.createSuccess') });
       }
 
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
-      showToast.error(isEdit ? t('propertyExpenses.updateError') : t('propertyExpenses.createError'));
+      showToast({ type: 'error', title: tGlobal('common.error'), message: isEdit ? t('propertyExpenses.updateError') : t('propertyExpenses.createError') });
     }
   };
 

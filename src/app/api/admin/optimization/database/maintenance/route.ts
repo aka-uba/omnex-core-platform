@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
         }
 
         const startTime = Date.now();
-        let result: any;
         let message: string;
 
         // Determine which database to operate on

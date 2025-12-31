@@ -1,53 +1,34 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useMemo, useCallback } from 'react';
 import {
-  Paper,
-  Button,
-  Table,
   Badge,
-  Group,
   Text,
-  Pagination,
-  Select,
-  Menu,
-  Loader,
 } from '@mantine/core';
-import {
-  IconPlus,
-  IconDownload,
-} from '@tabler/icons-react';
 import { useStockMovements } from '@/hooks/useStockMovements';
 import { useProducts } from '@/hooks/useProducts';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
-import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { useExport } from '@/lib/export/ExportProvider';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
+import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
 import type { StockMovementType } from '@/modules/production/types/product';
-import type { ExportFormat } from '@/lib/export/types';
 import dayjs from 'dayjs';
 
 interface StockMovementListProps {
   locale: string;
 }
 
-export function StockMovementList({ locale }: StockMovementListProps) {
-  const router = useRouter();
+export function StockMovementList({ locale: _locale }: StockMovementListProps) {
   const { t } = useTranslation('modules/production');
-  const { t: tGlobal } = useTranslation('global');
-  const { exportToExcel, exportToPDF, exportToCSV, isExporting } = useExport();
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState<number>(10);
-  const [productId, setProductId] = useState<string | undefined>();
-  const [locationId, setLocationId] = useState<string | undefined>();
+  const [productFilter, setProductFilter] = useState<string | undefined>();
+  const [locationFilter, setLocationFilter] = useState<string | undefined>();
   const [typeFilter, setTypeFilter] = useState<StockMovementType | undefined>();
 
   const { data, isLoading, error } = useStockMovements({
-    page,
-    pageSize,
-    ...(productId ? { productId } : {}),
-    ...(locationId ? { locationId } : {}),
+    page: 1,
+    pageSize: 1000,
+    ...(productFilter ? { productId: productFilter } : {}),
+    ...(locationFilter ? { locationId: locationFilter } : {}),
     ...(typeFilter ? { type: typeFilter } : {}),
   });
 
@@ -55,96 +36,7 @@ export function StockMovementList({ locale }: StockMovementListProps) {
   const { data: productsData } = useProducts({ page: 1, pageSize: 1000 });
   const { data: locationsData } = useLocations({ page: 1, pageSize: 1000 });
 
-  const handleExport = async (format: ExportFormat) => {
-    if (!data) return;
-
-    try {
-      const exportData = {
-        columns: [
-          t('stock.table.product'),
-          t('stock.table.type'),
-          t('stock.table.quantity'),
-          t('stock.table.unit'),
-          t('stock.table.movementDate'),
-          t('stock.table.referenceType'),
-          t('stock.table.notes'),
-        ],
-        rows: data.movements.map((movement) => [
-          movement.product?.name || '-',
-          t(`stock.types.${movement.type}`) || movement.type,
-          Number(movement.quantity).toLocaleString('tr-TR'),
-          movement.unit,
-          dayjs(movement.movementDate).format('DD.MM.YYYY HH:mm'),
-          movement.referenceType || '-',
-          movement.notes || '-',
-        ]),
-        metadata: {
-          title: t('stock.title'),
-          description: t('stock.exportDescription'),
-          generatedAt: new Date().toISOString(),
-        },
-      };
-
-      const options = {
-        title: t('stock.title'),
-        description: t('stock.exportDescription'),
-        includeHeader: true,
-        includeFooter: true,
-        includePageNumbers: true,
-        filename: `stock_movements_${dayjs().format('YYYY-MM-DD')}`,
-      };
-
-      switch (format) {
-        case 'excel':
-          await exportToExcel(exportData, options);
-          break;
-        case 'pdf':
-          await exportToPDF(exportData, options);
-          break;
-        case 'csv':
-          await exportToCSV(exportData, options);
-          break;
-      }
-
-      showToast({
-        type: 'success',
-        title: t('messages.success'),
-        message: t('stock.exportSuccess'),
-      });
-    } catch (error) {
-      showToast({
-        type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('stock.exportError'),
-      });
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Loader />
-      </Paper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text c="red">{tGlobal('common.errorLoading')}</Text>
-      </Paper>
-    );
-  }
-
-  if (!data) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text>{tGlobal('common.noData')}</Text>
-      </Paper>
-    );
-  }
-
-  const getTypeBadge = (type: StockMovementType) => {
+  const getTypeBadge = useCallback((type: StockMovementType) => {
     const typeColors: Record<StockMovementType, string> = {
       in: 'green',
       out: 'red',
@@ -156,135 +48,136 @@ export function StockMovementList({ locale }: StockMovementListProps) {
         {t(`stock.types.${type}`) || type}
       </Badge>
     );
-  };
+  }, [t]);
+
+  const movements = useMemo(() => data?.movements || [], [data]);
+
+  // Product options for filter
+  const productOptions = useMemo(() => {
+    return (productsData?.products || []).map((product) => ({
+      value: product.id,
+      label: product.name,
+    }));
+  }, [productsData]);
+
+  // Location options for filter
+  const locationOptions = useMemo(() => {
+    return (locationsData?.locations || []).map((location) => ({
+      value: location.id,
+      label: location.name,
+    }));
+  }, [locationsData]);
+
+  // Filter options
+  const filterOptions: FilterOption[] = useMemo(() => [
+    {
+      key: 'productId',
+      label: t('stock.table.product'),
+      type: 'select',
+      options: productOptions,
+    },
+    {
+      key: 'locationId',
+      label: t('stock.table.location'),
+      type: 'select',
+      options: locationOptions,
+    },
+    {
+      key: 'type',
+      label: t('stock.table.type'),
+      type: 'select',
+      options: [
+        { value: 'in', label: t('stock.types.in') },
+        { value: 'out', label: t('stock.types.out') },
+        { value: 'transfer', label: t('stock.types.transfer') },
+        { value: 'adjustment', label: t('stock.types.adjustment') },
+      ],
+    },
+  ], [t, productOptions, locationOptions]);
+
+  const handleFilter = useCallback((filters: Record<string, any>) => {
+    setProductFilter(filters.productId || undefined);
+    setLocationFilter(filters.locationId || undefined);
+    setTypeFilter(filters.type as StockMovementType || undefined);
+  }, []);
+
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'productName',
+      label: t('stock.table.product'),
+      sortable: true,
+      searchable: true,
+      render: (_value: string, row: Record<string, any>) => (
+        <Text fw={500}>{row.product?.name || '-'}</Text>
+      ),
+    },
+    {
+      key: 'locationName',
+      label: t('stock.table.location'),
+      sortable: true,
+      render: (_value: string, row: Record<string, any>) => row.location?.name || '-',
+    },
+    {
+      key: 'type',
+      label: t('stock.table.type'),
+      sortable: true,
+      render: (value: StockMovementType) => getTypeBadge(value),
+    },
+    {
+      key: 'quantity',
+      label: t('stock.table.quantity'),
+      sortable: true,
+      align: 'right',
+      render: (value: number) => Number(value).toLocaleString('tr-TR'),
+    },
+    {
+      key: 'unit',
+      label: t('stock.table.unit'),
+      sortable: true,
+    },
+    {
+      key: 'movementDate',
+      label: t('stock.table.movementDate'),
+      sortable: true,
+      render: (value: string) => dayjs(value).format('DD.MM.YYYY HH:mm'),
+    },
+    {
+      key: 'referenceType',
+      label: t('stock.table.referenceType'),
+      sortable: true,
+      render: (value: string) => value || '-',
+    },
+    {
+      key: 'notes',
+      label: t('stock.table.notes'),
+      render: (value: string) => value || '-',
+    },
+  ], [t, getTypeBadge]);
+
+  if (isLoading) {
+    return <DataTableSkeleton columns={8} rows={10} />;
+  }
+
+  if (error) {
+    return <DataTableSkeleton columns={8} rows={5} />;
+  }
 
   return (
-    <Paper shadow="sm" p="md" radius="md">
-      <Group justify="space-between" mb="md">
-        <Group>
-          <Select
-            placeholder={t('stock.filter.product')}
-            data={[
-              { value: '', label: t('filter.all') },
-              ...(productsData?.products.map(p => ({ value: p.id, label: p.name })) || []),
-            ]}
-            value={productId || ''}
-            onChange={(value) => setProductId(value || undefined)}
-            clearable
-            searchable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={t('stock.filter.location')}
-            data={[
-              { value: '', label: t('filter.all') },
-              ...(locationsData?.locations.map(l => ({ value: l.id, label: l.name })) || []),
-            ]}
-            value={locationId || ''}
-            onChange={(value) => setLocationId(value || undefined)}
-            clearable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={t('stock.filter.type')}
-            data={[
-              { value: '', label: t('filter.all') },
-              { value: 'in', label: t('stock.types.in') },
-              { value: 'out', label: t('stock.types.out') },
-              { value: 'transfer', label: t('stock.types.transfer') },
-              { value: 'adjustment', label: t('stock.types.adjustment') },
-            ]}
-            value={typeFilter || ''}
-            onChange={(value) => setTypeFilter(value as StockMovementType | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-        </Group>
-        <Group>
-          <Menu>
-            <Menu.Target>
-              <Button
-                leftSection={<IconDownload size={16} />}
-                variant="light"
-                loading={isExporting}
-              >
-                {t('export.title')}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => handleExport('excel')}>
-                {t('export.excel')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('pdf')}>
-                {t('export.pdf')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('csv')}>
-                {t('export.csv')}
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => router.push(`/${locale}/modules/production/stock/create`)}
-          >
-            {t('stock.create')}
-          </Button>
-        </Group>
-      </Group>
-
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t('stock.table.product')}</Table.Th>
-            <Table.Th>{t('stock.table.type')}</Table.Th>
-            <Table.Th>{t('stock.table.quantity')}</Table.Th>
-            <Table.Th>{t('stock.table.unit')}</Table.Th>
-            <Table.Th>{t('stock.table.movementDate')}</Table.Th>
-            <Table.Th>{t('stock.table.referenceType')}</Table.Th>
-            <Table.Th>{t('stock.table.notes')}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {data.movements.map((movement) => (
-            <Table.Tr key={movement.id}>
-              <Table.Td>
-                <Text fw={500}>{movement.product?.name || '-'}</Text>
-              </Table.Td>
-              <Table.Td>{getTypeBadge(movement.type)}</Table.Td>
-              <Table.Td>
-                {Number(movement.quantity).toLocaleString('tr-TR')}
-              </Table.Td>
-              <Table.Td>{movement.unit}</Table.Td>
-              <Table.Td>
-                {dayjs(movement.movementDate).format('DD.MM.YYYY HH:mm')}
-              </Table.Td>
-              <Table.Td>{movement.referenceType || '-'}</Table.Td>
-              <Table.Td>{movement.notes || '-'}</Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-
-      {data.total > 0 && (
-        <Group justify="space-between" mt="md">
-          <Text size="sm" c="dimmed">
-            {t('pagination.showing')} {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, data.total)} {t('pagination.of')} {data.total}
-          </Text>
-          <Pagination
-            value={page}
-            onChange={setPage}
-            total={Math.ceil(data.total / pageSize)}
-          />
-        </Group>
-      )}
-    </Paper>
+    <DataTable
+      columns={columns}
+      data={movements}
+      tableId="production-stock-movements-list"
+      searchable={true}
+      sortable={true}
+      pageable={true}
+      defaultPageSize={25}
+      pageSizeOptions={[10, 25, 50, 100]}
+      showExportIcons={true}
+      exportNamespace="modules/production"
+      showColumnSettings={true}
+      emptyMessage={t('stock.noData')}
+      filters={filterOptions}
+      onFilter={handleFilter}
+    />
   );
 }
-
-
-
-
-
-
-
-

@@ -1,113 +1,113 @@
 {
-  "success": "Başarılı",
-  "error": "Hata",
-  "warning": "Uyarı",
-  "info": "Bilgi",
+  "success": "Erfolgreich",
+  "error": "Fehler",
+  "warning": "Warnung",
+  "info": "Information",
   "common": {
     "actions": {
-      "save": "Kaydet",
-      "cancel": "İptal",
-      "delete": "Sil",
-      "edit": "Düzenle",
-      "create": "Oluştur",
-      "update": "Güncelle",
-      "view": "Görüntüle",
-      "back": "Geri",
-      "refresh": "Yenile",
-      "upload": "Yükle",
-      "export": "Dışa Aktar",
-      "import": "İçe Aktar",
-      "submit": "Gönder",
-      "reset": "Sıfırla",
-      "close": "Kapat",
-      "confirm": "Onayla",
-      "preview": "Önizle",
-      "archive": "Arşivle",
-      "setDefault": "Varsayılan Yap",
-      "title": "İşlemler",
-      "hidePeriodSelection": "Dönem Seçimini Gizle"
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "create": "Erstellen",
+      "update": "Aktualisieren",
+      "view": "Anzeigen",
+      "back": "Zurück",
+      "refresh": "Aktualisieren",
+      "upload": "Hochladen",
+      "export": "Exportieren",
+      "import": "Importieren",
+      "submit": "Senden",
+      "reset": "Zurücksetzen",
+      "close": "Schließen",
+      "confirm": "Bestätigen",
+      "preview": "Vorschau",
+      "archive": "Archivieren",
+      "setDefault": "Als Standard festlegen",
+      "title": "Aktionen",
+      "hidePeriodSelection": "Zeitraumauswahl ausblenden"
     },
     "status": {
-      "success": "Başarılı",
-      "error": "Hata",
-      "warning": "Uyarı",
-      "info": "Bilgi",
-      "loading": "Yükleniyor...",
-      "active": "Aktif",
-      "inactive": "Pasif",
-      "pending": "Beklemede",
-      "completed": "Tamamlandı",
-      "draft": "Taslak"
+      "success": "Erfolgreich",
+      "error": "Fehler",
+      "warning": "Warnung",
+      "info": "Information",
+      "loading": "Wird geladen...",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "pending": "Ausstehend",
+      "completed": "Abgeschlossen",
+      "draft": "Entwurf"
     },
     "messages": {
-      "noData": "Veri bulunamadı",
-      "noResults": "Sonuç bulunamadı",
-      "errorLoading": "Yüklenirken hata oluştu",
-      "notFound": "Bulunamadı",
-      "comingSoon": "Yakında Eklenecek"
+      "noData": "Keine Daten gefunden",
+      "noResults": "Keine Ergebnisse gefunden",
+      "errorLoading": "Fehler beim Laden",
+      "notFound": "Nicht gefunden",
+      "comingSoon": "Demnächst verfügbar"
     },
     "confirmations": {
-      "deleteFile": "Bu dosyayı silmek istediğinizden emin misiniz?",
-      "deleteItem": "Bu öğeyi silmek istediğinizden emin misiniz?",
-      "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?"
+      "deleteFile": "Möchten Sie diese Datei wirklich löschen?",
+      "deleteItem": "Möchten Sie dieses Element wirklich löschen?",
+      "unsavedChanges": "Es gibt nicht gespeicherte Änderungen. Möchten Sie wirklich verlassen?"
     },
     "validation": {
-      "required": "zorunludur",
-      "invalidEmail": "Geçerli bir e-posta adresi girin",
-      "minLength": "En az {{min}} karakter olmalıdır",
-      "maxLength": "En fazla {{max}} karakter olmalıdır",
-      "passwordRequired": "Şifre gereklidir",
-      "usernameRequired": "Kullanıcı adı gereklidir",
-      "companyRequired": "Firma seçimi gereklidir"
+      "required": "ist erforderlich",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "minLength": "Muss mindestens {{min}} Zeichen lang sein",
+      "maxLength": "Darf höchstens {{max}} Zeichen lang sein",
+      "passwordRequired": "Passwort ist erforderlich",
+      "usernameRequired": "Benutzername ist erforderlich",
+      "companyRequired": "Firmenauswahl ist erforderlich"
     },
     "dates": {
-      "createdAt": "Oluşturulma Tarihi",
-      "updatedAt": "Güncellenme Tarihi"
+      "createdAt": "Erstellungsdatum",
+      "updatedAt": "Aktualisierungsdatum"
     },
     "labels": {
-      "all": "Tümü",
-      "yes": "Evet",
-      "no": "Hayır",
-      "description": "Açıklama",
-      "subscription": "Abonelik",
-      "configuration": "Yapılandırma",
-      "calendar": "Takvim",
+      "all": "Alle",
+      "yes": "Ja",
+      "no": "Nein",
+      "description": "Beschreibung",
+      "subscription": "Abonnement",
+      "configuration": "Konfiguration",
+      "calendar": "Kalender",
       "list": "Liste"
     },
-    "back": "Geri",
-    "loading": "Yükleniyor...",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "save": "Kaydet",
-    "cancel": "İptal",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "view": "Görüntüle",
-    "confirm": "Onayla",
-    "close": "Kapat",
-    "search": "Ara",
-    "error": "Hata",
-    "success": "Başarılı",
-    "warning": "Uyarı",
-    "info": "Bilgi",
-    "active": "Aktif",
-    "inactive": "Pasif",
-    "noData": "Veri bulunamadı",
-    "noResults": "Sonuç bulunamadı",
-    "errorLoading": "Yüklenirken hata oluştu",
-    "notFound": "Bulunamadı",
-    "required": "zorunludur",
-    "showing": "Gösterilen",
+    "back": "Zurück",
+    "loading": "Wird geladen...",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "view": "Anzeigen",
+    "confirm": "Bestätigen",
+    "close": "Schließen",
+    "search": "Suchen",
+    "error": "Fehler",
+    "success": "Erfolgreich",
+    "warning": "Warnung",
+    "info": "Information",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "noData": "Keine Daten gefunden",
+    "noResults": "Keine Ergebnisse gefunden",
+    "errorLoading": "Fehler beim Laden",
+    "notFound": "Nicht gefunden",
+    "required": "ist erforderlich",
+    "showing": "Angezeigt",
     "of": "/",
-    "modules": "modül",
-    "information": "Bilgi",
-    "createdAt": "Oluşturulma Tarihi",
-    "updatedAt": "Güncellenme Tarihi",
-    "notApplicable": "Belirtilmemiş"
+    "modules": "Modul",
+    "information": "Information",
+    "createdAt": "Erstellungsdatum",
+    "updatedAt": "Aktualisierungsdatum",
+    "notApplicable": "Nicht angegeben"
   },
   "calendar": {
-    "title": "Takvim",
-    "description": "Takvim yönetimi ve etkinlikler"
+    "title": "Kalender",
+    "description": "Kalenderverwaltung und Ereignisse"
   },
   "list": {
     "subscription": "subscription",
@@ -117,7 +117,7 @@
           "islem": {
             "geri": {
               "alinamaz": {
-                "": " raporu silinecek. Bu işlem geri alınamaz. Emin misiniz?"
+                "": " Bericht wird gelöscht. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher?"
               }
             }
           }
@@ -126,450 +126,450 @@
     }
   },
   "form": {
-    "upload": "Yükle",
-    "cancel": "İptal",
-    "save": "Kaydet",
-    "submit": "Gönder",
-    "reset": "Sıfırla",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "close": "Kapat",
+    "upload": "Hochladen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "submit": "Senden",
+    "reset": "Zurücksetzen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
     "labels": {
-      "subscription": "Abonelik",
-      "description": "Açıklama"
+      "subscription": "Abonnement",
+      "description": "Beschreibung"
     }
   },
-  "save": "Kaydet",
-  "cancel": "İptal",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
   "buttons": {
-    "refresh": "Yenile",
-    "save": "Kaydet",
-    "cancel": "İptal",
-    "delete": "Sil",
-    "edit": "Düzenle",
-    "create": "Oluştur",
-    "update": "Güncelle",
-    "view": "Görüntüle",
-    "back": "Geri",
-    "next": "İleri",
-    "previous": "Önceki",
-    "submit": "Gönder",
-    "reset": "Sıfırla",
-    "close": "Kapat",
-    "confirm": "Onayla",
-    "add": "Ekle",
-    "remove": "Kaldır"
+    "refresh": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "view": "Anzeigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "submit": "Senden",
+    "reset": "Zurücksetzen",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen"
   },
   "navigation": {
-    "dashboard": "Panel",
-    "settings": "Ayarlar",
-    "modules": "Modüller",
-    "corePages": "Temel Sayfalar",
-    "superadmin": "Süper Yönetici"
+    "dashboard": "Dashboard",
+    "settings": "Einstellungen",
+    "modules": "Module",
+    "corePages": "Kernseiten",
+    "superadmin": "Superadministrator"
   },
   "settings": {
     "menuManagement": {
-      "title": "Menü Yönetimi"
+      "title": "Menüverwaltung"
     },
     "theme": {
-      "title": "Tema Ayarları",
-      "saved": "Ayarlar Kaydedildi",
-      "savedMessage": "Tema tercihleriniz başarıyla kaydedildi.",
-      "resetTitle": "Ayarları Sıfırla",
-      "resetConfirm": "Tüm tema tercihlerini varsayılan değerlere sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "resetSuccess": "Ayarlar Sıfırlandı",
-      "resetSuccessMessage": "Tüm tema tercihleri varsayılan değerlere sıfırlandı.",
-      "preferencesSaved": "Tercihler Kaydedildi",
-      "preferencesSavedMessage": "Tema tercihleriniz başarıyla kaydedildi.",
-      "resetPreferences": "Tercihleri Sıfırla",
-      "resetPreferencesConfirm": "Tüm tema tercihlerini varsayılan değerlere sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "preferencesReset": "Tercihler Sıfırlandı",
-      "preferencesResetMessage": "Tüm tema tercihleri varsayılan değerlere sıfırlandı.",
-      "menuColor": "Menü Rengi",
-      "topMenuColor": "Top Menü Rengi"
+      "title": "Theme-Einstellungen",
+      "saved": "Einstellungen gespeichert",
+      "savedMessage": "Ihre Theme-Präferenzen wurden erfolgreich gespeichert.",
+      "resetTitle": "Einstellungen zurücksetzen",
+      "resetConfirm": "Möchten Sie wirklich alle Theme-Präferenzen auf die Standardwerte zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "resetSuccess": "Einstellungen zurückgesetzt",
+      "resetSuccessMessage": "Alle Theme-Präferenzen wurden auf die Standardwerte zurückgesetzt.",
+      "preferencesSaved": "Präferenzen gespeichert",
+      "preferencesSavedMessage": "Ihre Theme-Präferenzen wurden erfolgreich gespeichert.",
+      "resetPreferences": "Präferenzen zurücksetzen",
+      "resetPreferencesConfirm": "Möchten Sie wirklich alle Theme-Präferenzen auf die Standardwerte zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "preferencesReset": "Präferenzen zurückgesetzt",
+      "preferencesResetMessage": "Alle Theme-Präferenzen wurden auf die Standardwerte zurückgesetzt.",
+      "menuColor": "Menüfarbe",
+      "topMenuColor": "Oberes Menüfarbe"
     },
     "general": {
-      "title": "Genel Ayarlar",
-      "description": "Platform genel ayarlarını yönetin",
-      "loadError": "Ayarlar yüklenirken bir hata oluştu",
-      "savedSuccessfully": "Ayarlar başarıyla kaydedildi",
-      "saveError": "Ayarlar kaydedilirken bir hata oluştu",
+      "title": "Allgemeine Einstellungen",
+      "description": "Verwalten Sie die allgemeinen Plattformeinstellungen",
+      "loadError": "Beim Laden der Einstellungen ist ein Fehler aufgetreten",
+      "savedSuccessfully": "Einstellungen erfolgreich gespeichert",
+      "saveError": "Beim Speichern der Einstellungen ist ein Fehler aufgetreten",
       "tabs": {
-        "regionTime": "Bölge ve Zaman",
-        "email": "E-posta (SMTP)",
-        "calendar": "Takvim Entegrasyonu",
-        "security": "Güvenlik"
+        "regionTime": "Region und Zeit",
+        "email": "E-Mail (SMTP)",
+        "calendar": "Kalenderintegration",
+        "security": "Sicherheit"
       },
       "regionTime": {
-        "title": "Bölge ve Zaman Ayarları",
-        "timezone": "Saat Dilimi",
-        "dateFormat": "Tarih Formatı",
-        "timeFormat": "Saat Formatı",
-        "timeFormat12": "12 Saat (AM/PM)",
-        "timeFormat24": "24 Saat",
-        "weekStart": "Hafta Başlangıcı",
-        "weekStartMonday": "Pazartesi",
-        "weekStartSunday": "Pazar",
-        "currency": "Para Birimi",
-        "defaultLanguage": "Varsayılan Dil",
-        "languageTr": "Türkçe",
-        "languageEn": "İngilizce",
-        "languageDe": "Almanca",
-        "languageAr": "Arapça",
-        "currencyTRY": "TRY - Türk Lirası",
-        "currencyUSD": "USD - ABD Doları",
+        "title": "Region- und Zeiteinstellungen",
+        "timezone": "Zeitzone",
+        "dateFormat": "Datumsformat",
+        "timeFormat": "Zeitformat",
+        "timeFormat12": "12 Stunden (AM/PM)",
+        "timeFormat24": "24 Stunden",
+        "weekStart": "Wochenanfang",
+        "weekStartMonday": "Montag",
+        "weekStartSunday": "Sonntag",
+        "currency": "Währung",
+        "defaultLanguage": "Standardsprache",
+        "languageTr": "Türkisch",
+        "languageEn": "Englisch",
+        "languageDe": "Deutsch",
+        "languageAr": "Arabisch",
+        "currencyTRY": "TRY - Türkische Lira",
+        "currencyUSD": "USD - US-Dollar",
         "currencyEUR": "EUR - Euro",
-        "currencyGBP": "GBP - İngiliz Sterlini",
-        "currencyJPY": "JPY - Japon Yeni",
-        "currencyCNY": "CNY - Çin Yuanı"
+        "currencyGBP": "GBP - Britisches Pfund",
+        "currencyJPY": "JPY - Japanischer Yen",
+        "currencyCNY": "CNY - Chinesischer Yuan"
       },
       "email": {
-        "title": "E-posta (SMTP) Ayarları",
-        "enableSmtp": "SMTP'yi Etkinleştir",
-        "smtpHost": "SMTP Sunucusu",
-        "smtpPort": "SMTP Portu",
-        "encryption": "Şifreleme",
-        "encryptionNone": "Yok",
-        "username": "Kullanıcı Adı",
-        "password": "Şifre",
-        "fromName": "Gönderen Adı",
-        "fromEmail": "Gönderen E-posta",
-        "advanced": "Gelişmiş Ayarlar",
-        "timeout": "Zaman Aşımı",
-        "retryAttempts": "Yeniden Deneme Sayısı",
-        "connectionPool": "Bağlantı Havuzu",
-        "sendTestEmail": "Test E-postası Gönder",
-        "testEmailPlaceholder": "Test e-posta özelliği yakında eklenecek",
-        "testEmailSuccess": "Test e-postası başarıyla gönderildi",
-        "testEmailError": "Test e-postası gönderilirken hata oluştu",
-        "testEmailValidationError": "SMTP ayarları eksik veya geçersiz. Lütfen SMTP sunucusu ve gönderen e-posta adresini kontrol edin",
+        "title": "E-Mail (SMTP) Einstellungen",
+        "enableSmtp": "SMTP aktivieren",
+        "smtpHost": "SMTP-Server",
+        "smtpPort": "SMTP-Port",
+        "encryption": "Verschlüsselung",
+        "encryptionNone": "Keine",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "fromName": "Absendername",
+        "fromEmail": "Absender-E-Mail",
+        "advanced": "Erweiterte Einstellungen",
+        "timeout": "Zeitüberschreitung",
+        "retryAttempts": "Anzahl der Wiederholungsversuche",
+        "connectionPool": "Verbindungspool",
+        "sendTestEmail": "Test-E-Mail senden",
+        "testEmailPlaceholder": "Test-E-Mail-Funktion wird demnächst hinzugefügt",
+        "testEmailSuccess": "Test-E-Mail wurde erfolgreich gesendet",
+        "testEmailError": "Fehler beim Senden der Test-E-Mail",
+        "testEmailValidationError": "SMTP-Einstellungen fehlen oder sind ungültig. Bitte überprüfen Sie den SMTP-Server und die Absender-E-Mail-Adresse",
         "testEmailModal": {
-          "title": "Test E-postası Gönder",
-          "to": "Alıcı E-posta",
-          "toPlaceholder": "ornek@email.com",
-          "toRequired": "Alıcı e-posta adresi gereklidir",
-          "invalidEmail": "Geçerli bir e-posta adresi giriniz",
-          "subject": "Konu",
-          "subjectPlaceholder": "E-posta konusu",
-          "subjectRequired": "Konu gereklidir",
-          "message": "Mesaj",
-          "messagePlaceholder": "E-posta mesajı",
-          "messageRequired": "Mesaj gereklidir",
-          "send": "Gönder",
-          "smtpDisabled": "SMTP Devre Dışı",
-          "smtpDisabledMessage": "Test e-postası göndermek için önce SMTP'yi etkinleştirmeniz gerekmektedir.",
-          "checkCredentials": "Lütfen SMTP kullanıcı adı, şifre ve diğer ayarlarınızı kontrol edin.",
-          "defaultSubject": "OMNEX - Test E-postası",
-          "defaultMessage": "Bu, OMNEX platformunuzdan gönderilen bir test e-postasıdır.\n\nBu e-postayı aldıysanız, SMTP yapılandırmanız doğru çalışıyor demektir."
+          "title": "Test-E-Mail senden",
+          "to": "Empfänger-E-Mail",
+          "toPlaceholder": "beispiel@email.com",
+          "toRequired": "Empfänger-E-Mail-Adresse ist erforderlich",
+          "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+          "subject": "Betreff",
+          "subjectPlaceholder": "E-Mail-Betreff",
+          "subjectRequired": "Betreff ist erforderlich",
+          "message": "Nachricht",
+          "messagePlaceholder": "E-Mail-Nachricht",
+          "messageRequired": "Nachricht ist erforderlich",
+          "send": "Senden",
+          "smtpDisabled": "SMTP deaktiviert",
+          "smtpDisabledMessage": "Um eine Test-E-Mail zu senden, müssen Sie zuerst SMTP aktivieren.",
+          "checkCredentials": "Bitte überprüfen Sie Ihren SMTP-Benutzernamen, Ihr Passwort und Ihre anderen Einstellungen.",
+          "defaultSubject": "OMNEX - Test-E-Mail",
+          "defaultMessage": "Dies ist eine Test-E-Mail, die von Ihrer OMNEX-Plattform gesendet wurde.\n\nWenn Sie diese E-Mail erhalten haben, funktioniert Ihre SMTP-Konfiguration korrekt."
         },
         "errors": {
-          "SMTP_AUTH_FAILED": "SMTP Kimlik Doğrulama Hatası",
-          "SMTP_AUTH_FAILED_MESSAGE": "Kullanıcı adı veya şifre hatalı. Lütfen SMTP kimlik bilgilerinizi kontrol edin.",
-          "SMTP_CONNECTION_FAILED": "SMTP Bağlantı Hatası",
-          "SMTP_CONNECTION_FAILED_MESSAGE": "SMTP sunucusuna bağlanılamıyor. Lütfen SMTP ayarlarınızı kontrol edin.",
-          "SMTP_SEND_FAILED": "E-posta Gönderme Hatası",
-          "SMTP_SEND_FAILED_MESSAGE": "E-posta gönderilemedi. Lütfen SMTP ayarlarınızı kontrol edip tekrar deneyin.",
-          "SMTP_NOT_ENABLED": "SMTP Etkin Değil",
-          "SMTP_NOT_ENABLED_MESSAGE": "SMTP etkin değil. Lütfen önce ayarlardan SMTP'yi etkinleştirin.",
-          "SMTP_INCOMPLETE": "SMTP Yapılandırması Eksik",
-          "SMTP_INCOMPLETE_MESSAGE": "SMTP sunucusu ve gönderen e-posta adresi gereklidir.",
-          "SMTP_TRANSPORTER_FAILED": "SMTP Aktarıcı Oluşturma Hatası",
-          "SMTP_TRANSPORTER_FAILED_MESSAGE": "SMTP aktarıcı oluşturulamadı. Lütfen SMTP ayarlarınızı kontrol edin.",
-          "NODEMAILER_IMPORT_FAILED": "Nodemailer İçe Aktarma Hatası",
-          "NODEMAILER_IMPORT_FAILED_MESSAGE": "Nodemailer içe aktarılamadı. Lütfen nodemailer paketinin yüklü olduğundan emin olun: npm install nodemailer @types/nodemailer",
-          "NODEMAILER_NOT_INSTALLED": "Nodemailer Yüklü Değil",
-          "NODEMAILER_NOT_INSTALLED_MESSAGE": "E-posta göndermek için nodemailer paketi gereklidir. Lütfen yükleyin: npm install nodemailer @types/nodemailer",
-          "TEST_EMAIL_ERROR": "Test E-postası Hatası",
-          "TEST_EMAIL_ERROR_MESSAGE": "Test e-postası gönderilirken bir hata oluştu.",
-          "REQUEST_FAILED": "İstek Hatası",
-          "REQUEST_FAILED_MESSAGE": "Beklenmeyen bir hata oluştu.",
-          "UNAUTHORIZED": "Yetkisiz Erişim",
-          "UNAUTHORIZED_MESSAGE": "Bu işlem için yetkiniz bulunmamaktadır.",
-          "TENANT_ID_REQUIRED": "Kiracı Kimliği Gerekli",
-          "TENANT_ID_REQUIRED_MESSAGE": "Kiracı kimliği gereklidir.",
-          "COMPANY_ID_REQUIRED": "Şirket Kimliği Gerekli",
-          "COMPANY_ID_REQUIRED_MESSAGE": "Şirket kimliği gereklidir. Kiracı için şirket bulunamadı.",
-          "EMAIL_REQUIRED": "E-posta Adresi Gerekli",
-          "EMAIL_REQUIRED_MESSAGE": "Alıcı e-posta adresi gereklidir.",
-          "INVALID_EMAIL": "Geçersiz E-posta Adresi",
-          "INVALID_EMAIL_MESSAGE": "Lütfen geçerli bir e-posta adresi giriniz.",
-          "INVALID_REQUEST_BODY": "Geçersiz İstek Gövdesi",
-          "INVALID_REQUEST_BODY_MESSAGE": "İstek gövdesi ayrıştırılamadı. Lütfen geçerli JSON içeren bir istek gönderin.",
-          "SETTINGS_NOT_FOUND": "Ayarlar Bulunamadı",
-          "SETTINGS_NOT_FOUND_MESSAGE": "Genel ayarlar bulunamadı. Lütfen önce SMTP ayarlarını yapılandırın.",
-          "status": "Durum",
-          "networkError": "Ağ hatası veya sunucu kullanılamıyor"
+          "SMTP_AUTH_FAILED": "SMTP-Authentifizierungsfehler",
+          "SMTP_AUTH_FAILED_MESSAGE": "Benutzername oder Passwort falsch. Bitte überprüfen Sie Ihre SMTP-Anmeldedaten.",
+          "SMTP_CONNECTION_FAILED": "SMTP-Verbindungsfehler",
+          "SMTP_CONNECTION_FAILED_MESSAGE": "Verbindung zum SMTP-Server konnte nicht hergestellt werden. Bitte überprüfen Sie Ihre SMTP-Einstellungen.",
+          "SMTP_SEND_FAILED": "E-Mail-Versandfehler",
+          "SMTP_SEND_FAILED_MESSAGE": "E-Mail konnte nicht gesendet werden. Bitte überprüfen Sie Ihre SMTP-Einstellungen und versuchen Sie es erneut.",
+          "SMTP_NOT_ENABLED": "SMTP nicht aktiviert",
+          "SMTP_NOT_ENABLED_MESSAGE": "SMTP ist nicht aktiviert. Bitte aktivieren Sie SMTP zuerst in den Einstellungen.",
+          "SMTP_INCOMPLETE": "SMTP-Konfiguration unvollständig",
+          "SMTP_INCOMPLETE_MESSAGE": "SMTP-Server und Absender-E-Mail-Adresse sind erforderlich.",
+          "SMTP_TRANSPORTER_FAILED": "SMTP-Transporter-Erstellungsfehler",
+          "SMTP_TRANSPORTER_FAILED_MESSAGE": "SMTP-Transporter konnte nicht erstellt werden. Bitte überprüfen Sie Ihre SMTP-Einstellungen.",
+          "NODEMAILER_IMPORT_FAILED": "Nodemailer-Importfehler",
+          "NODEMAILER_IMPORT_FAILED_MESSAGE": "Nodemailer konnte nicht importiert werden. Bitte stellen Sie sicher, dass das nodemailer-Paket installiert ist: npm install nodemailer @types/nodemailer",
+          "NODEMAILER_NOT_INSTALLED": "Nodemailer nicht installiert",
+          "NODEMAILER_NOT_INSTALLED_MESSAGE": "Das nodemailer-Paket ist erforderlich, um E-Mails zu senden. Bitte installieren Sie es: npm install nodemailer @types/nodemailer",
+          "TEST_EMAIL_ERROR": "Test-E-Mail-Fehler",
+          "TEST_EMAIL_ERROR_MESSAGE": "Beim Senden der Test-E-Mail ist ein Fehler aufgetreten.",
+          "REQUEST_FAILED": "Anfragefehler",
+          "REQUEST_FAILED_MESSAGE": "Ein unerwarteter Fehler ist aufgetreten.",
+          "UNAUTHORIZED": "Unbefugter Zugriff",
+          "UNAUTHORIZED_MESSAGE": "Sie haben keine Berechtigung für diese Aktion.",
+          "TENANT_ID_REQUIRED": "Mandanten-ID erforderlich",
+          "TENANT_ID_REQUIRED_MESSAGE": "Mandanten-ID ist erforderlich.",
+          "COMPANY_ID_REQUIRED": "Firmen-ID erforderlich",
+          "COMPANY_ID_REQUIRED_MESSAGE": "Firmen-ID ist erforderlich. Für den Mandanten wurde keine Firma gefunden.",
+          "EMAIL_REQUIRED": "E-Mail-Adresse erforderlich",
+          "EMAIL_REQUIRED_MESSAGE": "Empfänger-E-Mail-Adresse ist erforderlich.",
+          "INVALID_EMAIL": "Ungültige E-Mail-Adresse",
+          "INVALID_EMAIL_MESSAGE": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+          "INVALID_REQUEST_BODY": "Ungültiger Anfragekörper",
+          "INVALID_REQUEST_BODY_MESSAGE": "Anfragekörper konnte nicht analysiert werden. Bitte senden Sie eine Anfrage mit gültigem JSON.",
+          "SETTINGS_NOT_FOUND": "Einstellungen nicht gefunden",
+          "SETTINGS_NOT_FOUND_MESSAGE": "Allgemeine Einstellungen wurden nicht gefunden. Bitte konfigurieren Sie zuerst die SMTP-Einstellungen.",
+          "status": "Status",
+          "networkError": "Netzwerkfehler oder Server nicht verfügbar"
         },
-        "smtpHostPlaceholder": "smtp.ornek.com",
+        "smtpHostPlaceholder": "smtp.beispiel.com",
         "timeoutSuffix": " ms",
-        "retryAttemptsSuffix": " deneme",
-        "connectionPoolSuffix": " bağlantı"
+        "retryAttemptsSuffix": " Versuch",
+        "connectionPoolSuffix": " Verbindung"
       },
       "calendar": {
-        "title": "Takvim Entegrasyonu",
+        "title": "Kalenderintegration",
         "googleCalendar": "Google Calendar",
         "outlook": "Microsoft Outlook/Office 365",
         "icloud": "Apple iCloud",
         "yandex": "Yandex Calendar",
-        "enable": "Etkinleştir",
-        "apiKey": "API Anahtarı",
-        "calendarId": "Takvim ID",
-        "clientId": "Client ID",
-        "tenantId": "Tenant ID",
-        "calendarUrl": "Takvim URL",
+        "enable": "Aktivieren",
+        "apiKey": "API-Schlüssel",
+        "calendarId": "Kalender-ID",
+        "clientId": "Client-ID",
+        "tenantId": "Mandanten-ID",
+        "calendarUrl": "Kalender-URL",
         "token": "Token",
-        "syncInterval": "Senkronizasyon Aralığı",
-        "generalSettings": "Genel Takvim Ayarları",
-        "defaultView": "Varsayılan Görünüm",
-        "viewMonth": "Ay",
-        "viewWeek": "Hafta",
-        "viewDay": "Gün",
-        "showWeekends": "Hafta Sonlarını Göster",
-        "showHolidays": "Tatilleri Göster"
+        "syncInterval": "Synchronisierungsintervall",
+        "generalSettings": "Allgemeine Kalendereinstellungen",
+        "defaultView": "Standardansicht",
+        "viewMonth": "Monat",
+        "viewWeek": "Woche",
+        "viewDay": "Tag",
+        "showWeekends": "Wochenenden anzeigen",
+        "showHolidays": "Feiertage anzeigen"
       },
       "security": {
-        "title": "Güvenlik Ayarları",
-        "sessionManagement": "Oturum Yönetimi",
-        "sessionTimeout": "Oturum Zaman Aşımı",
-        "maxConcurrentSessions": "Maksimum Eşzamanlı Oturum",
-        "rememberMeDuration": "Beni Hatırla Süresi",
-        "passwordPolicy": "Şifre Politikası",
-        "passwordMinLength": "Minimum Şifre Uzunluğu",
-        "requireUppercase": "Büyük Harf Gerektir",
-        "requireLowercase": "Küçük Harf Gerektir",
-        "requireNumbers": "Sayı Gerektir",
-        "requireSpecial": "Özel Karakter Gerektir",
-        "passwordExpiration": "Şifre Son Kullanma (Gün)",
-        "noExpiration": "Süresiz",
-        "twoFactorAuth": "İki Faktörlü Kimlik Doğrulama (2FA)",
-        "enable2FA": "2FA'yı Etkinleştir",
-        "require2FAForAdmins": "Yöneticiler İçin Zorunlu",
-        "loginSecurity": "Giriş Güvenliği",
-        "maxLoginAttempts": "Maksimum Giriş Denemesi",
-        "lockoutDuration": "Kilitlenme Süresi",
-        "ipWhitelist": "IP Beyaz Liste",
-        "ipWhitelistDescription": "Her satıra bir IP adresi yazın",
+        "title": "Sicherheitseinstellungen",
+        "sessionManagement": "Sitzungsverwaltung",
+        "sessionTimeout": "Sitzungszeitüberschreitung",
+        "maxConcurrentSessions": "Maximale gleichzeitige Sitzungen",
+        "rememberMeDuration": "Angemeldet bleiben Dauer",
+        "passwordPolicy": "Passwortrichtlinie",
+        "passwordMinLength": "Mindestpasswortlänge",
+        "requireUppercase": "Großbuchstaben erforderlich",
+        "requireLowercase": "Kleinbuchstaben erforderlich",
+        "requireNumbers": "Zahlen erforderlich",
+        "requireSpecial": "Sonderzeichen erforderlich",
+        "passwordExpiration": "Passwortablauf (Tage)",
+        "noExpiration": "Unbegrenzt",
+        "twoFactorAuth": "Zwei-Faktor-Authentifizierung (2FA)",
+        "enable2FA": "2FA aktivieren",
+        "require2FAForAdmins": "Für Administratoren erforderlich",
+        "loginSecurity": "Anmeldesicherheit",
+        "maxLoginAttempts": "Maximale Anmeldeversuche",
+        "lockoutDuration": "Sperrdauer",
+        "ipWhitelist": "IP-Whitelist",
+        "ipWhitelistDescription": "Geben Sie eine IP-Adresse pro Zeile ein",
         "ipWhitelistPlaceholder": "192.168.1.1\n10.0.0.1",
-        "apiSecurity": "API Güvenliği",
-        "apiRateLimit": "API Hız Limiti",
-        "apiKeyExpiration": "API Anahtarı Son Kullanma (Gün)",
-        "minutesSuffix": " dakika",
-        "daysSuffix": " gün",
-        "requestsPerMinuteSuffix": " istek/dakika"
+        "apiSecurity": "API-Sicherheit",
+        "apiRateLimit": "API-Ratenlimit",
+        "apiKeyExpiration": "API-Schlüssel Ablauf (Tage)",
+        "minutesSuffix": " Minute",
+        "daysSuffix": " Tag",
+        "requestsPerMinuteSuffix": " Anfrage/Minute"
       }
     },
     "company": {
-      "title": "Şirket Ayarları"
+      "title": "Firmeneinstellungen"
     },
     "locations": {
-      "title": "Lokasyonlar",
-      "description": "Firma lokasyonlarını görüntüle ve yönet",
-      "allLocations": "Tüm Lokasyonlar",
-      "create": "Yeni Lokasyon",
-      "createSubArea": "Yeni Alt Alan",
-      "edit": "Düzenle",
-      "view": "Görüntüle",
-      "delete": "Sil",
-      "close": "Kapat",
-      "cancel": "İptal",
-      "update": "Güncelle",
-      "success": "Başarılı",
-      "error": "Hata",
-      "warning": "Uyarı",
-      "loading": "Lokasyonlar yükleniyor...",
-      "noData": "Lokasyon bulunamadı",
-      "createLocation": "Lokasyon Oluştur",
-      "editLocation": "Lokasyon Düzenle",
-      "editSubArea": "Alt Alan Düzenle",
-      "addSubArea": "Alt Alan Ekle",
-      "deleteConfirm": "Bu lokasyonu silmek istediğinizden emin misiniz?",
-      "deleteSuccess": "Lokasyon başarıyla silindi",
-      "deleteError": "Lokasyon silinirken hata oluştu",
-      "createSuccess": "Lokasyon başarıyla oluşturuldu",
-      "updateSuccess": "Lokasyon başarıyla güncellendi",
-      "saveError": "Lokasyon kaydedilirken hata oluştu",
-      "createSubAreaSuccess": "Alt alan başarıyla oluşturuldu",
-      "updateSubAreaSuccess": "Alt alan başarıyla güncellendi",
-      "nameRequired": "Lokasyon adı gereklidir",
-      "createDescription": "Yeni lokasyon oluşturun",
-      "noParentLocation": "Önce bir ana lokasyon oluşturmalısınız",
-      "noParentSelected": "Üst lokasyon seçilmelidir",
+      "title": "Standorte",
+      "description": "Firmenstandorte anzeigen und verwalten",
+      "allLocations": "Alle Standorte",
+      "create": "Neuer Standort",
+      "createSubArea": "Neuer Unterbereich",
+      "edit": "Bearbeiten",
+      "view": "Anzeigen",
+      "delete": "Löschen",
+      "close": "Schließen",
+      "cancel": "Abbrechen",
+      "update": "Aktualisieren",
+      "success": "Erfolgreich",
+      "error": "Fehler",
+      "warning": "Warnung",
+      "loading": "Standorte werden geladen...",
+      "noData": "Kein Standort gefunden",
+      "createLocation": "Standort erstellen",
+      "editLocation": "Standort bearbeiten",
+      "editSubArea": "Unterbereich bearbeiten",
+      "addSubArea": "Unterbereich hinzufügen",
+      "deleteConfirm": "Möchten Sie diesen Standort wirklich löschen?",
+      "deleteSuccess": "Standort wurde erfolgreich gelöscht",
+      "deleteError": "Fehler beim Löschen des Standorts",
+      "createSuccess": "Standort wurde erfolgreich erstellt",
+      "updateSuccess": "Standort wurde erfolgreich aktualisiert",
+      "saveError": "Fehler beim Speichern des Standorts",
+      "createSubAreaSuccess": "Unterbereich wurde erfolgreich erstellt",
+      "updateSubAreaSuccess": "Unterbereich wurde erfolgreich aktualisiert",
+      "nameRequired": "Standortname ist erforderlich",
+      "createDescription": "Neuen Standort erstellen",
+      "noParentLocation": "Sie müssen zuerst einen Hauptstandort erstellen",
+      "noParentSelected": "Übergeordneter Standort muss ausgewählt werden",
       "types": {
-        "headquarters": "Merkez",
-        "branch": "Şube",
-        "warehouse": "Depo",
-        "office": "Ofis",
-        "factory": "Fabrika",
-        "store": "Mağaza",
-        "other": "Diğer"
+        "headquarters": "Hauptsitz",
+        "branch": "Niederlassung",
+        "warehouse": "Lager",
+        "office": "Büro",
+        "factory": "Fabrik",
+        "store": "Geschäft",
+        "other": "Sonstiges"
       },
       "status": {
-        "active": "Aktif",
-        "inactive": "Pasif"
+        "active": "Aktiv",
+        "inactive": "Inaktiv"
       },
       "columns": {
-        "name": "Ad",
-        "code": "Kod",
-        "type": "Türü",
-        "city": "Şehir",
-        "status": "Durum",
-        "actions": "İşlemler"
+        "name": "Name",
+        "code": "Code",
+        "type": "Typ",
+        "city": "Stadt",
+        "status": "Status",
+        "actions": "Aktionen"
       },
       "filters": {
-        "type": "Lokasyon Tipi",
-        "status": "Durum"
+        "type": "Standorttyp",
+        "status": "Status"
       },
       "form": {
-        "upload": "Yükle",
-        "cancel": "İptal",
-        "save": "Kaydet",
-        "submit": "Gönder",
-        "reset": "Sıfırla",
-        "create": "Oluştur",
-        "update": "Güncelle",
-        "delete": "Sil",
-        "edit": "Düzenle",
-        "close": "Kapat",
-        "name": "Ad",
-        "code": "Kod",
-        "type": "Türü",
-        "parent": "Üst Lokasyon",
-        "address": "Adres",
-        "city": "Şehir",
-        "country": "Ülke",
-        "postalCode": "Posta Kodu",
-        "description": "Açıklama",
-        "isActive": "Aktif",
-        "latitude": "Enlem",
+        "upload": "Hochladen",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "submit": "Senden",
+        "reset": "Zurücksetzen",
+        "create": "Erstellen",
+        "update": "Aktualisieren",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "close": "Schließen",
+        "name": "Name",
+        "code": "Code",
+        "type": "Typ",
+        "parent": "Übergeordneter Standort",
+        "address": "Adresse",
+        "city": "Stadt",
+        "country": "Land",
+        "postalCode": "Postleitzahl",
+        "description": "Beschreibung",
+        "isActive": "Aktiv",
+        "latitude": "Breitengrad",
         "latitudePlaceholder": "41.0082",
-        "longitude": "Boylam",
+        "longitude": "Längengrad",
         "longitudePlaceholder": "28.9784",
         "phone": "Telefon",
         "phonePlaceholder": "+90 212 123 45 67",
-        "email": "E-posta",
-        "emailPlaceholder": "lokasyon@ornek.com",
-        "googleMapsLink": "Google Maps Paylaşım Linki",
+        "email": "E-Mail",
+        "emailPlaceholder": "standort@beispiel.com",
+        "googleMapsLink": "Google Maps Freigabelink",
         "googleMapsLinkPlaceholder": "https://www.google.com/maps?q=41.0082,28.9784",
-        "googleMapsLinkDescription": "Google Maps'ten paylaşım linkini yapıştırın, koordinatlar otomatik doldurulacaktır",
-        "namePlaceholder": "Örn: Ana Bina",
-        "codePlaceholder": "Örn: LOC-001",
-        "descriptionPlaceholder": "Lokasyon hakkında açıklama",
-        "parentPlaceholder": "Üst lokasyon seçin (opsiyonel)",
-        "addressPlaceholder": "Sokak adresi",
-        "cityPlaceholder": "Şehir adı",
-        "countryPlaceholder": "Ülke adı",
-        "postalCodePlaceholder": "Posta kodu",
-        "subAreaNamePlaceholder": "Örn: Koridor A",
-        "subAreaCodePlaceholder": "Örn: KOR-A",
-        "nameRequired": "NameRequired",
-        "typeRequired": "TypeRequired"
+        "googleMapsLinkDescription": "Fügen Sie den Freigabelink von Google Maps ein, die Koordinaten werden automatisch ausgefüllt",
+        "namePlaceholder": "z.B.: Hauptgebäude",
+        "codePlaceholder": "z.B.: LOC-001",
+        "descriptionPlaceholder": "Beschreibung des Standorts",
+        "parentPlaceholder": "Übergeordneten Standort auswählen (optional)",
+        "addressPlaceholder": "Straßenadresse",
+        "cityPlaceholder": "Stadtname",
+        "countryPlaceholder": "Ländername",
+        "postalCodePlaceholder": "Postleitzahl",
+        "subAreaNamePlaceholder": "z.B.: Korridor A",
+        "subAreaCodePlaceholder": "z.B.: KOR-A",
+        "nameRequired": "Name erforderlich",
+        "typeRequired": "Typ erforderlich"
       },
       "map": {
-        "title": "Harita Görünümü",
-        "description": "Lokasyonları haritada görüntüle",
-        "noLocations": "Haritada gösterilecek lokasyon bulunamadı. Lokasyonlara enlem ve boylam bilgisi ekleyin.",
-        "viewOnMap": "Haritada Görüntüle",
-        "latitude": "Enlem",
-        "longitude": "Boylam",
-        "openInGoogleMaps": "Google Maps'te Aç"
+        "title": "Kartenansicht",
+        "description": "Standorte auf der Karte anzeigen",
+        "noLocations": "Kein Standort zum Anzeigen auf der Karte gefunden. Fügen Sie Breiten- und Längengradinformationen zu den Standorten hinzu.",
+        "viewOnMap": "Auf Karte anzeigen",
+        "latitude": "Breitengrad",
+        "longitude": "Längengrad",
+        "openInGoogleMaps": "In Google Maps öffnen"
       },
       "table": {
         "name": "Liste"
       }
     },
     "exportTemplates": {
-      "title": "Export Şablonları"
+      "title": "Exportvorlagen"
     },
     "notifications": {
-      "title": "Bildirim Ayarları",
-      "description": "Platformunuzun bildirim ayarlarını yönetin",
-      "loadError": "Bildirim ayarları yüklenirken bir hata oluştu.",
-      "saveError": "Bildirim ayarları kaydedilirken bir hata oluştu.",
-      "savedSuccessfully": "Bildirim ayarları başarıyla kaydedildi.",
+      "title": "Benachrichtigungseinstellungen",
+      "description": "Verwalten Sie die Benachrichtigungseinstellungen Ihrer Plattform",
+      "loadError": "Beim Laden der Benachrichtigungseinstellungen ist ein Fehler aufgetreten.",
+      "saveError": "Beim Speichern der Benachrichtigungseinstellungen ist ein Fehler aufgetreten.",
+      "savedSuccessfully": "Benachrichtigungseinstellungen wurden erfolgreich gespeichert.",
       "email": {
-        "tabTitle": "E-posta Bildirimleri",
-        "title": "E-posta Bildirim Ayarları",
-        "enable": "E-posta Bildirimlerini Etkinleştir",
-        "enableDescription": "Sistem genelinde e-posta bildirimlerini etkinleştir veya devre dışı bırak",
-        "notificationTypes": "Bildirim Türleri",
+        "tabTitle": "E-Mail-Benachrichtigungen",
+        "title": "E-Mail-Benachrichtigungseinstellungen",
+        "enable": "E-Mail-Benachrichtigungen aktivieren",
+        "enableDescription": "E-Mail-Benachrichtigungen systemweit aktivieren oder deaktivieren",
+        "notificationTypes": "Benachrichtigungstypen",
         "types": {
-          "system": "Sistem Bildirimleri",
-          "systemDescription": "Sistem tarafından gönderilen bildirimler",
-          "user": "Kullanıcı Bildirimleri",
-          "userDescription": "Kullanıcılar arası bildirimler",
-          "module": "Modül Bildirimleri",
-          "moduleDescription": "Modüllerden gelen bildirimler"
+          "system": "Systembenachrichtigungen",
+          "systemDescription": "Vom System gesendete Benachrichtigungen",
+          "user": "Benutzerbenachrichtigungen",
+          "userDescription": "Benachrichtigungen zwischen Benutzern",
+          "module": "Modulbenachrichtigungen",
+          "moduleDescription": "Benachrichtigungen von Modulen"
         }
       },
       "push": {
-        "tabTitle": "Push Bildirimleri",
-        "title": "Push Bildirim Ayarları",
-        "enable": "Push Bildirimlerini Etkinleştir",
-        "enableDescription": "Tarayıcı ve mobil push bildirimlerini etkinleştir veya devre dışı bırak",
-        "channels": "Bildirim Kanalları",
-        "browser": "Tarayıcı Bildirimleri",
-        "browserDescription": "Web tarayıcısı push bildirimleri",
-        "mobile": "Mobil Bildirimler",
-        "mobileDescription": "Mobil uygulama push bildirimleri",
-        "notificationTypes": "Bildirim Türleri",
+        "tabTitle": "Push-Benachrichtigungen",
+        "title": "Push-Benachrichtigungseinstellungen",
+        "enable": "Push-Benachrichtigungen aktivieren",
+        "enableDescription": "Browser- und mobile Push-Benachrichtigungen aktivieren oder deaktivieren",
+        "channels": "Benachrichtigungskanäle",
+        "browser": "Browser-Benachrichtigungen",
+        "browserDescription": "Web-Browser-Push-Benachrichtigungen",
+        "mobile": "Mobile Benachrichtigungen",
+        "mobileDescription": "Mobile App-Push-Benachrichtigungen",
+        "notificationTypes": "Benachrichtigungstypen",
         "types": {
-          "system": "Sistem Bildirimleri",
-          "systemDescription": "Sistem tarafından gönderilen bildirimler",
-          "user": "Kullanıcı Bildirimleri",
-          "userDescription": "Kullanıcılar arası bildirimler",
-          "module": "Modül Bildirimleri",
-          "moduleDescription": "Modüllerden gelen bildirimler"
+          "system": "Systembenachrichtigungen",
+          "systemDescription": "Vom System gesendete Benachrichtigungen",
+          "user": "Benutzerbenachrichtigungen",
+          "userDescription": "Benachrichtigungen zwischen Benutzern",
+          "module": "Modulbenachrichtigungen",
+          "moduleDescription": "Benachrichtigungen von Modulen"
         }
       },
       "sms": {
-        "tabTitle": "SMS Bildirimleri",
-        "title": "SMS Bildirim Ayarları",
-        "enable": "SMS Bildirimlerini Etkinleştir",
-        "enableDescription": "SMS bildirimlerini etkinleştir veya devre dışı bırak",
-        "provider": "SMS Sağlayıcı",
-        "providerDescription": "SMS gönderimi için kullanılacak sağlayıcı",
-        "providerCustom": "Özel",
-        "apiKey": "API Anahtarı",
-        "apiKeyPlaceholder": "SMS sağlayıcı API anahtarı",
-        "apiSecret": "API Gizli Anahtarı",
-        "apiSecretPlaceholder": "SMS sağlayıcı API gizli anahtarı",
-        "fromNumber": "Gönderen Numarası",
-        "fromNumberPlaceholder": "SMS gönderen telefon numarası",
-        "notificationTypes": "Bildirim Türleri",
+        "tabTitle": "SMS-Benachrichtigungen",
+        "title": "SMS-Benachrichtigungseinstellungen",
+        "enable": "SMS-Benachrichtigungen aktivieren",
+        "enableDescription": "SMS-Benachrichtigungen aktivieren oder deaktivieren",
+        "provider": "SMS-Anbieter",
+        "providerDescription": "Anbieter für SMS-Versand",
+        "providerCustom": "Benutzerdefiniert",
+        "apiKey": "API-Schlüssel",
+        "apiKeyPlaceholder": "SMS-Anbieter API-Schlüssel",
+        "apiSecret": "API-Geheimschlüssel",
+        "apiSecretPlaceholder": "SMS-Anbieter API-Geheimschlüssel",
+        "fromNumber": "Absendernummer",
+        "fromNumberPlaceholder": "Telefonnummer für SMS-Versand",
+        "notificationTypes": "Benachrichtigungstypen",
         "types": {
-          "system": "Sistem Bildirimleri",
-          "systemDescription": "Sistem tarafından gönderilen SMS bildirimleri",
-          "user": "Kullanıcı Bildirimleri",
-          "userDescription": "Kullanıcılar arası SMS bildirimleri",
-          "module": "Modül Bildirimleri",
-          "moduleDescription": "Modüllerden gelen SMS bildirimleri"
+          "system": "System-SMS-Benachrichtigungen",
+          "systemDescription": "Vom System gesendete SMS-Benachrichtigungen",
+          "user": "Benutzer-SMS-Benachrichtigungen",
+          "userDescription": "SMS-Benachrichtigungen zwischen Benutzern",
+          "module": "Modul-SMS-Benachrichtigungen",
+          "moduleDescription": "SMS-Benachrichtigungen von Modulen"
         }
       },
       "preferences": {
-        "tabTitle": "Bildirim Tercihleri",
-        "title": "Bildirim Tercihleri",
-        "reminderTime": "Hatırlatma Süresi",
-        "reminderTimeDescription": "Bildirimden kaç dakika önce hatırlatma gönderilsin",
-        "quietHours": "Sessiz Saatler",
-        "quietHoursStart": "Başlangıç Saati",
-        "quietHoursEnd": "Bitiş Saati",
-        "notificationSound": "Bildirim Sesi",
-        "notificationSoundDescription": "Bildirim geldiğinde ses çal"
+        "tabTitle": "Benachrichtigungspräferenzen",
+        "title": "Benachrichtigungspräferenzen",
+        "reminderTime": "Erinnerungszeit",
+        "reminderTimeDescription": "Wie viele Minuten vor der Benachrichtigung soll eine Erinnerung gesendet werden",
+        "quietHours": "Ruhezeiten",
+        "quietHoursStart": "Startzeit",
+        "quietHoursEnd": "Endzeit",
+        "notificationSound": "Benachrichtigungston",
+        "notificationSoundDescription": "Ton abspielen, wenn eine Benachrichtigung eintrifft"
       },
       "modules": {
-        "tabTitle": "Modül Bildirimleri",
-        "title": "Modül Bildirim Ayarları",
-        "description": "Her modül için bildirim ayarlarını yönetin",
-        "noModules": "Bildirim ayarları olan modül bulunamadı",
-        "enableModule": "Modül Bildirimlerini Etkinleştir",
-        "enableModuleDescription": "{{module}} modülü için bildirimleri etkinleştir veya devre dışı bırak",
-        "channels": "Bildirim Kanalları",
-        "channelEmail": "E-posta",
+        "tabTitle": "Modulbenachrichtigungen",
+        "title": "Modulbenachrichtigungseinstellungen",
+        "description": "Verwalten Sie die Benachrichtigungseinstellungen für jedes Modul",
+        "noModules": "Kein Modul mit Benachrichtigungseinstellungen gefunden",
+        "enableModule": "Modulbenachrichtigungen aktivieren",
+        "enableModuleDescription": "Benachrichtigungen für das Modul {{module}} aktivieren oder deaktivieren",
+        "channels": "Benachrichtigungskanäle",
+        "channelEmail": "E-Mail",
         "channelPush": "Push",
         "channelSMS": "SMS",
-        "notificationTypes": "Bildirim Türleri"
+        "notificationTypes": "Benachrichtigungstypen"
       }
     },
     "security": {
@@ -580,166 +580,166 @@
     }
   },
   "management": {
-    "title": "Yönetim",
+    "title": "Verwaltung",
     "users": {
-      "title": "Kullanıcılar",
-      "description": "Sistem kullanıcılarını yönetin"
+      "title": "Benutzer",
+      "description": "Systembenutzer verwalten"
     },
     "roles": {
-      "title": "Roller",
-      "description": "Kullanıcı rollerini ve yetkilerini yönetin"
+      "title": "Rollen",
+      "description": "Benutzerrollen und Berechtigungen verwalten"
     },
     "permissions": {
-      "title": "İzinler",
-      "description": "Sistem genelindeki izinleri ve erişim seviyelerini yönetin"
+      "title": "Berechtigungen",
+      "description": "Systemweite Berechtigungen und Zugriffsebenen verwalten"
     },
     "companies": {
-      "title": "Şirketler",
-      "create": "Firma Oluştur",
-      "createTitle": "Yeni Firma Oluştur",
-      "createDescription": "Yeni bir firma (tenant) oluşturmak için aşağıdaki adımları tamamlayın",
+      "title": "Unternehmen",
+      "create": "Firma erstellen",
+      "createTitle": "Neue Firma erstellen",
+      "createDescription": "Vervollständigen Sie die folgenden Schritte, um eine neue Firma (Mandant) zu erstellen",
       "wizard": {
         "step1": {
-          "label": "Temel Bilgiler",
-          "description": "Firma detayları",
+          "label": "Grundinformationen",
+          "description": "Firmendetails",
           "fields": {
-            "tenantName": "Firma Adı",
+            "tenantName": "Firmenname",
             "tenantNamePlaceholder": "ACME Corporation",
-            "tenantNameRequired": "Firma Adı gereklidir",
+            "tenantNameRequired": "Firmenname ist erforderlich",
             "slug": "Slug",
             "slugPlaceholder": "acme",
-            "slugDescription": "Veritabanı isimlendirmesinde kullanılır (sadece küçük harf, rakam ve tire)",
-            "slugRequired": "Slug gereklidir",
-            "subdomain": "Alt Domain",
+            "slugDescription": "Wird für Datenbankbenennung verwendet (nur Kleinbuchstaben, Zahlen und Bindestriche)",
+            "slugRequired": "Slug ist erforderlich",
+            "subdomain": "Unterdomain",
             "subdomainPlaceholder": "acme",
-            "subdomainDescription": "Erişim URL'i: acme.onwindos.com",
-            "customDomain": "Özel Domain (Opsiyonel)",
+            "subdomainDescription": "Zugriffs-URL: acme.onwindos.com",
+            "customDomain": "Benutzerdefinierte Domain (Optional)",
             "customDomainPlaceholder": "https://acme.com"
           }
         },
         "step2": {
-          "label": "Şirket Bilgileri",
-          "description": "Logo ve detaylar",
+          "label": "Firmeninformationen",
+          "description": "Logo und Details",
           "fields": {
-            "companyName": "Şirket Adı",
+            "companyName": "Firmenname",
             "companyNamePlaceholder": "ACME Corporation",
-            "companyNameRequired": "Şirket Adı gereklidir",
-            "logo": "Şirket Logosu",
-            "logoPlaceholder": "Logo yükle",
-            "logoDescription": "Dışa aktarma belgelerinde kullanılır (PDF, Excel, vb.)",
-            "logoPreview": "Önizleme:",
+            "companyNameRequired": "Firmenname ist erforderlich",
+            "logo": "Firmenlogo",
+            "logoPlaceholder": "Logo hochladen",
+            "logoDescription": "Wird in Exportdokumenten verwendet (PDF, Excel, etc.)",
+            "logoPreview": "Vorschau:",
             "favicon": "Favicon",
-            "faviconPlaceholder": "Favicon yükle",
-            "faviconDescription": "Tarayıcı sekmesinde gösterilen ikon (16x16 veya 32x32 px)",
-            "pwaIconPlaceholder": "PWA ikonu yükle (192x192 veya 512x512 px)",
-            "address": "Adres",
-            "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
+            "faviconPlaceholder": "Favicon hochladen",
+            "faviconDescription": "In Browser-Tab angezeigtes Symbol (16x16 oder 32x32 px)",
+            "pwaIconPlaceholder": "PWA-Symbol hochladen (192x192 oder 512x512 px)",
+            "address": "Adresse",
+            "addressPlaceholder": "123 Hauptstraße, Stadt, Land",
             "phone": "Telefon",
             "phonePlaceholder": "+90 212 123 45 67",
-            "email": "E-posta",
+            "email": "E-Mail",
             "emailPlaceholder": "info@acme.com",
-            "website": "Web Sitesi",
+            "website": "Website",
             "websitePlaceholder": "https://acme.com",
-            "taxNumber": "Vergi Numarası",
+            "taxNumber": "Steuernummer",
             "taxNumberPlaceholder": "123-456-789"
           }
         },
         "step3": {
-          "label": "Lokasyon",
-          "description": "Opsiyonel",
-          "skipTitle": "Lokasyon Atlandı",
-          "skipMessage": "Lokasyonları daha sonra Ayarlar sayfasından ekleyebilirsiniz.",
-          "addLocation": "İlk Lokasyonu Ekle",
-          "optionalTitle": "Opsiyonel Adım",
-          "optionalMessage": "Bu adımı atlayabilir ve lokasyonları daha sonra ekleyebilirsiniz.",
-          "skipButton": "Lokasyon Kurulumunu Atla",
+          "label": "Standort",
+          "description": "Optional",
+          "skipTitle": "Standort übersprungen",
+          "skipMessage": "Sie können Standorte später auf der Einstellungsseite hinzufügen.",
+          "addLocation": "Ersten Standort hinzufügen",
+          "optionalTitle": "Optionaler Schritt",
+          "optionalMessage": "Sie können diesen Schritt überspringen und Standorte später hinzufügen.",
+          "skipButton": "Standorteinrichtung überspringen",
           "fields": {
-            "locationName": "Lokasyon Adı",
-            "locationNamePlaceholder": "Ana Ofis",
-            "code": "Kod",
+            "locationName": "Standortname",
+            "locationNamePlaceholder": "Hauptbüro",
+            "code": "Code",
             "codePlaceholder": "AUTO-GENERATED",
-            "locationType": "Lokasyon Tipi",
-            "locationTypePlaceholder": "Tip seçin",
-            "address": "Adres",
-            "addressPlaceholder": "123 Ana Cadde, Şehir, Ülke",
-            "city": "Şehir",
-            "cityPlaceholder": "İstanbul",
-            "country": "Ülke",
-            "countryPlaceholder": "Türkiye",
-            "postalCode": "Posta Kodu",
+            "locationType": "Standorttyp",
+            "locationTypePlaceholder": "Typ auswählen",
+            "address": "Adresse",
+            "addressPlaceholder": "123 Hauptstraße, Stadt, Land",
+            "city": "Stadt",
+            "cityPlaceholder": "Istanbul",
+            "country": "Land",
+            "countryPlaceholder": "Türkei",
+            "postalCode": "Postleitzahl",
             "postalCodePlaceholder": "34000",
             "phone": "Telefon",
             "phonePlaceholder": "+90 212 123 45 67",
-            "email": "E-posta",
-            "emailPlaceholder": "lokasyon@ornek.com",
-            "latitude": "Enlem",
+            "email": "E-Mail",
+            "emailPlaceholder": "standort@beispiel.com",
+            "latitude": "Breitengrad",
             "latitudePlaceholder": "41.0082",
-            "longitude": "Boylam",
+            "longitude": "Längengrad",
             "longitudePlaceholder": "28.9784",
-            "description": "Açıklama",
-            "descriptionPlaceholder": "Lokasyon hakkında açıklama"
+            "description": "Beschreibung",
+            "descriptionPlaceholder": "Beschreibung des Standorts"
           },
           "types": {
             "firma": "Firma (Company)",
-            "lokasyon": "Lokasyon (Location)",
-            "isletme": "İşletme (Business)",
-            "koridor": "Koridor (Corridor)",
-            "oda": "Oda (Room)"
+            "lokasyon": "Standort (Location)",
+            "isletme": "Betrieb (Business)",
+            "koridor": "Korridor (Corridor)",
+            "oda": "Raum (Room)"
           }
         },
         "step4": {
-          "label": "Özet",
-          "description": "Gözden geçirin",
-          "title": "Gözden geçirin",
-          "helpText": "Firmayı oluşturmadan önce lütfen tüm bilgileri gözden geçirin.",
-          "basicInfo": "Temel Bilgiler",
-          "companyInfo": "Şirket Bilgileri",
-          "initialLocation": "İlk Lokasyon",
-          "skipped": "Atlandı - Daha sonra eklenebilir",
-          "noLocation": "Lokasyon yapılandırılmadı",
-          "uploaded": "Yüklendi",
+          "label": "Zusammenfassung",
+          "description": "Überprüfen",
+          "title": "Überprüfen",
+          "helpText": "Bitte überprüfen Sie alle Informationen, bevor Sie die Firma erstellen.",
+          "basicInfo": "Grundinformationen",
+          "companyInfo": "Firmeninformationen",
+          "initialLocation": "Erster Standort",
+          "skipped": "Übersprungen - Kann später hinzugefügt werden",
+          "noLocation": "Standort nicht konfiguriert",
+          "uploaded": "Hochgeladen",
           "fields": {
-            "tenantName": "Firma Adı:",
+            "tenantName": "Firmenname:",
             "slug": "Slug:",
-            "subdomain": "Alt Domain:",
-            "customDomain": "Özel Domain:",
-            "companyName": "Şirket Adı:",
+            "subdomain": "Unterdomain:",
+            "customDomain": "Benutzerdefinierte Domain:",
+            "companyName": "Firmenname:",
             "logo": "Logo:",
             "favicon": "Favicon:",
-            "address": "Adres:",
+            "address": "Adresse:",
             "phone": "Telefon:",
-            "email": "E-posta:",
-            "website": "Web Sitesi:",
-            "taxNumber": "Vergi Numarası:",
-            "locationName": "Ad:",
-            "locationType": "Tip:",
-            "locationAddress": "Adres:"
+            "email": "E-Mail:",
+            "website": "Website:",
+            "taxNumber": "Steuernummer:",
+            "locationName": "Name:",
+            "locationType": "Typ:",
+            "locationAddress": "Adresse:"
           }
         },
         "step5": {
-          "label": "Oluşturuluyor",
-          "description": "Lütfen bekleyin"
+          "label": "Wird erstellt",
+          "description": "Bitte warten"
         },
         "buttons": {
-          "back": "Geri",
-          "next": "İleri",
-          "create": "Firma Oluştur",
-          "createTenant": "Firma Oluştur"
+          "back": "Zurück",
+          "next": "Weiter",
+          "create": "Firma erstellen",
+          "createTenant": "Firma erstellen"
         },
-        "requiredFields": "Mecburi alanlar:",
-        "validationError": "Lütfen tüm mecburi alanları doldurun",
+        "requiredFields": "Pflichtfelder:",
+        "validationError": "Bitte füllen Sie alle Pflichtfelder aus",
         "success": {
-          "title": "Başarılı",
-          "message": "Firma başarıyla oluşturuldu!"
+          "title": "Erfolgreich",
+          "message": "Firma wurde erfolgreich erstellt!"
         },
         "error": {
-          "title": "Hata",
-          "message": "Firma oluşturulamadı"
+          "title": "Fehler",
+          "message": "Firma konnte nicht erstellt werden"
         }
       }
     },
     "locations": {
-      "title": "Lokasyonlar"
+      "title": "Standorte"
     }
   },
   "profile": {
@@ -747,978 +747,978 @@
   },
   "modules": {
     "file-manager": {
-      "title": "Dosya Yöneticisi"
+      "title": "Dateimanager"
     }
   },
   "notifications": {
     "success": {
-      "title": "Başarılı",
-      "userCreated": "Kullanıcı başarıyla oluşturuldu",
-      "userUpdated": "Kullanıcı başarıyla güncellendi",
-      "userDeleted": "Kullanıcı başarıyla silindi",
-      "roleCreated": "Rol başarıyla oluşturuldu",
-      "roleUpdated": "Rol başarıyla güncellendi",
-      "permissionCreated": "İzin başarıyla oluşturuldu",
-      "permissionUpdated": "İzin başarıyla güncellendi",
-      "saved": "Başarıyla kaydedildi"
+      "title": "Erfolgreich",
+      "userCreated": "Benutzer wurde erfolgreich erstellt",
+      "userUpdated": "Benutzer wurde erfolgreich aktualisiert",
+      "userDeleted": "Benutzer wurde erfolgreich gelöscht",
+      "roleCreated": "Rolle wurde erfolgreich erstellt",
+      "roleUpdated": "Rolle wurde erfolgreich aktualisiert",
+      "permissionCreated": "Berechtigung wurde erfolgreich erstellt",
+      "permissionUpdated": "Berechtigung wurde erfolgreich aktualisiert",
+      "saved": "Erfolgreich gespeichert"
     },
     "error": {
-      "title": "Hata",
-      "validation": "Lütfen form hatalarını düzeltin",
-      "userCreateFailed": "Kullanıcı oluşturulamadı",
-      "userUpdateFailed": "Kullanıcı güncellenemedi",
-      "userDeleteFailed": "Kullanıcı silinemedi",
-      "statusUpdateFailed": "Durum güncellenemedi",
-      "roleSaveFailed": "Rol kaydedilemedi",
-      "permissionSaveFailed": "İzin kaydedilemedi",
-      "generic": "Bir hata oluştu"
+      "title": "Fehler",
+      "validation": "Bitte korrigieren Sie die Formularfehler",
+      "userCreateFailed": "Benutzer konnte nicht erstellt werden",
+      "userUpdateFailed": "Benutzer konnte nicht aktualisiert werden",
+      "userDeleteFailed": "Benutzer konnte nicht gelöscht werden",
+      "statusUpdateFailed": "Status konnte nicht aktualisiert werden",
+      "roleSaveFailed": "Rolle konnte nicht gespeichert werden",
+      "permissionSaveFailed": "Berechtigung konnte nicht gespeichert werden",
+      "generic": "Ein Fehler ist aufgetreten"
     },
     "warning": {
-      "title": "Uyarı"
+      "title": "Warnung"
     },
     "info": {
-      "title": "Bilgi"
+      "title": "Information"
     },
     "validation": {
-      "title": "Doğrulama Hatası",
-      "requiredFields": "Lütfen zorunlu alanları doldurun (Ad ve E-posta)",
-      "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
-      "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
-      "passwordMismatch": "Şifreler eşleşmiyor",
-      "fixErrors": "Lütfen form hatalarını düzeltin"
+      "title": "Validierungsfehler",
+      "requiredFields": "Bitte füllen Sie die Pflichtfelder aus (Name und E-Mail)",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "passwordMinLength": "Passwort muss mindestens 8 Zeichen lang sein",
+      "passwordMismatch": "Passwörter stimmen nicht überein",
+      "fixErrors": "Bitte korrigieren Sie die Formularfehler"
     }
   },
   "accessControl": {
-    "title": "Erişim Kontrol Paneli",
-    "description": "Organizasyonunuz için erişim, görünürlük ve düzen ayarlarını yönetin. Değişiklikler öncelik sırasına göre uygulanır: Kullanıcı > Rol > Firma.",
+    "title": "Zugriffssteuerungs-Panel",
+    "description": "Verwalten Sie Zugriffs-, Sichtbarkeits- und Layout-Einstellungen für Ihre Organisation. Änderungen werden in Prioritätsreihenfolge angewendet: Benutzer > Rolle > Firma.",
     "layout": {
-      "configuringFor": "Düzen yapılandırılıyor: {{scope}}",
-      "saveSuccess": "Düzen yapılandırması başarıyla kaydedildi",
-      "saveError": "Yapılandırma kaydedilemedi",
-      "sidebar": "Kenar Çubuğu",
-      "topLayout": "Üst Düzen",
-      "contentArea": "İçerik Alanı",
-      "footer": "Alt Bilgi",
-      "width": "Genişlik (px)",
-      "height": "Yükseklik (px)",
-      "backgroundColor": "Arka Plan Rengi",
-      "position": "Konum",
-      "left": "Sol",
-      "right": "Sağ",
-      "collapsed": "Varsayılan olarak daraltılmış",
-      "sticky": "Sabit Başlık",
-      "maxWidth": "Maksimum Genişlik (px)",
-      "maxWidthDescription": "Tam genişlik için 0",
-      "padding": "Dolgu (px)",
-      "visible": "Görünür"
+      "configuringFor": "Layout wird konfiguriert: {{scope}}",
+      "saveSuccess": "Layout-Konfiguration wurde erfolgreich gespeichert",
+      "saveError": "Konfiguration konnte nicht gespeichert werden",
+      "sidebar": "Seitenleiste",
+      "topLayout": "Oberes Layout",
+      "contentArea": "Inhaltsbereich",
+      "footer": "Fußzeile",
+      "width": "Breite (px)",
+      "height": "Höhe (px)",
+      "backgroundColor": "Hintergrundfarbe",
+      "position": "Position",
+      "left": "Links",
+      "right": "Rechts",
+      "collapsed": "Standardmäßig eingeklappt",
+      "sticky": "Feste Kopfzeile",
+      "maxWidth": "Maximale Breite (px)",
+      "maxWidthDescription": "0 für volle Breite",
+      "padding": "Abstand (px)",
+      "visible": "Sichtbar"
     },
     "menu": {
-      "configuringFor": "Menü görünürlüğü yapılandırılıyor: {{scope}}",
-      "saveSuccess": "Menü yapılandırması başarıyla kaydedildi",
-      "saveError": "Yapılandırma kaydedilemedi"
+      "configuringFor": "Menü-Sichtbarkeit wird konfiguriert: {{scope}}",
+      "saveSuccess": "Menü-Konfiguration wurde erfolgreich gespeichert",
+      "saveError": "Konfiguration konnte nicht gespeichert werden"
     },
     "modules": {
-      "enabled": "Etkin",
-      "disabled": "Devre Dışı",
-      "features": "Özellikler",
-      "noModules": "Modül Bulunamadı",
-      "noModulesDescription": "Şu anda yüklü veya mevcut modül bulunmamaktadır.",
-      "saveSuccess": "Modül erişim yapılandırması başarıyla kaydedildi",
-      "saveError": "Yapılandırma kaydedilemedi",
-      "configuringFor": "Modül erişimi yapılandırılıyor: {{scope}}"
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert",
+      "features": "Funktionen",
+      "noModules": "Kein Modul gefunden",
+      "noModulesDescription": "Derzeit ist kein Modul installiert oder verfügbar.",
+      "saveSuccess": "Modul-Zugriffskonfiguration wurde erfolgreich gespeichert",
+      "saveError": "Konfiguration konnte nicht gespeichert werden",
+      "configuringFor": "Modul-Zugriff wird konfiguriert: {{scope}}"
     },
     "scope": {
-      "title": "Yapılandırma Kapsamı",
+      "title": "Konfigurationsbereich",
       "tenant": "Firma",
-      "role": "Rol",
-      "user": "Kullanıcı",
-      "selectRole": "Rol Seçin",
-      "selectUser": "Kullanıcı Seçin",
-      "chooseRole": "Bir rol seçin",
-      "chooseUser": "Bir kullanıcı seçin",
-      "configuringFor": "Yapılandırma kapsamı: {{scope}}",
-      "tenantHelp": "Ayarlar, aksi belirtilmedikçe bu firmadaki tüm kullanıcılar için geçerli olacaktır.",
-      "roleHelp": "Ayarlar, firma ayarlarını geçersiz kılarak bu role sahip tüm kullanıcılar için geçerli olacaktır.",
-      "userHelp": "Ayarlar, rol ve firma ayarlarını geçersiz kılarak sadece bu kullanıcı için geçerli olacaktır."
+      "role": "Rolle",
+      "user": "Benutzer",
+      "selectRole": "Rolle auswählen",
+      "selectUser": "Benutzer auswählen",
+      "chooseRole": "Wählen Sie eine Rolle",
+      "chooseUser": "Wählen Sie einen Benutzer",
+      "configuringFor": "Konfigurationsbereich: {{scope}}",
+      "tenantHelp": "Einstellungen gelten für alle Benutzer in dieser Firma, sofern nicht anders angegeben.",
+      "roleHelp": "Einstellungen gelten für alle Benutzer mit dieser Rolle und überschreiben Firmeneinstellungen.",
+      "userHelp": "Einstellungen gelten nur für diesen Benutzer und überschreiben Rollen- und Firmeneinstellungen."
     },
     "tabs": {
-      "module": "Modül Erişimi",
-      "menu": "Menü Görünürlüğü",
-      "ui": "UI Özellikleri",
-      "layout": "Düzen"
+      "module": "Modul-Zugriff",
+      "menu": "Menü-Sichtbarkeit",
+      "ui": "UI-Funktionen",
+      "layout": "Layout"
     },
     "ui": {
-      "configuringFor": "UI özellikleri yapılandırılıyor: {{scope}}",
-      "saveSuccess": "UI yapılandırması başarıyla kaydedildi",
-      "saveError": "Yapılandırma kaydedilemedi",
+      "configuringFor": "UI-Funktionen werden konfiguriert: {{scope}}",
+      "saveSuccess": "UI-Konfiguration wurde erfolgreich gespeichert",
+      "saveError": "Konfiguration konnte nicht gespeichert werden",
       "groups": {
-        "buttons": "Aksiyon Butonları",
-        "datatable": "Veri Tablosu",
-        "filters": "Filtreleme & Arama",
-        "export": "Dışa Aktarma Seçenekleri"
+        "buttons": "Aktionsschaltflächen",
+        "datatable": "Datenbanktabelle",
+        "filters": "Filterung & Suche",
+        "export": "Export-Optionen"
       },
       "features": {
-        "create": "Oluştur Butonu",
-        "edit": "Düzenle Butonu",
-        "delete": "Sil Butonu",
-        "export": "Dışa Aktar Butonu",
-        "import": "İçe Aktar Butonu",
-        "bulk-actions": "Toplu İşlemler",
-        "column-visibility": "Sütun Görünürlüğü",
-        "density-toggle": "Sıkışıklık Ayarı",
-        "fullscreen": "Tam Ekran Modu",
-        "advanced-filters": "Gelişmiş Filtreler",
-        "saved-views": "Kayıtlı Görünümler",
-        "global-search": "Genel Arama"
+        "create": "Erstellen-Schaltfläche",
+        "edit": "Bearbeiten-Schaltfläche",
+        "delete": "Löschen-Schaltfläche",
+        "export": "Exportieren-Schaltfläche",
+        "import": "Importieren-Schaltfläche",
+        "bulk-actions": "Massenaktionen",
+        "column-visibility": "Spalten-Sichtbarkeit",
+        "density-toggle": "Dichte-Einstellung",
+        "fullscreen": "Vollbildmodus",
+        "advanced-filters": "Erweiterte Filter",
+        "saved-views": "Gespeicherte Ansichten",
+        "global-search": "Globale Suche"
       }
     },
     "preview": {
-      "title": "Yapılandırma Önizlemesi",
-      "currentScope": "MEVCUT KAPSAM",
-      "activeType": "AKTİF YAPILANDIRMA TİPİ",
-      "priorityLogic": "ÖNCELİK MANTIĞI",
-      "logicDesc": "Yapılandırmalar aşağıdaki sırayla birleştirilir (sonuncusu geçerli olur):"
+      "title": "Konfigurationsvorschau",
+      "currentScope": "AKTUELLER BEREICH",
+      "activeType": "AKTIVER KONFIGURATIONSTYP",
+      "priorityLogic": "PRIORITÄTSLOGIK",
+      "logicDesc": "Konfigurationen werden in folgender Reihenfolge kombiniert (die letzte gilt):"
     }
   },
   "footer": {
-    "copyright": "© 2024. Tüm hakları saklıdır.",
-    "privacy": "Gizlilik",
-    "terms": "Şartlar",
-    "support": "Destek"
+    "copyright": "© 2024. Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "support": "Support"
   },
   "layout": {
     "menu": "Menü",
-    "search": "Ara",
-    "searchPlaceholder": "Ara...",
-    "expandSidebar": "Kenar çubuğunu genişlet",
-    "collapseSidebar": "Kenar çubuğunu daralt",
-    "switchToSidebar": "Kenar Çubuğu Düzenine Geç",
-    "switchToTop": "Üst Düzen'e Geç",
-    "toggleTheme": "Temayı değiştir",
-    "enterFullscreen": "Tam Ekran",
-    "exitFullscreen": "Tam Ekrandan Çık",
-    "moreMenuItems": "Daha fazla menü öğesi",
-    "user": "Kullanıcı",
-    "myProfile": "Profilim",
-    "accountSettings": "Hesap Ayarları",
-    "logout": "Çıkış Yap",
+    "search": "Suchen",
+    "searchPlaceholder": "Suchen...",
+    "expandSidebar": "Seitenleiste erweitern",
+    "collapseSidebar": "Seitenleiste zusammenklappen",
+    "switchToSidebar": "Zur Seitenleisten-Layout wechseln",
+    "switchToTop": "Zum oberen Layout wechseln",
+    "toggleTheme": "Theme ändern",
+    "enterFullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild verlassen",
+    "moreMenuItems": "Weitere Menüelemente",
+    "user": "Benutzer",
+    "myProfile": "Mein Profil",
+    "accountSettings": "Kontoeinstellungen",
+    "logout": "Abmelden",
     "configurator": {
-      "title": "Tema Ayarları",
-      "openSettings": "Tema ayarlarını aç",
-      "saveSuccess": "Ayarlar Kaydedildi",
-      "saveSuccessMessage": "Tema tercihleriniz başarıyla kaydedildi.",
-      "resetTitle": "Ayarları Sıfırla",
-      "resetConfirmMessage": "Tüm tema tercihlerini varsayılan değerlere sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "resetSuccess": "Ayarlar Sıfırlandı",
-      "resetSuccessMessage": "Tüm tema tercihleri varsayılan değerlere sıfırlandı.",
-      "layoutStyle": "Layout Stili",
-      "theme": "Tema",
-      "direction": "Yön",
-      "sidebarSettings": "Sidebar Ayarları",
-      "topLayoutSettings": "Top Layout Ayarları",
-      "mobileSettings": "Mobil Ayarları",
-      "contentArea": "İçerik Alanı",
-      "footerVisible": "Footer Görünür",
-      "width": "Genişlik",
-      "height": "Yükseklik",
-      "headerHeight": "Header Yüksekliği",
-      "iconSize": "Icon Boyutu",
-      "collapsed": "Daraltılmış",
-      "background": "Arka Plan",
-      "scrollBehavior": "Scroll Davranışı",
-      "padding": "Padding",
-      "maxWidth": "Maksimum Genişlik (px)",
-      "maxWidthNote": "%100 genişlik seçildiğinde otomatik kaldırılır",
-      "unlimited": "Sınırsız",
-      "colorPalette": "Renk Paleti",
-      "customColor": "Özel Renk",
-      "sidebarLayout": "Sidebar Layout",
-      "topLayout": "Top Layout",
-      "themeLight": "Açık",
-      "themeDark": "Koyu",
-      "themeAuto": "Otomatik",
+      "title": "Theme-Einstellungen",
+      "openSettings": "Theme-Einstellungen öffnen",
+      "saveSuccess": "Einstellungen gespeichert",
+      "saveSuccessMessage": "Ihre Theme-Präferenzen wurden erfolgreich gespeichert.",
+      "resetTitle": "Einstellungen zurücksetzen",
+      "resetConfirmMessage": "Möchten Sie wirklich alle Theme-Präferenzen auf die Standardwerte zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "resetSuccess": "Einstellungen zurückgesetzt",
+      "resetSuccessMessage": "Alle Theme-Präferenzen wurden auf die Standardwerte zurückgesetzt.",
+      "layoutStyle": "Layout-Stil",
+      "theme": "Theme",
+      "direction": "Richtung",
+      "sidebarSettings": "Seitenleisten-Einstellungen",
+      "topLayoutSettings": "Oberes Layout-Einstellungen",
+      "mobileSettings": "Mobile Einstellungen",
+      "contentArea": "Inhaltsbereich",
+      "footerVisible": "Fußzeile sichtbar",
+      "width": "Breite",
+      "height": "Höhe",
+      "headerHeight": "Kopfzeilen-Höhe",
+      "iconSize": "Symbol-Größe",
+      "collapsed": "Zusammengeklappt",
+      "background": "Hintergrund",
+      "scrollBehavior": "Scroll-Verhalten",
+      "padding": "Abstand",
+      "maxWidth": "Maximale Breite (px)",
+      "maxWidthNote": "Wird automatisch entfernt, wenn 100% Breite ausgewählt wird",
+      "unlimited": "Unbegrenzt",
+      "colorPalette": "Farbpalette",
+      "customColor": "Benutzerdefinierte Farbe",
+      "sidebarLayout": "Seitenleisten-Layout",
+      "topLayout": "Oberes Layout",
+      "themeLight": "Hell",
+      "themeDark": "Dunkel",
+      "themeAuto": "Automatisch",
       "ltr": "LTR",
       "rtl": "RTL",
-      "close": "Kapat",
+      "close": "Schließen",
       "backgrounds": {
-        "light": "Açık",
-        "dark": "Koyu",
-        "brand": "Marka",
-        "custom": "Özel"
+        "light": "Hell",
+        "dark": "Dunkel",
+        "brand": "Marke",
+        "custom": "Benutzerdefiniert"
       },
       "scrollBehaviors": {
-        "fixed": "Sabit",
-        "hidden": "Gizli",
+        "fixed": "Fest",
+        "hidden": "Versteckt",
         "hiddenOnHover": "Hover"
       },
       "directions": {
-        "top": "Üst",
-        "right": "Sağ",
-        "bottom": "Alt",
-        "left": "Sol"
+        "top": "Oben",
+        "right": "Rechts",
+        "bottom": "Unten",
+        "left": "Links"
       },
       "buttons": {
-        "save": "Kaydet",
-        "reset": "Sıfırla"
+        "save": "Speichern",
+        "reset": "Zurücksetzen"
       }
     },
-    "toggleMenu": "Menüyü aç/kapat",
-    "userMenu": "Kullanıcı menüsü"
+    "toggleMenu": "Menü öffnen/schließen",
+    "userMenu": "Benutzermenü"
   },
   "menu": {
-    "dashboard": "Panel",
-    "moduleManagement": "Modül Yönetimi",
-    "settings": "Ayarlar",
-    "accessControl": "Erişim Kontrolü",
-    "companyManagement": "Firma Yönetimi",
+    "dashboard": "Dashboard",
+    "moduleManagement": "Modulverwaltung",
+    "settings": "Einstellungen",
+    "accessControl": "Zugriffskontrolle",
+    "companyManagement": "Firmenverwaltung",
     "label": "Label"
   },
   "coreSystems": {
-    "title": "Merkezi Sistemler",
-    "description": "Merkezi sistem yönetim paneline hoş geldiniz",
-    "comingSoon": "Yakında",
+    "title": "Zentrale Systeme",
+    "description": "Willkommen im zentralen Systemverwaltungs-Panel",
+    "comingSoon": "Demnächst",
     "files": {
-      "title": "Dosya Yönetimi",
-      "description": "Merkezi dosya yönetim sistemi",
-      "comingSoon": "Bu sayfa yakında eklenecektir."
+      "title": "Dateiverwaltung",
+      "description": "Zentrales Dateiverwaltungssystem",
+      "comingSoon": "Diese Seite wird demnächst hinzugefügt."
     },
     "ai": {
-      "title": "AI Servisi",
-      "description": "Yapay zeka servis yönetimi",
-      "comingSoon": "Bu sayfa yakında eklenecektir."
+      "title": "KI-Service",
+      "description": "Künstliche Intelligenz Service-Verwaltung",
+      "comingSoon": "Diese Seite wird demnächst hinzugefügt."
     },
     "notifications": {
-      "title": "Bildirimler",
-      "description": "Merkezi bildirim yönetimi",
-      "comingSoon": "Bu sayfa yakında eklenecektir."
+      "title": "Benachrichtigungen",
+      "description": "Zentrale Benachrichtigungsverwaltung",
+      "comingSoon": "Diese Seite wird demnächst hinzugefügt."
     }
   },
   "tenants": {
-    "title": "Tenant Yönetimi",
-    "description": "Tüm tenant'ları görüntüle ve yönet",
-    "create": "Yeni Tenant",
-    "search": "Ara...",
-    "filterStatus": "Durum Filtrele",
-    "all": "Tümü",
-    "active": "Aktif",
-    "inactive": "Pasif",
-    "suspended": "Askıya Alınmış",
-    "loadError": "Tenant'lar yüklenirken bir hata oluştu",
-    "noTenants": "Tenant bulunamadı",
+    "title": "Mandantenverwaltung",
+    "description": "Alle Mandanten anzeigen und verwalten",
+    "create": "Neuer Mandant",
+    "search": "Suchen...",
+    "filterStatus": "Status filtern",
+    "all": "Alle",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "suspended": "Ausgesetzt",
+    "loadError": "Beim Laden der Mandanten ist ein Fehler aufgetreten",
+    "noTenants": "Kein Mandant gefunden",
     "table": {
-      "name": "Firma Adı",
+      "name": "Firmenname",
       "slug": "Slug",
-      "subdomain": "Subdomain",
-      "database": "Veritabanı",
-      "status": "Durum",
-      "agency": "Agency",
-      "createdAt": "Oluşturulma"
+      "subdomain": "Unterdomain",
+      "database": "Datenbank",
+      "status": "Status",
+      "agency": "Agentur",
+      "createdAt": "Erstellt"
     }
   },
   "databases": {
-    "title": "Veritabanı Yönetimi",
-    "description": "Tüm veritabanlarını görüntüle ve yönet",
-    "search": "Veritabanı ara...",
-    "loadError": "Veritabanları yüklenirken bir hata oluştu",
-    "noDatabases": "Veritabanı bulunamadı",
+    "title": "Datenbankverwaltung",
+    "description": "Alle Datenbanken anzeigen und verwalten",
+    "search": "Datenbank suchen...",
+    "loadError": "Beim Laden der Datenbanken ist ein Fehler aufgetreten",
+    "noDatabases": "Keine Datenbank gefunden",
     "core": "Core",
-    "tenant": "Tenant",
-    "current": "Aktif",
-    "active": "Aktif",
-    "inactive": "Pasif",
+    "tenant": "Mandant",
+    "current": "Aktiv",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
     "stats": {
-      "total": "Toplam",
+      "total": "Gesamt",
       "core": "Core",
-      "tenant": "Tenant",
-      "active": "Aktif"
+      "tenant": "Mandant",
+      "active": "Aktiv"
     },
     "table": {
-      "name": "Veritabanı Adı",
-      "type": "Tip",
-      "tenant": "Tenant",
-      "year": "Yıl",
-      "status": "Durum"
+      "name": "Datenbankname",
+      "type": "Typ",
+      "tenant": "Mandant",
+      "year": "Jahr",
+      "status": "Status"
     }
   },
   "companies": {
-    "title": "Firma Yönetimi",
-    "description": "Mevcut firma ve alt firmaları görüntüle ve yönet",
-    "myCompany": "Firmam",
-    "myCompanyDescription": "Firma bilgilerinizi görüntüleyin ve düzenleyin",
-    "create": "Yeni Firma",
-    "createTitle": "Yeni Firma Oluştur",
-    "createDescription": "Yeni bir firma (tenant) oluşturmak için aşağıdaki adımları tamamlayın",
+    "title": "Firmenverwaltung",
+    "description": "Aktuelle Firma und Tochterfirmen anzeigen und verwalten",
+    "myCompany": "Meine Firma",
+    "myCompanyDescription": "Firmeninformationen anzeigen und bearbeiten",
+    "create": "Neue Firma",
+    "createTitle": "Neue Firma erstellen",
+    "createDescription": "Vervollständigen Sie die folgenden Schritte, um eine neue Firma (Mandant) zu erstellen",
     "wizard": {
       "buttons": {
-        "back": "Geri",
-        "createTenant": "Firma Oluştur",
-        "next": "İleri"
+        "back": "Zurück",
+        "createTenant": "Firma erstellen",
+        "next": "Weiter"
       },
       "error": {
-        "message": "Firma oluşturulurken bir hata oluştu",
-        "title": "Hata"
+        "message": "Beim Erstellen der Firma ist ein Fehler aufgetreten",
+        "title": "Fehler"
       },
-      "requiredFields": "Lütfen zorunlu alanları doldurun:",
-      "validationError": "Doğrulama Hatası",
+      "requiredFields": "Bitte füllen Sie die Pflichtfelder aus:",
+      "validationError": "Validierungsfehler",
       "step1": {
-        "label": "Temel Bilgiler",
-        "description": "Firma temel bilgileri",
+        "label": "Grundinformationen",
+        "description": "Firmengrundinformationen",
         "fields": {
-          "tenantName": "Firma Adı",
-          "tenantNamePlaceholder": "Firma adını girin",
-          "tenantNameRequired": "Firma adı gereklidir",
-          "slug": "Benzersiz Kod",
-          "slugPlaceholder": "firma-kodu",
-          "slugDescription": "Veritabanı ve URL'lerde kullanılacak benzersiz kod",
-          "slugRequired": "Benzersiz kod gereklidir",
-          "slugTaken": "Bu kod zaten kullanılıyor, lütfen farklı bir kod girin",
-          "slugAvailable": "Bu kod kullanılabilir",
-          "subdomain": "Alt Alan Adı",
+          "tenantName": "Firmenname",
+          "tenantNamePlaceholder": "Firmenname eingeben",
+          "tenantNameRequired": "Firmenname ist erforderlich",
+          "slug": "Eindeutiger Code",
+          "slugPlaceholder": "firma-code",
+          "slugDescription": "Eindeutiger Code für Datenbank und URLs",
+          "slugRequired": "Eindeutiger Code ist erforderlich",
+          "slugTaken": "Dieser Code wird bereits verwendet, bitte geben Sie einen anderen Code ein",
+          "slugAvailable": "Dieser Code ist verfügbar",
+          "subdomain": "Unterdomain",
           "subdomainPlaceholder": "firma",
-          "subdomainDescription": "firma.omnex.com şeklinde erişim sağlanır",
-          "subdomainTaken": "Bu alt alan adı zaten kullanılıyor, lütfen farklı bir alt alan adı girin",
-          "subdomainAvailable": "Bu alt alan adı kullanılabilir",
-          "customDomain": "Özel Alan Adı",
+          "subdomainDescription": "Zugriff erfolgt über firma.omnex.com",
+          "subdomainTaken": "Diese Unterdomain wird bereits verwendet, bitte geben Sie eine andere Unterdomain ein",
+          "subdomainAvailable": "Diese Unterdomain ist verfügbar",
+          "customDomain": "Benutzerdefinierte Domain",
           "customDomainPlaceholder": "www.firmaadi.com"
         }
       },
       "step2": {
-        "label": "Firma Bilgileri",
-        "description": "Detaylı firma bilgileri",
+        "label": "Firmeninformationen",
+        "description": "Detaillierte Firmeninformationen",
         "fields": {
-          "companyName": "Firma Adı",
-          "companyNamePlaceholder": "Firma adını girin",
-          "companyNameRequired": "Firma adı gereklidir",
+          "companyName": "Firmenname",
+          "companyNamePlaceholder": "Firmenname eingeben",
+          "companyNameRequired": "Firmenname ist erforderlich",
           "logo": "Logo",
-          "logoPlaceholder": "Logo dosyası seçin",
-          "logoDescription": "PNG, JPG veya SVG formatında (önerilen boyut: 200x200px)",
-          "logoPreview": "Logo Önizleme",
+          "logoPlaceholder": "Logo-Datei auswählen",
+          "logoDescription": "PNG, JPG oder SVG Format (empfohlene Größe: 200x200px)",
+          "logoPreview": "Logo-Vorschau",
           "favicon": "Favicon",
-          "faviconPlaceholder": "Favicon dosyası seçin",
-          "faviconDescription": "ICO veya PNG formatında (önerilen boyut: 32x32px)",
-          "address": "Adres",
-          "addressPlaceholder": "Firma adresini girin",
+          "faviconPlaceholder": "Favicon-Datei auswählen",
+          "faviconDescription": "ICO oder PNG Format (empfohlene Größe: 32x32px)",
+          "address": "Adresse",
+          "addressPlaceholder": "Firmenadresse eingeben",
           "phone": "Telefon",
           "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "E-posta",
+          "email": "E-Mail",
           "emailPlaceholder": "info@firma.com",
-          "website": "Web Sitesi",
+          "website": "Website",
           "websitePlaceholder": "https://www.firma.com",
-          "taxNumber": "Vergi Numarası",
+          "taxNumber": "Steuernummer",
           "taxNumberPlaceholder": "1234567890"
         }
       },
       "step3": {
-        "label": "Lokasyon",
-        "description": "İlk lokasyon bilgileri",
-        "addLocation": "Lokasyon Ekle",
-        "skipTitle": "Lokasyon Atla",
-        "skipMessage": "Lokasyon bilgisi olmadan devam edebilirsiniz",
-        "skipButton": "Atla",
-        "optionalTitle": "İsteğe Bağlı",
-        "optionalMessage": "Lokasyon bilgisi daha sonra da eklenebilir",
+        "label": "Standort",
+        "description": "Erste Standortinformationen",
+        "addLocation": "Standort hinzufügen",
+        "skipTitle": "Standort überspringen",
+        "skipMessage": "Sie können ohne Standortinformationen fortfahren",
+        "skipButton": "Überspringen",
+        "optionalTitle": "Optional",
+        "optionalMessage": "Standortinformationen können später hinzugefügt werden",
         "fields": {
-          "locationName": "Lokasyon Adı",
-          "locationNamePlaceholder": "Merkez Ofis",
-          "locationType": "Lokasyon Tipi",
-          "locationTypePlaceholder": "Tip seçin",
-          "code": "Lokasyon Kodu",
+          "locationName": "Standortname",
+          "locationNamePlaceholder": "Hauptbüro",
+          "locationType": "Standorttyp",
+          "locationTypePlaceholder": "Typ auswählen",
+          "code": "Standortcode",
           "codePlaceholder": "MRK",
-          "description": "Açıklama",
-          "descriptionPlaceholder": "Lokasyon açıklaması",
-          "address": "Adres",
-          "addressPlaceholder": "Tam adres",
-          "city": "Şehir",
-          "cityPlaceholder": "İstanbul",
-          "country": "Ülke",
-          "countryPlaceholder": "Türkiye",
-          "postalCode": "Posta Kodu",
+          "description": "Beschreibung",
+          "descriptionPlaceholder": "Standortbeschreibung",
+          "address": "Adresse",
+          "addressPlaceholder": "Vollständige Adresse",
+          "city": "Stadt",
+          "cityPlaceholder": "Istanbul",
+          "country": "Land",
+          "countryPlaceholder": "Türkei",
+          "postalCode": "Postleitzahl",
           "postalCodePlaceholder": "34000",
           "phone": "Telefon",
           "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "E-posta",
-          "emailPlaceholder": "lokasyon@firma.com",
-          "latitude": "Enlem",
+          "email": "E-Mail",
+          "emailPlaceholder": "standort@firma.com",
+          "latitude": "Breitengrad",
           "latitudePlaceholder": "41.0082",
-          "longitude": "Boylam",
+          "longitude": "Längengrad",
           "longitudePlaceholder": "28.9784"
         }
       },
       "step4": {
-        "label": "Özet",
-        "description": "Bilgileri kontrol edin",
-        "title": "Firma Bilgileri Özeti",
-        "helpText": "Lütfen girdiğiniz bilgileri kontrol edin",
-        "basicInfo": "Temel Bilgiler",
-        "companyInfo": "Firma Bilgileri",
-        "initialLocation": "İlk Lokasyon",
-        "noLocation": "Lokasyon eklenmedi",
-        "skipped": "Atlandı",
-        "uploaded": "Yüklendi",
+        "label": "Zusammenfassung",
+        "description": "Informationen überprüfen",
+        "title": "Firmeninformations-Zusammenfassung",
+        "helpText": "Bitte überprüfen Sie die eingegebenen Informationen",
+        "basicInfo": "Grundinformationen",
+        "companyInfo": "Firmeninformationen",
+        "initialLocation": "Erster Standort",
+        "noLocation": "Kein Standort hinzugefügt",
+        "skipped": "Übersprungen",
+        "uploaded": "Hochgeladen",
         "fields": {
-          "tenantName": "Firma Adı",
-          "slug": "Benzersiz Kod",
-          "subdomain": "Alt Alan Adı",
-          "customDomain": "Özel Alan Adı",
-          "companyName": "Şirket Adı",
+          "tenantName": "Firmenname",
+          "slug": "Eindeutiger Code",
+          "subdomain": "Unterdomain",
+          "customDomain": "Benutzerdefinierte Domain",
+          "companyName": "Firmenname",
           "logo": "Logo",
           "favicon": "Favicon",
-          "address": "Adres",
+          "address": "Adresse",
           "phone": "Telefon",
-          "email": "E-posta",
-          "website": "Web Sitesi",
-          "taxNumber": "Vergi Numarası",
-          "locationName": "Lokasyon Adı",
-          "locationType": "Lokasyon Tipi",
-          "locationAddress": "Lokasyon Adresi"
+          "email": "E-Mail",
+          "website": "Website",
+          "taxNumber": "Steuernummer",
+          "locationName": "Standortname",
+          "locationType": "Standorttyp",
+          "locationAddress": "Standortadresse"
         }
       },
       "step5": {
-        "label": "Oluşturma",
-        "description": "Firma oluşturuluyor"
+        "label": "Wird erstellt",
+        "description": "Firma wird erstellt"
       },
       "success": {
-        "title": "Başarılı",
-        "message": "Firma başarıyla oluşturuldu"
+        "title": "Erfolgreich",
+        "message": "Firma wurde erfolgreich erstellt"
       }
     },
-    "search": "Ara",
-    "loadError": "Yükleme hatası",
-    "noCompanies": "Şirket bulunamadı",
-    "main": "Ana",
-    "viewing": "Görüntüleniyor",
-    "editing": "Düzenleniyor",
-    "deleting": "Siliniyor",
-    "confirmDelete": "Silme Onayı",
-    "comingSoon": "Yakında",
-    "updated": "Güncellendi",
-    "updateError": "Güncelleme hatası",
+    "search": "Suchen",
+    "loadError": "Ladefehler",
+    "noCompanies": "Kein Unternehmen gefunden",
+    "main": "Haupt",
+    "viewing": "Wird angezeigt",
+    "editing": "Wird bearbeitet",
+    "deleting": "Wird gelöscht",
+    "confirmDelete": "Löschbestätigung",
+    "comingSoon": "Demnächst",
+    "updated": "Aktualisiert",
+    "updateError": "Aktualisierungsfehler",
     "logo": "Logo",
-    "uploadLogo": "Logo Yükle",
-    "changeLogo": "Logoyu Değiştir",
-    "removeLogo": "Logoyu Kaldır",
-    "logoHint": "Logo ipucu",
-    "logoUploadComingSoon": "Logo yükleme özelliği yakında eklenecek",
-    "logoUploaded": "Logo yüklendi",
-    "logoUploadError": "Logo yükleme hatası",
+    "uploadLogo": "Logo hochladen",
+    "changeLogo": "Logo ändern",
+    "removeLogo": "Logo entfernen",
+    "logoHint": "Logo-Hinweis",
+    "logoUploadComingSoon": "Logo-Upload-Funktion wird demnächst hinzugefügt",
+    "logoUploaded": "Logo hochgeladen",
+    "logoUploadError": "Logo-Upload-Fehler",
     "favicon": "Favicon",
-    "uploadFavicon": "Favicon Yükle",
-    "changeFavicon": "Favicon'u Değiştir",
-    "removeFavicon": "Favicon'u Kaldır",
-    "faviconHint": "Tarayıcı sekmesinde görünecek ikon. ICO, PNG veya SVG formatında olabilir (önerilen: 32x32px veya 64x64px)",
-    "faviconUploaded": "Favicon yüklendi",
-    "pwaIcon": "PWA Ikonu",
-    "uploadPwaIcon": "PWA Ikonu Yükle",
-    "changePwaIcon": "PWA Ikonunu Değiştir",
-    "removePwaIcon": "PWA Ikonunu Kaldır",
-    "pwaIconHint": "Mobil cihazlarda ana ekrana eklendiğinde görünecek ikon. PNG formatında olmalı (önerilen: 512x512px)",
-    "pwaIconUploaded": "PWA ikonu yüklendi",
-    "assets": "Varlıklar",
-    "contents": "İçerikler",
-    "websites": "Web Siteleri",
+    "uploadFavicon": "Favicon hochladen",
+    "changeFavicon": "Favicon ändern",
+    "removeFavicon": "Favicon entfernen",
+    "faviconHint": "Symbol, das im Browser-Tab angezeigt wird. Kann ICO, PNG oder SVG Format sein (empfohlen: 32x32px oder 64x64px)",
+    "faviconUploaded": "Favicon hochgeladen",
+    "pwaIcon": "PWA-Symbol",
+    "uploadPwaIcon": "PWA-Symbol hochladen",
+    "changePwaIcon": "PWA-Symbol ändern",
+    "removePwaIcon": "PWA-Symbol entfernen",
+    "pwaIconHint": "Symbol, das auf mobilen Geräten auf dem Startbildschirm angezeigt wird. Muss PNG Format sein (empfohlen: 512x512px)",
+    "pwaIconUploaded": "PWA-Symbol hochgeladen",
+    "assets": "Vermögenswerte",
+    "contents": "Inhalte",
+    "websites": "Websites",
     "tabs": {
-      "additional": "Ek Bilgiler",
-      "basic": "Temel Bilgiler",
-      "contact": "İletişim",
-      "financial": "Mali Bilgiler",
-      "legal": "Yasal Bilgiler"
+      "additional": "Zusätzliche Informationen",
+      "basic": "Grundinformationen",
+      "contact": "Kontakt",
+      "financial": "Finanzielle Informationen",
+      "legal": "Rechtliche Informationen"
     },
     "form": {
-      "upload": "Yükle",
-      "cancel": "İptal",
-      "save": "Kaydet",
-      "submit": "Gönder",
-      "reset": "Sıfırla",
-      "create": "Oluştur",
-      "update": "Güncelle",
-      "delete": "Sil",
-      "edit": "Düzenle",
-      "close": "Kapat",
-      "name": "Firma Adı",
-      "namePlaceholder": "Firma adını girin",
-      "industry": "Sektör",
-      "industryPlaceholder": "Sektör",
-      "website": "Web Sitesi",
+      "upload": "Hochladen",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "submit": "Senden",
+      "reset": "Zurücksetzen",
+      "create": "Erstellen",
+      "update": "Aktualisieren",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "close": "Schließen",
+      "name": "Firmenname",
+      "namePlaceholder": "Firmenname eingeben",
+      "industry": "Branche",
+      "industryPlaceholder": "Branche",
+      "website": "Website",
       "websitePlaceholder": "https://example.com",
-      "description": "Açıklama",
-      "descriptionPlaceholder": "Firma açıklaması",
-      "foundedYear": "Kuruluş Yılı",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Firmenbeschreibung",
+      "foundedYear": "Gründungsjahr",
       "foundedYearPlaceholder": "2020",
-      "employeeCount": "Çalışan Sayısı",
+      "employeeCount": "Anzahl der Mitarbeiter",
       "employeeCountPlaceholder": "50",
-      "capital": "Sermaye",
+      "capital": "Kapital",
       "capitalPlaceholder": "100.000 TL",
-      "address": "Adres",
-      "addressPlaceholder": "Tam adres",
-      "city": "Şehir",
-      "cityPlaceholder": "İstanbul",
-      "state": "İl/İlçe",
+      "address": "Adresse",
+      "addressPlaceholder": "Vollständige Adresse",
+      "city": "Stadt",
+      "cityPlaceholder": "Istanbul",
+      "state": "Provinz/Bezirk",
       "statePlaceholder": "Kadıköy",
-      "postalCode": "Posta Kodu",
+      "postalCode": "Postleitzahl",
       "postalCodePlaceholder": "34000",
-      "country": "Ülke",
-      "countryPlaceholder": "Türkiye",
+      "country": "Land",
+      "countryPlaceholder": "Türkei",
       "phone": "Telefon",
       "phonePlaceholder": "+90 (212) 123 45 67",
-      "email": "E-posta",
+      "email": "E-Mail",
       "emailPlaceholder": "info@example.com",
-      "taxNumber": "Vergi Numarası",
+      "taxNumber": "Steuernummer",
       "taxNumberPlaceholder": "1234567890",
-      "taxOffice": "Vergi Dairesi",
-      "taxOfficePlaceholder": "Kadıköy Vergi Dairesi",
-      "registrationNumber": "Ticaret Sicil Numarası",
+      "taxOffice": "Finanzamt",
+      "taxOfficePlaceholder": "Kadıköy Finanzamt",
+      "registrationNumber": "Handelsregisternummer",
       "registrationNumberPlaceholder": "123456-5",
-      "mersisNumber": "MERSIS Numarası",
-      "mersisNumberPlaceholder": "MERSIS numarası",
+      "mersisNumber": "MERSIS-Nummer",
+      "mersisNumberPlaceholder": "MERSIS-Nummer",
       "iban": "IBAN",
       "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
-      "bankName": "Banka Adı",
-      "bankNamePlaceholder": "Banka adı",
-      "accountHolder": "Hesap Sahibi",
-      "accountHolderPlaceholder": "Hesap sahibi adı",
-      "status": "Durum"
+      "bankName": "Bankname",
+      "bankNamePlaceholder": "Bankname",
+      "accountHolder": "Kontoinhaber",
+      "accountHolderPlaceholder": "Kontoinhaber-Name",
+      "status": "Status"
     },
     "stats": {
-      "active": "Aktif",
-      "assets": "Varlıklar",
-      "contents": "İçerikler",
-      "title": "İstatistikler",
-      "total": "Toplam",
-      "totalStats": "Toplam İstatistikler",
-      "users": "Kullanıcılar",
-      "websites": "Web Siteleri"
+      "active": "Aktiv",
+      "assets": "Vermögenswerte",
+      "contents": "Inhalte",
+      "title": "Statistiken",
+      "total": "Gesamt",
+      "totalStats": "Gesamtstatistiken",
+      "users": "Benutzer",
+      "websites": "Websites"
     },
     "info": {
-      "createdAt": "Oluşturulma Tarihi",
-      "status": "Durum",
-      "updatedAt": "Güncellenme Tarihi"
+      "createdAt": "Erstellungsdatum",
+      "status": "Status",
+      "updatedAt": "Aktualisierungsdatum"
     },
     "table": {
-      "actions": "İşlemler",
-      "createdAt": "Oluşturulma",
-      "industry": "Sektör",
-      "name": "Firma Adı",
-      "stats": "İstatistikler",
-      "status": "Durum",
-      "users": "Kullanıcılar",
-      "website": "Web Sitesi"
+      "actions": "Aktionen",
+      "createdAt": "Erstellt",
+      "industry": "Branche",
+      "name": "Firmenname",
+      "stats": "Statistiken",
+      "status": "Status",
+      "users": "Benutzer",
+      "website": "Website"
     },
-    "viewDescription": "Firma bilgilerini görüntüle",
-    "edit": "Firma Düzenle",
-    "allCompanies": "Tüm Şirketler",
-    "name": "Firma Adı",
-    "industry": "Sektör",
-    "foundedYear": "Kuruluş Yılı",
-    "employeeCount": "Çalışan Sayısı",
-    "capital": "Sermaye",
-    "email": "E-posta",
+    "viewDescription": "Firmeninformationen anzeigen",
+    "edit": "Firma bearbeiten",
+    "allCompanies": "Alle Unternehmen",
+    "name": "Firmenname",
+    "industry": "Branche",
+    "foundedYear": "Gründungsjahr",
+    "employeeCount": "Anzahl der Mitarbeiter",
+    "capital": "Kapital",
+    "email": "E-Mail",
     "phone": "Telefon",
-    "website": "Web Sitesi",
-    "address": "Adres",
-    "taxNumber": "Vergi Numarası",
-    "taxOffice": "Vergi Dairesi",
-    "registrationNumber": "Sicil Numarası",
-    "mersisNumber": "MERSİS Numarası",
+    "website": "Website",
+    "address": "Adresse",
+    "taxNumber": "Steuernummer",
+    "taxOffice": "Finanzamt",
+    "registrationNumber": "Registernummer",
+    "mersisNumber": "MERSIS-Nummer",
     "iban": "IBAN",
-    "bankName": "Banka Adı",
-    "accountHolder": "Hesap Sahibi",
-    "metadata": "Meta Bilgiler",
-    "createdAt": "Oluşturulma Tarihi",
-    "updatedAt": "Güncellenme Tarihi",
-    "active": "Aktif",
-    "inactive": "Pasif"
+    "bankName": "Bankname",
+    "accountHolder": "Kontoinhaber",
+    "metadata": "Metadaten",
+    "createdAt": "Erstellungsdatum",
+    "updatedAt": "Aktualisierungsdatum",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "optimization": {
-    "title": "Optimizasyon",
-    "description": "Sistem optimizasyonu ve performans yönetimi",
+    "title": "Optimierung",
+    "description": "Systemoptimierung und Leistungsverwaltung",
     "performance": {
-      "title": "Performans",
-      "description": "Sistem performans metrikleri ve optimizasyon önerileri",
-      "cpu": "CPU Kullanımı",
-      "memory": "Bellek Kullanımı",
-      "disk": "Disk Kullanımı",
-      "responseTime": "Yanıt Süresi",
-      "requestsPerSecond": "Saniyede İstek",
-      "activeConnections": "Aktif Bağlantılar",
-      "loadError": "Performans metrikleri yüklenirken bir hata oluştu"
+      "title": "Leistung",
+      "description": "Systemleistungsmetriken und Optimierungsvorschläge",
+      "cpu": "CPU-Auslastung",
+      "memory": "Speicherauslastung",
+      "disk": "Festplattenauslastung",
+      "responseTime": "Antwortzeit",
+      "requestsPerSecond": "Anfragen pro Sekunde",
+      "activeConnections": "Aktive Verbindungen",
+      "loadError": "Beim Laden der Leistungsmetriken ist ein Fehler aufgetreten"
     },
     "cache": {
-      "title": "Cache Yönetimi",
-      "description": "Cache ayarları ve temizleme işlemleri",
-      "clearAll": "Tümünü Temizle",
-      "clearKey": "Anahtar Temizle",
-      "clearSelected": "Seçileni Temizle",
-      "selectAll": "Tümünü Seç",
-      "key": "Cache Anahtarı",
-      "keyPlaceholder": "Temizlenecek cache anahtarını girin",
-      "cleared": "Tüm cache temizlendi",
-      "keyCleared": "Cache anahtarı temizlendi",
-      "selectedCleared": "Seçili cache'ler temizlendi",
-      "directoryCleared": "Dizin temizlendi",
-      "clearError": "Cache temizlenirken bir hata oluştu",
-      "loadError": "Cache listesi yüklenirken bir hata oluştu",
-      "clear": "Temizle",
-      "info": "Cache temizleme işlemleri sistem performansını etkileyebilir. Dikkatli kullanın.",
-      "confirmClearAll": "Tüm cache'i temizlemek istediğinize emin misiniz?",
-      "confirmClearSelected": "Seçili cache'leri temizlemek istediğinize emin misiniz?",
-      "confirmClearDirectory": "Bu dizini temizlemek istediğinize emin misiniz?",
-      "noDirectories": "Dizin bulunamadı",
-      "noEntries": "Cache girişi bulunamadı",
+      "title": "Cache-Verwaltung",
+      "description": "Cache-Einstellungen und Bereinigungsvorgänge",
+      "clearAll": "Alle löschen",
+      "clearKey": "Schlüssel löschen",
+      "clearSelected": "Ausgewählte löschen",
+      "selectAll": "Alle auswählen",
+      "key": "Cache-Schlüssel",
+      "keyPlaceholder": "Zu löschenden Cache-Schlüssel eingeben",
+      "cleared": "Alle Caches gelöscht",
+      "keyCleared": "Cache-Schlüssel gelöscht",
+      "selectedCleared": "Ausgewählte Caches gelöscht",
+      "directoryCleared": "Verzeichnis gelöscht",
+      "clearError": "Beim Löschen des Caches ist ein Fehler aufgetreten",
+      "loadError": "Beim Laden der Cache-Liste ist ein Fehler aufgetreten",
+      "clear": "Löschen",
+      "info": "Cache-Bereinigungsvorgänge können die Systemleistung beeinträchtigen. Verwenden Sie sie mit Vorsicht.",
+      "confirmClearAll": "Möchten Sie wirklich alle Caches löschen?",
+      "confirmClearSelected": "Möchten Sie wirklich die ausgewählten Caches löschen?",
+      "confirmClearDirectory": "Möchten Sie wirklich dieses Verzeichnis löschen?",
+      "noDirectories": "Kein Verzeichnis gefunden",
+      "noEntries": "Kein Cache-Eintrag gefunden",
       "tabs": {
-        "directories": "Dizinler",
-        "entries": "Cache Girişleri"
+        "directories": "Verzeichnisse",
+        "entries": "Cache-Einträge"
       },
       "stats": {
-        "totalSize": "Toplam Boyut",
-        "directories": "Dizinler",
-        "files": "Dosyalar",
-        "usage": "Kullanım"
+        "totalSize": "Gesamtgröße",
+        "directories": "Verzeichnisse",
+        "files": "Dateien",
+        "usage": "Nutzung"
       },
       "table": {
-        "directory": "Dizin",
-        "size": "Boyut",
-        "files": "Dosya Sayısı",
-        "lastModified": "Son Değişiklik",
-        "key": "Anahtar",
-        "type": "Tip",
-        "createdAt": "Oluşturulma",
-        "actions": "İşlemler"
+        "directory": "Verzeichnis",
+        "size": "Größe",
+        "files": "Anzahl der Dateien",
+        "lastModified": "Zuletzt geändert",
+        "key": "Schlüssel",
+        "type": "Typ",
+        "createdAt": "Erstellt",
+        "actions": "Aktionen"
       }
     },
     "database": {
-      "title": "Veritabanı Bakımı",
-      "description": "PostgreSQL veritabanı optimizasyonu ve bakım işlemleri",
-      "optimize": "Veritabanı Optimize Et",
-      "optimizeDesc": "VACUUM ANALYZE komutu ile veritabanını optimize eder, ölü satırları temizler ve istatistikleri günceller",
-      "vacuum": "Vacuum İşlemi",
-      "vacuumDesc": "VACUUM ANALYZE komutu ile kullanılmayan disk alanını geri kazanır ve sorgu optimizasyonu için istatistikleri günceller",
-      "analyze": "İstatistikleri Güncelle",
-      "analyzeDesc": "ANALYZE komutu ile veritabanı istatistiklerini günceller. Sorgu planlayıcısının daha iyi kararlar vermesini sağlar",
-      "reindex": "İndeksleri Yeniden Oluştur",
-      "reindexDesc": "REINDEX komutu ile tüm indeksleri yeniden oluşturur. Büyük veritabanlarında uzun sürebilir",
-      "run": "Çalıştır",
-      "confirm": "İşlemi Onayla",
-      "confirmMessage": "Bu işlem veritabanı üzerinde doğrudan çalışacaktır. Devam etmek istiyor musunuz?",
-      "operationSuccess": "İşlem başarıyla tamamlandı",
-      "operationError": "İşlem sırasında bir hata oluştu",
-      "warning": "Bu işlemler ana (CORE) veritabanı üzerinde çalışır. Üretim ortamında yoğun saatlerde dikkatli kullanın.",
-      "coreDbInfo": "Bu işlemler yalnızca CORE veritabanı üzerinde çalışır. Tenant veritabanları için ayrı bakım gereklidir.",
-      "lastResult": "Son İşlem Sonucu",
-      "operationToRun": "Çalıştırılacak Komut",
-      "riskLow": "Düşük Risk",
-      "riskMedium": "Orta Risk",
-      "riskHigh": "Yüksek Risk",
-      "highRiskWarning": "Bu işlem veritabanını kilitleyebilir ve uzun sürebilir. Üretim ortamında yoğun olmayan saatlerde çalıştırmanız önerilir."
+      "title": "Datenbankwartung",
+      "description": "PostgreSQL-Datenbankoptimierung und Wartungsvorgänge",
+      "optimize": "Datenbank optimieren",
+      "optimizeDesc": "Optimiert die Datenbank mit VACUUM ANALYZE-Befehl, bereinigt tote Zeilen und aktualisiert Statistiken",
+      "vacuum": "Vacuum-Vorgang",
+      "vacuumDesc": "Gewinnt ungenutzten Festplattenspeicher mit VACUUM ANALYZE-Befehl zurück und aktualisiert Statistiken für Abfrageoptimierung",
+      "analyze": "Statistiken aktualisieren",
+      "analyzeDesc": "Aktualisiert Datenbankstatistiken mit ANALYZE-Befehl. Ermöglicht dem Abfrageplaner bessere Entscheidungen",
+      "reindex": "Indizes neu erstellen",
+      "reindexDesc": "Erstellt alle Indizes mit REINDEX-Befehl neu. Kann bei großen Datenbanken lange dauern",
+      "run": "Ausführen",
+      "confirm": "Vorgang bestätigen",
+      "confirmMessage": "Dieser Vorgang wird direkt auf der Datenbank ausgeführt. Möchten Sie fortfahren?",
+      "operationSuccess": "Vorgang erfolgreich abgeschlossen",
+      "operationError": "Während des Vorgangs ist ein Fehler aufgetreten",
+      "warning": "Diese Vorgänge werden auf der Haupt- (CORE) Datenbank ausgeführt. Verwenden Sie sie in Produktionsumgebungen während Stoßzeiten mit Vorsicht.",
+      "coreDbInfo": "Diese Vorgänge werden nur auf der CORE-Datenbank ausgeführt. Für Mandantendatenbanken ist eine separate Wartung erforderlich.",
+      "lastResult": "Letztes Vorgangsergebnis",
+      "operationToRun": "Auszuführender Befehl",
+      "riskLow": "Niedriges Risiko",
+      "riskMedium": "Mittleres Risiko",
+      "riskHigh": "Hohes Risiko",
+      "highRiskWarning": "Dieser Vorgang kann die Datenbank sperren und lange dauern. Es wird empfohlen, ihn in Produktionsumgebungen außerhalb der Stoßzeiten auszuführen."
     }
   },
   "export": {
-    "report": "Rapor",
-    "pdf": "PDF olarak indir",
-    "excel": "Excel olarak indir",
-    "csv": "CSV olarak indir",
-    "word": "Word olarak indir",
-    "html": "HTML olarak indir",
-    "print": "Yazdır",
-    "title": "Dışa Aktar",
-    "exporting": "Dışa aktarılıyor...",
-    "success": "Başarıyla dışa aktarıldı",
-    "error": "Dışa aktarma sırasında hata oluştu",
-    "noData": "Dışa aktarılacak veri bulunamadı",
-    "selectFormat": "Format seçin",
-    "downloadReady": "İndirme hazır"
+    "report": "Bericht",
+    "pdf": "Als PDF herunterladen",
+    "excel": "Als Excel herunterladen",
+    "csv": "Als CSV herunterladen",
+    "word": "Als Word herunterladen",
+    "html": "Als HTML herunterladen",
+    "print": "Drucken",
+    "title": "Exportieren",
+    "exporting": "Wird exportiert...",
+    "success": "Erfolgreich exportiert",
+    "error": "Fehler beim Exportieren",
+    "noData": "Keine Daten zum Exportieren gefunden",
+    "selectFormat": "Format auswählen",
+    "downloadReady": "Download bereit"
   },
-  "exportComingSoon": "{{format}} formatında dışa aktarma yakında eklenecek",
+  "exportComingSoon": "Export im {{format}} Format wird demnächst hinzugefügt",
   "table": {
     "search": {
-      "placeholder": "Ara...",
-      "label": "Ara"
+      "placeholder": "Suchen...",
+      "label": "Suchen"
     },
     "filter": {
-      "title": "Filtreler",
-      "button": "Filtreler",
-      "clear": "Filtreleri Temizle",
-      "apply": "Filtreleri Uygula",
-      "active": "Aktif Filtreler",
-      "all": "Tümü",
-      "searchPlaceholder": "{{label}} ara...",
-      "selectPlaceholder": "{{label}} seçin...",
-      "numberPlaceholder": "{{label}} girin...",
-      "noOptions": "Filtre seçeneği bulunmamaktadır.",
+      "title": "Filter",
+      "button": "Filter",
+      "clear": "Filter löschen",
+      "apply": "Filter anwenden",
+      "active": "Aktive Filter",
+      "all": "Alle",
+      "searchPlaceholder": "{{label}} suchen...",
+      "selectPlaceholder": "{{label}} auswählen...",
+      "numberPlaceholder": "{{label}} eingeben...",
+      "noOptions": "Keine Filteroptionen verfügbar.",
       "dateRange": {
-        "start": "Başlangıç",
-        "end": "Bitiş",
-        "startPlaceholder": "Başlangıç tarihi",
-        "endPlaceholder": "Bitiş tarihi"
+        "start": "Start",
+        "end": "Ende",
+        "startPlaceholder": "Startdatum",
+        "endPlaceholder": "Enddatum"
       }
     },
     "columnSettings": {
-      "title": "Sütun Ayarları",
-      "reset": "Sıfırla",
-      "reorder": "Sütunları Yeniden Sırala",
-      "toggle": "Sütun Görünürlüğü",
-      "resetToDefaults": "Varsayılanlara Dön",
-      "show": "Göster",
-      "hide": "Gizle",
-      "moveUp": "Yukarı taşı",
-      "moveDown": "Aşağı taşı",
-      "columnsSection": "Sütunlar",
-      "columnBackground": "Sütun Arka Planı",
-      "clearColor": "Rengi Temizle",
+      "title": "Spalteneinstellungen",
+      "reset": "Zurücksetzen",
+      "reorder": "Spalten neu sortieren",
+      "toggle": "Spalten-Sichtbarkeit",
+      "resetToDefaults": "Auf Standard zurücksetzen",
+      "show": "Anzeigen",
+      "hide": "Ausblenden",
+      "moveUp": "Nach oben",
+      "moveDown": "Nach unten",
+      "columnsSection": "Spalten",
+      "columnBackground": "Spalten-Hintergrund",
+      "clearColor": "Farbe löschen",
       "tableStyle": {
-        "title": "Tablo Stili",
-        "verticalBorders": "Dikey Çizgiler",
-        "headerBackground": "Başlık Arka Planı",
-        "selectColor": "Renk seçin..."
+        "title": "Tabellenstil",
+        "verticalBorders": "Vertikale Linien",
+        "headerBackground": "Kopfzeilen-Hintergrund",
+        "selectColor": "Farbe auswählen..."
       },
       "badges": {
-        "sortable": "Sıralanabilir",
-        "searchable": "Aranabilir",
-        "filterable": "Filtrelenebilir"
+        "sortable": "Sortierbar",
+        "searchable": "Durchsuchbar",
+        "filterable": "Filterbar"
       },
       "tip": {
-        "title": "İpucu",
-        "description": "Sütunları sürükleyerek veya yukarı/aşağı butonları ile sıralayabilir, göz ikonuna tıklayarak görünürlüklerini değiştirebilirsiniz."
+        "title": "Tipp",
+        "description": "Sie können Spalten per Drag & Drop oder mit den Auf/Ab-Buttons sortieren und ihre Sichtbarkeit durch Klicken auf das Augensymbol ändern."
       }
     },
     "pagination": {
-      "recordsPerPage": "Sayfa başına:",
-      "showing": "kayıt gösteriliyor",
+      "recordsPerPage": "Einträge pro Seite:",
+      "showing": "Einträge werden angezeigt",
       "of": "/",
-      "page": "Sayfa",
-      "previous": "Önceki",
-      "next": "Sonraki"
+      "page": "Seite",
+      "previous": "Zurück",
+      "next": "Weiter"
     },
     "export": {
-      "providerRequired": "ExportProvider gerekli",
-      "all": "Tümü",
-      "currentPage": "Bu Sayfa",
-      "selected": "Seçili"
+      "providerRequired": "ExportProvider erforderlich",
+      "all": "Alle",
+      "currentPage": "Diese Seite",
+      "selected": "Ausgewählt"
     },
     "empty": {
-      "message": "Veri bulunamadı",
-      "noResults": "Sonuç bulunamadı"
+      "message": "Keine Daten gefunden",
+      "noResults": "Keine Ergebnisse gefunden"
     },
-    "description": "description",
-    "actions": "İşlemler"
+    "description": "Beschreibung",
+    "actions": "Aktionen"
   },
   "actions": {
-    "view": "Görüntüle",
-    "edit": "Düzenle",
-    "delete": "Sil",
-    "create": "Oluştur",
-    "save": "Kaydet",
-    "cancel": "İptal"
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
   },
   "setup": {
-    "title": "Veritabanı Kurulum Sihirbazı",
+    "title": "Datenbank-Setup-Assistent",
     "configuration": {
-      "title": "Yapılandırma",
-      "coreDatabaseUrl": "Core Veritabanı URL",
-      "tenantDatabaseUrl": "Tenant Veritabanı URL",
-      "tenantSlug": "Tenant Slug",
-      "resetAll": "Tüm Veritabanlarını Sıfırla",
-      "resetCore": "Sadece Core'u Sıfırla",
-      "resetTenant": "Sadece Tenant'ı Sıfırla"
+      "title": "Konfiguration",
+      "coreDatabaseUrl": "Core-Datenbank-URL",
+      "tenantDatabaseUrl": "Mandanten-Datenbank-URL",
+      "tenantSlug": "Mandanten-Slug",
+      "resetAll": "Alle Datenbanken zurücksetzen",
+      "resetCore": "Nur Core zurücksetzen",
+      "resetTenant": "Nur Mandant zurücksetzen"
     },
     "steps": {
       "testConnection": {
-        "label": "Veritabanı Bağlantısı",
-        "description": "Veritabanı bağlantılarını test et"
+        "label": "Datenbankverbindung",
+        "description": "Datenbankverbindungen testen"
       },
       "createDatabase": {
-        "label": "Veritabanları Oluştur",
-        "description": "Core ve tenant veritabanlarını oluştur"
+        "label": "Datenbanken erstellen",
+        "description": "Core- und Mandanten-Datenbanken erstellen"
       },
       "schemaMerge": {
-        "label": "Schema Birleştirme",
-        "description": "Modüler şemaları birleştir"
+        "label": "Schema-Zusammenführung",
+        "description": "Modulare Schemas zusammenführen"
       },
       "schemaValidate": {
-        "label": "Schema Doğrulama",
-        "description": "Schema bütünlüğünü doğrula"
+        "label": "Schema-Validierung",
+        "description": "Schema-Integrität überprüfen"
       },
       "dbPush": {
-        "label": "Veritabanı Uygulama",
-        "description": "Şemayı veritabanlarına uygula"
+        "label": "Datenbank-Anwendung",
+        "description": "Schema auf Datenbanken anwenden"
       },
       "generateClient": {
-        "label": "Client Oluştur",
-        "description": "Prisma client'larını oluştur"
+        "label": "Client erstellen",
+        "description": "Prisma-Clients erstellen"
       },
       "coreSeed": {
         "label": "Core Seed",
-        "description": "Core veritabanını doldur"
+        "description": "Core-Datenbank füllen"
       },
       "tenantSeed": {
-        "label": "Tenant Seed",
-        "description": "Tenant veritabanını doldur"
+        "label": "Mandanten Seed",
+        "description": "Mandanten-Datenbank füllen"
       },
       "demoSeed": {
         "label": "Demo Seed",
-        "description": "Demo verilerini ekle"
+        "description": "Demo-Daten hinzufügen"
       },
-      "unknown": "Bilinmeyen Adım"
+      "unknown": "Unbekannter Schritt"
     },
     "status": {
-      "completed": "✓ Tamamlandı",
-      "error": "✗ Hata",
-      "running": "⟳ Çalışıyor...",
-      "pending": "⏳ Beklemede",
-      "ready": "Hazır",
-      "runningText": "Çalışıyor...",
-      "solution": "Çözüm:"
+      "completed": "✓ Abgeschlossen",
+      "error": "✗ Fehler",
+      "running": "⟳ Läuft...",
+      "pending": "⏳ Ausstehend",
+      "ready": "Bereit",
+      "runningText": "Läuft...",
+      "solution": "Lösung:"
     },
     "actions": {
-      "runCurrent": "Mevcut Adımı Çalıştır",
-      "runAll": "Tüm Adımları Çalıştır",
-      "runStep": "Adımı Çalıştır",
-      "runAgain": "Tekrar Çalıştır",
-      "nextStep": "Sonraki Adıma Geç →",
-      "resetStep": "Adımı Sıfırla",
-      "autoAdvance": "Otomatik ilerle",
-      "clearLogs": "Logları Temizle",
-      "success": "Başarılı",
-      "error": "Hata"
+      "runCurrent": "Aktuellen Schritt ausführen",
+      "runAll": "Alle Schritte ausführen",
+      "runStep": "Schritt ausführen",
+      "runAgain": "Erneut ausführen",
+      "nextStep": "Zum nächsten Schritt →",
+      "resetStep": "Schritt zurücksetzen",
+      "autoAdvance": "Automatisch fortfahren",
+      "clearLogs": "Logs löschen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
     },
     "logs": {
-      "title": "Loglar",
+      "title": "Logs",
       "systemLogs": {
-        "title": "Sistem Logları",
-        "description": "Tüm sistem aktivitelerinin audit logları",
-        "csvDownload": "CSV İndir",
-        "refresh": "Yenile",
+        "title": "System-Logs",
+        "description": "Audit-Logs aller Systemaktivitäten",
+        "csvDownload": "Als CSV herunterladen",
+        "refresh": "Aktualisieren",
         "filters": {
-          "userId": "Kullanıcı ID",
-          "userIdPlaceholder": "Kullanıcı ID'ye göre ara",
-          "status": "Durum",
-          "statusPlaceholder": "Tüm Durumlar",
-          "module": "Modül",
-          "modulePlaceholder": "Tüm Modüller",
-          "startDate": "Başlangıç Tarihi",
-          "endDate": "Bitiş Tarihi",
-          "datePlaceholder": "Tarih seçin"
+          "userId": "Benutzer-ID",
+          "userIdPlaceholder": "Nach Benutzer-ID suchen",
+          "status": "Status",
+          "statusPlaceholder": "Alle Status",
+          "module": "Modul",
+          "modulePlaceholder": "Alle Module",
+          "startDate": "Startdatum",
+          "endDate": "Enddatum",
+          "datePlaceholder": "Datum auswählen"
         },
         "status": {
-          "success": "Başarılı",
-          "failure": "Başarısız",
-          "error": "Hata"
+          "success": "Erfolgreich",
+          "failure": "Fehlgeschlagen",
+          "error": "Fehler"
         },
         "table": {
-          "time": "Zaman",
-          "action": "İşlem",
-          "module": "Modül",
-          "user": "Kullanıcı",
-          "tenant": "Tenant",
-          "status": "Durum",
-          "ipAddress": "IP Adresi",
-          "details": "Detay",
-          "noLogs": "Log bulunamadı"
+          "time": "Zeit",
+          "action": "Aktion",
+          "module": "Modul",
+          "user": "Benutzer",
+          "tenant": "Mandant",
+          "status": "Status",
+          "ipAddress": "IP-Adresse",
+          "details": "Details",
+          "noLogs": "Kein Log gefunden"
         },
         "modal": {
-          "title": "Log Detayı",
-          "error": "Hata:",
-          "details": "Detaylar:"
+          "title": "Log-Details",
+          "error": "Fehler:",
+          "details": "Details:"
         },
         "errors": {
-          "loadFailed": "Loglar yüklenemedi",
-          "loadError": "Loglar yüklenirken bir hata oluştu",
-          "exportFailed": "Export işlemi başarısız"
+          "loadFailed": "Logs konnten nicht geladen werden",
+          "loadError": "Beim Laden der Logs ist ein Fehler aufgetreten",
+          "exportFailed": "Export-Vorgang fehlgeschlagen"
         }
       }
     },
     "completion": {
-      "title": "🎉 Kurulum Tamamlandı!",
-      "message": "Tüm aşamalar başarıyla tamamlandı! Veritabanı kurulumu hazır.",
-      "stepsTitle": "Tamamlanan Adımlar ve Detaylar",
-      "downloadMarkdown": "Markdown Olarak İndir",
-      "downloadText": "Text Olarak İndir",
-      "reportDescription": "Rapor, tüm kurulum adımlarını, yapılandırmayı ve logları içerir."
+      "title": "🎉 Setup abgeschlossen!",
+      "message": "Alle Phasen wurden erfolgreich abgeschlossen! Datenbank-Setup ist bereit.",
+      "stepsTitle": "Abgeschlossene Schritte und Details",
+      "downloadMarkdown": "Als Markdown herunterladen",
+      "downloadText": "Als Text herunterladen",
+      "reportDescription": "Der Bericht enthält alle Setup-Schritte, die Konfiguration und die Logs."
     },
     "errors": {
-      "unknown": "Bilinmeyen hata",
-      "statusFailed": "Durum bilgisi alınamadı",
-      "accessFailed": "Erişim kontrolü başarısız"
+      "unknown": "Unbekannter Fehler",
+      "statusFailed": "Statusinformationen konnten nicht abgerufen werden",
+      "accessFailed": "Zugriffskontrolle fehlgeschlagen"
     },
     "messages": {
-      "databaseConnectionSuccess": "Her iki veritabanı bağlantısı başarılı",
-      "databasesCreated": "Veritabanları oluşturuldu/doğrulandı",
-      "bothSchemasApplied": "Her iki veritabanı şeması uygulandı",
-      "coreSchemaApplied": "Core veritabanı şeması uygulandı",
-      "tenantSchemaApplied": "Tenant veritabanı şeması uygulandı",
-      "stepCompleted": "Adım başarıyla tamamlandı",
-      "stepFailed": "Adım başarısız",
-      "allStepsCompleted": "Tüm aşamalar tamamlandı",
-      "setupComplete": "Kurulum başarıyla tamamlandı, raporu indir",
-      "accessDenied": "Erişim reddedildi",
-      "accessCheckFailed": "Erişim kontrolü başarısız",
-      "noAccessPermission": "Bu sayfaya erişim izniniz yok",
-      "resetFailed": "Sıfırlama başarısız",
-      "databaseResetting": "Veritabanı sıfırlanıyor...",
-      "databaseResetComplete": "Veritabanı sıfırlama tamamlandı",
-      "databaseResetSuccess": "Veritabanı başarıyla sıfırlandı"
+      "databaseConnectionSuccess": "Beide Datenbankverbindungen erfolgreich",
+      "databasesCreated": "Datenbanken erstellt/überprüft",
+      "bothSchemasApplied": "Beide Datenbankschemas angewendet",
+      "coreSchemaApplied": "Core-Datenbankschema angewendet",
+      "tenantSchemaApplied": "Mandanten-Datenbankschema angewendet",
+      "stepCompleted": "Schritt erfolgreich abgeschlossen",
+      "stepFailed": "Schritt fehlgeschlagen",
+      "allStepsCompleted": "Alle Phasen abgeschlossen",
+      "setupComplete": "Setup erfolgreich abgeschlossen, Bericht herunterladen",
+      "accessDenied": "Zugriff verweigert",
+      "accessCheckFailed": "Zugriffskontrolle fehlgeschlagen",
+      "noAccessPermission": "Sie haben keine Berechtigung für diese Seite",
+      "resetFailed": "Zurücksetzen fehlgeschlagen",
+      "databaseResetting": "Datenbank wird zurückgesetzt...",
+      "databaseResetComplete": "Datenbank-Zurücksetzung abgeschlossen",
+      "databaseResetSuccess": "Datenbank erfolgreich zurückgesetzt"
     }
   },
   "systemStatus": {
-    "title": "Sistem Bilgileri",
-    "loading": "Sistem durumu yükleniyor...",
-    "databaseStatus": "Veritabanı Durumu",
-    "refresh": "Yenile",
-    "retry": "Tekrar Dene",
-    "environmentVariables": "Ortam Değişkenleri",
-    "lastUpdate": "Son güncelleme:",
+    "title": "Systeminformationen",
+    "loading": "Systemstatus wird geladen...",
+    "databaseStatus": "Datenbankstatus",
+    "refresh": "Aktualisieren",
+    "retry": "Erneut versuchen",
+    "environmentVariables": "Umgebungsvariablen",
+    "lastUpdate": "Letzte Aktualisierung:",
     "fields": {
-      "nodeVersion": "Node.js Versiyonu",
-      "platform": "Platform",
-      "arch": "Mimari",
-      "uptime": "Çalışma Süresi",
-      "environment": "Ortam",
-      "memoryUsage": "Bellek Kullanımı",
-      "used": "Kullanılan:",
-      "total": "Toplam:",
-      "postgresVersion": "PostgreSQL Versiyonu:",
-      "notDefined": "Tanımlı değil",
-      "host": "Sunucu",
-      "user": "Kullanıcı",
-      "database": "Veritabanı",
-      "tableCount": "Tablo Sayısı",
-      "tenantCount": "Tenant Sayısı",
-      "empty": "Boş (Seed gerekli)",
-      "coreSeedRequired": "Core Seed gerekli"
+      "nodeVersion": "Node.js-Version",
+      "platform": "Plattform",
+      "arch": "Architektur",
+      "uptime": "Betriebszeit",
+      "environment": "Umgebung",
+      "memoryUsage": "Speicherauslastung",
+      "used": "Verwendet:",
+      "total": "Gesamt:",
+      "postgresVersion": "PostgreSQL-Version:",
+      "notDefined": "Nicht definiert",
+      "host": "Server",
+      "user": "Benutzer",
+      "database": "Datenbank",
+      "tableCount": "Anzahl der Tabellen",
+      "tenantCount": "Anzahl der Mandanten",
+      "empty": "Leer (Seed erforderlich)",
+      "coreSeedRequired": "Core Seed erforderlich"
     },
     "status": {
-      "connected": "Bağlı",
-      "error": "Hata"
+      "connected": "Verbunden",
+      "error": "Fehler"
     }
   },
   "page": {
     "allReports": {
-      "title": "Başlık"
+      "title": "Titel"
     }
   },
   "metrics": {
-    "pending": "Beklemede"
+    "pending": "Ausstehend"
   },
   "create": {
-    "title": "Oluştur"
+    "title": "Erstellen"
   },
   "edit": {
-    "title": "Düzenle"
+    "title": "Bearbeiten"
   },
   "maintenance": {
     "create": {
-      "title": "Başlık"
+      "title": "Titel"
     },
     "edit": {
-      "title": "Başlık",
-      "description": "Açıklama"
+      "title": "Titel",
+      "description": "Beschreibung"
     },
-    "title": "Başlık"
+    "title": "Titel"
   },
   "Report": "Report",
   "TR": "TR",
   "TRY": "TRY",
-  "active": "Aktif",
-  "all": "Tümü",
+  "active": "Aktiv",
+  "all": "Alle",
   "auth-token": "Auth-token",
   "authorization": "Authorization",
   "auto": "Auto",
@@ -1726,16 +1726,16 @@
   "button": "Button",
   "center": "Center",
   "comfortable": "Comfortable",
-  "completed": "Tamamlandı",
+  "completed": "Abgeschlossen",
   "cookie": "Cookie",
-  "createDescription": "create açıklaması",
+  "createDescription": "Erstellen-Beschreibung",
   "detail": "Detail",
-  "detailDescription": "detail açıklaması",
+  "detailDescription": "Detail-Beschreibung",
   "direct": "Direct",
-  "draft": "Taslak",
-  "editDescription": "edit açıklaması",
+  "draft": "Entwurf",
+  "editDescription": "Bearbeiten-Beschreibung",
   "empty": {
-    "message": "Message"
+    "message": "Nachricht"
   },
   "filled": "Filled",
   "host": "Host",
@@ -1744,7 +1744,7 @@
   "link": "Link",
   "md": "Md",
   "normal": "Normal",
-  "pending": "Beklemede",
+  "pending": "Ausstehend",
   "react-leaflet": "React-leaflet",
   "resize": "Resize",
   "scheduled": "Scheduled",
@@ -1757,7 +1757,7 @@
   "tr": "Tr",
   "txt": "Txt",
   "unread": "Unread",
-  "user": "Kullanıcı",
+  "user": "Benutzer",
   "user-agent": "User-agent",
   "x-forwarded-for": "X-forwarded-for",
   "x-real-ip": "X-real-ip",
@@ -1765,38 +1765,38 @@
     "avatar": {
       "guncellenirken": {
         "hata": {
-          "olustu": "Avatar güncellenirken hata oluştu"
+          "olustu": "Fehler beim Aktualisieren des Avatars"
         }
       },
-      "guncellendi": "Avatar güncellendi"
+      "guncellendi": "Avatar aktualisiert"
     },
-    "success": "Başarılı",
-    "download": "İndir",
-    "onizle": "Önizle",
+    "success": "Erfolgreich",
+    "download": "Herunterladen",
+    "onizle": "Vorschau",
     "tenant": {
       "context": {
-        "bulunamadi": "Tenant context bulunamadı"
+        "bulunamadi": "Mandanten-Kontext nicht gefunden"
       }
     },
     "mikrofon": {
       "erisimi": {
-        "reddedildi": "Mikrofon erişimi reddedildi"
+        "reddedildi": "Mikrofon-Zugriff verweigert"
       }
     },
     "ses": {
       "kaydi": {
         "yuklenirken": {
           "hata": {
-            "olustu": "Ses kaydı yüklenirken hata oluştu"
+            "olustu": "Fehler beim Laden der Audioaufnahme"
           }
         },
-        "hazir": "Ses kaydı hazır"
+        "hazir": "Audioaufnahme bereit"
       },
       "kaydini": {
         "gondermek": {
           "icin": {
             "gonder": {
-              "butonu": "Ses kaydını göndermek için gönder butonuna tıklayın"
+              "butonu": "Klicken Sie auf die Senden-Schaltfläche, um die Audioaufnahme zu senden"
             }
           }
         }
@@ -1805,75 +1805,75 @@
     "filename": {
       "yuklenirken": {
         "hata": {
-          "olustu": "${file.name} yüklenirken hata oluştu"
+          "olustu": "Fehler beim Laden von ${file.name}"
         }
       },
       "basariyla": {
-        "yuklendi": "${file.name} başarıyla yüklendi"
+        "yuklendi": "${file.name} erfolgreich hochgeladen"
       }
     },
     "dosya": {
-      "yuklendi": "Dosya yüklendi",
+      "yuklendi": "Datei hochgeladen",
       "indirilirken": {
         "hata": {
-          "olustu": "Dosya indirilirken hata oluştu"
+          "olustu": "Fehler beim Herunterladen der Datei"
         }
       },
       "silinirken": {
         "hata": {
-          "olustu": "Dosya silinirken hata oluştu"
+          "olustu": "Fehler beim Löschen der Datei"
         }
       },
       "basariyla": {
-        "silindi": "Dosya başarıyla silindi",
-        "yuklendi": "Dosya başarıyla yüklendi"
+        "silindi": "Datei erfolgreich gelöscht",
+        "yuklendi": "Datei erfolgreich hochgeladen"
       },
       "yuklenirken": {
         "hata": {
-          "olustu": "Dosya yüklenirken hata oluştu"
+          "olustu": "Fehler beim Laden der Datei"
         }
       }
     },
     "mesaj": {
       "gonderilirken": {
         "hata": {
-          "olustu": "Mesaj gönderilirken hata oluştu"
+          "olustu": "Fehler beim Senden der Nachricht"
         }
       }
     },
     "kullanici": {
       "bilgisi": {
-        "bulunamadi": "Kullanıcı bilgisi bulunamadı"
+        "bulunamadi": "Benutzerinformationen nicht gefunden"
       }
     },
     "sohbet": {
       "olusturulurken": {
         "hata": {
-          "olustu": "Sohbet oluşturulurken hata oluştu"
+          "olustu": "Fehler beim Erstellen des Chats"
         }
       },
-      "baslatildi": "Sohbet başlatıldı"
+      "baslatildi": "Chat gestartet"
     },
     "bir": {
       "kullanici": {
-        "secmelisiniz": "Bir kullanıcı seçmelisiniz"
+        "secmelisiniz": "Sie müssen einen Benutzer auswählen"
       }
     },
     "grup": {
       "sohbeti": {
         "olusturulurken": {
           "hata": {
-            "olustu": "Grup sohbeti oluşturulurken hata oluştu"
+            "olustu": "Fehler beim Erstellen des Gruppenchats"
           }
         },
-        "olusturuldu": "Grup sohbeti oluşturuldu"
+        "olusturuldu": "Gruppenchat erstellt"
       }
     },
     "en": {
       "az": {
         "bir": {
           "kullanici": {
-            "secmelisiniz": "En az bir kullanıcı seçmelisiniz"
+            "secmelisiniz": "Sie müssen mindestens einen Benutzer auswählen"
           }
         }
       }
@@ -1882,30 +1882,30 @@
       "sayfaya": {
         "erisim": {
           "izniniz": {
-            "yok": "Bu sayfaya erişim izniniz yok."
+            "yok": "Sie haben keine Berechtigung für diese Seite."
           }
         }
       }
     },
     "erisim": {
-      "reddedildi": "Erişim Reddedildi"
+      "reddedildi": "Zugriff verweigert"
     },
     "sifirlama": {
       "basarisiz": {
-        "errormessage": "Sıfırlama başarısız: ${error.message}"
+        "errormessage": "Zurücksetzen fehlgeschlagen: ${error.message}"
       }
     },
     "tum": {
-      "label": "Tümü",
+      "label": "Alle",
       "asamalar": {
-        "tamamlandi": "Tüm aşamalar tamamlandı"
+        "tamamlandi": "Alle Phasen abgeschlossen"
       }
     },
     "kurulum": {
       "basariyla": {
         "tamamlandi": {
           "raporu": {
-            "indi": "Kurulum başarıyla tamamlandı. Raporu indirebilirsiniz."
+            "indi": "Setup erfolgreich abgeschlossen. Sie können den Bericht herunterladen."
           }
         }
       }
@@ -1913,43 +1913,43 @@
     "formattouppercase": {
       "formatinda": {
         "disa": {
-          "aktarm": "${format.toUpperCase()} formatında dışa aktarma yakında eklenecek"
+          "aktarm": "Export im ${format.toUpperCase()} Format wird demnächst hinzugefügt"
         }
       }
     },
     "kiraci": {
-      "sil": "Kiracı Sil"
+      "sil": "Mandant löschen"
     },
     "export": {
       "islemi": {
         "basarisiz": {
-          "oldu": "Export işlemi başarısız oldu"
+          "oldu": "Export-Vorgang fehlgeschlagen"
         }
       }
     },
     "sutun": {
-      "ayarlari": "Sütun Ayarları"
+      "ayarlari": "Spalteneinstellungen"
     },
-    "description": "description",
+    "description": "Beschreibung",
     "izin": {
-      "listesi": "İzin Listesi"
+      "listesi": "Berechtigungsliste"
     },
-    "izinler": "İzinler"
+    "izinler": "Berechtigungen"
   },
   "messages": {
     "dosya": {
       "gonderildi": {
         "fileinfosmapf": {
-          "fnamejoin": "Dosya gönderildi: ${fileInfos.map(f => f.name).join("
+          "fnamejoin": "Datei gesendet: ${fileInfos.map(f => f.name).join("
         }
       }
     },
-    "gonderildi": "gönderildi",
+    "gonderildi": "gesendet",
     "adim": {
       "step": {
         "1": {
           "basarisiz": {
-            "errormessage": "Adım ${step + 1} başarısız: ${errorMessage}"
+            "errormessage": "Schritt ${step + 1} fehlgeschlagen: ${errorMessage}"
           }
         }
       }
@@ -1958,341 +1958,341 @@
       "iki": {
         "veritabani": {
           "semasi": {
-            "uygulandi": "Her iki veritabanı şeması uygulandı"
+            "uygulandi": "Beide Datenbankschemas angewendet"
           },
           "baglantisi": {
-            "basarili": "Her iki veritabanı bağlantısı başarılı"
+            "basarili": "Beide Datenbankverbindungen erfolgreich"
           }
         }
       }
     },
     "veritabanlari": {
-      "olusturuldudogrulandi": "Veritabanları oluşturuldu/doğrulandı"
+      "olusturuldudogrulandi": "Datenbanken erstellt/überprüft"
     },
     "rapor": {
       "verisi": {
-        "bulunamadi": "Rapor verisi bulunamadı"
+        "bulunamadi": "Berichtsdaten nicht gefunden"
       }
     }
   },
   "errors": {
-    "tum": "Tüm",
+    "tum": "Alle",
     "erisim": {
       "kontrolu": {
-        "basarisiz": "Erişim kontrolü başarısız"
+        "basarisiz": "Zugriffskontrolle fehlgeschlagen"
       },
-      "reddedildi": "Erişim reddedildi"
+      "reddedildi": "Zugriff verweigert"
     },
-    "description": "Açıklama",
+    "description": "Beschreibung",
     "tenant": {
       "veritabani": {
         "semasi": {
-          "uygulandi": "Tenant veritabanı şeması uygulandı"
+          "uygulandi": "Mandanten-Datenbankschema angewendet"
         }
       }
     },
     "core": {
       "veritabani": {
         "semasi": {
-          "uygulandi": "Core veritabanı şeması uygulandı"
+          "uygulandi": "Core-Datenbankschema angewendet"
         }
       }
     },
     "zip": {
       "indirme": {
-        "basarisiz": "ZIP indirme başarısız"
+        "basarisiz": "ZIP-Download fehlgeschlagen"
       }
     },
     "not": {
-      "found": "not found"
+      "found": "nicht gefunden"
     }
   },
   "labels": {
-    "description": "description",
-    "edit": "Düzenle",
-    "view": "Görüntüle",
+    "description": "Beschreibung",
+    "edit": "Bearbeiten",
+    "view": "Anzeigen",
     "donem": {
       "secin": {
-        "label": "Dönem Seçin",
-        "opsiyonel": "Dönem Seçin (Opsiyonel)"
+        "label": "Zeitraum auswählen",
+        "opsiyonel": "Zeitraum auswählen (Optional)"
       }
     },
     "firma": {
-      "secin": "Firma seçin..."
+      "secin": "Firma auswählen..."
     }
   },
   "descriptions": {
-    "description": "description"
+    "description": "Beschreibung"
   },
   "modal": {
     "confirm": {
-      "title": "Onay",
-      "message": "Emin misiniz?",
-      "yes": "Evet",
-      "no": "Hayır",
-      "cancel": "İptal",
-      "confirm": "Onayla"
+      "title": "Bestätigen",
+      "message": "Sind Sie sicher?",
+      "yes": "Ja",
+      "no": "Nein",
+      "cancel": "Abbrechen",
+      "confirm": "Bestätigen"
     },
     "delete": {
-      "title": "Sil",
-      "message": "Bu öğeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "confirm": "Sil",
-      "cancel": "İptal"
+      "title": "Löschen",
+      "message": "Möchten Sie dieses Element wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "confirm": "Löschen",
+      "cancel": "Abbrechen"
     },
     "alert": {
-      "ok": "Tamam",
-      "cancel": "İptal"
+      "ok": "OK",
+      "cancel": "Abbrechen"
     }
   },
   "licenses": {
     "dashboard": {
-      "title": "Lisans Paneli",
-      "description": "Lisans yönetimi genel bakış ve istatistikler",
+      "title": "Lizenz-Panel",
+      "description": "Lizenzverwaltung Übersicht und Statistiken",
       "stats": {
-        "licenseTypes": "Lisans Türleri",
-        "licensePackages": "Lisans Paketleri",
-        "activeLicenses": "Aktif Lisanslar",
-        "pendingPayments": "Bekleyen Ödemeler"
+        "licenseTypes": "Lizenztypen",
+        "licensePackages": "Lizenzpakete",
+        "activeLicenses": "Aktive Lizenzen",
+        "pendingPayments": "Ausstehende Zahlungen"
       },
       "distribution": {
-        "title": "Lisans Durumu Dağılımı",
-        "total": "Toplam",
-        "active": "Aktif",
-        "trial": "Deneme",
-        "expired": "Süresi Dolmuş"
+        "title": "Lizenzstatus-Verteilung",
+        "total": "Gesamt",
+        "active": "Aktiv",
+        "trial": "Testversion",
+        "expired": "Abgelaufen"
       },
       "expiringSoon": {
-        "title": "Yakında Süresi Dolacaklar",
-        "count": "{{count}} lisans",
-        "noExpiring": "Yakında süresi dolacak lisans bulunmuyor"
+        "title": "Läuft demnächst ab",
+        "count": "{{count}} Lizenzen",
+        "noExpiring": "Keine Lizenzen, die demnächst ablaufen"
       },
       "recentLicenses": {
-        "title": "Son Eklenen Lisanslar",
+        "title": "Zuletzt hinzugefügte Lizenzen",
         "columns": {
           "company": "Firma",
           "package": "Paket",
-          "status": "Durum",
-          "endDate": "Bitiş Tarihi",
-          "payment": "Ödeme"
+          "status": "Status",
+          "endDate": "Enddatum",
+          "payment": "Zahlung"
         },
-        "noLicenses": "Henüz lisans bulunmuyor"
+        "noLicenses": "Noch keine Lizenzen vorhanden"
       }
     },
     "packages": {
-      "title": "Lisans Paketleri",
-      "description": "Fiyatlandırma paketlerini yönetin",
-      "newPackage": "Yeni Paket",
+      "title": "Lizenzpakete",
+      "description": "Preispakete verwalten",
+      "newPackage": "Neues Paket",
       "columns": {
         "package": "Paket",
-        "type": "Tür",
-        "price": "Fiyat",
-        "cycle": "Döngü",
-        "modules": "Modüller",
-        "subscriptions": "Abonelikler",
-        "status": "Durum",
-        "actions": "İşlemler"
+        "type": "Typ",
+        "price": "Preis",
+        "cycle": "Zyklus",
+        "modules": "Module",
+        "subscriptions": "Abonnements",
+        "status": "Status",
+        "actions": "Aktionen"
       },
-      "noPackages": "Henüz lisans paketi oluşturulmamış",
-      "deleteTitle": "Lisans Paketini Sil",
-      "deleteConfirm": "{{name}} paketini silmek istediğinize emin misiniz?",
-      "cannotDelete": "Bu pakete bağlı aktif lisanslar var",
-      "discount": "%{{percent}} indirim",
+      "noPackages": "Noch kein Lizenzpaket erstellt",
+      "deleteTitle": "Lizenzpaket löschen",
+      "deleteConfirm": "Möchten Sie das Paket {{name}} wirklich löschen?",
+      "cannotDelete": "Diesem Paket sind aktive Lizenzen zugeordnet",
+      "discount": "%{{percent}} Rabatt",
       "billingCycles": {
-        "monthly": "Aylık",
-        "quarterly": "3 Aylık",
-        "yearly": "Yıllık",
-        "one_time": "Tek Seferlik",
-        "custom": "Özel"
+        "monthly": "Monatlich",
+        "quarterly": "Vierteljährlich",
+        "yearly": "Jährlich",
+        "one_time": "Einmalig",
+        "custom": "Benutzerdefiniert"
       }
     },
     "types": {
-      "title": "Lisans Türleri",
-      "description": "Lisans türlerini yönetin (Trial, Standard, Premium, Enterprise)",
-      "newType": "Yeni Tür",
+      "title": "Lizenztypen",
+      "description": "Lizenztypen verwalten (Testversion, Standard, Premium, Enterprise)",
+      "newType": "Neuer Typ",
       "columns": {
-        "type": "Tür",
-        "description": "Açıklama",
-        "limits": "Limitler",
-        "duration": "Süre",
-        "packageCount": "Paket Sayısı",
-        "status": "Durum",
-        "actions": "İşlemler"
+        "type": "Typ",
+        "description": "Beschreibung",
+        "limits": "Limits",
+        "duration": "Dauer",
+        "packageCount": "Anzahl der Pakete",
+        "status": "Status",
+        "actions": "Aktionen"
       },
-      "noTypes": "Henüz lisans türü oluşturulmamış",
-      "deleteTitle": "Lisans Türünü Sil",
-      "deleteConfirm": "{{name}} lisans türünü silmek istediğinize emin misiniz?",
-      "cannotDelete": "Bu türe bağlı paketler var, önce paketleri silin",
+      "noTypes": "Noch kein Lizenztyp erstellt",
+      "deleteTitle": "Lizenztyp löschen",
+      "deleteConfirm": "Möchten Sie den Lizenztyp {{name}} wirklich löschen?",
+      "cannotDelete": "Diesem Typ sind Pakete zugeordnet, löschen Sie zuerst die Pakete",
       "limits": {
-        "users": "Kullanıcı",
-        "storage": "Depolama",
+        "users": "Benutzer",
+        "storage": "Speicher",
         "unlimited": "∞"
       },
       "duration": {
-        "days": "{{days}} gün",
-        "trial": "Deneme: {{days}} gün"
+        "days": "{{days}} Tage",
+        "trial": "Testversion: {{days}} Tage"
       },
-      "packagesCount": "{{count}} paket"
+      "packagesCount": "{{count}} Pakete"
     },
     "tenants": {
-      "title": "Firma Lisansları",
-      "description": "Firmalara atanmış lisansları yönetin",
-      "assignLicense": "Lisans Ata",
-      "searchPlaceholder": "Firma veya paket ara...",
-      "filterStatus": "Durum filtrele",
+      "title": "Firmenlizenzen",
+      "description": "Firmen zugewiesene Lizenzen verwalten",
+      "assignLicense": "Lizenz zuweisen",
+      "searchPlaceholder": "Firma oder Paket suchen...",
+      "filterStatus": "Status filtern",
       "columns": {
         "company": "Firma",
         "package": "Paket",
-        "status": "Durum",
-        "payment": "Ödeme",
-        "usage": "Kullanım",
-        "endDate": "Bitiş",
-        "actions": "İşlemler"
+        "status": "Status",
+        "payment": "Zahlung",
+        "usage": "Nutzung",
+        "endDate": "Ende",
+        "actions": "Aktionen"
       },
-      "noLicenses": "Henüz lisans atanmamış",
-      "noFilterResults": "Filtreye uygun lisans bulunamadı",
-      "deleteTitle": "Lisansı Sil",
-      "deleteConfirm": "{{name}} firmasının lisansını silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm ödeme kayıtları da silinir.",
-      "daysRemaining": "{{days}} gün kaldı",
-      "expired": "Süresi doldu",
-      "usageLabel": "{{current}}/{{max}} kullanıcı",
+      "noLicenses": "Noch keine Lizenz zugewiesen",
+      "noFilterResults": "Keine Lizenz gefunden, die dem Filter entspricht",
+      "deleteTitle": "Lizenz löschen",
+      "deleteConfirm": "Möchten Sie die Lizenz der Firma {{name}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden und alle Zahlungsaufzeichnungen werden ebenfalls gelöscht.",
+      "daysRemaining": "{{days}} Tage verbleibend",
+      "expired": "Abgelaufen",
+      "usageLabel": "{{current}}/{{max}} Benutzer",
       "menu": {
-        "details": "Detaylar",
-        "edit": "Düzenle",
-        "payments": "Ödemeler",
-        "delete": "Sil"
+        "details": "Details",
+        "edit": "Bearbeiten",
+        "payments": "Zahlungen",
+        "delete": "Löschen"
       }
     },
     "payments": {
-      "title": "Ödeme Takibi",
-      "description": "Lisans ödemelerini takip edin ve onaylayın",
-      "searchPlaceholder": "Firma, fatura no veya işlem ID ara...",
+      "title": "Zahlungsverfolgung",
+      "description": "Lizenzzahlungen verfolgen und genehmigen",
+      "searchPlaceholder": "Firma, Rechnungsnummer oder Transaktions-ID suchen...",
       "tabs": {
-        "pending": "Bekleyenler",
-        "approved": "Onaylananlar",
-        "rejected": "Reddedilenler",
-        "all": "Tümü"
+        "pending": "Ausstehend",
+        "approved": "Genehmigt",
+        "rejected": "Abgelehnt",
+        "all": "Alle"
       },
       "columns": {
         "company": "Firma",
         "package": "Paket",
-        "amount": "Tutar",
-        "method": "Yöntem",
-        "invoice": "Fatura",
-        "date": "Tarih",
-        "status": "Durum",
-        "actions": "İşlemler"
+        "amount": "Betrag",
+        "method": "Methode",
+        "invoice": "Rechnung",
+        "date": "Datum",
+        "status": "Status",
+        "actions": "Aktionen"
       },
-      "noPayments": "Bu kategoride ödeme bulunmuyor",
-      "noFilterResults": "Filtreye uygun ödeme bulunamadı",
-      "dueDate": "Son: {{date}}",
-      "approveTitle": "Ödemeyi Onayla",
-      "approveConfirm": "{{company}} firmasının {{amount}} tutarındaki ödemesini onaylamak istediğinize emin misiniz?",
-      "rejectTitle": "Ödemeyi Reddet",
-      "rejectConfirm": "{{company}} firmasının ödemesini reddetmek istediğinize emin misiniz?",
-      "rejectReason": "Red Sebebi",
-      "rejectReasonPlaceholder": "Ödeme neden reddedildi?",
+      "noPayments": "Keine Zahlung in dieser Kategorie",
+      "noFilterResults": "Keine Zahlung gefunden, die dem Filter entspricht",
+      "dueDate": "Fällig: {{date}}",
+      "approveTitle": "Zahlung genehmigen",
+      "approveConfirm": "Möchten Sie die Zahlung in Höhe von {{amount}} der Firma {{company}} wirklich genehmigen?",
+      "rejectTitle": "Zahlung ablehnen",
+      "rejectConfirm": "Möchten Sie die Zahlung der Firma {{company}} wirklich ablehnen?",
+      "rejectReason": "Ablehnungsgrund",
+      "rejectReasonPlaceholder": "Warum wurde die Zahlung abgelehnt?",
       "menu": {
-        "approve": "Onayla",
-        "reject": "Reddet",
-        "viewReceipt": "Dekont Görüntüle",
-        "viewInvoice": "Fatura Görüntüle"
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "viewReceipt": "Beleg anzeigen",
+        "viewInvoice": "Rechnung anzeigen"
       },
       "methods": {
-        "bank_transfer": "Havale/EFT",
-        "credit_card": "Kredi Kartı",
-        "cash": "Nakit",
-        "other": "Diğer"
+        "bank_transfer": "Überweisung/EFT",
+        "credit_card": "Kreditkarte",
+        "cash": "Bargeld",
+        "other": "Sonstiges"
       }
     },
     "status": {
-      "trial": "Deneme",
-      "active": "Aktif",
-      "expired": "Süresi Dolmuş",
-      "suspended": "Askıya Alındı",
-      "cancelled": "İptal"
+      "trial": "Testversion",
+      "active": "Aktiv",
+      "expired": "Abgelaufen",
+      "suspended": "Ausgesetzt",
+      "cancelled": "Storniert"
     },
     "paymentStatus": {
-      "pending": "Bekliyor",
-      "paid": "Ödendi",
-      "failed": "Başarısız",
-      "refunded": "İade",
-      "approved": "Onaylandı",
-      "rejected": "Reddedildi"
+      "pending": "Ausstehend",
+      "paid": "Bezahlt",
+      "failed": "Fehlgeschlagen",
+      "refunded": "Erstattet",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt"
     },
     "notifications": {
-      "statusUpdated": "Durum güncellendi",
-      "deleted": "Silindi",
-      "deleteFailed": "Silme işlemi başarısız",
-      "approved": "Ödeme onaylandı",
-      "approveFailed": "Onaylama işlemi başarısız",
-      "rejected": "Ödeme reddedildi",
-      "rejectFailed": "Reddetme işlemi başarısız"
+      "statusUpdated": "Status aktualisiert",
+      "deleted": "Gelöscht",
+      "deleteFailed": "Löschvorgang fehlgeschlagen",
+      "approved": "Zahlung genehmigt",
+      "approveFailed": "Genehmigungsvorgang fehlgeschlagen",
+      "rejected": "Zahlung abgelehnt",
+      "rejectFailed": "Ablehnungsvorgang fehlgeschlagen"
     }
   },
   "roles": {
     "items": {
       "superAdmin": {
-        "name": "Süper Yönetici",
-        "description": "Tüm sistem özelliklerine tam erişim"
+        "name": "Superadministrator",
+        "description": "Vollzugriff auf alle Systemfunktionen"
       },
       "agencyUser": {
-        "name": "Ajans Kullanıcısı",
-        "description": "Sınırlı erişimli ajans kullanıcısı"
+        "name": "Agentur-Benutzer",
+        "description": "Agentur-Benutzer mit eingeschränktem Zugriff"
       },
       "clientUser": {
-        "name": "Müşteri Kullanıcısı",
-        "description": "Temel erişimli müşteri kullanıcısı"
+        "name": "Kunden-Benutzer",
+        "description": "Kunden-Benutzer mit Basis-Zugriff"
       }
     }
   },
   "permissions": {
     "categories": {
-      "userManagement": "Kullanıcı Yönetimi",
-      "notifications": "Bildirimler",
-      "reports": "Raporlar"
+      "userManagement": "Benutzerverwaltung",
+      "notifications": "Benachrichtigungen",
+      "reports": "Berichte"
     },
     "modules": {
-      "users": "Kullanıcılar",
-      "notifications": "Bildirimler",
-      "reports": "Raporlar"
+      "users": "Benutzer",
+      "notifications": "Benachrichtigungen",
+      "reports": "Berichte"
     },
     "items": {
       "user": {
         "create": {
-          "name": "Kullanıcı Oluştur",
-          "description": "Yeni kullanıcı oluşturma izni"
+          "name": "Benutzer erstellen",
+          "description": "Berechtigung zum Erstellen neuer Benutzer"
         },
         "read": {
-          "name": "Kullanıcı Görüntüle",
-          "description": "Kullanıcıları görüntüleme izni"
+          "name": "Benutzer anzeigen",
+          "description": "Berechtigung zum Anzeigen von Benutzern"
         },
         "update": {
-          "name": "Kullanıcı Güncelle",
-          "description": "Kullanıcıları güncelleme izni"
+          "name": "Benutzer aktualisieren",
+          "description": "Berechtigung zum Aktualisieren von Benutzern"
         },
         "delete": {
-          "name": "Kullanıcı Sil",
-          "description": "Kullanıcıları silme izni"
+          "name": "Benutzer löschen",
+          "description": "Berechtigung zum Löschen von Benutzern"
         }
       },
       "notification": {
         "read": {
-          "name": "Bildirim Görüntüle",
-          "description": "Bildirimleri görüntüleme izni"
+          "name": "Benachrichtigung anzeigen",
+          "description": "Berechtigung zum Anzeigen von Benachrichtigungen"
         },
         "create": {
-          "name": "Bildirim Oluştur",
-          "description": "Bildirim oluşturma izni"
+          "name": "Benachrichtigung erstellen",
+          "description": "Berechtigung zum Erstellen von Benachrichtigungen"
         }
       },
       "report": {
         "read": {
-          "name": "Rapor Görüntüle",
-          "description": "Raporları görüntüleme izni"
+          "name": "Bericht anzeigen",
+          "description": "Berechtigung zum Anzeigen von Berichten"
         },
         "create": {
-          "name": "Rapor Oluştur",
-          "description": "Rapor oluşturma izni"
+          "name": "Bericht erstellen",
+          "description": "Berechtigung zum Erstellen von Berichten"
         }
       }
     }

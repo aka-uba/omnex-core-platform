@@ -58,7 +58,7 @@ export async function createTenantDirectoryStructure(tenantSlug: string): Promis
 export async function uploadCompanyAsset(
     tenantSlug: string,
     file: File | string,
-    type: 'logo' | 'favicon'
+    type: 'logo' | 'favicon' | 'pwa-icon'
 ): Promise<string> {
     const basePath = path.join(process.cwd(), 'storage', 'tenants', tenantSlug, 'company-assets');
 

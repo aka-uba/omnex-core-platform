@@ -7,7 +7,6 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { StaffPerformancePageSkeleton } from './StaffPerformancePageSkeleton';
 import { useRealEstateStaffMember, useStaffPerformance } from '@/hooks/useRealEstateStaff';
 import { useTranslation } from '@/lib/i18n/client';
-import { useRouter } from 'next/navigation';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, BarChart, Bar } from 'recharts';
 import { ChartTooltip } from '@/components/charts';
 import { DatePickerInput } from '@mantine/dates';
@@ -22,7 +21,6 @@ interface StaffPerformancePageClientProps {
 }
 
 export function StaffPerformancePageClient({ locale, staffId }: StaffPerformancePageClientProps) {
-  const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const [dateFrom, setDateFrom] = useState<Date | null>(dayjs().subtract(12, 'months').toDate());
   const [dateTo, setDateTo] = useState<Date | null>(dayjs().toDate());

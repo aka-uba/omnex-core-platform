@@ -368,7 +368,7 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
 
   // Config değişikliklerini track et (JSON.stringify yerine daha hafif)
   const configKeyRef = useRef<string>('');
-  const configKey = useMemo(() => {
+  useMemo(() => {
     // Sadece önemli alanları karşılaştır, tüm config'i değil
     const key = `${config.layoutType}-${config.themeMode}-${config.direction}-${config.layoutSource}`;
     if (key !== configKeyRef.current) {

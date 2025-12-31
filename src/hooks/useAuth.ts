@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export interface User {
   id: string;
@@ -45,7 +44,6 @@ export function useAuth() {
   // Initial state'i localStorage'dan direkt al (SSR uyumlu)
   const [user, setUser] = useState<User | null>(() => loadUserFromStorage());
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   const loadUser = () => {
     const loadedUser = loadUserFromStorage();

@@ -15,7 +15,6 @@ import {
   IconEdit,
   IconTrash,
   IconEye,
-  IconUsers,
   IconChartBar,
 } from '@tabler/icons-react';
 import {

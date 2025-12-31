@@ -362,7 +362,7 @@ function ThemeConfiguratorComponent() {
                     variant={config.sidebar?.position !== 'right' ? 'filled' : 'subtle'}
                     color={config.sidebar?.position !== 'right' ? 'blue' : 'gray'}
                     size="xl"
-                    onClick={() => applyChanges({
+                    onClick={() => config.sidebar && applyChanges({
                       sidebar: {
                         ...config.sidebar,
                         position: 'left'
@@ -376,7 +376,7 @@ function ThemeConfiguratorComponent() {
                     variant={config.sidebar?.position === 'right' ? 'filled' : 'subtle'}
                     color={config.sidebar?.position === 'right' ? 'blue' : 'gray'}
                     size="xl"
-                    onClick={() => applyChanges({
+                    onClick={() => config.sidebar && applyChanges({
                       sidebar: {
                         ...config.sidebar,
                         position: 'right'

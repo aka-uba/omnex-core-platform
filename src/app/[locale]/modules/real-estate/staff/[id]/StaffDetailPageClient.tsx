@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { Container, Paper, Stack, Group, Text, Badge, Grid, Title, Divider, Avatar, Box, Tabs, Table, Button, Alert, Progress, ActionIcon } from '@mantine/core';
 import { IconUsers, IconEdit, IconChartBar, IconUser, IconHome, IconBuilding, IconFileText, IconEye, IconUserCircle, IconBriefcase, IconPhone, IconSettings, IconInfoCircle, IconFolder, IconDownload } from '@tabler/icons-react';
-import { EntityFilesTab } from '@/components/detail-tabs/EntityFilesTab';
+// EntityFilesTab kullanılmıyor ama ileride kullanılabilir
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { FilePreviewModal } from '@/modules/file-manager/components/FilePreviewModal';
 import { FileItem } from '@/modules/file-manager/types/file';
@@ -69,7 +69,7 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
       mimeType: mimeTypeMap[extension] || 'application/octet-stream',
       size: 0,
       type: 'file',
-      isDirectory: false,
+      parentId: null,
       createdAt: new Date(),
       modifiedAt: new Date(),
     };
@@ -97,7 +97,8 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
     setDownloadingDocs(true);
     try {
       // Extract file IDs from document URLs
-      const fileIds = staff.documents.map((doc: { url: string }) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fileIds = (staff.documents as any[]).map((doc: { url: string }) => {
         if (doc.url.includes('/api/core-files/')) {
           return doc.url.split('/api/core-files/')[1]?.split('/')[0];
         }
@@ -663,7 +664,8 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
                 <Divider />
                 {staff.documents && staff.documents.length > 0 ? (
                   <Grid>
-                    {staff.documents.map((doc: { name: string; url: string; type: string }, index: number) => (
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {(staff.documents as any[]).map((doc: { name: string; url: string; type: string }, index: number) => (
                       <Grid.Col span={{ base: 12, sm: 6, md: 4 }} key={index}>
                         <Paper p="md" withBorder>
                           <Group justify="space-between">

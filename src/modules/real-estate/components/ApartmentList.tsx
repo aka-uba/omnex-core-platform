@@ -87,20 +87,6 @@ export function ApartmentList({ locale }: ApartmentListProps) {
     }
   }, [deleteId, deleteApartment, t]);
 
-  const getStatusBadge = useCallback((status: ApartmentStatus) => {
-    const statusColors: Record<ApartmentStatus, string> = {
-      empty: 'gray',
-      rented: 'blue',
-      sold: 'green',
-      maintenance: 'orange',
-    };
-    return (
-      <Badge color={statusColors[status] || 'gray'}>
-        {t(`status.${status}`) || status}
-      </Badge>
-    );
-  }, [t]);
-
   const getActiveBadge = useCallback((isActive: boolean) => {
     return isActive ? (
       <Badge color="green">{t('status.active')}</Badge>
@@ -251,8 +237,6 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   ), []);
 
   const renderArea = useCallback((value: number) => value ? `${value} m²` : '-', []);
-
-  const renderStatus = useCallback((value: ApartmentStatus) => getStatusBadge(value), [getStatusBadge]);
 
   const renderActive = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
 

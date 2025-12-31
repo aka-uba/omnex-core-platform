@@ -5,14 +5,13 @@ import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import { IconPackage } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useBulkOperation } from '@/hooks/useBulkOperations';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
 import dayjs from 'dayjs';
 import type { BulkOperationType } from '@/modules/real-estate/types/bulk-operation';
 
 export function BulkOperationDetailPageClient({ locale, operationId }: { locale: string; operationId: string }) {
   const params = useParams();
-  const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');

@@ -468,20 +468,20 @@ export function ApartmentMaintenanceTab({
           <DatePickerInput
             label={t('maintenance.form.scheduledDate')}
             value={formData.scheduledDate}
-            onChange={(value) => setFormData({ ...formData, scheduledDate: value })}
+            onChange={(value) => setFormData({ ...formData, scheduledDate: value ? new Date(value) : null })}
             required
           />
           <Group grow>
             <DatePickerInput
               label={t('maintenance.form.startDate')}
               value={formData.startDate}
-              onChange={(value) => setFormData({ ...formData, startDate: value })}
+              onChange={(value) => setFormData({ ...formData, startDate: value ? new Date(value) : null })}
               clearable
             />
             <DatePickerInput
               label={t('maintenance.form.endDate')}
               value={formData.endDate}
-              onChange={(value) => setFormData({ ...formData, endDate: value })}
+              onChange={(value) => setFormData({ ...formData, endDate: value ? new Date(value) : null })}
               clearable
             />
           </Group>

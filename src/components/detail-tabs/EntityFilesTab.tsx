@@ -26,8 +26,6 @@ import {
   IconDownload,
   IconChevronLeft,
   IconChevronRight,
-  IconX,
-  IconEye,
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import ReactMarkdown from 'react-markdown';
@@ -411,7 +409,7 @@ export function EntityFilesTab({
             ) : (
               <Paper p="xl" withBorder style={{ width: '100%', textAlign: 'center' }}>
                 <Stack gap="md" align="center">
-                  {getDocumentIcon(currentFileInfo)}
+                  {currentFileInfo && getDocumentIcon(currentFileInfo)}
                   <Text size="lg" fw={500}>
                     {currentFileInfo?.originalName || currentFileInfo?.filename}
                   </Text>

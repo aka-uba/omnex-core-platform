@@ -212,13 +212,6 @@ export function PropertyList({ locale }: PropertyListProps) {
     );
   }, []);
 
-  const renderName = useCallback((value: string) => (
-    <Group gap="xs">
-      <IconBuilding size={16} />
-      <Text fw={500}>{value}</Text>
-    </Group>
-  ), []);
-
   const renderType = useCallback((value: PropertyType) => getTypeBadge(value), [getTypeBadge]);
 
   const renderStatus = useCallback((value: boolean) => getStatusBadge(value), [getStatusBadge]);

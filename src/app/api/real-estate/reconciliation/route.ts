@@ -210,7 +210,7 @@ export async function POST(request: NextRequest) {
           fiscalYearEnd: data.fiscalYearEnd ? new Date(data.fiscalYearEnd) : null,
           status: 'calculated',
           calculatedAt: new Date(),
-          details: calculation.details,
+          details: calculation.details as unknown as Parameters<typeof tenantPrisma.sideCostReconciliation.create>[0]['data']['details'],
           notes: data.notes,
         },
         include: {

@@ -133,7 +133,7 @@ export function UsageRightsPanel({
       if (!groups[ur.category]) {
         groups[ur.category] = [];
       }
-      groups[ur.category].push(ur);
+      groups[ur.category]?.push(ur);
     });
     return groups;
   }, [filteredRights]);

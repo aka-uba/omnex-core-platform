@@ -1,39 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Paper,
-  TextInput,
-  Button,
-  Table,
   Badge,
   ActionIcon,
   Group,
   Text,
   Tooltip,
-  Pagination,
-  Select,
-  Menu,
-  Loader,
 } from '@mantine/core';
 import {
-  IconSearch,
-  IconPlus,
   IconEdit,
   IconTrash,
   IconEye,
-  IconDownload,
 } from '@tabler/icons-react';
 import { useProductionOrders, useDeleteProductionOrder } from '@/hooks/useProductionOrders';
 import { useProducts } from '@/hooks/useProducts';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { useExport } from '@/lib/export/ExportProvider';
-import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
+import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
+import { AlertModal } from '@/components/modals/AlertModal';
 import type { ProductionOrderStatus, ProductionOrderPriority } from '@/modules/production/types/product';
-import type { ExportFormat } from '@/lib/export/types';
 import dayjs from 'dayjs';
 
 interface ProductionOrderListProps {
@@ -44,23 +33,20 @@ export function ProductionOrderList({ locale }: ProductionOrderListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/production');
   const { t: tGlobal } = useTranslation('global');
-  const { exportToExcel, exportToPDF, exportToCSV, isExporting } = useExport();
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState<number>(10);
-  const [search, setSearch] = useState<string>('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [productFilter, setProductFilter] = useState<string | undefined>();
+  const [locationFilter, setLocationFilter] = useState<string | undefined>();
   const [statusFilter, setStatusFilter] = useState<ProductionOrderStatus | undefined>();
   const [priorityFilter, setPriorityFilter] = useState<ProductionOrderPriority | undefined>();
-  const [productId, setProductId] = useState<string | undefined>();
-  const [locationId, setLocationId] = useState<string | undefined>();
 
   const { data, isLoading, error } = useProductionOrders({
-    page,
-    pageSize,
-    ...(search ? { search } : {}),
+    page: 1,
+    pageSize: 1000,
+    ...(productFilter ? { productId: productFilter } : {}),
+    ...(locationFilter ? { locationId: locationFilter } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(priorityFilter ? { priority: priorityFilter } : {}),
-    ...(productId ? { productId } : {}),
-    ...(locationId ? { locationId } : {}),
   });
 
   // Fetch products and locations for filters
@@ -68,128 +54,34 @@ export function ProductionOrderList({ locale }: ProductionOrderListProps) {
   const { data: locationsData } = useLocations({ page: 1, pageSize: 1000 });
 
   const deleteOrder = useDeleteProductionOrder();
-  const { confirm, ConfirmDialog } = useConfirmDialog();
 
-  const handleDelete = async (id: string) => {
-    const confirmed = await confirm({
-      title: t('orders.delete.title'),
-      message: t('orders.delete.confirm'),
-      confirmLabel: tGlobal('common.delete'),
-      confirmColor: 'red',
-    });
+  const handleDeleteClick = useCallback((id: string) => {
+    setDeleteId(id);
+    setDeleteModalOpen(true);
+  }, []);
 
-    if (confirmed) {
-      try {
-        await deleteOrder.mutateAsync(id);
-        showToast({
-          type: 'success',
-          title: t('messages.success'),
-          message: t('orders.delete.success'),
-        });
-      } catch (error) {
-        showToast({
-          type: 'error',
-          title: t('messages.error'),
-          message: error instanceof Error ? error.message : t('orders.delete.error'),
-        });
-      }
-    }
-  };
-
-  const handleExport = async (format: ExportFormat) => {
-    if (!data) return;
-
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!deleteId) return;
     try {
-      const exportData = {
-        columns: [
-          t('orders.table.orderNumber'),
-          t('orders.table.product'),
-          t('orders.table.quantity'),
-          t('orders.table.status'),
-          t('orders.table.priority'),
-          t('orders.table.plannedStart'),
-          t('orders.table.plannedEnd'),
-          t('orders.table.actualStart'),
-          t('orders.table.actualEnd'),
-        ],
-        rows: data.orders.map((order) => [
-          order.orderNumber,
-          order.product?.name || '-',
-          `${Number(order.quantity).toLocaleString('tr-TR')} ${order.unit}`,
-          t(`orders.status.${order.status}`) || order.status,
-          t(`orders.priority.${order.priority}`) || order.priority,
-          order.plannedStartDate ? dayjs(order.plannedStartDate).format('DD.MM.YYYY') : '-',
-          order.plannedEndDate ? dayjs(order.plannedEndDate).format('DD.MM.YYYY') : '-',
-          order.actualStartDate ? dayjs(order.actualStartDate).format('DD.MM.YYYY') : '-',
-          order.actualEndDate ? dayjs(order.actualEndDate).format('DD.MM.YYYY') : '-',
-        ]),
-        metadata: {
-          title: t('orders.title'),
-          description: t('orders.exportDescription'),
-          generatedAt: new Date().toISOString(),
-        },
-      };
-
-      const options = {
-        title: t('orders.title'),
-        description: t('orders.exportDescription'),
-        includeHeader: true,
-        includeFooter: true,
-        includePageNumbers: true,
-        filename: `production_orders_${dayjs().format('YYYY-MM-DD')}`,
-      };
-
-      switch (format) {
-        case 'excel':
-          await exportToExcel(exportData, options);
-          break;
-        case 'pdf':
-          await exportToPDF(exportData, options);
-          break;
-        case 'csv':
-          await exportToCSV(exportData, options);
-          break;
-      }
-
+      await deleteOrder.mutateAsync(deleteId);
       showToast({
         type: 'success',
-        title: t('messages.success'),
-        message: t('orders.exportSuccess'),
+        title: tGlobal('common.success'),
+        message: t('orders.delete.success'),
       });
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('orders.exportError'),
+        title: tGlobal('common.error'),
+        message: error instanceof Error ? error.message : t('orders.delete.error'),
       });
+    } finally {
+      setDeleteModalOpen(false);
+      setDeleteId(null);
     }
-  };
+  }, [deleteId, deleteOrder, t, tGlobal]);
 
-  if (isLoading) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Loader />
-      </Paper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text c="red">{tGlobal('common.errorLoading')}</Text>
-      </Paper>
-    );
-  }
-
-  if (!data) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text>{tGlobal('common.noData')}</Text>
-      </Paper>
-    );
-  }
-
-  const getStatusBadge = (status: ProductionOrderStatus) => {
+  const getStatusBadge = useCallback((status: ProductionOrderStatus) => {
     const statusColors: Record<ProductionOrderStatus, string> = {
       pending: 'yellow',
       in_progress: 'blue',
@@ -201,9 +93,9 @@ export function ProductionOrderList({ locale }: ProductionOrderListProps) {
         {t(`orders.status.${status}`) || status}
       </Badge>
     );
-  };
+  }, [t]);
 
-  const getPriorityBadge = (priority: ProductionOrderPriority) => {
+  const getPriorityBadge = useCallback((priority: ProductionOrderPriority) => {
     const priorityColors: Record<ProductionOrderPriority, string> = {
       low: 'gray',
       normal: 'blue',
@@ -215,192 +107,208 @@ export function ProductionOrderList({ locale }: ProductionOrderListProps) {
         {t(`orders.priority.${priority}`) || priority}
       </Badge>
     );
-  };
+  }, [t]);
+
+  const orders = useMemo(() => data?.orders || [], [data]);
+
+  // Product options for filter
+  const productOptions = useMemo(() => {
+    return (productsData?.products || []).map((product) => ({
+      value: product.id,
+      label: product.name,
+    }));
+  }, [productsData]);
+
+  // Location options for filter
+  const locationOptions = useMemo(() => {
+    return (locationsData?.locations || []).map((location) => ({
+      value: location.id,
+      label: location.name,
+    }));
+  }, [locationsData]);
+
+  // Filter options
+  const filterOptions: FilterOption[] = useMemo(() => [
+    {
+      key: 'productId',
+      label: t('orders.table.product'),
+      type: 'select',
+      options: productOptions,
+    },
+    {
+      key: 'locationId',
+      label: t('orders.table.location'),
+      type: 'select',
+      options: locationOptions,
+    },
+    {
+      key: 'status',
+      label: t('orders.table.status'),
+      type: 'select',
+      options: [
+        { value: 'pending', label: t('orders.status.pending') },
+        { value: 'in_progress', label: t('orders.status.in_progress') },
+        { value: 'completed', label: t('orders.status.completed') },
+        { value: 'cancelled', label: t('orders.status.cancelled') },
+      ],
+    },
+    {
+      key: 'priority',
+      label: t('orders.table.priority'),
+      type: 'select',
+      options: [
+        { value: 'low', label: t('orders.priority.low') },
+        { value: 'normal', label: t('orders.priority.normal') },
+        { value: 'high', label: t('orders.priority.high') },
+        { value: 'urgent', label: t('orders.priority.urgent') },
+      ],
+    },
+  ], [t, productOptions, locationOptions]);
+
+  const handleFilter = useCallback((filters: Record<string, any>) => {
+    setProductFilter(filters.productId || undefined);
+    setLocationFilter(filters.locationId || undefined);
+    setStatusFilter(filters.status as ProductionOrderStatus || undefined);
+    setPriorityFilter(filters.priority as ProductionOrderPriority || undefined);
+  }, []);
+
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'orderNumber',
+      label: t('orders.table.orderNumber'),
+      sortable: true,
+      searchable: true,
+      render: (value: string) => <Text fw={500}>{value}</Text>,
+    },
+    {
+      key: 'productName',
+      label: t('orders.table.product'),
+      sortable: true,
+      searchable: true,
+      render: (_value: string, row: Record<string, any>) => row.product?.name || '-',
+    },
+    {
+      key: 'locationName',
+      label: t('orders.table.location'),
+      sortable: true,
+      render: (_value: string, row: Record<string, any>) => row.location?.name || '-',
+    },
+    {
+      key: 'quantity',
+      label: t('orders.table.quantity'),
+      sortable: true,
+      align: 'right',
+      render: (value: number, row: Record<string, any>) =>
+        `${Number(value).toLocaleString('tr-TR')} ${row.unit}`,
+    },
+    {
+      key: 'status',
+      label: t('orders.table.status'),
+      sortable: true,
+      render: (value: ProductionOrderStatus) => getStatusBadge(value),
+    },
+    {
+      key: 'priority',
+      label: t('orders.table.priority'),
+      sortable: true,
+      render: (value: ProductionOrderPriority) => getPriorityBadge(value),
+    },
+    {
+      key: 'plannedStartDate',
+      label: t('orders.table.plannedStart'),
+      sortable: true,
+      render: (value: string) => value ? dayjs(value).format('DD.MM.YYYY') : '-',
+    },
+    {
+      key: 'plannedEndDate',
+      label: t('orders.table.plannedEnd'),
+      sortable: true,
+      render: (value: string) => value ? dayjs(value).format('DD.MM.YYYY') : '-',
+    },
+    {
+      key: 'actions',
+      label: tGlobal('table.actions'),
+      align: 'right',
+      render: (_value: any, row: Record<string, any>) => (
+        <Group gap="xs" justify="flex-end">
+          <Tooltip label={t('actions.view')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="blue"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/production/orders/${row.id}`);
+              }}
+            >
+              <IconEye size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.edit')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/production/orders/${row.id}/edit`);
+              }}
+            >
+              <IconEdit size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.delete')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteClick(row.id);
+              }}
+            >
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
+      ),
+    },
+  ], [t, tGlobal, getStatusBadge, getPriorityBadge, router, locale, handleDeleteClick]);
+
+  if (isLoading) {
+    return <DataTableSkeleton columns={9} rows={10} />;
+  }
+
+  if (error) {
+    return <DataTableSkeleton columns={9} rows={5} />;
+  }
 
   return (
-    <Paper shadow="xs" p="md">
-      <Group justify="space-between" mb="md">
-        <TextInput
-          placeholder={t('search.placeholder')}
-          leftSection={<IconSearch size={16} />}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          style={{ flex: 1, maxWidth: 400 }}
-        />
-        <Group>
-          <Select
-            placeholder={t('orders.filter.product')}
-            data={[
-              { value: '', label: t('filter.all') },
-              ...(productsData?.products.map(p => ({ value: p.id, label: p.name })) || []),
-            ]}
-            value={productId || ''}
-            onChange={(value) => setProductId(value || undefined)}
-            clearable
-            searchable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={t('orders.filter.location')}
-            data={[
-              { value: '', label: t('filter.all') },
-              ...(locationsData?.locations.map(l => ({ value: l.id, label: l.name })) || []),
-            ]}
-            value={locationId || ''}
-            onChange={(value) => setLocationId(value || undefined)}
-            clearable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={t('orders.filter.status')}
-            data={[
-              { value: '', label: t('filter.all') },
-              { value: 'pending', label: t('orders.status.pending') },
-              { value: 'in_progress', label: t('orders.status.in_progress') },
-              { value: 'completed', label: t('orders.status.completed') },
-              { value: 'cancelled', label: t('orders.status.cancelled') },
-            ]}
-            value={statusFilter || ''}
-            onChange={(value) => setStatusFilter(value as ProductionOrderStatus | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Select
-            placeholder={t('orders.filter.priority')}
-            data={[
-              { value: '', label: t('filter.all') },
-              { value: 'low', label: t('orders.priority.low') },
-              { value: 'normal', label: t('orders.priority.normal') },
-              { value: 'high', label: t('orders.priority.high') },
-              { value: 'urgent', label: t('orders.priority.urgent') },
-            ]}
-            value={priorityFilter || ''}
-            onChange={(value) => setPriorityFilter(value as ProductionOrderPriority | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Menu>
-            <Menu.Target>
-              <Button
-                leftSection={<IconDownload size={16} />}
-                variant="light"
-                loading={isExporting}
-              >
-                {t('export.title')}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => handleExport('excel')}>
-                {t('export.excel')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('pdf')}>
-                {t('export.pdf')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('csv')}>
-                {t('export.csv')}
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => router.push(`/${locale}/modules/production/orders/create`)}
-          >
-            {t('orders.create')}
-          </Button>
-        </Group>
-      </Group>
+    <>
+      <DataTable
+        columns={columns}
+        data={orders}
+        tableId="production-orders-list"
+        searchable={true}
+        sortable={true}
+        pageable={true}
+        defaultPageSize={25}
+        pageSizeOptions={[10, 25, 50, 100]}
+        showExportIcons={true}
+        exportNamespace="modules/production"
+        showColumnSettings={true}
+        emptyMessage={t('orders.noData')}
+        filters={filterOptions}
+        onFilter={handleFilter}
+        onRowClick={(row) => router.push(`/${locale}/modules/production/orders/${row.id}`)}
+      />
 
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t('orders.table.orderNumber')}</Table.Th>
-            <Table.Th>{t('orders.table.product')}</Table.Th>
-            <Table.Th>{t('orders.table.quantity')}</Table.Th>
-            <Table.Th>{t('orders.table.status')}</Table.Th>
-            <Table.Th>{t('orders.table.priority')}</Table.Th>
-            <Table.Th>{t('orders.table.plannedStart')}</Table.Th>
-            <Table.Th>{t('orders.table.plannedEnd')}</Table.Th>
-            <Table.Th>{t('orders.table.actions')}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {data.orders.map((order) => (
-            <Table.Tr key={order.id}>
-              <Table.Td>
-                <Text fw={500}>{order.orderNumber}</Text>
-              </Table.Td>
-              <Table.Td>{order.product?.name || '-'}</Table.Td>
-              <Table.Td>
-                {Number(order.quantity).toLocaleString('tr-TR')} {order.unit}
-              </Table.Td>
-              <Table.Td>{getStatusBadge(order.status)}</Table.Td>
-              <Table.Td>{getPriorityBadge(order.priority)}</Table.Td>
-              <Table.Td>
-                {order.plannedStartDate ? dayjs(order.plannedStartDate).format('DD.MM.YYYY') : '-'}
-              </Table.Td>
-              <Table.Td>
-                {order.plannedEndDate ? dayjs(order.plannedEndDate).format('DD.MM.YYYY') : '-'}
-              </Table.Td>
-              <Table.Td>
-                <Group gap="xs" justify="flex-end">
-                  <Tooltip label={t('actions.view')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="blue"
-                      onClick={() => router.push(`/${locale}/modules/production/orders/${order.id}`)}
-                    >
-                      <IconEye size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.edit')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="gray"
-                      onClick={() => router.push(`/${locale}/modules/production/orders/${order.id}/edit`)}
-                    >
-                      <IconEdit size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.delete')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="red"
-                      onClick={() => handleDelete(order.id)}
-                    >
-                      <IconTrash size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Group>
-              </Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-
-      {data.total > 0 && (
-        <Group justify="space-between" mt="md">
-          <Text size="sm" c="dimmed">
-            {t('pagination.showing')} {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, data.total)} {t('pagination.of')} {data.total}
-          </Text>
-          <Pagination
-            value={page}
-            onChange={setPage}
-            total={Math.ceil(data.total / pageSize)}
-          />
-        </Group>
-      )}
-      <ConfirmDialog />
-    </Paper>
+      <AlertModal
+        opened={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title={t('orders.delete.title')}
+        message={t('orders.delete.confirm')}
+        variant="danger"
+        loading={deleteOrder.isPending}
+        onConfirm={handleDeleteConfirm}
+      />
+    </>
   );
 }
-
-
-
-
-
-
-
-

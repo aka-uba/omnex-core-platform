@@ -40,8 +40,7 @@ import {
 import { useProperties } from '@/hooks/useProperties';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import type { SideCostReconciliation as ReconciliationType, ReconciliationApartmentDetail, DistributionMethod } from '@/modules/real-estate/types/property-expense';
-import dayjs from 'dayjs';
+import type { SideCostReconciliation as _ReconciliationType, ReconciliationApartmentDetail, DistributionMethod } from '@/modules/real-estate/types/property-expense';
 
 interface SideCostReconciliationProps {
   locale: string;
@@ -214,7 +213,7 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
 
   const handleCreate = async () => {
     if (!createPropertyId) {
-      showToast.error(t('reconciliation.selectProperty'));
+      showToast({ type: 'error', title: tGlobal('common.error'), message: t('reconciliation.selectProperty') });
       return;
     }
 
@@ -224,11 +223,11 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
         year: parseInt(createYear),
         distributionMethod: createDistributionMethod,
       });
-      showToast.success(t('reconciliation.createSuccess'));
+      showToast({ type: 'success', title: tGlobal('common.success'), message: t('reconciliation.createSuccess') });
       closeCreateModal();
       refetch();
     } catch (error: any) {
-      showToast.error(error.message || t('reconciliation.createError'));
+      showToast({ type: 'error', title: tGlobal('common.error'), message: error.message || t('reconciliation.createError') });
     }
   };
 
@@ -236,10 +235,10 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
     if (confirm(t('reconciliation.finalizeConfirm'))) {
       try {
         await finalizeReconciliation.mutateAsync(id);
-        showToast.success(t('reconciliation.finalizeSuccess'));
+        showToast({ type: 'success', title: tGlobal('common.success'), message: t('reconciliation.finalizeSuccess') });
         refetch();
       } catch {
-        showToast.error(t('reconciliation.finalizeError'));
+        showToast({ type: 'error', title: tGlobal('common.error'), message: t('reconciliation.finalizeError') });
       }
     }
   };
@@ -248,10 +247,10 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
     if (confirm(t('reconciliation.deleteConfirm'))) {
       try {
         await deleteReconciliation.mutateAsync(id);
-        showToast.success(t('reconciliation.deleteSuccess'));
+        showToast({ type: 'success', title: tGlobal('common.success'), message: t('reconciliation.deleteSuccess') });
         refetch();
       } catch {
-        showToast.error(t('reconciliation.deleteError'));
+        showToast({ type: 'error', title: tGlobal('common.error'), message: t('reconciliation.deleteError') });
       }
     }
   };
@@ -301,21 +300,21 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
       </Paper>
 
       {/* Reconciliations List */}
-      <DataTable
-        columns={columns}
-        data={reconciliations}
-        loading={isLoading}
-        searchable={true}
-        sortable={true}
-        pageable={true}
-        defaultPageSize={10}
-        pageSizeOptions={[10, 25, 50]}
-        emptyMessage={t('reconciliation.noReconciliations')}
-        showColumnSettings={false}
-        mobileCardView={true}
-        mobileCardTitle={(row) => row.property?.name || '-'}
-        mobileCardSubtitle={(row) => `${row.year} - ${t(`reconciliation.statuses.${row.status}`)}`}
-      />
+      {isLoading ? (
+        <Skeleton height={200} />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={reconciliations}
+          searchable={true}
+          sortable={true}
+          pageable={true}
+          defaultPageSize={10}
+          pageSizeOptions={[10, 25, 50]}
+          emptyMessage={t('reconciliation.noReconciliations')}
+          showColumnSettings={false}
+        />
+      )}
 
       {/* Create Modal */}
       <Modal

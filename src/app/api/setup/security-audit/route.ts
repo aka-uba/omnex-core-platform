@@ -164,8 +164,6 @@ async function getSecuritySummary() {
   }
 
   // 3. Check for .env file exposure
-  const envExists = await fileExists(path.join(process.cwd(), '.env'));
-  const envLocalExists = await fileExists(path.join(process.cwd(), '.env.local'));
   const gitignoreContent = await readFileContent(path.join(process.cwd(), '.gitignore'));
   const envInGitignore = gitignoreContent?.includes('.env') || false;
 
@@ -221,7 +219,7 @@ async function getSecuritySummary() {
 
 async function runNpmAudit() {
   try {
-    const { stdout, stderr } = await execAsync('npm audit --json', {
+    const { stdout } = await execAsync('npm audit --json', {
       cwd: process.cwd(),
       timeout: 60000,
     });
@@ -285,15 +283,6 @@ async function getPackageVersions(): Promise<PackageVersions> {
     typescript: pkg.devDependencies?.typescript || 'unknown',
     prisma: pkg.devDependencies?.prisma || 'unknown',
   };
-}
-
-async function fileExists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 async function readFileContent(filePath: string): Promise<string | null> {

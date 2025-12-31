@@ -3,7 +3,7 @@
 import { useMemo, useState, useCallback } from 'react';
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Box, Image, Button, Card, Title, Divider, Table, SimpleGrid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconBuilding, IconFileText, IconHome, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconCalendar, IconMapPin, IconTool } from '@tabler/icons-react';
+import { IconBuilding, IconFileText, IconHome, IconEdit, IconEye, IconCash, IconReceipt, IconPhoto, IconFile, IconTool } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProperty } from '@/hooks/useProperties';
 import { useParams, useRouter } from 'next/navigation';

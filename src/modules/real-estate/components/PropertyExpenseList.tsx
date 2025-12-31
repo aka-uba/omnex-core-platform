@@ -34,7 +34,7 @@ import { usePropertyExpenses, useDeletePropertyExpense } from '@/hooks/useProper
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { PropertyExpenseForm } from './PropertyExpenseForm';
-import type { PropertyExpense, ExpenseCategory } from '@/modules/real-estate/types/property-expense';
+import type { ExpenseCategory } from '@/modules/real-estate/types/property-expense';
 import dayjs from 'dayjs';
 
 interface PropertyExpenseListProps {
@@ -96,9 +96,9 @@ export function PropertyExpenseList({ locale, propertyId, propertyName }: Proper
     if (confirm(t('propertyExpenses.deleteConfirm'))) {
       try {
         await deleteExpense.mutateAsync(expenseId);
-        showToast.success(t('propertyExpenses.deleteSuccess'));
+        showToast({ type: 'success', title: tGlobal('common.success'), message: t('propertyExpenses.deleteSuccess') });
       } catch {
-        showToast.error(t('propertyExpenses.deleteError'));
+        showToast({ type: 'error', title: tGlobal('common.error'), message: t('propertyExpenses.deleteError') });
       }
     }
   };

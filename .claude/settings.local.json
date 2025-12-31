@@ -137,7 +137,8 @@
       "Bash(__NEW_LINE__ find \"C:/xampp/htdocs/omnex-core-platform/src/app\" -name \"*PageClient.tsx\" -type f)",
       "Bash(while read file)",
       "Bash(do grep -q \"ListPageSkeleton\" \"$file\")",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: DataTable dönüşümleri ve TypeScript hata düzeltmeleri\n\n- HR modülü: EmployeeList, LeaveList, PayrollList DataTable''a dönüştürüldü\n- Production modülü: ProductList, ProductionOrderList, StockMovementList DataTable''a dönüştürüldü\n- Maintenance modülü: MaintenanceRecordList DataTable''a dönüştürüldü\n- useConfirmDialog yerine AlertModal kullanımı\n- FilterOption tipi düzeltmesi (key, type, options yapısı)\n- Tüm TypeScript type hataları düzeltildi\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

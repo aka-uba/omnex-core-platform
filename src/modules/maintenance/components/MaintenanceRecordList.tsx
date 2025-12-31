@@ -1,38 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Paper,
-  TextInput,
-  Button,
-  Table,
   Badge,
   ActionIcon,
   Group,
   Text,
-  Pagination,
-  Select,
-  Menu,
-  Loader,
   Tooltip,
 } from '@mantine/core';
 import {
-  IconSearch,
-  IconPlus,
   IconEdit,
   IconTrash,
   IconEye,
-  IconDownload,
 } from '@tabler/icons-react';
 import { useMaintenanceRecords, useDeleteMaintenanceRecord } from '@/hooks/useMaintenanceRecords';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { useExport } from '@/lib/export/ExportProvider';
-import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
+import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
+import { AlertModal } from '@/components/modals/AlertModal';
 import type { MaintenanceType, MaintenanceStatus } from '@/modules/maintenance/types/maintenance';
-import type { ExportFormat } from '@/lib/export/types';
 import dayjs from 'dayjs';
 
 interface MaintenanceRecordListProps {
@@ -43,22 +32,19 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/maintenance');
   const { t: tGlobal } = useTranslation('global');
-  const { exportToExcel, exportToPDF, exportToCSV, isExporting } = useExport();
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [search, setSearch] = useState<string>('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<MaintenanceType | undefined>();
   const [statusFilter, setStatusFilter] = useState<MaintenanceStatus | undefined>();
-  const [locationId, setLocationId] = useState<string | undefined>();
-  const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>(undefined);
+  const [locationFilter, setLocationFilter] = useState<string | undefined>();
+  const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
 
   const { data, isLoading, error } = useMaintenanceRecords({
-    page,
-    pageSize,
-    ...(search ? { search } : {}),
+    page: 1,
+    pageSize: 1000,
     ...(typeFilter ? { type: typeFilter } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
-    ...(locationId ? { locationId } : {}),
+    ...(locationFilter ? { locationId: locationFilter } : {}),
     ...(isActiveFilter !== undefined ? { isActive: isActiveFilter } : {}),
   });
 
@@ -66,132 +52,34 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
   const { data: locationsData } = useLocations({ page: 1, pageSize: 1000 });
 
   const deleteRecord = useDeleteMaintenanceRecord();
-  const { confirm, ConfirmDialog } = useConfirmDialog();
 
-  const handleDelete = async (id: string) => {
-    const confirmed = await confirm({
-      title: t('delete.title'),
-      message: t('delete.confirm'),
-      confirmLabel: tGlobal('common.delete'),
-      confirmColor: 'red',
-    });
+  const handleDeleteClick = useCallback((id: string) => {
+    setDeleteId(id);
+    setDeleteModalOpen(true);
+  }, []);
 
-    if (confirmed) {
-      try {
-        await deleteRecord.mutateAsync(id);
-        showToast({
-          type: 'success',
-          title: t('messages.success'),
-          message: t('delete.success'),
-        });
-      } catch (error) {
-        showToast({
-          type: 'error',
-          title: t('messages.error'),
-          message: error instanceof Error ? error.message : t('delete.error'),
-        });
-      }
-    }
-  };
-
-  const handleExport = async (format: ExportFormat) => {
-    if (!data) return;
-
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!deleteId) return;
     try {
-      const exportData = {
-        columns: [
-          t('table.title'),
-          t('table.type'),
-          t('table.status'),
-          t('table.location'),
-          t('table.equipment'),
-          t('table.scheduledDate'),
-          t('table.estimatedCost'),
-          t('table.actualCost'),
-        ],
-        rows: data.records.map((record) => [
-          record.title,
-          t(`types.${record.type}`) || record.type,
-          t(`status.${record.status}`) || record.status,
-          record.location?.name || '-',
-          record.equipment?.name || '-',
-          dayjs(record.scheduledDate).format('DD.MM.YYYY'),
-          record.estimatedCost ? Number(record.estimatedCost).toLocaleString('tr-TR', {
-            style: 'currency',
-            currency: 'TRY',
-          }) : '-',
-          record.actualCost ? Number(record.actualCost).toLocaleString('tr-TR', {
-            style: 'currency',
-            currency: 'TRY',
-          }) : '-',
-        ]),
-        metadata: {
-          title: t('title'),
-          description: t('exportDescription'),
-          generatedAt: new Date().toISOString(),
-        },
-      };
-
-      const options = {
-        title: t('title'),
-        description: t('exportDescription'),
-        includeHeader: true,
-        includeFooter: true,
-        includePageNumbers: true,
-        filename: `maintenance_records_${dayjs().format('YYYY-MM-DD')}`,
-      };
-
-      switch (format) {
-        case 'excel':
-          await exportToExcel(exportData, options);
-          break;
-        case 'pdf':
-          await exportToPDF(exportData, options);
-          break;
-        case 'csv':
-          await exportToCSV(exportData, options);
-          break;
-      }
-
+      await deleteRecord.mutateAsync(deleteId);
       showToast({
         type: 'success',
-        title: t('messages.success'),
-        message: t('exportSuccess'),
+        title: tGlobal('common.success'),
+        message: t('delete.success'),
       });
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('exportError'),
+        title: tGlobal('common.error'),
+        message: error instanceof Error ? error.message : t('delete.error'),
       });
+    } finally {
+      setDeleteModalOpen(false);
+      setDeleteId(null);
     }
-  };
+  }, [deleteId, deleteRecord, t, tGlobal]);
 
-  if (isLoading) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Loader />
-      </Paper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text c="red">{tGlobal('common.errorLoading')}</Text>
-      </Paper>
-    );
-  }
-
-  if (!data) {
-    return (
-      <Paper shadow="sm" p="md" radius="md">
-        <Text>{tGlobal('common.noData')}</Text>
-      </Paper>
-    );
-  }
-
-  const getTypeBadge = (type: MaintenanceType) => {
+  const getTypeBadge = useCallback((type: MaintenanceType) => {
     const typeColors: Record<MaintenanceType, string> = {
       preventive: 'blue',
       corrective: 'orange',
@@ -202,9 +90,9 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         {t(`types.${type}`) || type}
       </Badge>
     );
-  };
+  }, [t]);
 
-  const getStatusBadge = (status: MaintenanceStatus) => {
+  const getStatusBadge = useCallback((status: MaintenanceStatus) => {
     const statusColors: Record<MaintenanceStatus, string> = {
       scheduled: 'blue',
       in_progress: 'yellow',
@@ -216,209 +104,222 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         {t(`status.${status}`) || status}
       </Badge>
     );
-  };
+  }, [t]);
+
+  const formatCurrency = useCallback((value: number | null) => {
+    if (!value) return '-';
+    return Number(value).toLocaleString('tr-TR', {
+      style: 'currency',
+      currency: 'TRY',
+    });
+  }, []);
+
+  const records = useMemo(() => data?.records || [], [data]);
+
+  // Location options for filter
+  const locationOptions = useMemo(() => {
+    return (locationsData?.locations || []).map((location) => ({
+      value: location.id,
+      label: location.name,
+    }));
+  }, [locationsData]);
+
+  // Filter options
+  const filterOptions: FilterOption[] = useMemo(() => [
+    {
+      key: 'type',
+      label: t('table.type'),
+      type: 'select',
+      options: [
+        { value: 'preventive', label: t('types.preventive') },
+        { value: 'corrective', label: t('types.corrective') },
+        { value: 'emergency', label: t('types.emergency') },
+      ],
+    },
+    {
+      key: 'status',
+      label: t('table.status'),
+      type: 'select',
+      options: [
+        { value: 'scheduled', label: t('status.scheduled') },
+        { value: 'in_progress', label: t('status.in_progress') },
+        { value: 'completed', label: t('status.completed') },
+        { value: 'cancelled', label: t('status.cancelled') },
+      ],
+    },
+    {
+      key: 'locationId',
+      label: t('table.location'),
+      type: 'select',
+      options: locationOptions,
+    },
+    {
+      key: 'isActive',
+      label: tGlobal('status.title'),
+      type: 'select',
+      options: [
+        { value: 'true', label: tGlobal('status.active') },
+        { value: 'false', label: tGlobal('status.inactive') },
+      ],
+    },
+  ], [t, tGlobal, locationOptions]);
+
+  const handleFilter = useCallback((filters: Record<string, any>) => {
+    setTypeFilter(filters.type as MaintenanceType || undefined);
+    setStatusFilter(filters.status as MaintenanceStatus || undefined);
+    setLocationFilter(filters.locationId || undefined);
+    setIsActiveFilter(filters.isActive ? filters.isActive === 'true' : undefined);
+  }, []);
+
+  const columns: DataTableColumn[] = useMemo(() => [
+    {
+      key: 'title',
+      label: t('table.title'),
+      sortable: true,
+      searchable: true,
+      render: (value: string, row: Record<string, any>) => (
+        <>
+          <Text fw={500}>{value}</Text>
+          {row.description && (
+            <Text size="xs" c="dimmed" lineClamp={1}>
+              {row.description}
+            </Text>
+          )}
+        </>
+      ),
+    },
+    {
+      key: 'type',
+      label: t('table.type'),
+      sortable: true,
+      render: (value: MaintenanceType) => getTypeBadge(value),
+    },
+    {
+      key: 'status',
+      label: t('table.status'),
+      sortable: true,
+      render: (value: MaintenanceStatus) => getStatusBadge(value),
+    },
+    {
+      key: 'locationName',
+      label: t('table.location'),
+      sortable: true,
+      render: (_value: string, row: Record<string, any>) => row.location?.name || '-',
+    },
+    {
+      key: 'equipmentName',
+      label: t('table.equipment'),
+      sortable: true,
+      searchable: true,
+      render: (_value: string, row: Record<string, any>) => row.equipment?.name || '-',
+    },
+    {
+      key: 'scheduledDate',
+      label: t('table.scheduledDate'),
+      sortable: true,
+      render: (value: string) => dayjs(value).format('DD.MM.YYYY'),
+    },
+    {
+      key: 'estimatedCost',
+      label: t('table.estimatedCost'),
+      sortable: true,
+      align: 'right',
+      render: (value: number) => formatCurrency(value),
+    },
+    {
+      key: 'isActive',
+      label: tGlobal('status.title'),
+      sortable: true,
+      render: (value: boolean) => (
+        <Badge color={value ? 'green' : 'gray'}>
+          {value ? tGlobal('status.active') : tGlobal('status.inactive')}
+        </Badge>
+      ),
+    },
+    {
+      key: 'actions',
+      label: tGlobal('table.actions'),
+      align: 'right',
+      render: (_value: any, row: Record<string, any>) => (
+        <Group gap="xs" justify="flex-end">
+          <Tooltip label={t('actions.view')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="blue"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/maintenance/records/${row.id}`);
+              }}
+            >
+              <IconEye size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.edit')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/${locale}/modules/maintenance/records/${row.id}/edit`);
+              }}
+            >
+              <IconEdit size={18} />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t('actions.delete')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteClick(row.id);
+              }}
+            >
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
+      ),
+    },
+  ], [t, tGlobal, getTypeBadge, getStatusBadge, formatCurrency, router, locale, handleDeleteClick]);
+
+  if (isLoading) {
+    return <DataTableSkeleton columns={9} rows={10} />;
+  }
+
+  if (error) {
+    return <DataTableSkeleton columns={9} rows={5} />;
+  }
 
   return (
-    <Paper shadow="xs" p="md">
-      <Group justify="space-between" mb="md">
-        <TextInput
-          placeholder={t('search.placeholder')}
-          leftSection={<IconSearch size={16} />}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          style={{ flex: 1, maxWidth: 400 }}
-        />
-        <Group>
-          <Select
-            placeholder={t('filter.type')}
-            data={[
-              { value: '', label: tGlobal('filter.all') },
-              { value: 'preventive', label: t('types.preventive') },
-              { value: 'corrective', label: t('types.corrective') },
-              { value: 'emergency', label: t('types.emergency') },
-            ]}
-            value={typeFilter || ''}
-            onChange={(value) => setTypeFilter(value as MaintenanceType | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Select
-            placeholder={t('filter.status')}
-            data={[
-              { value: '', label: tGlobal('filter.all') },
-              { value: 'scheduled', label: t('status.scheduled') },
-              { value: 'in_progress', label: t('status.in_progress') },
-              { value: 'completed', label: t('status.completed') },
-              { value: 'cancelled', label: t('status.cancelled') },
-            ]}
-            value={statusFilter || ''}
-            onChange={(value) => setStatusFilter(value as MaintenanceStatus | undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Select
-            placeholder={t('filter.location')}
-            data={[
-              { value: '', label: tGlobal('filter.all') },
-              ...(locationsData?.locations || []).map((location) => ({
-                value: location.id,
-                label: location.name,
-              })),
-            ]}
-            value={locationId || ''}
-            onChange={(value) => setLocationId(value || undefined)}
-            clearable
-            searchable
-            style={{ width: 200 }}
-          />
-          <Select
-            placeholder={tGlobal('filter.status')}
-            data={[
-              { value: '', label: tGlobal('filter.all') },
-              { value: 'true', label: tGlobal('status.active') },
-              { value: 'false', label: tGlobal('status.inactive') },
-            ]}
-            value={isActiveFilter !== undefined ? isActiveFilter.toString() : ''}
-            onChange={(value) => setIsActiveFilter(value ? value === 'true' : undefined)}
-            clearable
-            style={{ width: 150 }}
-          />
-          <Menu>
-            <Menu.Target>
-              <Button
-                leftSection={<IconDownload size={16} />}
-                variant="light"
-                loading={isExporting}
-              >
-                {t('export.title')}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => handleExport('excel')}>
-                {t('export.excel')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('pdf')}>
-                {t('export.pdf')}
-              </Menu.Item>
-              <Menu.Item onClick={() => handleExport('csv')}>
-                {t('export.csv')}
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-          <Button
-            leftSection={<IconPlus size={16} />}
-            onClick={() => router.push(`/${locale}/modules/maintenance/records/create`)}
-          >
-            {t('create')}
-          </Button>
-        </Group>
-      </Group>
+    <>
+      <DataTable
+        columns={columns}
+        data={records}
+        tableId="maintenance-records-list"
+        searchable={true}
+        sortable={true}
+        pageable={true}
+        defaultPageSize={25}
+        pageSizeOptions={[10, 25, 50, 100]}
+        showExportIcons={true}
+        exportNamespace="modules/maintenance"
+        showColumnSettings={true}
+        emptyMessage={t('noData')}
+        filters={filterOptions}
+        onFilter={handleFilter}
+        onRowClick={(row) => router.push(`/${locale}/modules/maintenance/records/${row.id}`)}
+      />
 
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{t('table.title')}</Table.Th>
-            <Table.Th>{t('table.type')}</Table.Th>
-            <Table.Th>{t('table.status')}</Table.Th>
-            <Table.Th>{t('table.location')}</Table.Th>
-            <Table.Th>{t('table.equipment')}</Table.Th>
-            <Table.Th>{t('table.scheduledDate')}</Table.Th>
-            <Table.Th>{t('table.estimatedCost')}</Table.Th>
-            <Table.Th>{t('table.actions')}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {data.records.map((record) => (
-            <Table.Tr key={record.id}>
-              <Table.Td>
-                <Text fw={500}>{record.title}</Text>
-                {record.description && (
-                  <Text size="xs" c="dimmed" lineClamp={1}>
-                    {record.description}
-                  </Text>
-                )}
-              </Table.Td>
-              <Table.Td>{getTypeBadge(record.type)}</Table.Td>
-              <Table.Td>{getStatusBadge(record.status)}</Table.Td>
-              <Table.Td>{record.location?.name || '-'}</Table.Td>
-              <Table.Td>{record.equipment?.name || '-'}</Table.Td>
-              <Table.Td>{dayjs(record.scheduledDate).format('DD.MM.YYYY')}</Table.Td>
-              <Table.Td>
-                {record.estimatedCost
-                  ? Number(record.estimatedCost).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })
-                  : '-'}
-              </Table.Td>
-              <Table.Td>
-                <Group gap="xs">
-                  <Tooltip label={t('actions.view')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="blue"
-                      onClick={() => router.push(`/${locale}/modules/maintenance/records/${record.id}`)}
-                    >
-                      <IconEye size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.edit')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="gray"
-                      onClick={() => router.push(`/${locale}/modules/maintenance/records/${record.id}/edit`)}
-                    >
-                      <IconEdit size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('actions.delete')} withArrow>
-                    <ActionIcon
-                      variant="subtle"
-                      color="red"
-                      onClick={() => handleDelete(record.id)}
-                    >
-                      <IconTrash size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                </Group>
-              </Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-
-      {data.total > 0 && (
-        <Group justify="space-between" mt="md">
-          <Text size="sm" c="dimmed">
-            {t('pagination.showing')} {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, data.total)} {t('pagination.of')} {data.total}
-          </Text>
-          <Pagination
-            value={page}
-            onChange={setPage}
-            total={Math.ceil(data.total / pageSize)}
-          />
-          <Select
-            value={pageSize.toString()}
-            onChange={(value) => {
-              setPageSize(Number(value));
-              setPage(1);
-            }}
-            data={['10', '25', '50', '100']}
-            style={{ width: 80 }}
-          />
-        </Group>
-      )}
-      <ConfirmDialog />
-    </Paper>
+      <AlertModal
+        opened={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title={t('delete.title')}
+        message={t('delete.confirm')}
+        variant="danger"
+        loading={deleteRecord.isPending}
+        onConfirm={handleDeleteConfirm}
+      />
+    </>
   );
 }
-
-
-
-
-
-
-

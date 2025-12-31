@@ -33,8 +33,8 @@ export function InvoiceList({ locale }: InvoiceListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState<number>(25);
+  const [page, _setPage] = useState(1);
+  const [_pageSize] = useState<number>(25);
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | undefined>();
   const [subscriptionId, setSubscriptionId] = useState<string | undefined>();
 

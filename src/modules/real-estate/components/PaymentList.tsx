@@ -544,7 +544,7 @@ export function PaymentList({ locale }: PaymentListProps) {
             label={t('payments.completePayment.paidDate')}
             placeholder={t('form.selectDate')}
             value={selectedPaidDate}
-            onChange={setSelectedPaidDate}
+            onChange={(value) => setSelectedPaidDate(value ? new Date(value) : null)}
             leftSection={<IconCalendar size={16} />}
             locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
             clearable

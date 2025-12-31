@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
-import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Button, Divider, Title, ActionIcon } from '@mantine/core';
+import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid, Card, Box, Image, SimpleGrid, Divider, Title, ActionIcon } from '@mantine/core';
 import { IconHome, IconQrcode, IconFileText, IconEdit, IconPhoto, IconUsers, IconTool, IconEye, IconCash, IconFile, IconCheck, IconX } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { ApartmentQRCode } from '@/modules/real-estate/components/ApartmentQRCode';
@@ -24,7 +24,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
   const { t: tGlobal } = useTranslation('global');
   const currentLocale = (params?.locale as string) || locale;
   const apartmentId = params?.id as string;
-  const { formatCurrency, currency } = useCompany();
+  const { formatCurrency } = useCompany();
 
   const { data: apartment, isLoading } = useApartment(apartmentId);
 

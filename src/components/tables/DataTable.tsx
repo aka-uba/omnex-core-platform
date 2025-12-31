@@ -39,9 +39,13 @@ function getContrastColor(hexColor: string | undefined): string | undefined {
   let r: number, g: number, b: number;
 
   if (hex.length === 3) {
-    r = parseInt(hex[0] + hex[0], 16);
-    g = parseInt(hex[1] + hex[1], 16);
-    b = parseInt(hex[2] + hex[2], 16);
+    const h0 = hex[0];
+    const h1 = hex[1];
+    const h2 = hex[2];
+    if (!h0 || !h1 || !h2) return undefined;
+    r = parseInt(h0 + h0, 16);
+    g = parseInt(h1 + h1, 16);
+    b = parseInt(h2 + h2, 16);
   } else if (hex.length === 6) {
     r = parseInt(hex.substring(0, 2), 16);
     g = parseInt(hex.substring(2, 4), 16);
@@ -55,38 +59,6 @@ function getContrastColor(hexColor: string | undefined): string | undefined {
 
   // Return black for light backgrounds, white for dark backgrounds
   return luminance > 0.5 ? '#000000' : '#ffffff';
-}
-
-// Utility function to calculate hover color (slightly darker or lighter)
-function getHoverColor(hexColor: string | undefined): string | undefined {
-  if (!hexColor) return undefined;
-
-  const hex = hexColor.replace('#', '');
-
-  let r: number, g: number, b: number;
-
-  if (hex.length === 3) {
-    r = parseInt(hex[0] + hex[0], 16);
-    g = parseInt(hex[1] + hex[1], 16);
-    b = parseInt(hex[2] + hex[2], 16);
-  } else if (hex.length === 6) {
-    r = parseInt(hex.substring(0, 2), 16);
-    g = parseInt(hex.substring(2, 4), 16);
-    b = parseInt(hex.substring(4, 6), 16);
-  } else {
-    return undefined;
-  }
-
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-  // Darken light colors, lighten dark colors
-  const factor = luminance > 0.5 ? 0.9 : 1.15;
-
-  r = Math.min(255, Math.max(0, Math.round(r * factor)));
-  g = Math.min(255, Math.max(0, Math.round(g * factor)));
-  b = Math.min(255, Math.max(0, Math.round(b * factor)));
-
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 export interface DataTableColumn {

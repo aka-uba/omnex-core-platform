@@ -11,10 +11,8 @@ import {
   Title,
   Text,
   Card,
-  Box,
   Loader,
   ThemeIcon,
-  Progress,
   Code,
   Divider,
   Tooltip,
@@ -195,18 +193,8 @@ export function SecurityAudit() {
     }
   };
 
-  const getOverallStatusColor = (status: string) => {
-    switch (status) {
-      case 'pass':
-        return 'green';
-      case 'fail':
-        return 'red';
-      case 'warning':
-        return 'yellow';
-      default:
-        return 'gray';
-    }
-  };
+  // Overall status color utility - removed as unused
+  // const _getOverallStatusColor = (status: string) => { ... };
 
   const getCheckIcon = (checkId: string) => {
     switch (checkId) {

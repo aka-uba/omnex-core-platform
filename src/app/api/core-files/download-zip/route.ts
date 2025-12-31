@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Return ZIP file
-        return new NextResponse(zipBuffer, {
+        return new NextResponse(zipBuffer as unknown as BodyInit, {
           headers: {
             'Content-Type': 'application/zip',
             'Content-Disposition': `attachment; filename="${filename}"`,

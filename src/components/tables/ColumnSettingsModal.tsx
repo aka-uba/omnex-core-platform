@@ -1,7 +1,7 @@
 'use client';
 
 import { Modal, Stack, Group, Text, Button, Badge, ActionIcon, Paper, Switch, ColorInput, Divider, Popover, Box } from '@mantine/core';
-import { IconGripVertical, IconChevronUp, IconChevronDown, IconEye, IconEyeOff, IconSettings, IconRefresh, IconPalette, IconBorderVertical, IconColorSwatch } from '@tabler/icons-react';
+import { IconGripVertical, IconChevronUp, IconChevronDown, IconEye, IconEyeOff, IconSettings, IconRefresh, IconBorderVertical, IconColorSwatch } from '@tabler/icons-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '@/lib/i18n/client';
 

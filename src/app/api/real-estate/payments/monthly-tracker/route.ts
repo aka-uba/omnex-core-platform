@@ -283,7 +283,7 @@ export async function GET(request: NextRequest) {
           propertyName: apartment.property?.name || '-',
           apartmentId: apartment.id,
           unitNumber: apartment.unitNumber,
-          floor: apartment.floor || '-',
+          floor: String(apartment.floor || '-'),
           tenantId: tenant?.id || null,
           tenantName,
           tenantType: tenant?.tenantType as 'individual' | 'company' | null,
