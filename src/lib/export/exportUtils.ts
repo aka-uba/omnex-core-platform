@@ -1,12 +1,49 @@
 import ExcelJS from 'exceljs';
-import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, AlignmentType } from 'docx';
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, AlignmentType, BorderStyle, ImageRun, convertInchesToTwip } from 'docx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import type { ExportData, ExportOptions, CompanySettings, ExportFormat, ExportTemplateData } from './types';
+import type { ExportData, ExportOptions, CompanySettings, ExportFormat, ExportTemplateData, TemplateSection, SectionItem } from './types';
 import { ExportTemplateService } from './ExportTemplateService';
 import type { PrismaClient as TenantPrismaClient } from '@prisma/tenant-client';
+
+// Helper to replace placeholders in text
+const replacePlaceholders = (text: string, companySettings: CompanySettings, pageTitle?: string): string => {
+  if (!text) return '';
+  return text
+    .replace(/\{\{pageTitle\}\}/g, pageTitle || '')
+    .replace(/\{\{companyName\}\}/g, companySettings.name || '')
+    .replace(/\{\{companyAddress\}\}/g, companySettings.address || '')
+    .replace(/\{\{companyPhone\}\}/g, companySettings.phone || '')
+    .replace(/\{\{companyEmail\}\}/g, companySettings.email || '')
+    .replace(/\{\{companyWebsite\}\}/g, companySettings.website || '')
+    .replace(/\{\{companyTaxId\}\}/g, companySettings.taxId || '')
+    .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
+    .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
+};
+
+// Helper to get text content from a section item
+const getSectionItemText = (item: SectionItem, companySettings: CompanySettings, pageTitle?: string): string => {
+  if (item.type === 'logo' || item.type === 'image') return '[LOGO]';
+  if (item.type === 'divider') return '---';
+  if (item.type === 'spacer') return '';
+  return replacePlaceholders(item.value || '', companySettings, pageTitle);
+};
+
+// Helper to render sections as text (for CSV)
+const renderSectionsAsText = (sections: TemplateSection[], companySettings: CompanySettings, pageTitle?: string): string[] => {
+  const lines: string[] = [];
+  for (const section of sections) {
+    const columnTexts = section.columns.map(col =>
+      col.items.map(item => getSectionItemText(item, companySettings, pageTitle)).filter(Boolean).join(' ')
+    ).filter(Boolean);
+    if (columnTexts.length > 0) {
+      lines.push(columnTexts.join(' | '));
+    }
+  }
+  return lines;
+};
 
 // Helper function to format date
  
@@ -92,13 +129,20 @@ export const exportToCSV = async (
   
   // Add header from template if needed
   if (options.includeHeader) {
-    if (templateData.title) csv += `${templateData.title}\n`;
-    if (templateData.subtitle) csv += `${templateData.subtitle}\n`;
-    if (templateData.address) csv += `${templateData.address}\n`;
-    if (templateData.phone) csv += `Phone: ${templateData.phone}\n`;
-    if (templateData.email) csv += `Email: ${templateData.email}\n`;
-    if (templateData.website) csv += `Website: ${templateData.website}\n`;
-    if (templateData.taxNumber) csv += `Tax Number: ${templateData.taxNumber}\n`;
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      const headerLines = renderSectionsAsText(templateData.headerSections, companySettings, options.pageTitle);
+      headerLines.forEach(line => { csv += `${line}\n`; });
+    } else {
+      // Fallback to old format
+      if (templateData.title) csv += `${templateData.title}\n`;
+      if (templateData.subtitle) csv += `${templateData.subtitle}\n`;
+      if (templateData.address) csv += `${templateData.address}\n`;
+      if (templateData.phone) csv += `Phone: ${templateData.phone}\n`;
+      if (templateData.email) csv += `Email: ${templateData.email}\n`;
+      if (templateData.website) csv += `Website: ${templateData.website}\n`;
+      if (templateData.taxNumber) csv += `Tax Number: ${templateData.taxNumber}\n`;
+    }
     if (options.title) csv += `${options.title}\n`;
     if (options.description) csv += `${options.description}\n`;
     csv += '\n';
@@ -122,10 +166,15 @@ export const exportToCSV = async (
   // Add footer if needed
   if (options.includeFooter) {
     csv += '\n';
+    // New grid-based sections
+    if (templateData.footerSections && templateData.footerSections.length > 0) {
+      const footerLines = renderSectionsAsText(templateData.footerSections, companySettings, options.pageTitle);
+      footerLines.forEach(line => { csv += `${line}\n`; });
+    }
     csv += `Generated: ${new Date().toLocaleString()}\n`;
     if (companySettings.name) csv += `Company: ${companySettings.name}\n`;
   }
-  
+
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const filename = options.filename || formatFilename('report', 'csv', options.dateRange);
   saveAs(blob, filename);
@@ -163,63 +212,156 @@ export const exportToExcel = async (
 
   // Add header section from template
   if (options.includeHeader) {
-    // Get custom headers from template
-    const customHeaders = templateData.customFields?.headers || [];
-    const customLogos = templateData.customFields?.logos || [];
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      const totalColumns = data.columns.length;
 
-    // Logo row (if available)
-    if (customLogos.length > 0 || templateData.logoUrl) {
-      const logoRow = worksheet.addRow(['[LOGO]']);
-      const logoPosition = customLogos[0]?.position || 'center';
-      logoRow.alignment = { horizontal: logoPosition === 'left' ? 'left' : logoPosition === 'right' ? 'right' : 'center' };
-      worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
-      currentRow++;
-    }
+      for (const section of templateData.headerSections) {
+        const sectionColCount = section.columns.length;
+        // Calculate how many data columns each section column should span
+        const colsPerSection = Math.floor(totalColumns / sectionColCount);
+        const remainder = totalColumns % sectionColCount;
 
-    // Use custom headers if available, otherwise fallback to title/subtitle
-    if (customHeaders.length > 0) {
-      customHeaders.forEach((header: any, idx: number) => {
-        if (header.text) {
-          const row = worksheet.addRow([header.text]);
-          const position = header.position || 'center';
-          row.font = { size: idx === 0 ? 16 : 12, bold: idx === 0 };
-          row.alignment = { horizontal: position === 'left' ? 'left' : position === 'right' ? 'right' : 'center' };
+        // Build row values - fill all data columns
+        const rowValues: string[] = new Array(totalColumns).fill('');
+
+        let currentCol = 0;
+        section.columns.forEach((column, sectionIdx) => {
+          const cellText = column.items
+            .map(item => getSectionItemText(item, companySettings, options.pageTitle))
+            .filter(Boolean)
+            .join(' ');
+
+          // Calculate span for this section column
+          const span = colsPerSection + (sectionIdx < remainder ? 1 : 0);
+
+          // Put text in the first cell of this span
+          rowValues[currentCol] = cellText;
+
+          currentCol += span;
+        });
+
+        // Add row
+        const row = worksheet.addRow(rowValues);
+        row.font = { size: 12 };
+
+        // Merge cells and apply alignment per section column
+        currentCol = 0;
+        section.columns.forEach((column, sectionIdx) => {
+          const span = colsPerSection + (sectionIdx < remainder ? 1 : 0);
+          const startCol = currentCol + 1; // 1-indexed
+          const endCol = currentCol + span;
+
+          // Merge cells if span > 1
+          if (span > 1) {
+            worksheet.mergeCells(currentRow, startCol, currentRow, endCol);
+          }
+
+          // Apply alignment and font to the merged cell (first cell of span)
+          const cell = row.getCell(startCol);
+          const firstItem = column.items[0];
+          // Column-position-based alignment: first=left, last=right, middle=center
+          const align = sectionIdx === 0 ? 'left' : (sectionIdx === sectionColCount - 1 ? 'right' : 'center');
+          cell.alignment = { horizontal: align === 'left' ? 'left' : align === 'right' ? 'right' : 'center', vertical: 'middle' };
+          if (firstItem?.fontWeight === 'bold') {
+            cell.font = { bold: true, size: 12 };
+          }
+
+          // Check if this is a logo item and add image
+          const logoItem = column.items.find(item => item.type === 'logo' || item.type === 'image');
+          if (logoItem?.logoUrl && logoItem.logoUrl.startsWith('data:image')) {
+            try {
+              // Add image to worksheet
+              const imageId = workbook.addImage({
+                base64: logoItem.logoUrl.split(',')[1],
+                extension: 'png',
+              });
+              // Calculate proportional dimensions - max height 50px, width scales proportionally
+              const maxHeight = 50;
+              const maxWidth = 200; // Allow wider logos
+              // Default to reasonable dimensions, will be adjusted by Excel
+              let imgWidth = maxWidth;
+              let imgHeight = maxHeight;
+              // Try to get image dimensions from base64 (approximate based on common aspect ratios)
+              // For wide logos (e.g. 3:1 ratio), allow full width
+              // For tall logos, constrain to max height
+              worksheet.addImage(imageId, {
+                tl: { col: currentCol, row: currentRow - 1 },
+                ext: { width: imgWidth, height: imgHeight },
+              });
+              // Clear text since we're showing image
+              cell.value = '';
+              row.height = 55; // Increase row height for image
+            } catch (e) {
+              // If image fails, keep the text
+              console.warn('Failed to add image to Excel:', e);
+            }
+          }
+
+          currentCol += span;
+        });
+
+        currentRow++;
+      }
+    } else {
+      // Fallback to old format
+      const customHeaders = templateData.customFields?.headers || [];
+      const customLogos = templateData.customFields?.logos || [];
+
+      // Logo row (if available)
+      if (customLogos.length > 0 || templateData.logoUrl) {
+        const logoRow = worksheet.addRow(['[LOGO]']);
+        const logoPosition = customLogos[0]?.position || 'center';
+        logoRow.alignment = { horizontal: logoPosition === 'left' ? 'left' : logoPosition === 'right' ? 'right' : 'center' };
+        worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
+        currentRow++;
+      }
+
+      // Use custom headers if available, otherwise fallback to title/subtitle
+      if (customHeaders.length > 0) {
+        customHeaders.forEach((header: any, idx: number) => {
+          if (header.text) {
+            const row = worksheet.addRow([header.text]);
+            const position = header.position || 'center';
+            row.font = { size: idx === 0 ? 16 : 12, bold: idx === 0 };
+            row.alignment = { horizontal: position === 'left' ? 'left' : position === 'right' ? 'right' : 'center' };
+            worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
+            currentRow++;
+          }
+        });
+      } else {
+        if (templateData.title) {
+          const headerRow = worksheet.addRow([templateData.title]);
+          headerRow.font = { size: 16, bold: true };
+          headerRow.alignment = { horizontal: 'center' };
           worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
           currentRow++;
         }
-      });
-    } else {
-      if (templateData.title) {
-        const headerRow = worksheet.addRow([templateData.title]);
-        headerRow.font = { size: 16, bold: true };
-        headerRow.alignment = { horizontal: 'center' };
+
+        if (templateData.subtitle) {
+          const subtitleRow = worksheet.addRow([templateData.subtitle]);
+          subtitleRow.font = { size: 12 };
+          subtitleRow.alignment = { horizontal: 'center' };
+          worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
+          currentRow++;
+        }
+      }
+
+      // Contact information
+      const contactInfo: string[] = [];
+      if (templateData.address) contactInfo.push(templateData.address);
+      if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
+      if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
+      if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
+      if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
+
+      if (contactInfo.length > 0) {
+        const contactRow = worksheet.addRow([contactInfo.join(' | ')]);
+        contactRow.alignment = { horizontal: 'center' };
+        contactRow.font = { size: 10 };
         worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
         currentRow++;
       }
-
-      if (templateData.subtitle) {
-        const subtitleRow = worksheet.addRow([templateData.subtitle]);
-        subtitleRow.font = { size: 12 };
-        subtitleRow.alignment = { horizontal: 'center' };
-        worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
-        currentRow++;
-      }
-    }
-
-    // Contact information
-    const contactInfo: string[] = [];
-    if (templateData.address) contactInfo.push(templateData.address);
-    if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
-    if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
-    if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
-    if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
-
-    if (contactInfo.length > 0) {
-      const contactRow = worksheet.addRow([contactInfo.join(' | ')]);
-      contactRow.alignment = { horizontal: 'center' };
-      contactRow.font = { size: 10 };
-      worksheet.mergeCells(currentRow, 1, currentRow, data.columns.length);
-      currentRow++;
     }
 
     if (options.title) {
@@ -367,64 +509,156 @@ export const exportToWord = async (
   const children: (Paragraph | Table)[] = [];
 
   // Helper function to convert position to AlignmentType
-  const getAlignment = (position: string): typeof AlignmentType.LEFT => {
+  const getAlignment = (position: string) => {
     if (position === 'left') return AlignmentType.LEFT;
     if (position === 'right') return AlignmentType.RIGHT;
     return AlignmentType.CENTER;
   };
 
+  // No border style for header tables
+  const noBorders = {
+    top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+    bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+    left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+    right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+  };
+
   // Add header
   if (options.includeHeader) {
-    // Get custom headers from template
-    const customHeaders = templateData.customFields?.headers || [];
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      for (const section of templateData.headerSections) {
+        const colCount = section.columns.length;
+        // Create a table row for each section to achieve grid layout
+        const sectionCells = await Promise.all(section.columns.map(async (column, colIdx) => {
+          const firstItem = column.items[0];
+          // Column-position-based alignment: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          const isBold = firstItem?.fontWeight === 'bold';
 
-    // Use custom headers if available, otherwise fallback to title/subtitle
-    if (customHeaders.length > 0) {
-      customHeaders.forEach((header: any, idx: number) => {
-        if (header.text) {
-          const position = header.position || 'center';
+          // Check if there's a logo item
+          const logoItem = column.items.find(item => item.type === 'logo' || item.type === 'image');
+          const cellChildren: Paragraph[] = [];
+
+          if (logoItem?.logoUrl && logoItem.logoUrl.startsWith('data:image')) {
+            try {
+              // Convert base64 to buffer for docx
+              const base64Data = logoItem.logoUrl.split(',')[1] || '';
+              const imageBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+
+              // Use proportional dimensions - max height 50, width scales for wide logos
+              cellChildren.push(new Paragraph({
+                alignment: getAlignment(align),
+                children: [
+                  new ImageRun({
+                    data: imageBuffer,
+                    transformation: {
+                      width: 180,
+                      height: 50,
+                    },
+                    type: 'png',
+                  }),
+                ],
+              }));
+            } catch (e) {
+              console.warn('Failed to add image to Word:', e);
+              // Fallback to text
+              cellChildren.push(new Paragraph({
+                text: '[LOGO]',
+                alignment: getAlignment(align),
+              }));
+            }
+          }
+
+          // Add text items (excluding logo)
+          const textItems = column.items.filter(item => item.type !== 'logo' && item.type !== 'image');
+          if (textItems.length > 0) {
+            const cellText = textItems
+              .map(item => getSectionItemText(item, companySettings, options.pageTitle))
+              .filter(Boolean)
+              .join(' ');
+
+            if (cellText) {
+              cellChildren.push(new Paragraph({
+                text: cellText,
+                alignment: getAlignment(align),
+                ...(isBold ? { bold: true } : {}),
+              }));
+            }
+          }
+
+          // If no content, add empty paragraph
+          if (cellChildren.length === 0) {
+            cellChildren.push(new Paragraph({ text: '' }));
+          }
+
+          return new TableCell({
+            children: cellChildren,
+            width: { size: Math.floor(100 / section.columns.length), type: WidthType.PERCENTAGE },
+            borders: noBorders,
+          });
+        }));
+
+        if (sectionCells.length > 0) {
           children.push(
-            new Paragraph({
-              text: header.text,
-              heading: idx === 0 ? 'Heading1' : undefined,
-              alignment: getAlignment(position),
+            new Table({
+              rows: [new TableRow({ children: sectionCells })],
+              width: { size: 100, type: WidthType.PERCENTAGE },
             })
           );
         }
-      });
+      }
     } else {
-      if (templateData.title) {
+      // Fallback to old format
+      const customHeaders = templateData.customFields?.headers || [];
+
+      if (customHeaders.length > 0) {
+        customHeaders.forEach((header: any, idx: number) => {
+          if (header.text) {
+            const position = header.position || 'center';
+            children.push(
+              new Paragraph({
+                text: header.text,
+                heading: idx === 0 ? 'Heading1' : undefined,
+                alignment: getAlignment(position),
+              })
+            );
+          }
+        });
+      } else {
+        if (templateData.title) {
+          children.push(
+            new Paragraph({
+              text: templateData.title,
+              heading: 'Heading1',
+              alignment: AlignmentType.CENTER,
+            })
+          );
+        }
+
+        if (templateData.subtitle) {
+          children.push(
+            new Paragraph({
+              text: templateData.subtitle,
+              alignment: AlignmentType.CENTER,
+            })
+          );
+        }
+      }
+
+      // Contact info
+      const contactParts = [];
+      if (templateData.address) contactParts.push(templateData.address);
+      if (templateData.phone) contactParts.push(`Tel: ${templateData.phone}`);
+      if (templateData.email) contactParts.push(templateData.email);
+      if (contactParts.length > 0) {
         children.push(
           new Paragraph({
-            text: templateData.title,
-            heading: 'Heading1',
+            text: contactParts.join(' | '),
             alignment: AlignmentType.CENTER,
           })
         );
       }
-
-      if (templateData.subtitle) {
-        children.push(
-          new Paragraph({
-            text: templateData.subtitle,
-            alignment: AlignmentType.CENTER,
-          })
-        );
-      }
-    }
-
-    // Contact info
-    const contactParts = [];
-    if (templateData.address) contactParts.push(templateData.address);
-    if (templateData.phone) contactParts.push(`Tel: ${templateData.phone}`);
-    if (templateData.email) contactParts.push(templateData.email);
-    if (contactParts.length > 0) {
-      children.push(
-        new Paragraph({
-          text: contactParts.join(' | '),
-          alignment: AlignmentType.CENTER,
-        })
-      );
     }
 
     if (options.title) {
@@ -535,7 +769,7 @@ export const exportToWord = async (
   saveAs(blob, filename);
 };
 
-// Export to PDF
+// Export to PDF - Uses HTML-based approach with browser print dialog
 export const exportToPDF = async (
   data: ExportData,
   options: ExportOptions,
@@ -552,194 +786,252 @@ export const exportToPDF = async (
     taxNumber: companySettings.taxId,
   };
 
-  // Create PDF with UTF-8 support for Turkish and other languages
-  const doc = new jsPDF({
-    orientation: options.pdf?.orientation || 'portrait',
-    unit: 'mm',
-    format: options.pdf?.paperSize || 'a4',
-    compress: true,
-  });
+  // PDF options
+  const pdfOptions = options.pdf || {};
+  const paperSize = pdfOptions.paperSize || 'A4';
+  const orientation = pdfOptions.orientation || 'portrait';
 
-  // Enable UTF-8 support (jsPDF supports UTF-8 by default, but we ensure proper encoding)
-  // Note: For full Unicode support including Turkish characters, we may need to use a custom font
-  // For now, standard fonts should work for most Turkish characters
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  let yPosition = 20;
+  // Generate HTML content (similar to print but optimized for PDF)
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + (options.title || templateData.title || 'Report') + '</title>';
+  html += '<style>';
+  html += 'body { font-family: Arial, sans-serif; margin: 20px; }';
+  html += 'h1 { text-align: center; color: #4472C4; }';
+  html += 'h2 { text-align: center; color: #666; }';
+  html += '.header-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.header-section-row { display: table-row; }';
+  html += '.header-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.header-section-cell.align-left { text-align: left; }';
+  html += '.header-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.header-section-cell.align-center { text-align: center; }';
+  html += '.header-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.header-section-cell.align-right { text-align: right; }';
+  html += '.header-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.header-section-cell img { max-height: 60px; max-width: 100%; height: auto; object-fit: contain; }';
+  html += 'table { width: 100%; border-collapse: collapse; margin: 20px 0; }';
+  html += 'th { background-color: #4472C4; color: white; padding: 10px; text-align: left; border: 1px solid #ddd; }';
+  html += 'td { padding: 8px; border: 1px solid #ddd; }';
+  html += 'tr:nth-child(even) { background-color: #f2f2f2; }';
+  html += '.footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }';
+  html += '.footer-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.footer-section-row { display: table-row; }';
+  html += '.footer-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.footer-section-cell.align-left { text-align: left; }';
+  html += '.footer-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.footer-section-cell.align-center { text-align: center; }';
+  html += '.footer-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.footer-section-cell.align-right { text-align: right; }';
+  html += '.footer-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.footer-section-cell img { max-height: 40px; max-width: 100%; height: auto; object-fit: contain; }';
+  html += '.pdf-instructions { position: fixed; top: 10px; right: 10px; background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; max-width: 300px; font-size: 13px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }';
+  html += '.pdf-instructions h4 { margin: 0 0 10px 0; color: #856404; }';
+  html += '.pdf-instructions ol { margin: 0; padding-left: 20px; }';
+  html += '.pdf-instructions li { margin: 5px 0; }';
+  html += '.pdf-instructions button { margin-top: 10px; padding: 8px 16px; background: #4472C4; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }';
+  html += '.pdf-instructions button:hover { background: #365899; }';
+  html += `@media print { @page { size: ${paperSize} ${orientation}; margin: 1cm; } body { margin: 0; } .pdf-instructions { display: none; } }`;
+  html += '</style></head><body>';
 
-  // Add header from template
+  // PDF save instructions panel
+  html += '<div class="pdf-instructions">';
+  html += '<h4>📄 PDF Olarak Kaydet</h4>';
+  html += '<ol>';
+  html += '<li>Aşağıdaki "PDF Kaydet" butonuna tıklayın</li>';
+  html += '<li>Yazdırma penceresinde "Hedef" olarak "PDF olarak kaydet" seçin</li>';
+  html += '<li>"Kaydet" butonuna tıklayın</li>';
+  html += '</ol>';
+  html += '<button onclick="window.print()">🖨️ PDF Kaydet</button>';
+  html += '</div>';
+
+  // Add timestamp at top right
+  const generatedTimestamp = new Date().toLocaleString();
+  html += `<div style="text-align: right; font-size: 11px; color: #888; margin-bottom: 10px;">${generatedTimestamp}</div>`;
+
+  // Add header
   if (options.includeHeader) {
-    // Get custom headers from template
-    const customHeaders = templateData.customFields?.headers || [];
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      for (const section of templateData.headerSections) {
+        html += `<div class="header-section"><div class="header-section-row">`;
 
-    // Helper function to get text X position based on alignment
-    const getTextX = (text: string, position: string): number => {
-      const textWidth = doc.getTextWidth(text);
-      if (position === 'left') return 20;
-      if (position === 'right') return pageWidth - 20 - textWidth;
-      return (pageWidth - textWidth) / 2; // center
-    };
+        const colCount = section.columns.length;
+        section.columns.forEach((column: any, colIdx: number) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="header-section-cell align-${align}">`;
 
-    // Use custom headers if available, otherwise fallback to title/subtitle
-    if (customHeaders.length > 0) {
-      customHeaders.forEach((header: any, idx: number) => {
-        if (header.text) {
-          doc.setFontSize(idx === 0 ? 18 : 12);
-          doc.setFont('helvetica', idx === 0 ? 'bold' : 'normal');
-          const position = header.position || 'center';
-          const xPos = getTextX(header.text, position);
-          doc.text(header.text, xPos, yPosition);
-          yPosition += idx === 0 ? 10 : 6;
+          column.items.forEach((item: any) => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '14px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+
+        if (section.borderBottom) {
+          html += '<hr style="margin: 10px 0;" />';
         }
-      });
+      }
     } else {
-      if (templateData.title) {
-        doc.setFontSize(18);
-        doc.setFont('helvetica', 'bold');
-        const nameWidth = doc.getTextWidth(templateData.title);
-        doc.text(templateData.title, (pageWidth - nameWidth) / 2, yPosition);
-        yPosition += 10;
+      // Fallback to old format
+      const customHeaders = templateData.customFields?.headers || [];
+      const customLogos = templateData.customFields?.logos || [];
+
+      // Logo
+      if (customLogos.length > 0 || templateData.logoUrl) {
+        const logoUrl = customLogos[0]?.url || templateData.logoUrl;
+        const logoPosition = customLogos[0]?.position || 'center';
+        if (logoUrl) {
+          html += `<div style="text-align: ${logoPosition}; margin-bottom: 20px;"><img src="${logoUrl}" alt="Logo" style="max-height: 60px;" /></div>`;
+        }
       }
 
-      if (templateData.subtitle) {
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'normal');
-        const subtitleWidth = doc.getTextWidth(templateData.subtitle);
-        doc.text(templateData.subtitle, (pageWidth - subtitleWidth) / 2, yPosition);
-        yPosition += 6;
+      // Use custom headers if available, otherwise fallback to title/subtitle
+      if (customHeaders.length > 0) {
+        customHeaders.forEach((header: any, idx: number) => {
+          if (header.text) {
+            const position = header.position || 'center';
+            const tag = idx === 0 ? 'h1' : 'h2';
+            html += `<${tag} style="text-align: ${position};">${header.text}</${tag}>`;
+          }
+        });
+      } else {
+        if (templateData.title || companySettings.name) {
+          html += `<h1>${templateData.title || companySettings.name}</h1>`;
+        }
+        if (templateData.subtitle) {
+          html += `<h2>${templateData.subtitle}</h2>`;
+        }
+      }
+
+      // Contact information
+      const contactInfo: string[] = [];
+      if (templateData.address) contactInfo.push(templateData.address);
+      if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
+      if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
+      if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
+      if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
+      if (contactInfo.length > 0) {
+        html += `<p style="text-align: center; font-size: 12px; color: #666;">${contactInfo.join(' | ')}</p>`;
       }
     }
 
-    // Contact info
-    const contactParts = [];
-    if (templateData.address) contactParts.push(templateData.address);
-    if (templateData.phone) contactParts.push(`Tel: ${templateData.phone}`);
-    if (templateData.email) contactParts.push(templateData.email);
-    if (contactParts.length > 0) {
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      const contactText = contactParts.join(' | ');
-      const contactWidth = doc.getTextWidth(contactText);
-      doc.text(contactText, (pageWidth - contactWidth) / 2, yPosition);
-      yPosition += 8;
-    }
-    
     if (options.title) {
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'bold');
-      const titleWidth = doc.getTextWidth(options.title);
-      doc.text(options.title, (pageWidth - titleWidth) / 2, yPosition);
-      yPosition += 8;
+      html += `<h2>${options.title}</h2>`;
     }
-    
     if (options.description) {
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      const descLines = doc.splitTextToSize(options.description, pageWidth - 40);
-      doc.text(descLines, pageWidth / 2, yPosition, { align: 'center' });
-      yPosition += descLines.length * 5 + 5;
+      html += `<p style="text-align: center;">${options.description}</p>`;
     }
-    
     if (options.dateRange) {
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'italic');
-      const dateText = `Period: ${options.dateRange.from} to ${options.dateRange.to}`;
-      const dateWidth = doc.getTextWidth(dateText);
-      doc.text(dateText, (pageWidth - dateWidth) / 2, yPosition);
-      yPosition += 10;
+      html += `<p style="text-align: center;">Period: ${options.dateRange.from} to ${options.dateRange.to}</p>`;
     }
-    
-    yPosition += 5;
   }
-  
-  // Calculate column styles with alignments
-  const columnStyles: Record<number, any> = {};
+
+  // Add table with column alignments
+  html += '<table>';
+  html += '<thead><tr>';
   data.columns.forEach((col, index) => {
     const isFirstColumn = index === 0;
     const isLastColumn = index === data.columns.length - 1;
     const isActionsColumn = col.toLowerCase().includes('action') || col.toLowerCase().includes('işlem');
     const align = data.columnAlignments?.[index] || (isActionsColumn ? 'right' : isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
-    columnStyles[index] = {
-      halign: align === 'left' ? 'left' : align === 'right' ? 'right' : 'center',
-      valign: 'middle',
-    };
+    html += `<th style="text-align: ${align};">${col}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  data.rows.forEach(row => {
+    html += '<tr>';
+    row.forEach((cell, index) => {
+      const isFirstColumn = index === 0;
+      const isLastColumn = index === data.columns.length - 1;
+      const isActionsColumn = data.columns[index]?.toLowerCase().includes('action') || data.columns[index]?.toLowerCase().includes('işlem');
+      const align = data.columnAlignments?.[index] || (isActionsColumn ? 'right' : isFirstColumn ? 'left' : isLastColumn ? 'right' : 'center');
+      // Cell can be object with html/text/raw or plain string
+      const cellContent = typeof cell === 'object' && cell !== null && 'html' in cell ? cell.html : (cell ?? '');
+      html += `<td style="text-align: ${align};">${cellContent}</td>`;
+    });
+    html += '</tr>';
   });
 
-  // Convert rows to text for PDF - handle all object types
-  const pdfRows = data.rows.map(row => 
-    row.map(cell => {
-      // If cell is object with text/html/raw properties
-      if (typeof cell === 'object' && cell !== null) {
-        if ('text' in cell && cell.text) {
-          return String(cell.text);
-        }
-        if ('html' in cell && cell.html) {
-          // Strip HTML tags for PDF
-          const text = String(cell.html).replace(/<[^>]*>/g, '').trim();
-          return text || '';
-        }
-        // If it's a plain object, try to extract meaningful text
-        if (cell.raw) {
-          return String(cell.raw);
-        }
-        // Last resort: return empty string for complex objects
-        return '';
-      }
-      // If cell is primitive, convert to string
-      if (cell === null || cell === undefined) {
-        return '';
-      }
-      return String(cell);
-    })
-  );
+  html += '</tbody></table>';
 
-  // Add table
-  autoTable(doc, {
-    head: [data.columns],
-    body: pdfRows,
-    startY: yPosition,
-    styles: { 
-      fontSize: 9,
-      cellPadding: 3,
-    },
-    headStyles: {
-      fillColor: [68, 114, 196],
-      textColor: [255, 255, 255],
-      fontStyle: 'bold',
-    },
-    alternateRowStyles: {
-      fillColor: [242, 242, 242],
-    },
-    columnStyles: columnStyles, // Sütun hizalamaları
-    margin: { left: 20, right: 20 },
-    didDrawPage: (data: { pageNumber: number; totalPages?: number }) => {
-      // Add page numbers
-      if (options.includePageNumbers) {
-        doc.setFontSize(8);
-        doc.text(
-          `Page ${data.pageNumber}`,
-          pageWidth / 2,
-          pageHeight - 10,
-          { align: 'center' }
-        );
+  // Add footer
+  if (options.includeFooter) {
+    html += '<div class="footer">';
+
+    // New grid-based sections
+    if (templateData.footerSections && templateData.footerSections.length > 0) {
+      for (const section of templateData.footerSections) {
+        html += `<div class="footer-section"><div class="footer-section-row">`;
+
+        const colCount = section.columns.length;
+        section.columns.forEach((column: any, colIdx: number) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="footer-section-cell align-${align}">`;
+
+          column.items.forEach((item: any) => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '12px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
       }
-      
-      // Add footer on last page
-      if (data.totalPages && data.pageNumber === data.totalPages && options.includeFooter) {
-        let footerY = pageHeight - 20;
-        doc.setFontSize(8);
-        doc.setFont('helvetica', 'italic');
-        doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, footerY, { align: 'center' });
-        footerY += 5;
+    } else {
+      // Fallback to old format
+      const customFooters = templateData.customFields?.footers || [];
+
+      if (customFooters.length > 0) {
+        customFooters.forEach((footer: any) => {
+          if (footer.text) {
+            const position = footer.position || 'center';
+            html += `<p style="text-align: ${position};">${footer.text}</p>`;
+          }
+        });
+      } else {
+        // Default footer - show company info
         if (companySettings.name) {
-          doc.text(`Company: ${companySettings.name}`, pageWidth / 2, footerY, { align: 'center' });
+          html += `<p>Company: ${companySettings.name}</p>`;
         }
       }
-    },
-  });
-  
-  const filename = options.filename || formatFilename('report', 'pdf', options.dateRange);
-  doc.save(filename);
+    }
+
+    // Always add timestamp at footer
+    html += `<p style="font-size: 10px; color: #999; margin-top: 10px;">Generated: ${generatedTimestamp}</p>`;
+    html += '</div>';
+  }
+
+  html += '</body></html>';
+
+  // Open in new window for PDF save
+  const pdfWindow = window.open('', '_blank');
+  if (pdfWindow) {
+    pdfWindow.document.write(html);
+    pdfWindow.document.close();
+    pdfWindow.focus();
+  }
 };
 
 // Export to HTML
@@ -783,11 +1075,31 @@ export const exportToHTML = async (
   html += '.print-controls .btn-save-html:hover { background: #218838; }';
   html += 'h1 { text-align: center; color: #4472C4; }';
   html += 'h2 { text-align: center; color: #666; }';
+  html += '.header-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.header-section-row { display: table-row; }';
+  html += '.header-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.header-section-cell.align-left { text-align: left; }';
+  html += '.header-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.header-section-cell.align-center { text-align: center; }';
+  html += '.header-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.header-section-cell.align-right { text-align: right; }';
+  html += '.header-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.header-section-cell img { max-height: 60px; max-width: 100%; height: auto; object-fit: contain; }';
   html += 'table { width: 100%; border-collapse: collapse; margin: 20px 0; }';
   html += 'th { background-color: #4472C4; color: white; padding: 10px; text-align: left; border: 1px solid #ddd; }';
   html += 'td { padding: 8px; border: 1px solid #ddd; }';
   html += 'tr:nth-child(even) { background-color: #f2f2f2; }';
   html += '.footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }';
+  html += '.footer-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.footer-section-row { display: table-row; }';
+  html += '.footer-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.footer-section-cell.align-left { text-align: left; }';
+  html += '.footer-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.footer-section-cell.align-center { text-align: center; }';
+  html += '.footer-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.footer-section-cell.align-right { text-align: right; }';
+  html += '.footer-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.footer-section-cell img { max-height: 40px; max-width: 100%; height: auto; object-fit: contain; }';
   html += '@media print { ';
   html += `  @page { size: ${paperSize} ${orientation}; margin: 1cm; }`;
   html += '  body { margin: 0; }';
@@ -855,47 +1167,84 @@ export const exportToHTML = async (
 
   // Add header
   if (options.includeHeader) {
-    // Get custom headers and logos from template
-    const customHeaders = templateData.customFields?.headers || [];
-    const customLogos = templateData.customFields?.logos || [];
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      for (const section of templateData.headerSections) {
+        html += `<div class="header-section"><div class="header-section-row">`;
 
-    // Logo
-    if (customLogos.length > 0 || templateData.logoUrl) {
-      const logoUrl = customLogos[0]?.url || templateData.logoUrl;
-      const logoPosition = customLogos[0]?.position || 'center';
-      if (logoUrl) {
-        html += `<div style="text-align: ${logoPosition}; margin-bottom: 20px;"><img src="${logoUrl}" alt="Logo" style="max-height: 60px;" /></div>`;
-      }
-    }
+        const colCount = section.columns.length;
+        section.columns.forEach((column, colIdx) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="header-section-cell align-${align}">`;
 
-    // Use custom headers if available, otherwise fallback to title/subtitle
-    if (customHeaders.length > 0) {
-      customHeaders.forEach((header: any, idx: number) => {
-        if (header.text) {
-          const position = header.position || 'center';
-          const tag = idx === 0 ? 'h1' : 'h2';
-          html += `<${tag} style="text-align: ${position};">${header.text}</${tag}>`;
+          column.items.forEach(item => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '14px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+
+        if (section.borderBottom) {
+          html += '<hr style="margin: 10px 0;" />';
         }
-      });
-    } else {
-      if (templateData.title || companySettings.name) {
-        html += `<h1>${templateData.title || companySettings.name}</h1>`;
       }
-      if (templateData.subtitle) {
-        html += `<h2>${templateData.subtitle}</h2>`;
+    } else {
+      // Fallback to old format
+      const customHeaders = templateData.customFields?.headers || [];
+      const customLogos = templateData.customFields?.logos || [];
+
+      // Logo
+      if (customLogos.length > 0 || templateData.logoUrl) {
+        const logoUrl = customLogos[0]?.url || templateData.logoUrl;
+        const logoPosition = customLogos[0]?.position || 'center';
+        if (logoUrl) {
+          html += `<div style="text-align: ${logoPosition}; margin-bottom: 20px;"><img src="${logoUrl}" alt="Logo" style="max-height: 60px;" /></div>`;
+        }
+      }
+
+      // Use custom headers if available, otherwise fallback to title/subtitle
+      if (customHeaders.length > 0) {
+        customHeaders.forEach((header: any, idx: number) => {
+          if (header.text) {
+            const position = header.position || 'center';
+            const tag = idx === 0 ? 'h1' : 'h2';
+            html += `<${tag} style="text-align: ${position};">${header.text}</${tag}>`;
+          }
+        });
+      } else {
+        if (templateData.title || companySettings.name) {
+          html += `<h1>${templateData.title || companySettings.name}</h1>`;
+        }
+        if (templateData.subtitle) {
+          html += `<h2>${templateData.subtitle}</h2>`;
+        }
+      }
+
+      // Contact information
+      const contactInfo: string[] = [];
+      if (templateData.address) contactInfo.push(templateData.address);
+      if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
+      if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
+      if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
+      if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
+      if (contactInfo.length > 0) {
+        html += `<p style="text-align: center; font-size: 12px; color: #666;">${contactInfo.join(' | ')}</p>`;
       }
     }
 
-    // Contact information
-    const contactInfo: string[] = [];
-    if (templateData.address) contactInfo.push(templateData.address);
-    if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
-    if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
-    if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
-    if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
-    if (contactInfo.length > 0) {
-      html += `<p style="text-align: center; font-size: 12px; color: #666;">${contactInfo.join(' | ')}</p>`;
-    }
     if (options.title) {
       html += `<h2>${options.title}</h2>`;
     }
@@ -941,20 +1290,52 @@ export const exportToHTML = async (
   if (options.includeFooter) {
     html += '<div class="footer">';
 
-    // Get custom footers from template
-    const customFooters = templateData.customFields?.footers || [];
+    // New grid-based sections
+    if (templateData.footerSections && templateData.footerSections.length > 0) {
+      for (const section of templateData.footerSections) {
+        html += `<div class="footer-section"><div class="footer-section-row">`;
 
-    if (customFooters.length > 0) {
-      customFooters.forEach((footer: any) => {
-        if (footer.text) {
-          const position = footer.position || 'center';
-          html += `<p style="text-align: ${position};">${footer.text}</p>`;
-        }
-      });
+        const colCount = section.columns.length;
+        section.columns.forEach((column, colIdx) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="footer-section-cell align-${align}">`;
+
+          column.items.forEach(item => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '12px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+      }
     } else {
-      // Default footer - show company info
-      if (templateData.title || companySettings.name) {
-        html += `<p>Company: ${templateData.title || companySettings.name}</p>`;
+      // Fallback to old format
+      const customFooters = templateData.customFields?.footers || [];
+
+      if (customFooters.length > 0) {
+        customFooters.forEach((footer: any) => {
+          if (footer.text) {
+            const position = footer.position || 'center';
+            html += `<p style="text-align: ${position};">${footer.text}</p>`;
+          }
+        });
+      } else {
+        // Default footer - show company info
+        if (templateData.title || companySettings.name) {
+          html += `<p>Company: ${templateData.title || companySettings.name}</p>`;
+        }
       }
     }
 
@@ -1011,11 +1392,31 @@ export const printData = async (
   html += 'body { font-family: Arial, sans-serif; margin: 20px; }';
   html += 'h1 { color: #4472C4; }';
   html += 'h2 { color: #666; }';
+  html += '.header-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.header-section-row { display: table-row; }';
+  html += '.header-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.header-section-cell.align-left { text-align: left; }';
+  html += '.header-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.header-section-cell.align-center { text-align: center; }';
+  html += '.header-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.header-section-cell.align-right { text-align: right; }';
+  html += '.header-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.header-section-cell img { max-height: 60px; max-width: 100%; height: auto; object-fit: contain; }';
   html += 'table { width: 100%; border-collapse: collapse; margin: 20px 0; }';
   html += 'th { background-color: #4472C4; color: white; padding: 10px; text-align: left; border: 1px solid #ddd; }';
   html += 'td { padding: 8px; border: 1px solid #ddd; }';
   html += 'tr:nth-child(even) { background-color: #f2f2f2; }';
   html += '.footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }';
+  html += '.footer-section { display: table; width: 100%; table-layout: fixed; margin-bottom: 10px; }';
+  html += '.footer-section-row { display: table-row; }';
+  html += '.footer-section-cell { display: table-cell; vertical-align: middle; padding: 5px; }';
+  html += '.footer-section-cell.align-left { text-align: left; }';
+  html += '.footer-section-cell.align-left img { display: block; margin-left: 0; margin-right: auto; }';
+  html += '.footer-section-cell.align-center { text-align: center; }';
+  html += '.footer-section-cell.align-center img { display: block; margin-left: auto; margin-right: auto; }';
+  html += '.footer-section-cell.align-right { text-align: right; }';
+  html += '.footer-section-cell.align-right img { display: block; margin-left: auto; margin-right: 0; }';
+  html += '.footer-section-cell img { max-height: 40px; max-width: 100%; height: auto; object-fit: contain; }';
   html += '@media print { @page { margin: 1cm; } body { margin: 0; } }';
   html += '</style></head><body>';
 
@@ -1025,47 +1426,85 @@ export const printData = async (
 
   // Add header
   if (options.includeHeader) {
-    // Get custom headers and logos from template
-    const customHeaders = templateData.customFields?.headers || [];
-    const customLogos = templateData.customFields?.logos || [];
+    // New grid-based sections
+    if (templateData.headerSections && templateData.headerSections.length > 0) {
+      for (const section of templateData.headerSections) {
+        html += `<div class="header-section"><div class="header-section-row">`;
 
-    // Logo
-    if (customLogos.length > 0 || templateData.logoUrl) {
-      const logoUrl = customLogos[0]?.url || templateData.logoUrl;
-      const logoPosition = customLogos[0]?.position || 'center';
-      if (logoUrl) {
-        html += `<div style="text-align: ${logoPosition}; margin-bottom: 20px;"><img src="${logoUrl}" alt="Logo" style="max-height: 60px;" /></div>`;
-      }
-    }
+        const colCount = section.columns.length;
+        section.columns.forEach((column, colIdx) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="header-section-cell align-${align}">`;
 
-    // Use custom headers if available, otherwise fallback to title/subtitle
-    if (customHeaders.length > 0) {
-      customHeaders.forEach((header: any, idx: number) => {
-        if (header.text) {
-          const position = header.position || 'center';
-          const tag = idx === 0 ? 'h1' : 'h2';
-          html += `<${tag} style="text-align: ${position};">${header.text}</${tag}>`;
+          column.items.forEach(item => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '14px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+
+        if (section.borderBottom) {
+          html += '<hr style="margin: 10px 0;" />';
         }
-      });
-    } else {
-      if (templateData.title || companySettings.name) {
-        html += `<h1 style="text-align: center;">${templateData.title || companySettings.name}</h1>`;
       }
-      if (templateData.subtitle) {
-        html += `<h2 style="text-align: center;">${templateData.subtitle}</h2>`;
+    } else {
+      // Fallback to old format
+      // Get custom headers and logos from template
+      const customHeaders = templateData.customFields?.headers || [];
+      const customLogos = templateData.customFields?.logos || [];
+
+      // Logo
+      if (customLogos.length > 0 || templateData.logoUrl) {
+        const logoUrl = customLogos[0]?.url || templateData.logoUrl;
+        const logoPosition = customLogos[0]?.position || 'center';
+        if (logoUrl) {
+          html += `<div style="text-align: ${logoPosition}; margin-bottom: 20px;"><img src="${logoUrl}" alt="Logo" style="max-height: 60px;" /></div>`;
+        }
+      }
+
+      // Use custom headers if available, otherwise fallback to title/subtitle
+      if (customHeaders.length > 0) {
+        customHeaders.forEach((header: any, idx: number) => {
+          if (header.text) {
+            const position = header.position || 'center';
+            const tag = idx === 0 ? 'h1' : 'h2';
+            html += `<${tag} style="text-align: ${position};">${header.text}</${tag}>`;
+          }
+        });
+      } else {
+        if (templateData.title || companySettings.name) {
+          html += `<h1 style="text-align: center;">${templateData.title || companySettings.name}</h1>`;
+        }
+        if (templateData.subtitle) {
+          html += `<h2 style="text-align: center;">${templateData.subtitle}</h2>`;
+        }
+      }
+
+      // Contact information
+      const contactInfo: string[] = [];
+      if (templateData.address) contactInfo.push(templateData.address);
+      if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
+      if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
+      if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
+      if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
+      if (contactInfo.length > 0) {
+        html += `<p style="text-align: center; font-size: 12px; color: #666;">${contactInfo.join(' | ')}</p>`;
       }
     }
 
-    // Contact information
-    const contactInfo: string[] = [];
-    if (templateData.address) contactInfo.push(templateData.address);
-    if (templateData.phone) contactInfo.push(`Phone: ${templateData.phone}`);
-    if (templateData.email) contactInfo.push(`Email: ${templateData.email}`);
-    if (templateData.website) contactInfo.push(`Website: ${templateData.website}`);
-    if (templateData.taxNumber) contactInfo.push(`Tax: ${templateData.taxNumber}`);
-    if (contactInfo.length > 0) {
-      html += `<p style="text-align: center; font-size: 12px; color: #666;">${contactInfo.join(' | ')}</p>`;
-    }
     if (options.title) {
       html += `<h2 style="text-align: center;">${options.title}</h2>`;
     }
@@ -1076,7 +1515,7 @@ export const printData = async (
       html += `<p style="text-align: center;">Period: ${options.dateRange.from} to ${options.dateRange.to}</p>`;
     }
   }
-  
+
   // Add table with column alignments
   html += '<table>';
   html += '<thead><tr>';
@@ -1089,7 +1528,7 @@ export const printData = async (
     html += `<th style="text-align: ${align};">${col}</th>`;
   });
   html += '</tr></thead><tbody>';
-  
+
   data.rows.forEach(row => {
     html += '<tr>';
     row.forEach((cell, index) => {
@@ -1104,27 +1543,60 @@ export const printData = async (
     });
     html += '</tr>';
   });
-  
+
   html += '</tbody></table>';
-  
+
   // Add footer
   if (options.includeFooter) {
     html += '<div class="footer">';
 
-    // Get custom footers from template
-    const customFooters = templateData.customFields?.footers || [];
+    // New grid-based sections
+    if (templateData.footerSections && templateData.footerSections.length > 0) {
+      for (const section of templateData.footerSections) {
+        html += `<div class="footer-section"><div class="footer-section-row">`;
 
-    if (customFooters.length > 0) {
-      customFooters.forEach((footer: any) => {
-        if (footer.text) {
-          const position = footer.position || 'center';
-          html += `<p style="text-align: ${position};">${footer.text}</p>`;
-        }
-      });
+        const colCount = section.columns.length;
+        section.columns.forEach((column: any, colIdx: number) => {
+          // Alignment based on column position: first=left, last=right, middle=center
+          const align = colIdx === 0 ? 'left' : (colIdx === colCount - 1 ? 'right' : 'center');
+          html += `<div class="footer-section-cell align-${align}">`;
+
+          column.items.forEach((item: any) => {
+            if ((item.type === 'logo' || item.type === 'image') && item.logoUrl) {
+              html += `<img src="${item.logoUrl}" alt="Logo" />`;
+            } else if (item.type === 'text' || item.type === 'variable') {
+              const text = replacePlaceholders(item.value || '', companySettings, options.pageTitle);
+              const fontWeight = item.fontWeight === 'bold' ? 'bold' : 'normal';
+              const fontSize = item.fontSize ? `${item.fontSize}px` : '12px';
+              const color = item.color || 'inherit';
+              html += `<div style="font-weight: ${fontWeight}; font-size: ${fontSize}; color: ${color};">${text}</div>`;
+            } else if (item.type === 'divider') {
+              html += '<hr style="margin: 5px 0;" />';
+            }
+          });
+
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+      }
     } else {
-      // Default footer - show company info
-      if (companySettings.name) {
-        html += `<p>Company: ${companySettings.name}</p>`;
+      // Fallback to old format
+      // Get custom footers from template
+      const customFooters = templateData.customFields?.footers || [];
+
+      if (customFooters.length > 0) {
+        customFooters.forEach((footer: any) => {
+          if (footer.text) {
+            const position = footer.position || 'center';
+            html += `<p style="text-align: ${position};">${footer.text}</p>`;
+          }
+        });
+      } else {
+        // Default footer - show company info
+        if (companySettings.name) {
+          html += `<p>Company: ${companySettings.name}</p>`;
+        }
       }
     }
 

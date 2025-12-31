@@ -393,13 +393,22 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     if (!propertyOptions.length) return [];
     return [
       {
-        key: 'propertyName',
+        key: 'propertyId',
         label: t('table.property'),
         type: 'select',
         options: propertyOptions,
       },
     ];
   }, [propertyOptions, t]);
+
+  // Handle filter changes from DataTable
+  const handleFilter = useCallback((filters: Record<string, any>) => {
+    if (filters.propertyId) {
+      setPropertyFilter(filters.propertyId);
+    } else {
+      setPropertyFilter(null);
+    }
+  }, []);
 
   // Custom export handler to format month cells properly (avoid [object Object])
   const handleExport = useCallback(async (format: 'csv' | 'excel' | 'word' | 'pdf' | 'print' | 'html') => {
@@ -649,6 +658,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         showColumnSettings={true}
         showRowNumbers={true}
         filters={filterOptions}
+        onFilter={handleFilter}
         emptyMessage={t('payments.monthlyTracker.noData')}
         tableId="payment-monthly-tracker"
         exportTitle={`${t('payments.monthlyTracker.tab')} - ${currentYear}`}

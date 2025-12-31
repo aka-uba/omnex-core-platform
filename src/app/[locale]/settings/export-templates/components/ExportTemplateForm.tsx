@@ -6,7 +6,6 @@ import {
     Paper,
     TextInput,
     Select,
-    FileInput,
     Textarea,
     Button,
     Group,
@@ -16,7 +15,6 @@ import {
     Text,
     Image,
     ActionIcon,
-    Badge,
     Grid,
     Box,
     Divider,
@@ -26,29 +24,12 @@ import {
     Alert,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconPhoto, IconPlus, IconTrash, IconBuilding, IconMapPin, IconRefresh, IconInfoCircle } from '@tabler/icons-react';
+import { IconBuilding, IconMapPin, IconRefresh, IconInfoCircle } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useTranslation } from '@/lib/i18n/client';
 import { useQuery } from '@tanstack/react-query';
-
-interface LogoItem {
-    id: string;
-    url?: string;
-    file?: File;
-    position?: 'left' | 'center' | 'right';
-}
-
-interface HeaderItem {
-    id: string;
-    text: string;
-    position?: 'left' | 'center' | 'right';
-}
-
-interface FooterItem {
-    id: string;
-    text: string;
-    position?: 'left' | 'center' | 'right';
-}
+import { SectionEditor } from './SectionEditor';
+import type { TemplateSection, SectionItem } from '@/lib/export/types';
 
 interface CompanyData {
     id: string;
@@ -72,9 +53,8 @@ interface ExportTemplateFormData {
     type: 'header' | 'footer' | 'full';
     companyId?: string | null;
     locationId?: string | null;
-    logos: LogoItem[];
-    headers: HeaderItem[];
-    footers: FooterItem[];
+    headerSections: TemplateSection[];
+    footerSections: TemplateSection[];
     address?: string;
     phone?: string;
     email?: string;
@@ -90,6 +70,9 @@ interface ExportTemplateFormProps {
     onCancel: () => void;
     isEdit?: boolean;
 }
+
+// Generate unique ID
+const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 // Placeholder Info Table Component
 function PlaceholderInfoTable({ t }: { t: (key: string) => string }) {
@@ -144,7 +127,7 @@ function PlaceholderInfoTable({ t }: { t: (key: string) => string }) {
     );
 }
 
-// Template Preview Component
+// Template Preview Component with Grid Support
 function TemplatePreview({
     formValues,
     templateType,
@@ -154,61 +137,92 @@ function TemplatePreview({
     templateType: 'header' | 'footer' | 'full';
     t: (key: string) => string;
 }) {
-    const renderLogo = (logo: LogoItem, index: number) => {
-        if (!logo.url) return null;
+    const renderSectionItem = (item: SectionItem) => {
+        switch (item.type) {
+            case 'logo':
+                return item.logoUrl ? (
+                    <Image
+                        src={item.logoUrl}
+                        alt="Logo"
+                        h={40}
+                        w="auto"
+                        fit="contain"
+                        style={{ display: 'inline-block' }}
+                    />
+                ) : (
+                    <Box
+                        style={{
+                            width: 60,
+                            height: 40,
+                            backgroundColor: '#e0e0e0',
+                            borderRadius: 4,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Text size="xs" c="dimmed">Logo</Text>
+                    </Box>
+                );
+            case 'text':
+            case 'variable':
+                return (
+                    <Text
+                        size="sm"
+                        fw={item.fontWeight === 'bold' ? 700 : 400}
+                        style={{ textAlign: item.textAlign || 'center' }}
+                    >
+                        {item.value || (item.type === 'variable' ? '{{...}}' : 'Metin')}
+                    </Text>
+                );
+            case 'divider':
+                return <Divider my={4} />;
+            case 'spacer':
+                return <Box h={16} />;
+            default:
+                return null;
+        }
+    };
+
+    const renderSection = (section: TemplateSection) => {
+        const columnCount = section.columns.length;
         return (
-            <Box
-                key={logo.id || index}
-                style={{
-                    textAlign: logo.position || 'left',
-                    flex: logo.position === 'center' ? 1 : 'none'
-                }}
-            >
-                <Image
-                    src={logo.url}
-                    alt={`Logo ${index + 1}`}
-                    h={50}
-                    w="auto"
-                    fit="contain"
-                    style={{ display: 'inline-block' }}
-                />
+            <Box key={section.id} style={{ display: 'flex', gap: 8, padding: '8px 0' }}>
+                {section.columns.map((column) => (
+                    <Box
+                        key={column.id}
+                        style={{
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: column.verticalAlign === 'bottom' ? 'flex-end' :
+                                       column.verticalAlign === 'middle' ? 'center' : 'flex-start',
+                            justifyContent: columnCount === 1 ? 'center' : 'flex-start',
+                        }}
+                    >
+                        {column.items.map((item) => (
+                            <Box key={item.id} style={{ width: '100%', textAlign: item.textAlign || 'center' }}>
+                                {renderSectionItem(item)}
+                            </Box>
+                        ))}
+                    </Box>
+                ))}
             </Box>
         );
     };
 
-    const renderTextItem = (item: HeaderItem | FooterItem, index: number) => {
-        if (!item.text) return null;
-        return (
-            <Text
-                key={item.id || index}
-                size="sm"
-                style={{
-                    textAlign: item.position || 'left',
-                    flex: item.position === 'center' ? 1 : 'none'
-                }}
-            >
-                {item.text}
-            </Text>
-        );
-    };
-
     const renderHeader = () => (
-        <Box p="md" style={{ borderBottom: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
-            {/* Logos */}
-            {formValues.logos.length > 0 && (
-                <Group justify="space-between" mb="xs">
-                    {formValues.logos.map((logo, idx) => renderLogo(logo, idx))}
-                </Group>
+        <Box p="sm" style={{ borderBottom: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
+            {formValues.headerSections.length > 0 ? (
+                formValues.headerSections.map(renderSection)
+            ) : (
+                <Text size="xs" c="dimmed" ta="center">
+                    {t('preview.noHeaderSections')}
+                </Text>
             )}
-            {/* Headers */}
-            {formValues.headers.length > 0 && (
-                <Stack gap={4}>
-                    {formValues.headers.map((header, idx) => renderTextItem(header, idx))}
-                </Stack>
-            )}
-            {/* Company Info */}
+            {/* Contact Info */}
             {(formValues.address || formValues.phone || formValues.email) && (
-                <Group gap="md" mt="xs">
+                <Group gap="md" mt="xs" justify="center">
                     {formValues.address && <Text size="xs" c="dimmed">{formValues.address}</Text>}
                     {formValues.phone && <Text size="xs" c="dimmed">{formValues.phone}</Text>}
                     {formValues.email && <Text size="xs" c="dimmed">{formValues.email}</Text>}
@@ -218,14 +232,16 @@ function TemplatePreview({
     );
 
     const renderFooter = () => (
-        <Box p="md" style={{ borderTop: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
-            {formValues.footers.length > 0 && (
-                <Stack gap={4}>
-                    {formValues.footers.map((footer, idx) => renderTextItem(footer, idx))}
-                </Stack>
+        <Box p="sm" style={{ borderTop: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }}>
+            {formValues.footerSections.length > 0 ? (
+                formValues.footerSections.map(renderSection)
+            ) : (
+                <Text size="xs" c="dimmed" ta="center">
+                    {t('preview.noFooterSections')}
+                </Text>
             )}
             {(formValues.website || formValues.taxNumber) && (
-                <Group gap="md" mt="xs">
+                <Group gap="md" mt="xs" justify="center">
                     {formValues.website && <Text size="xs" c="dimmed">{formValues.website}</Text>}
                     {formValues.taxNumber && <Text size="xs" c="dimmed">VKN: {formValues.taxNumber}</Text>}
                 </Group>
@@ -234,11 +250,11 @@ function TemplatePreview({
     );
 
     const renderContent = () => (
-        <Box p="md" style={{ minHeight: 100, backgroundColor: '#fff' }}>
-            <Text size="sm" c="dimmed" ta="center" py="xl">
+        <Box p="md" style={{ minHeight: 80, backgroundColor: '#fff' }}>
+            <Text size="sm" c="dimmed" ta="center" py="md">
                 {t('preview.sampleContent')}
             </Text>
-            <Box style={{ border: '1px dashed #ccc', borderRadius: 4, padding: 16, margin: '0 auto', maxWidth: 400 }}>
+            <Box style={{ border: '1px dashed #ccc', borderRadius: 4, padding: 12, margin: '0 auto', maxWidth: 350 }}>
                 <Stack gap="xs">
                     <Group justify="space-between">
                         <Text size="xs" c="dimmed">Column 1</Text>
@@ -247,29 +263,23 @@ function TemplatePreview({
                     </Group>
                     <Divider />
                     <Group justify="space-between">
-                        <Text size="xs">Sample Data 1</Text>
-                        <Text size="xs">Sample Data 2</Text>
-                        <Text size="xs">Sample Data 3</Text>
-                    </Group>
-                    <Group justify="space-between">
-                        <Text size="xs">Sample Data 4</Text>
-                        <Text size="xs">Sample Data 5</Text>
-                        <Text size="xs">Sample Data 6</Text>
+                        <Text size="xs">Data 1</Text>
+                        <Text size="xs">Data 2</Text>
+                        <Text size="xs">Data 3</Text>
                     </Group>
                 </Stack>
             </Box>
         </Box>
     );
 
-    const isEmpty = formValues.logos.length === 0 &&
-                    formValues.headers.length === 0 &&
-                    formValues.footers.length === 0 &&
+    const isEmpty = formValues.headerSections.length === 0 &&
+                    formValues.footerSections.length === 0 &&
                     !formValues.address && !formValues.phone && !formValues.email &&
                     !formValues.website && !formValues.taxNumber;
 
     if (isEmpty) {
         return (
-            <Center h={300}>
+            <Center h={200}>
                 <Stack align="center" gap="xs">
                     <Text size="sm" c="dimmed">{t('preview.empty')}</Text>
                     <Text size="xs" c="dimmed">{t('preview.emptyHint')}</Text>
@@ -280,13 +290,8 @@ function TemplatePreview({
 
     return (
         <Box style={{ border: '1px solid #e0e0e0', borderRadius: 8, overflow: 'hidden', backgroundColor: '#fff' }}>
-            {/* Header - show for 'header' and 'full' types */}
             {(templateType === 'header' || templateType === 'full') && renderHeader()}
-
-            {/* Content area - only for 'full' type */}
             {templateType === 'full' && renderContent()}
-
-            {/* Footer - show for 'footer' and 'full' types */}
             {(templateType === 'footer' || templateType === 'full') && renderFooter()}
         </Box>
     );
@@ -329,9 +334,8 @@ export function ExportTemplateForm({
             type: initialData?.type || 'full',
             companyId: initialData?.companyId || null,
             locationId: initialData?.locationId || null,
-            logos: initialData?.logos || [],
-            headers: initialData?.headers || [],
-            footers: initialData?.footers || [],
+            headerSections: initialData?.headerSections || [],
+            footerSections: initialData?.footerSections || [],
             address: initialData?.address || '',
             phone: initialData?.phone || '',
             email: initialData?.email || '',
@@ -365,22 +369,41 @@ export function ExportTemplateForm({
         ].filter(Boolean);
         const fullAddress = addressParts.join(', ');
 
-        // Add company logo if available and no logos exist yet
-        if ((company.logo || company.logoFile) && form.values.logos.length === 0) {
-            form.setFieldValue('logos', [{
-                id: `logo-${Date.now()}`,
-                url: company.logo || company.logoFile,
-                position: 'left' as const
-            }]);
-        }
-
-        // Add company name as header if no headers exist
-        if (form.values.headers.length === 0) {
-            form.setFieldValue('headers', [{
-                id: `header-${Date.now()}`,
-                text: company.name,
-                position: 'center' as const
-            }]);
+        // Create default header section with logo and company name
+        if (form.values.headerSections.length === 0) {
+            const defaultSection: TemplateSection = {
+                id: generateId(),
+                columns: [
+                    {
+                        id: generateId(),
+                        items: company.logo || company.logoFile ? [{
+                            id: generateId(),
+                            type: 'logo',
+                            logoUrl: company.logo || company.logoFile,
+                        }] : [],
+                    },
+                    {
+                        id: generateId(),
+                        items: [{
+                            id: generateId(),
+                            type: 'text',
+                            value: company.name,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                        }],
+                    },
+                    {
+                        id: generateId(),
+                        items: [{
+                            id: generateId(),
+                            type: 'variable',
+                            value: '{{date}}',
+                            textAlign: 'right',
+                        }],
+                    },
+                ],
+            };
+            form.setFieldValue('headerSections', [defaultSection]);
         }
 
         // Fill contact info
@@ -402,62 +425,8 @@ export function ExportTemplateForm({
     // Handle company selection change
     const handleCompanyChange = (value: string | null) => {
         form.setFieldValue('companyId', value);
-        // Only auto-fill on new templates or when explicitly requested
         if (!isEdit && value) {
             fillFromCompany(value);
-        }
-    };
-
-    const addLogo = () => {
-        form.insertListItem('logos', {
-            id: `logo-${Date.now()}`,
-            position: 'left',
-        });
-    };
-
-    const removeLogo = (index: number) => {
-        form.removeListItem('logos', index);
-    };
-
-    const addHeader = () => {
-        form.insertListItem('headers', {
-            id: `header-${Date.now()}`,
-            text: '',
-            position: 'left',
-        });
-    };
-
-    const removeHeader = (index: number) => {
-        form.removeListItem('headers', index);
-    };
-
-    const addFooter = () => {
-        form.insertListItem('footers', {
-            id: `footer-${Date.now()}`,
-            text: '',
-            position: 'left',
-        });
-    };
-
-    const removeFooter = (index: number) => {
-        form.removeListItem('footers', index);
-    };
-
-    const handleLogoFileChange = (index: number, file: File | null) => {
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const logos = [...form.values.logos];
-                const currentLogo = logos[index];
-                logos[index] = {
-                    id: currentLogo?.id || `logo-${index}`,
-                    ...(currentLogo?.position ? { position: currentLogo.position } : {}),
-                    url: reader.result as string,
-                    file: file,
-                };
-                form.setFieldValue('logos', logos);
-            };
-            reader.readAsDataURL(file);
         }
     };
 
@@ -465,30 +434,15 @@ export function ExportTemplateForm({
         try {
             setLoading(true);
 
-            // Convert form data to templateData format
+            // Convert form data to templateData format for API
             const templateData = {
-                logoUrl: values.logos.length > 0 ? values.logos[0]?.url : undefined,
-                title: values.headers.length > 0 ? values.headers[0]?.text : undefined,
-                subtitle: values.headers.length > 1 ? values.headers[1]?.text : undefined,
                 address: values.address,
                 phone: values.phone,
                 email: values.email,
                 website: values.website,
                 taxNumber: values.taxNumber,
-                customFields: {
-                    logos: values.logos.map(logo => ({
-                        url: logo.url,
-                        position: logo.position,
-                    })),
-                    headers: values.headers.map(header => ({
-                        text: header.text,
-                        position: header.position,
-                    })),
-                    footers: values.footers.map(footer => ({
-                        text: footer.text,
-                        position: footer.position,
-                    })),
-                },
+                headerSections: values.headerSections,
+                footerSections: values.footerSections,
             };
 
             await onSubmit({
@@ -591,220 +545,78 @@ export function ExportTemplateForm({
                                 </Stack>
                             </Paper>
 
-                    <Paper p="md" withBorder>
-                        <Group justify="space-between" mb="md">
-                            <Title order={4}>{t('form.logos')}</Title>
-                            <Button
-                                size="xs"
-                                leftSection={<IconPlus size={14} />}
-                                onClick={addLogo}
-                                variant="light"
-                            >
-                                {t('form.addLogo')}
-                            </Button>
-                        </Group>
-
-                        <Stack gap="md">
-                            {form.values.logos.map((logo, index) => (
-                                <Paper key={logo.id || `logo-${index}`} p="sm" withBorder>
-                                    <Group justify="space-between" mb="sm">
-                                        <Badge>{t('form.logo')} {index + 1}</Badge>
-                                        <ActionIcon
-                                            color="red"
-                                            variant="light"
-                                            onClick={() => removeLogo(index)}
-                                        >
-                                            <IconTrash size={16} />
-                                        </ActionIcon>
-                                    </Group>
-                                    <Stack gap="sm">
-                                        <FileInput
-                                            label={t('form.logoFile')}
-                                            placeholder={t('form.logoFilePlaceholder')}
-                                            accept="image/png,image/jpeg,image/jpg,image/svg+xml"
-                                            leftSection={<IconPhoto size={16} />}
-                                            onChange={(file) => handleLogoFileChange(index, file)}
-                                        />
-                                        {logo.url && (
-                                            <Image src={logo.url} alt="Logo preview" w={100} h={100} fit="contain" />
-                                        )}
-                                        <Select
-                                            label={t('form.position')}
-                                            data={[
-                                                { value: 'left', label: t('form.positionLeft') },
-                                                { value: 'center', label: t('form.positionCenter') },
-                                                { value: 'right', label: t('form.positionRight') },
-                                            ]}
-                                            {...form.getInputProps(`logos.${index}.position`)}
-                                        />
-                                    </Stack>
-                                </Paper>
-                            ))}
-                            {form.values.logos.length === 0 && (
-                                <Text size="sm" c="dimmed" ta="center" py="md">
-                                    {t('form.noLogos')}
-                                </Text>
+                            {/* Header Sections Editor */}
+                            {(form.values.type === 'header' || form.values.type === 'full') && (
+                                <SectionEditor
+                                    sections={form.values.headerSections}
+                                    onChange={(sections) => form.setFieldValue('headerSections', sections)}
+                                    title={t('sections.headerSections')}
+                                    t={t}
+                                />
                             )}
-                        </Stack>
-                    </Paper>
 
-                    <Paper p="md" withBorder>
-                        <Group justify="space-between" mb="md">
-                            <Title order={4}>{t('form.headers')}</Title>
-                            <Button
-                                size="xs"
-                                leftSection={<IconPlus size={14} />}
-                                onClick={addHeader}
-                                variant="light"
-                            >
-                                {t('form.addHeader')}
-                            </Button>
-                        </Group>
+                            {/* Footer Sections Editor */}
+                            {(form.values.type === 'footer' || form.values.type === 'full') && (
+                                <SectionEditor
+                                    sections={form.values.footerSections}
+                                    onChange={(sections) => form.setFieldValue('footerSections', sections)}
+                                    title={t('sections.footerSections')}
+                                    t={t}
+                                />
+                            )}
 
-                        <Stack gap="md">
-                            {form.values.headers.map((header, index) => (
-                                <Paper key={header.id || `header-${index}`} p="sm" withBorder>
-                                    <Group justify="space-between" mb="sm">
-                                        <Badge>{t('form.header')} {index + 1}</Badge>
-                                        <ActionIcon
-                                            color="red"
-                                            variant="light"
-                                            onClick={() => removeHeader(index)}
-                                        >
-                                            <IconTrash size={16} />
-                                        </ActionIcon>
-                                    </Group>
-                                    <Stack gap="sm">
+                            <Paper p="md" withBorder>
+                                <Title order={4} mb="md">
+                                    {t('form.contactInfo')}
+                                </Title>
+
+                                <Stack>
+                                    <Textarea
+                                        label={t('form.address')}
+                                        placeholder={t('form.addressPlaceholder')}
+                                        rows={2}
+                                        {...form.getInputProps('address')}
+                                    />
+
+                                    <Group grow>
                                         <TextInput
-                                            label={t('form.headerText')}
-                                            placeholder={t('form.headerTextPlaceholder')}
-                                            {...form.getInputProps(`headers.${index}.text`)}
+                                            label={t('form.phone')}
+                                            placeholder="+90 555 123 4567"
+                                            {...form.getInputProps('phone')}
                                         />
-                                        <Select
-                                            label={t('form.position')}
-                                            data={[
-                                                { value: 'left', label: t('form.positionLeft') },
-                                                { value: 'center', label: t('form.positionCenter') },
-                                                { value: 'right', label: t('form.positionRight') },
-                                            ]}
-                                            {...form.getInputProps(`headers.${index}.position`)}
+
+                                        <TextInput
+                                            label={t('form.email')}
+                                            placeholder="info@firma.com"
+                                            type="email"
+                                            {...form.getInputProps('email')}
                                         />
-                                    </Stack>
-                                </Paper>
-                            ))}
-                            {form.values.headers.length === 0 && (
-                                <Text size="sm" c="dimmed" ta="center" py="md">
-                                    {t('form.noHeaders')}
-                                </Text>
-                            )}
-                        </Stack>
-                    </Paper>
-
-                    <Paper p="md" withBorder>
-                        <Group justify="space-between" mb="md">
-                            <Title order={4}>{t('form.footers')}</Title>
-                            <Button
-                                size="xs"
-                                leftSection={<IconPlus size={14} />}
-                                onClick={addFooter}
-                                variant="light"
-                            >
-                                {t('form.addFooter')}
-                            </Button>
-                        </Group>
-
-                        <Stack gap="md">
-                            {form.values.footers.map((footer, index) => (
-                                <Paper key={footer.id || `footer-${index}`} p="sm" withBorder>
-                                    <Group justify="space-between" mb="sm">
-                                        <Badge>{t('form.footer')} {index + 1}</Badge>
-                                        <ActionIcon
-                                            color="red"
-                                            variant="light"
-                                            onClick={() => removeFooter(index)}
-                                        >
-                                            <IconTrash size={16} />
-                                        </ActionIcon>
                                     </Group>
-                                    <Stack gap="sm">
-                                        <Textarea
-                                            label={t('form.footerText')}
-                                            placeholder={t('form.footerTextPlaceholder')}
-                                            rows={2}
-                                            {...form.getInputProps(`footers.${index}.text`)}
+
+                                    <Group grow>
+                                        <TextInput
+                                            label={t('form.website')}
+                                            placeholder="https://firma.com"
+                                            {...form.getInputProps('website')}
                                         />
-                                        <Select
-                                            label={t('form.position')}
-                                            data={[
-                                                { value: 'left', label: t('form.positionLeft') },
-                                                { value: 'center', label: t('form.positionCenter') },
-                                                { value: 'right', label: t('form.positionRight') },
-                                            ]}
-                                            {...form.getInputProps(`footers.${index}.position`)}
+
+                                        <TextInput
+                                            label={t('form.taxNumber')}
+                                            placeholder="123-456-789"
+                                            {...form.getInputProps('taxNumber')}
                                         />
-                                    </Stack>
-                                </Paper>
-                            ))}
-                            {form.values.footers.length === 0 && (
-                                <Text size="sm" c="dimmed" ta="center" py="md">
-                                    {t('form.noFooters')}
-                                </Text>
-                            )}
-                        </Stack>
-                    </Paper>
+                                    </Group>
+                                </Stack>
+                            </Paper>
 
-                    <Paper p="md" withBorder>
-                        <Title order={4} mb="md">
-                            {t('form.contactInfo')}
-                        </Title>
-
-                        <Stack>
-                            <Textarea
-                                label={t('form.address')}
-                                placeholder={t('form.addressPlaceholder')}
-                                rows={2}
-                                {...form.getInputProps('address')}
-                            />
-
-                            <Group grow>
-                                <TextInput
-                                    label={t('form.phone')}
-                                    placeholder="+90 555 123 4567"
-                                    {...form.getInputProps('phone')}
-                                />
-
-                                <TextInput
-                                    label={t('form.email')}
-                                    placeholder="info@firma.com"
-                                    type="email"
-                                    {...form.getInputProps('email')}
-                                />
+                            <Group justify="flex-end">
+                                <Button variant="default" onClick={onCancel} disabled={loading}>
+                                    {t('form.cancel')}
+                                </Button>
+                                <Button type="submit" loading={loading}>
+                                    {isEdit ? t('form.update') : t('form.create')}
+                                </Button>
                             </Group>
-
-                            <Group grow>
-                                <TextInput
-                                    label={t('form.website')}
-                                    placeholder="https://firma.com"
-                                    {...form.getInputProps('website')}
-                                />
-
-                                <TextInput
-                                    label={t('form.taxNumber')}
-                                    placeholder="123-456-789"
-                                    {...form.getInputProps('taxNumber')}
-                                />
-                            </Group>
-                        </Stack>
-                    </Paper>
-
-                    <Group justify="flex-end">
-                        <Button variant="default" onClick={onCancel} disabled={loading}>
-                            {t('form.cancel')}
-                        </Button>
-                        <Button type="submit" loading={loading}>
-                            {isEdit ? t('form.update') : t('form.create')}
-                        </Button>
-                    </Group>
                         </Stack>
                     </Grid.Col>
 

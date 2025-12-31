@@ -101,6 +101,60 @@ export function ExportProvider({ children }: ExportProviderProps) {
       .replace(/\{\{year\}\}/g, new Date().getFullYear().toString());
   }, []);
 
+  // Process placeholders in a section item
+  const processSectionItem = useCallback((
+    item: any,
+    settings: typeof companySettings,
+    dynamicData?: { pageTitle?: string }
+  ): any => {
+    if (!item) return item;
+
+    const processedItem = { ...item };
+
+    // Process text value
+    if (item.value) {
+      processedItem.value = processPlaceholders(item.value, settings, dynamicData);
+    }
+
+    // Process variable type - replace with actual value
+    if (item.type === 'variable' && item.value) {
+      const variableMap: Record<string, string> = {
+        'pageTitle': dynamicData?.pageTitle || '',
+        'companyName': settings?.name || '',
+        'companyAddress': settings?.address || '',
+        'companyPhone': settings?.phone || '',
+        'companyEmail': settings?.email || '',
+        'companyWebsite': settings?.website || '',
+        'companyTaxId': settings?.taxId || '',
+        'companyLogo': settings?.logo || '',
+        'date': new Date().toLocaleDateString(),
+        'year': new Date().getFullYear().toString(),
+      };
+      processedItem.value = variableMap[item.value] || item.value;
+    }
+
+    return processedItem;
+  }, [processPlaceholders]);
+
+  // Process placeholders in sections (headerSections, footerSections)
+  const processSectionsPlaceholders = useCallback((
+    sections: any[] | undefined,
+    settings: typeof companySettings,
+    dynamicData?: { pageTitle?: string }
+  ): any[] | undefined => {
+    if (!sections || !Array.isArray(sections)) return undefined;
+
+    return sections.map((section: any) => ({
+      ...section,
+      columns: (section.columns || []).map((column: any) => ({
+        ...column,
+        items: (column.items || []).map((item: any) =>
+          processSectionItem(item, settings, dynamicData)
+        ),
+      })),
+    }));
+  }, [processSectionItem]);
+
   // Process placeholders in customFields (headers, footers, logos arrays)
   const processCustomFieldsPlaceholders = useCallback((
     customFields: Record<string, any> | undefined,
@@ -112,8 +166,11 @@ export function ExportProvider({ children }: ExportProviderProps) {
     const processed: Record<string, any> = {};
 
     for (const [key, value] of Object.entries(customFields)) {
-      if (Array.isArray(value)) {
-        // Process arrays (headers, footers, logos)
+      if (key === 'headerSections' || key === 'footerSections') {
+        // Process new section format
+        processed[key] = processSectionsPlaceholders(value, settings, dynamicData);
+      } else if (Array.isArray(value)) {
+        // Process arrays (headers, footers, logos - old format)
         processed[key] = value.map((item: any) => {
           if (typeof item === 'object' && item !== null) {
             const processedItem: any = { ...item };
@@ -132,7 +189,7 @@ export function ExportProvider({ children }: ExportProviderProps) {
     }
 
     return processed;
-  }, [processPlaceholders]);
+  }, [processPlaceholders, processSectionsPlaceholders]);
 
   // Merge template with company settings
   const mergeTemplateWithSettings = useCallback((
@@ -163,6 +220,18 @@ export function ExportProvider({ children }: ExportProviderProps) {
     const processedAddress = processPlaceholders(template.address, settings, dynamicData);
     const processedCustomFields = processCustomFieldsPlaceholders(rawCustomFields, settings, dynamicData);
 
+    // Extract and process headerSections and footerSections from customFields
+    const headerSections = processSectionsPlaceholders(
+      rawCustomFields?.headerSections,
+      settings,
+      dynamicData
+    );
+    const footerSections = processSectionsPlaceholders(
+      rawCustomFields?.footerSections,
+      settings,
+      dynamicData
+    );
+
     return {
       logoUrl: template.logoUrl || settings?.logo,
       title: processedTitle || settings?.name,
@@ -175,8 +244,11 @@ export function ExportProvider({ children }: ExportProviderProps) {
       customFields: processedCustomFields,
       layout: template.layout,
       styles: template.styles,
+      // Add headerSections and footerSections at top level for export renderers
+      ...(headerSections && headerSections.length > 0 ? { headerSections } : {}),
+      ...(footerSections && footerSections.length > 0 ? { footerSections } : {}),
     };
-  }, [processPlaceholders, processCustomFieldsPlaceholders]);
+  }, [processPlaceholders, processCustomFieldsPlaceholders, processSectionsPlaceholders]);
 
   const exportData = useCallback(
     async (data: ExportData, options: ExportOptions) => {

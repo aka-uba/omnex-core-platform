@@ -147,7 +147,22 @@
       "check": "شيك"
     },
     "markedAsPaid": "تم وضع علامة على الدفعة كمدفوعة",
-    "markAsPaidError": "فشل وضع علامة على الدفعة كمدفوعة"
+    "markAsPaid": "وضع علامة كمدفوع",
+    "markAsPaidError": "فشل وضع علامة على الدفعة كمدفوعة",
+    "completePayment": {
+      "title": "إتمام الدفعة",
+      "description": "حدد تاريخ الدفع وطريقة الدفع",
+      "paidDate": "تاريخ الدفع",
+      "paymentMethod": "طريقة الدفع",
+      "selectMethod": "اختر طريقة الدفع",
+      "confirm": "إتمام الدفعة"
+    },
+    "quickEdit": {
+      "title": "تعديل سريع",
+      "description": "تحديث تاريخ وطريقة الدفع بسرعة",
+      "confirm": "تحديث",
+      "updateSuccess": "تم تحديث تفاصيل الدفعة"
+    }
   },
   "appointments": {
     "title": "المواعيد",
@@ -245,6 +260,8 @@
     "required": "هذا الحقل مطلوب",
     "amountRequired": "يجب أن يكون المبلغ أكبر من 0",
     "selectApartment": "اختر الشقة",
+    "noApartmentsFound": "لم يتم العثور على شقق",
+    "unknownProperty": "عقار غير معروف",
     "selectContract": "اختر العقد",
     "selectDate": "اختر التاريخ",
     "selectPaymentMethod": "اختر طريقة الدفع",
@@ -598,12 +615,5 @@
     "taxNumberPlaceholder": "أدخل الرقم الضريبي",
     "systemFields": "حقول النظام",
     "apartmentAssignment": "تعيين الشقة"
-  },
-  "form": {
-    "apartment": "الشقة",
-    "selectApartment": "اختر شقة",
-    "noApartmentsFound": "لم يتم العثور على شقق",
-    "unknownProperty": "عقار غير معروف",
-    "floor": "الطابق"
   }
 }

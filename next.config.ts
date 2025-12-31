@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
       dynamic: 0, // Do not cache dynamic pages
       static: 180, // Cache static pages for 3 minutes
     },
+    // Next.js 16.1+ Turbopack File System Cache
+    // DEV: Varsayılan aktif ama disk alanı çok tüketiyor (13GB+)
+    // Geliştirme sırasında hız için aktif tut, disk doluyorsa false yap
+    turbopackFileSystemCacheForDev: true,
+    // BUILD: Production build için cache (henüz experimental)
+    turbopackFileSystemCacheForBuild: false,
   },
   // Only process specific file types as pages (exclude README.md and other markdown files)
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],

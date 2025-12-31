@@ -3,7 +3,8 @@
   "version": "1.0.9",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
+    "dev:webpack": "next dev --webpack",
     "analyze:buttons": "node scripts/analyze-buttons.js",
     "typecheck": "tsc --noEmit",
     "typewatch": "tsc --noEmit --watch",

@@ -17,6 +17,13 @@ node_modules/
 /.next/
 /out/
 
+# Next.js 16+ Turbopack cache (çok büyük boyutlara ulaşabilir)
+.next/cache/
+.next/trace
+.next/server/
+.next/static/
+.next/BUILD_ID
+
 # production
 /build
 

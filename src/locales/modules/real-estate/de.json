@@ -147,7 +147,22 @@
       "check": "Scheck"
     },
     "markedAsPaid": "Zahlung als bezahlt markiert",
-    "markAsPaidError": "Fehler beim Markieren der Zahlung als bezahlt"
+    "markAsPaid": "Als bezahlt markieren",
+    "markAsPaidError": "Fehler beim Markieren der Zahlung als bezahlt",
+    "completePayment": {
+      "title": "Zahlung abschließen",
+      "description": "Wählen Sie das Zahlungsdatum und die Zahlungsmethode",
+      "paidDate": "Zahlungsdatum",
+      "paymentMethod": "Zahlungsmethode",
+      "selectMethod": "Zahlungsmethode auswählen",
+      "confirm": "Zahlung abschließen"
+    },
+    "quickEdit": {
+      "title": "Schnell bearbeiten",
+      "description": "Zahlungsdatum und -methode schnell aktualisieren",
+      "confirm": "Aktualisieren",
+      "updateSuccess": "Zahlungsdetails aktualisiert"
+    }
   },
   "appointments": {
     "title": "Termine",
@@ -308,6 +323,8 @@
     "required": "Dieses Feld ist erforderlich",
     "amountRequired": "Betrag muss größer als 0 sein",
     "selectApartment": "Wohnung auswählen",
+    "noApartmentsFound": "Keine Wohnungen gefunden",
+    "unknownProperty": "Unbekannte Immobilie",
     "selectContract": "Vertrag auswählen",
     "selectDate": "Datum auswählen",
     "selectPaymentMethod": "Zahlungsmethode auswählen",
@@ -697,12 +714,5 @@
     "taxNumberPlaceholder": "Steuernummer eingeben",
     "systemFields": "Systemfelder",
     "apartmentAssignment": "Wohnungszuweisung"
-  },
-  "form": {
-    "apartment": "Wohnung",
-    "selectApartment": "Wohnung auswählen",
-    "noApartmentsFound": "Keine Wohnungen gefunden",
-    "unknownProperty": "Unbekannte Immobilie",
-    "floor": "Etage"
   }
 }

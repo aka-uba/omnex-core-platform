@@ -6,10 +6,100 @@ import { EditExportTemplatePageSkeleton } from './EditExportTemplatePageSkeleton
 import { ExportTemplateForm } from '../../components/ExportTemplateForm';
 import { useRouter } from 'next/navigation';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import type { TemplateSection } from '@/lib/export/types';
 
 interface EditExportTemplatePageClientProps {
     locale: string;
     templateId: string;
+}
+
+// Helper to migrate old format to new sections format
+function migrateToSections(template: any): { headerSections: TemplateSection[]; footerSections: TemplateSection[] } {
+    // If already has new format, return it
+    if (template.customFields?.headerSections || template.headerSections) {
+        return {
+            headerSections: template.customFields?.headerSections || template.headerSections || [],
+            footerSections: template.customFields?.footerSections || template.footerSections || [],
+        };
+    }
+
+    // Migrate from old format
+    const headerSections: TemplateSection[] = [];
+    const footerSections: TemplateSection[] = [];
+
+    const oldLogos = (template.customFields as any)?.logos || [];
+    const oldHeaders = (template.customFields as any)?.headers || [];
+    const oldFooters = (template.customFields as any)?.footers || [];
+
+    // Create header section from old logos and headers
+    if (oldLogos.length > 0 || oldHeaders.length > 0 || template.logoUrl || template.title) {
+        const columns: any[] = [];
+
+        // Logo column
+        if (oldLogos.length > 0 || template.logoUrl) {
+            columns.push({
+                id: `col-${Date.now()}-1`,
+                items: [{
+                    id: `item-${Date.now()}-1`,
+                    type: 'logo',
+                    logoUrl: oldLogos[0]?.url || template.logoUrl,
+                    textAlign: oldLogos[0]?.position || 'left',
+                }],
+            });
+        }
+
+        // Title column
+        if (oldHeaders.length > 0 || template.title) {
+            columns.push({
+                id: `col-${Date.now()}-2`,
+                items: [{
+                    id: `item-${Date.now()}-2`,
+                    type: 'text',
+                    value: oldHeaders[0]?.text || template.title || '',
+                    fontWeight: 'bold',
+                    textAlign: oldHeaders[0]?.position || 'center',
+                }],
+            });
+        }
+
+        // Subtitle if exists
+        if (oldHeaders.length > 1 || template.subtitle) {
+            const lastCol = columns[columns.length - 1];
+            if (lastCol) {
+                lastCol.items.push({
+                    id: `item-${Date.now()}-3`,
+                    type: 'text',
+                    value: oldHeaders[1]?.text || template.subtitle || '',
+                    textAlign: oldHeaders[1]?.position || 'center',
+                });
+            }
+        }
+
+        if (columns.length > 0) {
+            headerSections.push({
+                id: `section-${Date.now()}-1`,
+                columns,
+            });
+        }
+    }
+
+    // Create footer sections from old footers
+    if (oldFooters.length > 0) {
+        footerSections.push({
+            id: `section-${Date.now()}-2`,
+            columns: [{
+                id: `col-${Date.now()}-3`,
+                items: oldFooters.map((footer: any, idx: number) => ({
+                    id: `item-${Date.now()}-${idx + 10}`,
+                    type: 'text',
+                    value: footer.text || '',
+                    textAlign: footer.position || 'center',
+                })),
+            }],
+        });
+    }
+
+    return { headerSections, footerSections };
 }
 
 export function EditExportTemplatePageClient({
@@ -55,19 +145,13 @@ export function EditExportTemplatePageClient({
             body: JSON.stringify({
                 name: data.name,
                 templateData: data.templateData || {
-                    logoUrl: data.logos?.[0]?.url,
-                    title: data.headers?.[0]?.text,
-                    subtitle: data.headers?.[1]?.text,
                     address: data.address,
                     phone: data.phone,
                     email: data.email,
                     website: data.website,
                     taxNumber: data.taxNumber,
-                    customFields: {
-                        logos: data.logos || [],
-                        headers: data.headers || [],
-                        footers: data.footers || [],
-                    },
+                    headerSections: data.headerSections || [],
+                    footerSections: data.footerSections || [],
                 },
                 isDefault: data.isDefault,
                 isActive: data.isActive,
@@ -95,6 +179,9 @@ export function EditExportTemplatePageClient({
         return null;
     }
 
+    // Migrate old format to new sections format
+    const { headerSections, footerSections } = migrateToSections(template);
+
     return (
         <div>
             <Paper p="md" mb="md">
@@ -110,24 +197,8 @@ export function EditExportTemplatePageClient({
                     type: template.type,
                     companyId: template.companyId,
                     locationId: template.locationId,
-                    logos: (template.customFields as any)?.logos || (template.logoUrl ? [{
-                        id: 'logo-1',
-                        url: template.logoUrl,
-                        position: 'left',
-                    }] : []),
-                    headers: (template.customFields as any)?.headers || [
-                        ...(template.title ? [{
-                            id: 'header-1',
-                            text: template.title,
-                            position: 'left',
-                        }] : []),
-                        ...(template.subtitle ? [{
-                            id: 'header-2',
-                            text: template.subtitle,
-                            position: 'left',
-                        }] : []),
-                    ],
-                    footers: (template.customFields as any)?.footers || [],
+                    headerSections,
+                    footerSections,
                     address: template.address || '',
                     phone: template.phone || '',
                     email: template.email || '',

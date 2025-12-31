@@ -410,10 +410,17 @@
     "markAsPaidError": "Ödeme işaretlenirken hata oluştu",
     "completePayment": {
       "title": "Ödemeyi Tamamla",
-      "description": "Bu ödemeyi tamamlamak için ödeme yöntemini seçin",
+      "description": "Bu ödemeyi tamamlamak için ödeme tarihini ve yöntemini seçin",
+      "paidDate": "Ödeme Tarihi",
       "paymentMethod": "Ödeme Yöntemi",
       "selectMethod": "Ödeme yöntemi seçin",
       "confirm": "Ödemeyi Tamamla"
+    },
+    "quickEdit": {
+      "title": "Hızlı Düzenle",
+      "description": "Ödeme tarihini ve yöntemini hızlıca güncelleyin",
+      "confirm": "Güncelle",
+      "updateSuccess": "Ödeme bilgileri güncellendi"
     },
     "quickBoard": {
       "upcoming": "Yaklaşan Ödemeler",
@@ -1295,6 +1302,8 @@
     "selectTime": "Saat seçin",
     "apartment": "Daire",
     "selectApartment": "Daire seçin",
+    "noApartmentsFound": "Daire bulunamadı",
+    "unknownProperty": "Bilinmeyen Bina",
     "type": "Tip",
     "typePlaceholder": "Tip seçin",
     "selectType": "Tip seçin",
@@ -2032,12 +2041,5 @@
     "taxNumberPlaceholder": "Vergi numarasını girin",
     "systemFields": "Sistem Alanları",
     "apartmentAssignment": "Daire Ataması"
-  },
-  "form": {
-    "apartment": "Daire",
-    "selectApartment": "Daire seçin",
-    "noApartmentsFound": "Daire bulunamadı",
-    "unknownProperty": "Bilinmeyen Bina",
-    "floor": "Kat"
   }
 }

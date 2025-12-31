@@ -143,6 +143,18 @@ export class ExportTemplateService {
       });
     }
 
+    // Build customFields - merge existing with headerSections/footerSections
+    const existingCustomFields = data.templateData.customFields || {};
+    const customFields: Record<string, any> = { ...existingCustomFields };
+
+    // Add headerSections and footerSections to customFields if provided
+    if (data.templateData.headerSections !== undefined) {
+      customFields.headerSections = data.templateData.headerSections;
+    }
+    if (data.templateData.footerSections !== undefined) {
+      customFields.footerSections = data.templateData.footerSections;
+    }
+
     const template = await this.tenantPrisma.exportTemplate.create({
       data: {
         tenantId,
@@ -160,7 +172,7 @@ export class ExportTemplateService {
         email: data.templateData.email || null,
         website: data.templateData.website || null,
         taxNumber: data.templateData.taxNumber || null,
-        customFields: data.templateData.customFields ? (data.templateData.customFields as any) : null,
+        customFields: Object.keys(customFields).length > 0 ? (customFields as any) : null,
         layout: data.templateData.layout ? (data.templateData.layout as any) : null,
         styles: data.templateData.styles ? (data.templateData.styles as any) : null,
         design: data.templateData.design ? (data.templateData.design as any) : null,
@@ -213,10 +225,26 @@ export class ExportTemplateService {
       if (data.templateData.email !== undefined) updateData.email = data.templateData.email || null;
       if (data.templateData.website !== undefined) updateData.website = data.templateData.website || null;
       if (data.templateData.taxNumber !== undefined) updateData.taxNumber = data.templateData.taxNumber || null;
-      if (data.templateData.customFields !== undefined) updateData.customFields = data.templateData.customFields || null;
       if (data.templateData.layout !== undefined) updateData.layout = data.templateData.layout || null;
       if (data.templateData.styles !== undefined) updateData.styles = data.templateData.styles || null;
       if (data.templateData.design !== undefined) updateData.design = data.templateData.design || null;
+
+      // Build customFields - merge existing with new headerSections/footerSections
+      const existingCustomFields = data.templateData.customFields || {};
+      const newCustomFields: Record<string, any> = { ...existingCustomFields };
+
+      // Add headerSections and footerSections to customFields if provided
+      if (data.templateData.headerSections !== undefined) {
+        newCustomFields.headerSections = data.templateData.headerSections;
+      }
+      if (data.templateData.footerSections !== undefined) {
+        newCustomFields.footerSections = data.templateData.footerSections;
+      }
+
+      // Only update customFields if there's data
+      if (Object.keys(newCustomFields).length > 0) {
+        updateData.customFields = newCustomFields;
+      }
     }
     if (data.isDefault !== undefined) updateData.isDefault = data.isDefault;
     if (data.isActive !== undefined) updateData.isActive = data.isActive;
@@ -273,6 +301,84 @@ export class ExportTemplateService {
   }
 
   /**
+   * Process placeholders in a section item
+   */
+  private processSectionItem(
+    item: any,
+    companySettings: {
+      logo?: string;
+      name: string;
+      address?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      taxId?: string;
+    },
+    dynamicData?: {
+      pageTitle?: string;
+    }
+  ): any {
+    if (!item) return item;
+
+    const processedItem = { ...item };
+
+    // Process text value
+    if (item.value) {
+      processedItem.value = this.processPlaceholders(item.value, companySettings, dynamicData);
+    }
+
+    // Process variable type - replace with actual value
+    if (item.type === 'variable' && item.value) {
+      const variableMap: Record<string, string> = {
+        'pageTitle': dynamicData?.pageTitle || '',
+        'companyName': companySettings.name || '',
+        'companyAddress': companySettings.address || '',
+        'companyPhone': companySettings.phone || '',
+        'companyEmail': companySettings.email || '',
+        'companyWebsite': companySettings.website || '',
+        'companyTaxId': companySettings.taxId || '',
+        'companyLogo': companySettings.logo || '',
+        'date': new Date().toLocaleDateString(),
+        'year': new Date().getFullYear().toString(),
+      };
+      processedItem.value = variableMap[item.value] || item.value;
+    }
+
+    return processedItem;
+  }
+
+  /**
+   * Process placeholders in sections (headerSections, footerSections)
+   */
+  private processSectionsPlaceholders(
+    sections: any[] | undefined,
+    companySettings: {
+      logo?: string;
+      name: string;
+      address?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      taxId?: string;
+    },
+    dynamicData?: {
+      pageTitle?: string;
+    }
+  ): any[] | undefined {
+    if (!sections || !Array.isArray(sections)) return undefined;
+
+    return sections.map((section: any) => ({
+      ...section,
+      columns: (section.columns || []).map((column: any) => ({
+        ...column,
+        items: (column.items || []).map((item: any) =>
+          this.processSectionItem(item, companySettings, dynamicData)
+        ),
+      })),
+    }));
+  }
+
+  /**
    * Process placeholders in customFields (headers, footers, logos arrays)
    */
   private processCustomFieldsPlaceholders(
@@ -295,8 +401,11 @@ export class ExportTemplateService {
     const processed: Record<string, any> = {};
 
     for (const [key, value] of Object.entries(customFields)) {
-      if (Array.isArray(value)) {
-        // Process arrays (headers, footers, logos)
+      if (key === 'headerSections' || key === 'footerSections') {
+        // Process new section format
+        processed[key] = this.processSectionsPlaceholders(value, companySettings, dynamicData);
+      } else if (Array.isArray(value)) {
+        // Process arrays (headers, footers, logos - old format)
         processed[key] = value.map((item: any) => {
           if (typeof item === 'object' && item !== null) {
             const processedItem: any = { ...item };
@@ -358,6 +467,19 @@ export class ExportTemplateService {
       dynamicData
     );
 
+    // Extract headerSections and footerSections from customFields
+    const customFieldsData = template.customFields as Record<string, any> | undefined;
+    const headerSections = this.processSectionsPlaceholders(
+      customFieldsData?.headerSections,
+      companySettings,
+      dynamicData
+    );
+    const footerSections = this.processSectionsPlaceholders(
+      customFieldsData?.footerSections,
+      companySettings,
+      dynamicData
+    );
+
     // Merge template with company settings (template takes precedence)
     return {
       ...(template.logoUrl || companySettings.logo ? { logoUrl: template.logoUrl || companySettings.logo } : {}),
@@ -371,6 +493,9 @@ export class ExportTemplateService {
       ...(processedCustomFields ? { customFields: processedCustomFields } : {}),
       ...(template.layout ? { layout: template.layout as Record<string, any> } : {}),
       ...(template.styles ? { styles: template.styles as Record<string, any> } : {}),
+      // Add headerSections and footerSections at top level for export renderers
+      ...(headerSections && headerSections.length > 0 ? { headerSections } : {}),
+      ...(footerSections && footerSections.length > 0 ? { footerSections } : {}),
     };
   }
 

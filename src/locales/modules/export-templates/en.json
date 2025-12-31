@@ -141,7 +141,41 @@
     "description": "View your form changes in real-time",
     "sampleContent": "Sample Content Area",
     "empty": "Preview is empty",
-    "emptyHint": "Add logo, header or contact information"
+    "emptyHint": "Add logo, header or contact information",
+    "noHeaderSections": "No header sections added",
+    "noFooterSections": "No footer sections added"
+  },
+  "sections": {
+    "headerSections": "Header Sections",
+    "footerSections": "Footer Sections",
+    "addSection": "Add Section",
+    "removeSection": "Remove Section",
+    "section": "Section",
+    "column": "Column",
+    "columnLabel": "Column",
+    "columns": "Column Count",
+    "addItem": "Add Item",
+    "emptyColumn": "Click + to add an item",
+    "noSections": "No sections added yet. Start by adding a section.",
+    "selectLogo": "Select logo",
+    "enterText": "Enter text or use {{placeholder}}",
+    "selectVariable": "Select variable",
+    "alignment": "Alignment",
+    "alignLeft": "Left",
+    "alignCenter": "Center",
+    "alignRight": "Right",
+    "fontSize": "Size",
+    "fontWeight": "Weight",
+    "normal": "Normal",
+    "bold": "Bold",
+    "itemTypes": {
+      "logo": "Logo",
+      "text": "Text",
+      "variable": "Variable",
+      "image": "Image",
+      "divider": "Divider",
+      "spacer": "Spacer"
+    }
   },
   "placeholders": {
     "title": "Available Placeholders",

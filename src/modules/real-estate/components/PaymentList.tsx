@@ -13,13 +13,17 @@ import {
   Stack,
   Select,
   Button,
+  Divider,
 } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
 import {
   IconEdit,
   IconTrash,
   IconEye,
   IconCheck,
   IconCash,
+  IconPencil,
+  IconCalendar,
 } from '@tabler/icons-react';
 import { usePayments, useDeletePayment, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useApartments } from '@/hooks/useApartments';
@@ -52,10 +56,12 @@ export function PaymentList({ locale }: PaymentListProps) {
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  // Ödeme tamamlama modalı state'leri
+  // Ödeme tamamlama/düzenleme modalı state'leri
   const [completionModalOpened, setCompletionModalOpened] = useState(false);
   const [completingPaymentId, setCompletingPaymentId] = useState<string | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+  const [selectedPaidDate, setSelectedPaidDate] = useState<Date | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false); // true = düzenleme modu, false = yeni ödeme modu
 
   const { data, isLoading, error } = usePayments({
     page,
@@ -102,31 +108,44 @@ export function PaymentList({ locale }: PaymentListProps) {
     }
   }, [deleteId, deletePayment, t]);
 
-  // Ödeme tamamlama modalını aç
+  // Ödeme tamamlama modalını aç (yeni ödeme için)
   const handleOpenCompletionModal = useCallback((id: string) => {
     setCompletingPaymentId(id);
     setSelectedPaymentMethod(null);
+    setSelectedPaidDate(new Date());
+    setIsEditMode(false);
     setCompletionModalOpened(true);
   }, []);
 
-  // Ödeme tamamla
+  // Hızlı düzenleme modalını aç (ödenmiş ödemeler için)
+  const handleOpenQuickEditModal = useCallback((payment: any) => {
+    setCompletingPaymentId(payment.id);
+    setSelectedPaymentMethod(payment.paymentMethod || null);
+    setSelectedPaidDate(payment.paidDate ? new Date(payment.paidDate) : new Date());
+    setIsEditMode(true);
+    setCompletionModalOpened(true);
+  }, []);
+
+  // Ödeme tamamla veya güncelle
   const handleCompletePayment = useCallback(async () => {
-    if (!completingPaymentId || !selectedPaymentMethod) return;
+    if (!completingPaymentId || !selectedPaymentMethod || !selectedPaidDate) return;
 
     try {
       await markAsPaid.mutateAsync({
         id: completingPaymentId,
-        paidDate: new Date(),
+        paidDate: selectedPaidDate,
         paymentMethod: selectedPaymentMethod
       });
       showToast({
         type: 'success',
         title: t('messages.success'),
-        message: t('payments.markedAsPaid'),
+        message: isEditMode ? t('payments.quickEdit.updateSuccess') : t('payments.markedAsPaid'),
       });
       setCompletionModalOpened(false);
       setCompletingPaymentId(null);
       setSelectedPaymentMethod(null);
+      setSelectedPaidDate(null);
+      setIsEditMode(false);
     } catch (error) {
       showToast({
         type: 'error',
@@ -134,7 +153,7 @@ export function PaymentList({ locale }: PaymentListProps) {
         message: error instanceof Error ? error.message : t('payments.markAsPaidError'),
       });
     }
-  }, [completingPaymentId, selectedPaymentMethod, markAsPaid, t]);
+  }, [completingPaymentId, selectedPaymentMethod, selectedPaidDate, isEditMode, markAsPaid, t]);
 
   const getTypeBadge = useCallback((type: PaymentType) => {
     const typeColors: Record<PaymentType, string> = {
@@ -261,7 +280,7 @@ export function PaymentList({ locale }: PaymentListProps) {
             <IconEdit size={18} />
           </ActionIcon>
         </Tooltip>
-        {payment.status === 'pending' && (
+        {payment.status === 'pending' ? (
           <Tooltip label={t('payments.markAsPaid')} withArrow>
             <ActionIcon
               variant="subtle"
@@ -274,7 +293,20 @@ export function PaymentList({ locale }: PaymentListProps) {
               <IconCheck size={18} />
             </ActionIcon>
           </Tooltip>
-        )}
+        ) : payment.status === 'paid' ? (
+          <Tooltip label={t('payments.quickEdit.title')} withArrow>
+            <ActionIcon
+              variant="subtle"
+              color="teal"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenQuickEditModal(payment);
+              }}
+            >
+              <IconPencil size={18} />
+            </ActionIcon>
+          </Tooltip>
+        ) : null}
         <Tooltip label={t('actions.delete')} withArrow>
           <ActionIcon
             variant="subtle"
@@ -289,7 +321,7 @@ export function PaymentList({ locale }: PaymentListProps) {
         </Tooltip>
       </Group>
     );
-  }, [router, locale, handleDeleteClick, handleOpenCompletionModal, t]);
+  }, [router, locale, handleDeleteClick, handleOpenCompletionModal, handleOpenQuickEditModal, t]);
 
   // Define columns
   const columns: DataTableColumn[] = useMemo(() => [
@@ -490,21 +522,37 @@ export function PaymentList({ locale }: PaymentListProps) {
         variant="danger"
       />
 
-      {/* Ödeme Tamamlama Modalı */}
+      {/* Ödeme Tamamlama / Hızlı Düzenleme Modalı */}
       <Modal
         opened={completionModalOpened}
         onClose={() => {
           setCompletionModalOpened(false);
           setCompletingPaymentId(null);
           setSelectedPaymentMethod(null);
+          setSelectedPaidDate(null);
+          setIsEditMode(false);
         }}
-        title={t('payments.completePayment.title')}
+        title={isEditMode ? t('payments.quickEdit.title') : t('payments.completePayment.title')}
         centered
       >
         <Stack gap="md">
           <Text size="sm" c="dimmed">
-            {t('payments.completePayment.description')}
+            {isEditMode ? t('payments.quickEdit.description') : t('payments.completePayment.description')}
           </Text>
+
+          <DateInput
+            label={t('payments.completePayment.paidDate')}
+            placeholder={t('form.selectDate')}
+            value={selectedPaidDate}
+            onChange={setSelectedPaidDate}
+            leftSection={<IconCalendar size={16} />}
+            locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+            clearable
+            required
+          />
+
+          <Divider />
+
           <Select
             label={t('payments.completePayment.paymentMethod')}
             placeholder={t('payments.completePayment.selectMethod')}
@@ -531,18 +579,20 @@ export function PaymentList({ locale }: PaymentListProps) {
                 setCompletionModalOpened(false);
                 setCompletingPaymentId(null);
                 setSelectedPaymentMethod(null);
+                setSelectedPaidDate(null);
+                setIsEditMode(false);
               }}
             >
               {t('actions.cancel') || tGlobal('common.cancel')}
             </Button>
             <Button
-              color="green"
+              color={isEditMode ? 'blue' : 'green'}
               onClick={handleCompletePayment}
-              disabled={!selectedPaymentMethod}
+              disabled={!selectedPaymentMethod || !selectedPaidDate}
               loading={markAsPaid.isPending}
-              leftSection={<IconCheck size={16} />}
+              leftSection={isEditMode ? <IconPencil size={16} /> : <IconCheck size={16} />}
             >
-              {t('payments.completePayment.confirm')}
+              {isEditMode ? t('payments.quickEdit.confirm') : t('payments.completePayment.confirm')}
             </Button>
           </Group>
         </Stack>

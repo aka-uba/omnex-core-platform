@@ -117,6 +117,36 @@ export interface ExportData {
 }
 
 // FAZ 0.3: Export Template Types
+
+// Grid Section Types for flexible layout
+export type SectionItemType = 'logo' | 'text' | 'variable' | 'image' | 'divider' | 'spacer';
+
+export interface SectionItem {
+  id: string;
+  type: SectionItemType;
+  value?: string;           // Text content or variable code ({{pageTitle}}, {{date}})
+  logoUrl?: string;         // For logo/image type
+  fontSize?: number;
+  fontWeight?: 'normal' | 'bold';
+  textAlign?: 'left' | 'center' | 'right';
+  color?: string;
+}
+
+export interface SectionColumn {
+  id: string;
+  width?: number;           // 1-4 grid span
+  items: SectionItem[];
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+}
+
+export interface TemplateSection {
+  id: string;
+  columns: SectionColumn[];
+  paddingTop?: number;
+  paddingBottom?: number;
+  borderBottom?: boolean;
+}
+
 export interface ExportTemplate {
   id: string;
   tenantId: string;
@@ -154,4 +184,7 @@ export interface ExportTemplateData {
   layout?: Record<string, any>;
   styles?: Record<string, any>;
   design?: Record<string, any>; // Template design structure (HTML-like structure for rendering)
+  // Grid-based section layout
+  headerSections?: TemplateSection[];
+  footerSections?: TemplateSection[];
 }

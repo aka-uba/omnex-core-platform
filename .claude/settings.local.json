@@ -121,7 +121,11 @@
       "Bash(node_modules.bintsc:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add {{pageTitle}} placeholder support for export templates\n\n- Added pageTitle to ExportOptions type\n- Updated processPlaceholders functions in ExportTemplateService and ExportProvider\n- Added PlaceholderInfoTable component to template form\n- Added translations for placeholder descriptions (TR/EN)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git stash pop:*)",
-      "Bash(./node_modules/.bin/tsc:*)"
+      "Bash(./node_modules/.bin/tsc:*)",
+      "Bash(dir \"C:\\xampp\\htdocs\\omnex-core-platform\\docs\")",
+      "Bash(node:*)",
+      "Bash(dir /b \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\locales\\modules\")",
+      "Bash(dir \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\locales\\modules\\export-templates\")"
     ],
     "deny": [],
     "ask": []

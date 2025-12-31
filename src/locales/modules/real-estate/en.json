@@ -186,10 +186,17 @@
     "markAsPaidError": "Error marking payment as paid",
     "completePayment": {
       "title": "Complete Payment",
-      "description": "Select a payment method to complete this payment",
+      "description": "Select the payment date and method to complete this payment",
+      "paidDate": "Payment Date",
       "paymentMethod": "Payment Method",
       "selectMethod": "Select payment method",
       "confirm": "Complete Payment"
+    },
+    "quickEdit": {
+      "title": "Quick Edit",
+      "description": "Quickly update the payment date and method",
+      "confirm": "Update",
+      "updateSuccess": "Payment details updated"
     },
     "quickBoard": {
       "upcoming": "Upcoming Payments",
@@ -852,6 +859,8 @@
     "selectTime": "Select time",
     "apartment": "Apartment",
     "selectApartment": "Select apartment",
+    "noApartmentsFound": "No apartments found",
+    "unknownProperty": "Unknown Property",
     "type": "Type",
     "selectType": "Select type",
     "status": "Status",
@@ -1185,12 +1194,5 @@
     "taxNumberPlaceholder": "Enter tax number",
     "systemFields": "System Fields",
     "apartmentAssignment": "Apartment Assignment"
-  },
-  "form": {
-    "apartment": "Apartment",
-    "selectApartment": "Select apartment",
-    "noApartmentsFound": "No apartments found",
-    "unknownProperty": "Unknown Property",
-    "floor": "Floor"
   }
 }
