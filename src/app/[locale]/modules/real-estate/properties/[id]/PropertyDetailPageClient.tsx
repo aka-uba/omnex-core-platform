@@ -176,10 +176,12 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
         actions={[
           {
             label: t('actions.edit') || tGlobal('actions.edit'),
-            icon: <IconEdit size={16} />,
+            icon: <IconEdit size={18} />,
             onClick: () => {
               router.push(`/${currentLocale}/modules/real-estate/properties/${propertyId}/edit`);
             },
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

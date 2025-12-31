@@ -77,7 +77,8 @@ export function OrderDetailPageClient({ locale, orderId }: { locale: string; ord
             onClick: () => {
               router.push(`/${currentLocale}/modules/production/orders/${orderId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

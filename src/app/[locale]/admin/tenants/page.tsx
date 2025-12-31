@@ -1,6 +1,7 @@
 'use client';
 
-import { Container, Stack, Text, Alert, Badge, Group, Button, TextInput, Select, ActionIcon, Modal } from '@mantine/core';
+import { Container, Stack, Text, Alert, Badge, Group, TextInput, Select, ActionIcon, Button } from '@mantine/core';
+import { AlertModal } from '@/components/modals/AlertModal';
 import { IconDatabase, IconSearch, IconRefresh, IconPlus, IconTrash } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams, useRouter } from 'next/navigation';
@@ -48,6 +49,7 @@ export default function TenantsPage() {
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Hard delete mutation
   const deleteMutation = useMutation({
@@ -260,9 +262,14 @@ export default function TenantsPage() {
             clearable
           />
           <Button
-            leftSection={<IconRefresh size={16} />}
-            onClick={() => refetch()}
+            leftSection={<IconRefresh size={16} style={isRefreshing ? { animation: 'spin 1s linear infinite' } : undefined} />}
+            onClick={async () => {
+              setIsRefreshing(true);
+              await refetch();
+              setIsRefreshing(false);
+            }}
             variant="light"
+            loading={isRefreshing}
           >
             {t('buttons.refresh')}
           </Button>
@@ -302,41 +309,17 @@ export default function TenantsPage() {
         )}
       </Stack>
 
-      {/* Delete Confirmation Modal */}
-      <Modal
+      <AlertModal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
         title={t('tenants.deleteConfirmTitle') || 'Tenant Silme Onayı'}
-        centered
-      >
-        <Stack gap="md">
-          <Text>
-            {t('tenants.deleteConfirmMessage') || 'Bu tenant\'ı silmek istediğinizden emin misiniz?'}
-          </Text>
-          {selectedTenant && (
-            <Alert color="red" variant="light">
-              <Text fw={500}>{selectedTenant.name}</Text>
-              <Text size="sm" c="dimmed">Slug: {selectedTenant.slug}</Text>
-              <Text size="sm" c="dimmed">Database: {selectedTenant.dbName}</Text>
-            </Alert>
-          )}
-          <Text size="sm" c="red">
-            {t('tenants.deleteWarning') || 'Bu işlem geri alınamaz. Tenant ve ilişkili tüm veriler silinecektir.'}
-          </Text>
-          <Group justify="flex-end" gap="sm">
-            <Button variant="default" onClick={closeDeleteModal}>
-              {t('common.actions.cancel') || 'İptal'}
-            </Button>
-            <Button
-              color="red"
-              onClick={confirmDelete}
-              loading={deleteMutation.isPending}
-            >
-              {t('common.actions.delete') || 'Sil'}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        message={`${t('tenants.deleteConfirmMessage') || 'Bu tenant\'ı silmek istediğinizden emin misiniz?'}${selectedTenant ? `\n\n${selectedTenant.name} (${selectedTenant.slug})\n${t('tenants.deleteWarning') || 'Bu işlem geri alınamaz.'}` : ''}`}
+        variant="danger"
+        loading={deleteMutation.isPending}
+        onConfirm={confirmDelete}
+        confirmLabel={t('common.actions.delete') || 'Sil'}
+        cancelLabel={t('common.actions.cancel') || 'İptal'}
+      />
     </Container>
   );
 }

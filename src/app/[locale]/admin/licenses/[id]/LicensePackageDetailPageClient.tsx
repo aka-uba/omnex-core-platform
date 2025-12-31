@@ -52,7 +52,8 @@ export function LicensePackageDetailPageClient({ locale, packageId }: LicensePac
             onClick: () => {
               router.push(`/${currentLocale}/modules/license/packages/${packageId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

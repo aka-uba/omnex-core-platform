@@ -77,7 +77,8 @@ export function ExpenseDetailPageClient({ locale, expenseId }: { locale: string;
             onClick: () => {
               router.push(`/${currentLocale}/modules/accounting/expenses/${expenseId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

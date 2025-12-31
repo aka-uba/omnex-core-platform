@@ -106,7 +106,8 @@ export function LocationDetailPageClient({ locale }: { locale: string }) {
             label: tGlobal('common.edit'),
             icon: <IconEdit size={18} />,
             onClick: () => router.push(`/${locale}/locations/${id}/edit`),
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
           {
             label: tGlobal('common.delete'),

@@ -15,6 +15,7 @@ export interface AlertModalProps {
   onCancel?: () => void;
   variant?: 'danger' | 'warning' | 'info';
   size?: string;
+  loading?: boolean;
 }
 
 export function AlertModal({
@@ -28,6 +29,7 @@ export function AlertModal({
   onCancel,
   variant = 'info',
   size = 'md',
+  loading = false,
 }: AlertModalProps) {
   const { t } = useTranslation('global');
   const handleCancel = () => {
@@ -82,10 +84,10 @@ export function AlertModal({
       </Text>
 
       <Group justify="flex-end" gap="sm">
-        <Button variant="default" onClick={handleCancel}>
+        <Button variant="default" onClick={handleCancel} disabled={loading}>
           {cancelLabel || t('modal.confirm.cancel')}
         </Button>
-        <Button color={getConfirmColor()} onClick={handleConfirm}>
+        <Button color={getConfirmColor()} onClick={handleConfirm} loading={loading}>
           {confirmLabel || t('modal.confirm.confirm')}
         </Button>
       </Group>

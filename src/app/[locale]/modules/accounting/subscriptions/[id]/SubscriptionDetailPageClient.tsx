@@ -74,7 +74,8 @@ export function SubscriptionDetailPageClient({ locale, subscriptionId }: { local
             onClick: () => {
               router.push(`/${currentLocale}/modules/accounting/subscriptions/${subscriptionId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

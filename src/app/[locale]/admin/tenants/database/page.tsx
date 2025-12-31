@@ -43,6 +43,7 @@ export default function DatabaseManagementPage() {
   const currentLocale = (params?.locale as string) || 'tr';
   const { t } = useTranslation('global');
   const [search, setSearch] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<TenantsResponse>({
     queryKey: ['tenants-all'],
@@ -298,9 +299,14 @@ export default function DatabaseManagementPage() {
             style={{ flex: 1 }}
           />
           <Button
-            leftSection={<IconRefresh size={16} />}
-            onClick={() => refetch()}
+            leftSection={<IconRefresh size={16} style={isRefreshing ? { animation: 'spin 1s linear infinite' } : undefined} />}
+            onClick={async () => {
+              setIsRefreshing(true);
+              await refetch();
+              setIsRefreshing(false);
+            }}
             variant="light"
+            loading={isRefreshing}
           >
             {t('buttons.refresh')}
           </Button>

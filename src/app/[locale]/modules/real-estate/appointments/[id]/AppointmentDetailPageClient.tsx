@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, Tabs, Paper, Stack, Group, Text, Badge, Grid } from '@mantine/core';
-import { IconCalendar, IconFileText, IconCheck } from '@tabler/icons-react';
+import { IconCalendar, IconFileText, IconCheck, IconEdit } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { AppointmentFollowUp } from '@/modules/real-estate/components/AppointmentFollowUp';
 import { useAppointment } from '@/hooks/useAppointments';
@@ -81,10 +81,12 @@ export function AppointmentDetailPageClient({ locale }: { locale: string }) {
         actions={[
           {
             label: t('actions.edit'),
+            icon: <IconEdit size={18} />,
             onClick: () => {
               router.push(`/${currentLocale}/modules/real-estate/appointments/${appointmentId}/edit`);
             },
-            variant: 'outline',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

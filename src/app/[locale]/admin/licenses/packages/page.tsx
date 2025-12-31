@@ -10,10 +10,8 @@ import {
     Text,
     Badge,
     ActionIcon,
-    Button,
     Menu,
     Switch,
-    Modal,
 } from '@mantine/core';
 import {
     IconPlus,
@@ -29,6 +27,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils/format';
 import { useTranslation } from '@/lib/i18n/client';
 import { LicensePackagesSkeleton } from './LicensePackagesSkeleton';
+import { AlertModal } from '@/components/modals/AlertModal';
 
 interface LicensePackage {
     id: string;
@@ -286,29 +285,17 @@ export default function LicensePackagesPage() {
                 </Card>
             )}
 
-            {/* Delete Confirmation Modal */}
-            <Modal
+            <AlertModal
                 opened={deleteModalOpen}
                 onClose={() => setDeleteModalOpen(false)}
                 title={t('licenses.packages.deleteTitle')}
-                centered
-            >
-                <Text mb="lg">
-                    {t('licenses.packages.deleteConfirm', { name: selectedPackage?.name || '' })}
-                </Text>
-                <Group justify="flex-end">
-                    <Button variant="default" onClick={() => setDeleteModalOpen(false)}>
-                        {t('buttons.cancel')}
-                    </Button>
-                    <Button
-                        color="red"
-                        loading={deleteMutation.isPending}
-                        onClick={() => selectedPackage && deleteMutation.mutate(selectedPackage.id)}
-                    >
-                        {t('buttons.delete')}
-                    </Button>
-                </Group>
-            </Modal>
+                message={t('licenses.packages.deleteConfirm', { name: selectedPackage?.name || '' })}
+                variant="danger"
+                loading={deleteMutation.isPending}
+                onConfirm={() => selectedPackage && deleteMutation.mutate(selectedPackage.id)}
+                confirmLabel={t('buttons.delete')}
+                cancelLabel={t('buttons.cancel')}
+            />
         </Container>
     );
 }

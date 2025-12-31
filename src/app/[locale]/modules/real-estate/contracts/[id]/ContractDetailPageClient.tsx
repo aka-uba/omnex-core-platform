@@ -33,8 +33,10 @@ export function ContractDetailPageClient({ locale, contractId }: ContractDetailP
         actions={[
           {
             label: t('actions.edit'),
-            icon: <IconEdit size={16} />,
+            icon: <IconEdit size={18} />,
             onClick: () => router.push(`/${locale}/modules/real-estate/contracts/${contractId}/edit`),
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

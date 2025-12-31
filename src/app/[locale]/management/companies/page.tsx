@@ -40,6 +40,7 @@ export default function CompaniesPage() {
   const { confirm, ConfirmDialog } = useConfirmDialog();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<CompaniesResponse>({
     queryKey: ['companies', statusFilter],
@@ -322,9 +323,14 @@ export default function CompaniesPage() {
             style={{ flex: 1 }}
           />
           <Button
-            leftSection={<IconRefresh size={16} />}
-            onClick={() => refetch()}
+            leftSection={<IconRefresh size={16} style={isRefreshing ? { animation: 'spin 1s linear infinite' } : undefined} />}
+            onClick={async () => {
+              setIsRefreshing(true);
+              await refetch();
+              setIsRefreshing(false);
+            }}
             variant="light"
+            loading={isRefreshing}
           >
             {t('buttons.refresh')}
           </Button>

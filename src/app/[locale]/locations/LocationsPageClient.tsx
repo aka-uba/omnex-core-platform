@@ -58,18 +58,6 @@ export function LocationsPageClient({ locale }: { locale: string }) {
     }
   };
 
-  if (isLoading) {
-    return <LocationsPageSkeleton />;
-  }
-
-  if (error) {
-    return (
-      <Container size="xl" py="xl">
-        <Text c="red">{tGlobal('common.errorLoading')}</Text>
-      </Container>
-    );
-  }
-
   const getTypeBadge = (type: string) => {
     const typeColors: Record<string, string> = {
       firma: 'blue',
@@ -114,6 +102,13 @@ export function LocationsPageClient({ locale }: { locale: string }) {
         ]}
       />
 
+      {isLoading ? (
+        <LocationsPageSkeleton />
+      ) : error ? (
+        <Paper shadow="sm" p="md" radius="md">
+          <Text c="red">{tGlobal('common.errorLoading')}</Text>
+        </Paper>
+      ) : (
       <Paper shadow="sm" p="md" radius="md">
         {/* Toolbar */}
         <Group justify="space-between" mb="md">
@@ -252,6 +247,7 @@ export function LocationsPageClient({ locale }: { locale: string }) {
           </Group>
         )}
       </Paper>
+      )}
     </Container>
   );
 }

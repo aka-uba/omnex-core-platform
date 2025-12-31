@@ -14,6 +14,7 @@ import {
     Skeleton,
     ScrollArea
 } from '@mantine/core';
+import { AlertModal } from '@/components/modals/AlertModal';
 import {
     IconPlus,
     IconDotsVertical,
@@ -394,16 +395,17 @@ export function MenuList({
                 </Stack>
             </Modal>
 
-            {/* Delete Confirmation Modal */}
-            <Modal opened={deleteModalOpen} onClose={closeDeleteModal} title={t('deleteMenu')}>
-                <Text size="sm" mb="lg">
-                    {t('deleteConfirmation')} {selectedMenu?.name ? `"${selectedMenu.name}"` : 'this item'}?
-                </Text>
-                <Group justify="flex-end">
-                    <Button variant="light" onClick={closeDeleteModal}>{t('cancel')}</Button>
-                    <Button color="red" onClick={handleDelete} loading={isSubmitting}>{t('delete')}</Button>
-                </Group>
-            </Modal>
+            <AlertModal
+                opened={deleteModalOpen}
+                onClose={closeDeleteModal}
+                title={t('deleteMenu')}
+                message={`${t('deleteConfirmation')} ${selectedMenu?.name ? `"${selectedMenu.name}"` : 'this item'}?`}
+                variant="danger"
+                loading={isSubmitting}
+                onConfirm={handleDelete}
+                confirmLabel={t('delete')}
+                cancelLabel={t('cancel')}
+            />
         </Paper>
     );
 }

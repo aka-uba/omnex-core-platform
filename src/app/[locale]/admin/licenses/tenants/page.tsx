@@ -10,9 +10,7 @@ import {
     Text,
     Badge,
     ActionIcon,
-    Button,
     Menu,
-    Modal,
     Stack,
     Select,
     TextInput,
@@ -36,6 +34,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils/format';
 import { useTranslation } from '@/lib/i18n/client';
 import { TenantLicensesSkeleton } from './TenantLicensesSkeleton';
+import { AlertModal } from '@/components/modals/AlertModal';
 
 interface TenantLicense {
     id: string;
@@ -354,29 +353,17 @@ export default function TenantLicensesPage() {
                 </>
             )}
 
-            {/* Delete Confirmation Modal */}
-            <Modal
+            <AlertModal
                 opened={deleteModalOpen}
                 onClose={() => setDeleteModalOpen(false)}
                 title={t('licenses.tenants.deleteTitle')}
-                centered
-            >
-                <Text mb="lg">
-                    {t('licenses.tenants.deleteConfirm', { name: selectedLicense?.tenant?.name || '' })}
-                </Text>
-                <Group justify="flex-end">
-                    <Button variant="default" onClick={() => setDeleteModalOpen(false)}>
-                        {t('buttons.cancel')}
-                    </Button>
-                    <Button
-                        color="red"
-                        loading={deleteMutation.isPending}
-                        onClick={() => selectedLicense && deleteMutation.mutate(selectedLicense.id)}
-                    >
-                        {t('buttons.delete')}
-                    </Button>
-                </Group>
-            </Modal>
+                message={t('licenses.tenants.deleteConfirm', { name: selectedLicense?.tenant?.name || '' })}
+                variant="danger"
+                loading={deleteMutation.isPending}
+                onConfirm={() => selectedLicense && deleteMutation.mutate(selectedLicense.id)}
+                confirmLabel={t('buttons.delete')}
+                cancelLabel={t('buttons.cancel')}
+            />
         </Container>
     );
 }

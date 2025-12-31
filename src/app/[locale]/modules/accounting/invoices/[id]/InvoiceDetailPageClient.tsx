@@ -63,7 +63,8 @@ export function InvoiceDetailPageClient({ locale, invoiceId }: { locale: string;
             onClick: () => {
               router.push(`/${currentLocale}/modules/accounting/invoices/${invoiceId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

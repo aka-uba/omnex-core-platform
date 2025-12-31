@@ -54,7 +54,8 @@ export function TenantLicenseDetailPageClient({ locale, licenseId }: TenantLicen
             onClick: () => {
               router.push(`/${currentLocale}/modules/license/tenants/${licenseId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

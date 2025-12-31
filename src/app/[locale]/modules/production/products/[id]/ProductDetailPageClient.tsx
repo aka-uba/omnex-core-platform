@@ -62,7 +62,8 @@ export function ProductDetailPageClient({ locale, productId }: { locale: string;
             onClick: () => {
               router.push(`/${currentLocale}/modules/production/products/${productId}/edit`);
             },
-            variant: 'light',
+            variant: 'filled',
+            color: 'blue',
           },
         ]}
       />

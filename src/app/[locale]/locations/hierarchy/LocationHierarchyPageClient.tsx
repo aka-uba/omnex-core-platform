@@ -5,14 +5,13 @@ import { useRouter } from 'next/navigation';
 import {
   Container,
   Paper,
-  Button,
   Group,
   Stack,
   Text,
   ActionIcon,
   Badge,
-  Modal,
 } from '@mantine/core';
+import { AlertModal } from '@/components/modals/AlertModal';
 import { notifications } from '@mantine/notifications';
 import {
   IconMapPin,
@@ -239,34 +238,20 @@ export function LocationHierarchyPageClient({ locale }: { locale: string }) {
         </DndContext>
       </Paper>
 
-      {/* Delete Confirmation Modal */}
-      <Modal
+      <AlertModal
         opened={deleteModalOpened}
         onClose={() => {
           setDeleteModalOpened(false);
           setSelectedNode(null);
         }}
         title={t('delete.confirm')}
-        centered
-      >
-        <Stack gap="md">
-          <Text>{t('delete.confirmMessage')}</Text>
-          <Group justify="flex-end">
-            <Button
-              variant="default"
-              onClick={() => {
-                setDeleteModalOpened(false);
-                setSelectedNode(null);
-              }}
-            >
-              {t('form.cancel')}
-            </Button>
-            <Button color="red" onClick={handleDelete} loading={deleteLocation.isPending}>
-              {tGlobal('common.delete')}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        message={t('delete.confirmMessage')}
+        variant="danger"
+        loading={deleteLocation.isPending}
+        onConfirm={handleDelete}
+        confirmLabel={tGlobal('common.delete')}
+        cancelLabel={t('form.cancel')}
+      />
     </Container>
   );
 }
