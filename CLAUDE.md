@@ -510,42 +510,51 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 GET /api/audit-logs?entity=Apartment&entityId=xxx&pageSize=5
 ```
 
-**AuditLog Kaydetme (API Route'larda):**
+**AuditLog Kaydetme - Yöntem 1: Helper Fonksiyonları (Önerilen):**
 ```typescript
-import { logAuditEvent } from '@/lib/services/auditLogService';
+import { getAuditContext, logCreate, logUpdate, logDelete } from '@/lib/api/auditHelper';
+
+// Handler başında audit context al
+const auditContext = await getAuditContext(request);
 
 // CREATE işlemi
-await logAuditEvent(tenantContext, {
-  userId: currentUser.id,
-  companyId: companyId,
-  action: 'create',
-  entity: 'Apartment',
-  entityId: newItem.id,
-  metadata: { newValue: newItem },
+logCreate(tenantContext, auditContext, 'Apartment', newItem.id, companyId, {
+  unitNumber: newItem.unitNumber,
+  status: newItem.status,
 });
 
-// UPDATE işlemi
-await logAuditEvent(tenantContext, {
-  userId: currentUser.id,
-  companyId: companyId,
-  action: 'update',
-  entity: 'Apartment',
-  entityId: item.id,
-  metadata: {
-    oldValue: oldItem,
-    newValue: updatedItem,
-    changedFields: ['status', 'price'],
-  },
-});
+// UPDATE işlemi - otomatik değişiklik tespiti
+logUpdate(tenantContext, auditContext, 'Apartment', id, existingItem, updatedItem, companyId);
 
 // DELETE işlemi
-await logAuditEvent(tenantContext, {
-  userId: currentUser.id,
-  companyId: companyId,
-  action: 'delete',
+logDelete(tenantContext, auditContext, 'Apartment', id, companyId, {
+  unitNumber: existingItem.unitNumber,
+});
+```
+
+**AuditLog Kaydetme - Yöntem 2: Merkezi CRUD Wrapper:**
+```typescript
+// src/app/api/real-estate/apartments/route.ts
+import { createAuditedCrud } from '@/lib/api/withAuditedCrud';
+
+const crud = createAuditedCrud({
   entity: 'Apartment',
-  entityId: item.id,
-  metadata: { oldValue: deletedItem },
+  module: 'real-estate',
+});
+
+export const POST = crud.create(async (prisma, data, context) => {
+  return await prisma.apartment.create({
+    data: { ...data, tenantId: context.tenantId, companyId: context.companyId },
+  });
+});
+
+// src/app/api/real-estate/apartments/[id]/route.ts
+export const PATCH = crud.update(async (prisma, id, data, existing, context) => {
+  return await prisma.apartment.update({ where: { id }, data });
+});
+
+export const DELETE = crud.delete(async (prisma, id, existing, context) => {
+  await prisma.apartment.delete({ where: { id } });
 });
 ```
 
