@@ -582,6 +582,9 @@ export function ApartmentList({ locale }: ApartmentListProps) {
         exportScope="all"
         exportTitle={t('apartments.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="Apartment"
+        auditIdKey="id"
       />
     </>
   );

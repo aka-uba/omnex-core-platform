@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { apartmentUpdateSchema } from '@/modules/real-estate/schemas/apartment.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -175,6 +176,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       if (validatedData.qrCode !== undefined) updateData.qrCode = validatedData.qrCode || null;
       if (validatedData.isActive !== undefined) updateData.isActive = validatedData.isActive;
 
+      // Get audit context before update
+      const auditContext = await getAuditContext(request);
+
       // Update apartment
       const updatedApartment = await tenantPrisma.apartment.update({
         where: { id },
@@ -189,6 +193,17 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           },
         },
       });
+
+      // Log audit event (fire and forget)
+      logUpdate(
+        tenantContext,
+        auditContext,
+        'Apartment',
+        id,
+        existingApartment,
+        updatedApartment,
+        existingApartment.companyId
+      );
 
       return successResponse({
         apartment: {
@@ -247,9 +262,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         return errorResponse('Validation error', 'Cannot delete apartment with contracts', 400);
       }
 
+      // Get audit context before delete
+      const auditContext = await getAuditContext(request);
+
       // Delete apartment
       await tenantPrisma.apartment.delete({
         where: { id },
+      });
+
+      // Log audit event (fire and forget)
+      logDelete(tenantContext, auditContext, 'Apartment', id, existingApartment.companyId, {
+        unitNumber: existingApartment.unitNumber,
+        propertyId: existingApartment.propertyId,
       });
 
       return successResponse({

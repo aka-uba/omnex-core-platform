@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { apartmentCreateSchema } from '@/modules/real-estate/schemas/apartment.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/apartments - List apartments
 export async function GET(request: NextRequest) {
@@ -187,6 +188,9 @@ export async function POST(request: NextRequest) {
         return errorResponse('Validation error', 'Unit number already exists in this property', 409);
       }
 
+      // Get audit context before create
+      const auditContext = await getAuditContext(request);
+
       // Create apartment
       const newApartment = await tenantPrisma.apartment.create({
         data: {
@@ -226,6 +230,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event (fire and forget)
+      logCreate(tenantContext, auditContext, 'Apartment', newApartment.id, companyId, {
+        unitNumber: newApartment.unitNumber,
+        propertyId: newApartment.propertyId,
+        status: newApartment.status,
       });
 
       return successResponse({
