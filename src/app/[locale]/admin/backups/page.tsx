@@ -33,6 +33,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
 import { authenticatedFetchJSON, authenticatedPost, authenticatedDelete, authenticatedFetch } from '@/lib/api/authenticatedFetch';
 
 interface Backup {
@@ -59,6 +60,7 @@ interface TenantInfo {
 export default function BackupManagementPage() {
     const params = useParams();
     const locale = (params?.locale as string) || 'tr';
+    const { t } = useTranslation('modules/backups');
     const [backups, setBackups] = useState<Backup[]>([]);
     const [loading, setLoading] = useState(false);
     const [tenants, setTenants] = useState<TenantInfo[]>([]);
@@ -102,11 +104,11 @@ export default function BackupManagementPage() {
             if (data.success) {
                 setBackups(data.data?.backups || []);
             } else {
-                setError(data.error?.message || 'Yedekler yüklenemedi');
+                setError(data.error?.message || t('notifications.loadError'));
             }
         } catch (err) {
-            setError('Yedekler yüklenirken bir hata oluştu');
-            showToast({ type: 'error', title: 'Hata', message: 'Yedekler yüklenemedi' });
+            setError(t('notifications.loadErrorDetail'));
+            showToast({ type: 'error', title: t('notifications.error'), message: t('notifications.loadError') });
         } finally {
             setLoading(false);
         }
@@ -122,7 +124,7 @@ export default function BackupManagementPage() {
 
     const handleCreateBackup = async () => {
         if (!selectedTenant) {
-            showToast({ type: 'warning', title: 'Uyarı', message: 'Önce bir tenant seçin' });
+            showToast({ type: 'warning', title: t('notifications.warning'), message: t('notifications.selectTenantFirst') });
             return;
         }
 
@@ -131,47 +133,43 @@ export default function BackupManagementPage() {
             const data = await authenticatedPost('/api/admin/backups', { tenantId: selectedTenant });
 
             if (data.success) {
-                showToast({ 
+                showToast({
                     type: 'success',
-                    title: 'Başarılı', 
-                    message: 'Yedekleme başlatıldı. Lütfen bekleyin...', 
+                    title: t('notifications.success'),
+                    message: t('notifications.backupStarted'),
                     duration: 3000,
                 });
-                // Wait a bit then refresh the list
                 setTimeout(() => {
                     fetchBackups();
                 }, 2000);
             } else {
-                // Even if response has error, backup might have been created
-                // Check if error is just serialization issue
                 if (data.error?.code === 'INTERNAL_ERROR' && data.error?.message?.includes('BigInt')) {
-                    showToast({ 
+                    showToast({
                         type: 'info',
-                        title: 'Bilgi', 
-                        message: 'Yedekleme başlatıldı (yanıt hatası görmezden gelindi)', 
+                        title: t('notifications.info'),
+                        message: t('notifications.backupStartedIgnored'),
                         duration: 3000,
                     });
                     setTimeout(() => {
                         fetchBackups();
                     }, 2000);
                 } else {
-                    throw new Error(data.error?.message || data.error || 'Yedekleme başlatılamadı');
+                    throw new Error(data.error?.message || data.error || t('notifications.backupFailed'));
                 }
             }
         } catch (err: any) {
-            // Check if it's a serialization error - backup might still be created
             if (err.message?.includes('BigInt') || err.message?.includes('serialize')) {
-                showToast({ 
+                showToast({
                     type: 'info',
-                    title: 'Bilgi', 
-                    message: 'Yedekleme başlatıldı. Liste yenileniyor...', 
+                    title: t('notifications.info'),
+                    message: t('notifications.backupStartedRefresh'),
                     duration: 3000,
                 });
                 setTimeout(() => {
                     fetchBackups();
                 }, 2000);
             } else {
-                showToast({ type: 'error', title: 'Hata', message: err.message || 'Yedekleme başlatılamadı' });
+                showToast({ type: 'error', title: t('notifications.error'), message: err.message || t('notifications.backupFailed') });
             }
         } finally {
             setCreatingBackup(false);
@@ -185,20 +183,20 @@ export default function BackupManagementPage() {
 
     const handleDelete = async () => {
         if (!backupToDelete) return;
-        
+
         setDeleting(true);
         try {
             const data = await authenticatedDelete(`/api/admin/backups/${backupToDelete.id}`);
             if (data.success) {
-                showToast({ type: 'success', title: 'Başarılı', message: 'Yedek silindi' });
+                showToast({ type: 'success', title: t('notifications.success'), message: t('notifications.backupDeleted') });
                 closeDelete();
                 setBackupToDelete(null);
                 fetchBackups();
             } else {
-                throw new Error(data.error?.message || 'Yedek silinemedi');
+                throw new Error(data.error?.message || t('notifications.backupDeleteFailed'));
             }
         } catch (err: any) {
-            showToast({ type: 'error', title: 'Hata', message: err.message || 'Yedek silinemedi' });
+            showToast({ type: 'error', title: t('notifications.error'), message: err.message || t('notifications.backupDeleteFailed') });
         } finally {
             setDeleting(false);
         }
@@ -214,20 +212,20 @@ export default function BackupManagementPage() {
             if (data.success) {
                 showToast({
                     type: 'success',
-                    title: 'Başarılı',
-                    message: 'Veritabanı başarıyla geri yüklendi. Güvenlik yedeği oluşturuldu.',
+                    title: t('notifications.success'),
+                    message: t('notifications.restoreSuccess'),
                     duration: 5000
                 });
                 closeRestore();
                 fetchBackups();
             } else {
-                throw new Error(data.error?.message || 'Geri yükleme başarısız');
+                throw new Error(data.error?.message || t('notifications.restoreFailed'));
             }
         } catch (err) {
             showToast({
                 type: 'error',
-                title: 'Hata',
-                message: err instanceof Error ? err.message : 'Geri yükleme başarısız'
+                title: t('notifications.error'),
+                message: err instanceof Error ? err.message : t('notifications.restoreFailed')
             });
         } finally {
             setRestoring(false);
@@ -265,7 +263,7 @@ export default function BackupManagementPage() {
             />
 
             {error && (
-                <Alert icon={<IconAlertCircle size={16} />} title="Hata" color="red" mb="md">
+                <Alert icon={<IconAlertCircle size={16} />} title={t('notifications.error')} color="red" mb="md">
                     {error}
                 </Alert>
             )}
@@ -276,7 +274,7 @@ export default function BackupManagementPage() {
                         <Group justify="space-between" mb="md">
                             <Group>
                                 <IconDatabase size={24} />
-                                <Text fw={500}>Veritabanı İşlemleri</Text>
+                                <Text fw={500}>{t('database.title')}</Text>
                             </Group>
                             <Button
                                 leftSection={<IconPlus size={16} />}
@@ -284,24 +282,24 @@ export default function BackupManagementPage() {
                                 loading={creatingBackup}
                                 disabled={!selectedTenant}
                             >
-                                Yedek Oluştur
+                                {t('backups.create')}
                             </Button>
                         </Group>
 
                         <Alert icon={<IconAlertTriangle size={16} />} color="blue" mb="md">
-                            Yedekleme işlemi için bir tenant seçin. Yedekler güvenli bir şekilde saklanır ve istenildiğinde geri yüklenebilir.
+                            {t('database.backupInfo')}
                         </Alert>
 
                         <Select
-                            label="Tenant Seçin"
-                            placeholder="Tenant seçin..."
-                            data={tenants.map(t => ({ value: t.id, label: `${t.name} (${t.slug})` }))}
+                            label={t('form.selectTenant')}
+                            placeholder={t('form.selectTenantPlaceholder')}
+                            data={tenants.map(tenant => ({ value: tenant.id, label: `${tenant.name} (${tenant.slug})` }))}
                             value={selectedTenant}
                             onChange={setSelectedTenant}
                             searchable
                             clearable
                             disabled={tenantsLoading}
-                            nothingFoundMessage="Tenant bulunamadı"
+                            nothingFoundMessage={t('form.tenantNotFound')}
                         />
                     </Card>
                 </Grid.Col>
@@ -338,13 +336,13 @@ export default function BackupManagementPage() {
                     <Table striped highlightOnHover>
                         <Table.Thead>
                             <Table.Tr>
-                                <Table.Th>Tenant</Table.Th>
-                                <Table.Th>Dosya Adı</Table.Th>
-                                <Table.Th>Boyut</Table.Th>
-                                <Table.Th>Tür</Table.Th>
-                                <Table.Th>Durum</Table.Th>
-                                <Table.Th>Oluşturulma</Table.Th>
-                                <Table.Th>İşlemler</Table.Th>
+                                <Table.Th>{t('table.tenant')}</Table.Th>
+                                <Table.Th>{t('table.fileName')}</Table.Th>
+                                <Table.Th>{t('table.fileSize')}</Table.Th>
+                                <Table.Th>{t('table.type')}</Table.Th>
+                                <Table.Th>{t('table.status')}</Table.Th>
+                                <Table.Th>{t('table.createdAt')}</Table.Th>
+                                <Table.Th>{t('table.actions')}</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -383,19 +381,19 @@ export default function BackupManagementPage() {
                                                         document.body.removeChild(a);
                                                         showToast({
                                                             type: 'success',
-                                                            title: 'Başarılı',
-                                                            message: 'Yedek indirildi',
+                                                            title: t('notifications.success'),
+                                                            message: t('notifications.backupDownloaded'),
                                                         });
                                                     } catch (err: any) {
                                                         console.error('Download error:', err);
                                                         showToast({
                                                             type: 'error',
-                                                            title: 'Hata',
-                                                            message: err.message || 'İndirme başarısız',
+                                                            title: t('notifications.error'),
+                                                            message: err.message || t('notifications.downloadFailed'),
                                                         });
                                                     }
                                                 }}
-                                                title="İndir"
+                                                title={t('backups.download')}
                                             >
                                                 <IconDownload size={16} />
                                             </ActionIcon>
@@ -406,7 +404,7 @@ export default function BackupManagementPage() {
                                                     setSelectedBackup(backup);
                                                     openRestore();
                                                 }}
-                                                title="Restore"
+                                                title={t('backups.restore')}
                                             >
                                                 <IconHistory size={16} />
                                             </ActionIcon>
@@ -414,7 +412,7 @@ export default function BackupManagementPage() {
                                                 variant="light"
                                                 color="red"
                                                 onClick={() => handleDeleteClick(backup)}
-                                                title="Delete"
+                                                title={t('backups.delete')}
                                             >
                                                 <IconTrash size={16} />
                                             </ActionIcon>
@@ -424,7 +422,7 @@ export default function BackupManagementPage() {
                             ))}
                             {backups.length === 0 && (
                                 <Table.Tr>
-                                    <Table.Td colSpan={7} align="center">Henüz yedek bulunmuyor</Table.Td>
+                                    <Table.Td colSpan={7} align="center">{t('table.noBackups')}</Table.Td>
                                 </Table.Tr>
                             )}
                         </Table.Tbody>
@@ -435,30 +433,29 @@ export default function BackupManagementPage() {
             <Modal
                 opened={restoreModalOpen}
                 onClose={closeRestore}
-                title="Veritabanını Geri Yükle"
+                title={t('restore.title')}
                 color="red"
             >
                 <Alert color="red" icon={<IconAlertTriangle />} mb="md">
-                    Uyarı: Bu işlem mevcut veritabanını seçili yedekle değiştirecektir.
-                    Geri yüklemeden önce otomatik olarak güvenlik yedeği oluşturulacaktır.
+                    {t('restore.warning')}
                 </Alert>
 
                 {selectedBackup && (
                     <Box mb="lg">
-                        <Text fw={500}>Seçili Yedek:</Text>
+                        <Text fw={500}>{t('restore.selectedBackup')}</Text>
                         <Text>{selectedBackup.fileName}</Text>
-                        <Text c="dimmed">Oluşturulma: {new Date(selectedBackup.createdAt).toLocaleString()}</Text>
+                        <Text c="dimmed">{t('restore.createdAt')} {new Date(selectedBackup.createdAt).toLocaleString()}</Text>
                     </Box>
                 )}
 
                 <Group justify="flex-end">
-                    <Button variant="default" onClick={closeRestore}>İptal</Button>
+                    <Button variant="default" onClick={closeRestore}>{t('actions.cancel')}</Button>
                     <Button
                         color="red"
                         onClick={handleRestore}
                         loading={restoring}
                     >
-                        Geri Yükle
+                        {t('backups.restore')}
                     </Button>
                 </Group>
             </Modal>
@@ -467,32 +464,32 @@ export default function BackupManagementPage() {
             <Modal
                 opened={deleteModalOpen}
                 onClose={closeDelete}
-                title="Yedeği Sil"
+                title={t('delete.title')}
                 color="red"
             >
                 <Alert color="red" icon={<IconAlertTriangle />} mb="md">
-                    Bu yedeği silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+                    {t('delete.confirm')}
                 </Alert>
 
                 {backupToDelete && (
                     <Box mb="lg">
-                        <Text fw={500}>Silinecek Yedek:</Text>
+                        <Text fw={500}>{t('delete.selectedBackup')}</Text>
                         <Text>{backupToDelete.fileName}</Text>
-                        <Text c="dimmed">Tenant: {backupToDelete.tenant.name}</Text>
-                        <Text c="dimmed">Oluşturulma: {new Date(backupToDelete.createdAt).toLocaleString()}</Text>
+                        <Text c="dimmed">{t('delete.tenant')} {backupToDelete.tenant.name}</Text>
+                        <Text c="dimmed">{t('restore.createdAt')} {new Date(backupToDelete.createdAt).toLocaleString()}</Text>
                     </Box>
                 )}
 
                 <Group justify="flex-end">
                     <Button variant="default" onClick={closeDelete} disabled={deleting}>
-                        İptal
+                        {t('actions.cancel')}
                     </Button>
                     <Button
                         color="red"
                         onClick={handleDelete}
                         loading={deleting}
                     >
-                        Sil
+                        {t('actions.delete')}
                     </Button>
                 </Group>
             </Modal>

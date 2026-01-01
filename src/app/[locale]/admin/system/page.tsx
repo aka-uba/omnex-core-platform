@@ -27,6 +27,7 @@ import { showToast } from '@/modules/notifications/components/ToastNotification'
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams } from 'next/navigation';
 import { authenticatedFetchJSON } from '@/lib/api/authenticatedFetch';
+import { useTranslation } from '@/lib/i18n/client';
 
 interface SystemInfo {
     hostname: string;
@@ -47,6 +48,7 @@ interface ResourceUsage {
 export default function SystemStatusPage() {
     const params = useParams();
     const locale = (params?.locale as string) || 'tr';
+    const { t } = useTranslation('global');
     const [info, setInfo] = useState<SystemInfo | null>(null);
     const [usage, setUsage] = useState<ResourceUsage | null>(null);
     const [loading, setLoading] = useState(false);
@@ -63,11 +65,11 @@ export default function SystemStatusPage() {
                 setInfo(data.data.info);
                 setUsage(data.data.usage);
             } else {
-                setError(data.error?.message || 'Sistem bilgileri alınamadı');
+                setError(data.error?.message || t('systemStatus.errors.loadFailed'));
             }
         } catch (err) {
-            setError('Sistem bilgileri yüklenirken bir hata oluştu');
-            showToast({ type: 'error', title: 'Hata', message: 'Sistem bilgileri alınamadı' });
+            setError(t('systemStatus.errors.loadError'));
+            showToast({ type: 'error', title: t('common.error'), message: t('systemStatus.errors.loadFailed') });
         } finally {
             setLoading(false);
         }
@@ -96,17 +98,17 @@ export default function SystemStatusPage() {
     return (
         <Container py="xl">
             <CentralPageHeader
-                title="system.title"
-                description="system.description"
-                namespace="modules/backups"
+                title={t('systemStatus.title')}
+                description={t('systemStatus.description')}
+                namespace="global"
                 icon={<IconServer size={32} />}
                 breadcrumbs={[
                     { label: 'navigation.dashboard', href: `/${locale}/dashboard`, namespace: 'global' },
-                    { label: 'system.title', namespace: 'modules/backups' },
+                    { label: t('systemStatus.title'), namespace: 'global' },
                 ]}
                 actions={[
                     {
-                        label: 'actions.view',
+                        label: t('systemStatus.refresh'),
                         icon: <IconRefresh size={18} />,
                         onClick: fetchData,
                         variant: 'default',
@@ -115,7 +117,7 @@ export default function SystemStatusPage() {
             />
 
             {error && (
-                <Alert icon={<IconAlertCircle size={16} />} title="Hata" color="red" mb="md">
+                <Alert icon={<IconAlertCircle size={16} />} title={t('common.error')} color="red" mb="md">
                     {error}
                 </Alert>
             )}
@@ -152,13 +154,13 @@ export default function SystemStatusPage() {
                             />
                             <div>
                                 <Text c="dimmed" tt="uppercase" fw={700}>
-                                    CPU Kullanımı
+                                    {t('systemStatus.cpuUsage')}
                                 </Text>
                                 <Text fw={700}>
                                     {usage?.cpuUsage.toFixed(1)}%
                                 </Text>
                                 <Text c="dimmed">
-                                    {info?.cpus} Çekirdek
+                                    {info?.cpus} {t('systemStatus.cores')}
                                 </Text>
                             </div>
                         </Group>
@@ -181,7 +183,7 @@ export default function SystemStatusPage() {
                             />
                             <div>
                                 <Text c="dimmed" tt="uppercase" fw={700}>
-                                    Bellek Kullanımı
+                                    {t('systemStatus.memoryUsage')}
                                 </Text>
                                 <Text fw={700}>
                                     {usage?.memoryUsage.toFixed(1)}%
@@ -210,42 +212,42 @@ export default function SystemStatusPage() {
                             />
                             <div>
                                 <Text c="dimmed" tt="uppercase" fw={700}>
-                                    Disk Kullanımı
+                                    {t('systemStatus.diskUsage')}
                                 </Text>
                                 <Text fw={700}>
                                     {usage?.diskUsage.toFixed(1)}%
                                 </Text>
                                 <Text c="dimmed">
-                                    Sistem Depolama
+                                    {t('systemStatus.systemStorage')}
                                 </Text>
                             </div>
                         </Group>
                     </Paper>
                 </Grid.Col>
 
-                {/* Sunucu Bilgileri */}
+                {/* Server Info */}
                 <Grid.Col span={12}>
                     <Card withBorder p="lg" radius="md">
                         <Group mb="md">
                             <IconServer size={24} />
-                            <Text fw={500}>Sunucu Bilgileri</Text>
+                            <Text fw={500}>{t('systemStatus.serverInfo')}</Text>
                         </Group>
 
                         <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }}>
                             <Box>
-                                <Text c="dimmed">Sunucu Adı</Text>
+                                <Text c="dimmed">{t('systemStatus.hostname')}</Text>
                                 <Text fw={500}>{info?.hostname || '-'}</Text>
                             </Box>
                             <Box>
-                                <Text c="dimmed">Platform</Text>
+                                <Text c="dimmed">{t('systemStatus.fields.platform')}</Text>
                                 <Text fw={500}>{info?.platform} ({info?.arch})</Text>
                             </Box>
                             <Box>
-                                <Text c="dimmed">Çalışma Süresi</Text>
+                                <Text c="dimmed">{t('systemStatus.fields.uptime')}</Text>
                                 <Text fw={500}>{info ? formatUptime(info.uptime) : '-'}</Text>
                             </Box>
                             <Box>
-                                <Text c="dimmed">Node Sürümü</Text>
+                                <Text c="dimmed">{t('systemStatus.fields.nodeVersion')}</Text>
                                 <Text fw={500}>{process.version}</Text>
                             </Box>
                         </SimpleGrid>

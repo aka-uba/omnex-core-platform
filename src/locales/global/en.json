@@ -1,9 +1,6 @@
 {
-  "success": "Success",
-  "error": "Error",
-  "warning": "Warning",
-  "info": "Info",
   "common": {
+    "search": "Search",
     "actions": {
       "save": "Save",
       "cancel": "Cancel",
@@ -24,871 +21,455 @@
       "preview": "Preview",
       "archive": "Archive",
       "setDefault": "Set as Default",
-      "title": "Actions",
-      "hidePeriodSelection": "Hide Period Selection"
+      "add": "Add",
+      "remove": "Remove",
+      "next": "Next",
+      "previous": "Previous",
+      "clear": "Clear",
+      "apply": "Apply",
+      "select": "Select",
+      "selectAll": "Select All",
+      "download": "Download",
+      "print": "Print",
+      "copy": "Copy",
+      "duplicate": "Duplicate",
+      "move": "Move",
+      "rename": "Rename",
+      "share": "Share",
+      "send": "Send",
+      "retry": "Retry",
+      "continue": "Continue",
+      "skip": "Skip",
+      "finish": "Finish",
+      "start": "Start",
+      "stop": "Stop",
+      "pause": "Pause",
+      "resume": "Resume",
+      "enable": "Enable",
+      "disable": "Disable",
+      "approve": "Approve",
+      "reject": "Reject",
+      "filter": "Filter",
+      "sort": "Sort",
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "showMore": "Show More",
+      "showLess": "Show Less",
+      "viewAll": "View All",
+      "hidePeriodSelection": "Hide Period Selection",
+      "title": "Actions"
     },
-    "status": {
-      "success": "Success",
-      "error": "Error",
-      "warning": "Warning",
-      "info": "Info",
-      "loading": "Loading...",
-      "active": "Active",
-      "inactive": "Inactive",
-      "pending": "Pending",
-      "completed": "Completed",
-      "draft": "Draft"
-    },
-    "messages": {
-      "noData": "No data found",
-      "noResults": "No results found",
-      "errorLoading": "Error loading",
-      "notFound": "Not found",
-      "comingSoon": "Coming Soon"
-    },
-    "confirmations": {
-      "deleteFile": "Are you sure you want to delete this file?",
-      "deleteItem": "Are you sure you want to delete this item?",
-      "unsavedChanges": "There are unsaved changes. Are you sure you want to leave?"
-    },
-    "validation": {
-      "required": "is required",
-      "invalidEmail": "Enter a valid email address",
-      "minLength": "Must be at least {{min}} characters",
-      "maxLength": "Must be at most {{max}} characters",
-      "passwordRequired": "Password is required",
-      "usernameRequired": "Username is required",
-      "companyRequired": "Company selection is required"
-    },
-    "dates": {
-      "createdAt": "Created Date",
-      "updatedAt": "Updated Date"
-    },
-    "labels": {
-      "all": "All",
-      "yes": "Yes",
-      "no": "No",
-      "description": "Description",
-      "subscription": "Subscription",
-      "configuration": "Configuration",
-      "calendar": "Calendar",
-      "list": "List"
-    },
-    "back": "Back",
-    "loading": "Loading...",
-    "delete": "Delete",
-    "edit": "Edit",
-    "save": "Save",
-    "cancel": "Cancel",
-    "create": "Create",
-    "update": "Update",
-    "view": "View",
-    "confirm": "Confirm",
-    "close": "Close",
-    "search": "Search",
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
     "info": "Info",
     "active": "Active",
     "inactive": "Inactive",
-    "noData": "No data found",
-    "noResults": "No results found",
+    "loading": "Loading...",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "deleted": "Deleted",
+    "comingSoon": "Coming Soon",
     "errorLoading": "Error loading",
-    "notFound": "Not found",
-    "required": "is required",
+    "noData": "No data found",
     "showing": "Showing",
-    "of": "/",
-    "modules": "module",
-    "information": "Info",
-    "createdAt": "Created Date",
-    "updatedAt": "Updated Date",
-    "notApplicable": "Not specified"
-  },
-  "calendar": {
-    "title": "Calendar",
-    "description": "Calendar management and events"
-  },
-  "list": {
-    "subscription": "subscription",
-    "raporu": {
-      "silinecek": {
-        "bu": {
-          "islem": {
-            "geri": {
-              "alinamaz": {
-                "": " report will be deleted. This action cannot be undone. Are you sure?"
-              }
+    "of": "of",
+    "modules": "Modules",
+    "create": "Create",
+    "update": "Update",
+    "back": "Back",
+    "required": "Required",
+    "notFound": "Not Found",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "notApplicable": "N/A",
+    "information": "Information",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "status": {
+      "title": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "completed": "Completed",
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "deleted": "Deleted",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled",
+      "expired": "Expired",
+      "suspended": "Suspended",
+      "processing": "Processing",
+      "failed": "Failed",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info",
+      "loading": "Loading..."
+    },
+    "messages": {
+      "noData": "No data found",
+      "noResults": "No results found",
+      "errorLoading": "Error loading",
+      "notFound": "Not found",
+      "comingSoon": "Coming Soon",
+      "saveSuccess": "Successfully saved",
+      "saveError": "Error while saving",
+      "deleteSuccess": "Successfully deleted",
+      "deleteError": "Error while deleting",
+      "updateSuccess": "Successfully updated",
+      "updateError": "Error while updating",
+      "createSuccess": "Successfully created",
+      "createError": "Error while creating",
+      "loadError": "An error occurred while loading",
+      "networkError": "Network error or server unavailable",
+      "unauthorized": "You are not authorized for this action",
+      "accessDenied": "Access denied",
+      "sessionExpired": "Session expired",
+      "invalidRequest": "Invalid request",
+      "unknownError": "An unknown error occurred"
+    },
+    "confirmations": {
+      "delete": "Are you sure you want to delete this item?",
+      "deleteFile": "Are you sure you want to delete this file?",
+      "deleteItem": "Are you sure you want to delete this item?",
+      "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
+      "irreversible": "This action cannot be undone."
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Enter a valid email address",
+      "minLength": "Must be at least {{min}} characters",
+      "maxLength": "Must be at most {{max}} characters",
+      "passwordRequired": "Password is required",
+      "usernameRequired": "Username is required",
+      "companyRequired": "Company selection is required",
+      "invalidFormat": "Invalid format",
+      "numberOnly": "Only numbers should be entered",
+      "positiveNumber": "A positive number must be entered",
+      "invalidDate": "Invalid date",
+      "invalidUrl": "Enter a valid URL",
+      "invalidPhone": "Enter a valid phone number",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 8 characters"
+    },
+    "labels": {
+      "all": "All",
+      "yes": "Yes",
+      "no": "No",
+      "none": "None",
+      "other": "Other",
+      "default": "Default",
+      "custom": "Custom",
+      "total": "Total",
+      "count": "Count",
+      "amount": "Amount",
+      "date": "Date",
+      "time": "Time",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "status": "Status",
+      "actions": "Actions",
+      "details": "Details",
+      "options": "Options",
+      "settings": "Settings",
+      "information": "Information",
+      "notes": "Notes",
+      "comments": "Comments",
+      "attachments": "Attachments",
+      "history": "History",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "createdBy": "Created By",
+      "updatedBy": "Updated By",
+      "notApplicable": "N/A",
+      "unlimited": "Unlimited",
+      "warning": "Warning"
+    },
+    "kullanici": {
+      "adi": {
+        "gereklidir": "Username is required"
+      }
+    },
+    "sifre": {
+      "gereklidir": "Password is required"
+    },
+    "firma": {
+      "secimi": {
+        "gereklidir": "Company selection is required"
+      }
+    },
+    "currentyear": {
+      "yili": "Year 2026",
+      "1": {
+        "yili": "Year 2025"
+      },
+      "2": {
+        "yili": "Year 2024"
+      }
+    },
+    "bu": {
+      "dosyayi": {
+        "silmek": {
+          "istediginizden": {
+            "emin": {
+              "mi": "Are you sure you want to delete this file?"
             }
           }
         }
       }
+    },
+    "time": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This Week",
+      "lastWeek": "Last Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisYear": "This Year",
+      "days": "days",
+      "hours": "hours",
+      "minutes": "minutes",
+      "seconds": "seconds"
+    },
+    "pagination": {
+      "showing": "Showing",
+      "of": "of",
+      "page": "Page",
+      "recordsPerPage": "Records per page:",
+      "first": "First",
+      "last": "Last",
+      "previous": "Previous",
+      "next": "Next"
     }
   },
-  "form": {
-    "upload": "Upload",
-    "cancel": "Cancel",
-    "save": "Save",
-    "submit": "Submit",
-    "reset": "Reset",
-    "create": "Create",
-    "update": "Update",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "labels": {
-      "subscription": "Subscription",
-      "description": "Description"
-    }
-  },
-  "save": "Save",
-  "cancel": "Cancel",
-  "buttons": {
-    "refresh": "Refresh",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "create": "Create",
-    "update": "Update",
-    "view": "View",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "reset": "Reset",
-    "close": "Close",
-    "confirm": "Confirm",
-    "add": "Add",
-    "remove": "Remove"
-  },
+
   "navigation": {
     "dashboard": "Dashboard",
     "settings": "Settings",
     "modules": "Modules",
     "corePages": "Core Pages",
-    "superadmin": "Super Admin"
+    "superadmin": "Super Admin",
+    "profile": "Profile",
+    "logout": "Logout",
+    "home": "Home",
+    "back": "Back",
+    "menu": "Menu"
   },
-  "settings": {
-    "menuManagement": {
-      "title": "Menu Management"
+
+  "empty": {
+    "message": "No data found"
+  },
+
+  "table": {
+    "actions": "Actions",
+    "noData": "No data found",
+    "noResults": "No results found",
+    "loading": "Loading...",
+    "search": {
+      "placeholder": "Search...",
+      "label": "Search"
     },
-    "theme": {
-      "title": "Theme Settings",
-      "saved": "Settings Saved",
-      "savedMessage": "Your theme preferences have been saved successfully.",
-      "defaultsSaved": "Defaults Saved",
-      "defaultsSavedMessage": "Company defaults have been saved successfully.",
-      "saveAsDefault": "Save as Default",
-      "resetTitle": "Reset Settings",
-      "resetConfirm": "Are you sure you want to reset all theme preferences to default values? This action cannot be undone.",
-      "resetSuccess": "Settings Reset",
-      "resetSuccessMessage": "All theme preferences have been reset to default values.",
-      "preferencesSaved": "Preferences Saved",
-      "preferencesSavedMessage": "Your theme preferences have been saved successfully.",
-      "resetPreferences": "Reset Preferences",
-      "resetPreferencesConfirm": "Are you sure you want to reset all theme preferences to default values? This action cannot be undone.",
-      "preferencesReset": "Preferences Reset",
-      "preferencesResetMessage": "All theme preferences have been reset to default values.",
-      "menuColor": "Menu Color",
-      "topMenuColor": "Top Menu Color"
-    },
-    "general": {
-      "title": "General Settings",
-      "description": "Manage platform general settings",
-      "loadError": "An error occurred while loading settings",
-      "savedSuccessfully": "Settings saved successfully",
-      "saveError": "An error occurred while saving settings",
-      "tabs": {
-        "regionTime": "Region and Time",
-        "email": "Email (SMTP)",
-        "calendar": "Calendar Integration",
-        "security": "Security"
-      },
-      "regionTime": {
-        "title": "Region and Time Settings",
-        "timezone": "Timezone",
-        "dateFormat": "Date Format",
-        "timeFormat": "Time Format",
-        "timeFormat12": "12 Hour (AM/PM)",
-        "timeFormat24": "24 Hour",
-        "weekStart": "Week Start",
-        "weekStartMonday": "Monday",
-        "weekStartSunday": "Sunday",
-        "currency": "Currency",
-        "defaultLanguage": "Default Language",
-        "languageTr": "Turkish",
-        "languageEn": "English",
-        "languageDe": "German",
-        "languageAr": "Arabic",
-        "currencyTRY": "TRY - Turkish Lira",
-        "currencyUSD": "USD - US Dollar",
-        "currencyEUR": "EUR - Euro",
-        "currencyGBP": "GBP - British Pound",
-        "currencyJPY": "JPY - Japanese Yen",
-        "currencyCNY": "CNY - Chinese Yuan"
-      },
-      "email": {
-        "title": "Email (SMTP) Settings",
-        "enableSmtp": "Enable SMTP",
-        "smtpHost": "SMTP Server",
-        "smtpPort": "SMTP Port",
-        "encryption": "Encryption",
-        "encryptionNone": "None",
-        "username": "Username",
-        "password": "Password",
-        "fromName": "From Name",
-        "fromEmail": "From Email",
-        "advanced": "Advanced Settings",
-        "timeout": "Timeout",
-        "retryAttempts": "Retry Attempts",
-        "connectionPool": "Connection Pool",
-        "sendTestEmail": "Send Test Email",
-        "testEmailPlaceholder": "Test email feature will be added soon",
-        "testEmailSuccess": "Test email sent successfully",
-        "testEmailError": "Error occurred while sending test email",
-        "testEmailValidationError": "SMTP settings are missing or invalid. Please check SMTP server and sender email address",
-        "testEmailModal": {
-          "title": "Send Test Email",
-          "to": "Recipient Email",
-          "toPlaceholder": "example@email.com",
-          "toRequired": "Recipient email address is required",
-          "invalidEmail": "Enter a valid email address",
-          "subject": "Subject",
-          "subjectPlaceholder": "Email subject",
-          "subjectRequired": "Subject is required",
-          "message": "Message",
-          "messagePlaceholder": "Email message",
-          "messageRequired": "Message is required",
-          "send": "Send",
-          "smtpDisabled": "SMTP Disabled",
-          "smtpDisabledMessage": "You need to enable SMTP first to send test email.",
-          "checkCredentials": "Please check your SMTP username, password and other settings.",
-          "defaultSubject": "OMNEX - Test Email",
-          "defaultMessage": "This is a test email sent from your OMNEX platform.\n\nIf you received this email, your SMTP configuration is working correctly."
-        },
-        "errors": {
-          "SMTP_AUTH_FAILED": "SMTP Authentication Error",
-          "SMTP_AUTH_FAILED_MESSAGE": "Username or password is incorrect. Please check your SMTP credentials.",
-          "SMTP_CONNECTION_FAILED": "SMTP Connection Error",
-          "SMTP_CONNECTION_FAILED_MESSAGE": "Cannot connect to SMTP server. Please check your SMTP settings.",
-          "SMTP_SEND_FAILED": "Email Sending Error",
-          "SMTP_SEND_FAILED_MESSAGE": "Email could not be sent. Please check your SMTP settings and try again.",
-          "SMTP_NOT_ENABLED": "SMTP Not Enabled",
-          "SMTP_NOT_ENABLED_MESSAGE": "SMTP is not enabled. Please enable SMTP from settings first.",
-          "SMTP_INCOMPLETE": "SMTP Configuration Incomplete",
-          "SMTP_INCOMPLETE_MESSAGE": "SMTP server and sender email address are required.",
-          "SMTP_TRANSPORTER_FAILED": "SMTP Transporter Creation Error",
-          "SMTP_TRANSPORTER_FAILED_MESSAGE": "SMTP transporter could not be created. Please check your SMTP settings.",
-          "NODEMAILER_IMPORT_FAILED": "Nodemailer Import Error",
-          "NODEMAILER_IMPORT_FAILED_MESSAGE": "Nodemailer could not be imported. Please ensure nodemailer package is installed: npm install nodemailer @types/nodemailer",
-          "NODEMAILER_NOT_INSTALLED": "Nodemailer Not Installed",
-          "NODEMAILER_NOT_INSTALLED_MESSAGE": "Nodemailer package is required to send emails. Please install: npm install nodemailer @types/nodemailer",
-          "TEST_EMAIL_ERROR": "Test Email Error",
-          "TEST_EMAIL_ERROR_MESSAGE": "An error occurred while sending test email.",
-          "REQUEST_FAILED": "Request Error",
-          "REQUEST_FAILED_MESSAGE": "An unexpected error occurred.",
-          "UNAUTHORIZED": "Unauthorized Access",
-          "UNAUTHORIZED_MESSAGE": "You do not have permission for this operation.",
-          "TENANT_ID_REQUIRED": "Tenant ID Required",
-          "TENANT_ID_REQUIRED_MESSAGE": "Tenant ID is required.",
-          "COMPANY_ID_REQUIRED": "Company ID Required",
-          "COMPANY_ID_REQUIRED_MESSAGE": "Company ID is required. Company not found for tenant.",
-          "EMAIL_REQUIRED": "Email Address Required",
-          "EMAIL_REQUIRED_MESSAGE": "Recipient email address is required.",
-          "INVALID_EMAIL": "Invalid Email Address",
-          "INVALID_EMAIL_MESSAGE": "Please enter a valid email address.",
-          "INVALID_REQUEST_BODY": "Invalid Request Body",
-          "INVALID_REQUEST_BODY_MESSAGE": "Request body could not be parsed. Please send a request with valid JSON.",
-          "SETTINGS_NOT_FOUND": "Settings Not Found",
-          "SETTINGS_NOT_FOUND_MESSAGE": "General settings not found. Please configure SMTP settings first.",
-          "status": "Status",
-          "networkError": "Network error or server unavailable"
-        },
-        "smtpHostPlaceholder": "smtp.example.com",
-        "timeoutSuffix": " ms",
-        "retryAttemptsSuffix": " attempts",
-        "connectionPoolSuffix": " connections"
-      },
-      "calendar": {
-        "title": "Calendar Integration",
-        "googleCalendar": "Google Calendar",
-        "outlook": "Microsoft Outlook/Office 365",
-        "icloud": "Apple iCloud",
-        "yandex": "Yandex Calendar",
-        "enable": "Enable",
-        "apiKey": "API Key",
-        "calendarId": "Calendar ID",
-        "clientId": "Client ID",
-        "tenantId": "Tenant ID",
-        "calendarUrl": "Calendar URL",
-        "token": "Token",
-        "syncInterval": "Sync Interval",
-        "generalSettings": "General Calendar Settings",
-        "defaultView": "Default View",
-        "viewMonth": "Month",
-        "viewWeek": "Week",
-        "viewDay": "Day",
-        "showWeekends": "Show Weekends",
-        "showHolidays": "Show Holidays"
-      },
-      "security": {
-        "title": "Security Settings",
-        "sessionManagement": "Session Management",
-        "sessionTimeout": "Session Timeout",
-        "maxConcurrentSessions": "Max Concurrent Sessions",
-        "rememberMeDuration": "Remember Me Duration",
-        "passwordPolicy": "Password Policy",
-        "passwordMinLength": "Minimum Password Length",
-        "requireUppercase": "Require Uppercase",
-        "requireLowercase": "Require Lowercase",
-        "requireNumbers": "Require Numbers",
-        "requireSpecial": "Require Special Characters",
-        "passwordExpiration": "Password Expiration (Days)",
-        "noExpiration": "No Expiration",
-        "twoFactorAuth": "Two-Factor Authentication (2FA)",
-        "enable2FA": "Enable 2FA",
-        "require2FAForAdmins": "Required for Admins",
-        "loginSecurity": "Login Security",
-        "maxLoginAttempts": "Max Login Attempts",
-        "lockoutDuration": "Lockout Duration",
-        "ipWhitelist": "IP Whitelist",
-        "ipWhitelistDescription": "Enter one IP address per line",
-        "ipWhitelistPlaceholder": "192.168.1.1\n10.0.0.1",
-        "apiSecurity": "API Security",
-        "apiRateLimit": "API Rate Limit",
-        "apiKeyExpiration": "API Key Expiration (Days)",
-        "minutesSuffix": " minutes",
-        "daysSuffix": " days",
-        "requestsPerMinuteSuffix": " requests/minute"
+    "filter": {
+      "title": "Filters",
+      "button": "Filters",
+      "clear": "Clear Filters",
+      "apply": "Apply Filters",
+      "active": "Active Filters",
+      "all": "All",
+      "searchPlaceholder": "Search {{label}}...",
+      "selectPlaceholder": "Select {{label}}...",
+      "numberPlaceholder": "Enter {{label}}...",
+      "noOptions": "No filter options available.",
+      "dateRange": {
+        "start": "Start",
+        "end": "End",
+        "startPlaceholder": "Start date",
+        "endPlaceholder": "End date"
       }
     },
-    "company": {
-      "title": "Company Settings"
+    "columnSettings": {
+      "title": "Column Settings",
+      "reset": "Reset",
+      "reorder": "Reorder Columns",
+      "toggle": "Column Visibility",
+      "resetToDefaults": "Reset to Defaults",
+      "show": "Show",
+      "hide": "Hide",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "columnsSection": "Columns",
+      "columnBackground": "Column Background",
+      "clearColor": "Clear Color",
+      "tableStyle": {
+        "title": "Table Style",
+        "verticalBorders": "Vertical Borders",
+        "headerBackground": "Header Background",
+        "selectColor": "Select color..."
+      },
+      "badges": {
+        "sortable": "Sortable",
+        "searchable": "Searchable",
+        "filterable": "Filterable"
+      },
+      "tip": {
+        "title": "Tip",
+        "description": "You can reorder columns by dragging or using up/down buttons, and change their visibility by clicking the eye icon."
+      }
     },
-    "locations": {
-      "title": "Locations",
-      "description": "View and manage company locations",
-      "allLocations": "All Locations",
-      "create": "New Location",
-      "createSubArea": "New Sub Area",
-      "edit": "Edit",
-      "view": "View",
-      "delete": "Delete",
-      "close": "Close",
+    "pagination": {
+      "recordsPerPage": "Records per page:",
+      "showing": "records showing",
+      "of": "of",
+      "page": "Page",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "export": {
+      "providerRequired": "ExportProvider required",
+      "all": "All",
+      "currentPage": "This Page",
+      "selected": "Selected"
+    },
+    "selection": {
+      "selected": "selected",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All"
+    }
+  },
+
+  "modal": {
+    "confirm": {
+      "title": "Confirmation",
+      "message": "Are you sure?",
+      "yes": "Yes",
+      "no": "No",
       "cancel": "Cancel",
-      "update": "Update",
-      "success": "Success",
-      "error": "Error",
-      "warning": "Warning",
-      "loading": "Loading locations...",
-      "noData": "No location found",
-      "createLocation": "Create Location",
-      "editLocation": "Edit Location",
-      "editSubArea": "Edit Sub Area",
-      "addSubArea": "Add Sub Area",
-      "deleteConfirm": "Are you sure you want to delete this location?",
-      "deleteSuccess": "Location deleted successfully",
-      "deleteError": "Error occurred while deleting location",
-      "createSuccess": "Location created successfully",
-      "updateSuccess": "Location updated successfully",
-      "saveError": "Error occurred while saving location",
-      "createSubAreaSuccess": "Sub area created successfully",
-      "updateSubAreaSuccess": "Sub area updated successfully",
-      "nameRequired": "Location name is required",
-      "createDescription": "Create new location",
-      "noParentLocation": "You must create a parent location first",
-      "noParentSelected": "Parent location must be selected",
-      "types": {
-        "headquarters": "Headquarters",
-        "branch": "Branch",
-        "warehouse": "Warehouse",
-        "office": "Office",
-        "factory": "Factory",
-        "store": "Store",
-        "other": "Other"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive"
-      },
-      "columns": {
-        "name": "Name",
-        "code": "Code",
-        "type": "Type",
-        "city": "City",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "filters": {
-        "type": "Location Type",
-        "status": "Status"
-      },
-      "form": {
-        "upload": "Upload",
-        "cancel": "Cancel",
-        "save": "Save",
-        "submit": "Submit",
-        "reset": "Reset",
-        "create": "Create",
-        "update": "Update",
-        "delete": "Delete",
-        "edit": "Edit",
-        "close": "Close",
-        "name": "Name",
-        "code": "Code",
-        "type": "Type",
-        "parent": "Parent Location",
-        "address": "Address",
-        "city": "City",
-        "country": "Country",
-        "postalCode": "Postal Code",
-        "description": "Description",
-        "isActive": "Active",
-        "latitude": "Latitude",
-        "latitudePlaceholder": "41.0082",
-        "longitude": "Longitude",
-        "longitudePlaceholder": "28.9784",
-        "phone": "Phone",
-        "phonePlaceholder": "+90 212 123 45 67",
-        "email": "Email",
-        "emailPlaceholder": "location@example.com",
-        "googleMapsLink": "Google Maps Share Link",
-        "googleMapsLinkPlaceholder": "https://www.google.com/maps?q=41.0082,28.9784",
-        "googleMapsLinkDescription": "Paste the share link from Google Maps, coordinates will be automatically filled",
-        "namePlaceholder": "E.g: Main Building",
-        "codePlaceholder": "E.g: LOC-001",
-        "descriptionPlaceholder": "Description about location",
-        "parentPlaceholder": "Select parent location (optional)",
-        "addressPlaceholder": "Street address",
-        "cityPlaceholder": "City name",
-        "countryPlaceholder": "Country name",
-        "postalCodePlaceholder": "Postal code",
-        "subAreaNamePlaceholder": "E.g: Corridor A",
-        "subAreaCodePlaceholder": "E.g: COR-A",
-        "nameRequired": "Name Required",
-        "typeRequired": "Type Required"
-      },
-      "map": {
-        "title": "Map View",
-        "description": "View locations on map",
-        "noLocations": "No location found to display on map. Add latitude and longitude information to locations.",
-        "viewOnMap": "View on Map",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "openInGoogleMaps": "Open in Google Maps"
-      },
-      "table": {
-        "name": "List"
-      }
+      "confirm": "Confirm"
     },
-    "exportTemplates": {
-      "title": "Export Templates"
+    "delete": {
+      "title": "Delete Confirmation",
+      "message": "Are you sure you want to delete this item? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
     },
-    "notifications": {
-      "title": "Notification Settings",
-      "description": "Manage your platform's notification settings",
-      "loadError": "An error occurred while loading notification settings.",
-      "saveError": "An error occurred while saving notification settings.",
-      "savedSuccessfully": "Notification settings saved successfully.",
-      "email": {
-        "tabTitle": "Email Notifications",
-        "title": "Email Notification Settings",
-        "enable": "Enable Email Notifications",
-        "enableDescription": "Enable or disable email notifications system-wide",
-        "notificationTypes": "Notification Types",
-        "types": {
-          "system": "System Notifications",
-          "systemDescription": "Notifications sent by the system",
-          "user": "User Notifications",
-          "userDescription": "Notifications between users",
-          "module": "Module Notifications",
-          "moduleDescription": "Notifications from modules"
-        }
-      },
-      "push": {
-        "tabTitle": "Push Notifications",
-        "title": "Push Notification Settings",
-        "enable": "Enable Push Notifications",
-        "enableDescription": "Enable or disable browser and mobile push notifications",
-        "channels": "Notification Channels",
-        "browser": "Browser Notifications",
-        "browserDescription": "Web browser push notifications",
-        "mobile": "Mobile Notifications",
-        "mobileDescription": "Mobile app push notifications",
-        "notificationTypes": "Notification Types",
-        "types": {
-          "system": "System Notifications",
-          "systemDescription": "Notifications sent by the system",
-          "user": "User Notifications",
-          "userDescription": "Notifications between users",
-          "module": "Module Notifications",
-          "moduleDescription": "Notifications from modules"
-        }
-      },
-      "sms": {
-        "tabTitle": "SMS Notifications",
-        "title": "SMS Notification Settings",
-        "enable": "Enable SMS Notifications",
-        "enableDescription": "Enable or disable SMS notifications",
-        "provider": "SMS Provider",
-        "providerDescription": "Provider to use for SMS sending",
-        "providerCustom": "Custom",
-        "apiKey": "API Key",
-        "apiKeyPlaceholder": "SMS provider API key",
-        "apiSecret": "API Secret Key",
-        "apiSecretPlaceholder": "SMS provider API secret key",
-        "fromNumber": "From Number",
-        "fromNumberPlaceholder": "SMS sender phone number",
-        "notificationTypes": "Notification Types",
-        "types": {
-          "system": "System Notifications",
-          "systemDescription": "SMS notifications sent by the system",
-          "user": "User Notifications",
-          "userDescription": "SMS notifications between users",
-          "module": "Module Notifications",
-          "moduleDescription": "SMS notifications from modules"
-        }
-      },
-      "preferences": {
-        "tabTitle": "Notification Preferences",
-        "title": "Notification Preferences",
-        "reminderTime": "Reminder Time",
-        "reminderTimeDescription": "How many minutes before notification to send reminder",
-        "quietHours": "Quiet Hours",
-        "quietHoursStart": "Start Time",
-        "quietHoursEnd": "End Time",
-        "notificationSound": "Notification Sound",
-        "notificationSoundDescription": "Play sound when notification arrives"
-      },
-      "modules": {
-        "tabTitle": "Module Notifications",
-        "title": "Module Notification Settings",
-        "description": "Manage notification settings for each module",
-        "noModules": "No module with notification settings found",
-        "enableModule": "Enable Module Notifications",
-        "enableModuleDescription": "Enable or disable notifications for {{module}} module",
-        "channels": "Notification Channels",
-        "channelEmail": "Email",
-        "channelPush": "Push",
-        "channelSMS": "SMS",
-        "notificationTypes": "Notification Types"
-      }
-    },
-    "security": {
-      "title": "Güvenlik"
-    },
-    "integrations": {
-      "title": "Entegrasyonlar"
+    "alert": {
+      "ok": "OK",
+      "cancel": "Cancel"
     }
   },
-  "management": {
-    "title": "Management",
-    "users": {
-      "title": "Users",
-      "description": "Manage system users"
-    },
-    "roles": {
-      "title": "Roles",
-      "description": "Manage user roles and permissions"
-    },
-    "permissions": {
-      "title": "Permissions",
-      "description": "Manage system-wide permissions and access levels"
-    },
-    "companies": {
-      "title": "Companies",
-      "create": "Create Company",
-      "createTitle": "Create New Company",
-      "createDescription": "Complete the following steps to create a new company (tenant)",
-      "wizard": {
-        "step1": {
-          "label": "Basic Information",
-          "description": "Company details",
-          "fields": {
-            "tenantName": "Company Name",
-            "tenantNamePlaceholder": "ACME Corporation",
-            "tenantNameRequired": "Company Name is required",
-            "slug": "Slug",
-            "slugPlaceholder": "acme",
-            "slugDescription": "Used in database naming (lowercase, numbers and hyphens only)",
-            "slugRequired": "Slug is required",
-            "subdomain": "Subdomain",
-            "subdomainPlaceholder": "acme",
-            "subdomainDescription": "Access URL: acme.onwindos.com",
-            "customDomain": "Custom Domain (Optional)",
-            "customDomainPlaceholder": "https://acme.com"
-          }
-        },
-        "step2": {
-          "label": "Company Information",
-          "description": "Logo and details",
-          "fields": {
-            "companyName": "Company Name",
-            "companyNamePlaceholder": "ACME Corporation",
-            "companyNameRequired": "Company Name is required",
-            "logo": "Company Logo",
-            "logoPlaceholder": "Upload logo",
-            "logoDescription": "Used in export documents (PDF, Excel, etc.)",
-            "logoPreview": "Preview:",
-            "favicon": "Favicon",
-            "faviconPlaceholder": "Upload favicon",
-            "faviconDescription": "Icon shown in browser tab (16x16 or 32x32 px)",
-            "pwaIconPlaceholder": "Upload PWA icon (192x192 or 512x512 px)",
-            "address": "Address",
-            "addressPlaceholder": "123 Main Street, City, Country",
-            "phone": "Phone",
-            "phonePlaceholder": "+90 212 123 45 67",
-            "email": "Email",
-            "emailPlaceholder": "info@acme.com",
-            "website": "Website",
-            "websitePlaceholder": "https://acme.com",
-            "taxNumber": "Tax Number",
-            "taxNumberPlaceholder": "123-456-789"
-          }
-        },
-        "step3": {
-          "label": "Location",
-          "description": "Optional",
-          "skipTitle": "Location Skipped",
-          "skipMessage": "You can add locations later from the Settings page.",
-          "addLocation": "Add First Location",
-          "optionalTitle": "Optional Step",
-          "optionalMessage": "You can skip this step and add locations later.",
-          "skipButton": "Skip Location Setup",
-          "fields": {
-            "locationName": "Location Name",
-            "locationNamePlaceholder": "Main Office",
-            "code": "Code",
-            "codePlaceholder": "AUTO-GENERATED",
-            "locationType": "Location Type",
-            "locationTypePlaceholder": "Select type",
-            "address": "Address",
-            "addressPlaceholder": "123 Main Street, City, Country",
-            "city": "City",
-            "cityPlaceholder": "Istanbul",
-            "country": "Country",
-            "countryPlaceholder": "Turkey",
-            "postalCode": "Postal Code",
-            "postalCodePlaceholder": "34000",
-            "phone": "Phone",
-            "phonePlaceholder": "+90 212 123 45 67",
-            "email": "Email",
-            "emailPlaceholder": "location@example.com",
-            "latitude": "Latitude",
-            "latitudePlaceholder": "41.0082",
-            "longitude": "Longitude",
-            "longitudePlaceholder": "28.9784",
-            "description": "Description",
-            "descriptionPlaceholder": "Description about location"
-          },
-          "types": {
-            "firma": "Company",
-            "lokasyon": "Location",
-            "isletme": "Business",
-            "koridor": "Corridor",
-            "oda": "Room"
-          }
-        },
-        "step4": {
-          "label": "Summary",
-          "description": "Review",
-          "title": "Review",
-          "helpText": "Please review all information before creating the company.",
-          "basicInfo": "Basic Information",
-          "companyInfo": "Company Information",
-          "initialLocation": "Initial Location",
-          "skipped": "Skipped - Can be added later",
-          "noLocation": "Location not configured",
-          "uploaded": "Uploaded",
-          "fields": {
-            "tenantName": "Company Name:",
-            "slug": "Slug:",
-            "subdomain": "Subdomain:",
-            "customDomain": "Custom Domain:",
-            "companyName": "Company Name:",
-            "logo": "Logo:",
-            "favicon": "Favicon:",
-            "address": "Address:",
-            "phone": "Phone:",
-            "email": "Email:",
-            "website": "Website:",
-            "taxNumber": "Tax Number:",
-            "locationName": "Name:",
-            "locationType": "Type:",
-            "locationAddress": "Address:"
-          }
-        },
-        "step5": {
-          "label": "Creating",
-          "description": "Please wait"
-        },
-        "buttons": {
-          "back": "Back",
-          "next": "Next",
-          "create": "Create Company",
-          "createTenant": "Create Company"
-        },
-        "requiredFields": "Required fields:",
-        "validationError": "Please fill in all required fields",
-        "success": {
-          "title": "Success",
-          "message": "Company created successfully!"
-        },
-        "error": {
-          "title": "Error",
-          "message": "Company could not be created"
-        }
-      }
-    },
-    "locations": {
-      "title": "Locations"
-    }
-  },
-  "profile": {
-    "title": "Profile"
-  },
-  "modules": {
-    "file-manager": {
-      "title": "File Manager"
-    }
-  },
+
   "notifications": {
     "success": {
       "title": "Success",
-      "userCreated": "User created successfully",
-      "userUpdated": "User updated successfully",
-      "userDeleted": "User deleted successfully",
-      "roleCreated": "Role created successfully",
-      "roleUpdated": "Role updated successfully",
-      "permissionCreated": "Permission created successfully",
-      "permissionUpdated": "Permission updated successfully",
-      "saved": "Saved successfully"
+      "saved": "Successfully saved",
+      "deleted": "Successfully deleted",
+      "updated": "Successfully updated",
+      "created": "Successfully created",
+      "userCreated": "User successfully created",
+      "userUpdated": "User successfully updated",
+      "userDeleted": "User successfully deleted",
+      "roleCreated": "Role successfully created",
+      "roleUpdated": "Role successfully updated",
+      "permissionCreated": "Permission successfully created",
+      "permissionUpdated": "Permission successfully updated"
     },
     "error": {
       "title": "Error",
-      "validation": "Please fix form errors",
+      "generic": "An error occurred",
+      "validation": "Please correct the form errors",
+      "network": "Network error occurred",
+      "unauthorized": "Unauthorized access",
       "userCreateFailed": "User could not be created",
       "userUpdateFailed": "User could not be updated",
       "userDeleteFailed": "User could not be deleted",
       "statusUpdateFailed": "Status could not be updated",
       "roleSaveFailed": "Role could not be saved",
-      "permissionSaveFailed": "Permission could not be saved",
-      "generic": "An error occurred"
+      "permissionSaveFailed": "Permission could not be saved"
     },
     "warning": {
       "title": "Warning"
     },
     "info": {
-      "title": "Info"
+      "title": "Information"
     },
     "validation": {
       "title": "Validation Error",
-      "requiredFields": "Please fill in required fields (Name and Email)",
+      "requiredFields": "Please fill in the required fields",
       "invalidEmail": "Please enter a valid email address",
       "passwordMinLength": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
-      "fixErrors": "Please fix form errors"
+      "fixErrors": "Please correct the form errors"
     }
   },
-  "accessControl": {
-    "title": "Access Control Panel",
-    "description": "Manage access, visibility and layout settings for your organization. Changes are applied in priority order: User > Role > Company.",
-    "layout": {
-      "configuringFor": "Configuring layout: {{scope}}",
-      "saveSuccess": "Layout configuration saved successfully",
-      "saveError": "Configuration could not be saved",
-      "sidebar": "Sidebar",
-      "topLayout": "Top Layout",
-      "contentArea": "Content Area",
-      "footer": "Footer",
-      "width": "Width (px)",
-      "height": "Height (px)",
-      "backgroundColor": "Background Color",
-      "position": "Position",
-      "left": "Left",
-      "right": "Right",
-      "collapsed": "Collapsed by default",
-      "sticky": "Sticky Header",
-      "maxWidth": "Max Width (px)",
-      "maxWidthDescription": "0 for full width",
-      "padding": "Padding (px)",
-      "visible": "Visible"
-    },
-    "menu": {
-      "configuringFor": "Configuring menu visibility: {{scope}}",
-      "saveSuccess": "Menu configuration saved successfully",
-      "saveError": "Configuration could not be saved"
-    },
-    "modules": {
-      "enabled": "Enabled",
-      "disabled": "Disabled",
-      "features": "Features",
-      "noModules": "No Module Found",
-      "noModulesDescription": "No module is currently installed or available.",
-      "saveSuccess": "Module access configuration saved successfully",
-      "saveError": "Configuration could not be saved",
-      "configuringFor": "Configuring module access: {{scope}}"
-    },
-    "scope": {
-      "title": "Configuration Scope",
-      "tenant": "Company",
-      "role": "Role",
-      "user": "User",
-      "selectRole": "Select Role",
-      "selectUser": "Select User",
-      "chooseRole": "Choose a role",
-      "chooseUser": "Choose a user",
-      "configuringFor": "Configuration scope: {{scope}}",
-      "tenantHelp": "Settings will apply to all users in this company unless otherwise specified.",
-      "roleHelp": "Settings will apply to all users with this role, overriding company settings.",
-      "userHelp": "Settings will apply only to this user, overriding role and company settings."
-    },
-    "tabs": {
-      "module": "Module Access",
-      "menu": "Menu Visibility",
-      "ui": "UI Features",
-      "layout": "Layout"
-    },
-    "ui": {
-      "configuringFor": "Configuring UI features: {{scope}}",
-      "saveSuccess": "UI configuration saved successfully",
-      "saveError": "Configuration could not be saved",
-      "groups": {
-        "buttons": "Action Buttons",
-        "datatable": "Data Table",
-        "filters": "Filtering & Search",
-        "export": "Export Options"
-      },
-      "features": {
-        "create": "Create Button",
-        "edit": "Edit Button",
-        "delete": "Delete Button",
-        "export": "Export Button",
-        "import": "Import Button",
-        "bulk-actions": "Bulk Actions",
-        "column-visibility": "Column Visibility",
-        "density-toggle": "Density Setting",
-        "fullscreen": "Fullscreen Mode",
-        "advanced-filters": "Advanced Filters",
-        "saved-views": "Saved Views",
-        "global-search": "Global Search"
-      }
-    },
-    "preview": {
-      "title": "Configuration Preview",
-      "currentScope": "CURRENT SCOPE",
-      "activeType": "ACTIVE CONFIGURATION TYPE",
-      "priorityLogic": "PRIORITY LOGIC",
-      "logicDesc": "Configurations are merged in the following order (last one takes precedence):"
+
+  "export": {
+    "title": "Export",
+    "report": "Report",
+    "pdf": "Download as PDF",
+    "excel": "Download as Excel",
+    "csv": "Download as CSV",
+    "word": "Download as Word",
+    "html": "Download as HTML",
+    "print": "Print",
+    "exporting": "Exporting...",
+    "success": "Successfully exported",
+    "error": "Error occurred during export",
+    "noData": "No data found to export",
+    "selectFormat": "Select format",
+    "downloadReady": "Download ready",
+    "comingSoon": "Export in {{format}} format will be added soon"
+  },
+
+  "form": {
+    "required": "Required field",
+    "optional": "Optional",
+    "selectPlaceholder": "Select...",
+    "searchPlaceholder": "Search...",
+    "noOptions": "No options found",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "submit": "Submit",
+    "reset": "Reset",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "upload": "Upload",
+    "uploadDetails": {
+      "title": "Upload File",
+      "dragDrop": "Drag and drop files or click",
+      "browse": "Browse",
+      "maxSize": "Maximum file size: {{size}}",
+      "allowedTypes": "Allowed types: {{types}}",
+      "uploading": "Uploading...",
+      "success": "File successfully uploaded",
+      "error": "Error occurred while uploading file"
     }
   },
-  "footer": {
-    "copyright": "© 2024. All rights reserved.",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "support": "Support"
+
+  "session": {
+    "timeoutWarning": {
+      "title": "Session Timeout",
+      "message": "Your session is about to end. Do you want to continue?",
+      "extend": "Extend Session",
+      "logout": "Logout"
+    }
   },
+
   "layout": {
     "menu": "Menu",
     "search": "Search",
@@ -898,9 +479,11 @@
     "switchToSidebar": "Switch to Sidebar Layout",
     "switchToTop": "Switch to Top Layout",
     "toggleTheme": "Toggle theme",
-    "enterFullscreen": "Fullscreen",
-    "exitFullscreen": "Exit Fullscreen",
+    "enterFullscreen": "Full Screen",
+    "exitFullscreen": "Exit Full Screen",
     "moreMenuItems": "More menu items",
+    "toggleMenu": "Toggle menu",
+    "userMenu": "User menu",
     "user": "User",
     "myProfile": "My Profile",
     "accountSettings": "Account Settings",
@@ -909,7 +492,7 @@
       "title": "Theme Settings",
       "openSettings": "Open theme settings",
       "saveSuccess": "Settings Saved",
-      "saveSuccessMessage": "Your theme preferences have been saved successfully.",
+      "saveSuccessMessage": "Your theme preferences have been successfully saved.",
       "resetTitle": "Reset Settings",
       "resetConfirmMessage": "Are you sure you want to reset all theme preferences to default values? This action cannot be undone.",
       "resetSuccess": "Settings Reset",
@@ -930,7 +513,7 @@
       "background": "Background",
       "scrollBehavior": "Scroll Behavior",
       "padding": "Padding",
-      "maxWidth": "Max Width (px)",
+      "maxWidth": "Maximum Width (px)",
       "maxWidthNote": "Automatically removed when 100% width is selected",
       "unlimited": "Unlimited",
       "colorPalette": "Color Palette",
@@ -964,48 +547,653 @@
         "save": "Save",
         "reset": "Reset"
       }
+    }
+  },
+
+  "settings": {
+    "title": "Settings",
+    "menuManagement": {
+      "title": "Menu Management"
     },
-    "toggleMenu": "Toggle menu",
-    "userMenu": "User menu"
+    "theme": {
+      "title": "Theme Settings",
+      "saved": "Settings Saved",
+      "savedMessage": "Your theme preferences have been successfully saved.",
+      "defaultsSaved": "Defaults Saved",
+      "defaultsSavedMessage": "Company defaults have been successfully saved.",
+      "saveAsDefault": "Set as Default",
+      "resetTitle": "Reset Settings",
+      "resetConfirm": "Are you sure you want to reset all theme preferences to default values? This action cannot be undone.",
+      "resetSuccess": "Settings Reset",
+      "resetSuccessMessage": "All theme preferences have been reset to default values.",
+      "menuColor": "Menu Color",
+      "topMenuColor": "Top Menu Color"
+    },
+    "general": {
+      "title": "General Settings",
+      "description": "Manage platform-wide settings",
+      "loadError": "An error occurred while loading settings",
+      "savedSuccessfully": "Settings successfully saved",
+      "saveError": "An error occurred while saving settings",
+      "tabs": {
+        "regionTime": "Region and Time",
+        "email": "Email (SMTP)",
+        "calendar": "Calendar Integration",
+        "security": "Security"
+      },
+      "regionTime": {
+        "title": "Region and Time Settings",
+        "timezone": "Timezone",
+        "dateFormat": "Date Format",
+        "timeFormat": "Time Format",
+        "timeFormat12": "12 Hour (AM/PM)",
+        "timeFormat24": "24 Hour",
+        "weekStart": "Week Starts On",
+        "weekStartMonday": "Monday",
+        "weekStartSunday": "Sunday",
+        "currency": "Currency",
+        "currencyTRY": "TRY - Turkish Lira",
+        "currencyUSD": "USD - US Dollar",
+        "currencyEUR": "EUR - Euro",
+        "currencyGBP": "GBP - British Pound",
+        "currencyJPY": "JPY - Japanese Yen",
+        "currencyCNY": "CNY - Chinese Yuan",
+        "defaultLanguage": "Default Language",
+        "languageTr": "Turkish",
+        "languageEn": "English",
+        "languageDe": "German",
+        "languageAr": "Arabic",
+        "languages": {
+          "tr": "Turkish",
+          "en": "English",
+          "de": "German",
+          "ar": "Arabic"
+        },
+        "currencies": {
+          "TRY": "TRY - Turkish Lira",
+          "USD": "USD - US Dollar",
+          "EUR": "EUR - Euro",
+          "GBP": "GBP - British Pound"
+        }
+      },
+      "email": {
+        "title": "Email (SMTP) Settings",
+        "enableSmtp": "Enable SMTP",
+        "smtpHost": "SMTP Server",
+        "smtpHostPlaceholder": "smtp.example.com",
+        "smtpPort": "SMTP Port",
+        "encryption": "Encryption",
+        "encryptionNone": "None",
+        "username": "Username",
+        "password": "Password",
+        "fromName": "Sender Name",
+        "fromEmail": "Sender Email",
+        "advanced": "Advanced Settings",
+        "timeout": "Timeout",
+        "retryAttempts": "Retry Attempts",
+        "connectionPool": "Connection Pool",
+        "sendTestEmail": "Send Test Email",
+        "testEmailSuccess": "Test email successfully sent",
+        "testEmailError": "Error occurred while sending test email",
+        "testEmailModal": {
+          "title": "Send Test Email",
+          "to": "Recipient Email",
+          "toPlaceholder": "example@email.com",
+          "toRequired": "Recipient email address is required",
+          "invalidEmail": "Enter a valid email address",
+          "subject": "Subject",
+          "subjectPlaceholder": "Test email subject",
+          "subjectRequired": "Subject is required",
+          "message": "Message",
+          "messagePlaceholder": "Write your test message",
+          "messageRequired": "Message is required",
+          "defaultSubject": "SMTP Test Email",
+          "defaultMessage": "This is an SMTP configuration test message.",
+          "send": "Send",
+          "smtpDisabled": "SMTP Disabled",
+          "smtpDisabledMessage": "Enable SMTP first to send a test email.",
+          "checkCredentials": "Check your SMTP information"
+        },
+        "testEmailValidationError": "Form validation error",
+        "errors": {
+          "status": "HTTP Status",
+          "networkError": "Network error occurred"
+        }
+      },
+      "calendar": {
+        "title": "Calendar Integration",
+        "googleCalendar": "Google Calendar",
+        "outlook": "Microsoft Outlook/Office 365",
+        "icloud": "Apple iCloud",
+        "yandex": "Yandex Calendar",
+        "enable": "Enable",
+        "apiKey": "API Key",
+        "calendarId": "Calendar ID",
+        "clientId": "Client ID",
+        "tenantId": "Tenant ID",
+        "calendarUrl": "Calendar URL",
+        "token": "Token",
+        "syncInterval": "Sync Interval",
+        "generalSettings": "General Calendar Settings",
+        "defaultView": "Default View",
+        "viewMonth": "Month",
+        "viewWeek": "Week",
+        "viewDay": "Day",
+        "showWeekends": "Show Weekends",
+        "showHolidays": "Show Holidays"
+      },
+      "security": {
+        "title": "Security Settings",
+        "sessionManagement": "Session Management",
+        "sessionTimeout": "Session Timeout",
+        "maxConcurrentSessions": "Max Concurrent Sessions",
+        "rememberMeDuration": "Remember Me Duration",
+        "minutesSuffix": "minutes",
+        "daysSuffix": "days",
+        "passwordPolicy": "Password Policy",
+        "passwordMinLength": "Minimum Password Length",
+        "requireUppercase": "Require Uppercase",
+        "requireLowercase": "Require Lowercase",
+        "requireNumbers": "Require Numbers",
+        "requireSpecial": "Require Special Characters",
+        "passwordExpiration": "Password Expiration (Days)",
+        "noExpiration": "Unlimited",
+        "twoFactorAuth": "Two-Factor Authentication (2FA)",
+        "enable2FA": "Enable 2FA",
+        "require2FAForAdmins": "Required for Admins",
+        "loginSecurity": "Login Security",
+        "maxLoginAttempts": "Maximum Login Attempts",
+        "lockoutDuration": "Lockout Duration",
+        "ipWhitelist": "IP Whitelist",
+        "ipWhitelistDescription": "Enter one IP address per line",
+        "apiSecurity": "API Security",
+        "apiRateLimit": "API Rate Limit",
+        "apiKeyExpiration": "API Key Expiration (Days)"
+      }
+    },
+    "company": {
+      "title": "Company Settings"
+    },
+    "locations": {
+      "title": "Locations",
+      "description": "View and manage company locations",
+      "allLocations": "All Locations",
+      "create": "New Location",
+      "createSubArea": "New Sub Area",
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete",
+      "loading": "Locations loading...",
+      "noData": "No location found",
+      "createLocation": "Create Location",
+      "editLocation": "Edit Location",
+      "editSubArea": "Edit Sub Area",
+      "addSubArea": "Add Sub Area",
+      "deleteConfirm": "Are you sure you want to delete this location?",
+      "deleteSuccess": "Location successfully deleted",
+      "deleteError": "Error occurred while deleting location",
+      "createSuccess": "Location successfully created",
+      "updateSuccess": "Location successfully updated",
+      "saveError": "Error occurred while saving location",
+      "createSubAreaSuccess": "Sub area successfully created",
+      "updateSubAreaSuccess": "Sub area successfully updated",
+      "noParentSelected": "Parent location not selected",
+      "nameRequired": "Location name is required",
+      "noParentLocation": "You must first create a main location",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "cancel": "Cancel",
+      "update": "Update",
+      "close": "Close",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "types": {
+        "headquarters": "Headquarters",
+        "branch": "Branch",
+        "warehouse": "Warehouse",
+        "office": "Office",
+        "factory": "Factory",
+        "store": "Store",
+        "other": "Other"
+      },
+      "table": {
+        "name": "Locations"
+      },
+      "filters": {
+        "type": "Filter by Type",
+        "status": "Filter by Status"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "e.g., Main Building",
+        "nameRequired": "Name is required",
+        "code": "Code",
+        "codePlaceholder": "e.g., LOC-001",
+        "type": "Type",
+        "typeRequired": "Type selection is required",
+        "parent": "Parent Location",
+        "parentPlaceholder": "Select parent location (optional)",
+        "address": "Address",
+        "addressPlaceholder": "Street address",
+        "city": "City",
+        "cityPlaceholder": "City name",
+        "country": "Country",
+        "countryPlaceholder": "Country name",
+        "postalCode": "Postal Code",
+        "postalCodePlaceholder": "Postal code",
+        "description": "Description",
+        "descriptionPlaceholder": "Description about location",
+        "isActive": "Active",
+        "latitude": "Latitude",
+        "latitudePlaceholder": "41.0082",
+        "longitude": "Longitude",
+        "longitudePlaceholder": "28.9784",
+        "phone": "Phone",
+        "phonePlaceholder": "+1 234 567 89 00",
+        "email": "Email",
+        "emailPlaceholder": "location@example.com",
+        "googleMapsLink": "Google Maps Share Link",
+        "googleMapsLinkPlaceholder": "https://www.google.com/maps?q=41.0082,28.9784",
+        "googleMapsLinkDescription": "Paste the share link from Google Maps, coordinates will be filled automatically",
+        "subAreaNamePlaceholder": "e.g., Block A, 1st Floor",
+        "subAreaCodePlaceholder": "e.g., A-BLK-01"
+      },
+      "map": {
+        "title": "Map View",
+        "description": "View locations on the map",
+        "noLocations": "No locations found to show on the map.",
+        "viewOnMap": "View on Map",
+        "openInGoogleMaps": "Open in Google Maps",
+        "latitude": "Latitude",
+        "longitude": "Longitude"
+      },
+      "columns": {
+        "name": "Name",
+        "code": "Code",
+        "type": "Type",
+        "city": "City",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "exportTemplates": {
+      "title": "Export Templates"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "description": "Manage your platform's notification settings",
+      "loadError": "An error occurred while loading notification settings.",
+      "saveError": "An error occurred while saving notification settings.",
+      "savedSuccessfully": "Notification settings successfully saved.",
+      "email": {
+        "tabTitle": "Email Notifications",
+        "title": "Email Notification Settings",
+        "enable": "Enable Email Notifications",
+        "enableDescription": "Enable or disable email notifications system-wide",
+        "notificationTypes": "Notification Types",
+        "types": {
+          "system": "System Notifications",
+          "systemDescription": "System updates and critical warnings",
+          "user": "User Notifications",
+          "userDescription": "Notifications related to user actions",
+          "module": "Module Notifications",
+          "moduleDescription": "Notifications related to module activities"
+        }
+      },
+      "push": {
+        "tabTitle": "Push Notifications",
+        "title": "Push Notification Settings",
+        "enable": "Enable Push Notifications",
+        "enableDescription": "Enable or disable browser and mobile push notifications",
+        "channels": "Channels",
+        "browser": "Browser Notifications",
+        "browserDescription": "Send notifications via web browser",
+        "mobile": "Mobile Notifications",
+        "mobileDescription": "Send notifications via mobile application",
+        "notificationTypes": "Notification Types",
+        "types": {
+          "system": "System Notifications",
+          "systemDescription": "System updates and critical warnings",
+          "user": "User Notifications",
+          "userDescription": "Notifications related to user actions",
+          "module": "Module Notifications",
+          "moduleDescription": "Notifications related to module activities"
+        }
+      },
+      "sms": {
+        "tabTitle": "SMS Notifications",
+        "title": "SMS Notification Settings",
+        "enable": "Enable SMS Notifications",
+        "enableDescription": "Enable or disable SMS notifications",
+        "provider": "SMS Provider",
+        "providerDescription": "Select the provider to be used for sending SMS",
+        "providerCustom": "Custom Provider",
+        "apiKey": "API Key",
+        "apiKeyPlaceholder": "Enter your API key",
+        "apiSecret": "API Secret Key",
+        "apiSecretPlaceholder": "Enter your secret key",
+        "fromNumber": "Sender Number",
+        "fromNumberPlaceholder": "+1 XXX XXX XX XX",
+        "notificationTypes": "Notification Types",
+        "types": {
+          "system": "System Notifications",
+          "systemDescription": "Send SMS for critical system warnings",
+          "user": "User Notifications",
+          "userDescription": "Send SMS for important user actions",
+          "module": "Module Notifications",
+          "moduleDescription": "Send SMS for module activities"
+        }
+      },
+      "preferences": {
+        "tabTitle": "Notification Preferences",
+        "title": "Notification Preferences",
+        "reminderTimeDescription": "Determine how far in advance reminders will be sent",
+        "reminderTime": "Reminder Duration",
+        "quietHours": "Quiet Hours",
+        "quietHoursStart": "Start Time",
+        "quietHoursEnd": "End Time",
+        "notificationSound": "Notification Sound",
+        "notificationSoundDescription": "Should sound be played for notifications?"
+      },
+      "modules": {
+        "tabTitle": "Module Notifications",
+        "title": "Module Notification Settings",
+        "description": "Customize notification preferences for each module",
+        "noModules": "No configurable modules found",
+        "enableModule": "Enable Module Notifications",
+        "enableModuleDescription": "Enable notifications for this module",
+        "channels": "Channels",
+        "channelEmail": "Email",
+        "channelPush": "Push",
+        "channelSMS": "SMS",
+        "notificationTypes": "Notification Types"
+      }
+    },
+    "security": {
+      "title": "Security"
+    },
+    "integrations": {
+      "title": "Integrations"
+    }
   },
-  "menu": {
-    "dashboard": "Dashboard",
-    "moduleManagement": "Module Management",
-    "settings": "Settings",
-    "accessControl": "Access Control",
-    "companyManagement": "Company Management",
-    "label": "Label"
+
+  "management": {
+    "title": "Management",
+    "users": {
+      "title": "Users",
+      "description": "Manage system users",
+      "create": "New User",
+      "edit": "Edit User",
+      "delete": "Delete User",
+      "deleteConfirm": "Are you sure you want to delete this user?",
+      "notifications": {
+        "created": "User successfully created",
+        "updated": "User successfully updated",
+        "deleted": "User successfully deleted",
+        "createError": "User could not be created",
+        "updateError": "User could not be updated",
+        "deleteError": "User could not be deleted"
+      }
+    },
+    "roles": {
+      "title": "Roles",
+      "description": "Manage user roles and permissions",
+      "create": "New Role",
+      "edit": "Edit Role",
+      "delete": "Delete Role",
+      "notifications": {
+        "created": "Role successfully created",
+        "updated": "Role successfully updated",
+        "saveError": "Role could not be saved"
+      }
+    },
+    "permissions": {
+      "title": "Permissions",
+      "description": "Manage system-wide permissions and access levels",
+      "categories": {
+        "userManagement": "User Management",
+        "notifications": "Notifications",
+        "reports": "Reports"
+      }
+    },
+    "companies": {
+      "title": "Companies",
+      "description": "View and manage current company and sub-companies",
+      "myCompany": "My Company",
+      "myCompanyDescription": "View and edit your company information",
+      "create": "New Company",
+      "edit": "Edit Company",
+      "allCompanies": "All Companies",
+      "noCompanies": "No company found",
+      "loadError": "Loading error",
+      "form": {
+        "name": "Company Name",
+        "namePlaceholder": "Enter company name",
+        "industry": "Industry",
+        "website": "Website",
+        "websitePlaceholder": "https://example.com",
+        "description": "Description",
+        "descriptionPlaceholder": "Company description",
+        "foundedYear": "Founded Year",
+        "employeeCount": "Employee Count",
+        "capital": "Capital",
+        "address": "Address",
+        "addressPlaceholder": "Full address",
+        "city": "City",
+        "state": "State/District",
+        "postalCode": "Postal Code",
+        "country": "Country",
+        "phone": "Phone",
+        "email": "Email",
+        "taxNumber": "Tax Number",
+        "taxOffice": "Tax Office",
+        "registrationNumber": "Trade Registration Number",
+        "mersisNumber": "MERSIS Number",
+        "iban": "IBAN",
+        "bankName": "Bank Name",
+        "accountHolder": "Account Holder"
+      },
+      "tabs": {
+        "basic": "Basic Info",
+        "contact": "Contact",
+        "financial": "Financial Info",
+        "legal": "Legal Info",
+        "additional": "Additional Info"
+      },
+      "assets": {
+        "logo": "Logo",
+        "uploadLogo": "Upload Logo",
+        "changeLogo": "Change Logo",
+        "removeLogo": "Remove Logo",
+        "favicon": "Favicon",
+        "uploadFavicon": "Upload Favicon",
+        "faviconHint": "Icon that will appear in browser tab (32x32px)",
+        "pwaIcon": "PWA Icon",
+        "uploadPwaIcon": "Upload PWA Icon",
+        "pwaIconHint": "Icon that will appear when added to home screen on mobile (512x512px)"
+      },
+      "wizard": {
+        "step1": {
+          "label": "Basic Information",
+          "description": "Company details",
+          "fields": {
+            "tenantName": "Company Name",
+            "tenantNamePlaceholder": "ACME Corporation",
+            "tenantNameRequired": "Company Name is required",
+            "slug": "Slug",
+            "slugPlaceholder": "acme",
+            "slugDescription": "Used in database naming",
+            "slugRequired": "Slug is required",
+            "subdomain": "Subdomain",
+            "subdomainPlaceholder": "acme",
+            "subdomainDescription": "Access URL: acme.onwindos.com",
+            "customDomain": "Custom Domain (Optional)",
+            "customDomainPlaceholder": "https://acme.com"
+          }
+        },
+        "step2": {
+          "label": "Company Info",
+          "description": "Logo and details",
+          "fields": {
+            "companyName": "Company Name",
+            "companyNamePlaceholder": "ACME Corporation",
+            "companyNameRequired": "Company Name is required",
+            "logo": "Company Logo",
+            "logoDescription": "Used in export documents",
+            "address": "Address",
+            "phone": "Phone",
+            "email": "Email",
+            "website": "Website",
+            "taxNumber": "Tax Number"
+          }
+        },
+        "step3": {
+          "label": "Location",
+          "description": "Optional",
+          "skipTitle": "Location Skipped",
+          "skipMessage": "You can add locations later from the Settings page.",
+          "addLocation": "Add First Location",
+          "skipButton": "Skip Location Setup",
+          "fields": {
+            "locationName": "Location Name",
+            "locationType": "Location Type",
+            "address": "Address",
+            "city": "City",
+            "country": "Country"
+          }
+        },
+        "step4": {
+          "label": "Summary",
+          "description": "Review",
+          "title": "Review",
+          "helpText": "Please review all information before creating the company.",
+          "basicInfo": "Basic Information",
+          "companyInfo": "Company Information",
+          "initialLocation": "Initial Location",
+          "skipped": "Skipped - Can be added later"
+        },
+        "step5": {
+          "label": "Creating",
+          "description": "Please wait"
+        },
+        "buttons": {
+          "back": "Back",
+          "next": "Next",
+          "create": "Create Company"
+        },
+        "success": {
+          "title": "Success",
+          "message": "Company successfully created!"
+        },
+        "error": {
+          "title": "Error",
+          "message": "Company could not be created"
+        }
+      }
+    },
+    "locations": {
+      "title": "Locations"
+    }
   },
+
+  "accessControl": {
+    "title": "Access Control Panel",
+    "description": "Manage access, visibility and layout settings for your organization.",
+    "tabs": {
+      "module": "Module Access",
+      "menu": "Menu Visibility",
+      "ui": "UI Features",
+      "layout": "Layout"
+    },
+    "scope": {
+      "title": "Configuration Scope",
+      "tenant": "Company",
+      "role": "Role",
+      "user": "User",
+      "selectRole": "Select Role",
+      "selectUser": "Select User",
+      "tenantHelp": "Settings will apply to all users in this company unless specified otherwise.",
+      "roleHelp": "Settings will override company settings and apply to all users with this role.",
+      "userHelp": "Settings will override role and company settings and apply only to this user."
+    },
+    "modules": {
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "features": "Features",
+      "noModules": "No Module Found",
+      "saveSuccess": "Module access configuration successfully saved",
+      "saveError": "Configuration could not be saved"
+    },
+    "layout": {
+      "saveSuccess": "Layout configuration successfully saved",
+      "saveError": "Configuration could not be saved",
+      "sidebar": "Sidebar",
+      "topLayout": "Top Layout",
+      "contentArea": "Content Area",
+      "footer": "Footer",
+      "width": "Width (px)",
+      "height": "Height (px)",
+      "backgroundColor": "Background Color",
+      "position": "Position",
+      "left": "Left",
+      "right": "Right",
+      "collapsed": "Collapsed by default",
+      "sticky": "Sticky Header",
+      "visible": "Visible"
+    },
+    "ui": {
+      "saveSuccess": "UI configuration successfully saved",
+      "saveError": "Configuration could not be saved",
+      "groups": {
+        "buttons": "Action Buttons",
+        "datatable": "Data Table",
+        "filters": "Filtering & Search",
+        "export": "Export Options"
+      },
+      "features": {
+        "create": "Create Button",
+        "edit": "Edit Button",
+        "delete": "Delete Button",
+        "export": "Export Button",
+        "import": "Import Button",
+        "bulkActions": "Bulk Actions",
+        "columnVisibility": "Column Visibility",
+        "densityToggle": "Density Setting",
+        "fullscreen": "Full Screen Mode",
+        "advancedFilters": "Advanced Filters",
+        "savedViews": "Saved Views",
+        "globalSearch": "Global Search"
+      }
+    }
+  },
+
   "coreSystems": {
     "title": "Central Systems",
     "description": "Welcome to the central system management panel",
     "comingSoon": "Coming Soon",
     "files": {
       "title": "File Management",
-      "description": "Central file management system",
-      "comingSoon": "This page will be added soon."
+      "description": "Central file management system"
     },
     "ai": {
       "title": "AI Service",
-      "description": "Artificial intelligence service management",
-      "comingSoon": "This page will be added soon."
+      "description": "Artificial intelligence service management"
     },
     "notifications": {
       "title": "Notifications",
-      "description": "Central notification management",
-      "comingSoon": "This page will be added soon."
+      "description": "Central notification management"
     }
   },
+
   "tenants": {
     "title": "Tenant Management",
     "description": "View and manage all tenants",
     "create": "New Tenant",
     "search": "Search...",
-    "filterStatus": "Filter Status",
-    "all": "All",
-    "active": "Active",
-    "inactive": "Inactive",
-    "suspended": "Suspended",
+    "filterStatus": "Filter by Status",
     "loadError": "An error occurred while loading tenants",
     "noTenants": "No tenant found",
     "table": {
@@ -1018,6 +1206,7 @@
       "createdAt": "Created"
     }
   },
+
   "databases": {
     "title": "Database Management",
     "description": "View and manage all databases",
@@ -1026,9 +1215,6 @@
     "noDatabases": "No database found",
     "core": "Core",
     "tenant": "Tenant",
-    "current": "Active",
-    "active": "Active",
-    "inactive": "Inactive",
     "stats": {
       "total": "Total",
       "core": "Core",
@@ -1043,300 +1229,13 @@
       "status": "Status"
     }
   },
-  "companies": {
-    "title": "Company Management",
-    "description": "View and manage current company and subsidiaries",
-    "myCompany": "My Company",
-    "myCompanyDescription": "View and edit your company information",
-    "create": "New Company",
-    "createTitle": "Create New Company",
-    "createDescription": "Complete the following steps to create a new company (tenant)",
-    "wizard": {
-      "buttons": {
-        "back": "Back",
-        "createTenant": "Create Company",
-        "next": "Next"
-      },
-      "error": {
-        "message": "An error occurred while creating company",
-        "title": "Error"
-      },
-      "requiredFields": "Please fill in required fields:",
-      "validationError": "Validation Error",
-      "step1": {
-        "label": "Basic Information",
-        "description": "Company basic information",
-        "fields": {
-          "tenantName": "Company Name",
-          "tenantNamePlaceholder": "Enter company name",
-          "tenantNameRequired": "Company name is required",
-          "slug": "Unique Code",
-          "slugPlaceholder": "company-code",
-          "slugDescription": "Unique code to be used in database and URLs",
-          "slugRequired": "Unique code is required",
-          "slugTaken": "This code is already in use, please enter a different code",
-          "slugAvailable": "This code is available",
-          "subdomain": "Subdomain",
-          "subdomainPlaceholder": "company",
-          "subdomainDescription": "Access will be provided as company.omnex.com",
-          "subdomainTaken": "This subdomain is already in use, please enter a different subdomain",
-          "subdomainAvailable": "This subdomain is available",
-          "customDomain": "Custom Domain",
-          "customDomainPlaceholder": "www.companyname.com"
-        }
-      },
-      "step2": {
-        "label": "Company Information",
-        "description": "Detailed company information",
-        "fields": {
-          "companyName": "Company Name",
-          "companyNamePlaceholder": "Enter company name",
-          "companyNameRequired": "Company name is required",
-          "logo": "Logo",
-          "logoPlaceholder": "Select logo file",
-          "logoDescription": "PNG, JPG or SVG format (recommended size: 200x200px)",
-          "logoPreview": "Logo Preview",
-          "favicon": "Favicon",
-          "faviconPlaceholder": "Select favicon file",
-          "faviconDescription": "ICO or PNG format (recommended size: 32x32px)",
-          "address": "Address",
-          "addressPlaceholder": "Enter company address",
-          "phone": "Phone",
-          "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "Email",
-          "emailPlaceholder": "info@company.com",
-          "website": "Website",
-          "websitePlaceholder": "https://www.company.com",
-          "taxNumber": "Tax Number",
-          "taxNumberPlaceholder": "1234567890"
-        }
-      },
-      "step3": {
-        "label": "Location",
-        "description": "First location information",
-        "addLocation": "Add Location",
-        "skipTitle": "Skip Location",
-        "skipMessage": "You can continue without location information",
-        "skipButton": "Skip",
-        "optionalTitle": "Optional",
-        "optionalMessage": "Location information can be added later",
-        "fields": {
-          "locationName": "Location Name",
-          "locationNamePlaceholder": "Main Office",
-          "locationType": "Location Type",
-          "locationTypePlaceholder": "Select type",
-          "code": "Location Code",
-          "codePlaceholder": "MRK",
-          "description": "Description",
-          "descriptionPlaceholder": "Location description",
-          "address": "Address",
-          "addressPlaceholder": "Full address",
-          "city": "City",
-          "cityPlaceholder": "Istanbul",
-          "country": "Country",
-          "countryPlaceholder": "Turkey",
-          "postalCode": "Postal Code",
-          "postalCodePlaceholder": "34000",
-          "phone": "Phone",
-          "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "Email",
-          "emailPlaceholder": "location@company.com",
-          "latitude": "Latitude",
-          "latitudePlaceholder": "41.0082",
-          "longitude": "Longitude",
-          "longitudePlaceholder": "28.9784"
-        }
-      },
-      "step4": {
-        "label": "Summary",
-        "description": "Check information",
-        "title": "Company Information Summary",
-        "helpText": "Please check the information you entered",
-        "basicInfo": "Basic Information",
-        "companyInfo": "Company Information",
-        "initialLocation": "Initial Location",
-        "noLocation": "No location added",
-        "skipped": "Skipped",
-        "uploaded": "Uploaded",
-        "fields": {
-          "tenantName": "Company Name",
-          "slug": "Unique Code",
-          "subdomain": "Subdomain",
-          "customDomain": "Custom Domain",
-          "companyName": "Company Name",
-          "logo": "Logo",
-          "favicon": "Favicon",
-          "address": "Address",
-          "phone": "Phone",
-          "email": "Email",
-          "website": "Website",
-          "taxNumber": "Tax Number",
-          "locationName": "Location Name",
-          "locationType": "Location Type",
-          "locationAddress": "Location Address"
-        }
-      },
-      "step5": {
-        "label": "Creating",
-        "description": "Company is being created"
-      },
-      "success": {
-        "title": "Success",
-        "message": "Company created successfully"
-      }
-    },
-    "search": "Search",
-    "loadError": "Loading error",
-    "noCompanies": "No company found",
-    "main": "Main",
-    "viewing": "Viewing",
-    "editing": "Editing",
-    "deleting": "Deleting",
-    "confirmDelete": "Delete Confirmation",
-    "comingSoon": "Coming Soon",
-    "updated": "Updated",
-    "updateError": "Update error",
-    "logo": "Logo",
-    "uploadLogo": "Upload Logo",
-    "changeLogo": "Change Logo",
-    "removeLogo": "Remove Logo",
-    "logoHint": "Logo hint",
-    "logoUploadComingSoon": "Logo upload feature will be added soon",
-    "logoUploaded": "Logo uploaded",
-    "logoUploadError": "Logo upload error",
-    "favicon": "Favicon",
-    "uploadFavicon": "Upload Favicon",
-    "changeFavicon": "Change Favicon",
-    "removeFavicon": "Remove Favicon",
-    "faviconHint": "Icon to be displayed in browser tab. Can be ICO, PNG or SVG format (recommended: 32x32px or 64x64px)",
-    "faviconUploaded": "Favicon uploaded",
-    "pwaIcon": "PWA Icon",
-    "uploadPwaIcon": "Upload PWA Icon",
-    "changePwaIcon": "Change PWA Icon",
-    "removePwaIcon": "Remove PWA Icon",
-    "pwaIconHint": "Icon to be displayed when added to home screen on mobile devices. Must be PNG format (recommended: 512x512px)",
-    "pwaIconUploaded": "PWA icon uploaded",
-    "assets": "Assets",
-    "contents": "Contents",
-    "websites": "Websites",
-    "tabs": {
-      "additional": "Additional Information",
-      "basic": "Basic Information",
-      "contact": "Contact",
-      "financial": "Financial Information",
-      "legal": "Legal Information"
-    },
-    "form": {
-      "upload": "Upload",
-      "cancel": "Cancel",
-      "save": "Save",
-      "submit": "Submit",
-      "reset": "Reset",
-      "create": "Create",
-      "update": "Update",
-      "delete": "Delete",
-      "edit": "Edit",
-      "close": "Close",
-      "name": "Company Name",
-      "namePlaceholder": "Enter company name",
-      "industry": "Industry",
-      "industryPlaceholder": "Industry",
-      "website": "Website",
-      "websitePlaceholder": "https://example.com",
-      "description": "Description",
-      "descriptionPlaceholder": "Company description",
-      "foundedYear": "Founded Year",
-      "foundedYearPlaceholder": "2020",
-      "employeeCount": "Employee Count",
-      "employeeCountPlaceholder": "50",
-      "capital": "Capital",
-      "capitalPlaceholder": "100.000 TL",
-      "address": "Address",
-      "addressPlaceholder": "Full address",
-      "city": "City",
-      "cityPlaceholder": "Istanbul",
-      "state": "State/Province",
-      "statePlaceholder": "Kadıköy",
-      "postalCode": "Postal Code",
-      "postalCodePlaceholder": "34000",
-      "country": "Country",
-      "countryPlaceholder": "Turkey",
-      "phone": "Phone",
-      "phonePlaceholder": "+90 (212) 123 45 67",
-      "email": "Email",
-      "emailPlaceholder": "info@example.com",
-      "taxNumber": "Tax Number",
-      "taxNumberPlaceholder": "1234567890",
-      "taxOffice": "Tax Office",
-      "taxOfficePlaceholder": "Kadıköy Tax Office",
-      "registrationNumber": "Trade Registry Number",
-      "registrationNumberPlaceholder": "123456-5",
-      "mersisNumber": "MERSIS Number",
-      "mersisNumberPlaceholder": "MERSIS number",
-      "iban": "IBAN",
-      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
-      "bankName": "Bank Name",
-      "bankNamePlaceholder": "Bank name",
-      "accountHolder": "Account Holder",
-      "accountHolderPlaceholder": "Account holder name",
-      "status": "Status"
-    },
-    "stats": {
-      "active": "Active",
-      "assets": "Assets",
-      "contents": "Contents",
-      "title": "Statistics",
-      "total": "Total",
-      "totalStats": "Total Statistics",
-      "users": "Users",
-      "websites": "Websites"
-    },
-    "info": {
-      "createdAt": "Created Date",
-      "status": "Status",
-      "updatedAt": "Updated Date"
-    },
-    "table": {
-      "actions": "Actions",
-      "createdAt": "Created",
-      "industry": "Industry",
-      "name": "Company Name",
-      "stats": "Statistics",
-      "status": "Status",
-      "users": "Users",
-      "website": "Website"
-    },
-    "viewDescription": "View company information",
-    "edit": "Edit Company",
-    "allCompanies": "All Companies",
-    "name": "Company Name",
-    "industry": "Industry",
-    "foundedYear": "Founded Year",
-    "employeeCount": "Employee Count",
-    "capital": "Capital",
-    "email": "Email",
-    "phone": "Phone",
-    "website": "Website",
-    "address": "Address",
-    "taxNumber": "Tax Number",
-    "taxOffice": "Tax Office",
-    "registrationNumber": "Registry Number",
-    "mersisNumber": "MERSIS Number",
-    "iban": "IBAN",
-    "bankName": "Bank Name",
-    "accountHolder": "Account Holder",
-    "metadata": "Metadata",
-    "createdAt": "Created Date",
-    "updatedAt": "Updated Date",
-    "active": "Active",
-    "inactive": "Inactive"
-  },
+
   "optimization": {
     "title": "Optimization",
     "description": "System optimization and performance management",
     "performance": {
       "title": "Performance",
-      "description": "System performance metrics and optimization recommendations",
+      "description": "System performance metrics and optimization suggestions",
       "cpu": "CPU Usage",
       "memory": "Memory Usage",
       "disk": "Disk Usage",
@@ -1347,171 +1246,45 @@
     },
     "cache": {
       "title": "Cache Management",
-      "description": "Cache settings and cleanup operations",
+      "description": "Cache settings and clearing operations",
       "clearAll": "Clear All",
       "clearKey": "Clear Key",
-      "clearSelected": "Clear Selected",
-      "selectAll": "Select All",
-      "key": "Cache Key",
-      "keyPlaceholder": "Enter cache key to clear",
       "cleared": "All cache cleared",
       "keyCleared": "Cache key cleared",
-      "selectedCleared": "Selected caches cleared",
-      "directoryCleared": "Directory cleared",
       "clearError": "An error occurred while clearing cache",
-      "loadError": "An error occurred while loading cache list",
-      "clear": "Clear",
-      "info": "Cache cleanup operations may affect system performance. Use with caution.",
       "confirmClearAll": "Are you sure you want to clear all cache?",
-      "confirmClearSelected": "Are you sure you want to clear selected caches?",
-      "confirmClearDirectory": "Are you sure you want to clear this directory?",
-      "noDirectories": "No directory found",
-      "noEntries": "No cache entry found",
-      "tabs": {
-        "directories": "Directories",
-        "entries": "Cache Entries"
-      },
       "stats": {
         "totalSize": "Total Size",
         "directories": "Directories",
         "files": "Files",
         "usage": "Usage"
-      },
-      "table": {
-        "directory": "Directory",
-        "size": "Size",
-        "files": "File Count",
-        "lastModified": "Last Modified",
-        "key": "Key",
-        "type": "Type",
-        "createdAt": "Created",
-        "actions": "Actions"
       }
     },
     "database": {
       "title": "Database Maintenance",
       "description": "PostgreSQL database optimization and maintenance operations",
       "optimize": "Optimize Database",
-      "optimizeDesc": "Optimizes database with VACUUM ANALYZE command, cleans dead rows and updates statistics",
       "vacuum": "Vacuum Operation",
-      "vacuumDesc": "Recovers unused disk space with VACUUM ANALYZE command and updates statistics for query optimization",
       "analyze": "Update Statistics",
-      "analyzeDesc": "Updates database statistics with ANALYZE command. Enables query planner to make better decisions",
       "reindex": "Rebuild Indexes",
-      "reindexDesc": "Rebuilds all indexes with REINDEX command. May take long on large databases",
       "run": "Run",
       "confirm": "Confirm Operation",
       "confirmMessage": "This operation will run directly on the database. Do you want to continue?",
-      "operationSuccess": "Operation completed successfully",
+      "operationSuccess": "Operation successfully completed",
       "operationError": "An error occurred during operation",
-      "warning": "These operations run on the main (CORE) database. Use with caution during peak hours in production environment.",
-      "coreDbInfo": "These operations run only on the CORE database. Separate maintenance is required for tenant databases.",
-      "lastResult": "Last Operation Result",
-      "operationToRun": "Command to Run",
+      "warning": "These operations run on the main (CORE) database. Use with caution during peak hours in production environments.",
       "riskLow": "Low Risk",
       "riskMedium": "Medium Risk",
       "riskHigh": "High Risk",
-      "highRiskWarning": "This operation may lock the database and take long. It is recommended to run it during off-peak hours in production environment."
+      "analyzeDesc": "Updates table statistics and optimizes query planner",
+      "vacuumDesc": "Reclaims space occupied by deleted rows",
+      "optimizeDesc": "Runs Vacuum and Analyze operations together",
+      "reindexDesc": "Rebuilds all indexes (may take a long time)",
+      "coreDbInfo": "Core database information",
+      "lastResult": "Last Operation Result"
     }
   },
-  "export": {
-    "report": "Report",
-    "pdf": "Download as PDF",
-    "excel": "Download as Excel",
-    "csv": "Download as CSV",
-    "word": "Download as Word",
-    "html": "Download as HTML",
-    "print": "Print",
-    "title": "Export",
-    "exporting": "Exporting...",
-    "success": "Exported successfully",
-    "error": "Error occurred during export",
-    "noData": "No data found to export",
-    "selectFormat": "Select format",
-    "downloadReady": "Download ready"
-  },
-  "exportComingSoon": "Export in {{format}} format will be added soon",
-  "table": {
-    "search": {
-      "placeholder": "Search...",
-      "label": "Search"
-    },
-    "filter": {
-      "title": "Filters",
-      "button": "Filters",
-      "clear": "Clear Filters",
-      "apply": "Apply Filters",
-      "active": "Active Filters",
-      "all": "All",
-      "searchPlaceholder": "Search {{label}}...",
-      "selectPlaceholder": "Select {{label}}...",
-      "numberPlaceholder": "Enter {{label}}...",
-      "noOptions": "No filter option available.",
-      "dateRange": {
-        "start": "Start",
-        "end": "End",
-        "startPlaceholder": "Start date",
-        "endPlaceholder": "End date"
-      }
-    },
-    "columnSettings": {
-      "title": "Column Settings",
-      "reset": "Reset",
-      "reorder": "Reorder Columns",
-      "toggle": "Column Visibility",
-      "resetToDefaults": "Reset to Defaults",
-      "show": "Show",
-      "hide": "Hide",
-      "moveUp": "Move Up",
-      "moveDown": "Move Down",
-      "columnsSection": "Columns",
-      "columnBackground": "Column Background",
-      "clearColor": "Clear Color",
-      "tableStyle": {
-        "title": "Table Style",
-        "verticalBorders": "Vertical Borders",
-        "headerBackground": "Header Background",
-        "selectColor": "Select color..."
-      },
-      "badges": {
-        "sortable": "Sortable",
-        "searchable": "Searchable",
-        "filterable": "Filterable"
-      },
-      "tip": {
-        "title": "Tip",
-        "description": "You can reorder columns by dragging or using up/down buttons, and change their visibility by clicking the eye icon."
-      }
-    },
-    "pagination": {
-      "recordsPerPage": "Records per page:",
-      "showing": "records showing",
-      "of": "/",
-      "page": "Page",
-      "previous": "Previous",
-      "next": "Next"
-    },
-    "export": {
-      "providerRequired": "ExportProvider required",
-      "all": "All",
-      "currentPage": "This Page",
-      "selected": "Selected"
-    },
-    "empty": {
-      "message": "No data found",
-      "noResults": "No results found"
-    },
-    "description": "description",
-    "actions": "Actions"
-  },
-  "actions": {
-    "view": "View",
-    "edit": "Edit",
-    "delete": "Delete",
-    "create": "Create",
-    "save": "Save",
-    "cancel": "Cancel"
-  },
+
   "setup": {
     "title": "Database Setup Wizard",
     "configuration": {
@@ -1538,7 +1311,7 @@
       },
       "schemaValidate": {
         "label": "Schema Validation",
-        "description": "Validate schema integrity"
+        "description": "Verify schema integrity"
       },
       "dbPush": {
         "label": "Database Application",
@@ -1563,25 +1336,21 @@
       "unknown": "Unknown Step"
     },
     "status": {
-      "completed": "✓ Completed",
-      "error": "✗ Error",
-      "running": "⟳ Running...",
-      "pending": "⏳ Pending",
-      "ready": "Ready",
-      "runningText": "Running...",
-      "solution": "Solution:"
+      "completed": "Completed",
+      "error": "Error",
+      "running": "Running...",
+      "pending": "Pending",
+      "ready": "Ready"
     },
     "actions": {
       "runCurrent": "Run Current Step",
       "runAll": "Run All Steps",
       "runStep": "Run Step",
       "runAgain": "Run Again",
-      "nextStep": "Go to Next Step →",
+      "nextStep": "Go to Next Step",
       "resetStep": "Reset Step",
       "autoAdvance": "Auto advance",
-      "clearLogs": "Clear Logs",
-      "success": "Success",
-      "error": "Error"
+      "clearLogs": "Clear Logs"
     },
     "logs": {
       "title": "Logs",
@@ -1592,19 +1361,14 @@
         "refresh": "Refresh",
         "filters": {
           "userId": "User ID",
-          "userIdPlaceholder": "Search by User ID",
+          "userIdPlaceholder": "Enter User ID",
           "status": "Status",
-          "statusPlaceholder": "All Statuses",
+          "statusPlaceholder": "Select Status",
           "module": "Module",
-          "modulePlaceholder": "All Modules",
+          "modulePlaceholder": "Select Module",
           "startDate": "Start Date",
           "endDate": "End Date",
-          "datePlaceholder": "Select date"
-        },
-        "status": {
-          "success": "Success",
-          "failure": "Failed",
-          "error": "Error"
+          "datePlaceholder": "Select Date"
         },
         "table": {
           "time": "Time",
@@ -1617,10 +1381,15 @@
           "details": "Detail",
           "noLogs": "No log found"
         },
+        "status": {
+          "success": "Success",
+          "failure": "Failure",
+          "error": "Error"
+        },
         "modal": {
-          "title": "Log Detail",
-          "error": "Error:",
-          "details": "Details:"
+          "title": "Log Details",
+          "error": "Error Message",
+          "details": "Details"
         },
         "errors": {
           "loadFailed": "Logs could not be loaded",
@@ -1630,45 +1399,48 @@
       }
     },
     "completion": {
-      "title": "🎉 Setup Completed!",
+      "title": "Setup Completed!",
       "message": "All stages completed successfully! Database setup is ready.",
       "stepsTitle": "Completed Steps and Details",
       "downloadMarkdown": "Download as Markdown",
-      "downloadText": "Download as Text",
-      "reportDescription": "The report contains all setup steps, configuration and logs."
-    },
-    "errors": {
-      "unknown": "Unknown error",
-      "statusFailed": "Status information could not be retrieved",
-      "accessFailed": "Access control failed"
+      "downloadText": "Download as Text"
     },
     "messages": {
       "databaseConnectionSuccess": "Both database connections successful",
-      "databasesCreated": "Databases created/validated",
+      "databasesCreated": "Databases created/verified",
       "bothSchemasApplied": "Both database schemas applied",
       "coreSchemaApplied": "Core database schema applied",
       "tenantSchemaApplied": "Tenant database schema applied",
       "stepCompleted": "Step completed successfully",
       "stepFailed": "Step failed",
       "allStepsCompleted": "All stages completed",
-      "setupComplete": "Setup completed successfully, download report",
+      "setupComplete": "Setup completed successfully",
       "accessDenied": "Access denied",
-      "accessCheckFailed": "Access control failed",
       "noAccessPermission": "You do not have permission to access this page",
-      "resetFailed": "Reset failed",
-      "databaseResetting": "Database resetting...",
-      "databaseResetComplete": "Database reset completed",
-      "databaseResetSuccess": "Database reset successfully"
+      "accessCheckFailed": "Access check failed",
+      "databaseResetting": "databases are resetting...",
+      "databaseResetSuccess": "databases successfully reset",
+      "databaseResetComplete": "database reset complete",
+      "resetFailed": "Reset failed"
     }
   },
+
   "systemStatus": {
     "title": "System Information",
-    "loading": "Loading system status...",
+    "description": "View server and system status information",
+    "loading": "System status loading...",
     "databaseStatus": "Database Status",
     "refresh": "Refresh",
     "retry": "Retry",
     "environmentVariables": "Environment Variables",
     "lastUpdate": "Last update:",
+    "serverInfo": "Server Information",
+    "cpuUsage": "CPU Usage",
+    "memoryUsage": "Memory Usage",
+    "diskUsage": "Disk Usage",
+    "systemStorage": "System Storage",
+    "cores": "Core",
+    "hostname": "Hostname",
     "fields": {
       "nodeVersion": "Node.js Version",
       "platform": "Platform",
@@ -1679,559 +1451,46 @@
       "used": "Used:",
       "total": "Total:",
       "postgresVersion": "PostgreSQL Version:",
-      "notDefined": "Not defined",
-      "host": "Server",
+      "host": "Host",
       "user": "User",
       "database": "Database",
       "tableCount": "Table Count",
-      "tenantCount": "Tenant Count",
-      "empty": "Empty (Seed required)",
-      "coreSeedRequired": "Core Seed required"
+      "tenantCount": "Tenant Count"
     },
     "status": {
       "connected": "Connected",
       "error": "Error"
+    },
+    "errors": {
+      "loadFailed": "System information could not be retrieved",
+      "loadError": "An error occurred while loading system information"
     }
   },
-  "page": {
-    "allReports": {
-      "title": "Title"
-    }
+
+  "footer": {
+    "copyright": "© 2024. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "support": "Support"
   },
-  "metrics": {
-    "pending": "Pending"
+
+  "menu": {
+    "dashboard": "Dashboard",
+    "moduleManagement": "Module Management",
+    "settings": "Settings",
+    "accessControl": "Access Control",
+    "companyManagement": "Company Management"
   },
-  "create": {
-    "title": "Create"
+
+  "profile": {
+    "title": "Profile",
+    "myProfile": "My Profile",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "preferences": "Preferences",
+    "notifications": "Notifications"
   },
-  "edit": {
-    "title": "Edit"
-  },
-  "maintenance": {
-    "create": {
-      "title": "Title"
-    },
-    "edit": {
-      "title": "Title",
-      "description": "Description"
-    },
-    "title": "Title"
-  },
-  "Report": "Report",
-  "TR": "TR",
-  "TRY": "TRY",
-  "active": "Active",
-  "all": "All",
-  "auth-token": "Auth-token",
-  "authorization": "Authorization",
-  "auto": "Auto",
-  "blob": "Blob",
-  "button": "Button",
-  "center": "Center",
-  "comfortable": "Comfortable",
-  "completed": "Completed",
-  "cookie": "Cookie",
-  "createDescription": "create description",
-  "detail": "Detail",
-  "detailDescription": "detail description",
-  "direct": "Direct",
-  "draft": "Draft",
-  "editDescription": "edit description",
-  "empty": {
-    "message": "Message"
-  },
-  "filled": "Filled",
-  "host": "Host",
-  "leaflet": "Leaflet",
-  "left": "Left",
-  "link": "Link",
-  "md": "Md",
-  "normal": "Normal",
-  "pending": "Pending",
-  "react-leaflet": "React-leaflet",
-  "resize": "Resize",
-  "scheduled": "Scheduled",
-  "script": "Script",
-  "sidebar": "Sidebar",
-  "style": "Style",
-  "tenant-slug": "Tenant-slug",
-  "text": "Text",
-  "top": "Top",
-  "tr": "Tr",
-  "txt": "Txt",
-  "unread": "Unread",
-  "user": "User",
-  "user-agent": "User-agent",
-  "x-forwarded-for": "X-forwarded-for",
-  "x-real-ip": "X-real-ip",
-  "titles": {
-    "avatar": {
-      "guncellenirken": {
-        "hata": {
-          "olustu": "Error occurred while updating avatar"
-        }
-      },
-      "guncellendi": "Avatar updated"
-    },
-    "success": "Success",
-    "download": "Download",
-    "onizle": "Preview",
-    "tenant": {
-      "context": {
-        "bulunamadi": "Tenant context not found"
-      }
-    },
-    "mikrofon": {
-      "erisimi": {
-        "reddedildi": "Microphone access denied"
-      }
-    },
-    "ses": {
-      "kaydi": {
-        "yuklenirken": {
-          "hata": {
-            "olustu": "Error occurred while loading audio recording"
-          }
-        },
-        "hazir": "Audio recording ready"
-      },
-      "kaydini": {
-        "gondermek": {
-          "icin": {
-            "gonder": {
-              "butonu": "Click the send button to send the audio recording"
-            }
-          }
-        }
-      }
-    },
-    "filename": {
-      "yuklenirken": {
-        "hata": {
-          "olustu": "Error occurred while loading ${file.name}"
-        }
-      },
-      "basariyla": {
-        "yuklendi": "${file.name} uploaded successfully"
-      }
-    },
-    "dosya": {
-      "yuklendi": "File uploaded",
-      "indirilirken": {
-        "hata": {
-          "olustu": "Error occurred while downloading file"
-        }
-      },
-      "silinirken": {
-        "hata": {
-          "olustu": "Error occurred while deleting file"
-        }
-      },
-      "basariyla": {
-        "silindi": "File deleted successfully",
-        "yuklendi": "File uploaded successfully"
-      },
-      "yuklenirken": {
-        "hata": {
-          "olustu": "Error occurred while loading file"
-        }
-      }
-    },
-    "mesaj": {
-      "gonderilirken": {
-        "hata": {
-          "olustu": "Error occurred while sending message"
-        }
-      }
-    },
-    "kullanici": {
-      "bilgisi": {
-        "bulunamadi": "User information not found"
-      }
-    },
-    "sohbet": {
-      "olusturulurken": {
-        "hata": {
-          "olustu": "Error occurred while creating chat"
-        }
-      },
-      "baslatildi": "Chat started"
-    },
-    "bir": {
-      "kullanici": {
-        "secmelisiniz": "You must select a user"
-      }
-    },
-    "grup": {
-      "sohbeti": {
-        "olusturulurken": {
-          "hata": {
-            "olustu": "Error occurred while creating group chat"
-          }
-        },
-        "olusturuldu": "Group chat created"
-      }
-    },
-    "en": {
-      "az": {
-        "bir": {
-          "kullanici": {
-            "secmelisiniz": "You must select at least one user"
-          }
-        }
-      }
-    },
-    "bu": {
-      "sayfaya": {
-        "erisim": {
-          "izniniz": {
-            "yok": "You do not have permission to access this page."
-          }
-        }
-      }
-    },
-    "erisim": {
-      "reddedildi": "Access Denied"
-    },
-    "sifirlama": {
-      "basarisiz": {
-        "errormessage": "Reset failed: ${error.message}"
-      }
-    },
-    "tum": {
-      "label": "All",
-      "asamalar": {
-        "tamamlandi": "All stages completed"
-      }
-    },
-    "kurulum": {
-      "basariyla": {
-        "tamamlandi": {
-          "raporu": {
-            "indi": "Setup completed successfully. You can download the report."
-          }
-        }
-      }
-    },
-    "formattouppercase": {
-      "formatinda": {
-        "disa": {
-          "aktarm": "Export in ${format.toUpperCase()} format will be added soon"
-        }
-      }
-    },
-    "kiraci": {
-      "sil": "Delete Tenant"
-    },
-    "export": {
-      "islemi": {
-        "basarisiz": {
-          "oldu": "Export operation failed"
-        }
-      }
-    },
-    "sutun": {
-      "ayarlari": "Column Settings"
-    },
-    "description": "description",
-    "izin": {
-      "listesi": "Permission List"
-    },
-    "izinler": "Permissions"
-  },
-  "messages": {
-    "dosya": {
-      "gonderildi": {
-        "fileinfosmapf": {
-          "fnamejoin": "File sent: ${fileInfos.map(f => f.name).join("
-        }
-      }
-    },
-    "gonderildi": "sent",
-    "adim": {
-      "step": {
-        "1": {
-          "basarisiz": {
-            "errormessage": "Step ${step + 1} failed: ${errorMessage}"
-          }
-        }
-      }
-    },
-    "her": {
-      "iki": {
-        "veritabani": {
-          "semasi": {
-            "uygulandi": "Both database schemas applied"
-          },
-          "baglantisi": {
-            "basarili": "Both database connections successful"
-          }
-        }
-      }
-    },
-    "veritabanlari": {
-      "olusturuldudogrulandi": "Databases created/validated"
-    },
-    "rapor": {
-      "verisi": {
-        "bulunamadi": "Report data not found"
-      }
-    }
-  },
-  "errors": {
-    "tum": "All",
-    "erisim": {
-      "kontrolu": {
-        "basarisiz": "Access control failed"
-      },
-      "reddedildi": "Access denied"
-    },
-    "description": "Description",
-    "tenant": {
-      "veritabani": {
-        "semasi": {
-          "uygulandi": "Tenant database schema applied"
-        }
-      }
-    },
-    "core": {
-      "veritabani": {
-        "semasi": {
-          "uygulandi": "Core database schema applied"
-        }
-      }
-    },
-    "zip": {
-      "indirme": {
-        "basarisiz": "ZIP download failed"
-      }
-    },
-    "not": {
-      "found": "not found"
-    }
-  },
-  "labels": {
-    "description": "description",
-    "edit": "Edit",
-    "view": "View",
-    "donem": {
-      "secin": {
-        "label": "Select Period",
-        "opsiyonel": "Select Period (Optional)"
-      }
-    },
-    "firma": {
-      "secin": "Select company..."
-    }
-  },
-  "descriptions": {
-    "description": "description"
-  },
-  "modal": {
-    "confirm": {
-      "title": "Confirm",
-      "message": "Are you sure?",
-      "yes": "Yes",
-      "no": "No",
-      "cancel": "Cancel",
-      "confirm": "Confirm"
-    },
-    "delete": {
-      "title": "Delete",
-      "message": "Are you sure you want to delete this item? This action cannot be undone.",
-      "confirm": "Delete",
-      "cancel": "Cancel"
-    },
-    "alert": {
-      "ok": "OK",
-      "cancel": "Cancel"
-    }
-  },
-  "licenses": {
-    "dashboard": {
-      "title": "License Panel",
-      "description": "License management overview and statistics",
-      "stats": {
-        "licenseTypes": "License Types",
-        "licensePackages": "License Packages",
-        "activeLicenses": "Active Licenses",
-        "pendingPayments": "Pending Payments"
-      },
-      "distribution": {
-        "title": "License Status Distribution",
-        "total": "Total",
-        "active": "Active",
-        "trial": "Trial",
-        "expired": "Expired"
-      },
-      "expiringSoon": {
-        "title": "Expiring Soon",
-        "count": "{{count}} licenses",
-        "noExpiring": "No licenses expiring soon"
-      },
-      "recentLicenses": {
-        "title": "Recently Added Licenses",
-        "columns": {
-          "company": "Company",
-          "package": "Package",
-          "status": "Status",
-          "endDate": "End Date",
-          "payment": "Payment"
-        },
-        "noLicenses": "No licenses yet"
-      }
-    },
-    "packages": {
-      "title": "License Packages",
-      "description": "Manage pricing packages",
-      "newPackage": "New Package",
-      "columns": {
-        "package": "Package",
-        "type": "Type",
-        "price": "Price",
-        "cycle": "Cycle",
-        "modules": "Modules",
-        "subscriptions": "Subscriptions",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "noPackages": "No license package created yet",
-      "deleteTitle": "Delete License Package",
-      "deleteConfirm": "Are you sure you want to delete the package {{name}}?",
-      "cannotDelete": "There are active licenses linked to this package",
-      "discount": "%{{percent}} discount",
-      "billingCycles": {
-        "monthly": "Monthly",
-        "quarterly": "Quarterly",
-        "yearly": "Yearly",
-        "one_time": "One-time",
-        "custom": "Custom"
-      }
-    },
-    "types": {
-      "title": "License Types",
-      "description": "Manage license types (Trial, Standard, Premium, Enterprise)",
-      "newType": "New Type",
-      "columns": {
-        "type": "Type",
-        "description": "Description",
-        "limits": "Limits",
-        "duration": "Duration",
-        "packageCount": "Package Count",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "noTypes": "No license type created yet",
-      "deleteTitle": "Delete License Type",
-      "deleteConfirm": "Are you sure you want to delete the license type {{name}}?",
-      "cannotDelete": "There are packages linked to this type, delete packages first",
-      "limits": {
-        "users": "Users",
-        "storage": "Storage",
-        "unlimited": "∞"
-      },
-      "duration": {
-        "days": "{{days}} days",
-        "trial": "Trial: {{days}} days"
-      },
-      "packagesCount": "{{count}} packages"
-    },
-    "tenants": {
-      "title": "Company Licenses",
-      "description": "Manage licenses assigned to companies",
-      "assignLicense": "Assign License",
-      "searchPlaceholder": "Search company or package...",
-      "filterStatus": "Filter status",
-      "columns": {
-        "company": "Company",
-        "package": "Package",
-        "status": "Status",
-        "payment": "Payment",
-        "usage": "Usage",
-        "endDate": "End",
-        "actions": "Actions"
-      },
-      "noLicenses": "No license assigned yet",
-      "noFilterResults": "No license found matching filter",
-      "deleteTitle": "Delete License",
-      "deleteConfirm": "Are you sure you want to delete the license of company {{name}}? This action cannot be undone and all payment records will also be deleted.",
-      "daysRemaining": "{{days}} days remaining",
-      "expired": "Expired",
-      "usageLabel": "{{current}}/{{max}} users",
-      "menu": {
-        "details": "Details",
-        "edit": "Edit",
-        "payments": "Payments",
-        "delete": "Delete"
-      }
-    },
-    "payments": {
-      "title": "Payment Tracking",
-      "description": "Track and approve license payments",
-      "searchPlaceholder": "Search company, invoice no or transaction ID...",
-      "tabs": {
-        "pending": "Pending",
-        "approved": "Approved",
-        "rejected": "Rejected",
-        "all": "All"
-      },
-      "columns": {
-        "company": "Company",
-        "package": "Package",
-        "amount": "Amount",
-        "method": "Method",
-        "invoice": "Invoice",
-        "date": "Date",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "noPayments": "No payment in this category",
-      "noFilterResults": "No payment found matching filter",
-      "dueDate": "Due: {{date}}",
-      "approveTitle": "Approve Payment",
-      "approveConfirm": "Are you sure you want to approve the payment of {{amount}} from company {{company}}?",
-      "rejectTitle": "Reject Payment",
-      "rejectConfirm": "Are you sure you want to reject the payment from company {{company}}?",
-      "rejectReason": "Rejection Reason",
-      "rejectReasonPlaceholder": "Why was the payment rejected?",
-      "menu": {
-        "approve": "Approve",
-        "reject": "Reject",
-        "viewReceipt": "View Receipt",
-        "viewInvoice": "View Invoice"
-      },
-      "methods": {
-        "bank_transfer": "Bank Transfer/EFT",
-        "credit_card": "Credit Card",
-        "cash": "Cash",
-        "other": "Other"
-      }
-    },
-    "status": {
-      "trial": "Trial",
-      "active": "Active",
-      "expired": "Expired",
-      "suspended": "Suspended",
-      "cancelled": "Cancelled"
-    },
-    "paymentStatus": {
-      "pending": "Pending",
-      "paid": "Paid",
-      "failed": "Failed",
-      "refunded": "Refunded",
-      "approved": "Approved",
-      "rejected": "Rejected"
-    },
-    "notifications": {
-      "statusUpdated": "Status updated",
-      "deleted": "Deleted",
-      "deleteFailed": "Delete operation failed",
-      "approved": "Payment approved",
-      "approveFailed": "Approve operation failed",
-      "rejected": "Payment rejected",
-      "rejectFailed": "Reject operation failed"
-    }
-  },
+
   "roles": {
     "items": {
       "superAdmin": {
@@ -2248,6 +1507,7 @@
       }
     }
   },
+
   "permissions": {
     "categories": {
       "userManagement": "User Management",
@@ -2263,7 +1523,7 @@
       "user": {
         "create": {
           "name": "Create User",
-          "description": "Permission to create new users"
+          "description": "Permission to create new user"
         },
         "read": {
           "name": "View User",
@@ -2285,7 +1545,7 @@
         },
         "create": {
           "name": "Create Notification",
-          "description": "Permission to create notifications"
+          "description": "Permission to create notification"
         }
       },
       "report": {
@@ -2295,9 +1555,220 @@
         },
         "create": {
           "name": "Create Report",
-          "description": "Permission to create reports"
+          "description": "Permission to create report"
         }
       }
     }
-  }
+  },
+
+  "calendar": {
+    "title": "Calendar",
+    "description": "Calendar management and events"
+  },
+
+  "fileManager": {
+    "title": "File Manager",
+    "upload": "Upload File",
+    "download": "Download",
+    "delete": "Delete",
+    "rename": "Rename",
+    "move": "Move",
+    "copy": "Copy",
+    "newFolder": "New Folder",
+    "files": "Files",
+    "folders": "Folders",
+    "size": "Size",
+    "modified": "Modified",
+    "type": "Type",
+    "name": "Name",
+    "path": "Path",
+    "noFiles": "No file found",
+    "deleteConfirm": "Are you sure you want to delete this file?",
+    "uploadSuccess": "File successfully uploaded",
+    "uploadError": "Error occurred while uploading file",
+    "deleteSuccess": "File successfully deleted",
+    "deleteError": "Error occurred while deleting file"
+  },
+
+  "companies": {
+    "title": "Companies",
+    "description": "Company and organization management",
+    "allCompanies": "All Companies",
+    "create": "Create New Company",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noCompanies": "No company found",
+    "loadError": "An error occurred while loading companies",
+    "search": "Search company...",
+    "deleteTitle": "Delete Company",
+    "confirmDelete": "Are you sure you want to delete this company? This action cannot be undone.",
+    "deleting": "Deleting...",
+    "comingSoon": "Coming soon",
+    "assets": "Assets",
+    "contents": "Contents",
+    "websites": "Websites",
+    "myCompany": "My Company",
+    "myCompanyDescription": "View and edit your company information",
+    "updated": "Company information successfully updated",
+    "updateError": "An error occurred while updating company information",
+    "logoUploadError": "An error occurred while uploading logo",
+    "logoUploaded": "Logo successfully uploaded",
+    "faviconUploaded": "Favicon successfully uploaded",
+    "pwaIconUploaded": "PWA icon successfully uploaded",
+    "main": "Main Company",
+    "viewing": "Viewing",
+    "editing": "Editing",
+    "metadata": "Metadata",
+    "viewDescription": "View company details",
+    "name": "Company Name",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "address": "Address",
+    "tabs": {
+      "basic": "Basic Info",
+      "contact": "Contact",
+      "legal": "Legal Info",
+      "financial": "Financial Info",
+      "additional": "Additional Info"
+    },
+    "logo": "Logo",
+    "uploadLogo": "Upload Logo",
+    "removeLogo": "Remove Logo",
+    "logoHint": "Recommended size: 200x60 pixels (PNG or SVG)",
+    "favicon": "Favicon",
+    "uploadFavicon": "Upload Favicon",
+    "removeFavicon": "Remove Favicon",
+    "faviconHint": "Icon that will appear in browser tab (32x32px)",
+    "pwaIcon": "PWA Icon",
+    "uploadPwaIcon": "Upload PWA Icon",
+    "removePwaIcon": "Remove PWA Icon",
+    "pwaIconHint": "Icon that will appear when added to home screen on mobile (512x512px)",
+    "table": {
+      "name": "Company Name",
+      "industry": "Industry",
+      "website": "Website",
+      "status": "Status",
+      "users": "Users",
+      "stats": "Statistics",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Company Name",
+      "namePlaceholder": "Enter company name",
+      "industry": "Industry",
+      "industryPlaceholder": "e.g., Technology, Finance, Health",
+      "website": "Website",
+      "websitePlaceholder": "https://www.examplecompany.com",
+      "description": "Description",
+      "descriptionPlaceholder": "Write a short description about company",
+      "foundedYear": "Founded Year",
+      "foundedYearPlaceholder": "e.g., 2010",
+      "employeeCount": "Employee Count",
+      "employeeCountPlaceholder": "e.g., 50",
+      "capital": "Capital",
+      "capitalPlaceholder": "e.g., 1,000,000 TRY",
+      "address": "Address",
+      "addressPlaceholder": "Enter full address information",
+      "city": "City",
+      "cityPlaceholder": "City name",
+      "state": "District",
+      "statePlaceholder": "District name",
+      "postalCode": "Postal Code",
+      "postalCodePlaceholder": "e.g., 34000",
+      "country": "Country",
+      "countryPlaceholder": "Country name",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 234 567 89 00",
+      "email": "Email",
+      "emailPlaceholder": "info@examplecompany.com",
+      "taxNumber": "Tax Number",
+      "taxNumberPlaceholder": "Enter tax number",
+      "taxOffice": "Tax Office",
+      "taxOfficePlaceholder": "Tax office name",
+      "registrationNumber": "Trade Registration Number",
+      "registrationNumberPlaceholder": "Enter trade registration number",
+      "mersisNumber": "MERSIS Number",
+      "mersisNumberPlaceholder": "Enter MERSIS number",
+      "iban": "IBAN",
+      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
+      "bankName": "Bank Name",
+      "bankNamePlaceholder": "Enter bank name",
+      "accountHolder": "Account Holder",
+      "accountHolderPlaceholder": "Enter account holder name"
+    },
+    "stats": {
+      "title": "Statistics",
+      "total": "Total Companies",
+      "active": "Active Companies",
+      "users": "Users",
+      "totalStats": "Total Resources",
+      "assets": "Assets",
+      "contents": "Contents",
+      "websites": "Websites"
+    },
+    "info": {
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "status": "Status"
+    }
+  },
+
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "download": "Download",
+    "refresh": "Refresh",
+    "create": "Create",
+    "update": "Update",
+    "back": "Back",
+    "close": "Close",
+    "confirm": "Confirm",
+    "submit": "Submit",
+    "reset": "Reset",
+    "export": "Export",
+    "import": "Import",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "apply": "Apply",
+    "add": "Add",
+    "remove": "Remove"
+  },
+
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "create": "Create",
+    "update": "Update",
+    "export": "Export",
+    "import": "Import",
+    "refresh": "Refresh",
+    "download": "Download",
+    "downloadAll": "Download All"
+  },
+
+  "exportComingSoon": "Export in {{format}} format will be added soon",
+
+  "loading": "Loading...",
+
+  "save": "Save",
+  "calendar": "Calendar",
+  "list": "List",
+
+  "status": {
+    "title": "Status",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+
+  "success": "Success",
+  "error": "Error"
 }

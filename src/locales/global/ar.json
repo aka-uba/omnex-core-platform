@@ -1,9 +1,6 @@
 {
-  "success": "نجح",
-  "error": "خطأ",
-  "warning": "تحذير",
-  "info": "معلومات",
   "common": {
+    "search": "بحث",
     "actions": {
       "save": "حفظ",
       "cancel": "إلغاء",
@@ -24,181 +21,560 @@
       "preview": "معاينة",
       "archive": "أرشفة",
       "setDefault": "تعيين كافتراضي",
-      "title": "الإجراءات",
-      "hidePeriodSelection": "إخفاء اختيار الفترة"
+      "add": "إضافة",
+      "remove": "إزالة",
+      "next": "التالي",
+      "previous": "السابق",
+      "clear": "مسح",
+      "apply": "تطبيق",
+      "select": "تحديد",
+      "selectAll": "تحديد الكل",
+      "download": "تنزيل",
+      "print": "طباعة",
+      "copy": "نسخ",
+      "duplicate": "تكرار",
+      "move": "نقل",
+      "rename": "إعادة تسمية",
+      "share": "مشاركة",
+      "send": "إرسال",
+      "retry": "إعادة المحاولة",
+      "continue": "متابعة",
+      "skip": "تخطي",
+      "finish": "إنهاء",
+      "start": "بدء",
+      "stop": "إيقاف",
+      "pause": "إيقاف مؤقت",
+      "resume": "استئناف",
+      "enable": "تفعيل",
+      "disable": "تعطيل",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "filter": "تصفية",
+      "sort": "فرز",
+      "expand": "توسيع",
+      "collapse": "طي",
+      "showMore": "عرض المزيد",
+      "showLess": "عرض أقل",
+      "viewAll": "عرض الكل",
+      "hidePeriodSelection": "إخفاء اختيار الفترة",
+      "title": "إجراءات"
     },
+    "error": "خطأ",
+    "success": "نجاح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "loading": "جاري التحميل...",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "deleted": "تم الحذف",
+    "comingSoon": "قريباً",
+    "errorLoading": "خطأ في التحميل",
+    "noData": "لم يتم العثور على بيانات",
+    "showing": "عرض",
+    "of": "من",
+    "modules": "الوحدات",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "back": "رجوع",
+    "required": "مطلوب",
+    "notFound": "غير موجود",
+    "yes": "نعم",
+    "no": "لا",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "notApplicable": "غير متاح",
+    "information": "معلومات",
+    "createdAt": "تاريخ الإنشاء",
+    "updatedAt": "تاريخ التحديث",
     "status": {
-      "success": "نجح",
-      "error": "خطأ",
-      "warning": "تحذير",
-      "info": "معلومات",
-      "loading": "جاري التحميل...",
+      "title": "الحالة",
       "active": "نشط",
       "inactive": "غير نشط",
       "pending": "قيد الانتظار",
       "completed": "مكتمل",
-      "draft": "مسودة"
+      "draft": "مسودة",
+      "published": "منشور",
+      "archived": "مؤرشف",
+      "deleted": "محذوف",
+      "approved": "معتمد",
+      "rejected": "مرفوض",
+      "cancelled": "ملغى",
+      "expired": "منتهي الصلاحية",
+      "suspended": "معلق",
+      "processing": "جاري المعالجة",
+      "failed": "فشل",
+      "success": "نجاح",
+      "error": "خطأ",
+      "warning": "تحذير",
+      "info": "معلومات",
+      "loading": "جاري التحميل..."
     },
     "messages": {
-      "noData": "لا توجد بيانات",
-      "noResults": "لا توجد نتائج",
+      "noData": "لم يتم العثور على بيانات",
+      "noResults": "لم يتم العثور على نتائج",
       "errorLoading": "حدث خطأ أثناء التحميل",
-      "notFound": "غير موجود",
-      "comingSoon": "قريباً"
+      "notFound": "العنصر غير موجود",
+      "comingSoon": "سيكون متاحاً قريباً",
+      "saveSuccess": "تم الحفظ بنجاح",
+      "saveError": "حدث خطأ أثناء الحفظ",
+      "deleteSuccess": "تم الحذف بنجاح",
+      "deleteError": "حدث خطأ أثناء الحذف",
+      "updateSuccess": "تم التحديث بنجاح",
+      "updateError": "حدث خطأ أثناء التحديث",
+      "createSuccess": "تم الإنشاء بنجاح",
+      "createError": "حدث خطأ أثناء الإنشاء",
+      "loadError": "حدث خطأ أثناء تحميل البيانات",
+      "networkError": "خطأ في الشبكة أو الخادم غير متاح",
+      "unauthorized": "ليس لديك صلاحية للقيام بهذا الإجراء",
+      "accessDenied": "تم رفض الوصول",
+      "sessionExpired": "انتهت صلاحية الجلسة",
+      "invalidRequest": "طلب غير صالح",
+      "unknownError": "حدث خطأ غير معروف"
     },
     "confirmations": {
-      "deleteFile": "هل أنت متأكد من حذف هذا الملف؟",
-      "deleteItem": "هل أنت متأكد من حذف هذا العنصر؟",
-      "unsavedChanges": "هناك تغييرات غير محفوظة. هل أنت متأكد من الخروج؟"
+      "delete": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+      "deleteFile": "هل أنت متأكد أنك تريد حذف هذا الملف؟",
+      "deleteItem": "هل أنت متأكد أنك تريد حذف هذا الصنف؟",
+      "unsavedChanges": "لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد مغادرة الصفحة؟",
+      "irreversible": "هذا الإجراء لا يمكن التراجع عنه."
     },
     "validation": {
-      "required": "مطلوب",
-      "invalidEmail": "أدخل عنوان بريد إلكتروني صحيح",
-      "minLength": "يجب أن يكون {{min}} أحرف على الأقل",
-      "maxLength": "يجب أن يكون {{max}} أحرف كحد أقصى",
+      "required": "هذا الحقل مطلوب",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "minLength": "يجب أن يتكون من {{min}} أحرف على الأقل",
+      "maxLength": "يجب ألا يتجاوز {{max}} أحرف",
       "passwordRequired": "كلمة المرور مطلوبة",
       "usernameRequired": "اسم المستخدم مطلوب",
-      "companyRequired": "اختيار الشركة مطلوب"
-    },
-    "dates": {
-      "createdAt": "تاريخ الإنشاء",
-      "updatedAt": "تاريخ التحديث"
+      "companyRequired": "اختيار الشركة مطلوب",
+      "invalidFormat": "تنسيق غير صالح",
+      "numberOnly": "يُسمح بالأرقام فقط",
+      "positiveNumber": "يجب إدخال رقم موجب",
+      "invalidDate": "تاريخ غير صالح",
+      "invalidUrl": "يرجى إدخال رابط (URL) صالح",
+      "invalidPhone": "يرجى إدخال رقم هاتف صالح",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
     },
     "labels": {
       "all": "الكل",
       "yes": "نعم",
       "no": "لا",
+      "none": "لا يوجد",
+      "other": "أخرى",
+      "default": "افتراضي",
+      "custom": "مخصص",
+      "total": "الإجمالي",
+      "count": "العدد",
+      "amount": "المبلغ",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "name": "الاسم",
       "description": "الوصف",
-      "subscription": "الاشتراك",
-      "configuration": "الإعدادات",
-      "calendar": "التقويم",
-      "list": "القائمة"
+      "type": "النوع",
+      "status": "الحالة",
+      "actions": "الإجراءات",
+      "details": "التفاصيل",
+      "options": "الخيارات",
+      "settings": "الإعدادات",
+      "information": "معلومات",
+      "notes": "ملاحظات",
+      "comments": "تعليقات",
+      "attachments": "مرفقات",
+      "history": "السجل",
+      "createdAt": "تاريخ الإنشاء",
+      "updatedAt": "تاريخ التحديث",
+      "createdBy": "أُنشئ بواسطة",
+      "updatedBy": "حدث بواسطة",
+      "notApplicable": "غير متاح",
+      "unlimited": "غير محدود",
+      "warning": "تحذير"
     },
-    "back": "رجوع",
-    "loading": "جاري التحميل...",
-    "delete": "حذف",
-    "edit": "تعديل",
-    "save": "حفظ",
-    "cancel": "إلغاء",
-    "create": "إنشاء",
-    "update": "تحديث",
-    "view": "عرض",
-    "confirm": "تأكيد",
-    "close": "إغلاق",
-    "search": "بحث",
-    "error": "خطأ",
-    "success": "نجح",
-    "warning": "تحذير",
-    "info": "معلومات",
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "noData": "لا توجد بيانات",
-    "noResults": "لا توجد نتائج",
-    "errorLoading": "حدث خطأ أثناء التحميل",
-    "notFound": "غير موجود",
-    "required": "مطلوب",
-    "showing": "عرض",
-    "of": "/",
-    "modules": "وحدة",
-    "information": "معلومات",
-    "createdAt": "تاريخ الإنشاء",
-    "updatedAt": "تاريخ التحديث",
-    "notApplicable": "غير محدد"
-  },
-  "calendar": {
-    "title": "التقويم",
-    "description": "إدارة التقويم والأحداث"
-  },
-  "list": {
-    "subscription": "subscription",
-    "raporu": {
-      "silinecek": {
-        "bu": {
-          "islem": {
-            "geri": {
-              "alinamaz": {
-                "": " سيتم حذف التقرير. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟"
-              }
+    "kullanici": {
+      "adi": {
+        "gereklidir": "اسم المستخدم مطلوب"
+      }
+    },
+    "sifre": {
+      "gereklidir": "كلمة المرور مطلوبة"
+    },
+    "firma": {
+      "secimi": {
+        "gereklidir": "اختيار الشركة مطلوب"
+      }
+    },
+    "currentyear": {
+      "yili": "سنة 2026",
+      "1": {
+        "yili": "سنة 2025"
+      },
+      "2": {
+        "yili": "سنة 2024"
+      }
+    },
+    "bu": {
+      "dosyayi": {
+        "silmek": {
+          "istediginizden": {
+            "emin": {
+              "mi": "هل أنت متأكد أنك تريد حذف هذا الملف؟"
             }
           }
         }
       }
+    },
+    "time": {
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "tomorrow": "غداً",
+      "thisWeek": "هذا الأسبوع",
+      "lastWeek": "الأسبوع الماضي",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "thisYear": "هذه السنة",
+      "days": "أيام",
+      "hours": "ساعات",
+      "minutes": "دقائق",
+      "seconds": "ثواني"
+    },
+    "pagination": {
+      "showing": "عرض",
+      "of": "من",
+      "page": "صفحة",
+      "recordsPerPage": "عدد السجلات في الصفحة:",
+      "first": "الأولى",
+      "last": "الأخيرة",
+      "previous": "السابق",
+      "next": "التالي"
     }
   },
-  "form": {
-    "upload": "رفع",
-    "cancel": "إلغاء",
-    "save": "حفظ",
-    "submit": "إرسال",
-    "reset": "إعادة تعيين",
-    "create": "إنشاء",
-    "update": "تحديث",
-    "delete": "حذف",
-    "edit": "تعديل",
-    "close": "إغلاق",
-    "labels": {
-      "subscription": "الاشتراك",
-      "description": "الوصف"
-    }
-  },
-  "save": "حفظ",
-  "cancel": "إلغاء",
-  "buttons": {
-    "refresh": "تحديث",
-    "save": "حفظ",
-    "cancel": "إلغاء",
-    "delete": "حذف",
-    "edit": "تعديل",
-    "create": "إنشاء",
-    "update": "تحديث",
-    "view": "عرض",
-    "back": "رجوع",
-    "next": "التالي",
-    "previous": "السابق",
-    "submit": "إرسال",
-    "reset": "إعادة تعيين",
-    "close": "إغلاق",
-    "confirm": "تأكيد",
-    "add": "إضافة",
-    "remove": "إزالة"
-  },
+
   "navigation": {
     "dashboard": "لوحة التحكم",
     "settings": "الإعدادات",
     "modules": "الوحدات",
     "corePages": "الصفحات الأساسية",
-    "superadmin": "المدير الفائق"
+    "superadmin": "المسؤول العام",
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج",
+    "home": "الرئيسية",
+    "back": "رجوع",
+    "menu": "القائمة"
   },
+
+  "empty": {
+    "message": "لم يتم العثور على بيانات"
+  },
+
+  "table": {
+    "actions": "الإجراءات",
+    "noData": "لم يتم العثور على بيانات",
+    "noResults": "لم يتم العثور على نتائج",
+    "loading": "جاري التحميل...",
+    "search": {
+      "placeholder": "بحث...",
+      "label": "بحث"
+    },
+    "filter": {
+      "title": "تصفية",
+      "button": "تصفية",
+      "clear": "مسح التصفية",
+      "apply": "تطبيق التصفية",
+      "active": "الفلاتر النشطة",
+      "all": "الكل",
+      "searchPlaceholder": "البحث في {{label}}...",
+      "selectPlaceholder": "اختر {{label}}...",
+      "numberPlaceholder": "أدخل {{label}}...",
+      "noOptions": "لا توجد خيارات تصفية متاحة.",
+      "dateRange": {
+        "start": "البداية",
+        "end": "النهاية",
+        "startPlaceholder": "تاريخ البدء",
+        "endPlaceholder": "تاريخ الانتهاء"
+      }
+    },
+    "columnSettings": {
+      "title": "إعدادات الأعمدة",
+      "reset": "إعادة تعيين",
+      "reorder": "إعادة ترتيب الأعمدة",
+      "toggle": "رؤية الأعمدة",
+      "resetToDefaults": "العودة للوضع الافتراضي",
+      "show": "إظهار",
+      "hide": "إخفاء",
+      "moveUp": "تحريك للأعلى",
+      "moveDown": "تحريك للأسفل",
+      "columnsSection": "الأعمدة",
+      "columnBackground": "خلفية العمود",
+      "clearColor": "مسح اللون",
+      "tableStyle": {
+        "title": "نمط الجدول",
+        "verticalBorders": "حدود عمودية",
+        "headerBackground": "خلفية الرأس",
+        "selectColor": "اختر اللون..."
+      },
+      "badges": {
+        "sortable": "قابل للفرز",
+        "searchable": "قابل للبحث",
+        "filterable": "قابل للتصفية"
+      },
+      "tip": {
+        "title": "نصيحة",
+        "description": "يمكنك إعادة ترتيب الأعمدة عن طريق السحب والإفلات أو باستخدام أزرار الأعلى/الأسفل، وتغيير الرؤية بالنقر على أيقونة العين."
+      }
+    },
+    "pagination": {
+      "recordsPerPage": "سجل لكل صفحة:",
+      "showing": "عرض السجلات",
+      "of": "من",
+      "page": "صفحة",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "export": {
+      "providerRequired": "مزود التصدير (ExportProvider) مطلوب",
+      "all": "الكل",
+      "currentPage": "الصفحة الحالية",
+      "selected": "المحدد"
+    },
+    "selection": {
+      "selected": "محدد",
+      "selectAll": "تحديد الكل",
+      "deselectAll": "إلغاء تحديد الكل"
+    }
+  },
+
+  "modal": {
+    "confirm": {
+      "title": "تأكيد",
+      "message": "هل أنت متأكد؟",
+      "yes": "نعم",
+      "no": "لا",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    },
+    "delete": {
+      "title": "تأكيد الحذف",
+      "message": "هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "alert": {
+      "ok": "موافق",
+      "cancel": "إلغاء"
+    }
+  },
+
+  "notifications": {
+    "success": {
+      "title": "نجاح",
+      "saved": "تم الحفظ بنجاح",
+      "deleted": "تم الحذف بنجاح",
+      "updated": "تم التحديث بنجاح",
+      "created": "تم الإنشاء بنجاح",
+      "userCreated": "تم إنشاء المستخدم بنجاح",
+      "userUpdated": "تم تحديث المستخدم بنجاح",
+      "userDeleted": "تم حذف المستخدم بنجاح",
+      "roleCreated": "تم إنشاء الدور بنجاح",
+      "roleUpdated": "تم تحديث الدور بنجاح",
+      "permissionCreated": "تم إنشاء الصلاحية بنجاح",
+      "permissionUpdated": "تم تحديث الصلاحية بنجاح"
+    },
+    "error": {
+      "title": "خطأ",
+      "generic": "حدث خطأ ما",
+      "validation": "يرجى تصحيح أخطاء النموذج",
+      "network": "حدث خطأ في الشبكة",
+      "unauthorized": "وصول غير مصرح به",
+      "userCreateFailed": "فشل إنشاء المستخدم",
+      "userUpdateFailed": "فشل تحديث المستخدم",
+      "userDeleteFailed": "فشل حذف المستخدم",
+      "statusUpdateFailed": "فشل تحديث الحالة",
+      "roleSaveFailed": "فشل حفظ الدور",
+      "permissionSaveFailed": "فشل حفظ الصلاحية"
+    },
+    "warning": {
+      "title": "تحذير"
+    },
+    "info": {
+      "title": "معلومات"
+    },
+    "validation": {
+      "title": "خطأ في التحقق",
+      "requiredFields": "يرجى ملء الحقول المطلوبة",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "fixErrors": "يرجى تصحيح الأخطاء في النموذج"
+    }
+  },
+
+  "export": {
+    "title": "تصدير",
+    "report": "تقرير",
+    "pdf": "تحميل بصيغة PDF",
+    "excel": "تحميل بصيغة Excel",
+    "csv": "تحميل بصيغة CSV",
+    "word": "تحميل بصيغة Word",
+    "html": "تحميل بصيغة HTML",
+    "print": "طباعة",
+    "exporting": "جاري التصدير...",
+    "success": "تم التصدير بنجاح",
+    "error": "حدث خطأ أثناء التصدير",
+    "noData": "لا توجد بيانات للتصدير",
+    "selectFormat": "اختر التنسيق",
+    "downloadReady": "التحميل جاهز",
+    "comingSoon": "سيتم إضافة التصدير بصيغة {{format}} قريباً"
+  },
+
+  "form": {
+    "required": "حقل مطلوب",
+    "optional": "اختياري",
+    "selectPlaceholder": "اختر...",
+    "searchPlaceholder": "بحث...",
+    "noOptions": "لم يتم العثور على خيارات",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "confirm": "تأكيد",
+    "createdAt": "أُنشئ في",
+    "updatedAt": "حدث في",
+    "upload": "رفع",
+    "uploadDetails": {
+      "title": "رفع ملف",
+      "dragDrop": "اسحب الملفات هنا أو انقر للاختيار",
+      "browse": "تصفح",
+      "maxSize": "أقصى حجم للملف: {{size}}",
+      "allowedTypes": "الأنواع المسموح بها: {{types}}",
+      "uploading": "جاري الرفع...",
+      "success": "تم رفع الملف بنجاح",
+      "error": "حدث خطأ أثناء رفع الملف"
+    }
+  },
+
+  "session": {
+    "timeoutWarning": {
+      "title": "انتهاء الجلسة",
+      "message": "ستنتهي جلستك قريباً. هل تريد المتابعة؟",
+      "extend": "تمديد الجلسة",
+      "logout": "تسجيل الخروج"
+    }
+  },
+
+  "layout": {
+    "menu": "القائمة",
+    "search": "بحث",
+    "searchPlaceholder": "بحث...",
+    "expandSidebar": "توسيع الشريط الجانبي",
+    "collapseSidebar": "طي الشريط الجانبي",
+    "switchToSidebar": "التبديل إلى تخطيط الشريط الجانبي",
+    "switchToTop": "التبديل إلى التخطيط العلوي",
+    "toggleTheme": "تبديل المظهر",
+    "enterFullscreen": "ملء الشاشة",
+    "exitFullscreen": "الخروج من ملء الشاشة",
+    "moreMenuItems": "المزيد من العناصر",
+    "toggleMenu": "تبديل القائمة",
+    "userMenu": "قائمة المستخدم",
+    "user": "المستخدم",
+    "myProfile": "ملفي الشخصي",
+    "accountSettings": "إعدادات الحساب",
+    "logout": "تسجيل الخروج",
+    "configurator": {
+      "title": "إعدادات المظهر",
+      "openSettings": "فتح إعدادات المظهر",
+      "saveSuccess": "تم حفظ الإعدادات",
+      "saveSuccessMessage": "تم حفظ تفضيلات المظهر الخاصة بك بنجاح.",
+      "resetTitle": "إعادة تعيين الإعدادات",
+      "resetConfirmMessage": "هل أنت متأكد أنك تريد إعادة تعيين كافة تفضيلات المظهر إلى القيم الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.",
+      "resetSuccess": "تمت إعادة تعيين الإعدادات",
+      "resetSuccessMessage": "تمت إعادة تعيين كافة تفضيلات المظهر إلى القيم الافتراضية.",
+      "layoutStyle": "نمط التخطيط",
+      "theme": "المظهر",
+      "direction": "الاتجاه",
+      "sidebarSettings": "إعدادات الشريط الجانبي",
+      "topLayoutSettings": "إعدادات التخطيط العلوي",
+      "mobileSettings": "إعدادات الجوال",
+      "contentArea": "منطقة المحتوى",
+      "footerVisible": "تذييل الصفحة مرئي",
+      "width": "العرض",
+      "height": "الارتفاع",
+      "headerHeight": "ارتفاع الرأس",
+      "iconSize": "حجم الأيقونة",
+      "collapsed": "مطوي",
+      "background": "الخلفية",
+      "scrollBehavior": "سلوك التمرير",
+      "padding": "الهوامش الداخلية",
+      "maxWidth": "أقصى عرض (px)",
+      "maxWidthNote": "يتم الإزالة تلقائياً عند اختيار عرض 100%",
+      "unlimited": "غير محدود",
+      "colorPalette": "لوحة الألوان",
+      "customColor": "لون مخصص",
+      "sidebarLayout": "تخطيط جانبي",
+      "topLayout": "تخطيط علوي",
+      "themeLight": "فاتح",
+      "themeDark": "داكن",
+      "themeAuto": "تلقائي",
+      "ltr": "يسار إلى يمين",
+      "rtl": "يمين إلى يسار",
+      "close": "إغلاق",
+      "backgrounds": {
+        "light": "فاتح",
+        "dark": "داكن",
+        "brand": "العلامة التجارية",
+        "custom": "مخصص"
+      },
+      "scrollBehaviors": {
+        "fixed": "ثابت",
+        "hidden": "مخفي",
+        "hiddenOnHover": "يظهر عند التمرير"
+      },
+      "directions": {
+        "top": "أعلى",
+        "right": "يمين",
+        "bottom": "أسفل",
+        "left": "يسار"
+      },
+      "buttons": {
+        "save": "حفظ",
+        "reset": "إعادة تعيين"
+      }
+    }
+  },
+
   "settings": {
+    "title": "الإعدادات",
     "menuManagement": {
-      "title": "إدارة القائمة"
+      "title": "إدارة القوائم"
     },
     "theme": {
       "title": "إعدادات المظهر",
       "saved": "تم حفظ الإعدادات",
       "savedMessage": "تم حفظ تفضيلات المظهر بنجاح.",
-      "defaultsSaved": "تم حفظ الإعدادات الافتراضية",
-      "defaultsSavedMessage": "تم حفظ الإعدادات الافتراضية للشركة بنجاح.",
-      "saveAsDefault": "حفظ كافتراضي",
+      "defaultsSaved": "تم حفظ القيم الافتراضية",
+      "defaultsSavedMessage": "تم حفظ القيم الافتراضية للشركة بنجاح.",
+      "saveAsDefault": "تعيين كافتراضي",
       "resetTitle": "إعادة تعيين الإعدادات",
-      "resetConfirm": "هل أنت متأكد من إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.",
-      "resetSuccess": "تم إعادة تعيين الإعدادات",
-      "resetSuccessMessage": "تم إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية.",
-      "preferencesSaved": "تم حفظ التفضيلات",
-      "preferencesSavedMessage": "تم حفظ تفضيلات المظهر بنجاح.",
-      "resetPreferences": "إعادة تعيين التفضيلات",
-      "resetPreferencesConfirm": "هل أنت متأكد من إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.",
-      "preferencesReset": "تم إعادة تعيين التفضيلات",
-      "preferencesResetMessage": "تم إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية.",
+      "resetConfirm": "هل أنت متأكد أنك تريد إعادة تعيين كافة التفضيلات إلى القيم الافتراضية؟",
+      "resetSuccess": "تمت إعادة التعيين",
+      "resetSuccessMessage": "تمت إعادة تفضيلات المظهر إلى الوضع الافتراضي.",
       "menuColor": "لون القائمة",
       "topMenuColor": "لون القائمة العلوية"
     },
     "general": {
       "title": "الإعدادات العامة",
-      "description": "إدارة الإعدادات العامة للمنصة",
-      "loadError": "حدث خطأ أثناء تحميل الإعدادات",
+      "description": "إدارة إعدادات المنصة بالكامل",
+      "loadError": "فشل تحميل الإعدادات",
       "savedSuccessfully": "تم حفظ الإعدادات بنجاح",
-      "saveError": "حدث خطأ أثناء حفظ الإعدادات",
+      "saveError": "فشل حفظ الإعدادات",
       "tabs": {
         "regionTime": "المنطقة والوقت",
         "email": "البريد الإلكتروني (SMTP)",
@@ -216,151 +592,123 @@
         "weekStartMonday": "الاثنين",
         "weekStartSunday": "الأحد",
         "currency": "العملة",
+        "currencyTRY": "TRY - ليرة تركية",
+        "currencyUSD": "USD - دولار أمريكي",
+        "currencyEUR": "EUR - يورو",
+        "currencyGBP": "GBP - جنيه إسترليني",
+        "currencyJPY": "JPY - ين ياباني",
+        "currencyCNY": "CNY - يوان صيني",
         "defaultLanguage": "اللغة الافتراضية",
         "languageTr": "التركية",
         "languageEn": "الإنجليزية",
         "languageDe": "الألمانية",
         "languageAr": "العربية",
-        "currencyTRY": "TRY - الليرة التركية",
-        "currencyUSD": "USD - الدولار الأمريكي",
-        "currencyEUR": "EUR - اليورو",
-        "currencyGBP": "GBP - الجنيه الإسترليني",
-        "currencyJPY": "JPY - الين الياباني",
-        "currencyCNY": "CNY - اليوان الصيني"
+        "languages": {
+          "tr": "التركية",
+          "en": "الإنجليزية",
+          "de": "الألمانية",
+          "ar": "العربية"
+        },
+        "currencies": {
+          "TRY": "ليرة تركية",
+          "USD": "دولار أمريكي",
+          "EUR": "يورو",
+          "GBP": "جنيه إسترليني"
+        }
       },
       "email": {
-        "title": "إعدادات البريد الإلكتروني (SMTP)",
+        "title": "إعدادات البريد (SMTP)",
         "enableSmtp": "تفعيل SMTP",
         "smtpHost": "خادم SMTP",
+        "smtpHostPlaceholder": "smtp.example.com",
         "smtpPort": "منفذ SMTP",
         "encryption": "التشفير",
-        "encryptionNone": "لا يوجد",
+        "encryptionNone": "بدون",
         "username": "اسم المستخدم",
         "password": "كلمة المرور",
         "fromName": "اسم المرسل",
         "fromEmail": "بريد المرسل",
-        "advanced": "الإعدادات المتقدمة",
-        "timeout": "انتهاء الوقت",
-        "retryAttempts": "عدد المحاولات",
-        "connectionPool": "مجموعة الاتصال",
+        "advanced": "إعدادات متقدمة",
+        "timeout": "مهلة الاتصال",
+        "retryAttempts": "محاولات الإعادة",
+        "connectionPool": "تجمع الاتصالات",
         "sendTestEmail": "إرسال بريد تجريبي",
-        "testEmailPlaceholder": "ميزة البريد التجريبي ستُضاف قريباً",
         "testEmailSuccess": "تم إرسال البريد التجريبي بنجاح",
-        "testEmailError": "حدث خطأ أثناء إرسال البريد التجريبي",
-        "testEmailValidationError": "إعدادات SMTP ناقصة أو غير صالحة. يرجى التحقق من خادم SMTP وعنوان البريد الإلكتروني للمرسل",
+        "testEmailError": "فشل إرسال البريد التجريبي",
         "testEmailModal": {
           "title": "إرسال بريد تجريبي",
           "to": "بريد المستلم",
           "toPlaceholder": "example@email.com",
-          "toRequired": "عنوان بريد المستلم مطلوب",
-          "invalidEmail": "أدخل عنوان بريد إلكتروني صحيح",
+          "toRequired": "بريد المستلم مطلوب",
+          "invalidEmail": "أدخل بريداً إلكترونياً صالحاً",
           "subject": "الموضوع",
-          "subjectPlaceholder": "موضوع البريد الإلكتروني",
+          "subjectPlaceholder": "موضوع البريد التجريبي",
           "subjectRequired": "الموضوع مطلوب",
           "message": "الرسالة",
-          "messagePlaceholder": "رسالة البريد الإلكتروني",
+          "messagePlaceholder": "اكتب رسالتك التجريبية هنا",
           "messageRequired": "الرسالة مطلوبة",
+          "defaultSubject": "بريد تجريبي SMTP",
+          "defaultMessage": "هذه رسالة تجريبية لتكوين SMTP.",
           "send": "إرسال",
           "smtpDisabled": "SMTP معطل",
-          "smtpDisabledMessage": "يجب تفعيل SMTP أولاً لإرسال بريد تجريبي.",
-          "checkCredentials": "يرجى التحقق من اسم مستخدم SMTP وكلمة المرور والإعدادات الأخرى.",
-          "defaultSubject": "OMNEX - بريد تجريبي",
-          "defaultMessage": "هذا بريد تجريبي تم إرساله من منصة OMNEX الخاصة بك.\n\nإذا تلقيت هذا البريد، فهذا يعني أن إعدادات SMTP تعمل بشكل صحيح."
+          "smtpDisabledMessage": "يرجى تفعيل SMTP أولاً لإرسال بريد تجريبي.",
+          "checkCredentials": "تحقق من معلومات SMTP الخاصة بك"
         },
+        "testEmailValidationError": "خطأ في التحقق من النموذج",
         "errors": {
-          "SMTP_AUTH_FAILED": "خطأ في مصادقة SMTP",
-          "SMTP_AUTH_FAILED_MESSAGE": "اسم المستخدم أو كلمة المرور غير صحيحة. يرجى التحقق من بيانات اعتماد SMTP.",
-          "SMTP_CONNECTION_FAILED": "خطأ في الاتصال بـ SMTP",
-          "SMTP_CONNECTION_FAILED_MESSAGE": "لا يمكن الاتصال بخادم SMTP. يرجى التحقق من إعدادات SMTP.",
-          "SMTP_SEND_FAILED": "خطأ في إرسال البريد الإلكتروني",
-          "SMTP_SEND_FAILED_MESSAGE": "لا يمكن إرسال البريد الإلكتروني. يرجى التحقق من إعدادات SMTP والمحاولة مرة أخرى.",
-          "SMTP_NOT_ENABLED": "SMTP غير مفعّل",
-          "SMTP_NOT_ENABLED_MESSAGE": "SMTP غير مفعّل. يرجى تفعيل SMTP من الإعدادات أولاً.",
-          "SMTP_INCOMPLETE": "إعدادات SMTP غير مكتملة",
-          "SMTP_INCOMPLETE_MESSAGE": "خادم SMTP وعنوان بريد المرسل مطلوبان.",
-          "SMTP_TRANSPORTER_FAILED": "خطأ في إنشاء ناقل SMTP",
-          "SMTP_TRANSPORTER_FAILED_MESSAGE": "لا يمكن إنشاء ناقل SMTP. يرجى التحقق من إعدادات SMTP.",
-          "NODEMAILER_IMPORT_FAILED": "خطأ في استيراد Nodemailer",
-          "NODEMAILER_IMPORT_FAILED_MESSAGE": "لا يمكن استيراد Nodemailer. يرجى التأكد من تثبيت حزمة nodemailer: npm install nodemailer @types/nodemailer",
-          "NODEMAILER_NOT_INSTALLED": "Nodemailer غير مثبت",
-          "NODEMAILER_NOT_INSTALLED_MESSAGE": "حزمة nodemailer مطلوبة لإرسال البريد الإلكتروني. يرجى التثبيت: npm install nodemailer @types/nodemailer",
-          "TEST_EMAIL_ERROR": "خطأ في البريد التجريبي",
-          "TEST_EMAIL_ERROR_MESSAGE": "حدث خطأ أثناء إرسال البريد التجريبي.",
-          "REQUEST_FAILED": "خطأ في الطلب",
-          "REQUEST_FAILED_MESSAGE": "حدث خطأ غير متوقع.",
-          "UNAUTHORIZED": "وصول غير مصرح",
-          "UNAUTHORIZED_MESSAGE": "ليس لديك صلاحية لهذه العملية.",
-          "TENANT_ID_REQUIRED": "معرف المستأجر مطلوب",
-          "TENANT_ID_REQUIRED_MESSAGE": "معرف المستأجر مطلوب.",
-          "COMPANY_ID_REQUIRED": "معرف الشركة مطلوب",
-          "COMPANY_ID_REQUIRED_MESSAGE": "معرف الشركة مطلوب. لم يتم العثور على شركة للمستأجر.",
-          "EMAIL_REQUIRED": "عنوان البريد الإلكتروني مطلوب",
-          "EMAIL_REQUIRED_MESSAGE": "عنوان بريد المستلم مطلوب.",
-          "INVALID_EMAIL": "عنوان بريد إلكتروني غير صالح",
-          "INVALID_EMAIL_MESSAGE": "يرجى إدخال عنوان بريد إلكتروني صحيح.",
-          "INVALID_REQUEST_BODY": "نص الطلب غير صالح",
-          "INVALID_REQUEST_BODY_MESSAGE": "لا يمكن تحليل نص الطلب. يرجى إرسال طلب يحتوي على JSON صالح.",
-          "SETTINGS_NOT_FOUND": "الإعدادات غير موجودة",
-          "SETTINGS_NOT_FOUND_MESSAGE": "لم يتم العثور على الإعدادات العامة. يرجى تكوين إعدادات SMTP أولاً.",
-          "status": "الحالة",
-          "networkError": "خطأ في الشبكة أو الخادم غير متاح"
-        },
-        "smtpHostPlaceholder": "smtp.example.com",
-        "timeoutSuffix": " مللي ثانية",
-        "retryAttemptsSuffix": " محاولة",
-        "connectionPoolSuffix": " اتصال"
+          "status": "حالة HTTP",
+          "networkError": "حدث خطأ في الشبكة"
+        }
       },
       "calendar": {
         "title": "تكامل التقويم",
-        "googleCalendar": "تقويم Google",
+        "googleCalendar": "تقويم جوجل",
         "outlook": "Microsoft Outlook/Office 365",
         "icloud": "Apple iCloud",
-        "yandex": "تقويم Yandex",
+        "yandex": "تقويم ياندكس",
         "enable": "تفعيل",
         "apiKey": "مفتاح API",
         "calendarId": "معرف التقويم",
         "clientId": "معرف العميل",
         "tenantId": "معرف المستأجر",
         "calendarUrl": "رابط التقويم",
-        "token": "الرمز المميز",
+        "token": "الرمز (Token)",
         "syncInterval": "فترة المزامنة",
         "generalSettings": "إعدادات التقويم العامة",
         "defaultView": "العرض الافتراضي",
         "viewMonth": "شهر",
         "viewWeek": "أسبوع",
         "viewDay": "يوم",
-        "showWeekends": "إظهار عطلة نهاية الأسبوع",
-        "showHolidays": "إظهار العطلات"
+        "showWeekends": "إظهار عطلات نهاية الأسبوع",
+        "showHolidays": "إظهار العطلات الرسمية"
       },
       "security": {
         "title": "إعدادات الأمان",
-        "sessionManagement": "إدارة الجلسة",
-        "sessionTimeout": "انتهاء الجلسة",
-        "maxConcurrentSessions": "الحد الأقصى للجلسات المتزامنة",
-        "rememberMeDuration": "مدة تذكرني",
+        "sessionManagement": "إدارة الجلسات",
+        "sessionTimeout": "مهلة انتهاء الجلسة",
+        "maxConcurrentSessions": "أقصى عدد للجلسات المتزامنة",
+        "rememberMeDuration": "مدة 'تذكرني'",
+        "minutesSuffix": "دقائق",
+        "daysSuffix": "أيام",
         "passwordPolicy": "سياسة كلمة المرور",
         "passwordMinLength": "الحد الأدنى لطول كلمة المرور",
-        "requireUppercase": "يتطلب حروف كبيرة",
-        "requireLowercase": "يتطلب حروف صغيرة",
-        "requireNumbers": "يتطلب أرقام",
-        "requireSpecial": "يتطلب أحرف خاصة",
+        "requireUppercase": "تطلب أحرف كبيرة",
+        "requireLowercase": "تطلب أحرف صغيرة",
+        "requireNumbers": "تطلب أرقام",
+        "requireSpecial": "تطلب رموزاً خاصة",
         "passwordExpiration": "انتهاء صلاحية كلمة المرور (أيام)",
-        "noExpiration": "بدون انتهاء",
+        "noExpiration": "لا تنتهي أبداً",
         "twoFactorAuth": "المصادقة الثنائية (2FA)",
         "enable2FA": "تفعيل 2FA",
-        "require2FAForAdmins": "إلزامي للمديرين",
-        "loginSecurity": "أمان تسجيل الدخول",
-        "maxLoginAttempts": "الحد الأقصى لمحاولات تسجيل الدخول",
+        "require2FAForAdmins": "تطلب للمسؤولين",
+        "loginSecurity": "أمن تسجيل الدخول",
+        "maxLoginAttempts": "أقصى محاولات دخول",
         "lockoutDuration": "مدة القفل",
-        "ipWhitelist": "القائمة البيضاء لـ IP",
-        "ipWhitelistDescription": "اكتب عنوان IP واحد في كل سطر",
-        "ipWhitelistPlaceholder": "192.168.1.1\n10.0.0.1",
-        "apiSecurity": "أمان API",
-        "apiRateLimit": "حد معدل API",
-        "apiKeyExpiration": "انتهاء صلاحية مفتاح API (أيام)",
-        "minutesSuffix": " دقيقة",
-        "daysSuffix": " يوم",
-        "requestsPerMinuteSuffix": " طلب/دقيقة"
+        "ipWhitelist": "القائمة البيضاء لعناوين IP",
+        "ipWhitelistDescription": "أدخل عنوان IP واحداً في كل سطر",
+        "apiSecurity": "أمن API",
+        "apiRateLimit": "حد معدل طلبات API",
+        "apiKeyExpiration": "انتهاء صلاحية مفتاح API (أيام)"
       }
     },
     "company": {
@@ -369,25 +717,19 @@
     "locations": {
       "title": "المواقع",
       "description": "عرض وإدارة مواقع الشركة",
-      "allLocations": "جميع المواقع",
+      "allLocations": "كافة المواقع",
       "create": "موقع جديد",
       "createSubArea": "منطقة فرعية جديدة",
       "edit": "تعديل",
       "view": "عرض",
       "delete": "حذف",
-      "close": "إغلاق",
-      "cancel": "إلغاء",
-      "update": "تحديث",
-      "success": "نجح",
-      "error": "خطأ",
-      "warning": "تحذير",
       "loading": "جاري تحميل المواقع...",
       "noData": "لم يتم العثور على موقع",
       "createLocation": "إنشاء موقع",
-      "editLocation": "تعديل موقع",
-      "editSubArea": "تعديل منطقة فرعية",
+      "editLocation": "تعديل الموقع",
+      "editSubArea": "تعديل المنطقة الفرعية",
       "addSubArea": "إضافة منطقة فرعية",
-      "deleteConfirm": "هل أنت متأكد من حذف هذا الموقع؟",
+      "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الموقع؟",
       "deleteSuccess": "تم حذف الموقع بنجاح",
       "deleteError": "حدث خطأ أثناء حذف الموقع",
       "createSuccess": "تم إنشاء الموقع بنجاح",
@@ -395,10 +737,19 @@
       "saveError": "حدث خطأ أثناء حفظ الموقع",
       "createSubAreaSuccess": "تم إنشاء المنطقة الفرعية بنجاح",
       "updateSubAreaSuccess": "تم تحديث المنطقة الفرعية بنجاح",
+      "noParentSelected": "الموقع الرئيسي غير محدد",
       "nameRequired": "اسم الموقع مطلوب",
-      "createDescription": "إنشاء موقع جديد",
-      "noParentLocation": "يجب إنشاء موقع رئيسي أولاً",
-      "noParentSelected": "يجب اختيار الموقع الرئيسي",
+      "noParentLocation": "يجب عليك إنشاء موقع رئيسي أولاً",
+      "success": "نجاح",
+      "error": "خطأ",
+      "warning": "تحذير",
+      "cancel": "إلغاء",
+      "update": "تحديث",
+      "close": "إغلاق",
+      "status": {
+        "active": "نشط",
+        "inactive": "غير نشط"
+      },
       "types": {
         "headquarters": "المقر الرئيسي",
         "branch": "فرع",
@@ -408,9 +759,56 @@
         "store": "متجر",
         "other": "أخرى"
       },
-      "status": {
-        "active": "نشط",
-        "inactive": "غير نشط"
+      "table": {
+        "name": "المواقع"
+      },
+      "filters": {
+        "type": "تصفية حسب النوع",
+        "status": "تصفية حسب الحالة"
+      },
+      "form": {
+        "name": "الاسم",
+        "namePlaceholder": "مثال: المبنى الرئيسي",
+        "nameRequired": "الاسم مطلوب",
+        "code": "الكود",
+        "codePlaceholder": "مثال: LOC-001",
+        "type": "النوع",
+        "typeRequired": "اختيار النوع مطلوب",
+        "parent": "الموقع الرئيسي",
+        "parentPlaceholder": "اختر الموقع الرئيسي (اختياري)",
+        "address": "العنوان",
+        "addressPlaceholder": "عنوان الشارع",
+        "city": "المدينة",
+        "cityPlaceholder": "اسم المدينة",
+        "country": "الدولة",
+        "countryPlaceholder": "اسم الدولة",
+        "postalCode": "الرمز البريدي",
+        "postalCodePlaceholder": "الرمز البريدي",
+        "description": "الوصف",
+        "descriptionPlaceholder": "وصف الموقع",
+        "isActive": "نشط",
+        "latitude": "خط العرض",
+        "latitudePlaceholder": "41.0082",
+        "longitude": "خط الطول",
+        "longitudePlaceholder": "28.9784",
+        "phone": "الهاتف",
+        "phonePlaceholder": "+1 234 567 89 00",
+        "email": "البريد الإلكتروني",
+        "emailPlaceholder": "location@example.com",
+        "googleMapsLink": "رابط مشاركة خرائط جوجل",
+        "googleMapsLinkPlaceholder": "http://maps.google.com/...",
+        "googleMapsLinkDescription": "الصق رابط المشاركة من خرائط جوجل، وسيتم ملء الإحداثيات تلقائياً",
+        "subAreaNamePlaceholder": "مثال: بلوك A، الطابق الأول",
+        "subAreaCodePlaceholder": "مثال: A-BLK-01"
+      },
+      "map": {
+        "title": "عرض الخريطة",
+        "description": "عرض المواقع على الخريطة",
+        "noLocations": "لم يتم العثور على مواقع لعرضها على الخريطة.",
+        "viewOnMap": "عرض على الخريطة",
+        "openInGoogleMaps": "فتح في خرائط جوجل",
+        "latitude": "خط العرض",
+        "longitude": "خط الطول"
       },
       "columns": {
         "name": "الاسم",
@@ -419,158 +817,97 @@
         "city": "المدينة",
         "status": "الحالة",
         "actions": "الإجراءات"
-      },
-      "filters": {
-        "type": "نوع الموقع",
-        "status": "الحالة"
-      },
-      "form": {
-        "upload": "رفع",
-        "cancel": "إلغاء",
-        "save": "حفظ",
-        "submit": "إرسال",
-        "reset": "إعادة تعيين",
-        "create": "إنشاء",
-        "update": "تحديث",
-        "delete": "حذف",
-        "edit": "تعديل",
-        "close": "إغلاق",
-        "name": "الاسم",
-        "code": "الكود",
-        "type": "النوع",
-        "parent": "الموقع الرئيسي",
-        "address": "العنوان",
-        "city": "المدينة",
-        "country": "الدولة",
-        "postalCode": "الرمز البريدي",
-        "description": "الوصف",
-        "isActive": "نشط",
-        "latitude": "خط العرض",
-        "latitudePlaceholder": "41.0082",
-        "longitude": "خط الطول",
-        "longitudePlaceholder": "28.9784",
-        "phone": "الهاتف",
-        "phonePlaceholder": "+90 212 123 45 67",
-        "email": "البريد الإلكتروني",
-        "emailPlaceholder": "location@example.com",
-        "googleMapsLink": "رابط مشاركة Google Maps",
-        "googleMapsLinkPlaceholder": "https://www.google.com/maps?q=41.0082,28.9784",
-        "googleMapsLinkDescription": "الصق رابط المشاركة من Google Maps، سيتم ملء الإحداثيات تلقائياً",
-        "namePlaceholder": "مثال: المبنى الرئيسي",
-        "codePlaceholder": "مثال: LOC-001",
-        "descriptionPlaceholder": "وصف عن الموقع",
-        "parentPlaceholder": "اختر الموقع الرئيسي (اختياري)",
-        "addressPlaceholder": "عنوان الشارع",
-        "cityPlaceholder": "اسم المدينة",
-        "countryPlaceholder": "اسم الدولة",
-        "postalCodePlaceholder": "الرمز البريدي",
-        "subAreaNamePlaceholder": "مثال: الممر A",
-        "subAreaCodePlaceholder": "مثال: COR-A",
-        "nameRequired": "الاسم مطلوب",
-        "typeRequired": "النوع مطلوب"
-      },
-      "map": {
-        "title": "عرض الخريطة",
-        "description": "عرض المواقع على الخريطة",
-        "noLocations": "لم يتم العثور على موقع للعرض على الخريطة. أضف معلومات خط العرض وخط الطول إلى المواقع.",
-        "viewOnMap": "عرض على الخريطة",
-        "latitude": "خط العرض",
-        "longitude": "خط الطول",
-        "openInGoogleMaps": "فتح في Google Maps"
-      },
-      "table": {
-        "name": "القائمة"
       }
     },
     "exportTemplates": {
-      "title": "قوالب التصدير"
+      "title": "نماذج التصدير"
     },
     "notifications": {
       "title": "إعدادات الإشعارات",
-      "description": "إدارة إعدادات الإشعارات لمنصتك",
-      "loadError": "حدث خطأ أثناء تحميل إعدادات الإشعارات.",
-      "saveError": "حدث خطأ أثناء حفظ إعدادات الإشعارات.",
+      "description": "إدارة إعدادات الإشعارات في منصتك",
+      "loadError": "فشل تحميل إعدادات الإشعارات.",
+      "saveError": "فشل حفظ إعدادات الإشعارات.",
       "savedSuccessfully": "تم حفظ إعدادات الإشعارات بنجاح.",
       "email": {
-        "tabTitle": "إشعارات البريد الإلكتروني",
+        "tabTitle": "إشعارات البريد",
         "title": "إعدادات إشعارات البريد الإلكتروني",
-        "enable": "تفعيل إشعارات البريد الإلكتروني",
-        "enableDescription": "تفعيل أو تعطيل إشعارات البريد الإلكتروني على مستوى النظام",
+        "enable": "تفعيل إشعارات البريد",
+        "enableDescription": "تفعيل أو تعطيل إشعارات البريد على مستوى النظام",
         "notificationTypes": "أنواع الإشعارات",
         "types": {
           "system": "إشعارات النظام",
-          "systemDescription": "الإشعارات المرسلة من النظام",
+          "systemDescription": "تحديثات النظام والتحذيرات الحرجة",
           "user": "إشعارات المستخدم",
-          "userDescription": "الإشعارات بين المستخدمين",
-          "module": "إشعارات الوحدة",
-          "moduleDescription": "الإشعارات من الوحدات"
+          "userDescription": "إشعارات تتعلق بإجراءات المستخدم",
+          "module": "إشعارات الوحدات",
+          "moduleDescription": "إشعارات تتعلق بأنشطة الوحدات (Modules)"
         }
       },
       "push": {
-        "tabTitle": "الإشعارات الفورية",
-        "title": "إعدادات الإشعارات الفورية",
-        "enable": "تفعيل الإشعارات الفورية",
-        "enableDescription": "تفعيل أو تعطيل الإشعارات الفورية للمتصفح والجوال",
-        "channels": "قنوات الإشعارات",
+        "tabTitle": "إشعارات الـ Push",
+        "title": "إعدادات إشعارات Push",
+        "enable": "تفعيل إشعارات Push",
+        "enableDescription": "تفعيل أو تعطيل إشعارات المتصفح والجوال",
+        "channels": "القنوات",
         "browser": "إشعارات المتصفح",
-        "browserDescription": "الإشعارات الفورية لمتصفح الويب",
-        "mobile": "الإشعارات المحمولة",
-        "mobileDescription": "الإشعارات الفورية للتطبيق المحمول",
+        "browserDescription": "إرسال الإشعارات عبر متصفح الويب",
+        "mobile": "إشعارات الجوال",
+        "mobileDescription": "إرسال الإشعارات عبر تطبيق الجوال",
         "notificationTypes": "أنواع الإشعارات",
         "types": {
           "system": "إشعارات النظام",
-          "systemDescription": "الإشعارات المرسلة من النظام",
+          "systemDescription": "تحديثات النظام والتحذيرات الحرجة",
           "user": "إشعارات المستخدم",
-          "userDescription": "الإشعارات بين المستخدمين",
-          "module": "إشعارات الوحدة",
-          "moduleDescription": "الإشعارات من الوحدات"
+          "userDescription": "إشعارات تتعلق بإجراءات المستخدم",
+          "module": "إشعارات الوحدات",
+          "moduleDescription": "إشعارات تتعلق بأنشطة الوحدات"
         }
       },
       "sms": {
         "tabTitle": "إشعارات SMS",
         "title": "إعدادات إشعارات SMS",
         "enable": "تفعيل إشعارات SMS",
-        "enableDescription": "تفعيل أو تعطيل إشعارات SMS",
-        "provider": "مزود SMS",
-        "providerDescription": "المزود المستخدم لإرسال SMS",
-        "providerCustom": "مخصص",
+        "enableDescription": "تفعيل أو تعطيل إشعارات الرسائل النصية القصيرة",
+        "provider": "مزود خدمة SMS",
+        "providerDescription": "اختر المزود لإرسال الرسائل النصية",
+        "providerCustom": "مزود مخصص",
         "apiKey": "مفتاح API",
-        "apiKeyPlaceholder": "مفتاح API لمزود SMS",
+        "apiKeyPlaceholder": "أدخل مفتاح API الخاص بك",
         "apiSecret": "المفتاح السري لـ API",
-        "apiSecretPlaceholder": "المفتاح السري لـ API لمزود SMS",
+        "apiSecretPlaceholder": "أدخل المفتاح السري",
         "fromNumber": "رقم المرسل",
-        "fromNumberPlaceholder": "رقم الهاتف المرسل لـ SMS",
+        "fromNumberPlaceholder": "+1 XXX XXX XX XX",
         "notificationTypes": "أنواع الإشعارات",
         "types": {
           "system": "إشعارات النظام",
-          "systemDescription": "إشعارات SMS المرسلة من النظام",
+          "systemDescription": "إرسال SMS للتحذيرات الحرجة للنظام",
           "user": "إشعارات المستخدم",
-          "userDescription": "إشعارات SMS بين المستخدمين",
-          "module": "إشعارات الوحدة",
-          "moduleDescription": "إشعارات SMS من الوحدات"
+          "userDescription": "إرسال SMS لإجراءات المستخدم الهامة",
+          "module": "إشعارات الوحدات",
+          "moduleDescription": "إرسال SMS لأنشطة الوحدات"
         }
       },
       "preferences": {
         "tabTitle": "تفضيلات الإشعارات",
         "title": "تفضيلات الإشعارات",
+        "reminderTimeDescription": "حدد وقت إرسال التذكيرات مسبقاً",
         "reminderTime": "وقت التذكير",
-        "reminderTimeDescription": "كم دقيقة قبل الإشعار لإرسال التذكير",
-        "quietHours": "ساعات الصمت",
-        "quietHoursStart": "وقت البداية",
-        "quietHoursEnd": "وقت النهاية",
+        "quietHours": "ساعات الهدوء",
+        "quietHoursStart": "وقت البدء",
+        "quietHoursEnd": "وقت الانتهاء",
         "notificationSound": "صوت الإشعار",
-        "notificationSoundDescription": "تشغيل الصوت عند وصول الإشعار"
+        "notificationSoundDescription": "هل تريد تشغيل صوت عند وصول إشعار؟"
       },
       "modules": {
-        "tabTitle": "إشعارات الوحدة",
-        "title": "إعدادات إشعارات الوحدة",
-        "description": "إدارة إعدادات الإشعارات لكل وحدة",
-        "noModules": "لم يتم العثور على وحدة بإعدادات إشعارات",
+        "tabTitle": "إشعارات الوحدات",
+        "title": "إعدادات إشعارات الوحدات",
+        "description": "تخصيص التفضيلات لكل وحدة",
+        "noModules": "لم يتم العثور على وحدات قابلة للتهيئة",
         "enableModule": "تفعيل إشعارات الوحدة",
-        "enableModuleDescription": "تفعيل أو تعطيل الإشعارات لوحدة {{module}}",
-        "channels": "قنوات الإشعارات",
-        "channelEmail": "البريد الإلكتروني",
-        "channelPush": "فوري",
+        "enableModuleDescription": "تفعيل الإشعارات لهذه الوحدة",
+        "channels": "القنوات",
+        "channelEmail": "بريد إلكتروني",
+        "channelPush": "Push",
         "channelSMS": "SMS",
         "notificationTypes": "أنواع الإشعارات"
       }
@@ -582,40 +919,117 @@
       "title": "التكاملات"
     }
   },
+
   "management": {
     "title": "الإدارة",
     "users": {
-      "title": "المستخدمون",
-      "description": "إدارة مستخدمي النظام"
+      "title": "المستخدمين",
+      "description": "إدارة مستخدمي النظام",
+      "create": "مستخدم جديد",
+      "edit": "تعديل المستخدم",
+      "delete": "حذف المستخدم",
+      "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+      "notifications": {
+        "created": "تم إنشاء المستخدم بنجاح",
+        "updated": "تم تحديث المستخدم بنجاح",
+        "deleted": "تم حذف المستخدم بنجاح",
+        "createError": "فشل إنشاء المستخدم",
+        "updateError": "فشل تحديث المستخدم",
+        "deleteError": "فشل حذف المستخدم"
+      }
     },
     "roles": {
       "title": "الأدوار",
-      "description": "إدارة أدوار المستخدمين والصلاحيات"
+      "description": "إدارة أدوار المستخدمين وصلاحياتهم",
+      "create": "دور جديد",
+      "edit": "تعديل الدور",
+      "delete": "حذف الدور",
+      "notifications": {
+        "created": "تم إنشاء الدور بنجاح",
+        "updated": "تم تحديث الدور بنجاح",
+        "saveError": "فشل حفظ الدور"
+      }
     },
     "permissions": {
       "title": "الصلاحيات",
-      "description": "إدارة الصلاحيات ومستويات الوصول على مستوى النظام"
+      "description": "إدارة الصلاحيات ومستويات الوصول في النظام",
+      "categories": {
+        "userManagement": "إدارة المستخدمين",
+        "notifications": "الإشعارات",
+        "reports": "التقارير"
+      }
     },
     "companies": {
       "title": "الشركات",
-      "create": "إنشاء شركة",
-      "createTitle": "إنشاء شركة جديدة",
-      "createDescription": "أكمل الخطوات التالية لإنشاء شركة جديدة (مستأجر)",
+      "description": "عرض وإدارة الشركة الحالية والشركات التابعة",
+      "myCompany": "شركتي",
+      "myCompanyDescription": "عرض وتعديل معلومات الشركة",
+      "create": "شركة جديدة",
+      "edit": "تعديل الشركة",
+      "allCompanies": "كافة الشركات",
+      "noCompanies": "لم يتم العثور على شركات",
+      "loadError": "خطأ في التحميل",
+      "form": {
+        "name": "اسم الشركة",
+        "namePlaceholder": "أدخل اسم الشركة",
+        "industry": "القطاع/الصناعة",
+        "website": "الموقع الإلكتروني",
+        "websitePlaceholder": "https://example.com",
+        "description": "الوصف",
+        "descriptionPlaceholder": "وصف الشركة",
+        "foundedYear": "سنة التأسيس",
+        "employeeCount": "عدد الموظفين",
+        "capital": "رأس المال",
+        "address": "العنوان",
+        "addressPlaceholder": "العنوان الكامل",
+        "city": "المدينة",
+        "state": "الولاية/المنطقة",
+        "postalCode": "الرمز البريدي",
+        "country": "الدولة",
+        "phone": "الهاتف",
+        "email": "البريد الإلكتروني",
+        "taxNumber": "الرقم الضريبي",
+        "taxOffice": "المكتب الضريبي",
+        "registrationNumber": "رقم السجل التجاري",
+        "mersisNumber": "رقم ميرسيس (Mersis)",
+        "iban": "IBAN",
+        "bankName": "اسم البنك",
+        "accountHolder": "صاحب الحساب"
+      },
+      "tabs": {
+        "basic": "معلومات أساسية",
+        "contact": "الاتصال",
+        "financial": "المعلومات المالية",
+        "legal": "المعلومات القانونية",
+        "additional": "معلومات إضافية"
+      },
+      "assets": {
+        "logo": "الشعار",
+        "uploadLogo": "رفع الشعار",
+        "changeLogo": "تغيير الشعار",
+        "removeLogo": "إزالة الشعار",
+        "favicon": "أيقونة المفضلة (Favicon)",
+        "uploadFavicon": "رفع Favicon",
+        "faviconHint": "أيقونة لتبويب المتصفح (32x32px)",
+        "pwaIcon": "أيقونة PWA",
+        "uploadPwaIcon": "رفع أيقونة PWA",
+        "pwaIconHint": "أيقونة للشاشة الرئيسية للجوال (512x512px)"
+      },
       "wizard": {
         "step1": {
           "label": "المعلومات الأساسية",
-          "description": "تفاصيل الشركة",
+          "description": "تفاصيل المستأجر (Tenant)",
           "fields": {
-            "tenantName": "اسم الشركة",
-            "tenantNamePlaceholder": "ACME Corporation",
-            "tenantNameRequired": "اسم الشركة مطلوب",
-            "slug": "المعرف",
+            "tenantName": "اسم المستأجر",
+            "tenantNamePlaceholder": "شركة ACME",
+            "tenantNameRequired": "اسم المستأجر مطلوب",
+            "slug": "Slug",
             "slugPlaceholder": "acme",
-            "slugDescription": "يُستخدم في تسمية قاعدة البيانات (أحرف صغيرة وأرقام وشرطة فقط)",
-            "slugRequired": "المعرف مطلوب",
-            "subdomain": "النطاق الفرعي",
+            "slugDescription": "يستخدم في تسمية قاعدة البيانات",
+            "slugRequired": "Slug مطلوب",
+            "subdomain": "نطاق فرعي (Subdomain)",
             "subdomainPlaceholder": "acme",
-            "subdomainDescription": "رابط الوصول: acme.onwindos.com",
+            "subdomainDescription": "عنوان الوصول: acme.onwindos.com",
             "customDomain": "نطاق مخصص (اختياري)",
             "customDomainPlaceholder": "https://acme.com"
           }
@@ -625,26 +1039,15 @@
           "description": "الشعار والتفاصيل",
           "fields": {
             "companyName": "اسم الشركة",
-            "companyNamePlaceholder": "ACME Corporation",
+            "companyNamePlaceholder": "شركة ACME المحدودة",
             "companyNameRequired": "اسم الشركة مطلوب",
             "logo": "شعار الشركة",
-            "logoPlaceholder": "رفع الشعار",
-            "logoDescription": "يُستخدم في مستندات التصدير (PDF, Excel, إلخ)",
-            "logoPreview": "معاينة:",
-            "favicon": "أيقونة الموقع",
-            "faviconPlaceholder": "رفع أيقونة الموقع",
-            "faviconDescription": "الأيقونة المعروضة في تبويب المتصفح (16x16 أو 32x32 بكسل)",
-            "pwaIconPlaceholder": "رفع أيقونة PWA (192x192 أو 512x512 بكسل)",
+            "logoDescription": "يستخدم في وثائق التصدير",
             "address": "العنوان",
-            "addressPlaceholder": "123 الشارع الرئيسي، المدينة، الدولة",
             "phone": "الهاتف",
-            "phonePlaceholder": "+90 212 123 45 67",
             "email": "البريد الإلكتروني",
-            "emailPlaceholder": "info@acme.com",
             "website": "الموقع الإلكتروني",
-            "websitePlaceholder": "https://acme.com",
-            "taxNumber": "الرقم الضريبي",
-            "taxNumberPlaceholder": "123-456-789"
+            "taxNumber": "الرقم الضريبي"
           }
         },
         "step3": {
@@ -653,71 +1056,24 @@
           "skipTitle": "تم تخطي الموقع",
           "skipMessage": "يمكنك إضافة المواقع لاحقاً من صفحة الإعدادات.",
           "addLocation": "إضافة الموقع الأول",
-          "optionalTitle": "خطوة اختيارية",
-          "optionalMessage": "يمكنك تخطي هذه الخطوة وإضافة المواقع لاحقاً.",
           "skipButton": "تخطي إعداد الموقع",
           "fields": {
             "locationName": "اسم الموقع",
-            "locationNamePlaceholder": "المكتب الرئيسي",
-            "code": "الكود",
-            "codePlaceholder": "AUTO-GENERATED",
             "locationType": "نوع الموقع",
-            "locationTypePlaceholder": "اختر النوع",
             "address": "العنوان",
-            "addressPlaceholder": "123 الشارع الرئيسي، المدينة، الدولة",
             "city": "المدينة",
-            "cityPlaceholder": "إسطنبول",
-            "country": "الدولة",
-            "countryPlaceholder": "تركيا",
-            "postalCode": "الرمز البريدي",
-            "postalCodePlaceholder": "34000",
-            "phone": "الهاتف",
-            "phonePlaceholder": "+90 212 123 45 67",
-            "email": "البريد الإلكتروني",
-            "emailPlaceholder": "location@example.com",
-            "latitude": "خط العرض",
-            "latitudePlaceholder": "41.0082",
-            "longitude": "خط الطول",
-            "longitudePlaceholder": "28.9784",
-            "description": "الوصف",
-            "descriptionPlaceholder": "وصف عن الموقع"
-          },
-          "types": {
-            "firma": "الشركة",
-            "lokasyon": "الموقع",
-            "isletme": "المؤسسة",
-            "koridor": "الممر",
-            "oda": "الغرفة"
+            "country": "الدولة"
           }
         },
         "step4": {
           "label": "الملخص",
-          "description": "مراجعة",
+          "description": "المراجعة",
           "title": "مراجعة",
-          "helpText": "يرجى مراجعة جميع المعلومات قبل إنشاء الشركة.",
+          "helpText": "يرجى مراجعة كافة المعلومات قبل إنشاء الشركة.",
           "basicInfo": "المعلومات الأساسية",
           "companyInfo": "معلومات الشركة",
-          "initialLocation": "الموقع الأول",
-          "skipped": "تم التخطي - يمكن إضافته لاحقاً",
-          "noLocation": "الموقع غير مُكوّن",
-          "uploaded": "تم الرفع",
-          "fields": {
-            "tenantName": "اسم الشركة:",
-            "slug": "المعرف:",
-            "subdomain": "النطاق الفرعي:",
-            "customDomain": "النطاق المخصص:",
-            "companyName": "اسم الشركة:",
-            "logo": "الشعار:",
-            "favicon": "أيقونة الموقع:",
-            "address": "العنوان:",
-            "phone": "الهاتف:",
-            "email": "البريد الإلكتروني:",
-            "website": "الموقع الإلكتروني:",
-            "taxNumber": "الرقم الضريبي:",
-            "locationName": "الاسم:",
-            "locationType": "النوع:",
-            "locationAddress": "العنوان:"
-          }
+          "initialLocation": "الموقع الأولي",
+          "skipped": "تم التخطي - يمكن إضافته لاحقاً"
         },
         "step5": {
           "label": "جاري الإنشاء",
@@ -726,18 +1082,15 @@
         "buttons": {
           "back": "رجوع",
           "next": "التالي",
-          "create": "إنشاء شركة",
-          "createTenant": "إنشاء شركة"
+          "create": "إنشاء الشركة"
         },
-        "requiredFields": "الحقول الإلزامية:",
-        "validationError": "يرجى ملء جميع الحقول الإلزامية",
         "success": {
-          "title": "نجح",
+          "title": "نجاح",
           "message": "تم إنشاء الشركة بنجاح!"
         },
         "error": {
           "title": "خطأ",
-          "message": "لا يمكن إنشاء الشركة"
+          "message": "فشل إنشاء الشركة"
         }
       }
     },
@@ -745,115 +1098,55 @@
       "title": "المواقع"
     }
   },
-  "profile": {
-    "title": "الملف الشخصي"
-  },
-  "modules": {
-    "file-manager": {
-      "title": "مدير الملفات"
-    }
-  },
-  "notifications": {
-    "success": {
-      "title": "نجح",
-      "userCreated": "تم إنشاء المستخدم بنجاح",
-      "userUpdated": "تم تحديث المستخدم بنجاح",
-      "userDeleted": "تم حذف المستخدم بنجاح",
-      "roleCreated": "تم إنشاء الدور بنجاح",
-      "roleUpdated": "تم تحديث الدور بنجاح",
-      "permissionCreated": "تم إنشاء الصلاحية بنجاح",
-      "permissionUpdated": "تم تحديث الصلاحية بنجاح",
-      "saved": "تم الحفظ بنجاح"
-    },
-    "error": {
-      "title": "خطأ",
-      "validation": "يرجى إصلاح أخطاء النموذج",
-      "userCreateFailed": "لا يمكن إنشاء المستخدم",
-      "userUpdateFailed": "لا يمكن تحديث المستخدم",
-      "userDeleteFailed": "لا يمكن حذف المستخدم",
-      "statusUpdateFailed": "لا يمكن تحديث الحالة",
-      "roleSaveFailed": "لا يمكن حفظ الدور",
-      "permissionSaveFailed": "لا يمكن حفظ الصلاحية",
-      "generic": "حدث خطأ"
-    },
-    "warning": {
-      "title": "تحذير"
-    },
-    "info": {
-      "title": "معلومات"
-    },
-    "validation": {
-      "title": "خطأ في التحقق",
-      "requiredFields": "يرجى ملء الحقول الإلزامية (الاسم والبريد الإلكتروني)",
-      "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
-      "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-      "passwordMismatch": "كلمات المرور غير متطابقة",
-      "fixErrors": "يرجى إصلاح أخطاء النموذج"
-    }
-  },
+
   "accessControl": {
-    "title": "لوحة تحكم الوصول",
-    "description": "إدارة إعدادات الوصول والرؤية والتخطيط لمنظمتك. يتم تطبيق التغييرات بترتيب الأولوية: المستخدم > الدور > الشركة.",
-    "layout": {
-      "configuringFor": "جاري تكوين التخطيط: {{scope}}",
-      "saveSuccess": "تم حفظ تكوين التخطيط بنجاح",
-      "saveError": "لا يمكن حفظ التكوين",
-      "sidebar": "الشريط الجانبي",
-      "topLayout": "التخطيط العلوي",
-      "contentArea": "منطقة المحتوى",
-      "footer": "التذييل",
-      "width": "العرض (بكسل)",
-      "height": "الارتفاع (بكسل)",
-      "backgroundColor": "لون الخلفية",
-      "position": "الموضع",
-      "left": "يسار",
-      "right": "يمين",
-      "collapsed": "مطوي افتراضياً",
-      "sticky": "رأس ثابت",
-      "maxWidth": "الحد الأقصى للعرض (بكسل)",
-      "maxWidthDescription": "0 للعرض الكامل",
-      "padding": "الحشو (بكسل)",
-      "visible": "مرئي"
-    },
-    "menu": {
-      "configuringFor": "جاري تكوين رؤية القائمة: {{scope}}",
-      "saveSuccess": "تم حفظ تكوين القائمة بنجاح",
-      "saveError": "لا يمكن حفظ التكوين"
-    },
-    "modules": {
-      "enabled": "مفعّل",
-      "disabled": "معطّل",
-      "features": "الميزات",
-      "noModules": "لم يتم العثور على وحدة",
-      "noModulesDescription": "لا توجد وحدة مثبتة أو متاحة حالياً.",
-      "saveSuccess": "تم حفظ تكوين وصول الوحدة بنجاح",
-      "saveError": "لا يمكن حفظ التكوين",
-      "configuringFor": "جاري تكوين وصول الوحدة: {{scope}}"
+    "title": "لوحة التحكم بالوصول",
+    "description": "إدارة إعدادات الوصول والرؤية والتخطيط.",
+    "tabs": {
+      "module": "الوصول للوحدات",
+      "menu": "رؤية القائمة",
+      "ui": "ميزات واجهة المستخدم",
+      "layout": "التخطيط (Layout)"
     },
     "scope": {
       "title": "نطاق التكوين",
-      "tenant": "الشركة",
-      "role": "الدور",
+      "tenant": "المستأجر (Tenant)",
+      "role": "الدور (Role)",
       "user": "المستخدم",
       "selectRole": "اختر الدور",
       "selectUser": "اختر المستخدم",
-      "chooseRole": "اختر دوراً",
-      "chooseUser": "اختر مستخدماً",
-      "configuringFor": "نطاق التكوين: {{scope}}",
-      "tenantHelp": "ستطبق الإعدادات على جميع المستخدمين في هذه الشركة ما لم يُذكر خلاف ذلك.",
-      "roleHelp": "ستطبق الإعدادات على جميع المستخدمين الذين لديهم هذا الدور، متجاوزة إعدادات الشركة.",
-      "userHelp": "ستطبق الإعدادات على هذا المستخدم فقط، متجاوزة إعدادات الدور والشركة."
+      "tenantHelp": "تطبق الإعدادات على كافة مستخدمي هذا المستأجر.",
+      "roleHelp": "تتجاوز هذه الإعدادات إعدادات المستأجر لهذا الدور المحدد.",
+      "userHelp": "تطبق الإعدادات فقط على هذا المستخدم."
     },
-    "tabs": {
-      "module": "وصول الوحدة",
-      "menu": "رؤية القائمة",
-      "ui": "ميزات واجهة المستخدم",
-      "layout": "التخطيط"
+    "modules": {
+      "enabled": "مفعل",
+      "disabled": "معطل",
+      "features": "الميزات",
+      "noModules": "لم يتم العثور على وحدات",
+      "saveSuccess": "تم حفظ تكوين الوصول للوحدات بنجاح",
+      "saveError": "فشل حفظ التكوين"
+    },
+    "layout": {
+      "saveSuccess": "تم حفظ تكوين التخطيط بنجاح",
+      "saveError": "فشل حفظ التكوين",
+      "sidebar": "الشريط الجانبي",
+      "topLayout": "التخطيط العلوي",
+      "contentArea": "منطقة المحتوى",
+      "footer": "تذييل الصفحة",
+      "width": "العرض (px)",
+      "height": "الارتفاع (px)",
+      "backgroundColor": "لون الخلفية",
+      "position": "الموقع",
+      "left": "يسار",
+      "right": "يمين",
+      "collapsed": "مطوي افتراضياً",
+      "sticky": "رأس ثابت (Sticky)",
+      "visible": "مرئي"
     },
     "ui": {
-      "configuringFor": "جاري تكوين ميزات واجهة المستخدم: {{scope}}",
       "saveSuccess": "تم حفظ تكوين واجهة المستخدم بنجاح",
-      "saveError": "لا يمكن حفظ التكوين",
+      "saveError": "فشل حفظ التكوين",
       "groups": {
         "buttons": "أزرار الإجراءات",
         "datatable": "جدول البيانات",
@@ -866,171 +1159,64 @@
         "delete": "زر الحذف",
         "export": "زر التصدير",
         "import": "زر الاستيراد",
-        "bulk-actions": "الإجراءات المجمعة",
-        "column-visibility": "رؤية الأعمدة",
-        "density-toggle": "إعداد الكثافة",
+        "bulkActions": "إجراءات جماعية",
+        "columnVisibility": "رؤية الأعمدة",
+        "densityToggle": "تغيير كثافة العرض",
         "fullscreen": "وضع ملء الشاشة",
-        "advanced-filters": "مرشحات متقدمة",
-        "saved-views": "العروض المحفوظة",
-        "global-search": "البحث العام"
+        "advancedFilters": "فلاتر متقدمة",
+        "savedViews": "طرق العرض المحفوظة",
+        "globalSearch": "البحث العالمي"
       }
-    },
-    "preview": {
-      "title": "معاينة التكوين",
-      "currentScope": "النطاق الحالي",
-      "activeType": "نوع التكوين النشط",
-      "priorityLogic": "منطق الأولوية",
-      "logicDesc": "يتم دمج التكوينات بالترتيب التالي (الأخير له الأولوية):"
     }
   },
-  "footer": {
-    "copyright": "© 2024. جميع الحقوق محفوظة.",
-    "privacy": "الخصوصية",
-    "terms": "الشروط",
-    "support": "الدعم"
-  },
-  "layout": {
-    "menu": "القائمة",
-    "search": "بحث",
-    "searchPlaceholder": "بحث...",
-    "expandSidebar": "توسيع الشريط الجانبي",
-    "collapseSidebar": "طي الشريط الجانبي",
-    "switchToSidebar": "التبديل إلى تخطيط الشريط الجانبي",
-    "switchToTop": "التبديل إلى التخطيط العلوي",
-    "toggleTheme": "تبديل المظهر",
-    "enterFullscreen": "ملء الشاشة",
-    "exitFullscreen": "الخروج من ملء الشاشة",
-    "moreMenuItems": "عناصر قائمة إضافية",
-    "user": "المستخدم",
-    "myProfile": "ملفي الشخصي",
-    "accountSettings": "إعدادات الحساب",
-    "logout": "تسجيل الخروج",
-    "configurator": {
-      "title": "إعدادات المظهر",
-      "openSettings": "فتح إعدادات المظهر",
-      "saveSuccess": "تم حفظ الإعدادات",
-      "saveSuccessMessage": "تم حفظ تفضيلات المظهر بنجاح.",
-      "resetTitle": "إعادة تعيين الإعدادات",
-      "resetConfirmMessage": "هل أنت متأكد من إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.",
-      "resetSuccess": "تم إعادة تعيين الإعدادات",
-      "resetSuccessMessage": "تم إعادة تعيين جميع تفضيلات المظهر إلى القيم الافتراضية.",
-      "layoutStyle": "نمط التخطيط",
-      "theme": "المظهر",
-      "direction": "الاتجاه",
-      "sidebarSettings": "إعدادات الشريط الجانبي",
-      "topLayoutSettings": "إعدادات التخطيط العلوي",
-      "mobileSettings": "إعدادات الجوال",
-      "contentArea": "منطقة المحتوى",
-      "footerVisible": "التذييل مرئي",
-      "width": "العرض",
-      "height": "الارتفاع",
-      "headerHeight": "ارتفاع الرأس",
-      "iconSize": "حجم الأيقونة",
-      "collapsed": "مطوي",
-      "background": "الخلفية",
-      "scrollBehavior": "سلوك التمرير",
-      "padding": "الحشو",
-      "maxWidth": "الحد الأقصى للعرض (بكسل)",
-      "maxWidthNote": "يتم إزالته تلقائياً عند اختيار عرض 100%",
-      "unlimited": "غير محدود",
-      "colorPalette": "لوحة الألوان",
-      "customColor": "لون مخصص",
-      "sidebarLayout": "تخطيط الشريط الجانبي",
-      "topLayout": "التخطيط العلوي",
-      "themeLight": "فاتح",
-      "themeDark": "داكن",
-      "themeAuto": "تلقائي",
-      "ltr": "LTR",
-      "rtl": "RTL",
-      "close": "إغلاق",
-      "backgrounds": {
-        "light": "فاتح",
-        "dark": "داكن",
-        "brand": "العلامة التجارية",
-        "custom": "مخصص"
-      },
-      "scrollBehaviors": {
-        "fixed": "ثابت",
-        "hidden": "مخفي",
-        "hiddenOnHover": "عند التمرير"
-      },
-      "directions": {
-        "top": "أعلى",
-        "right": "يمين",
-        "bottom": "أسفل",
-        "left": "يسار"
-      },
-      "buttons": {
-        "save": "حفظ",
-        "reset": "إعادة تعيين"
-      }
-    },
-    "toggleMenu": "فتح/إغلاق القائمة",
-    "userMenu": "قائمة المستخدم"
-  },
-  "menu": {
-    "dashboard": "لوحة التحكم",
-    "moduleManagement": "إدارة الوحدات",
-    "settings": "الإعدادات",
-    "accessControl": "التحكم في الوصول",
-    "companyManagement": "إدارة الشركة",
-    "label": "Label"
-  },
+
   "coreSystems": {
-    "title": "الأنظمة المركزية",
-    "description": "مرحباً بك في لوحة إدارة الأنظمة المركزية",
+    "title": "الأنظمة الأساسية",
+    "description": "أهلاً بك في لوحة إدارة النظام الأساسية",
     "comingSoon": "قريباً",
     "files": {
       "title": "إدارة الملفات",
-      "description": "نظام إدارة الملفات المركزي",
-      "comingSoon": "ستُضاف هذه الصفحة قريباً."
+      "description": "نظام إدارة الملفات المركزي"
     },
     "ai": {
       "title": "خدمة الذكاء الاصطناعي",
-      "description": "إدارة خدمة الذكاء الاصطناعي",
-      "comingSoon": "ستُضاف هذه الصفحة قريباً."
+      "description": "إدارة خدمات الذكاء الاصطناعي"
     },
     "notifications": {
       "title": "الإشعارات",
-      "description": "إدارة الإشعارات المركزية",
-      "comingSoon": "ستُضاف هذه الصفحة قريباً."
+      "description": "إدارة الإشعارات المركزية"
     }
   },
+
   "tenants": {
-    "title": "إدارة المستأجرين",
-    "description": "عرض وإدارة جميع المستأجرين",
+    "title": "إدارة المستأجرين (Tenants)",
+    "description": "عرض وإدارة كافة المستأجرين",
     "create": "مستأجر جديد",
     "search": "بحث...",
-    "filterStatus": "تصفية الحالة",
-    "all": "الكل",
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "suspended": "معلق",
-    "loadError": "حدث خطأ أثناء تحميل المستأجرين",
-    "noTenants": "لم يتم العثور على مستأجر",
+    "filterStatus": "تصفية حسب الحالة",
+    "loadError": "فشل تحميل المستأجرين",
+    "noTenants": "لم يتم العثور على مستأجرين",
     "table": {
       "name": "اسم الشركة",
-      "slug": "المعرف",
-      "subdomain": "النطاق الفرعي",
+      "slug": "Slug",
+      "subdomain": "Subdomain",
       "database": "قاعدة البيانات",
       "status": "الحالة",
-      "agency": "Agency",
+      "agency": "الوكالة",
       "createdAt": "تاريخ الإنشاء"
     }
   },
+
   "databases": {
     "title": "إدارة قواعد البيانات",
-    "description": "عرض وإدارة جميع قواعد البيانات",
-    "search": "بحث قاعدة البيانات...",
-    "loadError": "حدث خطأ أثناء تحميل قواعد البيانات",
+    "description": "عرض وإدارة كافة قواعد البيانات",
+    "search": "بحث عن قاعدة بيانات...",
+    "loadError": "فشل تحميل قواعد البيانات",
     "noDatabases": "لم يتم العثور على قاعدة بيانات",
-    "core": "Core",
-    "tenant": "Tenant",
-    "current": "نشط",
-    "active": "نشط",
-    "inactive": "غير نشط",
+    "core": "Core (الأساسية)",
+    "tenant": "Tenant (المستأجر)",
     "stats": {
-      "total": "المجموع",
+      "total": "الإجمالي",
       "core": "Core",
       "tenant": "Tenant",
       "active": "نشط"
@@ -1038,488 +1224,75 @@
     "table": {
       "name": "اسم قاعدة البيانات",
       "type": "النوع",
-      "tenant": "Tenant",
+      "tenant": "المستأجر",
       "year": "السنة",
       "status": "الحالة"
     }
   },
-  "companies": {
-    "title": "إدارة الشركة",
-    "description": "عرض وإدارة الشركة الحالية والشركات الفرعية",
-    "myCompany": "شركتي",
-    "myCompanyDescription": "عرض وتعديل معلومات شركتك",
-    "create": "شركة جديدة",
-    "createTitle": "إنشاء شركة جديدة",
-    "createDescription": "أكمل الخطوات التالية لإنشاء شركة جديدة (مستأجر)",
-    "wizard": {
-      "buttons": {
-        "back": "رجوع",
-        "createTenant": "إنشاء شركة",
-        "next": "التالي"
-      },
-      "error": {
-        "message": "حدث خطأ أثناء إنشاء الشركة",
-        "title": "خطأ"
-      },
-      "requiredFields": "يرجى ملء الحقول الإلزامية:",
-      "validationError": "خطأ في التحقق",
-      "step1": {
-        "label": "المعلومات الأساسية",
-        "description": "المعلومات الأساسية للشركة",
-        "fields": {
-          "tenantName": "اسم الشركة",
-          "tenantNamePlaceholder": "أدخل اسم الشركة",
-          "tenantNameRequired": "اسم الشركة مطلوب",
-          "slug": "رمز فريد",
-          "slugPlaceholder": "رمز-الشركة",
-          "slugDescription": "رمز فريد يُستخدم في قاعدة البيانات وعناوين URL",
-          "slugRequired": "الرمز الفريد مطلوب",
-          "slugTaken": "هذا الرمز مستخدم بالفعل، يرجى إدخال رمز مختلف",
-          "slugAvailable": "هذا الرمز متاح",
-          "subdomain": "النطاق الفرعي",
-          "subdomainPlaceholder": "شركة",
-          "subdomainDescription": "سيتم الوصول كـ شركة.omnex.com",
-          "subdomainTaken": "هذا النطاق الفرعي مستخدم بالفعل، يرجى إدخال نطاق فرعي مختلف",
-          "subdomainAvailable": "هذا النطاق الفرعي متاح",
-          "customDomain": "نطاق مخصص",
-          "customDomainPlaceholder": "www.اسم-الشركة.com"
-        }
-      },
-      "step2": {
-        "label": "معلومات الشركة",
-        "description": "معلومات الشركة التفصيلية",
-        "fields": {
-          "companyName": "اسم الشركة",
-          "companyNamePlaceholder": "أدخل اسم الشركة",
-          "companyNameRequired": "اسم الشركة مطلوب",
-          "logo": "الشعار",
-          "logoPlaceholder": "اختر ملف الشعار",
-          "logoDescription": "PNG أو JPG أو SVG (الحجم الموصى به: 200x200 بكسل)",
-          "logoPreview": "معاينة الشعار",
-          "favicon": "أيقونة الموقع",
-          "faviconPlaceholder": "اختر ملف أيقونة الموقع",
-          "faviconDescription": "ICO أو PNG (الحجم الموصى به: 32x32 بكسل)",
-          "address": "العنوان",
-          "addressPlaceholder": "أدخل عنوان الشركة",
-          "phone": "الهاتف",
-          "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "البريد الإلكتروني",
-          "emailPlaceholder": "info@company.com",
-          "website": "الموقع الإلكتروني",
-          "websitePlaceholder": "https://www.company.com",
-          "taxNumber": "الرقم الضريبي",
-          "taxNumberPlaceholder": "1234567890"
-        }
-      },
-      "step3": {
-        "label": "الموقع",
-        "description": "معلومات الموقع الأول",
-        "addLocation": "إضافة موقع",
-        "skipTitle": "تخطي الموقع",
-        "skipMessage": "يمكنك المتابعة دون معلومات الموقع",
-        "skipButton": "تخطي",
-        "optionalTitle": "اختياري",
-        "optionalMessage": "يمكن إضافة معلومات الموقع لاحقاً",
-        "fields": {
-          "locationName": "اسم الموقع",
-          "locationNamePlaceholder": "المكتب الرئيسي",
-          "locationType": "نوع الموقع",
-          "locationTypePlaceholder": "اختر النوع",
-          "code": "رمز الموقع",
-          "codePlaceholder": "MRK",
-          "description": "الوصف",
-          "descriptionPlaceholder": "وصف الموقع",
-          "address": "العنوان",
-          "addressPlaceholder": "العنوان الكامل",
-          "city": "المدينة",
-          "cityPlaceholder": "إسطنبول",
-          "country": "الدولة",
-          "countryPlaceholder": "تركيا",
-          "postalCode": "الرمز البريدي",
-          "postalCodePlaceholder": "34000",
-          "phone": "الهاتف",
-          "phonePlaceholder": "+90 (212) 123 45 67",
-          "email": "البريد الإلكتروني",
-          "emailPlaceholder": "location@company.com",
-          "latitude": "خط العرض",
-          "latitudePlaceholder": "41.0082",
-          "longitude": "خط الطول",
-          "longitudePlaceholder": "28.9784"
-        }
-      },
-      "step4": {
-        "label": "الملخص",
-        "description": "تحقق من المعلومات",
-        "title": "ملخص معلومات الشركة",
-        "helpText": "يرجى التحقق من المعلومات التي أدخلتها",
-        "basicInfo": "المعلومات الأساسية",
-        "companyInfo": "معلومات الشركة",
-        "initialLocation": "الموقع الأول",
-        "noLocation": "لم يتم إضافة موقع",
-        "skipped": "تم التخطي",
-        "uploaded": "تم الرفع",
-        "fields": {
-          "tenantName": "اسم الشركة",
-          "slug": "الرمز الفريد",
-          "subdomain": "النطاق الفرعي",
-          "customDomain": "النطاق المخصص",
-          "companyName": "اسم الشركة",
-          "logo": "الشعار",
-          "favicon": "أيقونة الموقع",
-          "address": "العنوان",
-          "phone": "الهاتف",
-          "email": "البريد الإلكتروني",
-          "website": "الموقع الإلكتروني",
-          "taxNumber": "الرقم الضريبي",
-          "locationName": "اسم الموقع",
-          "locationType": "نوع الموقع",
-          "locationAddress": "عنوان الموقع"
-        }
-      },
-      "step5": {
-        "label": "الإنشاء",
-        "description": "جاري إنشاء الشركة"
-      },
-      "success": {
-        "title": "نجح",
-        "message": "تم إنشاء الشركة بنجاح"
-      }
-    },
-    "search": "بحث",
-    "loadError": "خطأ في التحميل",
-    "noCompanies": "لم يتم العثور على شركة",
-    "main": "رئيسي",
-    "viewing": "عرض",
-    "editing": "تعديل",
-    "deleting": "حذف",
-    "confirmDelete": "تأكيد الحذف",
-    "comingSoon": "قريباً",
-    "updated": "تم التحديث",
-    "updateError": "خطأ في التحديث",
-    "logo": "الشعار",
-    "uploadLogo": "رفع الشعار",
-    "changeLogo": "تغيير الشعار",
-    "removeLogo": "إزالة الشعار",
-    "logoHint": "تلميح الشعار",
-    "logoUploadComingSoon": "ستُضاف ميزة رفع الشعار قريباً",
-    "logoUploaded": "تم رفع الشعار",
-    "logoUploadError": "خطأ في رفع الشعار",
-    "favicon": "أيقونة الموقع",
-    "uploadFavicon": "رفع أيقونة الموقع",
-    "changeFavicon": "تغيير أيقونة الموقع",
-    "removeFavicon": "إزالة أيقونة الموقع",
-    "faviconHint": "الأيقونة التي ستظهر في تبويب المتصفح. يمكن أن تكون بتنسيق ICO أو PNG أو SVG (موصى به: 32x32 أو 64x64 بكسل)",
-    "faviconUploaded": "تم رفع أيقونة الموقع",
-    "pwaIcon": "أيقونة PWA",
-    "uploadPwaIcon": "رفع أيقونة PWA",
-    "changePwaIcon": "تغيير أيقونة PWA",
-    "removePwaIcon": "إزالة أيقونة PWA",
-    "pwaIconHint": "الأيقونة التي ستظهر عند إضافتها إلى الشاشة الرئيسية على الأجهزة المحمولة. يجب أن تكون بتنسيق PNG (موصى به: 512x512 بكسل)",
-    "pwaIconUploaded": "تم رفع أيقونة PWA",
-    "assets": "الأصول",
-    "contents": "المحتويات",
-    "websites": "المواقع الإلكترونية",
-    "tabs": {
-      "additional": "معلومات إضافية",
-      "basic": "المعلومات الأساسية",
-      "contact": "الاتصال",
-      "financial": "المعلومات المالية",
-      "legal": "المعلومات القانونية"
-    },
-    "form": {
-      "upload": "رفع",
-      "cancel": "إلغاء",
-      "save": "حفظ",
-      "submit": "إرسال",
-      "reset": "إعادة تعيين",
-      "create": "إنشاء",
-      "update": "تحديث",
-      "delete": "حذف",
-      "edit": "تعديل",
-      "close": "إغلاق",
-      "name": "اسم الشركة",
-      "namePlaceholder": "أدخل اسم الشركة",
-      "industry": "القطاع",
-      "industryPlaceholder": "القطاع",
-      "website": "الموقع الإلكتروني",
-      "websitePlaceholder": "https://example.com",
-      "description": "الوصف",
-      "descriptionPlaceholder": "وصف الشركة",
-      "foundedYear": "سنة التأسيس",
-      "foundedYearPlaceholder": "2020",
-      "employeeCount": "عدد الموظفين",
-      "employeeCountPlaceholder": "50",
-      "capital": "رأس المال",
-      "capitalPlaceholder": "100.000 TL",
-      "address": "العنوان",
-      "addressPlaceholder": "العنوان الكامل",
-      "city": "المدينة",
-      "cityPlaceholder": "إسطنبول",
-      "state": "المحافظة/المنطقة",
-      "statePlaceholder": "كاديكوي",
-      "postalCode": "الرمز البريدي",
-      "postalCodePlaceholder": "34000",
-      "country": "الدولة",
-      "countryPlaceholder": "تركيا",
-      "phone": "الهاتف",
-      "phonePlaceholder": "+90 (212) 123 45 67",
-      "email": "البريد الإلكتروني",
-      "emailPlaceholder": "info@example.com",
-      "taxNumber": "الرقم الضريبي",
-      "taxNumberPlaceholder": "1234567890",
-      "taxOffice": "مكتب الضرائب",
-      "taxOfficePlaceholder": "مكتب ضرائب كاديكوي",
-      "registrationNumber": "رقم السجل التجاري",
-      "registrationNumberPlaceholder": "123456-5",
-      "mersisNumber": "رقم MERSIS",
-      "mersisNumberPlaceholder": "رقم MERSIS",
-      "iban": "IBAN",
-      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
-      "bankName": "اسم البنك",
-      "bankNamePlaceholder": "اسم البنك",
-      "accountHolder": "صاحب الحساب",
-      "accountHolderPlaceholder": "اسم صاحب الحساب",
-      "status": "الحالة"
-    },
-    "stats": {
-      "active": "نشط",
-      "assets": "الأصول",
-      "contents": "المحتويات",
-      "title": "الإحصائيات",
-      "total": "المجموع",
-      "totalStats": "الإحصائيات الإجمالية",
-      "users": "المستخدمون",
-      "websites": "المواقع الإلكترونية"
-    },
-    "info": {
-      "createdAt": "تاريخ الإنشاء",
-      "status": "الحالة",
-      "updatedAt": "تاريخ التحديث"
-    },
-    "table": {
-      "actions": "الإجراءات",
-      "createdAt": "تاريخ الإنشاء",
-      "industry": "القطاع",
-      "name": "اسم الشركة",
-      "stats": "الإحصائيات",
-      "status": "الحالة",
-      "users": "المستخدمون",
-      "website": "الموقع الإلكتروني"
-    },
-    "viewDescription": "عرض معلومات الشركة",
-    "edit": "تعديل الشركة",
-    "allCompanies": "جميع الشركات",
-    "name": "اسم الشركة",
-    "industry": "القطاع",
-    "foundedYear": "سنة التأسيس",
-    "employeeCount": "عدد الموظفين",
-    "capital": "رأس المال",
-    "email": "البريد الإلكتروني",
-    "phone": "الهاتف",
-    "website": "الموقع الإلكتروني",
-    "address": "العنوان",
-    "taxNumber": "الرقم الضريبي",
-    "taxOffice": "مكتب الضرائب",
-    "registrationNumber": "رقم السجل",
-    "mersisNumber": "رقم MERSIS",
-    "iban": "IBAN",
-    "bankName": "اسم البنك",
-    "accountHolder": "صاحب الحساب",
-    "metadata": "المعلومات الوصفية",
-    "createdAt": "تاريخ الإنشاء",
-    "updatedAt": "تاريخ التحديث",
-    "active": "نشط",
-    "inactive": "غير نشط"
-  },
+
   "optimization": {
-    "title": "التحسين",
+    "title": "التحسين (Optimization)",
     "description": "تحسين النظام وإدارة الأداء",
     "performance": {
       "title": "الأداء",
-      "description": "مقاييس أداء النظام وتوصيات التحسين",
-      "cpu": "استخدام المعالج",
-      "memory": "استخدام الذاكرة",
-      "disk": "استخدام القرص",
+      "description": "مقاييس أداء النظام واقتراحات التحسين",
+      "cpu": "استخدام المعالج (CPU)",
+      "memory": "استخدام الذاكرة (Memory)",
+      "disk": "استخدام القرص (Disk)",
       "responseTime": "وقت الاستجابة",
       "requestsPerSecond": "الطلبات في الثانية",
       "activeConnections": "الاتصالات النشطة",
-      "loadError": "حدث خطأ أثناء تحميل مقاييس الأداء"
+      "loadError": "فشل تحميل مقاييس الأداء"
     },
     "cache": {
-      "title": "إدارة الذاكرة المؤقتة",
-      "description": "إعدادات الذاكرة المؤقتة وعمليات التنظيف",
+      "title": "إدارة التخزين المؤقت (Cache)",
+      "description": "إعدادات الكاش وعمليات التطهير",
       "clearAll": "مسح الكل",
-      "clearKey": "مسح المفتاح",
-      "clearSelected": "مسح المحدد",
-      "selectAll": "تحديد الكل",
-      "key": "مفتاح الذاكرة المؤقتة",
-      "keyPlaceholder": "أدخل مفتاح الذاكرة المؤقتة المراد مسحه",
-      "cleared": "تم مسح جميع الذاكرة المؤقتة",
-      "keyCleared": "تم مسح مفتاح الذاكرة المؤقتة",
-      "selectedCleared": "تم مسح الذاكرة المؤقتة المحددة",
-      "directoryCleared": "تم مسح المجلد",
-      "clearError": "حدث خطأ أثناء مسح الذاكرة المؤقتة",
-      "loadError": "حدث خطأ أثناء تحميل قائمة الذاكرة المؤقتة",
-      "clear": "مسح",
-      "info": "يمكن أن تؤثر عمليات مسح الذاكرة المؤقتة على أداء النظام. استخدمها بحذر.",
-      "confirmClearAll": "هل أنت متأكد من مسح جميع الذاكرة المؤقتة؟",
-      "confirmClearSelected": "هل أنت متأكد من مسح الذاكرة المؤقتة المحددة؟",
-      "confirmClearDirectory": "هل أنت متأكد من مسح هذا المجلد؟",
-      "noDirectories": "لم يتم العثور على مجلد",
-      "noEntries": "لم يتم العثور على إدخال في الذاكرة المؤقتة",
-      "tabs": {
-        "directories": "المجلدات",
-        "entries": "إدخالات الذاكرة المؤقتة"
-      },
+      "clearKey": "مسح مفتاح محدد",
+      "cleared": "تم مسح كافة التخزين المؤقت",
+      "keyCleared": "تم مسح مفتاح الكاش",
+      "clearError": "حدث خطأ أثناء مسح الكاش",
+      "confirmClearAll": "هل أنت متأكد أنك تريد مسح كافة التخزين المؤقت؟",
       "stats": {
         "totalSize": "الحجم الإجمالي",
         "directories": "المجلدات",
         "files": "الملفات",
         "usage": "الاستخدام"
-      },
-      "table": {
-        "directory": "المجلد",
-        "size": "الحجم",
-        "files": "عدد الملفات",
-        "lastModified": "آخر تعديل",
-        "key": "المفتاح",
-        "type": "النوع",
-        "createdAt": "تاريخ الإنشاء",
-        "actions": "الإجراءات"
       }
     },
     "database": {
       "title": "صيانة قاعدة البيانات",
-      "description": "تحسين وصيانة قاعدة بيانات PostgreSQL",
+      "description": "تحسين وصيانة قواعد بيانات PostgreSQL",
       "optimize": "تحسين قاعدة البيانات",
-      "optimizeDesc": "يحسن قاعدة البيانات باستخدام أمر VACUUM ANALYZE، ويزيل الصفوف الميتة ويحدث الإحصائيات",
       "vacuum": "عملية Vacuum",
-      "vacuumDesc": "يستعيد مساحة القرص غير المستخدمة باستخدام أمر VACUUM ANALYZE ويحدث الإحصائيات لتحسين الاستعلامات",
       "analyze": "تحديث الإحصائيات",
-      "analyzeDesc": "يحدث إحصائيات قاعدة البيانات باستخدام أمر ANALYZE. يساعد مخطط الاستعلام على اتخاذ قرارات أفضل",
-      "reindex": "إعادة إنشاء الفهارس",
-      "reindexDesc": "يعيد إنشاء جميع الفهارس باستخدام أمر REINDEX. قد يستغرق وقتاً طويلاً في قواعد البيانات الكبيرة",
+      "reindex": "إعادة بناء الفهارس",
       "run": "تشغيل",
-      "confirm": "تأكيد العملية",
-      "confirmMessage": "ستعمل هذه العملية مباشرة على قاعدة البيانات. هل تريد المتابعة؟",
-      "operationSuccess": "تمت العملية بنجاح",
+      "confirm": "تأكيد الإجراء",
+      "confirmMessage": "سيتم تشغيل هذا الإجراء مباشرة على قاعدة البيانات. هل تريد المتابعة؟",
+      "operationSuccess": "اكتملت العملية بنجاح",
       "operationError": "حدث خطأ أثناء العملية",
-      "warning": "تعمل هذه العمليات على قاعدة البيانات الرئيسية (CORE). استخدمها بحذر في بيئة الإنتاج خلال ساعات الذروة.",
-      "coreDbInfo": "تعمل هذه العمليات فقط على قاعدة بيانات CORE. تتطلب قواعد بيانات المستأجر صيانة منفصلة.",
-      "lastResult": "نتيجة العملية الأخيرة",
-      "operationToRun": "الأمر المراد تشغيله",
-      "riskLow": "مخاطر منخفضة",
-      "riskMedium": "مخاطر متوسطة",
-      "riskHigh": "مخاطر عالية",
-      "highRiskWarning": "قد تقفل هذه العملية قاعدة البيانات وتستغرق وقتاً طويلاً. يُنصح بتشغيلها في بيئة الإنتاج خلال ساعات غير الذروة."
+      "warning": "سيتم تشغيل هذه الإجراءات على قاعدة بيانات CORE. استخدمها بحذر خلال أوقات الذروة.",
+      "riskLow": "خطر منخفض",
+      "riskMedium": "خطر متوسط",
+      "riskHigh": "خطر عالي",
+      "analyzeDesc": "يحدث إحصائيات الجداول ويحسن مخطط الاستعلام",
+      "vacuumDesc": "يستعيد المساحة التي تشغلها الصفوف المحذوفة",
+      "optimizeDesc": "يشغل عمليات Vacuum و Analyze معاً",
+      "reindexDesc": "يعيد بناء جميع الفهارس (قد يستغرق وقتاً طويلاً)",
+      "coreDbInfo": "معلومات قاعدة بيانات Core",
+      "lastResult": "نتيجة العملية الأخيرة"
     }
   },
-  "export": {
-    "report": "تقرير",
-    "pdf": "تحميل كـ PDF",
-    "excel": "تحميل كـ Excel",
-    "csv": "تحميل كـ CSV",
-    "word": "تحميل كـ Word",
-    "html": "تحميل كـ HTML",
-    "print": "طباعة",
-    "title": "تصدير",
-    "exporting": "جاري التصدير...",
-    "success": "تم التصدير بنجاح",
-    "error": "حدث خطأ أثناء التصدير",
-    "noData": "لم يتم العثور على بيانات للتصدير",
-    "selectFormat": "اختر التنسيق",
-    "downloadReady": "التنزيل جاهز"
-  },
-  "exportComingSoon": "سيتم إضافة التصدير بتنسيق {{format}} قريباً",
-  "table": {
-    "search": {
-      "placeholder": "بحث...",
-      "label": "بحث"
-    },
-    "filter": {
-      "title": "المرشحات",
-      "button": "المرشحات",
-      "clear": "مسح المرشحات",
-      "apply": "تطبيق المرشحات",
-      "active": "المرشحات النشطة",
-      "all": "الكل",
-      "searchPlaceholder": "بحث {{label}}...",
-      "selectPlaceholder": "اختر {{label}}...",
-      "numberPlaceholder": "أدخل {{label}}...",
-      "noOptions": "لا توجد خيارات للمرشح.",
-      "dateRange": {
-        "start": "البداية",
-        "end": "النهاية",
-        "startPlaceholder": "تاريخ البداية",
-        "endPlaceholder": "تاريخ النهاية"
-      }
-    },
-    "columnSettings": {
-      "title": "إعدادات الأعمدة",
-      "reset": "إعادة تعيين",
-      "reorder": "إعادة ترتيب الأعمدة",
-      "toggle": "رؤية الأعمدة",
-      "resetToDefaults": "العودة إلى الافتراضي",
-      "show": "إظهار",
-      "hide": "إخفاء",
-      "moveUp": "نقل لأعلى",
-      "moveDown": "نقل لأسفل",
-      "columnsSection": "الأعمدة",
-      "columnBackground": "خلفية العمود",
-      "clearColor": "مسح اللون",
-      "tableStyle": {
-        "title": "نمط الجدول",
-        "verticalBorders": "الحدود العمودية",
-        "headerBackground": "خلفية الرأس",
-        "selectColor": "اختر اللون..."
-      },
-      "badges": {
-        "sortable": "قابل للترتيب",
-        "searchable": "قابل للبحث",
-        "filterable": "قابل للتصفية"
-      },
-      "tip": {
-        "title": "تلميح",
-        "description": "يمكنك ترتيب الأعمدة بالسحب أو باستخدام أزرار الأعلى/الأسفل، وتغيير رؤيتها بالنقر على أيقونة العين."
-      }
-    },
-    "pagination": {
-      "recordsPerPage": "لكل صفحة:",
-      "showing": "سجلات معروضة",
-      "of": "/",
-      "page": "صفحة",
-      "previous": "السابق",
-      "next": "التالي"
-    },
-    "export": {
-      "providerRequired": "ExportProvider مطلوب",
-      "all": "الكل",
-      "currentPage": "هذه الصفحة",
-      "selected": "المحدد"
-    },
-    "empty": {
-      "message": "لم يتم العثور على بيانات",
-      "noResults": "لم يتم العثور على نتائج"
-    },
-    "description": "الوصف",
-    "actions": "الإجراءات"
-  },
-  "actions": {
-    "view": "عرض",
-    "edit": "تعديل",
-    "delete": "حذف",
-    "create": "إنشاء",
-    "save": "حفظ",
-    "cancel": "إلغاء"
-  },
+
   "setup": {
-    "title": "معالج إعداد قاعدة البيانات",
+    "title": "مساعد إعداد قاعدة البيانات",
     "configuration": {
       "title": "التكوين",
-      "coreDatabaseUrl": "رابط قاعدة بيانات Core",
-      "tenantDatabaseUrl": "رابط قاعدة بيانات Tenant",
-      "tenantSlug": "معرف Tenant",
-      "resetAll": "إعادة تعيين جميع قواعد البيانات",
+      "coreDatabaseUrl": "Core Database URL",
+      "tenantDatabaseUrl": "Tenant Database URL",
+      "tenantSlug": "Tenant Slug",
+      "resetAll": "إعادة تعيين كافة قواعد البيانات",
       "resetCore": "إعادة تعيين Core فقط",
       "resetTenant": "إعادة تعيين Tenant فقط"
     },
@@ -1530,774 +1303,472 @@
       },
       "createDatabase": {
         "label": "إنشاء قواعد البيانات",
-        "description": "إنشاء قواعد بيانات Core و Tenant"
+        "description": "إنشاء/التحقق من Core و Tenant"
       },
       "schemaMerge": {
-        "label": "دمج المخطط",
-        "description": "دمج المخططات المعيارية"
+        "label": "دمج المخطط (Schema Merge)",
+        "description": "دمج المخططات النمطية"
       },
       "schemaValidate": {
         "label": "التحقق من المخطط",
-        "description": "التحقق من تكامل المخطط"
+        "description": "التحقق من سلامة المخطط"
       },
       "dbPush": {
         "label": "تطبيق قاعدة البيانات",
         "description": "تطبيق المخطط على قواعد البيانات"
       },
       "generateClient": {
-        "label": "إنشاء العميل",
+        "label": "إنشاء العميل (Generate Client)",
         "description": "إنشاء عملاء Prisma"
       },
       "coreSeed": {
-        "label": "تهيئة Core",
-        "description": "ملء قاعدة بيانات Core"
+        "label": "Core Seed",
+        "description": "تعبئة قاعدة بيانات Core"
       },
       "tenantSeed": {
-        "label": "تهيئة Tenant",
-        "description": "ملء قاعدة بيانات Tenant"
+        "label": "Tenant Seed",
+        "description": "تعبئة قاعدة بيانات Tenant"
       },
       "demoSeed": {
-        "label": "تهيئة تجريبية",
+        "label": "Demo Seed",
         "description": "إضافة بيانات تجريبية"
       },
       "unknown": "خطوة غير معروفة"
     },
     "status": {
-      "completed": "✓ مكتمل",
-      "error": "✗ خطأ",
-      "running": "⟳ قيد التشغيل...",
-      "pending": "⏳ في الانتظار",
-      "ready": "جاهز",
-      "runningText": "قيد التشغيل...",
-      "solution": "الحل:"
+      "completed": "مكتمل",
+      "error": "خطأ",
+      "running": "جاري التشغيل...",
+      "pending": "قيد الانتظار",
+      "ready": "جاهز"
     },
     "actions": {
       "runCurrent": "تشغيل الخطوة الحالية",
-      "runAll": "تشغيل جميع الخطوات",
+      "runAll": "تشغيل الكل",
       "runStep": "تشغيل الخطوة",
-      "runAgain": "تشغيل مرة أخرى",
-      "nextStep": "الانتقال إلى الخطوة التالية →",
+      "runAgain": "تشغيل مجدداً",
+      "nextStep": "الخطوة التالية",
       "resetStep": "إعادة تعيين الخطوة",
-      "autoAdvance": "التقدم التلقائي",
-      "clearLogs": "مسح السجلات",
-      "success": "نجح",
-      "error": "خطأ"
+      "autoAdvance": "تقدم تلقائي",
+      "clearLogs": "مسح السجلات"
     },
     "logs": {
       "title": "السجلات",
       "systemLogs": {
         "title": "سجلات النظام",
-        "description": "سجلات تدقيق لجميع أنشطة النظام",
+        "description": "سجلات التدقيق لكافة أنشطة النظام",
         "csvDownload": "تحميل CSV",
         "refresh": "تحديث",
         "filters": {
           "userId": "معرف المستخدم",
-          "userIdPlaceholder": "البحث حسب معرف المستخدم",
+          "userIdPlaceholder": "أدخل معرف المستخدم",
           "status": "الحالة",
-          "statusPlaceholder": "جميع الحالات",
+          "statusPlaceholder": "اختر الحالة",
           "module": "الوحدة",
-          "modulePlaceholder": "جميع الوحدات",
-          "startDate": "تاريخ البداية",
-          "endDate": "تاريخ النهاية",
+          "modulePlaceholder": "اختر الوحدة",
+          "startDate": "تاريخ البدء",
+          "endDate": "تاريخ الانتهاء",
           "datePlaceholder": "اختر التاريخ"
-        },
-        "status": {
-          "success": "نجح",
-          "failure": "فشل",
-          "error": "خطأ"
         },
         "table": {
           "time": "الوقت",
           "action": "الإجراء",
           "module": "الوحدة",
           "user": "المستخدم",
-          "tenant": "Tenant",
+          "tenant": "المستأجر",
           "status": "الحالة",
           "ipAddress": "عنوان IP",
           "details": "التفاصيل",
-          "noLogs": "لم يتم العثور على سجلات"
+          "noLogs": "لم يتم العثور على سجل"
+        },
+        "status": {
+          "success": "ناجح",
+          "failure": "فشل",
+          "error": "خطأ"
         },
         "modal": {
           "title": "تفاصيل السجل",
-          "error": "خطأ:",
-          "details": "التفاصيل:"
+          "error": "رسالة الخطأ",
+          "details": "التفاصيل"
         },
         "errors": {
-          "loadFailed": "لا يمكن تحميل السجلات",
+          "loadFailed": "فشل تحميل السجلات",
           "loadError": "حدث خطأ أثناء تحميل السجلات",
-          "exportFailed": "فشلت عملية التصدير"
+          "exportFailed": "فشل التصدير"
         }
       }
     },
     "completion": {
-      "title": "🎉 اكتمل التثبيت!",
-      "message": "تم إكمال جميع المراحل بنجاح! إعداد قاعدة البيانات جاهز.",
+      "title": "اكتمل الإعداد!",
+      "message": "اكتملت جميع المراحل بنجاح! إعداد قاعدة البيانات جاهز.",
       "stepsTitle": "الخطوات المكتملة والتفاصيل",
-      "downloadMarkdown": "تحميل كـ Markdown",
-      "downloadText": "تحميل كـ Text",
-      "reportDescription": "يتضمن التقرير جميع خطوات التثبيت والتكوين والسجلات."
-    },
-    "errors": {
-      "unknown": "خطأ غير معروف",
-      "statusFailed": "لا يمكن الحصول على معلومات الحالة",
-      "accessFailed": "فشل التحقق من الوصول"
+      "downloadMarkdown": "تحميل بصيغة Markdown",
+      "downloadText": "تحميل بصيغة نصية"
     },
     "messages": {
-      "databaseConnectionSuccess": "تم الاتصال بقواعد البيانات بنجاح",
+      "databaseConnectionSuccess": "نجح اتصالا قاعدتي البيانات",
       "databasesCreated": "تم إنشاء/التحقق من قواعد البيانات",
-      "bothSchemasApplied": "تم تطبيق مخططات قاعدة البيانات لكلا الطرفين",
-      "coreSchemaApplied": "تم تطبيق مخطط قاعدة البيانات الأساسية",
-      "tenantSchemaApplied": "تم تطبيق مخطط قاعدة بيانات المستأجر",
-      "stepCompleted": "تم إكمال الخطوة بنجاح",
+      "bothSchemasApplied": "تم تطبيق مخططي قاعدتي البيانات",
+      "coreSchemaApplied": "تم تطبيق مخطط Core",
+      "tenantSchemaApplied": "تم تطبيق مخطط Tenant",
+      "stepCompleted": "اكتملت الخطوة بنجاح",
       "stepFailed": "فشلت الخطوة",
       "allStepsCompleted": "اكتملت جميع المراحل",
-      "setupComplete": "اكتمل التثبيت بنجاح، قم بتنزيل التقرير",
+      "setupComplete": "اكتمل الإعداد بنجاح",
       "accessDenied": "تم رفض الوصول",
+      "noAccessPermission": "ليس لديك صلاحية للوصول إلى هذه الصفحة",
       "accessCheckFailed": "فشل التحقق من الوصول",
-      "noAccessPermission": "ليس لديك إذن للوصول إلى هذه الصفحة",
-      "resetFailed": "فشلت إعادة التعيين",
-      "databaseResetting": "جاري إعادة تعيين قاعدة البيانات...",
+      "databaseResetting": "جاري إعادة تعيين قواعد البيانات...",
+      "databaseResetSuccess": "تمت إعادة تعيين قواعد البيانات بنجاح",
       "databaseResetComplete": "اكتملت إعادة تعيين قاعدة البيانات",
-      "databaseResetSuccess": "تم إعادة تعيين قاعدة البيانات بنجاح"
+      "resetFailed": "فشلت إعادة التعيين"
     }
   },
+
   "systemStatus": {
     "title": "معلومات النظام",
+    "description": "عرض معلومات حالة الخادم والنظام",
     "loading": "جاري تحميل حالة النظام...",
     "databaseStatus": "حالة قاعدة البيانات",
     "refresh": "تحديث",
     "retry": "إعادة المحاولة",
     "environmentVariables": "متغيرات البيئة",
     "lastUpdate": "آخر تحديث:",
+    "serverInfo": "معلومات الخادم",
+    "cpuUsage": "استخدام المعالج",
+    "memoryUsage": "استخدام الذاكرة",
+    "diskUsage": "استخدام القرص",
+    "systemStorage": "التخزين النظامي",
+    "cores": "نواة",
+    "hostname": "اسم المضيف",
     "fields": {
-      "nodeVersion": "إصدار Node.js",
+      "nodeVersion": "نسخة Node.js",
       "platform": "المنصة",
-      "arch": "البنية",
-      "uptime": "مدة التشغيل",
+      "arch": "المعمارية",
+      "uptime": "وقت التشغيل",
       "environment": "البيئة",
       "memoryUsage": "استخدام الذاكرة",
       "used": "المستخدم:",
       "total": "الإجمالي:",
-      "postgresVersion": "إصدار PostgreSQL:",
-      "notDefined": "غير محدد",
-      "host": "الخادم",
+      "postgresVersion": "نسخة PostgreSQL:",
+      "host": "المضيف",
       "user": "المستخدم",
       "database": "قاعدة البيانات",
       "tableCount": "عدد الجداول",
-      "tenantCount": "عدد المستأجرين",
-      "empty": "فارغ (يتطلب تهيئة)",
-      "coreSeedRequired": "يتطلب تهيئة Core"
+      "tenantCount": "عدد المستأجرين"
     },
     "status": {
       "connected": "متصل",
       "error": "خطأ"
+    },
+    "errors": {
+      "loadFailed": "تعذر استرداد معلومات النظام",
+      "loadError": "حدث خطأ أثناء تحميل معلومات النظام"
     }
   },
-  "page": {
-    "allReports": {
-      "title": "العنوان"
-    }
+
+  "footer": {
+    "copyright": "© 2024. جميع الحقوق محفوظة.",
+    "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "support": "الدعم"
   },
-  "metrics": {
-    "pending": "في الانتظار"
+
+  "menu": {
+    "dashboard": "لوحة التحكم",
+    "moduleManagement": "إدارة الوحدات",
+    "settings": "الإعدادات",
+    "accessControl": "التحكم بالوصول",
+    "companyManagement": "إدارة الشركة"
   },
-  "create": {
-    "title": "إنشاء"
+
+  "profile": {
+    "title": "الملف الشخصي",
+    "myProfile": "ملفي الشخصي",
+    "editProfile": "تعديل الملف الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+    "preferences": "التفضيلات",
+    "notifications": "الإشعارات"
   },
-  "edit": {
-    "title": "تعديل"
-  },
-  "maintenance": {
-    "create": {
-      "title": "العنوان"
-    },
-    "edit": {
-      "title": "العنوان",
-      "description": "الوصف"
-    },
-    "title": "العنوان"
-  },
-  "Report": "Report",
-  "TR": "TR",
-  "TRY": "TRY",
-  "active": "نشط",
-  "all": "الكل",
-  "auth-token": "Auth-token",
-  "authorization": "Authorization",
-  "auto": "Auto",
-  "blob": "Blob",
-  "button": "Button",
-  "center": "Center",
-  "comfortable": "Comfortable",
-  "completed": "مكتمل",
-  "cookie": "Cookie",
-  "createDescription": "وصف الإنشاء",
-  "detail": "Detail",
-  "detailDescription": "وصف التفاصيل",
-  "direct": "Direct",
-  "draft": "مسودة",
-  "editDescription": "وصف التعديل",
-  "empty": {
-    "message": "Message"
-  },
-  "filled": "Filled",
-  "host": "Host",
-  "leaflet": "Leaflet",
-  "left": "Left",
-  "link": "Link",
-  "md": "Md",
-  "normal": "Normal",
-  "pending": "في الانتظار",
-  "react-leaflet": "React-leaflet",
-  "resize": "Resize",
-  "scheduled": "Scheduled",
-  "script": "Script",
-  "sidebar": "Sidebar",
-  "style": "Style",
-  "tenant-slug": "Tenant-slug",
-  "text": "Text",
-  "top": "Top",
-  "tr": "Tr",
-  "txt": "Txt",
-  "unread": "Unread",
-  "user": "المستخدم",
-  "user-agent": "User-agent",
-  "x-forwarded-for": "X-forwarded-for",
-  "x-real-ip": "X-real-ip",
-  "titles": {
-    "avatar": {
-      "guncellenirken": {
-        "hata": {
-          "olustu": "Avatar güncellenirken hata oluştu"
-        }
-      },
-      "guncellendi": "Avatar güncellendi"
-    },
-    "success": "Başarılı",
-    "download": "İndir",
-    "onizle": "Önizle",
-    "tenant": {
-      "context": {
-        "bulunamadi": "Tenant context bulunamadı"
-      }
-    },
-    "mikrofon": {
-      "erisimi": {
-        "reddedildi": "Mikrofon erişimi reddedildi"
-      }
-    },
-    "ses": {
-      "kaydi": {
-        "yuklenirken": {
-          "hata": {
-            "olustu": "Ses kaydı yüklenirken hata oluştu"
-          }
-        },
-        "hazir": "Ses kaydı hazır"
-      },
-      "kaydini": {
-        "gondermek": {
-          "icin": {
-            "gonder": {
-              "butonu": "Ses kaydını göndermek için gönder butonuna tıklayın"
-            }
-          }
-        }
-      }
-    },
-    "filename": {
-      "yuklenirken": {
-        "hata": {
-          "olustu": "${file.name} yüklenirken hata oluştu"
-        }
-      },
-      "basariyla": {
-        "yuklendi": "${file.name} başarıyla yüklendi"
-      }
-    },
-    "dosya": {
-      "yuklendi": "Dosya yüklendi",
-      "indirilirken": {
-        "hata": {
-          "olustu": "Dosya indirilirken hata oluştu"
-        }
-      },
-      "silinirken": {
-        "hata": {
-          "olustu": "Dosya silinirken hata oluştu"
-        }
-      },
-      "basariyla": {
-        "silindi": "Dosya başarıyla silindi",
-        "yuklendi": "Dosya başarıyla yüklendi"
-      },
-      "yuklenirken": {
-        "hata": {
-          "olustu": "Dosya yüklenirken hata oluştu"
-        }
-      }
-    },
-    "mesaj": {
-      "gonderilirken": {
-        "hata": {
-          "olustu": "Mesaj gönderilirken hata oluştu"
-        }
-      }
-    },
-    "kullanici": {
-      "bilgisi": {
-        "bulunamadi": "Kullanıcı bilgisi bulunamadı"
-      }
-    },
-    "sohbet": {
-      "olusturulurken": {
-        "hata": {
-          "olustu": "Sohbet oluşturulurken hata oluştu"
-        }
-      },
-      "baslatildi": "Sohbet başlatıldı"
-    },
-    "bir": {
-      "kullanici": {
-        "secmelisiniz": "Bir kullanıcı seçmelisiniz"
-      }
-    },
-    "grup": {
-      "sohbeti": {
-        "olusturulurken": {
-          "hata": {
-            "olustu": "Grup sohbeti oluşturulurken hata oluştu"
-          }
-        },
-        "olusturuldu": "Grup sohbeti oluşturuldu"
-      }
-    },
-    "en": {
-      "az": {
-        "bir": {
-          "kullanici": {
-            "secmelisiniz": "En az bir kullanıcı seçmelisiniz"
-          }
-        }
-      }
-    },
-    "bu": {
-      "sayfaya": {
-        "erisim": {
-          "izniniz": {
-            "yok": "Bu sayfaya erişim izniniz yok."
-          }
-        }
-      }
-    },
-    "erisim": {
-      "reddedildi": "Erişim Reddedildi"
-    },
-    "sifirlama": {
-      "basarisiz": {
-        "errormessage": "Sıfırlama başarısız: ${error.message}"
-      }
-    },
-    "tum": {
-      "label": "Tümü",
-      "asamalar": {
-        "tamamlandi": "Tüm aşamalar tamamlandı"
-      }
-    },
-    "kurulum": {
-      "basariyla": {
-        "tamamlandi": {
-          "raporu": {
-            "indi": "Kurulum başarıyla tamamlandı. Raporu indirebilirsiniz."
-          }
-        }
-      }
-    },
-    "formattouppercase": {
-      "formatinda": {
-        "disa": {
-          "aktarm": "${format.toUpperCase()} formatında dışa aktarma yakında eklenecek"
-        }
-      }
-    },
-    "kiraci": {
-      "sil": "Kiracı Sil"
-    },
-    "export": {
-      "islemi": {
-        "basarisiz": {
-          "oldu": "Export işlemi başarısız oldu"
-        }
-      }
-    },
-    "sutun": {
-      "ayarlari": "Sütun Ayarları"
-    },
-    "description": "description",
-    "izin": {
-      "listesi": "İzin Listesi"
-    },
-    "izinler": "İzinler"
-  },
-  "messages": {
-    "dosya": {
-      "gonderildi": {
-        "fileinfosmapf": {
-          "fnamejoin": "Dosya gönderildi: ${fileInfos.map(f => f.name).join("
-        }
-      }
-    },
-    "gonderildi": "gönderildi",
-    "adim": {
-      "step": {
-        "1": {
-          "basarisiz": {
-            "errormessage": "Adım ${step + 1} başarısız: ${errorMessage}"
-          }
-        }
-      }
-    },
-    "her": {
-      "iki": {
-        "veritabani": {
-          "semasi": {
-            "uygulandi": "Her iki veritabanı şeması uygulandı"
-          },
-          "baglantisi": {
-            "basarili": "Her iki veritabanı bağlantısı başarılı"
-          }
-        }
-      }
-    },
-    "veritabanlari": {
-      "olusturuldudogrulandi": "Veritabanları oluşturuldu/doğrulandı"
-    },
-    "rapor": {
-      "verisi": {
-        "bulunamadi": "Rapor verisi bulunamadı"
-      }
-    }
-  },
-  "errors": {
-    "tum": "الكل",
-    "erisim": {
-      "kontrolu": {
-        "basarisiz": "فشل التحقق من الوصول"
-      },
-      "reddedildi": "تم رفض الوصول"
-    },
-    "description": "الوصف",
-    "tenant": {
-      "veritabani": {
-        "semasi": {
-          "uygulandi": "تم تطبيق مخطط قاعدة بيانات المستأجر"
-        }
-      }
-    },
-    "core": {
-      "veritabani": {
-        "semasi": {
-          "uygulandi": "تم تطبيق مخطط قاعدة البيانات الأساسية"
-        }
-      }
-    },
-    "zip": {
-      "indirme": {
-        "basarisiz": "فشل تنزيل ZIP"
-      }
-    },
-    "not": {
-      "found": "لم يتم العثور عليه"
-    }
-  },
-  "labels": {
-    "description": "الوصف",
-    "edit": "تعديل",
-    "view": "عرض",
-    "donem": {
-      "secin": {
-        "label": "اختر الفترة",
-        "opsiyonel": "اختر الفترة (اختياري)"
-      }
-    },
-    "firma": {
-      "secin": "اختر الشركة..."
-    }
-  },
-  "descriptions": {
-    "description": "الوصف"
-  },
-  "modal": {
-    "confirm": {
-      "title": "تأكيد",
-      "message": "هل أنت متأكد؟",
-      "yes": "نعم",
-      "no": "لا",
-      "cancel": "إلغاء",
-      "confirm": "تأكيد"
-    },
-    "delete": {
-      "title": "حذف",
-      "message": "هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
-      "confirm": "حذف",
-      "cancel": "إلغاء"
-    },
-    "alert": {
-      "ok": "موافق",
-      "cancel": "إلغاء"
-    }
-  },
-  "licenses": {
-    "dashboard": {
-      "title": "Lisans Paneli",
-      "description": "Lisans yönetimi genel bakış ve istatistikler",
-      "stats": {
-        "licenseTypes": "Lisans Türleri",
-        "licensePackages": "Lisans Paketleri",
-        "activeLicenses": "Aktif Lisanslar",
-        "pendingPayments": "Bekleyen Ödemeler"
-      },
-      "distribution": {
-        "title": "Lisans Durumu Dağılımı",
-        "total": "Toplam",
-        "active": "Aktif",
-        "trial": "Deneme",
-        "expired": "Süresi Dolmuş"
-      },
-      "expiringSoon": {
-        "title": "Yakında Süresi Dolacaklar",
-        "count": "{{count}} lisans",
-        "noExpiring": "Yakında süresi dolacak lisans bulunmuyor"
-      },
-      "recentLicenses": {
-        "title": "Son Eklenen Lisanslar",
-        "columns": {
-          "company": "Firma",
-          "package": "Paket",
-          "status": "Durum",
-          "endDate": "Bitiş Tarihi",
-          "payment": "Ödeme"
-        },
-        "noLicenses": "Henüz lisans bulunmuyor"
-      }
-    },
-    "packages": {
-      "title": "Lisans Paketleri",
-      "description": "Fiyatlandırma paketlerini yönetin",
-      "newPackage": "Yeni Paket",
-      "columns": {
-        "package": "Paket",
-        "type": "Tür",
-        "price": "Fiyat",
-        "cycle": "Döngü",
-        "modules": "Modüller",
-        "subscriptions": "Abonelikler",
-        "status": "Durum",
-        "actions": "İşlemler"
-      },
-      "noPackages": "Henüz lisans paketi oluşturulmamış",
-      "deleteTitle": "Lisans Paketini Sil",
-      "deleteConfirm": "{{name}} paketini silmek istediğinize emin misiniz?",
-      "cannotDelete": "Bu pakete bağlı aktif lisanslar var",
-      "discount": "%{{percent}} indirim",
-      "billingCycles": {
-        "monthly": "Aylık",
-        "quarterly": "3 Aylık",
-        "yearly": "Yıllık",
-        "one_time": "Tek Seferlik",
-        "custom": "Özel"
-      }
-    },
-    "types": {
-      "title": "Lisans Türleri",
-      "description": "Lisans türlerini yönetin (Trial, Standard, Premium, Enterprise)",
-      "newType": "Yeni Tür",
-      "columns": {
-        "type": "Tür",
-        "description": "Açıklama",
-        "limits": "Limitler",
-        "duration": "Süre",
-        "packageCount": "Paket Sayısı",
-        "status": "Durum",
-        "actions": "İşlemler"
-      },
-      "noTypes": "Henüz lisans türü oluşturulmamış",
-      "deleteTitle": "Lisans Türünü Sil",
-      "deleteConfirm": "{{name}} lisans türünü silmek istediğinize emin misiniz?",
-      "cannotDelete": "Bu türe bağlı paketler var, önce paketleri silin",
-      "limits": {
-        "users": "Kullanıcı",
-        "storage": "Depolama",
-        "unlimited": "∞"
-      },
-      "duration": {
-        "days": "{{days}} gün",
-        "trial": "Deneme: {{days}} gün"
-      },
-      "packagesCount": "{{count}} paket"
-    },
-    "tenants": {
-      "title": "Firma Lisansları",
-      "description": "Firmalara atanmış lisansları yönetin",
-      "assignLicense": "Lisans Ata",
-      "searchPlaceholder": "Firma veya paket ara...",
-      "filterStatus": "Durum filtrele",
-      "columns": {
-        "company": "Firma",
-        "package": "Paket",
-        "status": "Durum",
-        "payment": "Ödeme",
-        "usage": "Kullanım",
-        "endDate": "Bitiş",
-        "actions": "İşlemler"
-      },
-      "noLicenses": "Henüz lisans atanmamış",
-      "noFilterResults": "Filtreye uygun lisans bulunamadı",
-      "deleteTitle": "Lisansı Sil",
-      "deleteConfirm": "{{name}} firmasının lisansını silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm ödeme kayıtları da silinir.",
-      "daysRemaining": "{{days}} gün kaldı",
-      "expired": "Süresi doldu",
-      "usageLabel": "{{current}}/{{max}} kullanıcı",
-      "menu": {
-        "details": "Detaylar",
-        "edit": "Düzenle",
-        "payments": "Ödemeler",
-        "delete": "Sil"
-      }
-    },
-    "payments": {
-      "title": "Ödeme Takibi",
-      "description": "Lisans ödemelerini takip edin ve onaylayın",
-      "searchPlaceholder": "Firma, fatura no veya işlem ID ara...",
-      "tabs": {
-        "pending": "Bekleyenler",
-        "approved": "Onaylananlar",
-        "rejected": "Reddedilenler",
-        "all": "Tümü"
-      },
-      "columns": {
-        "company": "Firma",
-        "package": "Paket",
-        "amount": "Tutar",
-        "method": "Yöntem",
-        "invoice": "Fatura",
-        "date": "Tarih",
-        "status": "Durum",
-        "actions": "İşlemler"
-      },
-      "noPayments": "Bu kategoride ödeme bulunmuyor",
-      "noFilterResults": "Filtreye uygun ödeme bulunamadı",
-      "dueDate": "Son: {{date}}",
-      "approveTitle": "Ödemeyi Onayla",
-      "approveConfirm": "{{company}} firmasının {{amount}} tutarındaki ödemesini onaylamak istediğinize emin misiniz?",
-      "rejectTitle": "Ödemeyi Reddet",
-      "rejectConfirm": "{{company}} firmasının ödemesini reddetmek istediğinize emin misiniz?",
-      "rejectReason": "Red Sebebi",
-      "rejectReasonPlaceholder": "Ödeme neden reddedildi?",
-      "menu": {
-        "approve": "Onayla",
-        "reject": "Reddet",
-        "viewReceipt": "Dekont Görüntüle",
-        "viewInvoice": "Fatura Görüntüle"
-      },
-      "methods": {
-        "bank_transfer": "Havale/EFT",
-        "credit_card": "Kredi Kartı",
-        "cash": "Nakit",
-        "other": "Diğer"
-      }
-    },
-    "status": {
-      "trial": "Deneme",
-      "active": "Aktif",
-      "expired": "Süresi Dolmuş",
-      "suspended": "Askıya Alındı",
-      "cancelled": "İptal"
-    },
-    "paymentStatus": {
-      "pending": "Bekliyor",
-      "paid": "Ödendi",
-      "failed": "Başarısız",
-      "refunded": "İade",
-      "approved": "Onaylandı",
-      "rejected": "Reddedildi"
-    },
-    "notifications": {
-      "statusUpdated": "Durum güncellendi",
-      "deleted": "Silindi",
-      "deleteFailed": "Silme işlemi başarısız",
-      "approved": "Ödeme onaylandı",
-      "approveFailed": "Onaylama işlemi başarısız",
-      "rejected": "Ödeme reddedildi",
-      "rejectFailed": "Reddetme işlemi başarısız"
-    }
-  },
+
   "roles": {
     "items": {
       "superAdmin": {
-        "name": "Süper Yönetici",
-        "description": "Tüm sistem özelliklerine tam erişim"
+        "name": "مسؤول عام (Super Admin)",
+        "description": "وصول كامل لكافة ميزات النظام"
       },
       "agencyUser": {
-        "name": "Ajans Kullanıcısı",
-        "description": "Sınırlı erişimli ajans kullanıcısı"
+        "name": "مستخدم وكالة",
+        "description": "مستخدم وكالة بصلاحيات محددة"
       },
       "clientUser": {
-        "name": "Müşteri Kullanıcısı",
-        "description": "Temel erişimli müşteri kullanıcısı"
+        "name": "مستخدم عميل",
+        "description": "مستخدم عميل بصلاحيات أساسية"
       }
     }
   },
+
   "permissions": {
     "categories": {
-      "userManagement": "Kullanıcı Yönetimi",
-      "notifications": "Bildirimler",
-      "reports": "Raporlar"
+      "userManagement": "إدارة المستخدمين",
+      "notifications": "الإشعارات",
+      "reports": "التقارير"
     },
     "modules": {
-      "users": "Kullanıcılar",
-      "notifications": "Bildirimler",
-      "reports": "Raporlar"
+      "users": "المستخدمين",
+      "notifications": "الإشعارات",
+      "reports": "التقارير"
     },
     "items": {
       "user": {
         "create": {
-          "name": "Kullanıcı Oluştur",
-          "description": "Yeni kullanıcı oluşturma izni"
+          "name": "إنشاء مستخدم",
+          "description": "صلاحية إنشاء مستخدم جديد"
         },
         "read": {
-          "name": "Kullanıcı Görüntüle",
-          "description": "Kullanıcıları görüntüleme izni"
+          "name": "عرض المستخدم",
+          "description": "صلاحية عرض معلومات المستخدم"
         },
         "update": {
-          "name": "Kullanıcı Güncelle",
-          "description": "Kullanıcıları güncelleme izni"
+          "name": "تحديث المستخدم",
+          "description": "صلاحية تحديث بيانات المستخدم"
         },
         "delete": {
-          "name": "Kullanıcı Sil",
-          "description": "Kullanıcıları silme izni"
+          "name": "حذف المستخدم",
+          "description": "صلاحية حذف مستخدم من النظام"
         }
       },
       "notification": {
         "read": {
-          "name": "Bildirim Görüntüle",
-          "description": "Bildirimleri görüntüleme izni"
+          "name": "عرض الإشعار",
+          "description": "صلاحية عرض الإشعارات"
         },
         "create": {
-          "name": "Bildirim Oluştur",
-          "description": "Bildirim oluşturma izni"
+          "name": "إنشاء إشعار",
+          "description": "صلاحية إنشاء إشعار جديد"
         }
       },
       "report": {
         "read": {
-          "name": "Rapor Görüntüle",
-          "description": "Raporları görüntüleme izni"
+          "name": "عرض التقرير",
+          "description": "صلاحية عرض التقارير"
         },
         "create": {
-          "name": "Rapor Oluştur",
-          "description": "Rapor oluşturma izni"
+          "name": "إنشاء تقرير",
+          "description": "صلاحية إنشاء تقرير جديد"
         }
       }
     }
-  }
+  },
+
+  "calendar": {
+    "title": "التقويم",
+    "description": "إدارة التقويم والمواعيد"
+  },
+
+  "fileManager": {
+    "title": "مدير الملفات",
+    "upload": "رفع ملف",
+    "download": "تنزيل",
+    "delete": "حذف",
+    "rename": "إعادة تسمية",
+    "move": "نقل",
+    "copy": "نسخ",
+    "newFolder": "مجلد جديد",
+    "files": "الملفات",
+    "folders": "المجلدات",
+    "size": "الحجم",
+    "modified": "تاريخ التعديل",
+    "type": "النوع",
+    "name": "الاسم",
+    "path": "المسار",
+    "noFiles": "لم يتم العثور على ملفات",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الملف؟",
+    "uploadSuccess": "تم رفع الملف بنجاح",
+    "uploadError": "حدث خطأ أثناء رفع الملف",
+    "deleteSuccess": "تم حذف الملف بنجاح",
+    "deleteError": "حدث خطأ أثناء حذف الملف"
+  },
+
+  "companies": {
+    "title": "الشركات",
+    "description": "إدارة الشركات والمؤسسات",
+    "allCompanies": "كافة الشركات",
+    "create": "إنشاء شركة جديدة",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "noCompanies": "لم يتم العثور على شركات",
+    "loadError": "حدث خطأ أثناء تحميل الشركات",
+    "search": "البحث عن شركة...",
+    "deleteTitle": "حذف الشركة",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه الشركة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deleting": "جاري الحذف...",
+    "comingSoon": "قريباً",
+    "assets": "الأصول (Assets)",
+    "contents": "المحتويات",
+    "websites": "المواقع الإلكترونية",
+    "myCompany": "شركتي",
+    "myCompanyDescription": "عرض وتعديل معلومات الشركة الخاصة بك",
+    "updated": "تم تحديث معلومات الشركة بنجاح",
+    "updateError": "حدث خطأ أثناء تحديث معلومات الشركة",
+    "logoUploadError": "فشل رفع الشعار",
+    "logoUploaded": "تم رفع الشعار بنجاح",
+    "faviconUploaded": "تم رفع أيقونة المفضلة بنجاح",
+    "pwaIconUploaded": "تم رفع أيقونة PWA بنجاح",
+    "main": "الشركة الرئيسية",
+    "viewing": "جاري العرض",
+    "editing": "جاري التعديل",
+    "metadata": "البيانات الوصفية",
+    "viewDescription": "عرض تفاصيل الشركة",
+    "name": "اسم الشركة",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "website": "الموقع الإلكتروني",
+    "address": "العنوان",
+    "tabs": {
+      "basic": "معلومات أساسية",
+      "contact": "الاتصال",
+      "legal": "قانوني",
+      "financial": "مالي",
+      "additional": "إضافي"
+    },
+    "logo": "الشعار",
+    "uploadLogo": "رفع الشعار",
+    "removeLogo": "إزالة الشعار",
+    "logoHint": "الحجم الموصى به: 200x60 بكسل (PNG أو SVG)",
+    "favicon": "أيقونة المفضلة (Favicon)",
+    "uploadFavicon": "رفع Favicon",
+    "removeFavicon": "إزالة Favicon",
+    "faviconHint": "أيقونة لتبويب المتصفح (32x32px)",
+    "pwaIcon": "أيقونة PWA",
+    "uploadPwaIcon": "رفع أيقونة PWA",
+    "removePwaIcon": "إزالة أيقونة PWA",
+    "pwaIconHint": "أيقونة للشاشة الرئيسية للجوال (512x512px)",
+    "table": {
+      "name": "اسم الشركة",
+      "industry": "القطاع",
+      "website": "الموقع الإلكتروني",
+      "status": "الحالة",
+      "users": "المستخدمين",
+      "stats": "الإحصائيات",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "form": {
+      "name": "اسم الشركة",
+      "namePlaceholder": "أدخل اسم الشركة",
+      "industry": "القطاع/الصناعة",
+      "industryPlaceholder": "مثال: التكنولوجيا، المالية، الصحة",
+      "website": "الموقع الإلكتروني",
+      "websitePlaceholder": "https://www.example.com",
+      "description": "الوصف",
+      "descriptionPlaceholder": "وصف قصير للشركة",
+      "foundedYear": "سنة التأسيس",
+      "foundedYearPlaceholder": "مثال: 2010",
+      "employeeCount": "عدد الموظفين",
+      "employeeCountPlaceholder": "مثال: 50",
+      "capital": "رأس المال",
+      "capitalPlaceholder": "مثال: 1,000,000 TRY",
+      "address": "العنوان",
+      "addressPlaceholder": "أدخل معلومات العنوان الكاملة",
+      "city": "المدينة",
+      "cityPlaceholder": "اسم المدينة",
+      "state": "المنطقة/الولاية",
+      "statePlaceholder": "اسم المنطقة",
+      "postalCode": "الرمز البريدي",
+      "postalCodePlaceholder": "مثال: 34000",
+      "country": "الدولة",
+      "countryPlaceholder": "اسم الدولة",
+      "phone": "الهاتف",
+      "phonePlaceholder": "+1 234 567 89 00",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "info@examplecompany.com",
+      "taxNumber": "الرقم الضريبي",
+      "taxNumberPlaceholder": "أدخل الرقم الضريبي",
+      "taxOffice": "المكتب الضريبي",
+      "taxOfficePlaceholder": "اسم المكتب الضريبي",
+      "registrationNumber": "رقم السجل التجاري",
+      "registrationNumberPlaceholder": "أدخل رقم السجل التجاري",
+      "mersisNumber": "رقم ميرسيس",
+      "mersisNumberPlaceholder": "أدخل رقم ميرسيس",
+      "iban": "IBAN",
+      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
+      "bankName": "اسم البنك",
+      "bankNamePlaceholder": "أدخل اسم البنك",
+      "accountHolder": "صاحب الحساب",
+      "accountHolderPlaceholder": "أدخل اسم صاحب الحساب"
+    },
+    "stats": {
+      "title": "الإحصائيات",
+      "total": "إجمالي الشركات",
+      "active": "الشركات النشطة",
+      "users": "المستخدمين",
+      "totalStats": "إجمالي الموارد",
+      "assets": "الأصول",
+      "contents": "المحتويات",
+      "websites": "المواقع الإلكترونية"
+    },
+    "info": {
+      "createdAt": "تاريخ الإنشاء",
+      "updatedAt": "تاريخ التحديث",
+      "status": "الحالة"
+    }
+  },
+
+  "buttons": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "download": "تنزيل",
+    "refresh": "تحديث",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "back": "رجوع",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين",
+    "export": "تصدير",
+    "import": "استيراد",
+    "search": "بحث",
+    "filter": "تصفية",
+    "clear": "مسح",
+    "apply": "تطبيق",
+    "add": "إضافة",
+    "remove": "إزالة"
+  },
+
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "export": "تصدير",
+    "import": "استيراد",
+    "refresh": "تحديث",
+    "download": "تنزيل",
+    "downloadAll": "تنزيل الكل"
+  },
+
+  "exportComingSoon": "سيتم إضافة التصدير بصيغة {{format}} قريباً",
+
+  "loading": "جاري التحميل...",
+
+  "save": "حفظ",
+  "calendar": "التقويم",
+  "list": "القائمة",
+
+  "status": {
+    "title": "الحالة",
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+
+  "success": "نجاح",
+  "error": "خطأ"
 }

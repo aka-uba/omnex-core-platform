@@ -4,7 +4,9 @@
   "backups": {
     "restore": "Geri Yükle",
     "delete": "Yedeği Sil",
-    "restoreDatabase": "Veritabanını Geri Yükle"
+    "restoreDatabase": "Veritabanını Geri Yükle",
+    "download": "İndir",
+    "create": "Yedek Oluştur"
   },
   "system": {
     "title": "Sistem Durumu",
@@ -22,6 +24,62 @@
     "view": "Görüntüle",
     "save": "Kaydet",
     "cancel": "İptal",
-    "back": "Geri"
+    "back": "Geri",
+    "refresh": "Yenile"
+  },
+  "table": {
+    "tenant": "Tenant",
+    "fileName": "Dosya Adı",
+    "fileSize": "Boyut",
+    "type": "Tür",
+    "status": "Durum",
+    "createdAt": "Oluşturulma",
+    "actions": "İşlemler",
+    "noBackups": "Henüz yedek bulunmuyor"
+  },
+  "form": {
+    "selectTenant": "Tenant Seçin",
+    "selectTenantPlaceholder": "Tenant seçin...",
+    "tenantNotFound": "Tenant bulunamadı"
+  },
+  "database": {
+    "title": "Veritabanı İşlemleri",
+    "backupInfo": "Yedekleme işlemi için bir tenant seçin. Yedekler güvenli bir şekilde saklanır ve istenildiğinde geri yüklenebilir."
+  },
+  "restore": {
+    "title": "Veritabanını Geri Yükle",
+    "warning": "Uyarı: Bu işlem mevcut veritabanını seçili yedekle değiştirecektir. Geri yüklemeden önce otomatik olarak güvenlik yedeği oluşturulacaktır.",
+    "selectedBackup": "Seçili Yedek:",
+    "createdAt": "Oluşturulma:"
+  },
+  "delete": {
+    "title": "Yedeği Sil",
+    "confirm": "Bu yedeği silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "selectedBackup": "Silinecek Yedek:",
+    "tenant": "Tenant:"
+  },
+  "notifications": {
+    "success": "Başarılı",
+    "error": "Hata",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "loadError": "Yedekler yüklenemedi",
+    "loadErrorDetail": "Yedekler yüklenirken bir hata oluştu",
+    "selectTenantFirst": "Önce bir tenant seçin",
+    "backupStarted": "Yedekleme başlatıldı. Lütfen bekleyin...",
+    "backupStartedIgnored": "Yedekleme başlatıldı (yanıt hatası görmezden gelindi)",
+    "backupStartedRefresh": "Yedekleme başlatıldı. Liste yenileniyor...",
+    "backupFailed": "Yedekleme başlatılamadı",
+    "backupDeleted": "Yedek silindi",
+    "backupDeleteFailed": "Yedek silinemedi",
+    "backupDownloaded": "Yedek indirildi",
+    "downloadFailed": "İndirme başarısız",
+    "restoreSuccess": "Veritabanı başarıyla geri yüklendi. Güvenlik yedeği oluşturuldu.",
+    "restoreFailed": "Geri yükleme başarısız"
+  },
+  "status": {
+    "completed": "Tamamlandı",
+    "pending": "Bekliyor",
+    "failed": "Başarısız"
   }
 }

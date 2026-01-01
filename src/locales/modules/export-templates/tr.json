@@ -137,44 +137,44 @@
     "refillFromCompany": "Firma bilgilerini yeniden doldur"
   },
   "preview": {
-    "title": "Canli Onizleme",
-    "description": "Form degisikliklerinizi anlik olarak goruntuleyin",
-    "sampleContent": "Ornek Icerik Alani",
-    "empty": "Onizleme bos",
-    "emptyHint": "Logo, baslik veya iletisim bilgisi ekleyin",
-    "noHeaderSections": "Ust bolum eklenmedi",
-    "noFooterSections": "Alt bolum eklenmedi"
+    "title": "Canlı Önizleme",
+    "description": "Form değişikliklerinizi anlık olarak görüntüleyin",
+    "sampleContent": "Örnek İçerik Alanı",
+    "empty": "Önizleme boş",
+    "emptyHint": "Logo, başlık veya iletişim bilgisi ekleyin",
+    "noHeaderSections": "Üst bölüm eklenmedi",
+    "noFooterSections": "Alt bölüm eklenmedi"
   },
   "sections": {
-    "headerSections": "Ust Bolumler",
-    "footerSections": "Alt Bolumler",
-    "addSection": "Bolum Ekle",
-    "removeSection": "Bolumu Sil",
-    "section": "Bolum",
-    "column": "Sutun",
-    "columnLabel": "Sutun",
-    "columns": "Sutun Sayisi",
-    "addItem": "Oge Ekle",
-    "emptyColumn": "Oge eklemek icin + butonuna tiklayin",
-    "noSections": "Henuz bolum eklenmedi. Bolum ekleyerek baslayin.",
-    "selectLogo": "Logo sec",
-    "enterText": "Metin girin veya {{placeholder}} kullanin",
-    "selectVariable": "Degisken sec",
+    "headerSections": "Üst Bölümler",
+    "footerSections": "Alt Bölümler",
+    "addSection": "Bölüm Ekle",
+    "removeSection": "Bölümü Sil",
+    "section": "Bölüm",
+    "column": "Sütun",
+    "columnLabel": "Sütun",
+    "columns": "Sütun Sayısı",
+    "addItem": "Öğe Ekle",
+    "emptyColumn": "Öğe eklemek için + butonuna tıklayın",
+    "noSections": "Henüz bölüm eklenmedi. Bölüm ekleyerek başlayın.",
+    "selectLogo": "Logo seç",
+    "enterText": "Metin girin veya {{placeholder}} kullanın",
+    "selectVariable": "Değişken seç",
     "alignment": "Hizalama",
     "alignLeft": "Sol",
     "alignCenter": "Orta",
-    "alignRight": "Sag",
+    "alignRight": "Sağ",
     "fontSize": "Boyut",
-    "fontWeight": "Kalinlik",
+    "fontWeight": "Kalınlık",
     "normal": "Normal",
-    "bold": "Kalin",
+    "bold": "Kalın",
     "itemTypes": {
       "logo": "Logo",
       "text": "Metin",
-      "variable": "Degisken",
-      "image": "Gorsel",
-      "divider": "Ayirici",
-      "spacer": "Bosluk"
+      "variable": "Değişken",
+      "image": "Görsel",
+      "divider": "Ayırıcı",
+      "spacer": "Boşluk"
     }
   },
   "placeholders": {
@@ -201,8 +201,8 @@
     "settings": "Ayarlar"
   },
   "edit": {
-    "title": "Başlık",
-    "description": "Açıklama"
+    "title": "Şablonu Düzenle",
+    "description": "Export şablon yapılandırmasını güncelleyin"
   },
   "export": "Dışa Aktar",
   "exportComingSoon": "{{format}} formatında dışa aktarma yakında eklenecek"

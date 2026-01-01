@@ -6,6 +6,7 @@ import { EditExportTemplatePageSkeleton } from './EditExportTemplatePageSkeleton
 import { ExportTemplateForm } from '../../components/ExportTemplateForm';
 import { useRouter } from 'next/navigation';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
+import { useTranslation } from '@/lib/i18n/client';
 import type { TemplateSection } from '@/lib/export/types';
 
 interface EditExportTemplatePageClientProps {
@@ -107,6 +108,7 @@ export function EditExportTemplatePageClient({
     templateId,
 }: EditExportTemplatePageClientProps) {
     const router = useRouter();
+    const { t } = useTranslation('modules/export-templates');
     const [template, setTemplate] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -127,8 +129,8 @@ export function EditExportTemplatePageClient({
         } catch (error: any) {
             showToast({
                 type: 'error',
-                title: 'Error',
-                message: error.message || 'Failed to load template',
+                title: t('notifications.error'),
+                message: error.message || t('loadError'),
             });
             router.push(`/${locale}/settings/export-templates`);
         } finally {
@@ -185,9 +187,9 @@ export function EditExportTemplatePageClient({
     return (
         <div>
             <Paper p="md" mb="md">
-                <Title order={2}>Edit Export Template</Title>
+                <Title order={2}>{t('edit.title')}</Title>
                 <Text size="sm" c="dimmed">
-                    Update export template configuration
+                    {t('edit.description')}
                 </Text>
             </Paper>
 

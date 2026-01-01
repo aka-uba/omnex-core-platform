@@ -1,6 +1,6 @@
 # OMNEX CORE PLATFORM - Claude Referans Dokümanı
 
-> **Bu dosya Claude'un projeyi anlamsı ve tutarlı çalışması için kritik bilgileri içerir.**
+> **Bu dosya Claude'un projeyi anlaması ve tutarlı çalışması için kritik bilgileri içerir.**
 > **Her oturumda otomatik okunur. Değişiklik yaparken bu kurallara uy.**
 
 ---
@@ -253,7 +253,7 @@ export function ListPageClient({ locale }: { locale: string }) {
 </Container>
 ```
 
-### 3.2 Spacing Kuralları
+### 4.2 Spacing Kuralları
 | Element | Değer | Açıklama |
 |---------|-------|----------|
 | Container | `pt="xl"` | Sadece üst padding |
@@ -261,7 +261,7 @@ export function ListPageClient({ locale }: { locale: string }) {
 | Tabs | `mt="md"` | Header sonrası |
 | Tabs.Panel | `pt="md"` | Panel içi padding |
 
-### 3.3 Skeleton Kullanımı
+### 4.3 Skeleton Kullanımı
 ```tsx
 // Loading state için:
 if (isLoading) {
@@ -273,9 +273,9 @@ if (isLoading) {
 
 ---
 
-## 4. MERKEZİ SİSTEMLER
+## 5. MERKEZİ SİSTEMLER
 
-### 4.1 DataTable (Merkezi Tablo)
+### 5.1 DataTable (Merkezi Tablo)
 **Dosya**: `src/components/tables/DataTable.tsx`
 
 ```tsx
@@ -317,7 +317,7 @@ const columns: DataTableColumn[] = [
 />
 ```
 
-### 4.2 AlertModal (Merkezi Modal)
+### 5.2 AlertModal (Merkezi Modal)
 **Dosya**: `src/components/modals/AlertModal.tsx`
 
 ```tsx
@@ -333,7 +333,7 @@ import { AlertModal } from '@/components/modals/AlertModal';
 />
 ```
 
-### 4.3 CentralPageHeader
+### 5.3 CentralPageHeader
 **Dosya**: `src/components/headers/CentralPageHeader.tsx`
 
 ```tsx
@@ -350,7 +350,7 @@ import { AlertModal } from '@/components/modals/AlertModal';
 />
 ```
 
-### 4.4 Export Sistemi
+### 5.4 Export Sistemi
 **Dosyalar**:
 - `src/lib/export/ExportProvider.tsx` - Export context ve hooks
 - `src/lib/export/ExportTemplateService.ts` - Template yönetimi
@@ -419,7 +419,7 @@ await exportData(data, { format: 'pdf', includeHeader: true });
 - Excel: Hücre birleştirme ile kolon span
 - Word: Table layout ile grid yapısı
 
-### 4.5 Toast Bildirim Sistemi
+### 5.5 Toast Bildirim Sistemi
 **Dosyalar**:
 - `src/hooks/useNotification.tsx` - Merkezi bildirim hook'u
 - `src/modules/notifications/components/ToastNotification.tsx` - Toast bileşeni
@@ -462,7 +462,7 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 --toast-{type}-icon: currentColor;    /* Miras alınan renk */
 ```
 
-### 4.7 Session Timeout Sistemi
+### 5.6 Session Timeout Sistemi
 **Dosya**: `src/components/providers/SessionTimeoutProvider.tsx`
 
 **Özellikler:**
@@ -477,7 +477,7 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 - `session.timeoutWarning.extend`
 - `session.timeoutWarning.logout`
 
-### 4.8 Layout Sistemi
+### 5.7 Layout Sistemi
 **Dosya**: `src/components/layouts/`
 
 **Layout Tipleri:**
@@ -490,7 +490,7 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 **Layout Context Öncelik Sırası:**
 User > Role > Company > Default
 
-### 4.9 Tema Varsayılan Sistemi
+### 5.8 Tema Varsayılan Sistemi
 **Dosyalar**:
 - `src/components/layouts/core/LayoutConfig.ts` - Storage keys ve helper fonksiyonlar
 - `src/components/layouts/core/LayoutProvider.tsx` - Config yükleme öncelik sırası
@@ -570,9 +570,9 @@ export function getCompanyDefaults(): LayoutConfig {
 
 ---
 
-## 5. API STANDARTLARI
+## 6. API STANDARTLARI
 
-### 5.1 API Route Pattern
+### 6.1 API Route Pattern
 ```typescript
 // src/app/api/module-name/route.ts
 import { NextRequest } from 'next/server';
@@ -609,7 +609,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-### 5.2 Response Formatları
+### 6.2 Response Formatları
 ```typescript
 // Başarılı
 successResponse({ item });
@@ -621,7 +621,7 @@ notFoundResponse('Item');
 validationErrorResponse('Validation failed', errors);
 ```
 
-### 5.3 Date Alanları
+### 6.3 Date Alanları
 ```typescript
 // Schema'da:
 deliveryDate: z.coerce.date().optional().nullable(),
@@ -635,9 +635,9 @@ deliveryDate: item.deliveryDate?.toISOString() || null,
 
 ---
 
-## 6. MODÜL SİSTEMİ
+## 7. MODÜL SİSTEMİ
 
-### 6.1 Modül Yapısı
+### 7.1 Modül Yapısı
 ```
 src/modules/{module-slug}/
 ├── module.config.yaml     # Modül konfigürasyonu
@@ -652,7 +652,7 @@ src/locales/modules/{module-slug}/
 └── ar.json
 ```
 
-### 6.2 module.config.yaml Örneği
+### 7.2 module.config.yaml Örneği
 ```yaml
 name: Module Name
 slug: module-slug
@@ -668,9 +668,9 @@ menu:
 
 ---
 
-## 7. HOOK KULLANIMI
+## 8. HOOK KULLANIMI
 
-### 7.1 Veri Çekme Pattern
+### 8.1 Veri Çekme Pattern
 ```typescript
 // Hook tanımı (src/hooks/useItems.ts)
 export function useItems() {
@@ -695,9 +695,9 @@ const { items, loading } = useItems();
 
 ---
 
-## 8. YAPILAN HATALAR - TEKRARLAMA
+## 9. YAPILAN HATALAR - TEKRARLAMA
 
-### 8.1 i18n Hataları
+### 9.1 i18n Hataları
 - **YANLIŞ**: Modül key'ini `src/locales/global/tr.json`'a eklemek
 - **DOĞRU**: `src/locales/modules/{module}/tr.json`'a eklemek
 
@@ -707,7 +707,7 @@ const { items, loading } = useItems();
   - **Kontrol**: Her dil dosyasında `"form":` araması yap, sadece nested olanlar hariç root seviyede tek `form` olmalı
   - **Örnek**: `form`, `table`, `messages` gibi büyük objeler dosyada tekrar EDİLMEMELİ
 
-### 8.2 UI Hataları
+### 9.2 UI Hataları
 - **YANLIŞ**: Kendi tablo tasarımı oluşturmak
 - **DOĞRU**: `DataTable` bileşenini kullanmak
 
@@ -717,17 +717,17 @@ const { items, loading } = useItems();
 - **YANLIŞ**: Paper içinde Paper kullanmak
 - **DOĞRU**: Tek Paper, içinde Tabs
 
-### 8.3 Skeleton Hataları
+### 9.3 Skeleton Hataları
 - **YANLIŞ**: Skeleton'u her sayfada farklı yazmak
 - **DOĞRU**: `ListPageSkeleton` veya `DetailPageSkeleton` kullanmak
 
-### 8.4 Export Hataları
+### 9.4 Export Hataları
 - **YANLIŞ**: Export butonlarını manuel eklemek
 - **DOĞRU**: DataTable'da `showExportIcons={true}` kullanmak
 
 ---
 
-## 9. KONTROL LİSTESİ
+## 10. KONTROL LİSTESİ
 
 Yeni sayfa/özellik eklerken:
 
@@ -745,7 +745,7 @@ Yeni sayfa/özellik eklerken:
 
 ---
 
-## 10. DOSYA KONUMLARI HIZLI REFERANS
+## 11. DOSYA KONUMLARI HIZLI REFERANS
 
 | Amaç | Dosya |
 |------|-------|
@@ -764,9 +764,9 @@ Yeni sayfa/özellik eklerken:
 
 ---
 
-## 11. PERFORMANS KURALLARI
+## 12. PERFORMANS KURALLARI
 
-### 11.1 Context Provider Kuralları
+### 12.1 Context Provider Kuralları
 ```typescript
 // ✅ DOĞRU: Route-aware context - Auth sayfalarında skip
 const pathname = usePathname();
@@ -786,7 +786,7 @@ useEffect(() => {
 }, []);
 ```
 
-### 11.2 Cache Stratejisi
+### 12.2 Cache Stratejisi
 | Bileşen | Cache Süresi | Tip |
 |---------|--------------|-----|
 | ModuleContext | 5 dakika | Memory (React state) |
@@ -794,7 +794,7 @@ useEffect(() => {
 | CompanyContext | Uygulama ömrü | Memory (hasFetched ref) |
 | Layout | 60 saniye | Next.js ISR |
 
-### 11.3 Prisma Singleton Kuralı
+### 12.3 Prisma Singleton Kuralı
 ```typescript
 // ✅ DOĞRU: Singleton kullan
 import { corePrisma } from '@/lib/corePrisma';
@@ -813,7 +813,7 @@ export async function GET() {
 }
 ```
 
-### 11.4 Console.log Kuralları
+### 12.4 Console.log Kuralları
 ```typescript
 // ✅ DOĞRU: Sadece error loglama
 console.error('Critical error:', error);
@@ -829,9 +829,9 @@ console.log('[component] Data loaded:', data);
 
 ---
 
-## 12. İKON SİSTEMİ
+## 13. İKON SİSTEMİ
 
-### 12.1 Tabler Icons Kullanımı
+### 13.1 Tabler Icons Kullanımı
 ```tsx
 // ModuleIcon - String ikon adından component
 import { ModuleIcon } from '@/lib/modules/icon-loader';
@@ -845,7 +845,7 @@ import { ModuleIcon } from '@/lib/modules/icon-loader';
 // "building" → IconBuilding (case-insensitive)
 ```
 
-### 12.2 IconPicker - Kullanıcı İkon Seçimi
+### 13.2 IconPicker - Kullanıcı İkon Seçimi
 ```tsx
 import { IconPicker, IconPickerButton } from '@/components/common/IconPicker';
 
@@ -856,7 +856,7 @@ import { IconPicker, IconPickerButton } from '@/components/common/IconPicker';
 />
 ```
 
-### 12.3 Menü İkonları (useMenuItems)
+### 13.3 Menü İkonları (useMenuItems)
 ```typescript
 // String ikon adı → React component mapping
 const iconMap: Record<string, React.ComponentType> = {
@@ -869,40 +869,40 @@ const iconMap: Record<string, React.ComponentType> = {
 
 ---
 
-## 13. GÜVENLİK KURALLARI
+## 14. GÜVENLİK KURALLARI
 
-### 13.1 Kimlik Doğrulama
+### 14.1 Kimlik Doğrulama
 - **JWT Access Token**: 7 gün
 - **Refresh Token**: 30 gün
 - **Algorithm**: HS256
 
-### 13.2 Şifre Politikası
+### 14.2 Şifre Politikası
 - Minimum 8 karakter
 - En az 1 büyük harf
 - En az 1 küçük harf
 - En az 1 rakam
 
-### 13.3 RBAC Rolleri
+### 14.3 RBAC Rolleri
 | Rol | Yetki |
 |-----|-------|
 | SuperAdmin | Tam sistem erişimi |
 | AgencyUser | Ajans seviyesi erişim |
 | ClientUser | Temel kullanıcı erişimi |
 
-### 13.4 Rate Limiting
+### 14.4 Rate Limiting
 - Global: 100 request / 15 dakika / IP
 - Auth endpoints: 10 request / 15 dakika
 
-### 13.5 Input Validation
+### 14.5 Input Validation
 - Zod schema validation kullan
 - Prisma ORM SQL injection önler
 - Next.js XSS koruması sağlar
 
 ---
 
-## 14. TYPE HATA YÖNETİMİ
+## 15. TYPE HATA YÖNETİMİ
 
-### 14.1 Komutlar
+### 15.1 Komutlar
 ```bash
 # Type hatalarını analiz et
 npm run type:analyze
@@ -917,7 +917,7 @@ npm run typecheck
 npm run typewatch
 ```
 
-### 14.2 Yaygın Type Hataları
+### 15.2 Yaygın Type Hataları
 
 **exactOptionalPropertyTypes:**
 ```typescript
@@ -939,9 +939,9 @@ const value = obj?.property;
 
 ---
 
-## 15. MODÜL ÇEVİRİ YAPISI
+## 16. MODÜL ÇEVİRİ YAPISI
 
-### 15.1 Global Çeviriler (`src/locales/global/`)
+### 16.1 Global Çeviriler (`src/locales/global/`)
 ```json
 {
   "common": {
@@ -966,7 +966,7 @@ const value = obj?.property;
 }
 ```
 
-### 15.2 Modül Çevirileri (`src/locales/modules/{module}/`)
+### 16.2 Modül Çevirileri (`src/locales/modules/{module}/`)
 ```json
 {
   "title": "Modül Başlığı",
@@ -984,7 +984,7 @@ const value = obj?.property;
 }
 ```
 
-### 15.3 Kullanım Şablonu
+### 16.3 Kullanım Şablonu
 ```typescript
 // İKİ NAMESPACE BİRDEN:
 const { t } = useTranslation('modules/real-estate');
@@ -999,7 +999,7 @@ tGlobal('common.actions.save')  // "Kaydet"
 
 ---
 
-## 16. MEVCUT MODÜLLER
+## 17. MEVCUT MODÜLLER
 
 | Modül Slug | Açıklama |
 |-----------|----------|
@@ -1017,9 +1017,9 @@ tGlobal('common.actions.save')  // "Kaydet"
 
 ---
 
-## 17. NEXT.JS 16.1+ DEĞİŞİKLİKLERİ
+## 18. NEXT.JS 16.1+ DEĞİŞİKLİKLERİ
 
-### 17.1 Turbopack vs Webpack
+### 18.1 Turbopack vs Webpack
 Next.js 16+ sürümünde **Turbopack varsayılan** ama `webpack` config varsa çalışmaz!
 
 **KURAL: `webpack` config varken Turbopack için `--turbopack` flag gerekli!**
@@ -1035,7 +1035,7 @@ Next.js 16+ sürümünde **Turbopack varsayılan** ama `webpack` config varsa ç
 }
 ```
 
-### 17.2 Turbopack File System Cache
+### 18.2 Turbopack File System Cache
 Turbopack cache `.next` klasörünü 10GB+ boyutlara çıkarabilir.
 
 **Ayarlar** (`next.config.ts`):
@@ -1055,7 +1055,7 @@ rm -rf .next
 turbopackFileSystemCacheForDev: false
 ```
 
-### 17.3 Cache API Değişiklikleri
+### 18.3 Cache API Değişiklikleri
 ```typescript
 // ESKİ (Next.js 15)
 import { unstable_cacheLife, unstable_cacheTag } from 'next/cache'
@@ -1067,14 +1067,14 @@ import { cacheLife, cacheTag } from 'next/cache'
 import { updateTag, refresh } from 'next/cache'
 ```
 
-### 17.4 Image Optimizasyon Değişiklikleri
+### 18.4 Image Optimizasyon Değişiklikleri
 | Ayar | Eski Varsayılan | Yeni Varsayılan |
 |------|-----------------|-----------------|
 | `minimumCacheTTL` | 60 saniye | 14400 saniye (4 saat) |
 | `imageSizes` | [16, 32, 48...] | 16 kaldırıldı |
 | `qualities` | Tümü | Sadece [75] |
 
-### 17.5 Async Request APIs (Breaking)
+### 18.5 Async Request APIs (Breaking)
 ```typescript
 // ESKİ - Senkron erişim kaldırıldı
 const cookieStore = cookies()
@@ -1085,7 +1085,7 @@ const headersList = await headers()
 const { isEnabled } = await draftMode()
 ```
 
-### 17.6 PPR → cacheComponents
+### 18.6 PPR → cacheComponents
 ```typescript
 // ESKİ
 experimental: { ppr: true }
