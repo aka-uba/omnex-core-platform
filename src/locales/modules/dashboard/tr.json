@@ -1,24 +1,24 @@
 {
   "title": "Panel",
-  "description": "Genel bakış ve istatistikler",
+  "description": "Genel bakis ve istatistikler",
   "kpi": {
-    "totalActiveClients": "Toplam Aktif Müşteri",
-    "monthlyRecurringRevenue": "Aylık Tekrarlayan Gelir",
-    "newLeadsThisMonth": "Bu Ay Yeni Potansiyel Müşteri",
+    "totalActiveClients": "Toplam Aktif Musteri",
+    "monthlyRecurringRevenue": "Aylik Tekrarlayan Gelir",
+    "newLeadsThisMonth": "Bu Ay Yeni Potansiyel Musteri",
     "activeProjects": "Aktif Projeler",
-    "changeThisMonth": "Bu Ay Değişim",
-    "change": "Değişim"
+    "changeThisMonth": "Bu Ay Degisim",
+    "change": "Degisim"
   },
   "contentPerformance": {
-    "title": "İçerik Performansı",
-    "subtitle": "Son 30 gün"
+    "title": "Icerik Performansi",
+    "subtitle": "Son 30 gun"
   },
   "upcomingPosts": {
-    "title": "Yaklaşan Gönderiler",
-    "viewAll": "Tümünü Görüntüle"
+    "title": "Yaklasan Gonderiler",
+    "viewAll": "Tumunu Goruntule"
   },
   "financeOverview": {
-    "title": "Finansal Genel Bakış",
+    "title": "Finansal Genel Bakis",
     "revenue": "Gelir",
     "expenses": "Giderler",
     "profit": "Kar"
@@ -27,16 +27,43 @@
     "title": "Son Aktiviteler"
   },
   "actions": {
-    "create": "Oluştur",
-    "edit": "Düzenle",
-    "update": "Güncelle",
+    "create": "Olustur",
+    "edit": "Duzenle",
+    "update": "Guncelle",
     "delete": "Sil",
-    "view": "Görüntüle",
+    "view": "Goruntule",
     "save": "Kaydet",
-    "cancel": "İptal",
+    "cancel": "Iptal",
     "back": "Geri"
   },
   "navigation": {
     "dashboard": "Panel"
+  },
+  "upcomingEvents": {
+    "title": "Yaklasan Etkinlikler",
+    "subtitle": "Onumuzdeki gunlerde planlanan isler ve randevular",
+    "liveData": "Canli Veri Akisi",
+    "total": "Toplam",
+    "pendingWork": "Bekleyen Is",
+    "viewAll": "Tum Takvimi Goruntule",
+    "empty": "Yaklasan etkinlik bulunmuyor",
+    "types": {
+      "delivery": "Teslimat",
+      "key": "Anahtar",
+      "showing": "Sunum",
+      "maintenance": "Tamirat",
+      "completed": "Tamamlandi"
+    }
+  },
+  "quickOverview": {
+    "title": "Hizli Bakis"
+  },
+  "modules": {
+    "realEstate": "Gayrimenkul",
+    "calendar": "Takvim",
+    "notifications": "Bildirimler",
+    "hr": "Insan Kaynaklari",
+    "accounting": "Muhasebe",
+    "production": "Uretim"
   }
 }

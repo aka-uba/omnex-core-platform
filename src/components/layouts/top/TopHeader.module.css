@@ -3,7 +3,7 @@
   top: auto;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 200;
   height: var(--top-height, 64px);
   border-bottom: 1px solid var(--border-color);
   background-color: var(--top-bg-color, rgba(245, 247, 248, 0.75));

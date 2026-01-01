@@ -7,7 +7,6 @@ import {
   Text,
   Group,
   Badge,
-  Card,
   ActionIcon,
   Select,
   Tooltip,
@@ -16,6 +15,9 @@ import {
   Loader,
   Center,
   Stack,
+  Progress,
+  RingProgress,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
@@ -29,6 +31,8 @@ import {
   IconCreditCard,
   IconBuildingBank,
   IconReceipt,
+  IconTrendingUp,
+  IconShieldCheck,
 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/lib/i18n/client';
@@ -202,8 +206,214 @@ function MonthCellWithPopover({
   );
 }
 
+// Layered Depth Stats Card Component
+interface StatsCardProps {
+  title: string;
+  value: string | number;
+  subValue?: string;
+  icon: React.ReactNode;
+  iconColor: string;
+  badgeText?: string;
+  badgeColor?: string;
+  badgeIcon?: React.ReactNode;
+  progress?: number;
+  progressColor?: string;
+  ringProgress?: number;
+  ringColor?: string;
+  isDark: boolean;
+}
+
+function LayeredDepthCard({
+  title,
+  value,
+  subValue,
+  icon,
+  iconColor,
+  badgeText,
+  badgeColor = 'blue',
+  badgeIcon,
+  progress,
+  progressColor = 'blue',
+  ringProgress,
+  ringColor = 'blue',
+  isDark,
+}: StatsCardProps) {
+  const cardBg = isDark ? 'var(--mantine-color-dark-6)' : '#ffffff';
+  const cardBorder = isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0';
+  const insetBg = isDark ? 'var(--mantine-color-dark-7)' : '#f8fafc';
+  const insetShadow = isDark
+    ? 'inset 2px 2px 5px rgba(0, 0, 0, 0.3), inset -1px -1px 0px rgba(255, 255, 255, 0.05)'
+    : 'inset 2px 2px 5px rgba(0, 0, 0, 0.05), inset -1px -1px 0px rgba(255, 255, 255, 1)';
+  const iconBg = isDark
+    ? 'linear-gradient(to bottom right, var(--mantine-color-dark-5), var(--mantine-color-dark-6))'
+    : 'linear-gradient(to bottom right, #ffffff, #f8fafc)';
+
+  return (
+    <Paper
+      p="lg"
+      radius="lg"
+      style={{
+        backgroundColor: cardBg,
+        border: `1px solid ${cardBorder}`,
+        position: 'relative',
+        overflow: 'visible',
+        transition: 'all 0.3s ease',
+        boxShadow: isDark
+          ? '0 1px 3px rgba(0,0,0,0.3)'
+          : '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+        zIndex: 1,
+      }}
+      className="hover:shadow-md"
+    >
+      {/* Floating Badge - Right aligned, z-index between card and header */}
+      {badgeText && (
+        <Box
+          style={{
+            position: 'absolute',
+            top: -22,
+            right: 20,
+            zIndex: 5,
+          }}
+        >
+          <Badge
+            size="lg"
+            variant="filled"
+            color={badgeColor}
+            leftSection={badgeIcon}
+            radius="sm"
+            styles={{
+              root: {
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.08)',
+                fontWeight: 700,
+                textTransform: 'none',
+                padding: '10px 16px',
+                fontSize: '0.85rem',
+                minWidth: 60,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+                height: 'auto',
+              },
+              section: {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 6,
+              },
+              label: {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+              },
+            }}
+          >
+            {badgeText}
+          </Badge>
+        </Box>
+      )}
+
+      {/* Header */}
+      <Group justify="space-between" mb="md">
+        <Text
+          size="sm"
+          fw={500}
+          c="dimmed"
+          tt="uppercase"
+          style={{ letterSpacing: '0.05em' }}
+        >
+          {title}
+        </Text>
+        <Box
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 8,
+            background: iconBg,
+            border: `1px solid ${cardBorder}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            color: iconColor,
+          }}
+        >
+          {icon}
+        </Box>
+      </Group>
+
+      {/* Inset Value Area */}
+      <Box
+        p="md"
+        style={{
+          backgroundColor: insetBg,
+          borderRadius: 8,
+          boxShadow: insetShadow,
+          borderBottom: isDark ? '1px solid rgba(255,255,255,0.03)' : '1px solid rgba(0,0,0,0.03)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <Group justify="space-between" align="center">
+          <div>
+            <Text
+              size="xl"
+              fw={700}
+              style={{
+                fontSize: '1.75rem',
+                letterSpacing: '-0.025em',
+                textShadow: isDark ? 'none' : '1px 1px 0px rgba(255,255,255, 1)',
+              }}
+            >
+              {value}
+            </Text>
+            {subValue && (
+              <Text size="sm" c="dimmed" mt={4}>
+                {subValue}
+              </Text>
+            )}
+          </div>
+
+          {/* Ring Progress (for collection rate) */}
+          {ringProgress !== undefined && (
+            <RingProgress
+              size={52}
+              thickness={5}
+              roundCaps
+              sections={[{ value: ringProgress, color: ringColor }]}
+              label={
+                <Text size="xs" ta="center" fw={700}>
+                  {ringProgress}%
+                </Text>
+              }
+            />
+          )}
+
+          {/* Progress Ring (moved to right side like ringProgress) */}
+          {progress !== undefined && (
+            <RingProgress
+              size={52}
+              thickness={5}
+              roundCaps
+              sections={[{ value: progress, color: progressColor }]}
+              label={
+                <Text size="xs" ta="center" fw={700}>
+                  {Math.round(progress)}%
+                </Text>
+              }
+            />
+          )}
+        </Group>
+      </Box>
+    </Paper>
+  );
+}
+
 export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   const { t } = useTranslation('modules/real-estate');
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
 
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const [propertyFilter, setPropertyFilter] = useState<string | null>(null);
@@ -566,82 +776,64 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         </Group>
       </Paper>
 
-      {/* Summary Cards */}
+      {/* Summary Cards - Layered Depth Design */}
       <Grid>
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group justify="space-between">
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                  {t('payments.monthlyTracker.totalPayments')}
-                </Text>
-                <Text size="xl" fw={700} mt="xs">
-                  {summary?.totalPayments || 0}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {formatCurrency(summary?.totalAmount || 0)}
-                </Text>
-              </div>
-              <IconCurrencyDollar size={32} color="var(--mantine-color-blue-6)" />
-            </Group>
-          </Card>
+          <LayeredDepthCard
+            title={t('payments.monthlyTracker.totalPayments')}
+            value={summary?.totalPayments || 0}
+            subValue={formatCurrency(summary?.totalAmount || 0)}
+            icon={<IconCurrencyDollar size={20} style={{ filter: 'drop-shadow(0px 3px 3px rgba(0,0,0,0.15))' }} />}
+            iconColor="var(--mantine-color-blue-6)"
+            badgeText={`${currentYear}`}
+            badgeColor="blue"
+            progress={summary?.totalPayments ? Math.min((summary.paidPayments / summary.totalPayments) * 100, 100) : 0}
+            progressColor="blue"
+            isDark={isDark}
+          />
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group justify="space-between">
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                  {t('payments.monthlyTracker.paidPayments')}
-                </Text>
-                <Text size="xl" fw={700} mt="xs" c="green">
-                  {summary?.paidPayments || 0}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {formatCurrency(summary?.paidAmount || 0)}
-                </Text>
-              </div>
-              <IconCheck size={32} color="var(--mantine-color-green-6)" />
-            </Group>
-          </Card>
+          <LayeredDepthCard
+            title={t('payments.monthlyTracker.paidPayments')}
+            value={summary?.paidPayments || 0}
+            subValue={formatCurrency(summary?.paidAmount || 0)}
+            icon={<IconCheck size={20} style={{ filter: 'drop-shadow(0px 3px 3px rgba(0,0,0,0.15))' }} />}
+            iconColor="var(--mantine-color-green-6)"
+            badgeText={summary?.paidPayments ? `+${summary.paidPayments}` : undefined}
+            badgeColor="green"
+            badgeIcon={<IconTrendingUp size={12} />}
+            isDark={isDark}
+          />
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group justify="space-between">
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                  {t('payments.monthlyTracker.pendingPayments')}
-                </Text>
-                <Text size="xl" fw={700} mt="xs" c="yellow">
-                  {summary?.pendingPayments || 0}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {formatCurrency(summary?.pendingAmount || 0)}
-                </Text>
-              </div>
-              <IconClock size={32} color="var(--mantine-color-yellow-6)" />
-            </Group>
-          </Card>
+          <LayeredDepthCard
+            title={t('payments.monthlyTracker.pendingPayments')}
+            value={summary?.pendingPayments || 0}
+            subValue={formatCurrency(summary?.pendingAmount || 0)}
+            icon={<IconClock size={20} style={{ filter: 'drop-shadow(0px 3px 3px rgba(0,0,0,0.15))' }} />}
+            iconColor="var(--mantine-color-yellow-6)"
+            badgeText={summary?.pendingPayments ? t('payments.status.pending') : undefined}
+            badgeColor="yellow"
+            isDark={isDark}
+          />
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group justify="space-between">
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                  {t('payments.monthlyTracker.overduePayments')}
-                </Text>
-                <Text size="xl" fw={700} mt="xs" c="red">
-                  {summary?.overduePayments || 0}
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {t('payments.monthlyTracker.collectionRate')}: {(summary?.collectionRate || 0).toFixed(0)}%
-                </Text>
-              </div>
-              <IconAlertCircle size={32} color="var(--mantine-color-red-6)" />
-            </Group>
-          </Card>
+          <LayeredDepthCard
+            title={t('payments.monthlyTracker.overduePayments')}
+            value={summary?.overduePayments || 0}
+            subValue={t('payments.monthlyTracker.collectionRate')}
+            icon={<IconShieldCheck size={20} style={{ filter: 'drop-shadow(0px 3px 3px rgba(0,0,0,0.15))' }} />}
+            iconColor="var(--mantine-color-violet-6)"
+            badgeText={summary?.collectionRate ? t('payments.status.paid') : undefined}
+            badgeColor="violet"
+            badgeIcon={<IconShieldCheck size={12} />}
+            ringProgress={Math.round(summary?.collectionRate || 0)}
+            ringColor="violet"
+            isDark={isDark}
+          />
         </Grid.Col>
       </Grid>
 

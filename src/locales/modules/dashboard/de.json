@@ -1,33 +1,69 @@
 {
-    "title": "Dashboard",
-    "description": "Übersicht und Statistiken",
-    "kpi": {
-        "totalActiveClients": "Gesamte aktive Kunden",
-        "monthlyRecurringRevenue": "Monatliches wiederkehrendes Einkommen",
-        "newLeadsThisMonth": "Neue Leads diesen Monat",
-        "activeProjects": "Aktive Projekte",
-        "changeThisMonth": "Änderung diesen Monat",
-        "change": "Änderung"
-    },
-    "contentPerformance": {
-        "title": "Content-Leistung",
-        "subtitle": "Letzte 30 Tage"
-    },
-    "upcomingPosts": {
-        "title": "Bevorstehende Beiträge",
-        "viewAll": "Alle anzeigen"
-    },
-    "financeOverview": {
-        "title": "Finanzübersicht",
-        "revenue": "Einnahmen",
-        "expenses": "Ausgaben",
-        "profit": "Gewinn"
-    },
-    "recentActivity": {
-        "title": "Letzte Aktivitäten"
+  "title": "Dashboard",
+  "description": "Übersicht und Statistiken",
+  "kpi": {
+    "totalActiveClients": "Gesamte aktive Kunden",
+    "monthlyRecurringRevenue": "Monatliches wiederkehrendes Einkommen",
+    "newLeadsThisMonth": "Neue Leads diesen Monat",
+    "activeProjects": "Aktive Projekte",
+    "changeThisMonth": "Änderung diesen Monat",
+    "change": "Änderung"
+  },
+  "contentPerformance": {
+    "title": "Content-Leistung",
+    "subtitle": "Letzte 30 Tage"
+  },
+  "upcomingPosts": {
+    "title": "Bevorstehende Beiträge",
+    "viewAll": "Alle anzeigen"
+  },
+  "financeOverview": {
+    "title": "Finanzübersicht",
+    "revenue": "Einnahmen",
+    "expenses": "Ausgaben",
+    "profit": "Gewinn"
+  },
+  "recentActivity": {
+    "title": "Letzte Aktivitäten"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Ansehen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "upcomingEvents": {
+    "title": "Bevorstehende Ereignisse",
+    "subtitle": "Geplante Aufgaben und Termine für die kommenden Tage",
+    "liveData": "Live-Datenstrom",
+    "total": "Gesamt",
+    "pendingWork": "Ausstehende Arbeit",
+    "viewAll": "Vollständigen Kalender anzeigen",
+    "empty": "Keine bevorstehenden Ereignisse",
+    "types": {
+      "delivery": "Lieferung",
+      "key": "Schlüsselübergabe",
+      "showing": "Besichtigung",
+      "maintenance": "Wartung",
+      "completed": "Abgeschlossen"
     }
+  },
+  "quickOverview": {
+    "title": "Schnellübersicht"
+  },
+  "modules": {
+    "realEstate": "Immobilien",
+    "calendar": "Kalender",
+    "notifications": "Benachrichtigungen",
+    "hr": "Personalwesen",
+    "accounting": "Buchhaltung",
+    "production": "Produktion"
+  }
 }
-
-
-
-

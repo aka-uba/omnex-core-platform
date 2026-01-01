@@ -1,33 +1,69 @@
 {
-    "title": "Dashboard",
-    "description": "Overview and statistics",
-    "kpi": {
-        "totalActiveClients": "Total Active Clients",
-        "monthlyRecurringRevenue": "Monthly Recurring Revenue",
-        "newLeadsThisMonth": "New Leads This Month",
-        "activeProjects": "Active Projects",
-        "changeThisMonth": "Change This Month",
-        "change": "Change"
-    },
-    "contentPerformance": {
-        "title": "Content Performance",
-        "subtitle": "Last 30 days"
-    },
-    "upcomingPosts": {
-        "title": "Upcoming Posts",
-        "viewAll": "View All"
-    },
-    "financeOverview": {
-        "title": "Finance Overview",
-        "revenue": "Revenue",
-        "expenses": "Expenses",
-        "profit": "Profit"
-    },
-    "recentActivity": {
-        "title": "Recent Activity"
+  "title": "Dashboard",
+  "description": "Overview and statistics",
+  "kpi": {
+    "totalActiveClients": "Total Active Clients",
+    "monthlyRecurringRevenue": "Monthly Recurring Revenue",
+    "newLeadsThisMonth": "New Leads This Month",
+    "activeProjects": "Active Projects",
+    "changeThisMonth": "Change This Month",
+    "change": "Change"
+  },
+  "contentPerformance": {
+    "title": "Content Performance",
+    "subtitle": "Last 30 days"
+  },
+  "upcomingPosts": {
+    "title": "Upcoming Posts",
+    "viewAll": "View All"
+  },
+  "financeOverview": {
+    "title": "Finance Overview",
+    "revenue": "Revenue",
+    "expenses": "Expenses",
+    "profit": "Profit"
+  },
+  "recentActivity": {
+    "title": "Recent Activity"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "upcomingEvents": {
+    "title": "Upcoming Events",
+    "subtitle": "Planned tasks and appointments for the upcoming days",
+    "liveData": "Live Data Stream",
+    "total": "Total",
+    "pendingWork": "Pending Work",
+    "viewAll": "View Full Calendar",
+    "empty": "No upcoming events",
+    "types": {
+      "delivery": "Delivery",
+      "key": "Key Handover",
+      "showing": "Showing",
+      "maintenance": "Maintenance",
+      "completed": "Completed"
     }
+  },
+  "quickOverview": {
+    "title": "Quick Overview"
+  },
+  "modules": {
+    "realEstate": "Real Estate",
+    "calendar": "Calendar",
+    "notifications": "Notifications",
+    "hr": "Human Resources",
+    "accounting": "Accounting",
+    "production": "Production"
+  }
 }
-
-
-
-

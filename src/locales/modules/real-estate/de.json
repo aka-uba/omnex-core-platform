@@ -34,6 +34,7 @@
     "monthlyRevenue": "Monatliche Einnahmen",
     "recentActivity": "Letzte Aktivitäten",
     "noActivity": "Keine aktuellen Aktivitäten",
+    "noRecentActivity": "Noch keine Aktivität",
     "active": "Aktiv",
     "occupied": "Belegt",
     "vacant": "Leer",
@@ -55,7 +56,23 @@
     "noExpiringContracts": "Keine auslaufenden Verträge",
     "days": "Tage",
     "today": "Heute",
-    "yesterday": "Gestern"
+    "yesterday": "Gestern",
+    "expiring": "Auslaufend",
+    "lastMonth": "Letzter Monat",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mär",
+      "apr": "Apr",
+      "may": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Okt",
+      "nov": "Nov",
+      "dec": "Dez"
+    }
   },
   "properties": {
     "title": "Objekte",

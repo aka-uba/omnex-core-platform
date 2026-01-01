@@ -1,33 +1,69 @@
 {
-    "title": "لوحة التحكم",
-    "description": "نظرة عامة وإحصائيات",
-    "kpi": {
-        "totalActiveClients": "إجمالي العملاء النشطين",
-        "monthlyRecurringRevenue": "الإيرادات الشهرية المتكررة",
-        "newLeadsThisMonth": "عملاء محتملون جدد هذا الشهر",
-        "activeProjects": "المشاريع النشطة",
-        "changeThisMonth": "التغيير هذا الشهر",
-        "change": "التغيير"
-    },
-    "contentPerformance": {
-        "title": "أداء المحتوى",
-        "subtitle": "آخر 30 يوماً"
-    },
-    "upcomingPosts": {
-        "title": "المنشورات القادمة",
-        "viewAll": "عرض الكل"
-    },
-    "financeOverview": {
-        "title": "نظرة عامة على المالية",
-        "revenue": "الإيرادات",
-        "expenses": "المصروفات",
-        "profit": "الربح"
-    },
-    "recentActivity": {
-        "title": "الأنشطة الأخيرة"
+  "title": "لوحة التحكم",
+  "description": "نظرة عامة وإحصائيات",
+  "kpi": {
+    "totalActiveClients": "إجمالي العملاء النشطين",
+    "monthlyRecurringRevenue": "الإيرادات الشهرية المتكررة",
+    "newLeadsThisMonth": "عملاء محتملون جدد هذا الشهر",
+    "activeProjects": "المشاريع النشطة",
+    "changeThisMonth": "التغيير هذا الشهر",
+    "change": "التغيير"
+  },
+  "contentPerformance": {
+    "title": "أداء المحتوى",
+    "subtitle": "آخر 30 يوماً"
+  },
+  "upcomingPosts": {
+    "title": "المنشورات القادمة",
+    "viewAll": "عرض الكل"
+  },
+  "financeOverview": {
+    "title": "نظرة عامة على المالية",
+    "revenue": "الإيرادات",
+    "expenses": "المصروفات",
+    "profit": "الربح"
+  },
+  "recentActivity": {
+    "title": "الأنشطة الأخيرة"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "upcomingEvents": {
+    "title": "الأحداث القادمة",
+    "subtitle": "المهام والمواعيد المخطط لها للأيام القادمة",
+    "liveData": "تدفق البيانات المباشر",
+    "total": "الإجمالي",
+    "pendingWork": "العمل المعلق",
+    "viewAll": "عرض التقويم الكامل",
+    "empty": "لا توجد أحداث قادمة",
+    "types": {
+      "delivery": "تسليم",
+      "key": "تسليم المفاتيح",
+      "showing": "عرض",
+      "maintenance": "صيانة",
+      "completed": "مكتمل"
     }
+  },
+  "quickOverview": {
+    "title": "نظرة سريعة"
+  },
+  "modules": {
+    "realEstate": "العقارات",
+    "calendar": "التقويم",
+    "notifications": "الإشعارات",
+    "hr": "الموارد البشرية",
+    "accounting": "المحاسبة",
+    "production": "الإنتاج"
+  }
 }
-
-
-
-

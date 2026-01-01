@@ -34,6 +34,7 @@
     "monthlyRevenue": "الإيرادات الشهرية",
     "recentActivity": "النشاط الأخير",
     "noActivity": "لا يوجد نشاط حديث",
+    "noRecentActivity": "لا يوجد نشاط بعد",
     "active": "نشط",
     "occupied": "مشغول",
     "vacant": "شاغر",
@@ -55,7 +56,23 @@
     "noExpiringContracts": "لا توجد عقود منتهية",
     "days": "أيام",
     "today": "اليوم",
-    "yesterday": "أمس"
+    "yesterday": "أمس",
+    "expiring": "منتهي الصلاحية",
+    "lastMonth": "الشهر الماضي",
+    "months": {
+      "jan": "يناير",
+      "feb": "فبراير",
+      "mar": "مارس",
+      "apr": "أبريل",
+      "may": "مايو",
+      "jun": "يونيو",
+      "jul": "يوليو",
+      "aug": "أغسطس",
+      "sep": "سبتمبر",
+      "oct": "أكتوبر",
+      "nov": "نوفمبر",
+      "dec": "ديسمبر"
+    }
   },
   "properties": {
     "title": "العقارات",

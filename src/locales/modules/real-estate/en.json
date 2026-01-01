@@ -34,6 +34,7 @@
     "monthlyRevenue": "Monthly Revenue",
     "recentActivity": "Recent Activities",
     "noActivity": "No recent activity",
+    "noRecentActivity": "No activity yet",
     "active": "Active",
     "occupied": "Occupied",
     "vacant": "Vacant",
@@ -55,7 +56,23 @@
     "noExpiringContracts": "No expiring contracts",
     "days": "days",
     "today": "Today",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "expiring": "Expiring",
+    "lastMonth": "Last Month",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
   },
   "properties": {
     "title": "Properties",

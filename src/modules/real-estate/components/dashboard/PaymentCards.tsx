@@ -2,15 +2,15 @@
 
 import { useMemo, useCallback } from 'react';
 import { Paper, Text, Badge, ActionIcon, Tooltip, Skeleton } from '@mantine/core';
-import { IconCheck, IconEye, IconAlertTriangle, IconClock, IconArrowRight } from '@tabler/icons-react';
+import { IconCheck, IconEye, IconAlertTriangle, IconClock, IconArrowRight, IconCalendar } from '@tabler/icons-react';
 import { usePaymentAnalytics, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useTranslation } from '@/lib/i18n/client';
 import { useRouter } from 'next/navigation';
 import { notifications } from '@mantine/notifications';
 import dayjs from 'dayjs';
-import styles from './PaymentQuickBoard.module.css';
+import styles from './PaymentCards.module.css';
 
-interface PaymentQuickBoardProps {
+interface PaymentCardsProps {
   locale: string;
 }
 
@@ -28,7 +28,7 @@ interface QuickPaymentItem {
   contractId?: string;
 }
 
-export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
+export function PaymentCards({ locale }: PaymentCardsProps) {
   const { t } = useTranslation('modules/real-estate');
   const router = useRouter();
   const { data, isLoading, refetch } = usePaymentAnalytics();
@@ -79,9 +79,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
   }, [data]);
 
   const getDaysBadgeClass = useCallback((days: number, isOverdue: boolean) => {
-    if (isOverdue) {
-      return styles.urgent;
-    }
+    if (isOverdue) return styles.urgent;
     if (days <= 3) return styles.urgent;
     if (days <= 7) return styles.warning;
     return styles.normal;
@@ -93,7 +91,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
     return monthNames[d.month()];
   }, []);
 
-  const renderTimelineItem = useCallback((
+  const renderPaymentCard = useCallback((
     payment: QuickPaymentItem,
     isOverdue: boolean,
     index: number
@@ -105,78 +103,72 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
     return (
       <div
         key={payment.id}
-        className={`${styles.timelineItem} ${isOverdue ? styles.overdue : ''} ${styles[`delay${index}`]}`}
+        className={`${styles.paymentCard} ${isOverdue ? styles.overdueCard : styles.upcomingCard} ${styles[`delay${index}`]}`}
         onClick={() => handleViewPayment(payment)}
       >
-        {/* Date Column */}
-        <div className={styles.dateColumn}>
-          <span className={styles.dateDay}>{dueDate.format('DD')}</span>
-          <span className={styles.dateMonth}>{getMonthName(payment.dueDate)}</span>
-        </div>
+        {/* Bottom gradient line */}
+        <div className={`${styles.gradientLine} ${isOverdue ? styles.redGradient : styles.blueGradient}`} />
 
-        {/* Timeline Dot */}
-        <div className={styles.timelineDot} />
-
-        {/* Card */}
-        <div className={styles.timelineCard}>
-          {/* Card Header */}
-          <div className={styles.cardHeader}>
+        <div className={styles.cardContent}>
+          {/* Left side */}
+          <div className={styles.leftContent}>
             <span className={styles.propertyBadge}>
               {payment.propertyName} - {payment.apartmentUnitNumber}
             </span>
-            <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
-              {isOverdue
-                ? `${days} GÜN GECİKMİŞ`
-                : `${days} GÜN KALDI`
-              }
-            </span>
-          </div>
-
-          {/* Card Content */}
-          <div className={styles.cardContent}>
             <div className={styles.tenantInfo}>
-              <span className={styles.tenantName}>{payment.tenantName}</span>
-              <span className={styles.paymentType}>
-                {t('payments.quickBoard.rentPayment')}
+              <h3 className={styles.tenantName}>{payment.tenantName}</h3>
+              <p className={styles.dateInfo}>
+                <IconCalendar size={14} />
+                {dueDate.format('DD')} {getMonthName(payment.dueDate)}
                 {isProjected && (
-                  <Badge size="xs" variant="outline" color="gray" className={styles.projectedBadge}>
+                  <Badge size="xs" variant="outline" color="gray" ml={8}>
                     {t('payments.quickBoard.projected')}
                   </Badge>
                 )}
-              </span>
-            </div>
-            <div className="flex items-end gap-2">
-              <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
-              <div className={styles.cardActions}>
-                {!isOverdue && !isProjected && (
-                  <Tooltip label={t('payments.markAsPaid')} withArrow>
-                    <ActionIcon
-                      variant="light"
-                      color="green"
-                      size="sm"
-                      onClick={(e) => handleMarkAsPaid(payment.id, e)}
-                      loading={markAsPaid.isPending}
-                    >
-                      <IconCheck size={14} />
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-                <Tooltip label={isProjected ? t('payments.quickBoard.viewContract') : t('actions.view')} withArrow>
-                  <ActionIcon
-                    variant="light"
-                    color="blue"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleViewPayment(payment);
-                    }}
-                  >
-                    <IconEye size={14} />
-                  </ActionIcon>
-                </Tooltip>
-              </div>
+              </p>
             </div>
           </div>
+
+          {/* Right side */}
+          <div className={styles.rightContent}>
+            <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
+            <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
+              {isOverdue
+                ? `${days} Gün Gecikmiş`
+                : `${days} Gün Kaldı`
+              }
+            </span>
+          </div>
+        </div>
+
+        {/* Hover Actions */}
+        <div className={styles.cardActions}>
+          {!isOverdue && !isProjected && (
+            <Tooltip label={t('payments.markAsPaid')} withArrow>
+              <ActionIcon
+                variant="light"
+                color="green"
+                size="sm"
+                onClick={(e) => handleMarkAsPaid(payment.id, e)}
+                loading={markAsPaid.isPending}
+              >
+                <IconCheck size={14} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+          <Tooltip label={isProjected ? t('payments.quickBoard.viewContract') : t('actions.view')} withArrow>
+            <ActionIcon
+              variant="light"
+              color="blue"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleViewPayment(payment);
+              }}
+            >
+              <IconEye size={14} />
+            </ActionIcon>
+          </Tooltip>
         </div>
       </div>
     );
@@ -193,7 +185,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
   const renderSkeleton = useCallback(() => (
     <div className={styles.skeletonContainer}>
       {[...Array(4)].map((_, i) => (
-        <Skeleton key={i} height={80} radius="md" mb={16} />
+        <Skeleton key={i} height={100} radius="lg" mb={16} />
       ))}
     </div>
   ), []);
@@ -203,7 +195,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
       {/* Upcoming Payments Panel */}
       <Paper
         shadow="lg"
-        radius="lg"
+        radius="xl"
         withBorder
         className={styles.boardPanel}
       >
@@ -211,7 +203,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
         <div className={styles.panelHeader}>
           <div className={styles.headerContent}>
             <div className={`${styles.headerIconWrapper} ${styles.blue}`}>
-              <IconClock size={20} />
+              <IconClock size={24} />
             </div>
             <div className={styles.headerText}>
               <h2>{t('payments.quickBoard.upcoming')}</h2>
@@ -223,19 +215,16 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
           </span>
         </div>
 
-        {/* Timeline Content */}
+        {/* Cards Container */}
         <div className={styles.scrollContainer}>
-          {/* Timeline Line */}
-          <div className={styles.timelineLine} />
-
           {isLoading ? (
             renderSkeleton()
           ) : upcomingPayments.length === 0 ? (
             renderEmptyState(t('payments.quickBoard.noUpcoming'))
           ) : (
-            <div className={styles.paymentList}>
+            <div className={styles.cardList}>
               {upcomingPayments.map((payment, index) =>
-                renderTimelineItem(payment, false, index)
+                renderPaymentCard(payment, false, index)
               )}
             </div>
           )}
@@ -248,7 +237,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
             onClick={() => router.push(`/${locale}/modules/real-estate/payments?status=pending`)}
           >
             <span>{t('dashboard.viewAll')}</span>
-            <IconArrowRight size={16} />
+            <IconArrowRight size={18} />
           </div>
         )}
       </Paper>
@@ -256,7 +245,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
       {/* Overdue Payments Panel */}
       <Paper
         shadow="lg"
-        radius="lg"
+        radius="xl"
         withBorder
         className={styles.boardPanel}
       >
@@ -264,7 +253,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
         <div className={styles.panelHeader}>
           <div className={styles.headerContent}>
             <div className={`${styles.headerIconWrapper} ${styles.red}`}>
-              <IconAlertTriangle size={20} />
+              <IconAlertTriangle size={24} />
             </div>
             <div className={styles.headerText}>
               <h2>{t('payments.quickBoard.overdue')}</h2>
@@ -276,19 +265,16 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
           </span>
         </div>
 
-        {/* Timeline Content */}
+        {/* Cards Container */}
         <div className={styles.scrollContainer}>
-          {/* Timeline Line */}
-          <div className={styles.timelineLine} />
-
           {isLoading ? (
             renderSkeleton()
           ) : overduePayments.length === 0 ? (
             renderEmptyState(t('payments.quickBoard.noOverdue'))
           ) : (
-            <div className={styles.paymentList}>
+            <div className={styles.cardList}>
               {overduePayments.map((payment, index) =>
-                renderTimelineItem(payment, true, index)
+                renderPaymentCard(payment, true, index)
               )}
             </div>
           )}
@@ -301,7 +287,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
             onClick={() => router.push(`/${locale}/modules/real-estate/payments?status=overdue`)}
           >
             <span>{t('dashboard.viewAll')}</span>
-            <IconArrowRight size={16} />
+            <IconArrowRight size={18} />
           </div>
         )}
       </Paper>

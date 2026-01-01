@@ -2,7 +2,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 2rem;
   margin-bottom: 1.5rem;
 }
 
@@ -12,22 +12,20 @@
   }
 }
 
-/* Board Panel Styles */
+/* Board Panel */
 .boardPanel {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   height: 600px;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Panel Header */
 .panelHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 1.25rem 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
   border-bottom: 1px solid var(--mantine-color-gray-2);
   background: var(--mantine-color-white);
   z-index: 1;
@@ -40,12 +38,13 @@
 
 .headerContent {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
 }
 
 .headerIconWrapper {
-  margin-top: 0.25rem;
-  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -77,21 +76,22 @@
   font-weight: 700;
   color: var(--mantine-color-gray-8);
   margin: 0;
+  line-height: 1.2;
 }
 
 .headerText p {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--mantine-color-gray-5);
+  color: var(--mantine-color-gray-4);
   margin: 0.125rem 0 0 0;
 }
 
 :global([data-mantine-color-scheme="dark"]) .headerText h2 {
-  color: var(--mantine-color-gray-0);
+  color: var(--mantine-color-white);
 }
 
 :global([data-mantine-color-scheme="dark"]) .headerText p {
-  color: var(--mantine-color-dark-2);
+  color: var(--mantine-color-dark-3);
 }
 
 .countBadge {
@@ -102,31 +102,30 @@
 }
 
 .countBadge.blue {
-  background: var(--mantine-color-blue-1);
-  color: var(--mantine-color-blue-7);
+  background: var(--mantine-color-blue-0);
+  color: var(--mantine-color-blue-6);
 }
 
 .countBadge.red {
-  background: var(--mantine-color-red-1);
-  color: var(--mantine-color-red-7);
+  background: var(--mantine-color-red-0);
+  color: var(--mantine-color-red-6);
 }
 
 :global([data-mantine-color-scheme="dark"]) .countBadge.blue {
-  background: var(--mantine-color-blue-9);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--mantine-color-blue-3);
 }
 
 :global([data-mantine-color-scheme="dark"]) .countBadge.red {
-  background: var(--mantine-color-red-9);
+  background: rgba(239, 68, 68, 0.15);
   color: var(--mantine-color-red-3);
 }
 
-/* Scroll Container with Timeline */
+/* Scroll Container */
 .scrollContainer {
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
-  position: relative;
 }
 
 /* Custom Scrollbar */
@@ -147,152 +146,92 @@
   background-color: var(--mantine-color-dark-4);
 }
 
-/* Timeline Line */
-.timelineLine {
-  position: absolute;
-  left: 86px;
-  top: 1.5rem;
-  bottom: 1.5rem;
-  width: 2px;
-  background: var(--mantine-color-gray-2);
-}
-
-.timelineLine::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: -1px;
-  width: 2px;
-  height: 40px;
-  background: linear-gradient(to bottom, transparent, var(--mantine-color-white));
-}
-
-:global([data-mantine-color-scheme="dark"]) .timelineLine {
-  background: var(--mantine-color-dark-5);
-}
-
-:global([data-mantine-color-scheme="dark"]) .timelineLine::after {
-  background: linear-gradient(to bottom, transparent, var(--mantine-color-dark-6));
-}
-
-/* Payment List */
-.paymentList {
+/* Card List */
+.cardList {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
-/* Timeline Item */
-.timelineItem {
+/* Payment Card */
+.paymentCard {
   position: relative;
-  display: flex;
+  background: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: 0.5rem;
+  padding: 1rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
 }
 
-.timelineItem:hover .timelineCard {
+.paymentCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.upcomingCard:hover {
   border-color: var(--mantine-color-blue-3);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.timelineItem.overdue:hover .timelineCard {
+.overdueCard:hover {
   border-color: var(--mantine-color-red-3);
 }
 
-:global([data-mantine-color-scheme="dark"]) .timelineItem:hover .timelineCard {
-  border-color: var(--mantine-color-blue-8);
-}
-
-:global([data-mantine-color-scheme="dark"]) .timelineItem.overdue:hover .timelineCard {
-  border-color: var(--mantine-color-red-8);
-}
-
-/* Date Column */
-.dateColumn {
-  width: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-right: 2rem;
-  padding-top: 0.5rem;
-}
-
-.dateDay {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--mantine-color-gray-8);
-}
-
-.dateMonth {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--mantine-color-gray-5);
-  text-transform: uppercase;
-}
-
-:global([data-mantine-color-scheme="dark"]) .dateDay {
-  color: var(--mantine-color-gray-0);
-}
-
-:global([data-mantine-color-scheme="dark"]) .dateMonth {
-  color: var(--mantine-color-dark-2);
-}
-
-/* Timeline Dot */
-.timelineDot {
-  position: absolute;
-  left: 55px;
-  top: 0.75rem;
-  width: 12px;
-  height: 12px;
-  background: var(--mantine-color-white);
-  border: 2px solid var(--mantine-color-blue-5);
-  border-radius: 50%;
-  z-index: 10;
-  transition: transform 0.2s ease;
-}
-
-.timelineItem:hover .timelineDot {
-  transform: scale(1.25);
-}
-
-.timelineItem.overdue .timelineDot {
-  border-color: var(--mantine-color-red-5);
-}
-
-:global([data-mantine-color-scheme="dark"]) .timelineDot {
-  background: var(--mantine-color-dark-7);
-}
-
-/* Timeline Card */
-.timelineCard {
-  flex: 1;
-  background: var(--mantine-color-white);
-  border-radius: 0.5rem;
-  border: 1px solid var(--mantine-color-gray-2);
-  padding: 1rem;
-  transition: all 0.2s ease;
-}
-
-:global([data-mantine-color-scheme="dark"]) .timelineCard {
+:global([data-mantine-color-scheme="dark"]) .paymentCard {
   background: rgba(30, 41, 59, 0.5);
   border-color: var(--mantine-color-dark-5);
 }
 
-/* Card Header Row */
-.cardHeader {
+:global([data-mantine-color-scheme="dark"]) .upcomingCard:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+:global([data-mantine-color-scheme="dark"]) .overdueCard:hover {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Gradient Line at bottom */
+.gradientLine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  opacity: 0.5;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.blueGradient {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.3), transparent);
+}
+
+.redGradient {
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.3), transparent);
+}
+
+/* Card Content */
+.cardContent {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
+}
+
+.leftContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .propertyBadge {
-  background: var(--mantine-color-blue-0);
-  color: var(--mantine-color-blue-6);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  background: var(--mantine-color-blue-0);
+  color: var(--mantine-color-blue-6);
+  width: fit-content;
 }
 
 :global([data-mantine-color-scheme="dark"]) .propertyBadge {
@@ -300,11 +239,64 @@
   color: var(--mantine-color-blue-3);
 }
 
-.daysBadge {
-  font-size: 0.625rem;
+.tenantInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tenantName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mantine-color-gray-7);
+  margin: 0;
+}
+
+:global([data-mantine-color-scheme="dark"]) .tenantName {
+  color: var(--mantine-color-gray-2);
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--mantine-color-gray-4);
+  margin: 0;
+}
+
+:global([data-mantine-color-scheme="dark"]) .dateInfo {
+  color: var(--mantine-color-dark-3);
+}
+
+/* Right Content */
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.amountText {
+  font-size: 1.125rem;
   font-weight: 700;
+  color: var(--mantine-color-gray-9);
+}
+
+:global([data-mantine-color-scheme="dark"]) .amountText {
+  color: var(--mantine-color-white);
+}
+
+/* Days Badge */
+.daysBadge {
+  display: inline-flex;
+  align-items: center;
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   border: 1px solid;
 }
 
@@ -328,74 +320,34 @@
 
 :global([data-mantine-color-scheme="dark"]) .daysBadge.urgent {
   background: rgba(239, 68, 68, 0.1);
-  color: var(--mantine-color-red-4);
+  color: var(--mantine-color-red-3);
   border-color: rgba(239, 68, 68, 0.2);
 }
 
 :global([data-mantine-color-scheme="dark"]) .daysBadge.warning {
   background: rgba(249, 115, 22, 0.1);
-  color: var(--mantine-color-orange-4);
+  color: var(--mantine-color-orange-3);
   border-color: rgba(249, 115, 22, 0.2);
 }
 
 :global([data-mantine-color-scheme="dark"]) .daysBadge.normal {
   background: rgba(59, 130, 246, 0.1);
-  color: var(--mantine-color-blue-4);
+  color: var(--mantine-color-blue-3);
   border-color: rgba(59, 130, 246, 0.2);
-}
-
-/* Card Content Row */
-.cardContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.tenantInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.tenantName {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--mantine-color-gray-8);
-}
-
-.paymentType {
-  font-size: 0.75rem;
-  color: var(--mantine-color-gray-5);
-}
-
-:global([data-mantine-color-scheme="dark"]) .tenantName {
-  color: var(--mantine-color-gray-0);
-}
-
-:global([data-mantine-color-scheme="dark"]) .paymentType {
-  color: var(--mantine-color-dark-2);
-}
-
-.amountText {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--mantine-color-gray-8);
-}
-
-:global([data-mantine-color-scheme="dark"]) .amountText {
-  color: var(--mantine-color-gray-0);
 }
 
 /* Card Actions - shown on hover */
 .cardActions {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
   display: flex;
   gap: 0.25rem;
-  margin-left: 0.5rem;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
-.timelineItem:hover .cardActions {
+.paymentCard:hover .cardActions {
   opacity: 1;
 }
 
@@ -406,7 +358,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-  border-top: 1px solid var(--mantine-color-gray-2);
+  border-top: 1px solid var(--mantine-color-gray-1);
   background: var(--mantine-color-gray-0);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -421,16 +373,28 @@
   font-weight: 600;
 }
 
-.viewAllLink.blue span {
+.viewAllLink.blue span,
+.viewAllLink.blue svg {
+  color: var(--mantine-color-blue-5);
+}
+
+.viewAllLink.red span,
+.viewAllLink.red svg {
+  color: var(--mantine-color-red-5);
+}
+
+.viewAllLink.blue:hover span,
+.viewAllLink.blue:hover svg {
   color: var(--mantine-color-blue-6);
 }
 
-.viewAllLink.red span {
+.viewAllLink.red:hover span,
+.viewAllLink.red:hover svg {
   color: var(--mantine-color-red-6);
 }
 
 :global([data-mantine-color-scheme="dark"]) .viewAllLink {
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(30, 41, 59, 0.5);
   border-top-color: var(--mantine-color-dark-5);
 }
 
@@ -438,12 +402,24 @@
   background: var(--mantine-color-dark-6);
 }
 
-:global([data-mantine-color-scheme="dark"]) .viewAllLink.blue span {
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.blue span,
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.blue svg {
   color: var(--mantine-color-blue-4);
 }
 
-:global([data-mantine-color-scheme="dark"]) .viewAllLink.red span {
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.red span,
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.red svg {
   color: var(--mantine-color-red-4);
+}
+
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.blue:hover span,
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.blue:hover svg {
+  color: var(--mantine-color-blue-3);
+}
+
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.red:hover span,
+:global([data-mantine-color-scheme="dark"]) .viewAllLink.red:hover svg {
+  color: var(--mantine-color-red-3);
 }
 
 /* Empty State */
@@ -461,19 +437,19 @@
   padding: 0.5rem;
 }
 
-/* Animation for new items */
+/* Animation for cards */
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateX(-10px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-.timelineItem {
+.paymentCard {
   animation: slideIn 0.3s ease-out forwards;
 }
 
@@ -486,29 +462,10 @@
 .delay6 { animation-delay: 300ms; }
 .delay7 { animation-delay: 350ms; }
 
-/* Projected badge */
-.projectedBadge {
-  font-size: 0.625rem;
-  margin-left: 0.5rem;
-}
-
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .boardPanel {
     height: 500px;
-  }
-
-  .dateColumn {
-    width: 48px;
-    margin-right: 1.5rem;
-  }
-
-  .timelineLine {
-    left: 70px;
-  }
-
-  .timelineDot {
-    left: 42px;
   }
 
   .cardActions {
@@ -519,7 +476,7 @@
     padding: 1rem;
   }
 
-  .paymentList {
-    gap: 1.5rem;
+  .cardList {
+    gap: 0.75rem;
   }
 }
