@@ -414,6 +414,9 @@ export default function CalendarAppointmentsPage() {
             defaultPageSize={10}
             pageSizeOptions={[10, 25, 50]}
             emptyMessage={t('appointments.empty')}
+            showAuditHistory={true}
+            auditEntityName="Appointment"
+            auditIdKey="id"
           />
         )}
       </Stack>

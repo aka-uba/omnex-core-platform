@@ -305,6 +305,9 @@ export default function TenantsPage() {
                 message: `${format.toUpperCase()} formatında dışa aktarma yakında eklenecek`,
               });
             }}
+            showAuditHistory={true}
+            auditEntityName="Tenant"
+            auditIdKey="id"
           />
         )}
       </Stack>

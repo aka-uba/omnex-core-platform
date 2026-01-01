@@ -277,6 +277,9 @@ export function EmailCampaignList({ locale }: EmailCampaignListProps) {
         exportScope="all"
         exportTitle={t('email.campaigns.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="EmailCampaign"
+        auditIdKey="id"
       />
     </>
   );

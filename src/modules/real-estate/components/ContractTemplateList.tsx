@@ -295,6 +295,9 @@ export function ContractTemplateList({ locale }: ContractTemplateListProps) {
         exportScope="all"
         exportTitle={t('contractTemplates.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="ContractTemplate"
+        auditIdKey="id"
       />
     </>
   );

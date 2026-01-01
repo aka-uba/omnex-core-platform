@@ -369,6 +369,9 @@ export function AgreementReportList({ locale }: AgreementReportListProps) {
         exportScope="all"
         exportTitle={t('agreementReports.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="AgreementReport"
+        auditIdKey="id"
       />
     </>
   );

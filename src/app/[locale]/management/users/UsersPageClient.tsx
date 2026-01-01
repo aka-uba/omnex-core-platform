@@ -302,6 +302,9 @@ export function UsersPageClient({ locale }: { locale: string }) {
                 message: tGlobal('exportComingSoon', { format: format.toUpperCase() }),
               });
             }}
+          showAuditHistory={true}
+          auditEntityName="User"
+          auditIdKey="id"
         />
       )}
 

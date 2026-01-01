@@ -868,6 +868,9 @@ const LocationsPageClientComponent = forwardRef<LocationsPageClientRef, {}>((pro
               setTypeFilter(filters.type);
               setIsActiveFilter(filters.isActive === 'true' ? true : filters.isActive === 'false' ? false : undefined);
             }}
+            showAuditHistory={true}
+            auditEntityName="Location"
+            auditIdKey="id"
             />
           )}
         </Tabs.Panel>

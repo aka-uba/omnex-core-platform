@@ -381,6 +381,9 @@ export function TenantList({ locale }: TenantListProps) {
         exportScope="all"
         exportTitle={t('tenants.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="TenantRecord"
+        auditIdKey="id"
       />
     </>
   );

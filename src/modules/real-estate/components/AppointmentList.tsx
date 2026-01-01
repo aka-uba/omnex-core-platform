@@ -379,6 +379,9 @@ export function AppointmentList({ locale }: AppointmentListProps) {
         exportScope="all"
         exportTitle={t('appointments.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="Appointment"
+        auditIdKey="id"
       />
     </>
   );

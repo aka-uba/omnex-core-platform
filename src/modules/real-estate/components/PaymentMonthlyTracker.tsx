@@ -664,6 +664,9 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         exportTitle={`${t('payments.monthlyTracker.tab')} - ${currentYear}`}
         exportNamespace="modules/real-estate"
         onExport={handleExport}
+        showAuditHistory={true}
+        auditEntityName="Payment"
+        auditIdKey="tenantId"
       />
 
       {/* Legend */}

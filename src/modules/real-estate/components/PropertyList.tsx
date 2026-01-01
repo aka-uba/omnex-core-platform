@@ -503,6 +503,9 @@ export function PropertyList({ locale }: PropertyListProps) {
         exportScope="all"
         exportTitle={t('properties.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="Property"
+        auditIdKey="id"
       />
     </>
   );

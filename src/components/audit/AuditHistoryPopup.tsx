@@ -268,6 +268,8 @@ export function AuditHistoryPopup({
       withArrow
       shadow="md"
       width={320}
+      closeOnClickOutside={true}
+      closeOnEscape={true}
     >
       <Popover.Target>
         <Tooltip label={t('audit.title')} withArrow>

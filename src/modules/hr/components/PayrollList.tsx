@@ -269,6 +269,9 @@ export function PayrollList({ locale }: PayrollListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/hr/payrolls/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Payroll"
+        auditIdKey="id"
       />
 
       <AlertModal

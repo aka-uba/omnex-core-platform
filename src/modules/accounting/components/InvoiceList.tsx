@@ -258,6 +258,9 @@ export function InvoiceList({ locale }: InvoiceListProps) {
         exportNamespace="modules/accounting"
         tableId="accounting-invoices"
         onRowClick={(row) => router.push(`/${locale}/modules/accounting/invoices/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Invoice"
+        auditIdKey="id"
       />
       <ConfirmDialog />
     </>

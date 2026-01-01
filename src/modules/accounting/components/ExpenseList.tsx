@@ -304,6 +304,9 @@ export function ExpenseList({ locale }: ExpenseListProps) {
         exportNamespace="modules/accounting"
         tableId="accounting-expenses"
         onRowClick={(row) => router.push(`/${locale}/modules/accounting/expenses/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Expense"
+        auditIdKey="id"
       />
       <ConfirmDialog />
     </>

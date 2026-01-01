@@ -226,6 +226,9 @@ export function PermissionsPageClient({ locale }: { locale: string }) {
         exportNamespace="modules/permissions"
         tableId="permissions-table"
         emptyMessage={t('table.empty')}
+        showAuditHistory={true}
+        auditEntityName="Permission"
+        auditIdKey="id"
       />
 
       <PermissionModal

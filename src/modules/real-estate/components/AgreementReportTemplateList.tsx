@@ -297,6 +297,9 @@ export function AgreementReportTemplateList({ locale }: AgreementReportTemplateL
         exportScope="all"
         exportTitle={t('agreementReportTemplates.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="AgreementReportTemplate"
+        auditIdKey="id"
       />
     </>
   );

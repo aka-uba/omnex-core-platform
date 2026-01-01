@@ -298,6 +298,9 @@ export function ProductionOrderList({ locale }: ProductionOrderListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/production/orders/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="ProductionOrder"
+        auditIdKey="id"
       />
 
       <AlertModal

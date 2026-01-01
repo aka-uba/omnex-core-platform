@@ -283,6 +283,9 @@ export function BulkOperationList({ locale }: BulkOperationListProps) {
         exportScope="all"
         exportTitle={t('bulkOperations.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="BulkOperation"
+        auditIdKey="id"
       />
     </>
   );

@@ -615,6 +615,9 @@ export function PaymentList({ locale }: PaymentListProps) {
         exportScope="all"
         exportTitle={t('payments.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="Payment"
+        auditIdKey="id"
       />
     </>
   );

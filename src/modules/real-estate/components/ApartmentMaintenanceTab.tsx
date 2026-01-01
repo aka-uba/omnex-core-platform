@@ -427,6 +427,9 @@ export function ApartmentMaintenanceTab({
             emptyMessage={t('maintenance.noData')}
             showColumnSettings={false}
             showRowNumbers={false}
+            showAuditHistory={true}
+            auditEntityName="RealEstateMaintenanceRecord"
+            auditIdKey="id"
           />
         )}
       </Stack>

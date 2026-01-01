@@ -226,6 +226,9 @@ export function EmailCampaignDetailPageClient({ locale, campaignId }: EmailCampa
             pageSizeOptions={[10, 25, 50]}
             emptyMessage={t('table.noRecipients')}
             showColumnSettings={true}
+            showAuditHistory={true}
+            auditEntityName="EmailCampaignRecipient"
+            auditIdKey="id"
           />
         </Paper>
 

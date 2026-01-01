@@ -362,6 +362,9 @@ export function NotificationsTable() {
                 exportScope="all"
                 exportTitle={t('notifications.title') || 'Notifications'}
                 exportNamespace="modules/notifications"
+                showAuditHistory={true}
+                auditEntityName="Notification"
+                auditIdKey="id"
             />
 
             {/* Quick View Modal */}

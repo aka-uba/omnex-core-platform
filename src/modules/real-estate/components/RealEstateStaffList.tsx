@@ -375,6 +375,9 @@ export function RealEstateStaffList({ locale }: RealEstateStaffListProps) {
         exportScope="all"
         exportTitle={t('staff.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="RealEstateStaff"
+        auditIdKey="id"
       />
     </>
   );

@@ -168,6 +168,9 @@ export function RolesPageClient({ locale }: { locale: string }) {
         exportNamespace="modules/roles"
         tableId="roles-table"
         emptyMessage={t('table.empty')}
+        showAuditHistory={true}
+        auditEntityName="Role"
+        auditIdKey="id"
       />
 
       <RoleModal

@@ -382,6 +382,9 @@ export function ContractList({ locale }: ContractListProps) {
         exportScope="all"
         exportTitle={t('contracts.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="Contract"
+        auditIdKey="id"
       />
     </>
   );

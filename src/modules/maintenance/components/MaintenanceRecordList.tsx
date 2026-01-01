@@ -309,6 +309,9 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/maintenance/records/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="MaintenanceRecord"
+        auditIdKey="id"
       />
 
       <AlertModal

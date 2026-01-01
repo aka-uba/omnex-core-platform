@@ -646,6 +646,9 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                 emptyMessage={t('contracts.noData')}
                 showColumnSettings={false}
                 showRowNumbers={false}
+                showAuditHistory={true}
+                auditEntityName="Contract"
+                auditIdKey="id"
               />
             </Stack>
           </Tabs.Panel>

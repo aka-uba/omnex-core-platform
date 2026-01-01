@@ -596,6 +596,9 @@ export function ExportTemplatesPageClient({ locale }: ExportTemplatesPageClientP
                     selectedRows={selectedRows}
                     onSelectionChange={setSelectedRows}
                     rowIdKey="id"
+                    showAuditHistory={true}
+                    auditEntityName="ExportTemplate"
+                    auditIdKey="id"
                 />
             )}
             <ConfirmDialog />

@@ -550,6 +550,9 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
           exportNamespace="modules/accounting"
           tableId="accounting-cash-transactions"
           emptyMessage={t('cashTransactions.noData')}
+          showAuditHistory={true}
+          auditEntityName="CashTransaction"
+          auditIdKey="id"
         />
       </Paper>
 

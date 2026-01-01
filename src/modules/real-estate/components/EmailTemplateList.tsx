@@ -304,6 +304,9 @@ export function EmailTemplateList({ locale }: EmailTemplateListProps) {
         exportScope="all"
         exportTitle={t('email.templates.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="EmailTemplate"
+        auditIdKey="id"
       />
     </>
   );

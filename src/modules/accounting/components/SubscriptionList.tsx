@@ -278,6 +278,9 @@ export function SubscriptionList({ locale }: SubscriptionListProps) {
         exportNamespace="modules/accounting"
         tableId="accounting-subscriptions"
         onRowClick={(row) => router.push(`/${locale}/modules/accounting/subscriptions/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Subscription"
+        auditIdKey="id"
       />
       <ConfirmDialog />
     </>

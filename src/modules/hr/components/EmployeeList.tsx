@@ -259,6 +259,9 @@ export function EmployeeList({ locale }: EmployeeListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/hr/employees/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Employee"
+        auditIdKey="id"
       />
 
       <AlertModal

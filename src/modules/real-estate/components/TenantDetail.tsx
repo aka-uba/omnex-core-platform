@@ -763,6 +763,9 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
             emptyMessage={t('messages.noContracts')}
             showColumnSettings={false}
             onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/contracts/${row.id}`)}
+            showAuditHistory={true}
+            auditEntityName="Contract"
+            auditIdKey="id"
           />
         </Tabs.Panel>
 
@@ -868,6 +871,9 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
             emptyMessage={t('messages.noPayments')}
             showColumnSettings={false}
             onRowClick={(row: Record<string, any>) => router.push(`/${locale}/modules/real-estate/payments/${row.id}`)}
+            showAuditHistory={true}
+            auditEntityName="Payment"
+            auditIdKey="id"
           />
         </Tabs.Panel>
       </Tabs>

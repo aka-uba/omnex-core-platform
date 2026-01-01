@@ -178,6 +178,9 @@ export function StockMovementList({ locale: _locale }: StockMovementListProps) {
       emptyMessage={t('stock.noData')}
       filters={filterOptions}
       onFilter={handleFilter}
+      showAuditHistory={true}
+      auditEntityName="StockMovement"
+      auditIdKey="id"
     />
   );
 }

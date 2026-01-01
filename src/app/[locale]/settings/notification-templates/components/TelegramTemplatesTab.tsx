@@ -483,6 +483,9 @@ export function TelegramTemplatesTab({ locale }: { locale: string }) {
           selectedRows={selectedRows}
           onSelectionChange={setSelectedRows}
           rowIdKey="id"
+          showAuditHistory={true}
+          auditEntityName="NotificationTemplate"
+          auditIdKey="id"
         />
       )}
       <ConfirmDialog />

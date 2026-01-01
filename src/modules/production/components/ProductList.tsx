@@ -281,6 +281,9 @@ export function ProductList({ locale }: ProductListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/production/products/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Product"
+        auditIdKey="id"
       />
 
       <AlertModal

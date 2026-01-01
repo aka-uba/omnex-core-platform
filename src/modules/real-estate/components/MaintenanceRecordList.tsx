@@ -350,6 +350,9 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         exportScope="all"
         exportTitle={t('maintenance.title')}
         exportNamespace="modules/real-estate"
+        showAuditHistory={true}
+        auditEntityName="MaintenanceRecord"
+        auditIdKey="id"
       />
     </>
   );

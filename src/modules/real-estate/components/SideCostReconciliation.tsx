@@ -313,6 +313,9 @@ export function SideCostReconciliation({ locale }: SideCostReconciliationProps) 
           pageSizeOptions={[10, 25, 50]}
           emptyMessage={t('reconciliation.noReconciliations')}
           showColumnSettings={false}
+          showAuditHistory={true}
+          auditEntityName="SideCostReconciliation"
+          auditIdKey="id"
         />
       )}
 

@@ -243,6 +243,9 @@ export function PaymentList({ locale, paymentType }: PaymentListProps) {
         exportTitle={t('payments.title')}
         exportNamespace="modules/accounting"
         tableId="accounting-payments"
+        showAuditHistory={true}
+        auditEntityName="Payment"
+        auditIdKey="id"
       />
 
       <Modal

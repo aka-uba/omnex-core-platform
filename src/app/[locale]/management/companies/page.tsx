@@ -366,6 +366,9 @@ export default function CompaniesPage() {
                 message: t('exportComingSoon', { format: format.toUpperCase() }),
               });
             }}
+            showAuditHistory={true}
+            auditEntityName="Company"
+            auditIdKey="id"
           />
         )}
       </Stack>

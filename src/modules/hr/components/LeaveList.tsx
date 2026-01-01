@@ -262,6 +262,9 @@ export function LeaveList({ locale }: LeaveListProps) {
         filters={filterOptions}
         onFilter={handleFilter}
         onRowClick={(row) => router.push(`/${locale}/modules/hr/leaves/${row.id}`)}
+        showAuditHistory={true}
+        auditEntityName="Leave"
+        auditIdKey="id"
       />
 
       <AlertModal
