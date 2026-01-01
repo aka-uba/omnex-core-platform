@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { propertyCreateSchema } from '@/modules/real-estate/schemas/property.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/properties - List properties
 export async function GET(request: NextRequest) {
@@ -173,6 +174,17 @@ export async function POST(request: NextRequest) {
           },
         },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(
+        tenantContext,
+        auditContext,
+        'Property',
+        newProperty.id,
+        companyId,
+        { name: newProperty.name, code: newProperty.code, type: newProperty.type }
+      );
 
       return successResponse({
         property: {

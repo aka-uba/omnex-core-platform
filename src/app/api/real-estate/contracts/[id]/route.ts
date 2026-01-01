@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { contractUpdateSchema } from '@/modules/real-estate/schemas/contract.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import type { ContractUpdateInput } from '@/modules/real-estate/types/contract';
+import { getAuditContext, logUpdate } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -186,6 +187,18 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           },
         },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(
+        tenantContext,
+        auditContext,
+        'Contract',
+        id,
+        existingContract,
+        updatedContract,
+        existingContract.companyId || undefined
+      );
 
       return successResponse({
         contract: {

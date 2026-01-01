@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { paymentCreateSchema } from '@/modules/real-estate/schemas/payment.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/payments - List payments
 export async function GET(request: NextRequest) {
@@ -206,6 +207,17 @@ export async function POST(request: NextRequest) {
           },
         },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(
+        tenantContext,
+        auditContext,
+        'Payment',
+        newPayment.id,
+        companyId,
+        { type: newPayment.type, amount: newPayment.amount, status: newPayment.status }
+      );
 
       return successResponse({
         payment: {

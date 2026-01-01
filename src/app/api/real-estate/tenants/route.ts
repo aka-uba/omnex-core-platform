@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { tenantCreateSchema } from '@/modules/real-estate/schemas/tenant.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/tenants - List tenants
 export async function GET(request: NextRequest) {
@@ -162,6 +163,17 @@ export async function POST(request: NextRequest) {
           },
         },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(
+        tenantContext,
+        auditContext,
+        'Tenant',
+        newTenant.id,
+        companyId,
+        { tenantNumber: newTenant.tenantNumber }
+      );
 
       return successResponse({
         tenant: {

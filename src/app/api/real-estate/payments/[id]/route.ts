@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { paymentUpdateSchema } from '@/modules/real-estate/schemas/payment.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -162,6 +163,18 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(
+        tenantContext,
+        auditContext,
+        'Payment',
+        id,
+        existingPayment,
+        updatedPayment,
+        existingPayment.companyId || undefined
+      );
+
       return successResponse({
         payment: {
           ...updatedPayment,
@@ -205,6 +218,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       await tenantPrisma.payment.delete({
         where: { id },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(
+        tenantContext,
+        auditContext,
+        'Payment',
+        id,
+        existingPayment.companyId || undefined,
+        { type: existingPayment.type, amount: existingPayment.amount }
+      );
 
       return successResponse(undefined);
     },

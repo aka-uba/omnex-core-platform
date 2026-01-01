@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { tenantUpdateSchema } from '@/modules/real-estate/schemas/tenant.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -197,6 +198,18 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           },
         },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(
+        tenantContext,
+        auditContext,
+        'Tenant',
+        id,
+        existingTenant,
+        updatedTenant,
+        existingTenant.companyId || undefined
+      );
 
       return successResponse({
         tenant: {

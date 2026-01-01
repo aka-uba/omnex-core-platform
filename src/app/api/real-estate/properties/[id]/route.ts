@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { propertyUpdateSchema } from '@/modules/real-estate/schemas/property.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -216,6 +217,18 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(
+        tenantContext,
+        auditContext,
+        'Property',
+        id,
+        existingProperty,
+        updatedProperty,
+        existingProperty.companyId || undefined
+      );
+
       return successResponse({
         property: {
           ...updatedProperty,
@@ -273,6 +286,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       await tenantPrisma.property.delete({
         where: { id },
       });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(
+        tenantContext,
+        auditContext,
+        'Property',
+        id,
+        existingProperty.companyId || undefined,
+        { name: existingProperty.name, code: existingProperty.code }
+      );
 
       return successResponse({
         message: 'Property deleted successfully',
