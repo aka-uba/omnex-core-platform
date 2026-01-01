@@ -20,9 +20,9 @@ import {
   IconPlus,
   IconPencil,
   IconTrash,
-  IconUser,
-  IconClock,
   IconChevronRight,
+  IconPhoto,
+  IconFile,
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
@@ -51,15 +51,46 @@ interface AuditHistoryPopupProps {
 }
 
 const ACTION_ICONS: Record<string, React.ReactNode> = {
-  create: <IconPlus size={14} />,
-  update: <IconPencil size={14} />,
-  delete: <IconTrash size={14} />,
+  create: <IconPlus size={12} />,
+  update: <IconPencil size={12} />,
+  delete: <IconTrash size={12} />,
 };
 
 const ACTION_COLORS: Record<string, string> = {
   create: 'green',
   update: 'blue',
   delete: 'red',
+};
+
+// Alan adlarını kullanıcı dostu metinlere çevir
+const FIELD_LABELS: Record<string, string> = {
+  images: 'Resimler',
+  documents: 'Belgeler',
+  isActive: 'Aktif',
+  status: 'Durum',
+  unitNumber: 'Birim No',
+  floor: 'Kat',
+  area: 'Alan',
+  roomCount: 'Oda Sayısı',
+  bathroomCount: 'Banyo',
+  balcony: 'Balkon',
+  rentPrice: 'Kira',
+  salePrice: 'Satış Fiyatı',
+  description: 'Açıklama',
+  coldRent: 'Soğuk Kira',
+  additionalCosts: 'Ek Masraflar',
+  heatingCosts: 'Isıtma',
+  deposit: 'Depozito',
+  livingRoom: 'Oturma Odası',
+  block: 'Blok',
+  ownerType: 'Malik Tipi',
+  ownershipType: 'Mülkiyet Tipi',
+  ownerId: 'Malik',
+  metadata: 'Meta Veri',
+  inventory: 'Envanter',
+  keys: 'Anahtarlar',
+  qrCode: 'QR Kod',
+  deliveryDate: 'Teslim Tarihi',
 };
 
 export function AuditHistoryPopup({
@@ -108,7 +139,7 @@ export function AuditHistoryPopup({
     return date.toLocaleDateString('tr-TR', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric',
+      year: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -118,49 +149,115 @@ export function AuditHistoryPopup({
   const IGNORED_FIELDS = [
     'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
     'property', 'contracts', 'payments', 'appointments', 'maintenance',
-    '_count', 'user', 'company', 'tenant'
+    '_count', 'user', 'company', 'tenant', 'propertyId'
   ];
 
-  const getChangeSummary = (log: AuditLog): string[] => {
-    if (!log.metadata) return [];
+  // Değişiklik özetini kullanıcı dostu formatta oluştur
+  const getChangeDescription = (log: AuditLog): React.ReactNode => {
+    if (!log.metadata) return null;
 
     const { oldValue, newValue, changedFields } = log.metadata;
 
-    if (changedFields && changedFields.length > 0 && oldValue && newValue) {
-      // Filtrelenmiş ve anlamlı değişiklikler
-      const meaningfulChanges = changedFields
-        .filter(field => !IGNORED_FIELDS.includes(field))
-        .slice(0, 3) // En fazla 3 değişiklik göster
-        .map(field => {
-          const oldVal = oldValue[field];
-          const newVal = newValue[field];
-
-          // Değerleri formatla
-          const formatValue = (val: any): string => {
-            if (val === null || val === undefined) return '-';
-            // Boolean değerleri
-            if (typeof val === 'boolean') return val ? '✓' : '✗';
-            // Sayılar
-            if (typeof val === 'number') return val.toLocaleString('tr-TR');
-            // Objeler - sadece ilk 30 karakter
-            if (typeof val === 'object') {
-              const str = JSON.stringify(val);
-              return str.length > 30 ? str.substring(0, 30) + '...' : str;
-            }
-            // Stringler - 30 karaktere kısalt
-            if (typeof val === 'string') {
-              return val.length > 30 ? val.substring(0, 30) + '...' : val;
-            }
-            return String(val);
-          };
-
-          return `${field}: ${formatValue(oldVal)} → ${formatValue(newVal)}`;
-        });
-
-      return meaningfulChanges;
+    if (!changedFields || changedFields.length === 0 || !oldValue || !newValue) {
+      return null;
     }
 
-    return [];
+    // Anlamlı değişiklikleri filtrele
+    const meaningfulFields = changedFields.filter(field => !IGNORED_FIELDS.includes(field));
+
+    if (meaningfulFields.length === 0) return null;
+
+    // Değişiklik açıklamalarını oluştur
+    const descriptions: React.ReactNode[] = [];
+
+    for (const field of meaningfulFields.slice(0, 2)) {
+      const oldVal = oldValue[field];
+      const newVal = newValue[field];
+      const label = FIELD_LABELS[field] || field;
+
+      // Array değişiklikleri (resimler, belgeler)
+      if (Array.isArray(oldVal) && Array.isArray(newVal)) {
+        const added = newVal.length - oldVal.length;
+        if (added > 0) {
+          descriptions.push(
+            <Group key={field} gap={4} wrap="nowrap">
+              {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
+              <Text size="xs" c="dimmed">{added} {label.toLowerCase()} eklendi</Text>
+            </Group>
+          );
+        } else if (added < 0) {
+          descriptions.push(
+            <Group key={field} gap={4} wrap="nowrap">
+              {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
+              <Text size="xs" c="dimmed">{Math.abs(added)} {label.toLowerCase()} silindi</Text>
+            </Group>
+          );
+        }
+        continue;
+      }
+
+      // Boolean değişiklikleri
+      if (typeof newVal === 'boolean') {
+        descriptions.push(
+          <Text key={field} size="xs" c="dimmed">
+            {label}: {newVal ? 'Aktif' : 'Pasif'}
+          </Text>
+        );
+        continue;
+      }
+
+      // Sayı değişiklikleri
+      if (typeof newVal === 'number') {
+        const formattedOld = oldVal != null ? Number(oldVal).toLocaleString('tr-TR') : '-';
+        const formattedNew = newVal.toLocaleString('tr-TR');
+        descriptions.push(
+          <Text key={field} size="xs" c="dimmed">
+            {label}: {formattedOld} → {formattedNew}
+          </Text>
+        );
+        continue;
+      }
+
+      // String değişiklikleri
+      if (typeof newVal === 'string') {
+        const shortOld = oldVal ? (String(oldVal).length > 15 ? String(oldVal).substring(0, 15) + '...' : String(oldVal)) : '-';
+        const shortNew = newVal.length > 15 ? newVal.substring(0, 15) + '...' : newVal;
+        descriptions.push(
+          <Text key={field} size="xs" c="dimmed">
+            {label}: {shortOld} → {shortNew}
+          </Text>
+        );
+        continue;
+      }
+
+      // Diğer (null, undefined, object)
+      if (newVal === null && oldVal !== null) {
+        descriptions.push(
+          <Text key={field} size="xs" c="dimmed">
+            {label} temizlendi
+          </Text>
+        );
+      } else if (newVal !== null && oldVal === null) {
+        descriptions.push(
+          <Text key={field} size="xs" c="dimmed">
+            {label} eklendi
+          </Text>
+        );
+      }
+    }
+
+    // Daha fazla değişiklik varsa
+    if (meaningfulFields.length > 2) {
+      descriptions.push(
+        <Text key="more" size="xs" c="dimmed" fs="italic">
+          +{meaningfulFields.length - 2} değişiklik daha
+        </Text>
+      );
+    }
+
+    return descriptions.length > 0 ? (
+      <Stack gap={2}>{descriptions}</Stack>
+    ) : null;
   };
 
   return (
@@ -170,7 +267,7 @@ export function AuditHistoryPopup({
       position="bottom-end"
       withArrow
       shadow="md"
-      width={400}
+      width={320}
     >
       <Popover.Target>
         <Tooltip label={t('audit.title')} withArrow>
@@ -200,7 +297,7 @@ export function AuditHistoryPopup({
               onClick={fetchHistory}
               disabled={loading}
             >
-              {loading ? <Loader size={12} /> : <IconClock size={12} />}
+              {loading ? <Loader size={12} /> : <IconHistory size={12} />}
             </ActionIcon>
           </Group>
 
@@ -225,42 +322,35 @@ export function AuditHistoryPopup({
           )}
 
           {!loading && !error && logs.length > 0 && (
-            <ScrollArea.Autosize mah={300}>
-              <Stack gap="xs">
+            <ScrollArea.Autosize mah={280}>
+              <Stack gap={8}>
                 {logs.map((log, index) => (
                   <Box key={log.id}>
-                    {index > 0 && <Divider my="xs" />}
-                    <Group gap="xs" wrap="nowrap" align="flex-start">
-                      <Badge
-                        size="xs"
-                        color={ACTION_COLORS[log.action] || 'gray'}
-                        variant="light"
-                        leftSection={ACTION_ICONS[log.action]}
-                        style={{ flexShrink: 0 }}
-                      >
-                        {t(`audit.actions.${log.action}`) || log.action}
-                      </Badge>
-                      <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
-                        <Group gap={4} wrap="nowrap">
-                          <IconUser size={12} style={{ flexShrink: 0 }} />
-                          <Text size="xs" truncate>
-                            {log.user?.name || log.user?.email || t('audit.system')}
-                          </Text>
-                        </Group>
-                        <Text size="xs" c="dimmed">
+                    {index > 0 && <Divider my={6} />}
+                    <Stack gap={4}>
+                      {/* Üst satır: Badge + Tarih + Kullanıcı */}
+                      <Group gap="xs" justify="space-between" wrap="nowrap">
+                        <Badge
+                          size="xs"
+                          color={ACTION_COLORS[log.action] || 'gray'}
+                          variant="light"
+                          leftSection={ACTION_ICONS[log.action]}
+                        >
+                          {t(`audit.actions.${log.action}`) || log.action}
+                        </Badge>
+                        <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>
                           {formatDate(log.createdAt)}
                         </Text>
-                        {log.action === 'update' && getChangeSummary(log).length > 0 && (
-                          <Stack gap={2}>
-                            {getChangeSummary(log).map((change, idx) => (
-                              <Text key={idx} size="xs" c="dimmed" fs="italic">
-                                {change}
-                              </Text>
-                            ))}
-                          </Stack>
-                        )}
-                      </Stack>
-                    </Group>
+                      </Group>
+
+                      {/* Kullanıcı */}
+                      <Text size="xs" c="dimmed">
+                        {log.user?.name || log.user?.email || t('audit.system')}
+                      </Text>
+
+                      {/* Değişiklik detayları */}
+                      {log.action === 'update' && getChangeDescription(log)}
+                    </Stack>
                   </Box>
                 ))}
               </Stack>
