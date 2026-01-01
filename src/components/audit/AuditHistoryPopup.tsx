@@ -114,24 +114,38 @@ export function AuditHistoryPopup({
     });
   };
 
-  const getChangeSummary = (log: AuditLog): string | null => {
-    if (!log.metadata) return null;
+  // Otomatik güncellenen ve gösterilmemesi gereken alanlar
+  const IGNORED_FIELDS = ['updatedAt', 'createdAt', 'id', 'tenantId', 'companyId'];
+
+  const getChangeSummary = (log: AuditLog): string[] => {
+    if (!log.metadata) return [];
 
     const { oldValue, newValue, changedFields } = log.metadata;
 
     if (changedFields && changedFields.length > 0 && oldValue && newValue) {
-      const field = changedFields[0];
-      if (field) {
-        const oldVal = oldValue[field];
-        const newVal = newValue[field];
+      // Filtrelenmiş ve anlamlı değişiklikler
+      const meaningfulChanges = changedFields
+        .filter(field => !IGNORED_FIELDS.includes(field))
+        .slice(0, 3) // En fazla 3 değişiklik göster
+        .map(field => {
+          const oldVal = oldValue[field];
+          const newVal = newValue[field];
 
-        if (oldVal !== undefined && newVal !== undefined) {
-          return `${field}: ${oldVal} → ${newVal}`;
-        }
-      }
+          // Değerleri kısalt
+          const formatValue = (val: any): string => {
+            if (val === null || val === undefined) return '-';
+            if (typeof val === 'string' && val.length > 20) return val.substring(0, 20) + '...';
+            if (typeof val === 'object') return JSON.stringify(val).substring(0, 20) + '...';
+            return String(val);
+          };
+
+          return `${field}: ${formatValue(oldVal)} → ${formatValue(newVal)}`;
+        });
+
+      return meaningfulChanges;
     }
 
-    return null;
+    return [];
   };
 
   return (
@@ -141,7 +155,7 @@ export function AuditHistoryPopup({
       position="bottom-end"
       withArrow
       shadow="md"
-      width={320}
+      width={400}
     >
       <Popover.Target>
         <Tooltip label={t('audit.title')} withArrow>
@@ -221,10 +235,14 @@ export function AuditHistoryPopup({
                         <Text size="xs" c="dimmed">
                           {formatDate(log.createdAt)}
                         </Text>
-                        {log.action === 'update' && getChangeSummary(log) && (
-                          <Text size="xs" c="dimmed" fs="italic" lineClamp={1}>
-                            {getChangeSummary(log)}
-                          </Text>
+                        {log.action === 'update' && getChangeSummary(log).length > 0 && (
+                          <Stack gap={2}>
+                            {getChangeSummary(log).map((change, idx) => (
+                              <Text key={idx} size="xs" c="dimmed" fs="italic">
+                                {change}
+                              </Text>
+                            ))}
+                          </Stack>
                         )}
                       </Stack>
                     </Group>
