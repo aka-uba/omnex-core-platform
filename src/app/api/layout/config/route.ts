@@ -1,358 +1,231 @@
 /**
  * Layout Config API
- * GET: Layout yapılandırmasını yükle
- * POST: Layout yapılandırmasını kaydet
+ * LayoutResolver.loadAllConfigs taraf1ndan kullan1l1r
+ * Scope parametresine g�re user/role/company config d�nd�r�r
  */
 
 import { NextRequest } from 'next/server';
 import { withTenant } from '@/lib/api/withTenant';
-import { successResponse, errorResponse } from '@/lib/api/errorHandler';
-import type { ApiResponse } from '@/lib/api/errorHandler';
+import { successResponse, errorResponse } from '@/lib/api/response';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
-import { requireCompanyId } from '@/lib/api/companyContext';
-// Simple LayoutConfig type for API compatibility
-export interface LayoutConfig {
-  layoutType?: 'sidebar' | 'top' | 'mobile';
-  themeMode?: 'light' | 'dark' | 'auto';
-  direction?: 'ltr' | 'rtl';
-  footerVisible?: boolean;
-  layoutSource?: 'role' | 'user' | 'company' | 'default';
-  [key: string]: any; // Allow additional properties
-}
+import {
+  DEFAULT_SIDEBAR_CONFIG,
+  DEFAULT_TOP_CONFIG,
+  DEFAULT_MOBILE_CONFIG,
+  DEFAULT_CONTENT_AREA_CONFIG,
+  type LayoutConfig,
+} from '@/components/layouts/core/LayoutConfig';
 
-// GET: Layout yapılandırmasını yükle
-export async function GET(request: NextRequest) {
-  // Try to get tenant context, but don't fail if not found
-  try {
-    return await withTenant<ApiResponse<{ config: LayoutConfig | null }>>(
-      request,
-      async (tenantPrisma) => {
-        try {
-          // Tenant context yoksa null döndür (non-critical)
-          if (!tenantPrisma) {
-            return successResponse({ config: null });
-          }
+type LayoutScope = 'user' | 'role' | 'company';
 
-
-          const searchParams = request.nextUrl.searchParams;
-          const scope = searchParams.get('scope'); // user | role | company
-          const userId = searchParams.get('userId')?.trim() || undefined;
-          const role = searchParams.get('role')?.trim() || undefined;
-          const companyId = searchParams.get('companyId')?.trim() || undefined;
-
-          let config: LayoutConfig | null = null;
-
-          // Eğer hiçbir parametre yoksa, null döndür (hata değil)
-          if (!userId && !role && !companyId) {
-            return successResponse({ config: null });
-          }
-
-          if (scope === 'user' && userId) {
-            // Kullanıcı özel ayarı
-            try {
-              const userPrefs = await tenantPrisma.userPreferences.findUnique({
-                where: { userId },
-                select: {
-                  layoutType: true,
-                  themeMode: true,
-                  direction: true,
-                  layoutConfig: true,
-                  preferences: true,
-                  layoutSource: true,
-                },
-              });
-
-              if (userPrefs) {
-                // Önce direkt alanlardan config oluştur
-                const layoutTypeValue = userPrefs.layoutType 
-                    ? (userPrefs.layoutType === 'SidebarLayout' ? 'sidebar' 
-                      : userPrefs.layoutType === 'TopLayout' ? 'top' 
-                      : userPrefs.layoutType === 'MobileLayout' ? 'mobile' 
-                      : userPrefs.layoutType.toLowerCase() as 'sidebar' | 'top' | 'mobile')
-                    : undefined;
-                const themeModeValue = userPrefs.themeMode
-                    ? (userPrefs.themeMode === 'Light' ? 'light'
-                      : userPrefs.themeMode === 'Dark' ? 'dark'
-                      : userPrefs.themeMode === 'Auto' ? 'auto'
-                      : userPrefs.themeMode.toLowerCase() as 'light' | 'dark' | 'auto')
-                    : undefined;
-                const directionValue = userPrefs.direction
-                    ? (userPrefs.direction === 'LTR' ? 'ltr'
-                      : userPrefs.direction === 'RTL' ? 'rtl'
-                      : userPrefs.direction.toLowerCase() as 'ltr' | 'rtl')
-                    : undefined;
-                const layoutSourceValue = (userPrefs.layoutSource as 'role' | 'user' | 'company' | 'default') || undefined;
-                
-                const directConfig: LayoutConfig = {
-                  ...(layoutTypeValue ? { layoutType: layoutTypeValue } : {}),
-                  ...(themeModeValue ? { themeMode: themeModeValue } : {}),
-                  ...(directionValue ? { direction: directionValue } : {}),
-                  layoutSource: layoutSourceValue || 'default',
-                };
-
-                // preferences.layoutConfig varsa onu kullan (daha detaylı)
-                let preferencesConfig: LayoutConfig | null = null;
-                if (userPrefs.preferences) {
-                  try {
-                    const prefs = typeof userPrefs.preferences === 'string'
-                      ? JSON.parse(userPrefs.preferences)
-                      : userPrefs.preferences;
-                    if (prefs?.layoutConfig) {
-                      preferencesConfig = prefs.layoutConfig;
-                    }
-                  } catch (err) {
-                    // Silently fail - preferences parse hatası
-                  }
-                }
-
-                // layoutConfig direkt alan varsa onu kullan
-                let directLayoutConfig: LayoutConfig | null = null;
-                if (userPrefs.layoutConfig) {
-                  try {
-                    directLayoutConfig = typeof userPrefs.layoutConfig === 'string'
-                      ? JSON.parse(userPrefs.layoutConfig)
-                      : userPrefs.layoutConfig as LayoutConfig;
-                  } catch (err) {
-                    // Silently fail
-                  }
-                }
-
-                // Öncelik: directLayoutConfig > preferencesConfig > directConfig
-                config = directLayoutConfig || preferencesConfig || directConfig;
-              }
-            } catch (dbError) {
-              // Database hatası - gracefully handle, null döndür
-              // UserPreferences tablosu yoksa veya migration eksikse hata verme
-              return successResponse({ config: null });
-            }
-          } else if (scope === 'role' && role) {
-            // Rol ayarı - model mevcut değil, şimdilik atlanıyor
-            // TODO: Implement roleLayoutConfig model
-          } else if (scope === 'company' && companyId) {
-            // Firma ayarı - model mevcut değil, şimdilik atlanıyor
-            // TODO: Implement companyLayoutConfig model
-          }
-
-          return successResponse({ config });
-        } catch (error) {
-          // Unexpected error - gracefully return null instead of failing
-          return successResponse({ config: null });
-        }
-      },
-      { required: false, module: 'layout-config' } // Tenant optional - graceful degradation
-    );
-  } catch (error) {
-    // If withTenant itself fails, return null (non-critical)
-    return successResponse({ config: null });
-  }
-}
-
-// POST: Layout yapılandırmasını kaydet
-export async function POST(request: NextRequest) {
-  return withTenant<ApiResponse>(
-    request,
-    async (tenantPrisma) => {
-      try {
-        // Tenant context yoksa hata döndür (POST için gerekli)
-        if (!tenantPrisma) {
-          return errorResponse('Tenant context required', 'Tenant context is required to save layout config', 400);
-        }
-
-        const body = await request.json();
-        const { config, scope, userId, role, companyId } = body;
-
-        // Boş string'leri undefined'a çevir
-        const cleanUserId = userId?.trim() || undefined;
-        const cleanRole = role?.trim() || undefined;
-        const cleanCompanyId = companyId?.trim() || undefined;
-
-        if (!config) {
-          return errorResponse('Validation error', 'Config is required', 400);
-        }
-
-        if (!scope) {
-          return errorResponse('Validation error', 'Scope is required (user, role, or company)', 400);
-        }
-
-        if (scope === 'user' && cleanUserId) {
-          // Kullanıcı özel ayarı kaydet
-
-          // Get tenant context
-          const tenantContext = await getTenantFromRequest(request);
-          if (!tenantContext) {
-            return errorResponse('Tenant context required', 'Tenant context is required to save layout config', 400);
-          }
-
-          // Get companyId
-          let companyId: string;
-          try {
-            companyId = await requireCompanyId(request, tenantPrisma);
-          } catch (companyError: any) {
-            return errorResponse(
-              'Company ID error',
-              companyError.message || 'Company ID is required',
-              400
-            );
-          }
-
-          // Get existing preferences or create new object
-          const existingPrefs = await tenantPrisma.userPreferences.findUnique({
-            where: { userId: cleanUserId },
-            select: {
-              preferences: true,
-            },
-          });
-
-          const currentPrefs = existingPrefs?.preferences
-            ? (typeof existingPrefs.preferences === 'string'
-              ? JSON.parse(existingPrefs.preferences)
-              : existingPrefs.preferences)
-            : {};
-
-          const updatedPrefs = {
-            ...currentPrefs,
-            layoutConfig: typeof config === 'string' ? JSON.parse(config) : config,
-          };
-
-          // Map layoutType from API format to schema format
-          const layoutTypeMap: Record<string, string> = {
-            'sidebar': 'SidebarLayout',
-            'top': 'TopLayout',
-            'mobile': 'MobileLayout',
-          };
-          const mappedLayoutType = config.layoutType 
-            ? (layoutTypeMap[config.layoutType] || config.layoutType)
-            : 'SidebarLayout';
-
-          // Map themeMode from API format to schema format
-          const themeModeMap: Record<string, string> = {
-            'light': 'Light',
-            'dark': 'Dark',
-            'auto': 'Auto',
-          };
-          const mappedThemeMode = config.themeMode
-            ? (themeModeMap[config.themeMode] || config.themeMode)
-            : 'Auto';
-
-          // Map direction from API format to schema format
-          const directionMap: Record<string, string> = {
-            'ltr': 'LTR',
-            'rtl': 'RTL',
-          };
-          const mappedDirection = config.direction
-            ? (directionMap[config.direction] || config.direction.toUpperCase())
-            : 'LTR';
-
-          await tenantPrisma.userPreferences.upsert({
-            where: { userId: cleanUserId },
-            update: {
-              preferences: updatedPrefs as any, // Prisma handles JSON automatically
-              layoutConfig: typeof config === 'string' ? JSON.parse(config) : config, // Direct layoutConfig field
-              layoutType: mappedLayoutType,
-              themeMode: mappedThemeMode,
-              direction: mappedDirection,
-              updatedAt: new Date(),
-            },
-            create: {
-              userId: cleanUserId,
-              tenantId: tenantContext.id,
-              companyId: companyId,
-              preferences: updatedPrefs as any, // Prisma handles JSON automatically
-              layoutConfig: typeof config === 'string' ? JSON.parse(config) : config, // Direct layoutConfig field
-              layoutType: mappedLayoutType,
-              themeMode: mappedThemeMode,
-              direction: mappedDirection,
-            },
-          });
-          return successResponse(undefined, 'Layout config saved successfully');
-        } else if (scope === 'role' && cleanRole) {
-          // Rol ayarı kaydet
-
-          // Get tenant context
-          const tenantContextForRole = await getTenantFromRequest(request);
-          if (!tenantContextForRole) {
-            return errorResponse('Tenant context required', 'Tenant context is required to save layout config', 400);
-          }
-
-          // Önce Role modelini kontrol et
-          let roleModel = await tenantPrisma.role.findUnique({
-            where: { name: cleanRole },
-          });
-
-          if (!roleModel) {
-            // Role yoksa oluştur
-            const companyId = await requireCompanyId(request, tenantPrisma);
-            roleModel = await tenantPrisma.role.create({
-              data: {
-                tenantId: tenantContextForRole.id,
-                companyId: companyId,
-                name: cleanRole,
-                description: `Layout config for ${role} role`,
-              },
-            });
-          }
-
-          // TODO: roleLayoutConfig model mevcut değil
-          // await tenantPrisma.roleLayoutConfig.upsert({
-          //   where: { role },
-          //   update: {
-          //     config: configString,
-          //     layoutType: config.layoutType || 'sidebar',
-          //     updatedAt: new Date(),
-          //   },
-          //   create: {
-          //     role,
-          //     config: configString,
-          //     layoutType: config.layoutType || 'sidebar',
-          //   },
-          // });
-          return errorResponse(
-            'Not implemented',
-            'roleLayoutConfig model is not implemented yet',
-            501
-          );
-        }
-
-        if (scope === 'company' && cleanCompanyId) {
-          // Firma ayarı kaydet
-
-          // TODO: companyLayoutConfig model mevcut değil
-          // await tenantPrisma.companyLayoutConfig.upsert({
-          //   where: { companyId },
-          //   update: {
-          //     config: configString,
-          //     layoutType: config.layoutType || 'sidebar',
-          //     updatedAt: new Date(),
-          //   },
-          //   create: {
-          //     companyId,
-          //     config: configString,
-          //     layoutType: config.layoutType || 'sidebar',
-          //   },
-          // });
-          return errorResponse(
-            'Not implemented',
-            'companyLayoutConfig model is not implemented yet',
-            501
-          );
-        }
-
-        return errorResponse(
-          'Validation error',
-          'Invalid scope or missing parameters',
-          400,
-          `Scope: ${scope}, userId: ${cleanUserId || 'missing'}, role: ${cleanRole || 'missing'}, companyId: ${cleanCompanyId || 'missing'}`
-        );
-      } catch (error) {
-        // Unexpected error - gracefully return error
-        return errorResponse(
-          'Internal error',
-          'Failed to save layout config',
-          500
-        );
-      }
+/**
+ * UserPreferences'dan LayoutConfig format1na d�n�_t�r
+ */
+function userPreferencesToLayoutConfig(prefs: {
+  layoutType?: string | null;
+  themeMode?: string | null;
+  direction?: string | null;
+  footerVisible?: boolean | null;
+  sidebarBackground?: string | null;
+  sidebarCollapsed?: boolean | null;
+  sidebarWidth?: number | null;
+  menuColor?: string | null;
+  topBarScroll?: string | null;
+}): LayoutConfig {
+  return {
+    layoutType: (prefs.layoutType?.toLowerCase() === 'toplayout' ? 'top' : 'sidebar') as LayoutConfig['layoutType'],
+    themeMode: (prefs.themeMode?.toLowerCase() || 'light') as LayoutConfig['themeMode'],
+    direction: (prefs.direction?.toLowerCase() || 'ltr') as LayoutConfig['direction'],
+    footerVisible: prefs.footerVisible ?? true,
+    sidebar: {
+      ...DEFAULT_SIDEBAR_CONFIG,
+      background: (prefs.sidebarBackground as any) || DEFAULT_SIDEBAR_CONFIG.background,
+      collapsed: prefs.sidebarCollapsed ?? DEFAULT_SIDEBAR_CONFIG.collapsed,
+      width: prefs.sidebarWidth ?? DEFAULT_SIDEBAR_CONFIG.width,
+      menuColor: (prefs.menuColor as any) || DEFAULT_SIDEBAR_CONFIG.menuColor,
     },
-    { required: false, module: 'layout-config' } // Tenant optional - handler içinde kontrol ediliyor
-  );
+    top: {
+      ...DEFAULT_TOP_CONFIG,
+      scrollBehavior: (prefs.topBarScroll as any) || DEFAULT_TOP_CONFIG.scrollBehavior,
+      menuColor: (prefs.menuColor as any) || DEFAULT_TOP_CONFIG.menuColor,
+    },
+    mobile: DEFAULT_MOBILE_CONFIG,
+    contentArea: DEFAULT_CONTENT_AREA_CONFIG,
+  };
 }
 
+/**
+ * GET - Layout config'i scope'a g�re getir
+ * Query params:
+ * - scope: 'user' | 'role' | 'company'
+ * - userId: (scope=user i�in)
+ * - role: (scope=role i�in)
+ * - companyId: (scope=company i�in)
+ */
+export async function GET(request: NextRequest) {
+  return withTenant(request, async (tenantPrisma) => {
+    const { searchParams } = new URL(request.url);
+    const scope = searchParams.get('scope') as LayoutScope;
+    const userId = searchParams.get('userId');
+    const role = searchParams.get('role');
+    const companyId = searchParams.get('companyId');
+
+    if (!scope) {
+      return errorResponse('INVALID_REQUEST', 'scope parameter is required', null, 400);
+    }
+
+    let config = null;
+
+    switch (scope) {
+      case 'user':
+        if (!userId) {
+          return errorResponse('INVALID_REQUEST', 'userId parameter is required for user scope', null, 400);
+        }
+        // UserPreferences tablosundan kullan1c1 config'ini al
+        const userPrefs = await tenantPrisma.userPreferences.findUnique({
+          where: { userId },
+        });
+        if (userPrefs) {
+          config = userPreferencesToLayoutConfig(userPrefs);
+        }
+        break;
+
+      case 'role':
+        if (!role) {
+          return errorResponse('INVALID_REQUEST', 'role parameter is required for role scope', null, 400);
+        }
+        // RoleLayoutConfig tablosundan rol config'ini al
+        const roleConfig = await tenantPrisma.roleLayoutConfig.findFirst({
+          where: { role },
+        });
+        config = roleConfig?.config || null;
+        break;
+
+      case 'company':
+        if (!companyId) {
+          return errorResponse('INVALID_REQUEST', 'companyId parameter is required for company scope', null, 400);
+        }
+        // CompanyLayoutConfig tablosundan firma config'ini al
+        const companyConfig = await tenantPrisma.companyLayoutConfig.findUnique({
+          where: { companyId },
+        });
+        config = companyConfig?.config || null;
+        break;
+
+      default:
+        return errorResponse('INVALID_REQUEST', 'Invalid scope. Must be user, role, or company', null, 400);
+    }
+
+    return successResponse({ config });
+  }, { required: true });
+}
+
+/**
+ * POST - Layout config kaydet
+ * Body:
+ * - config: LayoutConfig object
+ * - scope: 'user' | 'role' | 'company'
+ * - userId: (scope=user için)
+ * - role: (scope=role için)
+ * - companyId: (scope=company için)
+ */
+export async function POST(request: NextRequest) {
+  return withTenant(request, async (tenantPrisma) => {
+    const tenantContext = await getTenantFromRequest(request);
+    const tenantId = tenantContext?.id || '';
+
+    const body = await request.json();
+    const { config, scope, userId, role, companyId } = body;
+
+    if (!config) {
+      return errorResponse('INVALID_REQUEST', 'config is required', null, 400);
+    }
+
+    if (!scope) {
+      return errorResponse('INVALID_REQUEST', 'scope is required', null, 400);
+    }
+
+    switch (scope) {
+      case 'user':
+        if (!userId) {
+          return errorResponse('INVALID_REQUEST', 'userId is required for user scope', null, 400);
+        }
+        // UserPreferences tablosuna kaydet
+        await tenantPrisma.userPreferences.upsert({
+          where: { userId },
+          update: {
+            layoutType: config.layoutType === 'top' ? 'TopLayout' : 'SidebarLayout',
+            themeMode: config.themeMode,
+            direction: config.direction?.toUpperCase() || 'LTR',
+            footerVisible: config.footerVisible,
+            sidebarBackground: config.sidebar?.background,
+            sidebarCollapsed: config.sidebar?.collapsed,
+            sidebarWidth: config.sidebar?.width,
+            menuColor: config.sidebar?.menuColor,
+            topBarScroll: config.top?.scrollBehavior,
+          },
+          create: {
+            userId,
+            tenantId,
+            companyId: companyId || '',
+            layoutType: config.layoutType === 'top' ? 'TopLayout' : 'SidebarLayout',
+            themeMode: config.themeMode,
+            direction: config.direction?.toUpperCase() || 'LTR',
+            footerVisible: config.footerVisible,
+            sidebarBackground: config.sidebar?.background,
+            sidebarCollapsed: config.sidebar?.collapsed,
+            sidebarWidth: config.sidebar?.width,
+            menuColor: config.sidebar?.menuColor,
+            topBarScroll: config.top?.scrollBehavior,
+          },
+        });
+        break;
+
+      case 'role':
+        if (!role) {
+          return errorResponse('INVALID_REQUEST', 'role is required for role scope', null, 400);
+        }
+        // RoleLayoutConfig tablosuna kaydet
+        await tenantPrisma.roleLayoutConfig.upsert({
+          where: { role },
+          update: {
+            config,
+            layoutType: config.layoutType || 'sidebar',
+          },
+          create: {
+            role,
+            tenantId,
+            companyId: companyId || '',
+            config,
+            layoutType: config.layoutType || 'sidebar',
+          },
+        });
+        break;
+
+      case 'company':
+        if (!companyId) {
+          return errorResponse('INVALID_REQUEST', 'companyId is required for company scope', null, 400);
+        }
+        // CompanyLayoutConfig tablosuna kaydet
+        await tenantPrisma.companyLayoutConfig.upsert({
+          where: { companyId },
+          update: {
+            config,
+            layoutType: config.layoutType || 'sidebar',
+          },
+          create: {
+            companyId,
+            tenantId,
+            config,
+            layoutType: config.layoutType || 'sidebar',
+          },
+        });
+        break;
+
+      default:
+        return errorResponse('INVALID_REQUEST', 'Invalid scope. Must be user, role, or company', null, 400);
+    }
+
+    return successResponse({ message: 'Config saved successfully' });
+  }, { required: true });
+}

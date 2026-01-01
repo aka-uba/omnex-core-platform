@@ -34,15 +34,26 @@ import {
   IconAlignRight,
   IconDeviceTablet,
   IconDeviceMobile,
+  IconWorld,
 } from '@tabler/icons-react';
+import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '../core/LayoutProvider';
 import { useNotification } from '@/hooks/useNotification';
-import { useMantineColorScheme } from '@mantine/core';
+import { setCompanyDefaults, STORAGE_KEYS } from '../core/LayoutConfig';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
+import { useCompany } from '@/context/CompanyContext';
 import { useTranslation } from '@/lib/i18n/client';
 import styles from './ThemeConfigurator.module.css';
 
+// Admin rolleri
+const ADMIN_ROLES = ['SuperAdmin', 'Admin', 'TenantAdmin', 'CompanyAdmin'];
+
 function ThemeConfiguratorComponent() {
   const { t } = useTranslation('global');
+  const { user } = useAuth();
+  const { company } = useCompany();
+  const isAdmin = user?.role && ADMIN_ROLES.includes(user.role);
+  const [savingDefaults, setSavingDefaults] = useState(false);
 
   // Panel state'ini localStorage'da sakla (layout değiştiğinde korunması için)
   // Hydration hatasını önlemek için ilk render'da her zaman false
@@ -77,7 +88,6 @@ function ThemeConfiguratorComponent() {
   };
   const [activeTab, setActiveTab] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const { showSuccess, showConfirm } = useNotification();
-  const { setColorScheme } = useMantineColorScheme();
   const {
     config,
     applyChanges,
@@ -147,65 +157,65 @@ function ThemeConfiguratorComponent() {
     close();
   }, [showSuccess, close, t]);
 
+  // Varsayılan olarak kaydet (sadece admin)
+  // localStorage'a + DB'ye kaydeder
+  const handleSaveAsDefault = useCallback(async () => {
+    if (!isAdmin || !company?.id) return;
+
+    setSavingDefaults(true);
+    try {
+      // 1. localStorage'a kaydet (anında uygulama için)
+      setCompanyDefaults(config);
+
+      // 2. DB'ye kaydet (diğer tarayıcılar için)
+      const response = await fetchWithAuth('/api/layout/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          config,
+          scope: 'company',
+          companyId: company.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('DB kaydetme hatası');
+      }
+
+      showSuccess(
+        t('settings.theme.defaultsSaved') || 'Varsayılanlar Kaydedildi',
+        t('settings.theme.defaultsSavedMessage') || 'Tüm kullanıcılar için varsayılan ayarlar güncellendi'
+      );
+    } catch (error) {
+      console.error('[ThemeConfigurator] Error saving defaults:', error);
+      showSuccess(
+        'Hata',
+        'Varsayılanlar kaydedilemedi'
+      );
+    } finally {
+      setSavingDefaults(false);
+    }
+  }, [isAdmin, company?.id, config, showSuccess, t]);
+
   const handleReset = useCallback(() => {
     showConfirm(
       t('settings.theme.resetTitle'),
       t('settings.theme.resetConfirm'),
       () => {
-        // Reset to defaults - light mode
-        setColorScheme('light');
-        applyChangesRef.current({
-          layoutType: 'sidebar',
-          themeMode: 'light',
-          direction: 'ltr',
-          footerVisible: true,
-          sidebar: {
-            background: 'light',
-            width: 260,
-            minWidth: 200,
-            maxWidth: 320,
-            collapsed: false,
-            menuColor: 'auto',
-            customMenuColor: '#228be6',
-            logoPosition: 'top',
-            logoSize: 'medium',
-            hoverEffects: true,
-          },
-          top: {
-            background: 'light',
-            height: 64,
-            scrollBehavior: 'fixed',
-            sticky: true,
-            menuColor: 'auto',
-            customMenuColor: '#228be6',
-            logoPosition: 'left',
-            logoSize: 'medium',
-          },
-          mobile: {
-            headerHeight: 56,
-            iconSize: 24,
-            menuAnimation: 'drawer',
-            bottomBarVisible: false,
-            iconSpacing: 8,
-          },
-          contentArea: {
-            width: { value: 100, unit: '%', min: 320, max: 1920 },
-            padding: { top: 24, right: 24, bottom: 24, left: 24 },
-            margin: { top: 0, right: 0, bottom: 0, left: 0 },
-            responsive: {
-              mobile: {
-                padding: { top: 16, right: 16, bottom: 16, left: 16 },
-              },
-              tablet: {
-                padding: { top: 20, right: 20, bottom: 20, left: 20 },
-              },
-            },
-          },
-        });
+        // Kullanıcı config'ini temizle
+        localStorage.removeItem(STORAGE_KEYS.layoutConfig);
+        localStorage.removeItem(STORAGE_KEYS.layoutConfigTimestamp);
+        // Company defaults cache'ini de temizle - DB'den taze veri çekilecek
+        localStorage.removeItem(STORAGE_KEYS.companyDefaults);
+
+        // Sayfayı yenile - LayoutProvider DB'den varsayılanları yükleyecek
         showSuccess(t('settings.theme.resetSuccess'), t('settings.theme.resetSuccessMessage'));
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       }
     );
-  }, [showConfirm, showSuccess, setColorScheme, t]);
+  }, [showConfirm, showSuccess, t]);
 
   const handleThemeModeChange = useCallback((mode: 'light' | 'dark' | 'auto') => {
     // Config'i güncelle - LayoutProvider'daki useEffect otomatik olarak tema değişikliğini uygulayacak
@@ -1472,6 +1482,19 @@ function ThemeConfiguratorComponent() {
           >
             Sıfırla
           </Button>
+          {isAdmin && (
+            <Button
+              variant="light"
+              size="sm"
+              color="orange"
+              leftSection={mounted ? <IconWorld size={16} /> : null}
+              onClick={handleSaveAsDefault}
+              loading={savingDefaults}
+              title="Mevcut ayarları tüm kullanıcılar için varsayılan yap"
+            >
+              Varsayılan Yap
+            </Button>
+          )}
           <Button
             variant="filled"
             size="sm"

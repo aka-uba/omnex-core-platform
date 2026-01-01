@@ -9,11 +9,11 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef, ReactNode } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useMantineColorScheme } from '@mantine/core';
-import { LayoutConfig, DEFAULT_LAYOUT_CONFIG, BREAKPOINTS, LayoutType } from './LayoutConfig';
+import { LayoutConfig, DEFAULT_LAYOUT_CONFIG, BREAKPOINTS, LayoutType, STORAGE_KEYS } from './LayoutConfig';
 import { useLayoutData } from '../hooks/useLayoutData';
 import { useLayoutSync } from '../hooks/useLayoutSync';
-import { LayoutResolver } from './LayoutResolver';
 import { useTheme } from '@/context/ThemeContext';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface LayoutContextType {
   // Mevcut layout
@@ -82,18 +82,26 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
   });
 
   // Local state (instant updates için)
-  // LocalStorage'dan initial state oku (hydration flash'ı önlemek için)
+  // Öncelik: 1. Kullanıcı config (localStorage) 2. Company defaults 3. Sistem varsayılanları
   const [config, setConfigState] = useState<LayoutConfig>(() => {
     if (typeof window !== 'undefined') {
       try {
-        const cached = localStorage.getItem('omnex-layout-config-v2');
-        if (cached) {
-          return JSON.parse(cached) as LayoutConfig;
+        // 1. Kullanıcının kendi ayarları varsa onu kullan
+        const userConfig = localStorage.getItem(STORAGE_KEYS.layoutConfig);
+        if (userConfig) {
+          return JSON.parse(userConfig) as LayoutConfig;
+        }
+
+        // 2. Admin tarafından belirlenen firma varsayılanları
+        const companyDefaultsStr = localStorage.getItem(STORAGE_KEYS.companyDefaults);
+        if (companyDefaultsStr) {
+          return JSON.parse(companyDefaultsStr) as LayoutConfig;
         }
       } catch {
         // Silently fail
       }
     }
+    // 3. Sistem varsayılanları
     return DEFAULT_LAYOUT_CONFIG;
   });
   const [mounted, setMounted] = useState(false);
@@ -109,38 +117,67 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
     debounceMs: 2000, // Increase debounce to reduce API calls
   });
 
-  // İlk yükleme: Local-first render
+  // Mount effect - sadece bir kez çalışır
   useEffect(() => {
-    if (mounted) return;
-
     setMounted(true);
+  }, []);
 
-    // Background'da DB'den yükle ve çözümle
-    if (userId) {
-      LayoutResolver.loadAllConfigs({
-        ...(userId ? { userId } : {}),
-        ...(userRole ? { userRole } : {}),
-        ...(companyId ? { companyId } : {}),
-      }).then((configs) => {
-        const resolved = LayoutResolver.resolve({
-          ...(userId ? { userId } : {}),
-          ...(userRole ? { userRole } : {}),
-          ...(companyId ? { companyId } : {}),
-          ...configs,
-        });
+  // Company defaults değiştiğinde dinle (başka tab'dan veya admin'den)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
 
-
-        // Sadece localStorage boşsa DB'den yükle
-        if (typeof window !== 'undefined') {
-          const cached = localStorage.getItem('omnex-layout-config-v2');
-          if (!cached) {
-            setConfigState(resolved.config);
-            localStorage.setItem('omnex-layout-config-v2', JSON.stringify(resolved.config));
+    const handleStorageChange = (e: StorageEvent) => {
+      // Company defaults değiştiğinde ve kullanıcının kendi config'i yoksa güncelle
+      if (e.key === STORAGE_KEYS.companyDefaults && e.newValue) {
+        const hasUserConfig = !!localStorage.getItem(STORAGE_KEYS.layoutConfig);
+        if (!hasUserConfig) {
+          try {
+            const newDefaults = JSON.parse(e.newValue) as LayoutConfig;
+            setConfigState(newDefaults);
+          } catch {
+            // Silently fail
           }
         }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // localStorage'da company defaults yoksa DB'den çek (diğer tarayıcılar için)
+  const hasLoadedCompanyDefaultsRef = useRef(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!companyId) return;
+    if (hasLoadedCompanyDefaultsRef.current) return;
+
+    // Kullanıcının kendi config'i varsa DB'den çekmeye gerek yok
+    const hasUserConfig = !!localStorage.getItem(STORAGE_KEYS.layoutConfig);
+    if (hasUserConfig) return;
+
+    // localStorage'da company defaults varsa DB'den çekmeye gerek yok
+    const hasCompanyDefaults = !!localStorage.getItem(STORAGE_KEYS.companyDefaults);
+    if (hasCompanyDefaults) return;
+
+    hasLoadedCompanyDefaultsRef.current = true;
+
+    // DB'den company defaults'u çek
+    fetchWithAuth(`/api/layout/config?scope=company&companyId=${companyId}`)
+      .then(async (response) => {
+        if (!response.ok) return;
+        const data = await response.json();
+        const companyConfig = data.data?.config;
+        if (companyConfig) {
+          // localStorage'a kaydet ve state'i güncelle
+          localStorage.setItem(STORAGE_KEYS.companyDefaults, JSON.stringify(companyConfig));
+          setConfigState(companyConfig);
+        }
+      })
+      .catch(() => {
+        // Silently fail
       });
-    }
-  }, [mounted, userId, userRole, companyId]);
+  }, [companyId]);
 
   // Loaded config değiştiğinde state'i güncelle - DISABLED
   // LocalStorage artık öncelikli olduğu için bu useEffect gerekli değil
@@ -285,42 +322,41 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
    * 4. Eski ThemeContext'e senkronize et (themeMode için)
    */
   const applyChanges = useCallback((changes: Partial<LayoutConfig>) => {
-    // Deep merge için helper - contentArea gibi nested objeleri düzgün merge et
-    const deepMerge = (target: any, source: any): any => {
-      if (!source) return target;
-      if (typeof source !== 'object' || Array.isArray(source)) return source;
+    // Tam config mi yoksa partial update mi kontrol et
+    const isFullConfig = changes.layoutType !== undefined &&
+                         changes.themeMode !== undefined &&
+                         changes.sidebar !== undefined &&
+                         changes.top !== undefined;
 
-      const result = { ...target };
-      for (const key in source) {
-        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key]) && key === 'contentArea') {
-          // contentArea için özel deep merge
-          result[key] = {
-            ...target[key],
-            ...source[key],
-            padding: source[key].padding ? { ...target[key]?.padding, ...source[key].padding } : target[key]?.padding,
-            margin: source[key].margin ? { ...target[key]?.margin, ...source[key].margin } : target[key]?.margin,
-            width: source[key].width ? { ...target[key]?.width, ...source[key].width } : target[key]?.width,
-            responsive: source[key].responsive ? {
-              ...target[key]?.responsive,
-              mobile: source[key].responsive?.mobile ? {
-                ...target[key]?.responsive?.mobile,
-                padding: source[key].responsive.mobile.padding ? { ...target[key]?.responsive?.mobile?.padding, ...source[key].responsive.mobile.padding } : target[key]?.responsive?.mobile?.padding,
-              } : target[key]?.responsive?.mobile,
-              tablet: source[key].responsive?.tablet ? {
-                ...target[key]?.responsive?.tablet,
-                padding: source[key].responsive.tablet.padding ? { ...target[key]?.responsive?.tablet?.padding, ...source[key].responsive.tablet.padding } : target[key]?.responsive?.tablet?.padding,
-              } : target[key]?.responsive?.tablet,
-            } : target[key]?.responsive,
-          };
-        } else {
-          result[key] = source[key];
-        }
-      }
-      return result;
-    };
+    let newConfig: LayoutConfig;
 
-    // Önce değişiklik olup olmadığını kontrol et
-    const newConfig: LayoutConfig = deepMerge(config, changes) as LayoutConfig;
+    if (isFullConfig) {
+      // Tam config geçirildi (reset veya varsayılan yükleme) - direkt replace et
+      newConfig = changes as LayoutConfig;
+    } else {
+      // Partial update - mevcut config ile merge et
+      const mergedContentArea = changes.contentArea && config.contentArea ? {
+        ...config.contentArea,
+        ...changes.contentArea,
+        padding: { ...config.contentArea.padding, ...changes.contentArea.padding },
+        margin: { ...config.contentArea.margin, ...changes.contentArea.margin },
+        width: { ...config.contentArea.width, ...changes.contentArea.width },
+        responsive: {
+          ...config.contentArea.responsive,
+          ...changes.contentArea.responsive,
+        },
+      } : (changes.contentArea || config.contentArea);
+
+      newConfig = {
+        ...config,
+        ...changes,
+        // Nested objeler için shallow merge
+        sidebar: changes.sidebar ? { ...config.sidebar, ...changes.sidebar } : config.sidebar,
+        top: changes.top ? { ...config.top, ...changes.top } : config.top,
+        mobile: changes.mobile ? { ...config.mobile, ...changes.mobile } : config.mobile,
+        contentArea: mergedContentArea,
+      };
+    }
 
     // Config değişikliğini kontrol et - aynıysa güncelleme yapma
     const currentConfigStr = JSON.stringify(config);

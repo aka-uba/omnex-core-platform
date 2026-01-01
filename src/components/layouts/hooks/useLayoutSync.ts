@@ -6,6 +6,7 @@
 
 import { useEffect, useRef } from 'react';
 import { LayoutConfig } from '../core/LayoutConfig';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface UseLayoutSyncOptions {
   config: LayoutConfig;
@@ -52,7 +53,7 @@ export function useLayoutSync(options: UseLayoutSyncOptions) {
     // Yeni timeout oluştur
     timeoutRef.current = setTimeout(async () => {
       try {
-        const response = await fetch('/api/layout/config', {
+        const response = await fetchWithAuth('/api/layout/config', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

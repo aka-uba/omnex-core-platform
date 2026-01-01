@@ -16,7 +16,7 @@ interface UseLayoutDataOptions {
 export function useLayoutData(options: UseLayoutDataOptions = {}) {
   const { userId, userRole, companyId } = options;
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT_CONFIG);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Başlangıçta false - LayoutProvider zaten localStorage'dan okuyor
   const [error, setError] = useState<Error | null>(null);
 
   /**

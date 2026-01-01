@@ -214,5 +214,47 @@ export const BREAKPOINTS = {
 export const STORAGE_KEYS = {
   layoutConfig: 'omnex-layout-config-v2',
   layoutConfigTimestamp: 'omnex-layout-config-timestamp',
+  companyDefaults: 'omnex-company-defaults', // Admin tarafından belirlenen firma varsayılanları
 } as const;
+
+/**
+ * Firma varsayılanlarını localStorage'dan oku
+ * Admin "Varsayılan Yap" dediğinde bu değerler kaydedilir
+ * Yeni kullanıcılar için başlangıç değerleri olarak kullanılır
+ */
+export function getCompanyDefaults(): LayoutConfig {
+  if (typeof window === 'undefined') {
+    return DEFAULT_LAYOUT_CONFIG;
+  }
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.companyDefaults);
+    if (stored) {
+      return JSON.parse(stored) as LayoutConfig;
+    }
+  } catch {
+    // Silently fail
+  }
+
+  return DEFAULT_LAYOUT_CONFIG;
+}
+
+/**
+ * Firma varsayılanlarını localStorage'a kaydet
+ * Sadece admin tarafından çağrılmalı
+ */
+export function setCompanyDefaults(config: LayoutConfig): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    localStorage.setItem(STORAGE_KEYS.companyDefaults, JSON.stringify(config));
+    // Diğer tab'lara bildir
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: STORAGE_KEYS.companyDefaults,
+      newValue: JSON.stringify(config),
+    }));
+  } catch {
+    // Silently fail
+  }
+}
 

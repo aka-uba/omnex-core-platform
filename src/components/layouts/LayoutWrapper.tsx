@@ -14,6 +14,7 @@ import { MobileLayout } from './mobile/MobileLayout';
 import { SidebarLayout } from './sidebar/SidebarLayout';
 import { TopLayout } from './top/TopLayout';
 import { useAuth } from '@/hooks/useAuth';
+import { useCompany } from '@/context/CompanyContext';
 import { SessionTimeoutWarning } from '@/components/auth/SessionTimeoutWarning';
 
 interface LayoutWrapperProps {
@@ -106,11 +107,13 @@ function LayoutContent({ children }: LayoutWrapperProps) {
 
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const { user } = useAuth();
+  const { company } = useCompany();
 
   return (
     <LayoutProvider
       {...(user?.id ? { userId: user.id } : {})}
       {...(user?.role ? { userRole: user.role } : {})}
+      {...(company?.id ? { companyId: company.id } : {})}
     >
       <SessionTimeoutWarning />
       <LayoutContent>{children}</LayoutContent>

@@ -490,6 +490,84 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 **Layout Context Öncelik Sırası:**
 User > Role > Company > Default
 
+### 4.9 Tema Varsayılan Sistemi
+**Dosyalar**:
+- `src/components/layouts/core/LayoutConfig.ts` - Storage keys ve helper fonksiyonlar
+- `src/components/layouts/core/LayoutProvider.tsx` - Config yükleme öncelik sırası
+- `src/components/layouts/configurator/ThemeConfigurator.tsx` - Admin UI
+
+**LocalStorage Keys:**
+| Key | Açıklama |
+|-----|----------|
+| `omnex-layout-config-v2` | Kullanıcının kendi tema ayarları |
+| `omnex-layout-config-timestamp` | Son güncelleme zamanı |
+| `omnex-company-defaults` | Admin tarafından belirlenen firma varsayılanları |
+
+**Öncelik Sırası (İlk Render):**
+1. Kullanıcının kendi config'i (`omnex-layout-config-v2`)
+2. Firma varsayılanları (`omnex-company-defaults`)
+3. Sistem varsayılanları (`DEFAULT_LAYOUT_CONFIG`)
+
+**Admin "Varsayılan Yap" Butonu:**
+- Sadece admin rolleri görebilir: `SuperAdmin`, `Admin`, `TenantAdmin`, `CompanyAdmin`
+- Mevcut config'i `omnex-company-defaults` localStorage'a kaydeder
+- Aynı zamanda DB'ye kaydeder (cross-browser senkronizasyon için)
+- `setCompanyDefaults()` helper fonksiyonu kullanır
+
+**Kullanıcı "Sıfırla" Butonu:**
+- Tüm localStorage key'lerini temizler
+- Sayfa yeniden yüklenir (clean state)
+- LayoutProvider DB'den firma varsayılanlarını çeker
+- Sonraki yüklemelerde localStorage cache kullanılır
+
+**Cross-Browser Senkronizasyon:**
+```typescript
+// LayoutProvider.tsx - DB'den company defaults yükleme
+useEffect(() => {
+  // localStorage'da company defaults yoksa DB'den çek
+  if (!hasUserConfig && !hasCompanyDefaults && companyId) {
+    fetchWithAuth(`/api/layout/config?scope=company&companyId=${companyId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.data?.config) {
+          localStorage.setItem(STORAGE_KEYS.companyDefaults, JSON.stringify(data.data.config));
+          setConfigState(data.data.config);
+        }
+      });
+  }
+}, [companyId]);
+```
+
+**API Endpoint:**
+- `POST /api/layout/config` - Config kaydetme
+- `GET /api/layout/config?scope=company&companyId=xxx` - Firma varsayılanlarını çekme
+
+**Helper Fonksiyonlar (LayoutConfig.ts):**
+```typescript
+// Firma varsayılanlarını localStorage'a kaydet
+export function setCompanyDefaults(config: LayoutConfig): void {
+  localStorage.setItem(STORAGE_KEYS.companyDefaults, JSON.stringify(config));
+  // Diğer tab'lara bildir
+  window.dispatchEvent(new StorageEvent('storage', {
+    key: STORAGE_KEYS.companyDefaults,
+    newValue: JSON.stringify(config),
+  }));
+}
+
+// Firma varsayılanlarını localStorage'dan oku
+export function getCompanyDefaults(): LayoutConfig {
+  const stored = localStorage.getItem(STORAGE_KEYS.companyDefaults);
+  return stored ? JSON.parse(stored) : DEFAULT_LAYOUT_CONFIG;
+}
+```
+
+**i18n Keys (global namespace):**
+- `settings.theme.saveAsDefault` - "Varsayılan Yap"
+- `settings.theme.defaultsSaved` - "Firma varsayılanları kaydedildi"
+- `settings.theme.resetTitle` - "Sıfırla"
+- `settings.theme.resetConfirm` - "Ayarları sıfırlamak istediğinize emin misiniz?"
+- `settings.theme.resetSuccess` - "Ayarlar sıfırlandı"
+
 ---
 
 ## 5. API STANDARTLARI
@@ -1018,6 +1096,6 @@ cacheComponents: true
 
 ---
 
-**Son Güncelleme**: 2025-12-31
+**Son Güncelleme**: 2026-01-01
 **Platform Versiyonu**: 1.0.9
 **Next.js Versiyonu**: 16.1.1

@@ -5,6 +5,7 @@
  */
 
 import { LayoutConfig, DEFAULT_LAYOUT_CONFIG, LayoutSource } from './LayoutConfig';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 interface ResolveOptions {
   userId?: string;
@@ -72,23 +73,24 @@ export class LayoutResolver {
     const { userId, userRole, companyId } = options;
 
     try {
-      // Paralel olarak tüm config'leri yükle
+      // Paralel olarak tüm config'leri yükle (fetchWithAuth ile JWT token eklenir)
       const [userResponse, roleResponse, companyResponse] = await Promise.allSettled([
-        userId ? fetch(`/api/layout/config?scope=user&userId=${userId}`) : Promise.resolve(null),
-        userRole ? fetch(`/api/layout/config?scope=role&role=${userRole}`) : Promise.resolve(null),
-        companyId ? fetch(`/api/layout/config?scope=company&companyId=${companyId}`) : Promise.resolve(null),
+        userId ? fetchWithAuth(`/api/layout/config?scope=user&userId=${userId}`) : Promise.resolve(null),
+        userRole ? fetchWithAuth(`/api/layout/config?scope=role&role=${userRole}`) : Promise.resolve(null),
+        companyId ? fetchWithAuth(`/api/layout/config?scope=company&companyId=${companyId}`) : Promise.resolve(null),
       ]);
 
+      // API response format: { success: true, data: { config: {...} } }
       const userConfig = userResponse.status === 'fulfilled' && userResponse.value
-        ? await userResponse.value.json().then((data: { config?: LayoutConfig }) => data.config || null).catch(() => null)
+        ? await userResponse.value.json().then((res: { success?: boolean; data?: { config?: LayoutConfig } }) => res.data?.config || null).catch(() => null)
         : null;
 
       const roleConfig = roleResponse.status === 'fulfilled' && roleResponse.value
-        ? await roleResponse.value.json().then((data: { config?: LayoutConfig }) => data.config || null).catch(() => null)
+        ? await roleResponse.value.json().then((res: { success?: boolean; data?: { config?: LayoutConfig } }) => res.data?.config || null).catch(() => null)
         : null;
 
       const companyConfig = companyResponse.status === 'fulfilled' && companyResponse.value
-        ? await companyResponse.value.json().then((data: { config?: LayoutConfig }) => data.config || null).catch(() => null)
+        ? await companyResponse.value.json().then((res: { success?: boolean; data?: { config?: LayoutConfig } }) => res.data?.config || null).catch(() => null)
         : null;
 
       return {
