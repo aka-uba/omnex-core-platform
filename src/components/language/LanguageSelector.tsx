@@ -22,17 +22,18 @@ export function LanguageSelector({ size = 20 }: LanguageSelectorProps) {
   // Dil değiştirme fonksiyonu
   const changeLanguage = (newLocale: Locale) => {
     if (newLocale === currentLocale) return;
-    
+
     // Yeni locale'e göre direction'ı hesapla ve güncelle
     const isRTL = rtlLocales.includes(newLocale);
     const newDirection = isRTL ? 'rtl' : 'ltr';
     setDirection(newDirection);
-    
+
     // Pathname'den mevcut locale'i çıkar ve yeni locale ile değiştir
     const pathWithoutLocale = pathname?.replace(`/${currentLocale}`, '') || '';
     const newPath = `/${newLocale}${pathWithoutLocale || ''}`;
-    
-    router.push(newPath);
+
+    // Hard navigation to ensure all components reload with new locale
+    window.location.href = newPath;
   };
 
   return (
