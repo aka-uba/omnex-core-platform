@@ -1769,6 +1769,25 @@
     "inactive": "Inactive"
   },
 
+  "audit": {
+    "title": "Change History",
+    "recentChanges": "Recent Changes",
+    "viewAll": "View All History",
+    "noHistory": "No changes yet",
+    "loadError": "Error loading history",
+    "system": "System",
+    "actions": {
+      "create": "Created",
+      "update": "Updated",
+      "delete": "Deleted",
+      "view": "Viewed",
+      "export": "Exported",
+      "import": "Imported",
+      "login": "Logged In",
+      "logout": "Logged Out"
+    }
+  },
+
   "success": "Success",
   "error": "Error"
 }

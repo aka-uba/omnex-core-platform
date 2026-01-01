@@ -1769,6 +1769,25 @@
     "inactive": "Inaktiv"
   },
 
+  "audit": {
+    "title": "Änderungsverlauf",
+    "recentChanges": "Letzte Änderungen",
+    "viewAll": "Vollständigen Verlauf anzeigen",
+    "noHistory": "Noch keine Änderungen",
+    "loadError": "Fehler beim Laden des Verlaufs",
+    "system": "System",
+    "actions": {
+      "create": "Erstellt",
+      "update": "Aktualisiert",
+      "delete": "Gelöscht",
+      "view": "Angesehen",
+      "export": "Exportiert",
+      "import": "Importiert",
+      "login": "Angemeldet",
+      "logout": "Abgemeldet"
+    }
+  },
+
   "success": "Erfolg",
   "error": "Fehler"
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { Menu } from '@mantine/core';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { locales, localeNames, rtlLocales, type Locale } from '@/lib/i18n/config';
 import { FlagIcon } from './FlagIcon';
 import styles from './LanguageSelector.module.css';
@@ -13,7 +13,6 @@ interface LanguageSelectorProps {
 
 export function LanguageSelector({ size = 20 }: LanguageSelectorProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const { setDirection } = useTheme();
   
   // Mevcut locale'i pathname'den al

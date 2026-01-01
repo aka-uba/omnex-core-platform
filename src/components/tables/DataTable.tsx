@@ -24,6 +24,7 @@ import { FilterModal, FilterOption } from './FilterModal';
 import { ColumnSettingsModal, ColumnSettingsColumn, TableStyleSettings } from './ColumnSettingsModal';
 import { useExport } from '@/lib/export/ExportProvider';
 import { useTranslation } from '@/lib/i18n/client';
+import { AuditHistoryPopup } from '@/components/audit/AuditHistoryPopup';
 
 export type { FilterOption } from './FilterModal';
 export type { TableStyleSettings } from './ColumnSettingsModal';
@@ -103,6 +104,11 @@ export interface DataTableProps {
   showRowNumbers?: boolean; // Show row number (#) column (default: true)
   // Persistence
   tableId?: string; // Unique ID for persisting column settings to localStorage
+  // Audit history
+  showAuditHistory?: boolean; // Show audit history icon in actions column
+  auditEntityName?: string; // Entity name for audit logs (e.g., 'Apartment', 'Building')
+  auditIdKey?: string; // Key to use for entity ID in audit logs (default: 'id')
+  onAuditViewAll?: (entityId: string) => void; // Callback when "View All" is clicked in audit popup
 }
 
 export function DataTable({
@@ -132,6 +138,10 @@ export function DataTable({
   rowIdKey = 'id',
   showRowNumbers = true,
   tableId,
+  showAuditHistory = false,
+  auditEntityName,
+  auditIdKey = 'id',
+  onAuditViewAll,
 }: DataTableProps) {
   const { t } = useTranslation(exportNamespace);
   const { t: tGlobal } = useTranslation('global');
@@ -950,11 +960,21 @@ export function DataTable({
                     </Stack>
 
                     {/* Card Footer - Actions */}
-                    {actionsColumn && (
+                    {(actionsColumn || (showAuditHistory && auditEntityName)) && (
                       <Box className={classes.cardActions}>
-                        {actionsColumn.render
-                          ? actionsColumn.render((row as Record<string, any>)[actionsColumn.key], row)
-                          : null}
+                        <Group gap="xs" justify="flex-end">
+                          {/* Audit History Icon for mobile */}
+                          {showAuditHistory && auditEntityName && (
+                            <AuditHistoryPopup
+                              entityId={row[auditIdKey]}
+                              entityName={auditEntityName}
+                              onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
+                            />
+                          )}
+                          {actionsColumn?.render
+                            ? actionsColumn.render((row as Record<string, any>)[actionsColumn.key], row)
+                            : null}
+                        </Group>
                       </Box>
                     )}
                   </Card>
@@ -1132,7 +1152,16 @@ export function DataTable({
                             alignItems: 'center',
                             width: '100%',
                             color: 'inherit',
+                            gap: '4px',
                           }}>
+                            {/* Audit History Icon - shown before actions column content */}
+                            {isActionsColumn && showAuditHistory && auditEntityName && (
+                              <AuditHistoryPopup
+                                entityId={row[auditIdKey]}
+                                entityName={auditEntityName}
+                                onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
+                              />
+                            )}
                             {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
                           </div>
                         </Table.Td>

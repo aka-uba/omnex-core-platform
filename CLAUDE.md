@@ -314,6 +314,11 @@ const columns: DataTableColumn[] = [
   showColumnSettings={true}     // Kolon ayarları
   exportNamespace="modules/x"   // Export çevirileri
   defaultPageSize={25}
+  // Audit History (Değişiklik Geçmişi)
+  showAuditHistory={true}       // Audit ikonu göster
+  auditEntityName="Apartment"   // Entity adı (DB'deki model adı)
+  auditIdKey="id"               // Satır ID key (varsayılan: 'id')
+  onAuditViewAll={(entityId) => router.push(`/audit/${entityId}`)} // Tüm geçmişi gör
 />
 ```
 
@@ -476,6 +481,82 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 - `session.timeoutWarning.message`
 - `session.timeoutWarning.extend`
 - `session.timeoutWarning.logout`
+
+### 5.6.1 Audit History (Değişiklik Geçmişi)
+**Dosyalar**:
+- `src/components/audit/AuditHistoryPopup.tsx` - Popup bileşeni
+- `prisma/extensions/audit.prisma` - AuditLog modeli
+- `src/lib/services/auditLogService.ts` - Audit servis katmanı
+- `src/app/api/audit-logs/route.ts` - REST API endpoint
+
+**Özellikler:**
+- Her satır için değişiklik geçmişi gösterimi
+- Son 5 işlem popup'ta görüntülenir
+- Kim, ne zaman, hangi işlemi yaptı bilgisi
+- Değişen alanlar ve eski/yeni değerler
+
+**DataTable Entegrasyonu:**
+```tsx
+<DataTable
+  showAuditHistory={true}       // Audit ikonu göster
+  auditEntityName="Apartment"   // Entity adı (model adı ile aynı olmalı)
+  auditIdKey="id"               // Satır ID key
+  onAuditViewAll={(entityId) => {}} // Opsiyonel: Tüm geçmişi gör callback
+/>
+```
+
+**API Kullanımı:**
+```
+GET /api/audit-logs?entity=Apartment&entityId=xxx&pageSize=5
+```
+
+**AuditLog Kaydetme (API Route'larda):**
+```typescript
+import { logAuditEvent } from '@/lib/services/auditLogService';
+
+// CREATE işlemi
+await logAuditEvent(tenantContext, {
+  userId: currentUser.id,
+  companyId: companyId,
+  action: 'create',
+  entity: 'Apartment',
+  entityId: newItem.id,
+  metadata: { newValue: newItem },
+});
+
+// UPDATE işlemi
+await logAuditEvent(tenantContext, {
+  userId: currentUser.id,
+  companyId: companyId,
+  action: 'update',
+  entity: 'Apartment',
+  entityId: item.id,
+  metadata: {
+    oldValue: oldItem,
+    newValue: updatedItem,
+    changedFields: ['status', 'price'],
+  },
+});
+
+// DELETE işlemi
+await logAuditEvent(tenantContext, {
+  userId: currentUser.id,
+  companyId: companyId,
+  action: 'delete',
+  entity: 'Apartment',
+  entityId: item.id,
+  metadata: { oldValue: deletedItem },
+});
+```
+
+**i18n Keys (global namespace):**
+- `audit.title` → "Değişiklik Geçmişi"
+- `audit.recentChanges` → "Son Değişiklikler"
+- `audit.viewAll` → "Tüm Geçmişi Gör"
+- `audit.noHistory` → "Henüz değişiklik yok"
+- `audit.actions.create` → "Oluşturuldu"
+- `audit.actions.update` → "Güncellendi"
+- `audit.actions.delete` → "Silindi"
 
 ### 5.7 Layout Sistemi
 **Dosya**: `src/components/layouts/`
