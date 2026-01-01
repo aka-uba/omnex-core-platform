@@ -115,7 +115,11 @@ export function AuditHistoryPopup({
   };
 
   // Otomatik güncellenen ve gösterilmemesi gereken alanlar
-  const IGNORED_FIELDS = ['updatedAt', 'createdAt', 'id', 'tenantId', 'companyId'];
+  const IGNORED_FIELDS = [
+    'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
+    'property', 'contracts', 'payments', 'appointments', 'maintenance',
+    '_count', 'user', 'company', 'tenant'
+  ];
 
   const getChangeSummary = (log: AuditLog): string[] => {
     if (!log.metadata) return [];
@@ -131,11 +135,22 @@ export function AuditHistoryPopup({
           const oldVal = oldValue[field];
           const newVal = newValue[field];
 
-          // Değerleri kısalt
+          // Değerleri formatla
           const formatValue = (val: any): string => {
             if (val === null || val === undefined) return '-';
-            if (typeof val === 'string' && val.length > 20) return val.substring(0, 20) + '...';
-            if (typeof val === 'object') return JSON.stringify(val).substring(0, 20) + '...';
+            // Boolean değerleri
+            if (typeof val === 'boolean') return val ? '✓' : '✗';
+            // Sayılar
+            if (typeof val === 'number') return val.toLocaleString('tr-TR');
+            // Objeler - sadece ilk 30 karakter
+            if (typeof val === 'object') {
+              const str = JSON.stringify(val);
+              return str.length > 30 ? str.substring(0, 30) + '...' : str;
+            }
+            // Stringler - 30 karaktere kısalt
+            if (typeof val === 'string') {
+              return val.length > 30 ? val.substring(0, 30) + '...' : val;
+            }
             return String(val);
           };
 

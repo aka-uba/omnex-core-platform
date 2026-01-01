@@ -68,6 +68,13 @@ export function logAudit(
   });
 }
 
+// Audit log'da gösterilmeyecek alanlar
+const IGNORED_FIELDS = [
+  'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
+  'property', 'contracts', 'payments', 'appointments', 'maintenance',
+  '_count', 'user', 'company', 'tenant'
+];
+
 /**
  * Değişen alanları tespit et
  * Sadece değişen alanları döner, tüm objeyi değil
@@ -85,11 +92,17 @@ export function getChangedFields<T extends Record<string, any>>(
   const newValues: Record<string, any> = {};
 
   for (const key of Object.keys(newValue)) {
+    // İlişkili objeleri ve otomatik alanları atla
+    if (IGNORED_FIELDS.includes(key)) continue;
+
     const oldVal = oldValue[key];
     const newVal = newValue[key];
 
     // Skip undefined values
     if (newVal === undefined) continue;
+
+    // İlişkili objeleri atla (nested objects with id)
+    if (newVal && typeof newVal === 'object' && !Array.isArray(newVal) && 'id' in newVal) continue;
 
     // Compare values (handle dates, null, etc.)
     const oldCompare = oldVal && typeof oldVal === 'object' && 'toISOString' in oldVal ? (oldVal as Date).toISOString() : oldVal;
