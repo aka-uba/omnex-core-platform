@@ -129,10 +129,14 @@ export function AuditHistoryPopup({
     }
   }, [entityId, entityName, limit, t]);
 
-  const handleOpen = useCallback(() => {
-    setOpened(true);
-    fetchHistory();
-  }, [fetchHistory]);
+  const handleToggle = useCallback(() => {
+    if (!opened) {
+      setOpened(true);
+      fetchHistory();
+    } else {
+      setOpened(false);
+    }
+  }, [opened, fetchHistory]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -263,13 +267,12 @@ export function AuditHistoryPopup({
   return (
     <Popover
       opened={opened}
-      onClose={() => setOpened(false)}
+      onChange={setOpened}
       position="bottom-end"
       withArrow
       shadow="md"
       width={320}
-      closeOnClickOutside={true}
-      closeOnEscape={true}
+      clickOutsideEvents={['mousedown', 'touchstart']}
     >
       <Popover.Target>
         <Tooltip label={t('audit.title')} withArrow>
@@ -279,7 +282,7 @@ export function AuditHistoryPopup({
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
-              handleOpen();
+              handleToggle();
             }}
           >
             <IconHistory size={16} />
