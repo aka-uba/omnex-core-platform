@@ -4,6 +4,8 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { employeeUpdateSchema } from '@/modules/hr/schemas/hr.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
+
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
@@ -86,7 +88,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       // Check if employee exists
       const existingEmployee = await tenantPrisma.employee.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingEmployee || existingEmployee.tenantId !== tenantContext.id) {
@@ -147,6 +148,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Employee', id, existingEmployee, updatedEmployee, existingEmployee.companyId || undefined);
+
       return successResponse({
         employee: {
           ...updatedEmployee,
@@ -177,12 +182,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       // Check if employee exists
       const existingEmployee = await tenantPrisma.employee.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingEmployee || existingEmployee.tenantId !== tenantContext.id) {
         return errorResponse('Not found', 'Employee not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Employee', id, existingEmployee.companyId || undefined, {
+        employeeNumber: existingEmployee.employeeNumber,
+      });
 
       // Delete employee
       await tenantPrisma.employee.delete({

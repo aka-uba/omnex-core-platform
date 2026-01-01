@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { expenseCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/accounting/expenses - List expenses
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ expenses: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -170,6 +171,14 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Expense', newExpense.id, companyId, {
+        name: newExpense.name,
+        category: newExpense.category,
+        amount: newExpense.amount,
       });
 
       return successResponse({

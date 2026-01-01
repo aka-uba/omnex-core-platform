@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { productUpdateSchema } from '@/modules/production/schemas/product.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -185,6 +186,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Product', id, existingProduct, updatedProduct, existingProduct.companyId || undefined);
+
       return successResponse({
         product: {
           ...updatedProduct,
@@ -234,6 +239,13 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
           productId: id,
         },
       }) > 0;
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Product', id, existingProduct.companyId || undefined, {
+        name: existingProduct.name,
+        code: existingProduct.code,
+      });
 
       if (hasProductionOrders) {
         // Soft delete instead

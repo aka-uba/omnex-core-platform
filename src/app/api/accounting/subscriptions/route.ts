@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { subscriptionCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/accounting/subscriptions - List subscriptions
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ subscriptions: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -158,6 +159,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Subscription', newSubscription.id, companyId, {
+        name: newSubscription.name,
+        type: newSubscription.type,
       });
 
       return successResponse({

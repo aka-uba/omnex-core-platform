@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { productCreateSchema } from '@/modules/production/schemas/product.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/production/products - List products
 export async function GET(request: NextRequest) {
@@ -196,6 +197,14 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Product', newProduct.id, companyId, {
+        name: newProduct.name,
+        code: newProduct.code,
+        type: newProduct.type,
       });
 
       return successResponse({

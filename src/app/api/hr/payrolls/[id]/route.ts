@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { payrollUpdateSchema } from '@/modules/hr/schemas/hr.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -87,7 +88,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       // Check if payroll exists
       const existingPayroll = await tenantPrisma.payroll.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingPayroll || existingPayroll.tenantId !== tenantContext.id) {
@@ -131,6 +131,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Payroll', id, existingPayroll, updatedPayroll, existingPayroll.companyId || undefined);
+
       return successResponse({
         payroll: {
           ...updatedPayroll,
@@ -168,12 +172,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       // Check if payroll exists
       const existingPayroll = await tenantPrisma.payroll.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingPayroll || existingPayroll.tenantId !== tenantContext.id) {
         return errorResponse('Not found', 'Payroll not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Payroll', id, existingPayroll.companyId || undefined, {
+        period: existingPayroll.period,
+        status: existingPayroll.status,
+      });
 
       // Delete payroll
       await tenantPrisma.payroll.delete({

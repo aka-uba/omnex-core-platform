@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { maintenanceRecordCreateSchema } from '@/modules/maintenance/schemas/maintenance.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/maintenance/records - List maintenance records
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ records: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -204,6 +205,14 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'MaintenanceRecord', newRecord.id, companyId, {
+        title: newRecord.title,
+        type: newRecord.type,
+        status: newRecord.status,
       });
 
       // Send notification (non-blocking)

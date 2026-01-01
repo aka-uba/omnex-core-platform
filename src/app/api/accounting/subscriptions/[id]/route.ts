@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { subscriptionUpdateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 interface RouteParams {
   params: Promise<{
@@ -163,6 +164,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Subscription', id, existingSubscription, updatedSubscription, existingSubscription.companyId || undefined);
+
       return successResponse({
         subscription: {
           ...updatedSubscription,
@@ -204,6 +209,13 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       if (!existingSubscription) {
         return errorResponse('Not found', 'Subscription not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Subscription', id, existingSubscription.companyId || undefined, {
+        name: existingSubscription.name,
+        type: existingSubscription.type,
+      });
 
       // Check if subscription has invoices or payments
       const hasInvoices = await tenantPrisma.invoice.count({

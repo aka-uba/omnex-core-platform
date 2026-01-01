@@ -4,6 +4,8 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { expenseUpdateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
+
 interface RouteParams {
   params: Promise<{
     id: string;
@@ -119,6 +121,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Expense', id, existingExpense, updatedExpense, existingExpense.companyId || undefined);
+
       return successResponse({
         expense: {
           ...updatedExpense,
@@ -158,6 +164,13 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       if (!existingExpense) {
         return errorResponse('Not found', 'Expense not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Expense', id, existingExpense.companyId || undefined, {
+        name: existingExpense.name,
+        category: existingExpense.category,
+      });
 
       // Check if expense is approved
       if (existingExpense.status === 'approved') {

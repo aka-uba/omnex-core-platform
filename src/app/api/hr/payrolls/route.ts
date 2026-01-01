@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { payrollCreateSchema } from '@/modules/hr/schemas/hr.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/hr/payrolls - List payrolls
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ payrolls: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -189,6 +190,12 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Payroll', newPayroll.id, companyId, {
+        period: newPayroll.period,
       });
 
       return successResponse({

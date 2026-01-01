@@ -5,6 +5,8 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { invoiceUpdateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
+
 interface RouteParams {
   params: Promise<{
     id: string;
@@ -158,6 +160,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Invoice', id, existingInvoice, updatedInvoice, existingInvoice.companyId || undefined);
+
       return successResponse({
         invoice: {
           ...updatedInvoice,
@@ -201,6 +207,13 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       if (!existingInvoice) {
         return errorResponse('Not found', 'Invoice not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Invoice', id, existingInvoice.companyId || undefined, {
+        invoiceNumber: existingInvoice.invoiceNumber,
+        status: existingInvoice.status,
+      });
 
       // Check if invoice is paid
       if (existingInvoice.status === 'paid') {

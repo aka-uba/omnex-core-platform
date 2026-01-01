@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { invoiceCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // Generate invoice number
 function generateInvoiceNumber(): string {
   const timestamp = Date.now();
@@ -207,6 +208,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Invoice', newInvoice.id, companyId, {
+        invoiceNumber: newInvoice.invoiceNumber,
+        status: newInvoice.status,
       });
 
       return successResponse({

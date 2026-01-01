@@ -4,6 +4,8 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { maintenanceRecordUpdateSchema } from '@/modules/maintenance/schemas/maintenance.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
+
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
@@ -84,7 +86,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       // Check if record exists
       const existingRecord = await tenantPrisma.maintenanceRecord.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingRecord) {
@@ -206,6 +207,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         console.error('Error sending maintenance updated notification:', notificationError);
       }
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'MaintenanceRecord', id, existingRecord, updatedRecord, existingRecord.companyId || undefined);
+
       return successResponse({
         record: {
           ...updatedRecord,
@@ -239,12 +244,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       // Check if record exists
       const existingRecord = await tenantPrisma.maintenanceRecord.findUnique({
         where: { id },
-        select: { id: true, tenantId: true },
       });
 
       if (!existingRecord) {
         return errorResponse('Not found', 'Maintenance record not found', 404);
       }
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'MaintenanceRecord', id, existingRecord.companyId || undefined, {
+        title: existingRecord.title,
+        type: existingRecord.type,
+      });
 
       // Note: withTenant already provides tenant isolation via per-tenant database
       // Delete maintenance record

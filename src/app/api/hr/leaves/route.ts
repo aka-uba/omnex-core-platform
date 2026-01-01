@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { leaveCreateSchema } from '@/modules/hr/schemas/hr.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/hr/leaves - List leaves
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ leaves: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -181,6 +182,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Leave', newLeave.id, companyId, {
+        type: newLeave.type,
+        status: newLeave.status,
       });
 
       return successResponse({

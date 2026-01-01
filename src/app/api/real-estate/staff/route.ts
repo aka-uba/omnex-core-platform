@@ -6,6 +6,7 @@ import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { realEstateStaffSchema } from '@/modules/real-estate/schemas/staff.schema';
 import { Prisma } from '@prisma/tenant-client';
 import { z } from 'zod';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/staff - List staff
 export async function GET(request: NextRequest) {
@@ -144,6 +145,13 @@ export async function POST(request: NextRequest) {
             notes: validatedData.notes || null,
             isActive: true,
           },
+        });
+
+        // Log audit event
+        const auditContext = await getAuditContext(request);
+        logCreate(tenantContext, auditContext, 'RealEstateStaff', staff.id, companyId, {
+          name: staff.name,
+          role: staff.role,
         });
 
         return successResponse({ staff });

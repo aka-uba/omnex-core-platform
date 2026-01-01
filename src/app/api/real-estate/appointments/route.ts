@@ -6,6 +6,7 @@ import { appointmentCreateSchema } from '@/modules/real-estate/schemas/appointme
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
 import { notifyAppointmentCreated } from '@/modules/real-estate/services/appointmentNotificationService';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/appointments - List appointments
 export async function GET(request: NextRequest) {
@@ -182,6 +183,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Appointment', newAppointment.id, companyId, {
+        title: newAppointment.title,
+        status: newAppointment.status,
       });
 
       // Send notification for new appointment (async, non-blocking)

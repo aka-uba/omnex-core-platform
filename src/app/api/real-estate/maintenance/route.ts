@@ -6,6 +6,7 @@ import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { realEstateMaintenanceRecordCreateSchema } from '@/modules/real-estate/schemas/maintenance-record.schema';
 import { Prisma } from '@prisma/tenant-client';
 import { z } from 'zod';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/maintenance - List maintenance records
 export async function GET(request: NextRequest) {
@@ -165,6 +166,13 @@ export async function POST(request: NextRequest) {
             photos: validatedData.photos || [],
             notes: validatedData.notes || null,
           },
+        });
+
+        // Log audit event
+        const auditContext = await getAuditContext(request);
+        logCreate(tenantContext, auditContext, 'RealEstateMaintenanceRecord', record.id, companyId, {
+          title: record.title,
+          type: record.type,
         });
 
         return successResponse({ record });

@@ -6,6 +6,7 @@ import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { agreementReportCreateSchema } from '@/modules/real-estate/schemas/agreement-report.schema';
 import { Prisma } from '@prisma/tenant-client';
 import { z } from 'zod';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/agreement-reports - List agreement reports
 export async function GET(request: NextRequest) {
@@ -165,6 +166,13 @@ export async function POST(request: NextRequest) {
             attachments: validatedData.attachments || [],
             status: 'draft',
           },
+        });
+
+        // Log audit event
+        const auditContext = await getAuditContext(request);
+        logCreate(tenantContext, auditContext, 'AgreementReport', report.id, companyId, {
+          type: report.type,
+          agreementStatus: report.agreementStatus,
         });
 
         return successResponse({ report });

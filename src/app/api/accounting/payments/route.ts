@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { accountingPaymentCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 // GET /api/accounting/payments - List payments
 export async function GET(request: NextRequest) {
   return withTenant<ApiResponse<{ payments: unknown[]; total: number; page: number; pageSize: number }>>(
@@ -174,6 +175,13 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'AccountingPayment', newPayment.id, companyId, {
+        amount: newPayment.amount.toString(),
+        paymentMethod: newPayment.paymentMethod,
       });
 
       // Update invoice status if payment is for an invoice
