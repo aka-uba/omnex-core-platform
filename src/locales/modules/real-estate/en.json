@@ -4,24 +4,35 @@
   "menu": {
     "label": "Real Estate",
     "items": {
-      "dashboard": "Dashboard",
-      "properties": "Properties",
-      "apartments": "Apartments",
-      "tenants": "Tenants",
-      "contracts": "Contracts",
+      "dashboard": "Overview",
       "payments": "Payments",
+      "tenants": "Tenants",
+      "apartments": "Apartments",
+      "staff": "Staff",
+      "properties": "Properties",
+      "agreementReports": "Agreement Reports",
+      "agreement-reports": "Agreement Reports",
       "appointments": "Appointments",
+      "contracts": "Contracts",
+      "maintenance": "Maintenance",
+      "contractTemplates": "Contract Templates",
+      "contract-templates": "Contract Templates",
+      "bulkOperations": "Bulk Operations",
+      "bulk-operations": "Bulk Operations",
       "email": "Email Campaigns",
+      "sendEmail": "Send Email",
+      "send": "Send Email",
+      "campaigns": "Campaigns",
       "reports": "Reports",
-      "staff": "Staff"
+      "settings": "Settings"
     }
   },
   "dashboard": {
-    "title": "Real Estate Dashboard",
+    "title": "Real Estate Management Overview",
     "description": "Overview of your real estate management",
     "totalRevenue": "Total Revenue",
     "monthlyRevenue": "Monthly Revenue",
-    "recentActivity": "Recent Activity",
+    "recentActivity": "Recent Activities",
     "noActivity": "No recent activity",
     "active": "Active",
     "occupied": "Occupied",
@@ -48,7 +59,7 @@
   },
   "properties": {
     "title": "Properties",
-    "description": "Manage your real estate properties",
+    "description": "Manage your properties",
     "create": {
       "title": "New Property",
       "description": "Create a new property"
@@ -60,7 +71,37 @@
     "detail": {
       "title": "Property Details",
       "description": "View property details"
-    }
+    },
+    "fields": {
+      "propertyNumber": "Property Number",
+      "constructionYear": "Construction Year",
+      "lastRenovationDate": "Last Renovation Date",
+      "landArea": "Land Area (m²)",
+      "floorCount": "Floor Count",
+      "livingArea": "Living Area (m²)",
+      "purchaseDate": "Purchase Date",
+      "purchasePrice": "Purchase Price",
+      "isPaidOff": "Paid Off",
+      "financingStartDate": "Financing Start Date",
+      "financingEndDate": "Financing End Date",
+      "monthlyFinancingRate": "Monthly Financing Installment",
+      "numberOfInstallments": "Number of Installments",
+      "financingPaymentDay": "Financing Installment Day",
+      "type": "Type"
+    },
+    "sections": {
+      "masterData": "Master Data",
+      "address": "Address Information",
+      "purchaseInfo": "Purchase Information",
+      "financing": "Financing Information"
+    },
+    "delete": {
+      "title": "Delete Property",
+      "confirm": "Are you sure you want to delete this property?",
+      "success": "Property successfully deleted",
+      "error": "Error occurred while deleting property"
+    },
+    "details": "Details"
   },
   "apartments": {
     "title": "Apartments",
@@ -77,27 +118,91 @@
       "title": "Apartment Details",
       "description": "View apartment details"
     },
+    "details": "Details",
+    "floor": "Floor",
+    "block": "Block",
+    "area": "Area",
+    "roomCount": "Room Count",
+    "rooms": "rooms",
+    "rentPrice": "Rent Price",
+    "salePrice": "Sale Price",
+    "deliveryDate": "Delivery Date",
+    "currentTenant": "Current Tenant",
+    "currentRent": "Current Rent",
+    "nextPaymentDate": "Next Payment Date",
+    "managedBy": "Managed By Staff",
+    "propertyManager": "Property Manager",
+    "status": {
+      "empty": "Empty",
+      "rented": "Occupied",
+      "sold": "Sold",
+      "maintenance": "Under Maintenance"
+    },
+    "fields": {
+      "apartmentType": "Apartment Type",
+      "bedroomCount": "Bedroom Count",
+      "basementSize": "Basement Size (m²)",
+      "lastRenovationDate": "Last Renovation Date",
+      "internetSpeed": "Internet Speed",
+      "heatingSystems": "Heating Systems",
+      "coldRent": "Net Rent",
+      "additionalCosts": "Additional Costs",
+      "heatingCosts": "Heating Costs",
+      "deposit": "Deposit",
+      "usageRights": "Usage Rights",
+      "area": "Area (m²)",
+      "roomCount": "Room Count",
+      "bathroomCount": "Bathroom Count",
+      "floor": "Floor",
+      "block": "Block",
+      "balcony": "Balcony",
+      "livingRoom": "Living Room",
+      "description": "Description"
+    },
+    "sections": {
+      "basicInfo": "Basic Information",
+      "roomsAndAreas": "Rooms and Areas",
+      "heatingAndInternet": "Heating and Internet",
+      "monthlyCosts": "Monthly Costs",
+      "usageRights": "Usage Rights"
+    },
+    "heatingSystem": {
+      "primary": "Primary System",
+      "secondary": "Secondary System",
+      "system1": "Heating System 1",
+      "system2": "Heating System 2",
+      "system3": "Heating System 3",
+      "system4": "Heating System 4"
+    },
+    "usageRight": {
+      "name": "Right Name",
+      "selected": "Selected"
+    },
+    "delete": {
+      "title": "Delete Apartment",
+      "confirm": "Are you sure you want to delete this apartment?",
+      "success": "Apartment successfully deleted",
+      "error": "Error occurred while deleting apartment"
+    },
+    "form": {
+      "unit": "Apartment"
+    },
+    "images": "Images",
+    "contactForDetails": "Contact for details",
     "tenantHistory": "Tenant History",
     "maintenance": "Maintenance",
-    "maintenanceDescription": "Click 'View All' to see maintenance records for this apartment or create a new maintenance request.",
-    "form": {
-      "unit": "Unit"
-    }
+    "maintenanceDescription": "Click the 'View All' button to see maintenance records for this apartment or create a new maintenance request."
   },
   "tenants": {
     "title": "Tenants",
     "description": "Manage tenants and their information",
-    "apartmentInfo": "Apartment Info",
+    "apartmentInfo": "Apartment Information",
     "currentApartment": "Current Apartment",
     "noActiveContract": "No active contract found",
     "noActiveContractHint": "This tenant does not have an active rental contract",
-    "type": {
-      "individual": "Individual",
-      "company": "Company"
-    },
     "create": {
       "title": "New Tenant",
-      "description": "Add a new tenant"
+      "description": "Add new tenant"
     },
     "edit": {
       "title": "Edit Tenant",
@@ -106,6 +211,51 @@
     "detail": {
       "title": "Tenant Details",
       "description": "View tenant details and analytics"
+    },
+    "fields": {
+      "tenantType": "Tenant Type",
+      "companyName": "Company Name",
+      "salutation": "Salutation",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "birthDate": "Birth Date",
+      "birthPlace": "Birth Place",
+      "street": "Street",
+      "houseNumber": "Building Number",
+      "postalCode": "Postal Code",
+      "city": "City",
+      "phone": "Landline",
+      "mobile": "Mobile Phone",
+      "email": "Email",
+      "nationality": "Nationality",
+      "taxNumber": "Tax Number"
+    },
+    "types": {
+      "person": "Person",
+      "company": "Company"
+    },
+    "type": {
+      "individual": "Individual",
+      "company": "Company"
+    },
+    "salutations": {
+      "mr": "Mr.",
+      "mrs": "Mrs.",
+      "ms": "Ms.",
+      "dr": "Dr."
+    },
+    "sections": {
+      "typeInfo": "Type Information",
+      "personalInfo": "Personal Information",
+      "addressInfo": "Address Information",
+      "contactInfo": "Contact Information",
+      "additionalInfo": "Additional Information"
+    },
+    "delete": {
+      "title": "Delete Tenant",
+      "confirm": "Are you sure you want to delete this tenant?",
+      "success": "Tenant successfully deleted",
+      "error": "Error occurred while deleting tenant"
     }
   },
   "contracts": {
@@ -119,6 +269,16 @@
       "title": "Edit Contract",
       "description": "Edit contract information"
     },
+    "detail": {
+      "title": "Contract Details",
+      "description": "View contract details"
+    },
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "expired": "Expired",
+      "terminated": "Terminated"
+    },
     "tracking": {
       "title": "Contract Tracking",
       "description": "Track contract renewals and expirations"
@@ -126,6 +286,10 @@
     "templates": {
       "title": "Contract Templates",
       "description": "Manage contract templates",
+      "detail": {
+        "title": "Contract Template Details",
+        "description": "View contract template details"
+      },
       "create": {
         "title": "New Contract Template",
         "description": "Create a new contract template"
@@ -133,27 +297,72 @@
       "edit": {
         "title": "Edit Contract Template",
         "description": "Edit contract template"
+      },
+      "delete": {
+        "title": "Delete Contract Template",
+        "confirm": "Are you sure you want to delete this contract template?",
+        "success": "Contract template successfully deleted",
+        "error": "Error occurred while deleting contract template"
       }
+    },
+    "delete": {
+      "title": "Delete Contract",
+      "confirm": "Are you sure you want to delete this contract?",
+      "success": "Contract successfully deleted",
+      "error": "Error occurred while deleting contract"
     }
   },
   "payments": {
     "title": "Payments",
     "description": "Manage rental payments and transactions",
+    "create": {
+      "title": "New Payment",
+      "description": "Record a new payment"
+    },
+    "edit": {
+      "title": "Edit Payment",
+      "description": "Edit payment information"
+    },
+    "detail": {
+      "title": "Payment Details",
+      "description": "View payment details",
+      "paymentInfo": "Payment Information",
+      "type": "Type",
+      "status": "Status",
+      "amount": "Amount",
+      "extraCharges": "Extra Charges",
+      "totalAmount": "Total Amount",
+      "currency": "Currency",
+      "dueDate": "Due Date",
+      "paidDate": "Paid Date",
+      "paymentMethod": "Payment Method",
+      "receiptNumber": "Receipt Number",
+      "relatedInfo": "Related Information",
+      "apartment": "Apartment",
+      "property": "Property",
+      "contract": "Contract",
+      "notes": "Notes",
+      "systemInfo": "System Information",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "reminderSent": "Reminder Sent"
+    },
+    "autoGenerated": "Auto Generated",
     "list": "List",
     "analytics": "Analytics",
     "monthlyTracker": {
       "tab": "Monthly Tracker",
       "title": "Monthly Payment Tracker",
-      "description": "Track monthly payment status",
-      "monthView": "Month View",
-      "yearView": "Year View",
+      "description": "Track monthly payment statuses",
+      "monthView": "Monthly View",
+      "yearView": "Yearly View",
       "month": "Month",
       "totalPayments": "Total Payments",
       "paidPayments": "Paid",
       "pendingPayments": "Pending",
       "overduePayments": "Overdue",
       "expectedAmount": "Expected Amount",
-      "collectedAmount": "Collected",
+      "collectedAmount": "Collected Amount",
       "collectionRate": "Collection Rate",
       "noData": "No data found",
       "noPayment": "No Payment",
@@ -171,51 +380,7 @@
       "total": "total",
       "paid": "paid",
       "paidAmount": "Paid Amount",
-      "error": "Error loading data"
-    },
-    "create": {
-      "title": "Create Payment",
-      "description": "Record a new payment"
-    },
-    "edit": {
-      "title": "Edit Payment",
-      "description": "Edit payment information"
-    },
-    "markedAsPaid": "Payment marked as paid",
-    "markAsPaid": "Mark as Paid",
-    "markAsPaidError": "Error marking payment as paid",
-    "completePayment": {
-      "title": "Complete Payment",
-      "description": "Select the payment date and method to complete this payment",
-      "paidDate": "Payment Date",
-      "paymentMethod": "Payment Method",
-      "selectMethod": "Select payment method",
-      "confirm": "Complete Payment"
-    },
-    "quickEdit": {
-      "title": "Quick Edit",
-      "description": "Quickly update the payment date and method",
-      "confirm": "Update",
-      "updateSuccess": "Payment details updated"
-    },
-    "quickBoard": {
-      "upcoming": "Upcoming Payments",
-      "overdue": "Overdue Payments",
-      "next30Days": "Next 30 Days",
-      "requiresAction": "Requires Action",
-      "noUpcoming": "No upcoming payments",
-      "noOverdue": "No overdue payments",
-      "daysLeft": "days left",
-      "daysLate": "days late",
-      "projected": "Projected",
-      "viewContract": "View Contract"
-    },
-    "status": {
-      "pending": "Pending",
-      "paid": "Paid",
-      "overdue": "Overdue",
-      "partial": "Partial",
-      "cancelled": "Cancelled"
+      "error": "Error occurred while loading data"
     },
     "types": {
       "rent": "Rent",
@@ -223,25 +388,149 @@
       "fee": "Fee",
       "maintenance": "Maintenance",
       "utility": "Utility"
+    },
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "partial": "Partial Payment",
+      "cancelled": "Cancelled"
+    },
+    "methods": {
+      "cash": "Cash",
+      "bankTransfer": "Bank Transfer",
+      "bank_transfer": "Bank Transfer",
+      "card": "Card",
+      "credit_card": "Credit Card",
+      "check": "Check",
+      "autoDebit": "Auto Debit"
+    },
+    "markedAsPaid": "Payment marked as paid",
+    "markAsPaid": "Mark as Paid",
+    "markAsPaidError": "Error occurred while marking payment",
+    "completePayment": {
+      "title": "Complete Payment",
+      "description": "Select payment date and method to complete this payment",
+      "paidDate": "Paid Date",
+      "paymentMethod": "Payment Method",
+      "selectMethod": "Select payment method",
+      "confirm": "Complete Payment"
+    },
+    "quickEdit": {
+      "title": "Quick Edit",
+      "description": "Quickly update payment date and method",
+      "confirm": "Update",
+      "updateSuccess": "Payment information updated"
+    },
+    "quickBoard": {
+      "upcoming": "Upcoming Payments",
+      "overdue": "Overdue Payments",
+      "next30Days": "Next 30 Days",
+      "requiresAction": "Action Required",
+      "noUpcoming": "No upcoming payments",
+      "noOverdue": "No overdue payments",
+      "daysLeft": "days left",
+      "daysLate": "days late",
+      "projected": "Projected",
+      "viewContract": "View Contract"
+    },
+    "exportDescription": "Real Estate Payments Report",
+    "exportSuccess": "Payments successfully exported",
+    "exportError": "Error occurred while exporting payments",
+    "delete": {
+      "title": "Delete Payment",
+      "confirm": "Are you sure you want to delete this payment?",
+      "success": "Payment successfully deleted",
+      "error": "Error occurred while deleting payment"
     }
   },
   "appointments": {
     "title": "Appointments",
-    "description": "Manage property viewings and appointments",
-    "create": {
-      "title": "Create Appointment",
-      "description": "Schedule a new appointment"
+    "description": "Manage appointments and viewings",
+    "create": "New Appointment",
+    "edit": "Edit Appointment",
+    "createPage": {
+      "title": "New Appointment",
+      "description": "Create a new appointment"
     },
-    "edit": {
+    "editPage": {
       "title": "Edit Appointment",
-      "description": "Edit appointment details"
+      "description": "Edit appointment information"
     },
     "detail": {
       "title": "Appointment Details",
       "description": "View appointment details"
-    }
+    },
+    "types": {
+      "viewing": "Viewing",
+      "delivery": "Delivery",
+      "maintenance": "Maintenance",
+      "inspection": "Inspection",
+      "meeting": "Meeting"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No Show"
+    },
+    "delete": {
+      "title": "Delete Appointment",
+      "confirm": "Are you sure you want to delete this appointment?",
+      "success": "Appointment successfully deleted",
+      "error": "Error occurred while deleting appointment"
+    },
+    "markedAsCompleted": "Appointment marked as completed",
+    "markAsCompletedError": "Error occurred while marking appointment",
+    "followUpForm": "Appointment Follow-up Form",
+    "followUpDescription": "Fill in the details after the appointment is completed",
+    "rating": "Rating",
+    "forViewing": "for viewing",
+    "interestLevel": "Interest Level",
+    "interestLevels": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "resultNotes": "Result Notes",
+    "enterResultNotes": "Enter result notes...",
+    "outcome": "Outcome",
+    "enterOutcome": "Enter outcome...",
+    "nextAction": "Next Action",
+    "enterNextAction": "Enter next action...",
+    "followUpSaved": "Follow-up information successfully saved",
+    "details": "Details",
+    "followUp": "Follow-up",
+    "minutes": "minutes",
+    "result": "Result",
+    "markAsCompleted": "Mark as Completed"
   },
   "email": {
+    "title": "Email",
+    "edit": "Edit Email Template",
+    "update": {
+      "success": "Email template successfully updated"
+    },
+    "create": {
+      "title": "Create Email Template",
+      "success": "Email template successfully created"
+    },
+    "save": {
+      "error": "An error occurred while saving email template"
+    },
+    "delete": {
+      "title": "Delete Email Template",
+      "confirm": "Are you sure you want to delete this email template?",
+      "success": "Email template successfully deleted",
+      "error": "Error occurred while deleting email template"
+    },
+    "categories": {
+      "promotion": "Promotion",
+      "announcement": "Announcement",
+      "reminder": "Reminder",
+      "welcome": "Welcome",
+      "agreement": "Agreement"
+    },
     "templates": {
       "title": "Email Templates",
       "description": "Manage email templates",
@@ -256,20 +545,203 @@
     },
     "campaigns": {
       "title": "Email Campaigns",
-      "description": "Manage email campaigns"
+      "description": "Manage email campaigns",
+      "listTab": "Campaigns",
+      "analyticsTab": "Analytics",
+      "detail": {
+        "title": "Campaign Details",
+        "description": "View email campaign details",
+        "createdAt": "Created At",
+        "recipients": "Recipients"
+      }
+    },
+    "campaign": {
+      "delete": {
+        "title": "Delete Email Campaign",
+        "confirm": "Are you sure you want to delete this email campaign?",
+        "success": "Email campaign successfully deleted",
+        "error": "Error occurred while deleting email campaign"
+      },
+      "status": {
+        "draft": "Draft",
+        "scheduled": "Scheduled",
+        "sending": "Sending",
+        "sent": "Sent",
+        "failed": "Failed"
+      }
+    },
+    "wizard": {
+      "step1": {
+        "title": "Recipients",
+        "description": "Select recipients",
+        "manualEmail": "Add Email",
+        "emailPlaceholder": "Enter email address",
+        "selectTenants": "Select Tenants",
+        "tenantPlaceholder": "Search and select tenants",
+        "selectApartments": "Select Apartments (Get Tenants)",
+        "apartmentPlaceholder": "Search and select apartments",
+        "selectedRecipients": "Selected Recipients",
+        "noRecipients": "No recipients selected. Add recipients to continue."
+      },
+      "step2": {
+        "title": "Template",
+        "description": "Select template",
+        "noTemplates": "No templates found. Create a template first.",
+        "selectedTemplate": "Selected Template"
+      },
+      "step3": {
+        "title": "Apartment",
+        "description": "Link apartment (optional)",
+        "selectedApartment": "Selected Apartment",
+        "autoFillVariables": "Auto-fill Template Variables",
+        "availableVariables": "Available Variables",
+        "variablesHint": "These variables will be automatically filled in the template:",
+        "skipMessage": "You can skip this step. Linking apartment is optional."
+      },
+      "step4": {
+        "title": "Content",
+        "description": "Edit content",
+        "availableVariables": "Available Variables",
+        "clickToAdd": "Click to add variable to content",
+        "currentVariables": "Current Variable Values"
+      },
+      "step5": {
+        "title": "Preview",
+        "description": "Preview and test",
+        "desktop": "Desktop",
+        "mobile": "Mobile",
+        "emailPreview": "Email Preview",
+        "sendTest": "Send Test Email",
+        "testEmailPlaceholder": "Enter your email address",
+        "sendTestButton": "Send Test",
+        "testHint": "Send yourself a test email to see how it will look",
+        "summary": "Email Summary",
+        "recipients": "Recipients",
+        "template": "Template",
+        "apartment": "Apartment",
+        "invalidEmail": "Please enter a valid email address",
+        "testSent": "Test email successfully sent",
+        "testError": "Error occurred while sending test email",
+        "noRecipients": "No recipients selected. Please go back and add recipients.",
+        "noTemplate": "No template selected. Please go back and select a template."
+      },
+      "step6": {
+        "title": "Send",
+        "description": "Confirm and send",
+        "sendNow": "Send Now",
+        "sendNowDescription": "Send email immediately",
+        "schedule": "Schedule Send Time",
+        "schedulePlaceholder": "Select date and time",
+        "summary": "Email Summary",
+        "recipients": "Recipients",
+        "template": "Template",
+        "apartment": "Apartment",
+        "tracking": "Tracking and Analytics",
+        "trackingDescription": "Email opens and clicks will be automatically tracked",
+        "openTracking": "Open Tracking",
+        "clickTracking": "Click Tracking",
+        "confirmTitle": "Ready to Send",
+        "confirmNow": "This email will be sent to all recipients immediately.",
+        "confirmScheduled": "This email will be sent to all recipients at the specified date and time.",
+        "sent": "Email successfully sent",
+        "scheduled": "Email successfully scheduled",
+        "sendError": "Error occurred while sending email"
+      },
+      "send": "Send"
+    },
+    "analytics": {
+      "totalCampaigns": "Total Campaigns",
+      "openRate": "Open Rate",
+      "clickRate": "Click Rate",
+      "totalRecipients": "Total Recipients",
+      "monthlyTrend": "Monthly Trend",
+      "sent": "Sent",
+      "opened": "Opened",
+      "clicked": "Clicked",
+      "statusBreakdown": "Status Breakdown",
+      "topTemplates": "Top Templates",
+      "recentCampaigns": "Recent Campaigns",
+      "noTemplates": "No templates found",
+      "noCampaigns": "No campaigns found",
+      "noData": "No analytics data found",
+      "noDataDescription": "No email campaigns have been created or sent yet. After creating and sending campaigns, you can view analytics data here."
     },
     "send": {
       "title": "Send Email",
-      "description": "Send email to tenants"
+      "description": "Send email to tenants",
+      "success": "Email successfully sent",
+      "error": "Error occurred while sending email"
+    },
+    "description": "Manage email templates and campaigns",
+    "status": {
+      "default": "Default",
+      "active": "Active",
+      "inactive": "Inactive"
     }
   },
   "map": {
-    "title": "Property Map",
-    "description": "View properties on map"
+    "title": "Map",
+    "description": "View your properties on the map",
+    "mapboxTokenMissing": "Mapbox Token Required",
+    "mapboxTokenMissingDescription": "Mapbox provider is selected but access token is missing. Please configure from module settings or use free OpenStreetMap.",
+    "goToSettings": "Go to Settings",
+    "totalProperties": "Total Buildings",
+    "totalApartments": "Total Apartments",
+    "rented": "Occupied",
+    "empty": "Empty",
+    "geocodingInProgress": "Finding property coordinates..."
   },
   "reports": {
     "title": "Reports",
-    "description": "Generate and view reports"
+    "description": "Create and view reports",
+    "tabs": {
+      "overview": "Overview",
+      "agreement": "Agreement Reports",
+      "financial": "Financial Reports",
+      "property": "Property Reports",
+      "tenant": "Tenant Reports"
+    },
+    "stats": {
+      "totalProperties": "Total Properties",
+      "totalApartments": "Total Apartments",
+      "totalTenants": "Total Tenants",
+      "activeContracts": "Active Contracts",
+      "totalPayments": "Total Payments",
+      "totalAppointments": "Total Appointments"
+    },
+    "quickActions": "Quick Actions",
+    "exportSummary": "Export Summary",
+    "viewAgreementReports": "View Agreement Reports",
+    "viewPayments": "View Payments",
+    "financial": {
+      "title": "Financial Reports",
+      "description": "Create comprehensive financial reports including payments, income and expenses."
+    },
+    "property": {
+      "title": "Property Reports",
+      "description": "Create property and apartment reports including occupancy rates and status information."
+    },
+    "tenant": {
+      "title": "Tenant Reports",
+      "description": "Create tenant reports including analytics, payment history and contract information."
+    },
+    "exportSuccess": "Report successfully exported",
+    "exportError": "Error occurred while exporting report",
+    "exportDescription": "Real Estate Report",
+    "viewPaymentDetails": "View Payment Details",
+    "viewProperties": "View Properties",
+    "viewTenants": "View Tenants",
+    "types": {
+      "summary": "Summary Report",
+      "financial": "Financial Report",
+      "property": "Property Report",
+      "tenant": "Tenant Report"
+    },
+    "column": {
+      "date": "Date",
+      "type": "Type",
+      "details": "Details"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -280,7 +752,7 @@
     "description": "Manage staff members",
     "tabs": {
       "details": "Details",
-      "detailsDescription": "Detailed information about this staff member is displayed above.",
+      "detailsDescription": "Detailed information about the staff member is displayed above.",
       "assignedProperties": "Assigned Properties",
       "assignedApartments": "Assigned Apartments",
       "userInfo": "User Information",
@@ -291,7 +763,9 @@
     "editUserInfo": "Edit User Information",
     "create": {
       "title": "New Staff Member",
-      "description": "Add a new staff member"
+      "description": "Add new staff member",
+      "success": "Success",
+      "error": "Error"
     },
     "edit": {
       "title": "Edit Staff Member",
@@ -299,11 +773,19 @@
     },
     "detail": {
       "title": "Staff Details",
-      "description": "View staff member details"
+      "description": "View staff member details",
+      "createdAt": "Created At"
     },
     "performance": {
       "title": "Performance",
-      "description": "View staff performance metrics"
+      "description": "View staff performance metrics",
+      "detailedMetrics": "Detailed Metrics",
+      "totalPaid": "Total Paid",
+      "completed": "completed"
+    },
+    "analytics": {
+      "paymentAmountTrend": "Payment Amount Trend",
+      "maintenanceTrend": "Maintenance Trend"
     },
     "types": {
       "internal": "Internal",
@@ -312,24 +794,67 @@
     "roles": {
       "manager": "Manager",
       "agent": "Agent",
+      "accountant": "Accountant",
       "maintenance": "Maintenance",
+      "observer": "Observer",
       "administrator": "Administrator"
     },
     "delete": {
+      "title": "Delete Staff",
       "confirm": "Are you sure you want to delete this staff member?",
-      "success": "Staff member deleted successfully",
-      "error": "Failed to delete staff member"
+      "success": "Staff member successfully deleted",
+      "error": "Error occurred while deleting staff member"
+    },
+    "noDocuments": "No documents uploaded yet",
+    "profileImage": {
+      "uploadSuccess": "Profile image successfully uploaded",
+      "uploadError": "Error occurred while uploading profile image"
+    },
+    "uploadProfileImage": "Upload Profile Image",
+    "setProfileImage": "Change Profile Image",
+    "uploadProfileImageHint": "Upload profile image. Recommended size: 400x400px. Maximum file size: 5MB.",
+    "form": {
+      "profileImage": "Profile Image",
+      "uploadProfileImage": "Upload Profile Image",
+      "setProfileImage": "Change Profile Image",
+      "uploadProfileImageHint": "Upload profile image. Recommended size: 400x400px. Maximum file size: 5MB.",
+      "profileImageUploadSuccess": "Profile image successfully uploaded",
+      "profileImageUploadError": "Error occurred while uploading profile image",
+      "staffType": "Staff Type",
+      "staffTypePlaceholder": "Select staff type",
+      "user": "System User",
+      "userPlaceholder": "Select system user",
+      "internalStaffHint": "Select a user from the system. This user will have access to the real estate module.",
+      "name": "Name",
+      "namePlaceholder": "Enter name",
+      "nameAutoFill": "Name will be auto-filled from user data",
+      "email": "Email",
+      "emailPlaceholder": "Enter email",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter phone",
+      "role": "Role",
+      "rolePlaceholder": "Select role",
+      "properties": "Properties",
+      "propertiesPlaceholder": "Select properties",
+      "apartments": "Apartments",
+      "apartmentsPlaceholder": "Select apartments",
+      "apartmentsHint": "Number of assigned units will be automatically calculated",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes"
+    },
+    "update": {
+      "success": "Success"
     }
   },
   "maintenance": {
     "title": "Maintenance",
-    "viewAll": "View All",
     "description": "Manage maintenance requests",
+    "viewAll": "View All",
     "create": {
       "title": "New Maintenance Request",
-      "description": "Create a maintenance request",
-      "success": "Maintenance record created successfully",
-      "error": "Failed to save maintenance record"
+      "description": "Create maintenance request",
+      "success": "Maintenance record successfully created",
+      "error": "Error occurred while saving maintenance record"
     },
     "edit": {
       "title": "Edit Maintenance Request",
@@ -351,22 +876,22 @@
       "cancelled": "Cancelled"
     },
     "update": {
-      "success": "Maintenance record updated successfully",
-      "error": "Failed to update maintenance record"
+      "success": "Maintenance record successfully updated",
+      "error": "Error occurred while updating maintenance record"
     },
     "delete": {
       "title": "Delete Maintenance Record",
-      "confirm": "Are you sure you want to delete this record?",
-      "success": "Maintenance record deleted successfully",
-      "error": "Failed to delete maintenance record"
+      "confirm": "Are you sure you want to delete this maintenance record?",
+      "success": "Maintenance record successfully deleted",
+      "error": "Error occurred while deleting maintenance record"
     },
-    "noData": "No maintenance records found",
-    "createFirst": "Create first record",
+    "noData": "No maintenance record found",
+    "createFirst": "Create first maintenance record",
     "created": "Maintenance record created",
     "updated": "Maintenance record updated",
     "deleted": "Maintenance record deleted",
     "validation": {
-      "required": "Please fill required fields"
+      "required": "Please fill in required fields"
     },
     "table": {
       "date": "Date",
@@ -393,9 +918,29 @@
   "bulkOperations": {
     "title": "Bulk Operations",
     "description": "Perform bulk operations",
+    "empty": "No operation found",
     "create": {
       "title": "New Bulk Operation",
-      "description": "Create a new bulk operation"
+      "description": "Create new bulk operation",
+      "button": "Create Bulk Operation",
+      "success": "Bulk operation successfully created",
+      "error": "Error occurred while creating bulk operation"
+    },
+    "execute": {
+      "success": "Bulk operation successfully executed"
+    },
+    "delete": {
+      "title": "Delete Bulk Operation",
+      "confirm": "Are you sure you want to delete this bulk operation?",
+      "success": "Bulk operation successfully deleted",
+      "error": "Error occurred while deleting bulk operation"
+    },
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
     },
     "types": {
       "rent_increase": "Rent Increase",
@@ -405,12 +950,12 @@
       "custom": "Custom"
     },
     "detail": {
-      "title": "Bulk Operation Details",
+      "title": "Bulk Operation Detail",
       "description": "View bulk operation details",
       "progress": "Progress",
       "totalAffected": "Total Affected",
-      "successCount": "Success Count",
-      "failedCount": "Failed Count",
+      "successCount": "Successful",
+      "failedCount": "Failed",
       "progressPercent": "Progress Percentage",
       "parameters": "Parameters",
       "results": "Results",
@@ -420,12 +965,55 @@
       "completedAt": "Completed At",
       "updatedAt": "Updated At"
     },
-    "status": {
-      "pending": "Pending",
-      "processing": "Processing",
-      "completed": "Completed",
+    "filter": {
+      "type": "Filter by Type",
+      "status": "Filter by Status"
+    },
+    "table": {
+      "title": "Title",
+      "type": "Type",
+      "status": "Status",
+      "affected": "Affected",
+      "success": "Successful",
       "failed": "Failed",
-      "cancelled": "Cancelled"
+      "createdAt": "Created At"
+    },
+    "type": "Operation Type",
+    "selectType": "Select operation type",
+    "titlePlaceholder": "Enter operation title",
+    "descriptionPlaceholder": "Enter operation description",
+    "rentIncrease": {
+      "apartments": "Apartments (Optional - Leave empty for all)",
+      "selectApartments": "Select apartments or leave empty for all",
+      "contracts": "Contracts (Optional - Leave empty for all)",
+      "selectContracts": "Select contracts or leave empty for all",
+      "increaseType": "Increase Type",
+      "selectType": "Select type",
+      "percentage": "Percentage (%)",
+      "fixed": "Fixed Amount",
+      "percentageValue": "Percentage (%)",
+      "fixedValue": "Fixed Amount",
+      "enterValue": "Enter value",
+      "effectiveDate": "Effective Date",
+      "selectDate": "Select date",
+      "notifyTenants": "Notify Tenants",
+      "createNewPayments": "Create New Payments"
+    },
+    "feeUpdate": {
+      "apartments": "Apartments (Optional - Leave empty for all)",
+      "selectApartments": "Select apartments or leave empty for all",
+      "feeType": "Fee Type",
+      "selectType": "Select type",
+      "selectFeeType": "Select fee type",
+      "maintenance": "Maintenance Fee",
+      "utility": "Utility Fee",
+      "other": "Other Fee",
+      "newAmount": "New Amount",
+      "amount": "Amount",
+      "enterAmount": "Enter amount",
+      "effectiveDate": "Effective Date",
+      "selectDate": "Select date",
+      "notifyTenants": "Notify Tenants"
     }
   },
   "agreementReports": {
@@ -433,7 +1021,7 @@
     "description": "View and manage agreement reports",
     "create": {
       "title": "New Agreement Report",
-      "description": "Create a new agreement report"
+      "description": "Create new agreement report"
     },
     "edit": {
       "title": "Edit Agreement Report",
@@ -441,7 +1029,55 @@
     },
     "detail": {
       "title": "Agreement Report Details",
-      "description": "View agreement report details"
+      "description": "View agreement report details",
+      "createdAt": "Created At"
+    },
+    "agreementReport": {
+      "detail": {
+        "title": "Agreement Report",
+        "description": "View agreement report details",
+        "createdAt": "Created At"
+      },
+      "types": {
+        "boss": "Boss",
+        "owner": "Owner",
+        "tenant": "Tenant",
+        "internal": "Internal"
+      },
+      "status": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "viewed": "Viewed"
+      },
+      "agreementStatus": {
+        "pre_agreement": "Pre-Agreement",
+        "signed": "Signed",
+        "delivery_scheduled": "Delivery Scheduled",
+        "deposit_received": "Deposit Received"
+      },
+      "recipient": {
+        "email": "Enter email address",
+        "name": "Enter name (optional)"
+      },
+      "selectApartmentFirst": "Please select an apartment first",
+      "tenantAdded": "Tenant added as recipient",
+      "recipientExists": "Recipient already added",
+      "noRecipients": "No recipients added. Click the 'Add Recipient' button to add.",
+      "selectTenants": "Select Tenants",
+      "create": {
+        "success": "Agreement report successfully created",
+        "error": "An error occurred while creating agreement report"
+      },
+      "update": {
+        "success": "Agreement report successfully updated",
+        "error": "An error occurred while updating agreement report"
+      },
+      "delete": {
+        "title": "Delete Agreement Report",
+        "confirm": "Are you sure you want to delete this agreement report?",
+        "success": "Agreement report successfully deleted",
+        "error": "An error occurred while deleting agreement report"
+      }
     }
   },
   "types": {
@@ -460,13 +1096,21 @@
     "bankTransfer": "Bank Transfer",
     "autoDebit": "Auto Debit"
   },
+  "tenantTypes": {
+    "person": "Person",
+    "company": "Company"
+  },
+  "salutations": {
+    "mr": "Mr.",
+    "mrs": "Mrs."
+  },
   "status": {
     "active": "Active",
     "inactive": "Inactive",
     "empty": "Empty",
-    "rented": "Rented",
+    "rented": "Occupied",
     "sold": "Sold",
-    "maintenance": "Maintenance",
+    "maintenance": "Under Maintenance",
     "pending": "Pending",
     "paid": "Paid",
     "overdue": "Overdue",
@@ -477,18 +1121,16 @@
     "urgent": "Urgent",
     "upcoming": "Upcoming",
     "default": "Default",
+    "draft": "Draft",
+    "expired": "Expired",
+    "terminated": "Terminated",
     "paidOff": "Paid Off",
-    "notPaidOff": "Not Paid Off"
-  },
-  "tenantTypes": {
-    "person": "Person",
-    "company": "Company"
-  },
-  "salutations": {
-    "mr": "Mr.",
-    "mrs": "Mrs."
+    "notPaidOff": "Not Paid Off",
+    "yes": "Yes",
+    "no": "No"
   },
   "actions": {
+    "title": "Actions",
     "create": "Create New",
     "update": "Update",
     "delete": "Delete",
@@ -497,27 +1139,102 @@
     "save": "Save",
     "cancel": "Cancel",
     "viewDetails": "View Details",
-    "back": "Back"
+    "back": "Back",
+    "export": "Export",
+    "add": "Add",
+    "addSelected": "Add Selected",
+    "addTenantsFromApartments": "Add Tenants from Apartments",
+    "next": "Next",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "previous": "Previous",
+    "preview": "Preview",
+    "clear": "Clear",
+    "execute": "Execute",
+    "remove": "Remove"
   },
   "table": {
     "name": "Name",
     "type": "Type",
+    "propertyNumber": "Property No",
     "address": "Address",
     "city": "City",
     "district": "District",
-    "units": "Units",
+    "units": "Unit Count",
     "status": "Status",
+    "preview": "Preview",
     "actions": "Actions",
-    "unitNumber": "Unit Number",
-    "unit": "Unit",
+    "unitNumber": "Apartment No",
+    "unit": "Apartment",
     "property": "Property",
     "area": "Area",
-    "rooms": "Rooms",
+    "rooms": "Room Count",
     "active": "Active",
-    "contractNumber": "Contract Number",
+    "contractNumber": "Contract No",
     "apartment": "Apartment",
     "endDate": "End Date",
     "daysUntil": "Days Until",
+    "role": "Role",
+    "assignedUnits": "Assigned Units",
+    "collectionRate": "Collection Rate",
+    "category": "Category",
+    "description": "Description",
+    "agreementStatus": "Agreement Status",
+    "rentAmount": "Rent Amount",
+    "sentAt": "Sent At",
+    "scheduledDate": "Scheduled Date",
+    "estimatedCost": "Estimated Cost",
+    "tenantNumber": "Tenant No",
+    "userId": "User ID",
+    "contactId": "Contact ID",
+    "moveInDate": "Move-in Date",
+    "tenant": "Tenant",
+    "startDate": "Start Date",
+    "amount": "Amount",
+    "dueDate": "Due Date",
+    "paidDate": "Paid Date",
+    "contract": "Contract",
+    "subject": "Subject",
+    "recipients": "Recipients",
+    "sent": "Sent",
+    "opened": "Opened",
+    "clicked": "Clicked",
+    "template": "Template",
+    "openRate": "Open Rate",
+    "clickRate": "Click Rate",
+    "floor": "Floor",
+    "paymentMethod": "Payment Method",
+    "maintenanceCompletion": "Maintenance Completion",
+    "noRecipients": "No recipients found",
+    "email": "Email",
+    "fullName": "Full Name",
+    "phone": "Phone",
+    "noPayments": "No payments found",
+    "noAgreementReportTemplates": "No agreement report template found",
+    "noEmailTemplates": "No email template found",
+    "noEmailCampaigns": "No email campaign found",
+    "noContractTemplates": "No contract template found",
+    "noAppointments": "No appointment found",
+    "noContracts": "No contract found",
+    "noMaintenanceRecords": "No maintenance record found",
+    "noAgreementReports": "No agreement report found",
+    "noProperties": "No property found",
+    "noStaff": "No staff found",
+    "noApartments": "No apartment found",
+    "noTenants": "No tenant found",
+    "moveOutDate": "Move-out Date",
+    "emptyApartments": "Empty Apartments",
+    "averageVacancyDays": "Average Vacancy Days",
+    "customerSatisfaction": "Customer Satisfaction",
+    "totalContracts": "Total Contracts",
+    "totalMaintenance": "Total Maintenance Records",
+    "scheduledAt": "Scheduled At",
+    "notes": "Notes",
+    "title": "Title",
+    "isDefault": "Set as Default",
+    "notDefault": "Not Default",
+    "contentHint": "Use {{variableName}} for dynamic values (e.g.: {{contractNumber}}, {{tenantName}}, {{rentAmount}})",
+    "premium": "Premium",
     "apartmentType": "Apartment Type",
     "floor": "Floor",
     "basementSize": "Basement Size",
@@ -525,68 +1242,92 @@
     "bathrooms": "Bathrooms",
     "lastRenovation": "Last Renovation",
     "internetSpeed": "Internet Speed",
-    "coldRent": "Cold Rent",
+    "coldRent": "Net Rent",
     "additionalCosts": "Additional Costs",
     "heatingCosts": "Heating Costs",
     "deposit": "Deposit",
     "landArea": "Land Area",
     "livingArea": "Living Area",
     "yearBuilt": "Year Built",
-    "renovatedYear": "Renovated Year",
+    "renovatedYear": "Renovation Date",
     "purchasePrice": "Purchase Price",
-    "paidOff": "Paid Off",
+    "paidOff": "Payment Status",
     "financingStart": "Financing Start",
     "financingEnd": "Financing End",
-    "financingRate": "Monthly Rate",
-    "numberOfInstallments": "No. of Installments",
-    "financingPaymentDay": "Payment Day",
+    "financingRate": "Monthly Installment",
+    "numberOfInstallments": "Number of Installments",
+    "financingPaymentDay": "Installment Day",
     "tenantType": "Tenant Type",
     "companyName": "Company Name",
     "salutation": "Salutation",
     "firstName": "First Name",
     "lastName": "Last Name",
     "birthDate": "Birth Date",
-    "mobile": "Mobile",
-    "phone": "Phone",
-    "email": "Email",
-    "contract": "Contract",
-    "amount": "Amount",
-    "title": "Title",
-    "startDate": "Start Date",
-    "dueDate": "Due Date",
-    "paidDate": "Paid Date",
-    "tenant": "Tenant",
-    "paymentMethod": "Payment Method",
-    "noPayments": "No payments found",
-    "noProperties": "No properties found",
-    "noApartments": "No apartments found",
-    "noTenants": "No tenants found",
+    "mobile": "Mobile Phone",
     "lastPaymentStatus": "Payment Status",
     "lastPaymentDate": "Last Payment Date"
   },
   "form": {
+    "files": "files",
+    "recipients": "Recipients",
+    "attachments": "Attachments",
+    "deliveryDate": "Delivery Date",
+    "contractDate": "Contract Date",
+    "specialTerms": "Special Terms",
+    "nextSteps": "Next Steps",
+    "agreementStatus": "Agreement Status",
+    "selectAgreementStatus": "Select agreement status",
+    "selectAppointment": "Select appointment",
+    "rentAmount": "Rent Amount",
+    "rentAmountPlaceholder": "Enter rent amount",
+    "deposit": "Deposit",
+    "depositPlaceholder": "Enter deposit",
+    "specialTermsPlaceholder": "Enter special terms",
+    "nextStepsPlaceholder": "Enter next steps",
+    "endDateAfterStart": "End date must be after start date",
+    "enterTitle": "Enter title",
+    "enterDescription": "Enter description",
+    "startTime": "Start Time (HH:mm)",
+    "endTime": "End Time (HH:mm)",
+    "enterDuration": "Enter duration",
+    "durationAutoCalculated": "Automatically calculated from start and end dates",
+    "enterLocation": "Enter location",
+    "externalParticipants": "External Participants",
+    "addParticipant": "Add Participant",
     "name": "Name",
-    "namePlaceholder": "Enter property name",
+    "namePlaceholder": "Enter template name",
+    "phone": "Landline",
+    "email": "Email",
+    "followUpRequired": "Follow-up Required",
+    "selectTime": "Select time",
+    "apartment": "Apartment",
+    "selectApartment": "Select apartment",
+    "noApartmentsFound": "No apartment found",
+    "unknownProperty": "Unknown Building",
     "type": "Type",
     "typePlaceholder": "Select type",
+    "selectType": "Select type",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "selectStatus": "Select status",
     "code": "Code",
-    "codePlaceholder": "Optional code",
+    "codePlaceholder": "Enter code (optional)",
     "address": "Address",
     "addressPlaceholder": "Enter address",
     "city": "City",
-    "cityPlaceholder": "Enter city",
+    "cityPlaceholder": "Enter city name",
     "district": "District",
     "districtPlaceholder": "Enter district",
     "neighborhood": "Neighborhood",
     "neighborhoodPlaceholder": "Enter neighborhood",
     "street": "Street",
-    "streetPlaceholder": "Enter street",
+    "streetPlaceholder": "Enter street name",
     "buildingNo": "Building No",
     "buildingNoPlaceholder": "Enter building number",
     "postalCode": "Postal Code",
     "postalCodePlaceholder": "Enter postal code",
     "country": "Country",
-    "countryPlaceholder": "Enter country",
+    "countryPlaceholder": "Select country",
     "latitude": "Latitude",
     "latitudePlaceholder": "Enter latitude",
     "longitude": "Longitude",
@@ -594,18 +1335,117 @@
     "monthlyFee": "Monthly Fee",
     "monthlyFeePlaceholder": "Enter monthly fee",
     "paymentDay": "Payment Day",
-    "paymentDayPlaceholder": "Enter payment day (1-31)",
+    "paymentDayPlaceholder": "Select payment day (1-31)",
+    "title": "Title",
+    "titlePlaceholder": "Enter title",
     "description": "Description",
     "descriptionPlaceholder": "Enter description",
+    "scheduledDate": "Scheduled Date",
+    "selectDateTime": "Select date and time",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "assignedStaff": "Assigned Staff (Optional)",
+    "selectStaff": "Select staff",
+    "performedByStaff": "Performed By Staff (Optional)",
+    "back": "Back",
+    "tenantNumber": "Tenant Number",
+    "tenantNumberPlaceholder": "Enter tenant number",
+    "tenantType": "Tenant Type",
+    "tenantTypePlaceholder": "Select tenant type",
+    "tenantTypePerson": "Person",
+    "tenantTypeCompany": "Company",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "Enter company name",
+    "userId": "User ID",
+    "userIdPlaceholder": "Enter user ID (optional)",
+    "contactId": "Contact ID",
+    "contactIdPlaceholder": "Enter contact ID (optional)",
+    "salutation": "Salutation",
+    "salutationPlaceholder": "Select salutation",
+    "salutationMr": "Mr.",
+    "salutationMrs": "Mrs.",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter last name",
+    "birthDate": "Birth Date",
+    "birthDatePlaceholder": "Select birth date",
+    "birthPlace": "Birth Place",
+    "birthPlacePlaceholder": "Enter birth place",
+    "houseNumber": "Building Number",
+    "houseNumberPlaceholder": "Enter building number",
+    "phonePlaceholder": "Enter landline number",
+    "mobile": "Mobile Phone",
+    "mobilePlaceholder": "Enter mobile phone number",
+    "emailPlaceholder": "Enter email address",
+    "invalidEmail": "Invalid email address",
+    "nationality": "Nationality",
+    "nationalityPlaceholder": "Enter nationality information",
+    "taxNumber": "Tax Number",
+    "taxNumberPlaceholder": "Enter tax number",
+    "moveInDate": "Move-in Date",
+    "moveInDatePlaceholder": "Select move-in date",
+    "moveOutDate": "Move-out Date",
+    "moveOutDatePlaceholder": "Select move-out date",
+    "notes": "Notes",
+    "notesPlaceholder": "Enter notes",
+    "sections": {
+      "basic": "Basic Information",
+      "personal": "Personal Information",
+      "address": "Address Information",
+      "contact": "Contact Information",
+      "notes": "Notes"
+    },
+    "tenant": "Tenant",
+    "tenantPlaceholder": "Select tenant",
+    "template": "Template",
+    "templatePlaceholder": "Select template (optional)",
+    "contractNumber": "Contract Number",
+    "contractNumberPlaceholder": "Enter contract number",
+    "renewalDate": "Renewal Date",
+    "renewalDatePlaceholder": "Select renewal date",
+    "currency": "Currency",
+    "currencyPlaceholder": "Enter currency",
+    "paymentType": "Payment Type",
+    "paymentTypePlaceholder": "Select payment type",
+    "autoRenewal": "Auto Renewal",
+    "renewalNoticeDays": "Renewal Notice Days",
+    "renewalNoticeDaysPlaceholder": "Enter renewal notice days",
+    "increaseRate": "Increase Rate",
+    "increaseRatePlaceholder": "Enter increase rate (0-1)",
+    "terms": "Terms",
+    "termsPlaceholder": "Enter contract terms",
+    "mustBePositive": "must be positive",
+    "mustBeNonNegative": "cannot be negative",
+    "startDatePlaceholder": "Select start date",
+    "endDatePlaceholder": "Select end date",
+    "contract": "Contract (Optional)",
+    "none": "None",
+    "receiptNumber": "Receipt Number (Optional)",
+    "paymentMethod": "Payment Method (Optional)",
+    "duration": "Duration (minutes)",
+    "location": "Location (Optional)",
+    "followUpDate": "Follow-up Date",
+    "followUpNotes": "Follow-up Notes (Optional)",
+    "subject": "Email Subject",
+    "subjectPlaceholder": "Enter email subject",
+    "subjectHint": "Use {{variableName}} for dynamic values",
+    "htmlContent": "HTML Content",
+    "htmlContentPlaceholder": "Enter HTML content",
+    "htmlContentHint": "Use {{variableName}} for dynamic values",
+    "textContent": "Text Content",
+    "textContentPlaceholder": "Enter text content (optional)",
+    "textContentHint": "This text will be displayed if email clients don't support HTML",
     "property": "Property",
     "propertyPlaceholder": "Select property",
-    "unitNumber": "Unit Number",
-    "unitNumberPlaceholder": "Enter unit number",
+    "selectProperty": "Select property",
+    "unitNumber": "Apartment Number",
+    "unitNumberPlaceholder": "Enter apartment number",
     "floor": "Floor",
     "floorPlaceholder": "Enter floor",
     "block": "Block",
     "blockPlaceholder": "Enter block",
-    "area": "Area (m²)",
+    "area": "Area",
     "areaPlaceholder": "Enter area",
     "roomCount": "Room Count",
     "roomCountPlaceholder": "Enter room count",
@@ -618,18 +1458,83 @@
     "salePrice": "Sale Price",
     "salePricePlaceholder": "Enter sale price",
     "documents": "Documents",
-    "noDocuments": "No documents uploaded",
     "uploadDocuments": "Upload Documents",
     "uploadDocumentsHint": "Click or drag files here (PDF, Images, Word documents)",
-    "buildingInfo": "Building Information",
-    "purchaseAndFinancing": "Purchase & Financing",
-    "coordinates": "Coordinates",
+    "images": "Images",
+    "uploadImages": "Upload Images",
+    "uploadImagesHint": "Click or drag images here (JPG, PNG, WEBP)",
+    "imageUploadSuccess": "Image Uploaded",
+    "imageUploadSuccessMessage": "Image successfully uploaded",
+    "imageUploadError": "Image Upload Error",
+    "invalidImageType": "Only image files are allowed (PNG, JPG, WEBP)",
+    "coverImage": "Cover Image",
+    "selectCoverImage": "Select Cover Image",
+    "coverImageHint": "Main image to be displayed in list view",
+    "imageGallery": "Image Gallery",
+    "noImages": "No images added yet",
+    "setAsCover": "Set as Cover",
+    "removeImage": "Remove Image",
+    "imagePreview": "Image Preview",
+    "required": "Required",
+    "amountRequired": "Amount must be greater than 0",
+    "amount": "Amount",
+    "enterAmount": "Enter amount",
+    "dueDate": "Due Date",
+    "paidDate": "Paid Date",
+    "selectContract": "Select contract",
+    "selectPaymentMethod": "Select payment method",
+    "enterReceiptNumber": "Enter receipt number",
+    "extraCharges": "Extra Charges",
+    "addExtraCharge": "Add Extra Charge",
+    "chargeName": "Charge name",
+    "totalAmount": "Total Amount",
+    "createdAt": "Created At",
+    "enterNotes": "Enter notes",
+    "isAutoGenerated": "Auto Generated",
+    "reminderSent": "Reminder Sent",
+    "selectDate": "Select date",
+    "selectTemplate": "Select template",
+    "appointment": "Appointment",
+    "automaticAttachments": "Automatic Attachments",
+    "automaticAttachmentsHint": "The following files will be automatically added to this report:",
+    "staffType": "Staff Type",
+    "selectStaffType": "Select staff type",
+    "user": "System User",
+    "selectUser": "Select system user",
+    "internalStaffHint": "Select a user from the system. This user will have access to the real estate module.",
+    "nameAutoFill": "Name will be auto-filled from user data",
+    "selectRole": "Select role",
+    "properties": "Properties",
+    "selectProperties": "Select properties",
+    "apartments": "Apartments",
+    "selectApartments": "Select apartments",
+    "apartmentsHint": "Number of assigned units will be automatically calculated",
+    "selectTenants": "Select Tenants",
+    "selectTenantsPlaceholder": "Search and select tenants",
+    "categoryPlaceholder": "Select category",
+    "category": "Category",
+    "isDefault": "Set as Default",
+    "isDefaultDescription": "This template will be used as default for this category",
+    "notDefault": "Not Default",
+    "content": "Template Content",
+    "contentPlaceholder": "Enter template content (HTML supported, use {{variable}} for dynamic values)",
+    "contentHint": "Use {{variableName}} for dynamic values (e.g.: {{contractNumber}}, {{tenantName}}, {{rentAmount}})",
+    "premium": "Premium",
+    "isActiveDescription": "Only active templates can be used in campaigns",
+    "propertyNumber": "Property Number",
+    "propertyNumberPlaceholder": "Enter property number",
+    "totalUnits": "Total Apartment Count",
+    "totalUnitsPlaceholder": "Enter total apartment count",
     "constructionYear": "Construction Year",
     "constructionYearPlaceholder": "Enter construction year",
-    "floorCount": "Floor Count",
-    "floorCountPlaceholder": "Enter floor count",
     "lastRenovationDate": "Last Renovation Date",
     "lastRenovationDatePlaceholder": "Select last renovation date",
+    "landArea": "Land Area (m²)",
+    "landAreaPlaceholder": "Enter land area",
+    "floorCount": "Floor Count",
+    "floorCountPlaceholder": "Enter floor count",
+    "livingArea": "Living Area (m²)",
+    "livingAreaPlaceholder": "Enter living area",
     "purchaseDate": "Purchase Date",
     "purchaseDatePlaceholder": "Select purchase date",
     "purchasePrice": "Purchase Price",
@@ -639,69 +1544,121 @@
     "financingStartDatePlaceholder": "Select financing start date",
     "financingEndDate": "Financing End Date",
     "financingEndDatePlaceholder": "Select financing end date",
-    "monthlyFinancingRate": "Monthly Financing Rate",
-    "monthlyFinancingRatePlaceholder": "Enter monthly rate",
+    "monthlyFinancingRate": "Monthly Financing Installment",
+    "monthlyFinancingRatePlaceholder": "Enter monthly financing installment",
     "numberOfInstallments": "Number of Installments",
-    "numberOfInstallmentsPlaceholder": "Enter installment count",
-    "financingPaymentDay": "Financing Payment Day",
-    "financingPaymentDayPlaceholder": "Select payment day (1-31)",
-    "coldRent": "Cold Rent",
-    "coldRentPlaceholder": "Enter cold rent amount",
-    "additionalCosts": "Additional Costs",
-    "additionalCostsPlaceholder": "Enter additional costs",
+    "numberOfInstallmentsPlaceholder": "Enter number of installments",
+    "financingPaymentDay": "Financing Installment Day",
+    "financingPaymentDayPlaceholder": "Select financing installment day (1-31)",
+    "apartmentType": "Apartment Type",
+    "apartmentTypePlaceholder": "Select apartment type",
+    "bedroomCount": "Bedroom Count",
+    "bedroomCountPlaceholder": "Enter bedroom count",
+    "basementSize": "Basement Size (m²)",
+    "basementSizePlaceholder": "Enter basement size",
+    "internetSpeed": "Internet Speed",
+    "internetSpeedPlaceholder": "Select internet speed",
+    "coldRent": "Net Rent",
+    "coldRentPlaceholder": "Enter net rent amount",
     "heatingCosts": "Heating Costs",
     "heatingCostsPlaceholder": "Enter heating costs",
-    "deposit": "Deposit",
-    "depositPlaceholder": "Enter deposit amount"
+    "additionalCosts": "Additional Costs",
+    "additionalCostsPlaceholder": "Enter additional costs",
+    "contractDocuments": "Contract Documents",
+    "apartmentDocuments": "Apartment Documents",
+    "estimatedCost": "Estimated Cost",
+    "role": "Role",
+    "estimatedCostPlaceholder": "Enter estimated cost",
+    "actualCost": "Actual Cost",
+    "actualCostPlaceholder": "Enter actual cost",
+    "isActive": "Active",
+    "apartmentPlaceholder": "Select apartment",
+    "noDocuments": "No document found",
+    "select": "Select",
+    "selectCategory": "Select category",
+    "cancel": "Cancel",
+    "buildingInfo": "Building Information",
+    "purchaseAndFinancing": "Purchase and Financing",
+    "coordinates": "Coordinates"
+  },
+  "validation": {
+    "required": "Required"
   },
   "search": {
     "placeholder": "Search..."
   },
+  "loading": "Loading...",
+  "all": "All",
   "filter": {
     "all": "All",
+    "category": "Category",
     "type": "Type",
     "status": "Status",
     "property": "Property",
     "active": "Active",
-    "apartment": "Apartment",
+    "tenant": "Tenant",
     "contract": "Contract",
-    "tenant": "Tenant"
+    "role": "Role",
+    "apartment": "Apartment",
+    "agreementStatus": "Agreement Status"
   },
   "messages": {
-    "createSuccess": "Successfully created",
-    "createError": "Creation error",
-    "updateSuccess": "Successfully updated",
-    "updateError": "Update error",
-    "deleteSuccess": "Successfully deleted",
-    "deleteError": "Delete error",
-    "renewSuccess": "Contract renewed successfully",
-    "renewError": "Contract renewal error",
-    "autoRenewSuccess": "Auto-renewal successful",
-    "autoRenewError": "Auto-renewal error",
-    "fileUploaded": "File uploaded successfully",
-    "fileUploadError": "File upload error",
-    "fileDeleted": "File deleted successfully",
-    "fileDeleteError": "File delete error",
-    "uploadAfterCreate": "Files will be uploaded after contract is created",
-    "info": "Info",
+    "noContracts": "No contract found",
+    "noPayments": "No payment found",
     "success": "Success",
-    "error": "Error"
+    "error": "Error",
+    "createSuccess": "Successfully created",
+    "updateSuccess": "Successfully updated",
+    "createError": "An error occurred while creating",
+    "fileDeleted": "File successfully deleted",
+    "fileDeleteError": "An error occurred while deleting file",
+    "fileUploadError": "An error occurred while uploading file",
+    "info": "Info",
+    "uploadAfterCreate": "Files will be uploaded after contract is created",
+    "fileUploaded": "File successfully uploaded",
+    "renewSuccess": "Contract successfully renewed",
+    "renewError": "Contract renewal error",
+    "autoRenewSuccess": "Contracts automatically renewed",
+    "autoRenewError": "Auto renewal error"
   },
   "delete": {
     "confirm": "Are you sure you want to delete?",
-    "success": "Successfully deleted"
+    "success": "Successfully deleted",
+    "error": "Error",
+    "title": "Title"
+  },
+  "agreementReportTemplate": {
+    "delete": {
+      "title": "Delete Agreement Report Template",
+      "confirm": "Are you sure you want to delete this agreement report template?",
+      "success": "Agreement report template successfully deleted",
+      "error": "Error occurred while deleting agreement report template"
+    },
+    "update": {
+      "success": "Success"
+    },
+    "create": {
+      "success": "Success",
+      "error": "Error",
+      "title": "Title"
+    },
+    "edit": {
+      "title": "Title"
+    }
   },
   "pagination": {
     "showing": "Showing: {{from}}-{{to}} / {{total}}"
   },
   "renewal": {
-    "title": "Contracts Needing Renewal",
-    "autoRenew": "Auto-Renew All",
-    "noContracts": "No contracts need renewal at this time",
-    "info": "contract(s) need renewal in the next",
+    "title": "Contracts to Renew",
+    "autoRenew": "Auto Renew All",
+    "noContracts": "No contracts to renew at this time",
+    "info": "contracts need to be renewed in the next",
     "days": "days"
   },
   "analytics": {
+    "dateFrom": "Start Date",
+    "dateTo": "End Date",
     "title": "Tenant Analytics",
     "overallScore": "Overall Score",
     "paymentScore": "Payment Score",
@@ -712,42 +1669,48 @@
     "appointmentHistory": "Appointment History",
     "maintenanceHistory": "Maintenance History",
     "totalPayments": "Total Payments",
-    "totalContracts": "Total Contracts",
+    "totalAmount": "Total Amount",
+    "paidAmount": "Paid Amount",
+    "collectionRate": "Collection Rate",
+    "statusBreakdown": "Status Breakdown",
+    "monthlyTrend": "Monthly Trend",
+    "typeBreakdown": "Type Breakdown",
+    "upcomingPayments": "Upcoming Payments (Next 30 Days)",
+    "overduePayments": "Overdue Payments",
+    "total": "Total",
     "paid": "Paid",
     "pending": "Pending",
     "overdue": "Overdue",
+    "amount": "Amount",
+    "daysUntilDue": "Days Until Due",
+    "daysOverdue": "Days Overdue",
+    "days": "days",
+    "noUpcomingPayments": "No upcoming payments",
+    "noOverduePayments": "No overdue payments",
+    "totalContracts": "Total Contracts",
     "active": "Active",
     "expired": "Expired",
     "terminated": "Terminated",
     "recalculate": "Recalculate",
-    "recalculated": "Analytics recalculated successfully",
-    "recalculateError": "Failed to recalculate analytics",
-    "loadError": "Failed to load analytics",
+    "recalculated": "Analytics successfully recalculated",
+    "recalculateError": "Error occurred while recalculating analytics",
+    "loadError": "Error occurred while loading analytics",
     "excellent": "Excellent",
     "good": "Good",
     "fair": "Fair",
     "poor": "Poor",
-    "onTimeRate": "{{rate}}% on-time",
+    "onTimeRate": "%{{rate}} on-time payment",
     "appointments": "{{total}} appointments",
-    "maintenanceRecords": "{{total}} records"
-  },
-  "form": {
-    "moveInDate": "Move-In Date",
-    "moveOutDate": "Move-Out Date",
-    "amount": "Amount",
-    "dueDate": "Due Date",
-    "paidDate": "Paid Date"
-  },
-  "messages": {
-    "noContracts": "No contracts found",
-    "noPayments": "No payments found"
+    "maintenanceRecords": "{{total}} maintenance records",
+    "paymentAmountTrend": "Payment Amount Trend",
+    "maintenanceTrend": "Maintenance Trend"
   },
   "tracking": {
     "title": "Contract Tracking",
     "totalActive": "Total Active",
     "upcomingRenewals": "Upcoming Renewals",
     "expired": "Expired",
-    "autoRenewal": "Auto-Renewal",
+    "autoRenewal": "Auto Renewal",
     "active": "Active",
     "urgent": "Urgent",
     "upcoming": "Upcoming",
@@ -755,7 +1718,7 @@
     "noActiveContracts": "No active contracts",
     "noExpiredContracts": "No expired contracts"
   },
-    "common": {
+  "common": {
     "yes": "Yes",
     "no": "No",
     "error": "Error",
@@ -773,157 +1736,29 @@
     "create": "Create",
     "edit": "Edit",
     "actions": "Actions",
+    "createdAt": "Created At",
     "delete": "Delete",
-    "required": "Required"
-  },
-  "payments": {
-    "title": "Payments",
-    "create": "New Payment",
-    "edit": "Edit Payment",
-    "types": {
-      "rent": "Rent",
-      "deposit": "Deposit",
-      "fee": "Fee",
-      "maintenance": "Maintenance",
-      "utility": "Utility"
-    },
-    "status": {
-      "pending": "Pending",
-      "paid": "Paid",
-      "overdue": "Overdue",
-      "cancelled": "Cancelled"
-    },
-    "methods": {
-      "cash": "Cash",
-      "bankTransfer": "Bank Transfer",
-      "bank_transfer": "Bank Transfer",
-      "card": "Card",
-      "credit_card": "Credit Card",
-      "check": "Check"
-    },
-    "markedAsPaid": "Payment marked as paid",
-    "markAsPaidError": "Failed to mark payment as paid"
-  },
-  "form": {
-    "required": "This field is required",
-    "amountRequired": "Amount must be greater than 0",
-    "selectApartment": "Select apartment",
-    "selectContract": "Select contract",
-    "selectDate": "Select date",
-    "selectPaymentMethod": "Select payment method",
-    "enterAmount": "Enter amount",
-    "enterReceiptNumber": "Enter receipt number",
-    "enterNotes": "Enter notes",
-    "extraCharges": "Extra Charges",
-    "addExtraCharge": "Add Extra Charge",
-    "chargeName": "Charge name",
-    "totalAmount": "Total Amount",
-    "isAutoGenerated": "Auto Generated",
-    "reminderSent": "Reminder Sent"
-  },
-    "appointments": {
-    "title": "Appointments",
-    "create": "New Appointment",
-    "edit": "Edit Appointment",
-    "types": {
-      "viewing": "Viewing",
-      "delivery": "Delivery",
-      "maintenance": "Maintenance",
-      "inspection": "Inspection",
-      "meeting": "Meeting"
-    },
-    "status": {
-      "scheduled": "Scheduled",
-      "completed": "Completed",
-      "cancelled": "Cancelled",
-      "no_show": "No Show"
-    },
-    "markedAsCompleted": "Appointment marked as completed",
-    "markAsCompletedError": "Failed to mark appointment as completed"
-  },
-  "form": {
-    "endDateAfterStart": "End date must be after start date",
-    "enterTitle": "Enter title",
-    "enterDescription": "Enter description",
-    "startTime": "Start Time (HH:mm)",
-    "endTime": "End Time (HH:mm)",
-    "enterDuration": "Enter duration",
-    "durationAutoCalculated": "Automatically calculated from start and end dates",
-    "enterLocation": "Enter location",
-    "externalParticipants": "External Participants",
-    "addParticipant": "Add Participant",
-    "name": "Name",
-    "phone": "Phone",
-    "email": "Email",
-    "followUpRequired": "Follow-up Required",
-    "selectTime": "Select time",
-    "apartment": "Apartment",
-    "selectApartment": "Select apartment",
-    "noApartmentsFound": "No apartments found",
-    "unknownProperty": "Unknown Property",
-    "type": "Type",
-    "selectType": "Select type",
-    "status": "Status",
-    "selectStatus": "Select status",
-    "title": "Title",
-    "titlePlaceholder": "Enter title",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter description",
-    "scheduledDate": "Scheduled Date",
-    "selectDateTime": "Select date and time",
-    "startDate": "Start Date (Optional)",
-    "endDate": "End Date (Optional)",
-    "assignedStaff": "Assigned Staff (Optional)",
-    "selectStaff": "Select staff",
-    "performedByStaff": "Performed By Staff (Optional)",
-    "back": "Back"
-  },
-  "appointments": {
-    "followUpForm": "Appointment Follow-up Form",
-    "followUpDescription": "Fill in the details after the appointment is completed",
-    "rating": "Rating",
-    "forViewing": "for viewing",
-    "interestLevel": "Interest Level",
-    "interestLevels": {
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "resultNotes": "Result Notes",
-    "enterResultNotes": "Enter result notes...",
-    "outcome": "Outcome",
-    "enterOutcome": "Enter outcome...",
-    "nextAction": "Next Action",
-    "enterNextAction": "Enter next action...",
-    "followUpSaved": "Follow-up information saved successfully",
-    "details": "Details",
-    "followUp": "Follow-up",
-    "minutes": "minutes",
-    "result": "Result"
-  },
-  "map": {
-    "title": "Map",
-    "mapboxTokenMissing": "Mapbox access token is missing. Please set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.",
-    "totalProperties": "Total Properties",
-    "totalApartments": "Total Apartments",
-    "rented": "Rented",
-    "empty": "Empty"
+    "notApplicable": "Not Applicable",
+    "notFound": "Not Found",
+    "refresh": "Refresh",
+    "required": "Required",
+    "updatedAt": "Updated At"
   },
   "sideCosts": {
     "rentAndSideCosts": "Rent and Side Costs",
     "sideCosts": "Side Costs",
-    "monthlyEstimate": "Monthly estimate",
+    "monthlyEstimate": "Estimated monthly amount",
     "rentCalculation": "Rent Calculation",
-    "totalRent": "Total Rent (Warm)",
+    "totalRent": "Total Rent (Gross)",
     "total": "Total",
     "apartmentBreakdown": "Apartment Breakdown",
-    "noData": "No side cost data available for this record",
-    "noDataHint": "Add apartments with rent and side cost information to see the summary",
+    "noData": "No side cost data found for this record",
+    "noDataHint": "Add an apartment to see rent and side cost information",
     "noDataApartmentHint": "Add rent and side cost information in edit mode",
     "noDataTenantHint": "Side cost information is linked to the tenant's active contract apartment"
   },
   "propertyExpenses": {
-    "title": "Property Expenses",
+    "title": "Building Expenses",
     "description": "Property side cost tracking",
     "addExpense": "Add Expense",
     "editExpense": "Edit Expense",
@@ -933,16 +1768,16 @@
     "allYears": "All Years",
     "year": "Year",
     "category": "Category",
-    "searchPlaceholder": "Search expenses...",
-    "createSuccess": "Expense created successfully",
-    "createError": "Error creating expense",
-    "updateSuccess": "Expense updated successfully",
-    "updateError": "Error updating expense",
-    "deleteSuccess": "Expense deleted successfully",
-    "deleteError": "Error deleting expense",
+    "searchPlaceholder": "Search expense...",
+    "createSuccess": "Expense successfully created",
+    "createError": "Error occurred while creating expense",
+    "updateSuccess": "Expense successfully updated",
+    "updateError": "Error occurred while updating expense",
+    "deleteSuccess": "Expense successfully deleted",
+    "deleteError": "Error occurred while deleting expense",
     "deleteConfirm": "Are you sure you want to delete this expense?",
     "categories": {
-      "utilities": "Utilities",
+      "utilities": "Electricity/Water/Gas",
       "maintenance": "Maintenance",
       "insurance": "Insurance",
       "taxes": "Taxes",
@@ -953,37 +1788,78 @@
     },
     "form": {
       "name": "Expense Name",
+      "namePlaceholder": "e.g.: Common area electricity",
       "category": "Category",
+      "categoryPlaceholder": "Select category",
       "amount": "Amount",
       "expenseDate": "Expense Date",
+      "expenseDatePlaceholder": "Select date",
       "year": "Year",
       "month": "Month",
       "description": "Description",
-      "receiptUrl": "Receipt URL",
+      "descriptionPlaceholder": "Details about the expense...",
+      "receiptUrl": "Invoice/Receipt URL",
       "invoiceNumber": "Invoice No",
-      "vendorName": "Vendor"
+      "invoiceNumberPlaceholder": "Invoice number",
+      "vendorName": "Vendor",
+      "vendorNamePlaceholder": "Vendor name"
     },
     "messages": {
-      "created": "Expense created successfully",
-      "updated": "Expense updated successfully",
-      "deleted": "Expense deleted successfully"
+      "created": "Expense successfully created",
+      "updated": "Expense successfully updated",
+      "deleted": "Expense successfully deleted"
     }
   },
   "reconciliation": {
     "title": "Year-End Reconciliation",
+    "menuTitle": "Side Cost Reconciliation",
     "description": "Side cost calculation and reconciliation",
-    "create": "New Calculation",
+    "createNew": "Create New Calculation",
     "noReconciliations": "No reconciliation records yet",
-    "status": {
+    "year": "Year",
+    "distributionMethod": "Distribution Method",
+    "totalExpenses": "Total Expenses",
+    "perApartmentShare": "Per Apartment Share",
+    "apartmentCount": "Apartment Count",
+    "status": "Status",
+    "details": "Reconciliation Details",
+    "viewDetails": "View Details",
+    "apartmentBreakdown": "Apartment Breakdown",
+    "tenant": "Tenant",
+    "estimatedPaid": "Estimated Paid",
+    "actualShare": "Actual Share",
+    "difference": "Difference",
+    "result": "Result",
+    "months": "months",
+    "notes": "Notes",
+    "selectProperty": "Please select property",
+    "selectPropertyPlaceholder": "Select property",
+    "calculate": "Calculate",
+    "finalize": "Finalize",
+    "infoText": "Year-end reconciliation compares estimated side cost payments made throughout the year with actual expenses to calculate debt or credit per tenant.",
+    "createSuccess": "Reconciliation successfully calculated",
+    "createError": "Error occurred while creating reconciliation",
+    "finalizeConfirm": "Are you sure you want to finalize this reconciliation? This action cannot be undone.",
+    "finalizeSuccess": "Reconciliation finalized",
+    "finalizeError": "Error occurred while finalizing reconciliation",
+    "deleteConfirm": "Are you sure you want to delete this reconciliation?",
+    "deleteSuccess": "Reconciliation deleted",
+    "deleteError": "Error occurred while deleting reconciliation",
+    "statuses": {
       "draft": "Draft",
       "calculated": "Calculated",
       "finalized": "Finalized",
       "cancelled": "Cancelled"
     },
-    "distributionMethod": {
+    "distributionMethods": {
       "equal": "Equal Distribution",
       "area_based": "Area Based",
       "custom": "Custom Ratio"
+    },
+    "resultStatuses": {
+      "debt": "Debtor",
+      "credit": "Creditor",
+      "balanced": "Balanced"
     },
     "form": {
       "property": "Property",
@@ -1001,7 +1877,7 @@
       "totalCredit": "Total Credit"
     },
     "apartmentDetail": {
-      "unit": "Unit",
+      "unit": "Apartment",
       "area": "Area",
       "estimatedPaid": "Estimated Paid",
       "actualShare": "Actual Share",
@@ -1021,104 +1897,59 @@
       "created": "Reconciliation calculated",
       "finalized": "Reconciliation finalized",
       "deleted": "Reconciliation deleted",
-      "cannotModify": "Finalized reconciliations cannot be modified"
+      "cannotModify": "Finalized reconciliation cannot be modified"
     }
   },
   "qrCode": {
     "title": "Apartment QR Code",
-    "description": "Scan this QR code to view apartment details",
+    "description": "You can view apartment details by scanning this QR code",
     "generating": "Generating QR code...",
-    "generateError": "Failed to generate QR code",
+    "generateError": "QR code could not be generated",
     "download": "Download",
-    "downloadSuccess": "QR code downloaded successfully"
+    "downloadSuccess": "QR code successfully downloaded"
   },
-  "apartments": {
-    "details": "Details",
-    "floor": "Floor",
-    "block": "Block",
-    "area": "Area",
-    "roomCount": "Room Count",
-    "rooms": "rooms",
-    "rentPrice": "Rent Price",
-    "salePrice": "Sale Price",
-    "deliveryDate": "Delivery Date",
-    "status": {
-      "empty": "Empty",
-      "rented": "Rented",
-      "sold": "Sold",
-      "maintenance": "Maintenance"
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "contractTemplates": {
+    "title": "Contract Templates",
+    "types": {
+      "residential": "Residential",
+      "commercial": "Commercial",
+      "short_term": "Short Term",
+      "long_term": "Long Term"
     }
   },
-  "form": {
-    "name": "Name",
-    "namePlaceholder": "Enter property name",
-    "type": "Type",
-    "typePlaceholder": "Select type",
-    "code": "Code",
-    "codePlaceholder": "Optional code",
-    "country": "Country",
-    "countryPlaceholder": "Country",
-    "address": "Address",
-    "addressPlaceholder": "Enter address",
-    "city": "City",
-    "cityPlaceholder": "Enter city",
-    "district": "District",
-    "districtPlaceholder": "Enter district",
-    "neighborhood": "Neighborhood",
-    "neighborhoodPlaceholder": "Enter neighborhood",
-    "street": "Street",
-    "streetPlaceholder": "Enter street",
-    "buildingNo": "Building No",
-    "buildingNoPlaceholder": "Enter building number",
-    "postalCode": "Postal Code",
-    "postalCodePlaceholder": "Enter postal code",
-    "latitude": "Latitude",
-    "latitudePlaceholder": "Enter latitude",
-    "longitude": "Longitude",
-    "longitudePlaceholder": "Enter longitude",
-    "monthlyFee": "Monthly Fee",
-    "monthlyFeePlaceholder": "Enter monthly fee",
-    "paymentDay": "Payment Day",
-    "paymentDayPlaceholder": "Enter payment day (1-31)",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter description"
+  "agreementReport": {
+    "types": {
+      "boss": "Boss",
+      "owner": "Owner",
+      "tenant": "Tenant",
+      "internal": "Internal"
+    },
+    "title": "Agreement Report",
+    "detail": {
+      "title": "Agreement Report Detail"
+    }
   },
-  "actions": {
-    "create": "Create",
-    "update": "Update",
-    "delete": "Delete",
+  "agreementReportTemplates": {
+    "title": "Agreement Report Templates"
+  },
+  "HH:mm": "HH:mm",
+  "buttons": {
     "edit": "Edit",
-    "save": "Save",
-    "cancel": "Cancel"
+    "view": "View"
   },
-  "types": {
-    "apartment": "Apartment",
-    "complex": "Complex",
-    "building": "Building",
-    "rental": "Rental",
-    "sale": "Sale",
-    "lease": "Lease",
-    "general": "General",
-    "commercial": "Commercial",
-    "short_term": "Short Term",
-    "long_term": "Long Term",
-    "residential": "Residential",
-    "cash": "Cash",
-    "bankTransfer": "Bank Transfer",
-    "autoDebit": "Auto Debit"
-  },
-  "messages": {
-    "success": "Success",
-    "error": "Error",
-    "createError": "An error occurred",
-    "createSuccess": "Created successfully",
-    "updateSuccess": "Updated successfully",
-    "updateError": "Error updating"
-  },
+  "calendar": "Calendar",
+  "leaflet": "Map",
+  "link": "Link",
+  "list": "List",
+  "style": "Style",
+  "templateId": "Template ID",
   "usageRights": {
     "title": "Usage Rights",
     "manage": "Manage Usage Rights",
-    "search": "Search usage rights...",
+    "search": "Search usage right...",
     "allCategories": "All",
     "name": "Name",
     "selection": "Selection",
@@ -1137,8 +1968,33 @@
       "outdoor": "Outdoor",
       "storage": "Storage",
       "accessibility": "Accessibility",
-      "flooring": "Flooring & Interior",
+      "flooring": "Floor & Interior",
       "energy": "Energy"
+    }
+  },
+  "emailTemplates": {
+    "title": "Email Templates",
+    "detail": {
+      "title": "Email Template Details",
+      "description": "View email template details",
+      "info": "Template Information",
+      "name": "Template Name",
+      "category": "Category",
+      "subject": "Email Subject",
+      "variables": "Variables",
+      "preview": "HTML Preview",
+      "textContent": "Text Content",
+      "systemInfo": "System Information",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "default": "Default",
+    "categories": {
+      "promotion": "Promotion",
+      "announcement": "Announcement",
+      "reminder": "Reminder",
+      "welcome": "Welcome",
+      "agreement": "Agreement"
     }
   },
   "mediaGallery": {
@@ -1147,27 +2003,18 @@
     "preview": "Preview",
     "download": "Download",
     "downloadAll": "Download All (ZIP)",
-    "noImages": "No images available",
+    "noImages": "No images added yet",
     "uploadDocuments": "Upload Documents",
     "uploadDocumentsHint": "Supported formats: PDF, DOC, DOCX, XLS, XLSX, TXT, CSV",
     "noDocuments": "No documents uploaded yet",
     "documentUploadSuccess": "Documents uploaded",
     "documentsUploaded": "documents uploaded",
-    "documentUploadError": "Error uploading documents",
+    "documentUploadError": "Error occurred while uploading document",
     "imagesUploaded": "images uploaded",
     "loading": "Loading...",
     "videoNotSupported": "Your browser does not support the video tag.",
     "audioNotSupported": "Your browser does not support the audio tag.",
     "previewNotAvailable": "Preview not available for this file type"
-  },
-  "contractTemplates": {
-    "title": "Contract Templates",
-    "types": {
-      "residential": "Residential",
-      "commercial": "Commercial",
-      "short_term": "Short Term",
-      "long_term": "Long Term"
-    }
   },
   "tenantForm": {
     "basicInfo": "Basic Information",
@@ -1178,18 +2025,18 @@
     "personalInfo": "Personal Information",
     "companyInfo": "Company Information",
     "salutation": "Salutation",
-    "selectSalutation": "Select",
+    "selectSalutation": "Select salutation",
     "salutationMr": "Mr.",
     "salutationMs": "Ms.",
     "birthDate": "Birth Date",
     "birthDatePlaceholder": "Select birth date",
     "birthPlace": "Birth Place",
     "birthPlacePlaceholder": "Enter birth place",
-    "address": "Address",
+    "address": "Address Information",
     "contactInfo": "Contact Information",
     "additionalInfo": "Additional Information",
     "nationality": "Nationality",
-    "nationalityPlaceholder": "Enter nationality",
+    "nationalityPlaceholder": "Enter nationality information",
     "taxNumber": "Tax Number",
     "taxNumberPlaceholder": "Enter tax number",
     "systemFields": "System Fields",

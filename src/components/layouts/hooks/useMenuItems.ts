@@ -535,24 +535,79 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       return false;
     };
 
-    // Helper to get localized label
-    const getLocalizedLabel = (label: any): string => {
-      if (typeof label === 'string') return label;
-      if (typeof label === 'object' && label !== null) {
-        return label[locale] || label['en'] || Object.values(label)[0] || '';
+    // Helper to get localized label from module translations
+    const getLocalizedLabelFromModule = (moduleSlug: string | undefined, itemHref: string, fallbackLabel: string): string => {
+      if (!moduleSlug) return fallbackLabel;
+
+      try {
+        const translationModule = require(`@/locales/modules/${moduleSlug}/${locale}.json`);
+        const translations = translationModule.default || translationModule;
+
+        // Extract page key from href (e.g., /modules/real-estate/apartments -> apartments)
+        const hrefParts = itemHref.replace(/^\//, '').split('/');
+        const pageKey = hrefParts[hrefParts.length - 1] || '';
+
+        // Try menu.items.{pageKey} first
+        if (translations.menu?.items && typeof translations.menu.items === 'object') {
+          if (translations.menu.items[pageKey]) {
+            const val = translations.menu.items[pageKey];
+            return typeof val === 'string' ? val : (val?.title || val?.label || fallbackLabel);
+          }
+        }
+
+        // Try {pageKey}.title
+        if (translations[pageKey]?.title) {
+          return translations[pageKey].title;
+        }
+
+        // Try menu.label for module root
+        if (pageKey === 'dashboard' || itemHref.endsWith(`/modules/${moduleSlug}`)) {
+          if (translations.menu?.label) {
+            return translations.menu.label;
+          }
+          if (translations.title) {
+            return translations.title;
+          }
+        }
+
+        return fallbackLabel;
+      } catch {
+        return fallbackLabel;
       }
-      return '';
+    };
+
+    // Helper to get localized label
+    const getLocalizedLabel = (label: any, moduleSlug?: string, itemHref?: string): string => {
+      // If label is already multi-language object, use it
+      if (typeof label === 'object' && label !== null) {
+        const localizedLabel = label[locale] || label['en'] || Object.values(label)[0] || '';
+        if (localizedLabel) return localizedLabel;
+      }
+
+      // If label is a string and we have moduleSlug, try to get from module translations
+      const stringLabel = typeof label === 'string' ? label : '';
+      if (moduleSlug && itemHref) {
+        const translatedLabel = getLocalizedLabelFromModule(moduleSlug, itemHref, stringLabel);
+        if (translatedLabel && translatedLabel !== stringLabel) {
+          return translatedLabel;
+        }
+      }
+
+      return stringLabel;
     };
 
     // Convert menu items to MenuItem format
-    const convertItems = (items: any[]): MenuItem[] => {
+    const convertItems = (items: any[], parentModuleSlug?: string): MenuItem[] => {
       return items
         .filter((item: any) => !hasDynamicRoute(item.href))
         .map((item: any) => {
           // Use dynamic icon resolver to support ALL Tabler icons
           const iconComponent = getIconComponent(item.icon);
 
-          const label = getLocalizedLabel(item.label);
+          // Inherit moduleSlug from parent if not set
+          const moduleSlug = item.moduleSlug || parentModuleSlug;
+
+          const label = getLocalizedLabel(item.label, moduleSlug, item.href);
           const href = item.href.startsWith('/') ? `/${locale}${item.href}` : `/${locale}/${item.href}`;
 
           // Backfill group from default menus if missing
@@ -585,7 +640,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
           }
 
           if (item.children && item.children.length > 0) {
-            menuItem.children = convertItems(item.children);
+            menuItem.children = convertItems(item.children, moduleSlug);
           }
 
           return menuItem;
