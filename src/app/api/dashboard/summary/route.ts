@@ -298,37 +298,65 @@ export async function GET(request: NextRequest) {
         // Module not available
       }
 
-      // Accounting Module
+      // Accounting Module - aggregate from multiple sources like cash-transactions API
       try {
-        // CashTransaction verilerini çek - tüm zamanlar
-        const [totalIncome, totalExpense, transactionCount] = await Promise.all([
-          tenantPrisma.cashTransaction.aggregate({
-            where: {
-              tenantId: tenantContext.id,
-              companyId,
-              type: 'income',
-            },
-            _sum: { amount: true },
-          }),
-          tenantPrisma.cashTransaction.aggregate({
-            where: {
-              tenantId: tenantContext.id,
-              companyId,
-              type: 'expense',
-            },
-            _sum: { amount: true },
-          }),
-          tenantPrisma.cashTransaction.count({
-            where: {
-              tenantId: tenantContext.id,
-              companyId,
-            },
-          }),
-        ]);
+        // 1. Income from paid Payments (Real Estate - rents)
+        const paidPayments = await tenantPrisma.payment.aggregate({
+          where: {
+            tenantId: tenantContext.id,
+            companyId,
+            status: 'paid',
+          },
+          _sum: { totalAmount: true, amount: true },
+          _count: true,
+        });
 
-        const totalIncomeAmount = Number(totalIncome._sum?.amount || 0);
-        const totalExpenseAmount = Number(totalExpense._sum?.amount || 0);
+        // 2. Income from paid Invoices
+        const paidInvoices = await tenantPrisma.invoice.aggregate({
+          where: {
+            tenantId: tenantContext.id,
+            companyId,
+            status: 'paid',
+          },
+          _sum: { totalAmount: true },
+          _count: true,
+        });
+
+        // 3. Expense from Expenses
+        const approvedExpenses = await tenantPrisma.expense.aggregate({
+          where: {
+            tenantId: tenantContext.id,
+            companyId,
+            status: 'approved',
+            isActive: true,
+          },
+          _sum: { amount: true },
+          _count: true,
+        });
+
+        // 4. Expense from PropertyExpenses
+        const propertyExpenses = await tenantPrisma.propertyExpense.aggregate({
+          where: {
+            tenantId: tenantContext.id,
+            companyId,
+            isActive: true,
+          },
+          _sum: { amount: true },
+          _count: true,
+        });
+
+        // Calculate totals
+        const paymentIncome = Number(paidPayments._sum?.totalAmount || paidPayments._sum?.amount || 0);
+        const invoiceIncome = Number(paidInvoices._sum?.totalAmount || 0);
+        const totalIncomeAmount = paymentIncome + invoiceIncome;
+
+        const expenseAmount = Number(approvedExpenses._sum?.amount || 0);
+        const propertyExpenseAmount = Number(propertyExpenses._sum?.amount || 0);
+        const totalExpenseAmount = expenseAmount + propertyExpenseAmount;
+
         const netBalance = totalIncomeAmount - totalExpenseAmount;
+        const transactionCount = (paidPayments._count || 0) + (paidInvoices._count || 0) +
+                                 (approvedExpenses._count || 0) + (propertyExpenses._count || 0);
 
         modules.push({
           module: 'accounting',
@@ -346,7 +374,8 @@ export async function GET(request: NextRequest) {
           ],
         });
       } catch (e) {
-        // Module not available
+        // Module not available - log error for debugging
+        console.error('[Dashboard] Accounting module error:', e);
       }
 
       // Production Module
