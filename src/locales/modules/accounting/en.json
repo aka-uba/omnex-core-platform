@@ -9,7 +9,9 @@
       "invoices": "Invoices",
       "payments": "Payments",
       "expenses": "Expenses",
-      "reports": "Reports"
+      "reports": "Reports",
+      "cashTransactions": "Cash Transactions",
+      "cash-transactions": "Cash Transactions"
     }
   },
   "dashboard": {

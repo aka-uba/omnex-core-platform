@@ -24,7 +24,8 @@
       "send": "E-posta Gönder",
       "campaigns": "Kampanyalar",
       "reports": "Raporlar",
-      "settings": "Ayarlar"
+      "settings": "Ayarlar",
+      "reconciliation": "Uzlaştırma"
     }
   },
   "dashboard": {

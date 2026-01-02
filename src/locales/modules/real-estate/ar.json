@@ -24,7 +24,8 @@
       "send": "إرسال بريد إلكتروني",
       "campaigns": "الحملات",
       "reports": "التقارير",
-      "settings": "الإعدادات"
+      "settings": "الإعدادات",
+      "reconciliation": "التسوية"
     }
   },
   "dashboard": {

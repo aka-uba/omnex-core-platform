@@ -24,7 +24,8 @@
       "send": "E-Mail senden",
       "campaigns": "Kampagnen",
       "reports": "Berichte",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "reconciliation": "Abrechnung"
     }
   },
   "dashboard": {

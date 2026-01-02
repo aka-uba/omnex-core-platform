@@ -9,7 +9,9 @@
       "invoices": "Faturalar",
       "payments": "Ödemeler",
       "expenses": "Giderler",
-      "reports": "Raporlar"
+      "reports": "Raporlar",
+      "cashTransactions": "Kasa İşlemleri",
+      "cash-transactions": "Kasa İşlemleri"
     }
   },
   "dashboard": {

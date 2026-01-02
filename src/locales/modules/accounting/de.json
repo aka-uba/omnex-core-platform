@@ -9,7 +9,9 @@
       "invoices": "Rechnungen",
       "payments": "Zahlungen",
       "expenses": "Ausgaben",
-      "reports": "Berichte"
+      "reports": "Berichte",
+      "cashTransactions": "Kassenbuchungen",
+      "cash-transactions": "Kassenbuchungen"
     }
   },
   "dashboard": {

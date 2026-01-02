@@ -9,7 +9,9 @@
       "invoices": "الفواتير",
       "payments": "المدفوعات",
       "expenses": "المصروفات",
-      "reports": "التقارير"
+      "reports": "التقارير",
+      "cashTransactions": "معاملات الصندوق",
+      "cash-transactions": "معاملات الصندوق"
     }
   },
   "dashboard": {

@@ -24,7 +24,8 @@
       "send": "Send Email",
       "campaigns": "Campaigns",
       "reports": "Reports",
-      "settings": "Settings"
+      "settings": "Settings",
+      "reconciliation": "Reconciliation"
     }
   },
   "dashboard": {
