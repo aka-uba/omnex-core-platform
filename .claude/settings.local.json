@@ -156,7 +156,9 @@
       "Bash(for file in src/modules/accounting/components/InvoiceList.tsx src/modules/accounting/components/ExpenseList.tsx src/modules/accounting/components/PaymentList.tsx src/modules/accounting/components/SubscriptionList.tsx src/modules/hr/components/EmployeeList.tsx src/modules/hr/components/LeaveList.tsx src/modules/hr/components/PayrollList.tsx src/modules/production/components/ProductList.tsx src/modules/production/components/ProductionOrderList.tsx src/modules/production/components/StockMovementList.tsx)",
       "Bash(do echo \"=== $file ===\" grep -n \"tableId\\|showAuditHistory\\|auditEntityName\" \"$file\")",
       "Bash(ssh -p 2222 deploy@146.190.224.121 \"cd /opt/omnex && cat .env 2>/dev/null || echo ''.env dosyası yok''\")",
-      "Bash(gh run list:*)"
+      "Bash(gh run list:*)",
+      "Bash(dir /b /s \"C:\\xampp\\htdocs\\omnex-core-platform\\src\\app\\*locale*\\modules\\sohbet\\*\")",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

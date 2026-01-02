@@ -22,6 +22,8 @@ import Link from 'next/link';
 import classes from './AdminLoginPage.module.css';
 import NextImage from 'next/image';
 
+const REMEMBER_ME_KEY = 'omnex-remember-credentials-admin';
+
 interface Period {
   id: string;
   name: string;
@@ -130,6 +132,26 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
     fetchLogo();
   }, []);
 
+  // Sayfa yüklendiğinde kaydedilmiş credentials'ı yükle
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(REMEMBER_ME_KEY);
+        if (saved) {
+          const { username, password } = JSON.parse(saved);
+          form.setValues({
+            ...form.values,
+            username: username || '',
+            password: password || '',
+            rememberMe: true,
+          });
+        }
+      } catch (e) {
+        // localStorage erişim hatası - sessizce devam et
+      }
+    }
+  }, []);
+
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     setError(null);
@@ -157,9 +179,19 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
             const selectedPeriod = periods.find(p => p.id === values.periodId);
             localStorage.setItem('selectedPeriod', JSON.stringify(selectedPeriod));
           }
-          
+
+          // Beni Hatırla - credentials'ı kaydet veya sil
+          if (values.rememberMe) {
+            localStorage.setItem(REMEMBER_ME_KEY, JSON.stringify({
+              username: values.username,
+              password: values.password,
+            }));
+          } else {
+            localStorage.removeItem(REMEMBER_ME_KEY);
+          }
+
           window.dispatchEvent(new Event('user-updated'));
-          
+
           if (data.data.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);
           }

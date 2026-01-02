@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Container,
@@ -20,6 +20,8 @@ import { IconAlertCircle, IconUser, IconLock } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import Link from 'next/link';
 import classes from './LoginPage.module.css';
+
+const REMEMBER_ME_KEY = 'omnex-remember-credentials';
 
 export function LoginPageClient({ locale }: { locale: string }) {
   const { t } = useTranslation('modules/auth');
@@ -49,6 +51,25 @@ export function LoginPageClient({ locale }: { locale: string }) {
     },
   });
 
+  // Sayfa yüklendiğinde kaydedilmiş credentials'ı yükle
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(REMEMBER_ME_KEY);
+        if (saved) {
+          const { username, password } = JSON.parse(saved);
+          form.setValues({
+            username: username || '',
+            password: password || '',
+            rememberMe: true,
+          });
+        }
+      } catch (e) {
+        // localStorage erişim hatası - sessizce devam et
+      }
+    }
+  }, []);
+
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     setError(null);
@@ -71,10 +92,20 @@ export function LoginPageClient({ locale }: { locale: string }) {
         // Başarılı giriş - session'a kaydet (ileride session yönetimi eklenebilir)
         if (typeof window !== 'undefined') {
           localStorage.setItem('user', JSON.stringify(data.data.user));
-          
+
+          // Beni Hatırla - credentials'ı kaydet veya sil
+          if (values.rememberMe) {
+            localStorage.setItem(REMEMBER_ME_KEY, JSON.stringify({
+              username: values.username,
+              password: values.password,
+            }));
+          } else {
+            localStorage.removeItem(REMEMBER_ME_KEY);
+          }
+
           // User-updated event'i tetikle (useAuth hook'unun güncellenmesi için)
           window.dispatchEvent(new Event('user-updated'));
-          
+
           // Token'ları da sakla
           if (data.data.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);

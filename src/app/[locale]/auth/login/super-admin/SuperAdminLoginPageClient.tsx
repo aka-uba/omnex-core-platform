@@ -22,6 +22,8 @@ import Link from 'next/link';
 import classes from './SuperAdminLoginPage.module.css';
 import NextImage from 'next/image';
 
+const REMEMBER_ME_KEY = 'omnex-remember-credentials-superadmin';
+
 interface Tenant {
   id: string;
   name: string;
@@ -154,13 +156,34 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
     fetchLogo();
   }, []);
 
+  // Sayfa yüklendiğinde kaydedilmiş credentials'ı yükle
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(REMEMBER_ME_KEY);
+        if (saved) {
+          const { username, password, tenantId } = JSON.parse(saved);
+          form.setValues({
+            ...form.values,
+            username: username || '',
+            password: password || '',
+            tenantId: tenantId || '',
+            rememberMe: true,
+          });
+        }
+      } catch (e) {
+        // localStorage erişim hatası - sessizce devam et
+      }
+    }
+  }, []);
+
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     setError(null);
 
     try {
       const selectedTenant = tenants.find(t => t.id === values.tenantId);
-      
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -186,9 +209,20 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
             const selectedPeriod = periods.find(p => p.id === values.periodId);
             localStorage.setItem('selectedPeriod', JSON.stringify(selectedPeriod));
           }
-          
+
+          // Beni Hatırla - credentials'ı kaydet veya sil
+          if (values.rememberMe) {
+            localStorage.setItem(REMEMBER_ME_KEY, JSON.stringify({
+              username: values.username,
+              password: values.password,
+              tenantId: values.tenantId,
+            }));
+          } else {
+            localStorage.removeItem(REMEMBER_ME_KEY);
+          }
+
           window.dispatchEvent(new Event('user-updated'));
-          
+
           if (data.data.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);
           }
