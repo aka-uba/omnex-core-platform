@@ -33,12 +33,19 @@ jobs:
             # Pull latest code
             cd /opt/omnex && git pull origin main
 
-            # Build and restart app container only
+            # Cleanup old build cache before building (keep last 5GB)
+            echo "Cleaning up old build cache..."
+            docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+
+            # Build with resource limits (--memory 2g --cpu-quota 100000)
             cd /opt/omnex/deploy
-            docker compose build --no-cache app
+            DOCKER_BUILDKIT=1 docker compose build --no-cache --build-arg BUILDKIT_INLINE_CACHE=0 app
+
+            # Restart app container
             docker compose up -d --force-recreate app
 
-            # Cleanup old images
+            # Cleanup old images and build cache
             docker image prune -f
+            docker builder prune -f --keep-storage 5GB 2>/dev/null || true
 
             echo "Deployment completed at $(date)"
