@@ -5,6 +5,8 @@
  * - Property → Apartment → Contract → Tenant → Payments
  * - PropertyExpenses (Yan Giderler)
  * - SideCostReconciliation (Yıl Sonu Mutabakat)
+ *
+ * Supports localized demo data for: tr, en, de, ar
  */
 
 import { Prisma } from '@prisma/tenant-client';
@@ -16,67 +18,36 @@ export class RealEstateSeeder implements ModuleSeeder {
   description = 'Gayrimenkul yönetimi demo verileri - Tamamen birbirine bağlı';
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma, tenantId, companyId, tenantSlug } = ctx;
+    const { tenantPrisma, tenantId, companyId, tenantSlug, demoData, currency } = ctx;
     let itemsCreated = 0;
     const details: Record<string, number> = {};
 
     try {
+      // Get localized property data from demoData
+      const localizedProperties = demoData.realEstate.properties;
+      const localizedTenants = demoData.realEstate.tenants;
+      const country = demoData.country;
+
       // ============================================
       // 1. PROPERTIES (Binalar/Apartmanlar)
       // ============================================
-      const propertiesData = [
-        {
-          name: 'Deniz Apartmanı',
-          type: 'apartment',
-          code: 'PROP-001',
-          address: 'Sahil Caddesi No: 45',
-          city: 'İstanbul',
-          district: 'Kadıköy',
-          neighborhood: 'Fenerbahçe',
-          totalUnits: 6,
-          monthlyFee: 2500,
-          paymentDay: 5,
-          description: 'Deniz manzaralı lüks apartman',
-          constructionYear: 2018,
-          floorCount: 3,
-          livingArea: 720,
-          landArea: 450,
-        },
-        {
-          name: 'Park Residence',
-          type: 'complex',
-          code: 'PROP-002',
-          address: 'Park Sokak No: 12',
-          city: 'İstanbul',
-          district: 'Beşiktaş',
-          neighborhood: 'Etiler',
-          totalUnits: 6,
-          monthlyFee: 3500,
-          paymentDay: 1,
-          description: 'Parkın yanında prestijli konut',
-          constructionYear: 2020,
-          floorCount: 4,
-          livingArea: 960,
-          landArea: 600,
-        },
-        {
-          name: 'Yeşil Vadi Sitesi',
-          type: 'complex',
-          code: 'PROP-003',
-          address: 'Vadi Yolu No: 78',
-          city: 'İstanbul',
-          district: 'Sarıyer',
-          neighborhood: 'Maslak',
-          totalUnits: 6,
-          monthlyFee: 4000,
-          paymentDay: 10,
-          description: 'Doğayla iç içe yaşam alanı',
-          constructionYear: 2015,
-          floorCount: 5,
-          livingArea: 1200,
-          landArea: 800,
-        },
-      ];
+      const propertiesData = localizedProperties.map((prop, idx) => ({
+        name: prop.name,
+        type: prop.type,
+        code: `PROP-00${idx + 1}`,
+        address: prop.address,
+        city: prop.city,
+        district: prop.district,
+        neighborhood: prop.neighborhood,
+        totalUnits: 6,
+        monthlyFee: idx === 0 ? 2500 : idx === 1 ? 3500 : 4000,
+        paymentDay: idx === 0 ? 5 : idx === 1 ? 1 : 10,
+        description: prop.description,
+        constructionYear: idx === 0 ? 2018 : idx === 1 ? 2020 : 2015,
+        floorCount: idx === 0 ? 3 : idx === 1 ? 4 : 5,
+        livingArea: idx === 0 ? 720 : idx === 1 ? 960 : 1200,
+        landArea: idx === 0 ? 450 : idx === 1 ? 600 : 800,
+      }));
 
       const properties: any[] = [];
       for (let idx = 0; idx < propertiesData.length; idx++) {
@@ -95,7 +66,7 @@ export class RealEstateSeeder implements ModuleSeeder {
             city: p.city,
             district: p.district,
             neighborhood: p.neighborhood,
-            country: 'TR',
+            country: country,
             totalUnits: p.totalUnits,
             monthlyFee: new Prisma.Decimal(p.monthlyFee),
             paymentDay: p.paymentDay,
@@ -170,32 +141,56 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       // ============================================
       // 3. TENANTS (Kiracılar) - 18 kiracı (her daire için bir kiracı)
+      // Uses localized tenant data from demoData
       // ============================================
-      const tenantNames = [
-        // Property 1 - Deniz Apartmanı kiracıları
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Ahmet', lastName: 'Yılmaz', email: 'ahmet.yilmaz@demo.com', phone: '0212 111 2233', mobile: '0532 111 2233', street: 'Atatürk Caddesi', houseNumber: '45/3', postalCode: '34710', city: 'İstanbul', birthDate: new Date(1985, 5, 15), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '12345678901' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Ayşe', lastName: 'Demir', email: 'ayse.demir@demo.com', phone: '0212 222 3344', mobile: '0533 222 3344', street: 'İstiklal Caddesi', houseNumber: '123', postalCode: '34430', city: 'İstanbul', birthDate: new Date(1990, 2, 22), birthPlace: 'Ankara', nationality: 'TR', taxNumber: '23456789012' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Mehmet', lastName: 'Kaya', email: 'mehmet.kaya@demo.com', phone: '0312 333 4455', mobile: '0534 333 4455', street: 'Kızılay Sokak', houseNumber: '78/A', postalCode: '06420', city: 'Ankara', birthDate: new Date(1978, 8, 10), birthPlace: 'Konya', nationality: 'TR', taxNumber: '34567890123' },
-        { tenantType: 'company', companyName: 'Özkan Ticaret Ltd. Şti.', email: 'info@ozkanticaret.demo.com', phone: '0232 444 5566', mobile: '0535 444 5566', street: 'Konak Meydanı', houseNumber: '5', postalCode: '35220', city: 'İzmir', taxNumber: '45678901234' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Ali', lastName: 'Çelik', email: 'ali.celik@demo.com', phone: '0216 555 6677', mobile: '0536 555 6677', street: 'Bağdat Caddesi', houseNumber: '234/5', postalCode: '34740', city: 'İstanbul', birthDate: new Date(1995, 11, 5), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '56789012345' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Zeynep', lastName: 'Arslan', email: 'zeynep.arslan@demo.com', phone: '0224 666 7788', mobile: '0537 666 7788', street: 'Mudanya Yolu', houseNumber: '89', postalCode: '16050', city: 'Bursa', birthDate: new Date(1988, 3, 18), birthPlace: 'Bursa', nationality: 'TR', taxNumber: '67890123456' },
+      // Build tenant list from localized data (6 tenants per property = 18 total)
+      // First 6 from localizedTenants, then duplicate with variations for remaining 12
+      const buildTenantNames = () => {
+        const tenants: any[] = [];
+        const baseTenants = localizedTenants;
+        const defaultCity = localizedProperties[0]?.city || 'City';
 
-        // Property 2 - Park Residence kiracıları
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Mustafa', lastName: 'Öztürk', email: 'mustafa.ozturk@demo.com', phone: '0212 777 8899', mobile: '0538 777 8899', street: 'Nişantaşı Caddesi', houseNumber: '56', postalCode: '34365', city: 'İstanbul', birthDate: new Date(1982, 7, 25), birthPlace: 'Trabzon', nationality: 'TR', taxNumber: '78901234567' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Fatma', lastName: 'Yıldırım', email: 'fatma.yildirim@demo.com', phone: '0212 888 9900', mobile: '0539 888 9900', street: 'Bebek Caddesi', houseNumber: '12/A', postalCode: '34342', city: 'İstanbul', birthDate: new Date(1992, 1, 8), birthPlace: 'İstanbul', nationality: 'TR', taxNumber: '89012345678' },
-        { tenantType: 'company', companyName: 'Yıldız Danışmanlık A.Ş.', email: 'info@yildizdanismanlik.demo.com', phone: '0212 999 0011', mobile: '0540 999 0011', street: 'Levent Caddesi', houseNumber: '100', postalCode: '34330', city: 'İstanbul', taxNumber: '90123456789' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Hasan', lastName: 'Şahin', email: 'hasan.sahin@demo.com', phone: '0216 111 2244', mobile: '0541 111 2244', street: 'Fenerbahçe Caddesi', houseNumber: '78', postalCode: '34726', city: 'İstanbul', birthDate: new Date(1975, 9, 12), birthPlace: 'Samsun', nationality: 'TR', taxNumber: '01234567890' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Elif', lastName: 'Koç', email: 'elif.koc@demo.com', phone: '0216 222 3355', mobile: '0542 222 3355', street: 'Suadiye Caddesi', houseNumber: '45/B', postalCode: '34740', city: 'İstanbul', birthDate: new Date(1998, 4, 30), birthPlace: 'İzmir', nationality: 'TR', taxNumber: '12345678902' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Emre', lastName: 'Aydın', email: 'emre.aydin@demo.com', phone: '0216 333 4466', mobile: '0543 333 4466', street: 'Caddebostan Caddesi', houseNumber: '23', postalCode: '34728', city: 'İstanbul', birthDate: new Date(1987, 6, 20), birthPlace: 'Ankara', nationality: 'TR', taxNumber: '23456789013' },
+        // Create 18 tenants (3 properties x 6 apartments each)
+        for (let i = 0; i < 18; i++) {
+          const baseTenant = baseTenants[i % baseTenants.length]!;
+          const isCompany = i % 6 === 3; // Every 4th tenant is a company
 
-        // Property 3 - Yeşil Vadi Sitesi kiracıları
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Burak', lastName: 'Demir', email: 'burak.demir@demo.com', phone: '0212 444 5577', mobile: '0544 444 5577', street: 'Maslak Caddesi', houseNumber: '67', postalCode: '34398', city: 'İstanbul', birthDate: new Date(1980, 2, 14), birthPlace: 'Eskişehir', nationality: 'TR', taxNumber: '34567890124' },
-        { tenantType: 'company', companyName: 'Teknoloji Sistemleri Ltd.', email: 'info@teknolojisistem.demo.com', phone: '0212 555 6688', mobile: '0545 555 6688', street: 'İTÜ Ayazağa Kampüsü', houseNumber: '1', postalCode: '34469', city: 'İstanbul', taxNumber: '45678901235' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Selin', lastName: 'Yılmaz', email: 'selin.yilmaz@demo.com', phone: '0212 666 7799', mobile: '0546 666 7799', street: 'Vadistanbul Caddesi', houseNumber: '34', postalCode: '34396', city: 'İstanbul', birthDate: new Date(1993, 11, 7), birthPlace: 'Adana', nationality: 'TR', taxNumber: '56789012346' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Oğuz', lastName: 'Kara', email: 'oguz.kara@demo.com', phone: '0212 777 8800', mobile: '0547 777 8800', street: 'Sarıyer Caddesi', houseNumber: '89/C', postalCode: '34450', city: 'İstanbul', birthDate: new Date(1984, 8, 23), birthPlace: 'Bursa', nationality: 'TR', taxNumber: '67890123457' },
-        { tenantType: 'person', salutation: 'Frau', firstName: 'Deniz', lastName: 'Tan', email: 'deniz.tan@demo.com', phone: '0212 888 9911', mobile: '0548 888 9911', street: 'Tarabya Caddesi', houseNumber: '56', postalCode: '34457', city: 'İstanbul', birthDate: new Date(1996, 5, 16), birthPlace: 'Antalya', nationality: 'TR', taxNumber: '78901234568' },
-        { tenantType: 'person', salutation: 'Herr', firstName: 'Can', lastName: 'Özdemir', email: 'can.ozdemir@demo.com', phone: '0212 999 0022', mobile: '0549 999 0022', street: 'Emirgan Caddesi', houseNumber: '12', postalCode: '34467', city: 'İstanbul', birthDate: new Date(1979, 0, 28), birthPlace: 'İzmir', nationality: 'TR', taxNumber: '89012345679' },
-      ];
+          if (isCompany) {
+            tenants.push({
+              tenantType: 'company',
+              companyName: `${baseTenant.firstName} ${baseTenant.lastName} ${demoData.locale === 'de' ? 'GmbH' : demoData.locale === 'ar' ? 'للتجارة' : demoData.locale === 'en' ? 'Inc.' : 'Ltd.'}`,
+              email: baseTenant.email.replace('@', `.company@`),
+              phone: baseTenant.phone,
+              mobile: baseTenant.phone,
+              street: localizedProperties[Math.floor(i / 6)]?.address || 'Main Street 1',
+              houseNumber: `${(i % 100) + 1}`,
+              postalCode: '10001',
+              city: localizedProperties[Math.floor(i / 6)]?.city || defaultCity,
+              taxNumber: `${10000000000 + i}`,
+            });
+          } else {
+            tenants.push({
+              tenantType: 'person',
+              salutation: i % 2 === 0 ? 'Herr' : 'Frau',
+              firstName: baseTenant.firstName,
+              lastName: baseTenant.lastName,
+              email: i < baseTenants.length ? baseTenant.email : baseTenant.email.replace('@', `${i}@`),
+              phone: baseTenant.phone,
+              mobile: baseTenant.phone,
+              street: localizedProperties[Math.floor(i / 6)]?.address || 'Main Street 1',
+              houseNumber: `${(i % 100) + 1}`,
+              postalCode: '10001',
+              city: localizedProperties[Math.floor(i / 6)]?.city || defaultCity,
+              birthDate: new Date(1980 + (i % 20), i % 12, (i % 28) + 1),
+              birthPlace: localizedProperties[i % localizedProperties.length]?.city || defaultCity,
+              nationality: country,
+              taxNumber: `${10000000000 + i}`,
+            });
+          }
+        }
+        return tenants;
+      };
+      const tenantNames = buildTenantNames();
 
       const tenants: any[] = [];
       for (let idx = 0; idx < tenantNames.length; idx++) {
@@ -277,7 +272,7 @@ export class RealEstateSeeder implements ModuleSeeder {
             endDate,
             rentAmount: apartment.rentPrice || new Prisma.Decimal(15000),
             deposit: apartment.deposit || new Prisma.Decimal(30000),
-            currency: 'TRY',
+            currency: currency,
             paymentType: randomChoice(['bank_transfer', 'auto_debit']),
             paymentDay: properties[apartment.propertyIndex]?.paymentDay || 5,
             autoRenewal: true,
@@ -368,7 +363,7 @@ export class RealEstateSeeder implements ModuleSeeder {
               tenantRecordId: tenant.id,
               type: 'rent',
               amount: new Prisma.Decimal(baseRent),
-              currency: 'TRY',
+              currency: currency,
               dueDate: paymentDate,
               paidDate,
               status,

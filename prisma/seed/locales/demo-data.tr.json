@@ -1,0 +1,185 @@
+{
+  "locale": "tr",
+  "currency": "TRY",
+  "country": "TR",
+  "dateFormat": "DD.MM.YYYY",
+
+  "locations": {
+    "hq": {
+      "name": "Merkez Ofis",
+      "address": "Atatürk Caddesi No: 123",
+      "city": "İstanbul",
+      "district": "Şişli",
+      "postalCode": "34394"
+    },
+    "factory": {
+      "name": "Üretim Tesisi",
+      "address": "Organize Sanayi Bölgesi 5. Cadde No: 45",
+      "city": "İstanbul",
+      "district": "Tuzla",
+      "postalCode": "34959"
+    },
+    "warehouse": {
+      "name": "Ana Depo",
+      "address": "Lojistik Merkezi No: 12",
+      "city": "İstanbul",
+      "district": "Hadımköy",
+      "postalCode": "34555"
+    }
+  },
+
+  "realEstate": {
+    "properties": [
+      {
+        "name": "Deniz Apartmanı",
+        "type": "apartment",
+        "address": "Sahil Caddesi No: 45",
+        "city": "İstanbul",
+        "district": "Kadıköy",
+        "neighborhood": "Fenerbahçe",
+        "description": "Deniz manzaralı lüks apartman"
+      },
+      {
+        "name": "Park Residence",
+        "type": "complex",
+        "address": "Park Sokak No: 12",
+        "city": "İstanbul",
+        "district": "Beşiktaş",
+        "neighborhood": "Etiler",
+        "description": "Parkın yanında prestijli konut"
+      },
+      {
+        "name": "Yeşil Vadi Sitesi",
+        "type": "complex",
+        "address": "Vadi Yolu No: 78",
+        "city": "İstanbul",
+        "district": "Sarıyer",
+        "neighborhood": "Maslak",
+        "description": "Doğayla iç içe yaşam alanı"
+      }
+    ],
+    "tenants": [
+      { "firstName": "Ahmet", "lastName": "Yılmaz", "email": "ahmet.yilmaz@email.com", "phone": "+90 532 111 2233" },
+      { "firstName": "Ayşe", "lastName": "Demir", "email": "ayse.demir@email.com", "phone": "+90 533 222 3344" },
+      { "firstName": "Mehmet", "lastName": "Kaya", "email": "mehmet.kaya@email.com", "phone": "+90 534 333 4455" },
+      { "firstName": "Fatma", "lastName": "Çelik", "email": "fatma.celik@email.com", "phone": "+90 535 444 5566" },
+      { "firstName": "Ali", "lastName": "Öztürk", "email": "ali.ozturk@email.com", "phone": "+90 536 555 6677" },
+      { "firstName": "Zeynep", "lastName": "Aydın", "email": "zeynep.aydin@email.com", "phone": "+90 537 666 7788" }
+    ],
+    "staffRoles": {
+      "manager": "Yönetici",
+      "agent": "Emlak Danışmanı",
+      "accountant": "Muhasebeci",
+      "maintenance": "Teknik Personel"
+    }
+  },
+
+  "hr": {
+    "departments": ["Yazılım", "Satış", "Finans", "İnsan Kaynakları", "Pazarlama", "Operasyon"],
+    "positions": {
+      "developer": "Yazılım Geliştirici",
+      "manager": "Müdür",
+      "analyst": "Analist",
+      "specialist": "Uzman",
+      "intern": "Stajyer"
+    },
+    "employees": [
+      { "firstName": "Emre", "lastName": "Yılmaz", "email": "emre.yilmaz@company.com", "department": "Yazılım", "position": "Kıdemli Yazılım Geliştirici" },
+      { "firstName": "Deniz", "lastName": "Kaya", "email": "deniz.kaya@company.com", "department": "Satış", "position": "Satış Müdürü" },
+      { "firstName": "Canan", "lastName": "Arslan", "email": "canan.arslan@company.com", "department": "Finans", "position": "Finans Analisti" },
+      { "firstName": "Burak", "lastName": "Şahin", "email": "burak.sahin@company.com", "department": "İnsan Kaynakları", "position": "İK Uzmanı" },
+      { "firstName": "Selin", "lastName": "Koç", "email": "selin.koc@company.com", "department": "Pazarlama", "position": "Pazarlama Uzmanı" },
+      { "firstName": "Mert", "lastName": "Yıldız", "email": "mert.yildiz@company.com", "department": "Operasyon", "position": "Operasyon Müdürü" },
+      { "firstName": "Ece", "lastName": "Güneş", "email": "ece.gunes@company.com", "department": "Yazılım", "position": "Junior Yazılım Geliştirici" },
+      { "firstName": "Kaan", "lastName": "Demir", "email": "kaan.demir@company.com", "department": "Satış", "position": "Satış Temsilcisi" }
+    ],
+    "leaveTypes": {
+      "annual": "Yıllık İzin",
+      "sick": "Hastalık İzni",
+      "maternity": "Doğum İzni",
+      "paternity": "Babalık İzni",
+      "unpaid": "Ücretsiz İzin"
+    }
+  },
+
+  "production": {
+    "products": [
+      { "name": "Alüminyum Profil A-100", "sku": "ALU-A100", "unit": "adet", "category": "Profil" },
+      { "name": "Çelik Levha 2mm", "sku": "STL-2MM", "unit": "kg", "category": "Levha" },
+      { "name": "Plastik Granül PP", "sku": "PLS-PP", "unit": "kg", "category": "Hammadde" },
+      { "name": "Bakır Kablo 2.5mm", "sku": "COP-25", "unit": "metre", "category": "Kablo" },
+      { "name": "Vida M8x20", "sku": "SCR-M820", "unit": "adet", "category": "Bağlantı" },
+      { "name": "Contol Parçası", "sku": "CTR-001", "unit": "adet", "category": "Yedek Parça" },
+      { "name": "Hidrolik Yağı", "sku": "HYD-OIL", "unit": "litre", "category": "Sarf Malzeme" },
+      { "name": "Kaynak Teli 1.2mm", "sku": "WLD-12", "unit": "kg", "category": "Sarf Malzeme" }
+    ],
+    "orderStatuses": {
+      "draft": "Taslak",
+      "pending": "Beklemede",
+      "in_progress": "Üretimde",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal"
+    }
+  },
+
+  "maintenance": {
+    "equipment": [
+      { "name": "CNC Torna Makinesi", "code": "CNC-001", "type": "production", "location": "Üretim Tesisi" },
+      { "name": "Kaynak Robotu", "code": "WLD-001", "type": "production", "location": "Üretim Tesisi" },
+      { "name": "Pres Makinesi", "code": "PRS-001", "type": "production", "location": "Üretim Tesisi" },
+      { "name": "Forklift", "code": "FRK-001", "type": "logistics", "location": "Ana Depo" },
+      { "name": "Klima Sistemi", "code": "HVAC-001", "type": "facility", "location": "Merkez Ofis" },
+      { "name": "Jeneratör", "code": "GEN-001", "type": "facility", "location": "Üretim Tesisi" },
+      { "name": "Kompresör", "code": "CMP-001", "type": "production", "location": "Üretim Tesisi" },
+      { "name": "Konveyör Bant", "code": "CNV-001", "type": "production", "location": "Üretim Tesisi" }
+    ],
+    "workOrderTypes": {
+      "preventive": "Periyodik Bakım",
+      "corrective": "Arıza Bakımı",
+      "inspection": "Kontrol/Denetim",
+      "emergency": "Acil Müdahale"
+    }
+  },
+
+  "accounting": {
+    "expenseCategories": ["Personel", "Kira", "Enerji", "Malzeme", "Ulaşım", "Pazarlama", "Hizmet", "Diğer"],
+    "paymentMethods": {
+      "cash": "Nakit",
+      "bank_transfer": "Banka Havalesi",
+      "credit_card": "Kredi Kartı",
+      "check": "Çek"
+    },
+    "invoiceTypes": {
+      "sales": "Satış Faturası",
+      "purchase": "Alış Faturası",
+      "service": "Hizmet Faturası"
+    }
+  },
+
+  "notifications": {
+    "templates": {
+      "welcome": "Hoş geldiniz! Sisteme başarıyla giriş yaptınız.",
+      "payment_reminder": "Yaklaşan ödeme hatırlatması: {amount} {currency} tutarında ödemeniz bulunmaktadır.",
+      "contract_expiry": "Sözleşme süresi dolmak üzere. Son tarih: {date}",
+      "maintenance_scheduled": "Bakım planlandı: {equipment} için {date} tarihinde bakım yapılacak.",
+      "leave_approved": "İzin talebiniz onaylandı. Tarihler: {startDate} - {endDate}"
+    }
+  },
+
+  "webBuilder": {
+    "company": {
+      "name": "Omnex Demo Şirketi",
+      "slogan": "Dijital Dönüşümün Öncüsü",
+      "description": "Yenilikçi çözümlerle işletmenizi geleceğe taşıyoruz.",
+      "address": "Atatürk Caddesi No: 123, Şişli, İstanbul",
+      "phone": "+90 212 123 45 67",
+      "email": "info@omnexdemo.com"
+    },
+    "pages": {
+      "home": "Ana Sayfa",
+      "about": "Hakkımızda",
+      "services": "Hizmetlerimiz",
+      "contact": "İletişim"
+    }
+  }
+}

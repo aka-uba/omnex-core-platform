@@ -1,0 +1,185 @@
+{
+  "locale": "en",
+  "currency": "USD",
+  "country": "US",
+  "dateFormat": "MM/DD/YYYY",
+
+  "locations": {
+    "hq": {
+      "name": "Headquarters",
+      "address": "123 Main Street",
+      "city": "New York",
+      "district": "Manhattan",
+      "postalCode": "10001"
+    },
+    "factory": {
+      "name": "Manufacturing Plant",
+      "address": "45 Industrial Boulevard",
+      "city": "Newark",
+      "district": "Industrial Zone",
+      "postalCode": "07102"
+    },
+    "warehouse": {
+      "name": "Main Warehouse",
+      "address": "12 Logistics Center Drive",
+      "city": "Jersey City",
+      "district": "Port District",
+      "postalCode": "07305"
+    }
+  },
+
+  "realEstate": {
+    "properties": [
+      {
+        "name": "Harbor View Apartments",
+        "type": "apartment",
+        "address": "45 Waterfront Drive",
+        "city": "New York",
+        "district": "Brooklyn",
+        "neighborhood": "DUMBO",
+        "description": "Luxury apartments with stunning harbor views"
+      },
+      {
+        "name": "Central Park Residences",
+        "type": "complex",
+        "address": "12 Park Avenue",
+        "city": "New York",
+        "district": "Manhattan",
+        "neighborhood": "Upper East Side",
+        "description": "Premium residential complex near Central Park"
+      },
+      {
+        "name": "Green Valley Estate",
+        "type": "complex",
+        "address": "78 Valley Road",
+        "city": "Hoboken",
+        "district": "Uptown",
+        "neighborhood": "Riverside",
+        "description": "Nature-inspired living community"
+      }
+    ],
+    "tenants": [
+      { "firstName": "John", "lastName": "Smith", "email": "john.smith@email.com", "phone": "+1 212 111 2233" },
+      { "firstName": "Emily", "lastName": "Johnson", "email": "emily.johnson@email.com", "phone": "+1 212 222 3344" },
+      { "firstName": "Michael", "lastName": "Williams", "email": "michael.williams@email.com", "phone": "+1 212 333 4455" },
+      { "firstName": "Sarah", "lastName": "Brown", "email": "sarah.brown@email.com", "phone": "+1 212 444 5566" },
+      { "firstName": "David", "lastName": "Davis", "email": "david.davis@email.com", "phone": "+1 212 555 6677" },
+      { "firstName": "Jennifer", "lastName": "Miller", "email": "jennifer.miller@email.com", "phone": "+1 212 666 7788" }
+    ],
+    "staffRoles": {
+      "manager": "Property Manager",
+      "agent": "Real Estate Agent",
+      "accountant": "Accountant",
+      "maintenance": "Maintenance Technician"
+    }
+  },
+
+  "hr": {
+    "departments": ["Software Development", "Sales", "Finance", "Human Resources", "Marketing", "Operations"],
+    "positions": {
+      "developer": "Software Developer",
+      "manager": "Manager",
+      "analyst": "Analyst",
+      "specialist": "Specialist",
+      "intern": "Intern"
+    },
+    "employees": [
+      { "firstName": "James", "lastName": "Wilson", "email": "james.wilson@company.com", "department": "Software Development", "position": "Senior Software Developer" },
+      { "firstName": "Emma", "lastName": "Taylor", "email": "emma.taylor@company.com", "department": "Sales", "position": "Sales Manager" },
+      { "firstName": "Robert", "lastName": "Anderson", "email": "robert.anderson@company.com", "department": "Finance", "position": "Financial Analyst" },
+      { "firstName": "Olivia", "lastName": "Thomas", "email": "olivia.thomas@company.com", "department": "Human Resources", "position": "HR Specialist" },
+      { "firstName": "William", "lastName": "Jackson", "email": "william.jackson@company.com", "department": "Marketing", "position": "Marketing Specialist" },
+      { "firstName": "Sophia", "lastName": "White", "email": "sophia.white@company.com", "department": "Operations", "position": "Operations Manager" },
+      { "firstName": "Daniel", "lastName": "Harris", "email": "daniel.harris@company.com", "department": "Software Development", "position": "Junior Software Developer" },
+      { "firstName": "Ava", "lastName": "Martin", "email": "ava.martin@company.com", "department": "Sales", "position": "Sales Representative" }
+    ],
+    "leaveTypes": {
+      "annual": "Annual Leave",
+      "sick": "Sick Leave",
+      "maternity": "Maternity Leave",
+      "paternity": "Paternity Leave",
+      "unpaid": "Unpaid Leave"
+    }
+  },
+
+  "production": {
+    "products": [
+      { "name": "Aluminum Profile A-100", "sku": "ALU-A100", "unit": "piece", "category": "Profile" },
+      { "name": "Steel Sheet 2mm", "sku": "STL-2MM", "unit": "kg", "category": "Sheet" },
+      { "name": "Plastic Granule PP", "sku": "PLS-PP", "unit": "kg", "category": "Raw Material" },
+      { "name": "Copper Cable 2.5mm", "sku": "COP-25", "unit": "meter", "category": "Cable" },
+      { "name": "Screw M8x20", "sku": "SCR-M820", "unit": "piece", "category": "Fastener" },
+      { "name": "Control Part", "sku": "CTR-001", "unit": "piece", "category": "Spare Part" },
+      { "name": "Hydraulic Oil", "sku": "HYD-OIL", "unit": "liter", "category": "Consumable" },
+      { "name": "Welding Wire 1.2mm", "sku": "WLD-12", "unit": "kg", "category": "Consumable" }
+    ],
+    "orderStatuses": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+
+  "maintenance": {
+    "equipment": [
+      { "name": "CNC Lathe Machine", "code": "CNC-001", "type": "production", "location": "Manufacturing Plant" },
+      { "name": "Welding Robot", "code": "WLD-001", "type": "production", "location": "Manufacturing Plant" },
+      { "name": "Press Machine", "code": "PRS-001", "type": "production", "location": "Manufacturing Plant" },
+      { "name": "Forklift", "code": "FRK-001", "type": "logistics", "location": "Main Warehouse" },
+      { "name": "HVAC System", "code": "HVAC-001", "type": "facility", "location": "Headquarters" },
+      { "name": "Generator", "code": "GEN-001", "type": "facility", "location": "Manufacturing Plant" },
+      { "name": "Compressor", "code": "CMP-001", "type": "production", "location": "Manufacturing Plant" },
+      { "name": "Conveyor Belt", "code": "CNV-001", "type": "production", "location": "Manufacturing Plant" }
+    ],
+    "workOrderTypes": {
+      "preventive": "Preventive Maintenance",
+      "corrective": "Corrective Maintenance",
+      "inspection": "Inspection",
+      "emergency": "Emergency"
+    }
+  },
+
+  "accounting": {
+    "expenseCategories": ["Personnel", "Rent", "Energy", "Materials", "Transportation", "Marketing", "Services", "Other"],
+    "paymentMethods": {
+      "cash": "Cash",
+      "bank_transfer": "Bank Transfer",
+      "credit_card": "Credit Card",
+      "check": "Check"
+    },
+    "invoiceTypes": {
+      "sales": "Sales Invoice",
+      "purchase": "Purchase Invoice",
+      "service": "Service Invoice"
+    }
+  },
+
+  "notifications": {
+    "templates": {
+      "welcome": "Welcome! You have successfully logged in.",
+      "payment_reminder": "Payment reminder: You have a payment of {amount} {currency} due.",
+      "contract_expiry": "Contract expiring soon. End date: {date}",
+      "maintenance_scheduled": "Maintenance scheduled: {equipment} will be serviced on {date}.",
+      "leave_approved": "Your leave request has been approved. Dates: {startDate} - {endDate}"
+    }
+  },
+
+  "webBuilder": {
+    "company": {
+      "name": "Omnex Demo Inc.",
+      "slogan": "Pioneer of Digital Transformation",
+      "description": "We bring your business into the future with innovative solutions.",
+      "address": "123 Main Street, Manhattan, New York",
+      "phone": "+1 212 123 4567",
+      "email": "info@omnexdemo.com"
+    },
+    "pages": {
+      "home": "Home",
+      "about": "About Us",
+      "services": "Services",
+      "contact": "Contact"
+    }
+  }
+}

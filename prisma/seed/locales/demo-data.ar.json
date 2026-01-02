@@ -1,0 +1,185 @@
+{
+  "locale": "ar",
+  "currency": "SAR",
+  "country": "SA",
+  "dateFormat": "DD/MM/YYYY",
+
+  "locations": {
+    "hq": {
+      "name": "المقر الرئيسي",
+      "address": "شارع الملك فهد 123",
+      "city": "الرياض",
+      "district": "العليا",
+      "postalCode": "11564"
+    },
+    "factory": {
+      "name": "مصنع الإنتاج",
+      "address": "المنطقة الصناعية الثانية 45",
+      "city": "جدة",
+      "district": "المنطقة الصناعية",
+      "postalCode": "21442"
+    },
+    "warehouse": {
+      "name": "المستودع الرئيسي",
+      "address": "مركز اللوجستيات 12",
+      "city": "الدمام",
+      "district": "الميناء",
+      "postalCode": "31952"
+    }
+  },
+
+  "realEstate": {
+    "properties": [
+      {
+        "name": "أبراج الخليج",
+        "type": "apartment",
+        "address": "شارع الكورنيش 45",
+        "city": "جدة",
+        "district": "الشاطئ",
+        "neighborhood": "الكورنيش",
+        "description": "شقق فاخرة مطلة على البحر"
+      },
+      {
+        "name": "واحة الرياض",
+        "type": "complex",
+        "address": "طريق الملك عبدالله 12",
+        "city": "الرياض",
+        "district": "النخيل",
+        "neighborhood": "حي الورود",
+        "description": "مجمع سكني راقي في قلب الرياض"
+      },
+      {
+        "name": "حدائق الواحة",
+        "type": "complex",
+        "address": "شارع الأمير سلطان 78",
+        "city": "الخبر",
+        "district": "الراكة",
+        "neighborhood": "الحي الراقي",
+        "description": "مجتمع سكني محاط بالطبيعة"
+      }
+    ],
+    "tenants": [
+      { "firstName": "محمد", "lastName": "الأحمد", "email": "mohammed.alahmad@email.sa", "phone": "+966 50 111 2233" },
+      { "firstName": "فاطمة", "lastName": "العلي", "email": "fatima.alali@email.sa", "phone": "+966 50 222 3344" },
+      { "firstName": "عبدالله", "lastName": "السعيد", "email": "abdullah.alsaeed@email.sa", "phone": "+966 50 333 4455" },
+      { "firstName": "نورة", "lastName": "القحطاني", "email": "noura.alqahtani@email.sa", "phone": "+966 50 444 5566" },
+      { "firstName": "خالد", "lastName": "الشمري", "email": "khalid.alshammari@email.sa", "phone": "+966 50 555 6677" },
+      { "firstName": "سارة", "lastName": "العتيبي", "email": "sara.alotaibi@email.sa", "phone": "+966 50 666 7788" }
+    ],
+    "staffRoles": {
+      "manager": "مدير العقارات",
+      "agent": "وكيل عقاري",
+      "accountant": "محاسب",
+      "maintenance": "فني صيانة"
+    }
+  },
+
+  "hr": {
+    "departments": ["تطوير البرمجيات", "المبيعات", "المالية", "الموارد البشرية", "التسويق", "العمليات"],
+    "positions": {
+      "developer": "مطور برمجيات",
+      "manager": "مدير",
+      "analyst": "محلل",
+      "specialist": "أخصائي",
+      "intern": "متدرب"
+    },
+    "employees": [
+      { "firstName": "أحمد", "lastName": "الراشد", "email": "ahmed.alrashed@company.sa", "department": "تطوير البرمجيات", "position": "مطور برمجيات أول" },
+      { "firstName": "ريم", "lastName": "الفهد", "email": "reem.alfahad@company.sa", "department": "المبيعات", "position": "مدير المبيعات" },
+      { "firstName": "سعود", "lastName": "الدوسري", "email": "saud.aldosari@company.sa", "department": "المالية", "position": "محلل مالي" },
+      { "firstName": "هند", "lastName": "المطيري", "email": "hind.almutairi@company.sa", "department": "الموارد البشرية", "position": "أخصائي موارد بشرية" },
+      { "firstName": "فيصل", "lastName": "العنزي", "email": "faisal.alanazi@company.sa", "department": "التسويق", "position": "أخصائي تسويق" },
+      { "firstName": "لمى", "lastName": "الحربي", "email": "lama.alharbi@company.sa", "department": "العمليات", "position": "مدير العمليات" },
+      { "firstName": "ماجد", "lastName": "الغامدي", "email": "majed.alghamdi@company.sa", "department": "تطوير البرمجيات", "position": "مطور برمجيات مبتدئ" },
+      { "firstName": "أمل", "lastName": "الزهراني", "email": "amal.alzahrani@company.sa", "department": "المبيعات", "position": "مندوب مبيعات" }
+    ],
+    "leaveTypes": {
+      "annual": "إجازة سنوية",
+      "sick": "إجازة مرضية",
+      "maternity": "إجازة أمومة",
+      "paternity": "إجازة أبوة",
+      "unpaid": "إجازة بدون راتب"
+    }
+  },
+
+  "production": {
+    "products": [
+      { "name": "بروفيل ألومنيوم A-100", "sku": "ALU-A100", "unit": "قطعة", "category": "بروفيل" },
+      { "name": "لوح فولاذ 2مم", "sku": "STL-2MM", "unit": "كجم", "category": "ألواح" },
+      { "name": "حبيبات بلاستيك PP", "sku": "PLS-PP", "unit": "كجم", "category": "مواد خام" },
+      { "name": "كابل نحاس 2.5مم", "sku": "COP-25", "unit": "متر", "category": "كابلات" },
+      { "name": "برغي M8x20", "sku": "SCR-M820", "unit": "قطعة", "category": "مثبتات" },
+      { "name": "قطعة تحكم", "sku": "CTR-001", "unit": "قطعة", "category": "قطع غيار" },
+      { "name": "زيت هيدروليكي", "sku": "HYD-OIL", "unit": "لتر", "category": "مستهلكات" },
+      { "name": "سلك لحام 1.2مم", "sku": "WLD-12", "unit": "كجم", "category": "مستهلكات" }
+    ],
+    "orderStatuses": {
+      "draft": "مسودة",
+      "pending": "قيد الانتظار",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    }
+  },
+
+  "maintenance": {
+    "equipment": [
+      { "name": "مخرطة CNC", "code": "CNC-001", "type": "production", "location": "مصنع الإنتاج" },
+      { "name": "روبوت لحام", "code": "WLD-001", "type": "production", "location": "مصنع الإنتاج" },
+      { "name": "آلة كبس", "code": "PRS-001", "type": "production", "location": "مصنع الإنتاج" },
+      { "name": "رافعة شوكية", "code": "FRK-001", "type": "logistics", "location": "المستودع الرئيسي" },
+      { "name": "نظام تكييف", "code": "HVAC-001", "type": "facility", "location": "المقر الرئيسي" },
+      { "name": "مولد كهربائي", "code": "GEN-001", "type": "facility", "location": "مصنع الإنتاج" },
+      { "name": "ضاغط هواء", "code": "CMP-001", "type": "production", "location": "مصنع الإنتاج" },
+      { "name": "حزام ناقل", "code": "CNV-001", "type": "production", "location": "مصنع الإنتاج" }
+    ],
+    "workOrderTypes": {
+      "preventive": "صيانة وقائية",
+      "corrective": "صيانة تصحيحية",
+      "inspection": "فحص وتفتيش",
+      "emergency": "طوارئ"
+    }
+  },
+
+  "accounting": {
+    "expenseCategories": ["الموظفين", "الإيجار", "الطاقة", "المواد", "النقل", "التسويق", "الخدمات", "أخرى"],
+    "paymentMethods": {
+      "cash": "نقدي",
+      "bank_transfer": "تحويل بنكي",
+      "credit_card": "بطاقة ائتمان",
+      "check": "شيك"
+    },
+    "invoiceTypes": {
+      "sales": "فاتورة مبيعات",
+      "purchase": "فاتورة مشتريات",
+      "service": "فاتورة خدمات"
+    }
+  },
+
+  "notifications": {
+    "templates": {
+      "welcome": "مرحباً بك! تم تسجيل الدخول بنجاح.",
+      "payment_reminder": "تذكير بالدفع: لديك دفعة مستحقة بقيمة {amount} {currency}.",
+      "contract_expiry": "العقد على وشك الانتهاء. تاريخ الانتهاء: {date}",
+      "maintenance_scheduled": "تمت جدولة الصيانة: سيتم صيانة {equipment} في {date}.",
+      "leave_approved": "تمت الموافقة على طلب إجازتك. الفترة: {startDate} - {endDate}"
+    }
+  },
+
+  "webBuilder": {
+    "company": {
+      "name": "شركة أومنكس التجريبية",
+      "slogan": "رائدة التحول الرقمي",
+      "description": "نقود أعمالك نحو المستقبل بحلول مبتكرة.",
+      "address": "شارع الملك فهد 123، العليا، الرياض",
+      "phone": "+966 11 123 4567",
+      "email": "info@omnexdemo.sa"
+    },
+    "pages": {
+      "home": "الرئيسية",
+      "about": "من نحن",
+      "services": "خدماتنا",
+      "contact": "اتصل بنا"
+    }
+  }
+}

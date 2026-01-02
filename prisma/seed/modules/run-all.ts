@@ -5,12 +5,25 @@
  * TENANT_DATABASE_URL="..." npx tsx prisma/seed/modules/run-all.ts --tenant-slug=omnexcore
  * TENANT_DATABASE_URL="..." npx tsx prisma/seed/modules/run-all.ts --tenant-slug=omnexcore --module=real-estate
  * TENANT_DATABASE_URL="..." npx tsx prisma/seed/modules/run-all.ts --tenant-slug=omnexcore --unseed
+ *
+ * Locale options (for localized demo data):
+ * --locale=tr  Turkish demo data with TRY currency (default)
+ * --locale=en  English demo data with USD currency
+ * --locale=de  German demo data with EUR currency
+ * --locale=ar  Arabic demo data with SAR currency
  */
 
 import { PrismaClient as TenantPrismaClient } from '@prisma/tenant-client';
 import { PrismaClient as CorePrismaClient } from '@prisma/core-client';
 import { seedAllModules, unseedAllModules, seedModule, unseedModule, getSeeder, getAllSeeders } from './seeder-registry';
-import type { SeederContext } from './base-seeder';
+import {
+  type SeederContext,
+  type SupportedLocale,
+  loadDemoData,
+  getAvailableLocales,
+  DEFAULT_LOCALE,
+  LOCALE_CURRENCIES,
+} from './base-seeder';
 
 const tenantPrisma = new TenantPrismaClient();
 const corePrisma = new CorePrismaClient();
@@ -21,10 +34,24 @@ const tenantSlug = args.find((arg) => arg.startsWith('--tenant-slug='))?.split('
 const moduleSlug = args.find((arg) => arg.startsWith('--module='))?.split('=')[1];
 const unseed = args.includes('--unseed');
 const listModules = args.includes('--list');
+const listLocales = args.includes('--list-locales');
+const localeArg = args.find((arg) => arg.startsWith('--locale='))?.split('=')[1] as SupportedLocale | undefined;
+const locale: SupportedLocale = localeArg && ['tr', 'en', 'de', 'ar'].includes(localeArg) ? localeArg : DEFAULT_LOCALE;
 
 async function main() {
   console.log(`\n🌱 Modular Seeder System`);
   console.log('=' .repeat(60));
+
+  // List available locales if requested
+  if (listLocales) {
+    console.log('\n🌍 Available Locales:');
+    const locales = getAvailableLocales();
+    for (const loc of locales) {
+      const currency = LOCALE_CURRENCIES[loc];
+      console.log(`  - ${loc}: ${currency} (${loc === 'tr' ? 'Turkish' : loc === 'en' ? 'English' : loc === 'de' ? 'German' : 'Arabic'})`);
+    }
+    process.exit(0);
+  }
 
   // List modules if requested
   if (listModules) {
@@ -81,6 +108,10 @@ async function main() {
       process.exit(1);
     }
 
+    // Load demo data for the selected locale
+    const demoData = loadDemoData(locale);
+    console.log(`🌍 Locale: ${locale.toUpperCase()} (Currency: ${demoData.currency})`);
+
     const ctx: SeederContext = {
       tenantPrisma,
       corePrisma,
@@ -88,6 +119,9 @@ async function main() {
       companyId: company.id,
       adminUserId: adminUser.id,
       tenantSlug,
+      locale,
+      currency: demoData.currency,
+      demoData,
     };
 
     if (moduleSlug) {

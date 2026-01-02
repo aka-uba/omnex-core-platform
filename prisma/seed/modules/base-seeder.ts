@@ -5,6 +5,120 @@
 
 import { PrismaClient as TenantPrismaClient, Prisma } from '@prisma/tenant-client';
 import { PrismaClient as CorePrismaClient } from '@prisma/core-client';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Supported locales for demo data
+export type SupportedLocale = 'tr' | 'en' | 'de' | 'ar';
+
+export interface LocaleConfig {
+  locale: SupportedLocale;
+  currency: string;
+  country: string;
+  dateFormat: string;
+}
+
+// Demo data structure for each locale
+export interface DemoData {
+  locale: string;
+  currency: string;
+  country: string;
+  dateFormat: string;
+  locations: {
+    hq: LocationData;
+    factory: LocationData;
+    warehouse: LocationData;
+  };
+  realEstate: RealEstateData;
+  hr: HRData;
+  production: ProductionData;
+  maintenance: MaintenanceData;
+  accounting: AccountingData;
+  notifications: NotificationsData;
+  webBuilder: WebBuilderData;
+}
+
+export interface LocationData {
+  name: string;
+  address: string;
+  city: string;
+  district: string;
+  postalCode: string;
+}
+
+export interface RealEstateData {
+  properties: Array<{
+    name: string;
+    type: string;
+    address: string;
+    city: string;
+    district: string;
+    neighborhood: string;
+    description: string;
+  }>;
+  tenants: Array<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  }>;
+  staffRoles: Record<string, string>;
+}
+
+export interface HRData {
+  departments: string[];
+  positions: Record<string, string>;
+  employees: Array<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    department: string;
+    position: string;
+  }>;
+  leaveTypes: Record<string, string>;
+}
+
+export interface ProductionData {
+  products: Array<{
+    name: string;
+    sku: string;
+    unit: string;
+    category: string;
+  }>;
+  orderStatuses: Record<string, string>;
+}
+
+export interface MaintenanceData {
+  equipment: Array<{
+    name: string;
+    code: string;
+    type: string;
+    location: string;
+  }>;
+  workOrderTypes: Record<string, string>;
+}
+
+export interface AccountingData {
+  expenseCategories: string[];
+  paymentMethods: Record<string, string>;
+  invoiceTypes: Record<string, string>;
+}
+
+export interface NotificationsData {
+  templates: Record<string, string>;
+}
+
+export interface WebBuilderData {
+  company: {
+    name: string;
+    slogan: string;
+    description: string;
+    address: string;
+    phone: string;
+    email: string;
+  };
+  pages: Record<string, string>;
+}
 
 export interface SeederContext {
   tenantPrisma: TenantPrismaClient;
@@ -13,6 +127,10 @@ export interface SeederContext {
   companyId: string;
   adminUserId: string;
   tenantSlug: string;
+  // Locale support
+  locale: SupportedLocale;
+  currency: string;
+  demoData: DemoData;
 }
 
 export interface SeederResult {
@@ -67,4 +185,59 @@ export const DEMO_DATA_PREFIX = 'demo-';
 
 export function isDemoData(id: string): boolean {
   return id.includes(DEMO_DATA_PREFIX) || id.includes('-demo-');
+}
+
+// Default locale configuration
+export const DEFAULT_LOCALE: SupportedLocale = 'tr';
+
+// Locale to currency mapping
+export const LOCALE_CURRENCIES: Record<SupportedLocale, string> = {
+  tr: 'TRY',
+  en: 'USD',
+  de: 'EUR',
+  ar: 'SAR',
+};
+
+// Load demo data for a specific locale
+export function loadDemoData(locale: SupportedLocale = DEFAULT_LOCALE): DemoData {
+  const localesDir = path.join(__dirname, '..', 'locales');
+  const filePath = path.join(localesDir, `demo-data.${locale}.json`);
+
+  if (!fs.existsSync(filePath)) {
+    console.warn(`Demo data file not found for locale "${locale}", falling back to "${DEFAULT_LOCALE}"`);
+    const fallbackPath = path.join(localesDir, `demo-data.${DEFAULT_LOCALE}.json`);
+    return JSON.parse(fs.readFileSync(fallbackPath, 'utf-8'));
+  }
+
+  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+}
+
+// Create seeder context with locale support
+export function createSeederContext(
+  baseContext: Omit<SeederContext, 'locale' | 'currency' | 'demoData'>,
+  locale: SupportedLocale = DEFAULT_LOCALE
+): SeederContext {
+  const demoData = loadDemoData(locale);
+  return {
+    ...baseContext,
+    locale,
+    currency: demoData.currency,
+    demoData,
+  };
+}
+
+// Get available locales
+export function getAvailableLocales(): SupportedLocale[] {
+  const localesDir = path.join(__dirname, '..', 'locales');
+  const files = fs.readdirSync(localesDir);
+  const locales: SupportedLocale[] = [];
+
+  for (const file of files) {
+    const match = file.match(/^demo-data\.(\w+)\.json$/);
+    if (match && ['tr', 'en', 'de', 'ar'].includes(match[1])) {
+      locales.push(match[1] as SupportedLocale);
+    }
+  }
+
+  return locales;
 }

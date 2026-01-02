@@ -1,0 +1,185 @@
+{
+  "locale": "de",
+  "currency": "EUR",
+  "country": "DE",
+  "dateFormat": "DD.MM.YYYY",
+
+  "locations": {
+    "hq": {
+      "name": "Hauptsitz",
+      "address": "Königsallee 123",
+      "city": "Düsseldorf",
+      "district": "Stadtmitte",
+      "postalCode": "40212"
+    },
+    "factory": {
+      "name": "Produktionsstätte",
+      "address": "Industriestraße 45",
+      "city": "Essen",
+      "district": "Rüttenscheid",
+      "postalCode": "45131"
+    },
+    "warehouse": {
+      "name": "Hauptlager",
+      "address": "Logistikzentrum 12",
+      "city": "Duisburg",
+      "district": "Hafen",
+      "postalCode": "47059"
+    }
+  },
+
+  "realEstate": {
+    "properties": [
+      {
+        "name": "Rheinblick Residenz",
+        "type": "apartment",
+        "address": "Rheinuferstraße 45",
+        "city": "Düsseldorf",
+        "district": "Oberkassel",
+        "neighborhood": "Rheinufer",
+        "description": "Luxuriöse Wohnung mit Rheinblick"
+      },
+      {
+        "name": "Parkview Apartments",
+        "type": "complex",
+        "address": "Am Stadtpark 12",
+        "city": "Köln",
+        "district": "Lindenthal",
+        "neighborhood": "Stadtwald",
+        "description": "Moderne Wohnanlage am Stadtpark"
+      },
+      {
+        "name": "Grüne Oase Wohnpark",
+        "type": "complex",
+        "address": "Waldweg 78",
+        "city": "Bonn",
+        "district": "Bad Godesberg",
+        "neighborhood": "Villenviertel",
+        "description": "Naturnahes Wohnen im Grünen"
+      }
+    ],
+    "tenants": [
+      { "firstName": "Thomas", "lastName": "Müller", "email": "thomas.mueller@email.de", "phone": "+49 152 111 2233" },
+      { "firstName": "Anna", "lastName": "Schmidt", "email": "anna.schmidt@email.de", "phone": "+49 153 222 3344" },
+      { "firstName": "Michael", "lastName": "Weber", "email": "michael.weber@email.de", "phone": "+49 154 333 4455" },
+      { "firstName": "Sarah", "lastName": "Fischer", "email": "sarah.fischer@email.de", "phone": "+49 155 444 5566" },
+      { "firstName": "Klaus", "lastName": "Wagner", "email": "klaus.wagner@email.de", "phone": "+49 156 555 6677" },
+      { "firstName": "Julia", "lastName": "Becker", "email": "julia.becker@email.de", "phone": "+49 157 666 7788" }
+    ],
+    "staffRoles": {
+      "manager": "Verwalter",
+      "agent": "Immobilienmakler",
+      "accountant": "Buchhalter",
+      "maintenance": "Haustechniker"
+    }
+  },
+
+  "hr": {
+    "departments": ["Softwareentwicklung", "Vertrieb", "Finanzen", "Personalwesen", "Marketing", "Betrieb"],
+    "positions": {
+      "developer": "Softwareentwickler",
+      "manager": "Abteilungsleiter",
+      "analyst": "Analyst",
+      "specialist": "Fachkraft",
+      "intern": "Praktikant"
+    },
+    "employees": [
+      { "firstName": "Max", "lastName": "Müller", "email": "max.mueller@company.de", "department": "Softwareentwicklung", "position": "Senior Softwareentwickler" },
+      { "firstName": "Lisa", "lastName": "Weber", "email": "lisa.weber@company.de", "department": "Vertrieb", "position": "Vertriebsleiter" },
+      { "firstName": "Felix", "lastName": "Schmidt", "email": "felix.schmidt@company.de", "department": "Finanzen", "position": "Finanzanalyst" },
+      { "firstName": "Laura", "lastName": "Fischer", "email": "laura.fischer@company.de", "department": "Personalwesen", "position": "HR-Spezialist" },
+      { "firstName": "Tim", "lastName": "Wagner", "email": "tim.wagner@company.de", "department": "Marketing", "position": "Marketing-Spezialist" },
+      { "firstName": "Nina", "lastName": "Becker", "email": "nina.becker@company.de", "department": "Betrieb", "position": "Betriebsleiter" },
+      { "firstName": "Jan", "lastName": "Hoffmann", "email": "jan.hoffmann@company.de", "department": "Softwareentwicklung", "position": "Junior Softwareentwickler" },
+      { "firstName": "Sophie", "lastName": "Koch", "email": "sophie.koch@company.de", "department": "Vertrieb", "position": "Vertriebsmitarbeiter" }
+    ],
+    "leaveTypes": {
+      "annual": "Jahresurlaub",
+      "sick": "Krankenurlaub",
+      "maternity": "Mutterschaftsurlaub",
+      "paternity": "Vaterschaftsurlaub",
+      "unpaid": "Unbezahlter Urlaub"
+    }
+  },
+
+  "production": {
+    "products": [
+      { "name": "Aluminiumprofil A-100", "sku": "ALU-A100", "unit": "Stück", "category": "Profil" },
+      { "name": "Stahlblech 2mm", "sku": "STL-2MM", "unit": "kg", "category": "Blech" },
+      { "name": "Kunststoffgranulat PP", "sku": "PLS-PP", "unit": "kg", "category": "Rohmaterial" },
+      { "name": "Kupferkabel 2,5mm", "sku": "COP-25", "unit": "Meter", "category": "Kabel" },
+      { "name": "Schraube M8x20", "sku": "SCR-M820", "unit": "Stück", "category": "Verbindung" },
+      { "name": "Steuerungsteil", "sku": "CTR-001", "unit": "Stück", "category": "Ersatzteil" },
+      { "name": "Hydrauliköl", "sku": "HYD-OIL", "unit": "Liter", "category": "Verbrauchsmaterial" },
+      { "name": "Schweißdraht 1,2mm", "sku": "WLD-12", "unit": "kg", "category": "Verbrauchsmaterial" }
+    ],
+    "orderStatuses": {
+      "draft": "Entwurf",
+      "pending": "Ausstehend",
+      "in_progress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
+    }
+  },
+
+  "maintenance": {
+    "equipment": [
+      { "name": "CNC-Drehmaschine", "code": "CNC-001", "type": "production", "location": "Produktionsstätte" },
+      { "name": "Schweißroboter", "code": "WLD-001", "type": "production", "location": "Produktionsstätte" },
+      { "name": "Pressmaschine", "code": "PRS-001", "type": "production", "location": "Produktionsstätte" },
+      { "name": "Gabelstapler", "code": "FRK-001", "type": "logistics", "location": "Hauptlager" },
+      { "name": "Klimaanlage", "code": "HVAC-001", "type": "facility", "location": "Hauptsitz" },
+      { "name": "Notstromaggregat", "code": "GEN-001", "type": "facility", "location": "Produktionsstätte" },
+      { "name": "Kompressor", "code": "CMP-001", "type": "production", "location": "Produktionsstätte" },
+      { "name": "Förderband", "code": "CNV-001", "type": "production", "location": "Produktionsstätte" }
+    ],
+    "workOrderTypes": {
+      "preventive": "Vorbeugende Wartung",
+      "corrective": "Korrekturwartung",
+      "inspection": "Inspektion",
+      "emergency": "Notfall"
+    }
+  },
+
+  "accounting": {
+    "expenseCategories": ["Personal", "Miete", "Energie", "Material", "Transport", "Marketing", "Dienstleistung", "Sonstiges"],
+    "paymentMethods": {
+      "cash": "Bargeld",
+      "bank_transfer": "Überweisung",
+      "credit_card": "Kreditkarte",
+      "check": "Scheck"
+    },
+    "invoiceTypes": {
+      "sales": "Verkaufsrechnung",
+      "purchase": "Einkaufsrechnung",
+      "service": "Dienstleistungsrechnung"
+    }
+  },
+
+  "notifications": {
+    "templates": {
+      "welcome": "Willkommen! Sie haben sich erfolgreich angemeldet.",
+      "payment_reminder": "Zahlungserinnerung: Eine Zahlung von {amount} {currency} steht aus.",
+      "contract_expiry": "Vertragsablauf: Ihr Vertrag läuft am {date} ab.",
+      "maintenance_scheduled": "Wartung geplant: {equipment} wird am {date} gewartet.",
+      "leave_approved": "Urlaubsantrag genehmigt. Zeitraum: {startDate} - {endDate}"
+    }
+  },
+
+  "webBuilder": {
+    "company": {
+      "name": "Omnex Demo GmbH",
+      "slogan": "Pionier der digitalen Transformation",
+      "description": "Wir bringen Ihr Unternehmen mit innovativen Lösungen in die Zukunft.",
+      "address": "Königsallee 123, Stadtmitte, Düsseldorf",
+      "phone": "+49 211 123 45 67",
+      "email": "info@omnexdemo.de"
+    },
+    "pages": {
+      "home": "Startseite",
+      "about": "Über uns",
+      "services": "Dienstleistungen",
+      "contact": "Kontakt"
+    }
+  }
+}
