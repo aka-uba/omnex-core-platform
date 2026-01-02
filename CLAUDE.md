@@ -756,6 +756,88 @@ menu:
     order: 10
 ```
 
+### 7.3 Demo Veri Lokalizasyon Sistemi
+
+Demo veriler için çoklu dil ve para birimi desteği:
+
+**Desteklenen Diller:**
+| Locale | Para Birimi | Ülke | Açıklama |
+|--------|-------------|------|----------|
+| `tr` | TRY | TR | Türkçe (varsayılan) |
+| `en` | USD | US | İngilizce |
+| `de` | EUR | DE | Almanca |
+| `ar` | SAR | SA | Arapça |
+
+**Dosya Yapısı:**
+```
+prisma/seed/
+├── locales/
+│   ├── demo-data.tr.json    # Türkçe demo veriler
+│   ├── demo-data.en.json    # İngilizce demo veriler
+│   ├── demo-data.de.json    # Almanca demo veriler
+│   └── demo-data.ar.json    # Arapça demo veriler
+└── modules/
+    ├── base-seeder.ts       # Locale type ve helper fonksiyonlar
+    ├── run-all.ts           # CLI runner (--locale parametresi)
+    └── *.seed.ts            # Modül seeder'ları
+```
+
+**CLI Kullanımı:**
+```bash
+# Almanca demo veriler ile seed (EUR para birimi)
+TENANT_DATABASE_URL="..." npx tsx prisma/seed/modules/run-all.ts --tenant-slug=demo --locale=de
+
+# Mevcut locale'leri listele
+npx tsx prisma/seed/modules/run-all.ts --list-locales
+
+# Belirli modülü seed et
+npx tsx prisma/seed/modules/run-all.ts --tenant-slug=demo --locale=en --module=real-estate
+```
+
+**Seeder'da Localized Veri Kullanımı:**
+```typescript
+async seed(ctx: SeederContext): Promise<SeederResult> {
+  const { demoData, currency, locale } = ctx;
+
+  // Lokalize edilmiş mülk verileri
+  const properties = demoData.realEstate.properties;
+
+  // Lokalize edilmiş kiracı isimleri
+  const tenants = demoData.realEstate.tenants;
+
+  // Para birimi (TRY, EUR, USD, SAR)
+  const paymentCurrency = currency;
+
+  // Ülke kodu
+  const country = demoData.country; // TR, DE, US, SA
+}
+```
+
+**Demo Veri JSON Yapısı:**
+```json
+{
+  "locale": "de",
+  "currency": "EUR",
+  "country": "DE",
+  "dateFormat": "DD.MM.YYYY",
+  "locations": { "hq": {...}, "factory": {...}, "warehouse": {...} },
+  "realEstate": { "properties": [...], "tenants": [...], "staffRoles": {...} },
+  "hr": { "departments": [...], "employees": [...], "positions": {...} },
+  "production": { "products": [...], "orderStatuses": {...} },
+  "maintenance": { "equipment": [...], "workOrderTypes": {...} },
+  "accounting": { "expenseCategories": [...], "paymentMethods": {...} },
+  "notifications": { "templates": {...} },
+  "webBuilder": { "company": {...}, "pages": {...} }
+}
+```
+
+**KURALLAR:**
+- ✅ Demo verilerde hardcoded Türkçe metin yerine `demoData` kullan
+- ✅ Para birimi için `ctx.currency` kullan (`'TRY'` yerine)
+- ✅ Ülke kodu için `demoData.country` kullan
+- ✅ Yeni locale eklerken tüm seeder'ları güncelle
+- ❌ Seeder'da doğrudan dil/para birimi hardcode etme
+
 ---
 
 ## 8. HOOK KULLANIMI
@@ -851,6 +933,10 @@ Yeni sayfa/özellik eklerken:
 | Modül Çevirileri | `src/locales/modules/` |
 | Tema Context | `src/context/ThemeContext.tsx` |
 | Company Context | `src/context/CompanyContext.tsx` |
+| Demo Veri Locales | `prisma/seed/locales/` |
+| Seeder Base | `prisma/seed/modules/base-seeder.ts` |
+| Seeder CLI | `prisma/seed/modules/run-all.ts` |
+| Modül Seeder'lar | `prisma/seed/modules/*.seed.ts` |
 
 ---
 
