@@ -300,17 +300,12 @@ export async function GET(request: NextRequest) {
 
       // Accounting Module
       try {
-        const thisMonthStart = dayjs(now).startOf('month').toDate();
-        const lastMonthStart = dayjs(now).subtract(1, 'month').startOf('month').toDate();
-        const lastMonthEnd = dayjs(now).subtract(1, 'month').endOf('month').toDate();
-
-        // CashTransaction verilerini çek (ana veri kaynağı)
-        const [cashIncomeThisMonth, cashExpenseThisMonth, cashIncomeLastMonth] = await Promise.all([
+        // CashTransaction verilerini çek - tüm zamanlar
+        const [totalIncome, totalExpense, transactionCount] = await Promise.all([
           tenantPrisma.cashTransaction.aggregate({
             where: {
               tenantId: tenantContext.id,
               companyId,
-              transactionDate: { gte: thisMonthStart },
               type: 'income',
             },
             _sum: { amount: true },
@@ -319,37 +314,31 @@ export async function GET(request: NextRequest) {
             where: {
               tenantId: tenantContext.id,
               companyId,
-              transactionDate: { gte: thisMonthStart },
               type: 'expense',
             },
             _sum: { amount: true },
           }),
-          tenantPrisma.cashTransaction.aggregate({
+          tenantPrisma.cashTransaction.count({
             where: {
               tenantId: tenantContext.id,
               companyId,
-              transactionDate: { gte: lastMonthStart, lte: lastMonthEnd },
-              type: 'income',
             },
-            _sum: { amount: true },
           }),
         ]);
 
-        const thisMonthRevenue = Number(cashIncomeThisMonth._sum?.amount || 0);
-        const lastMonthRevenue = Number(cashIncomeLastMonth._sum?.amount || 0);
-        const thisMonthExpenses = Number(cashExpenseThisMonth._sum?.amount || 0);
-        const revenueChange = lastMonthRevenue > 0
-          ? Math.round(((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100)
-          : 0;
+        const totalIncomeAmount = Number(totalIncome._sum?.amount || 0);
+        const totalExpenseAmount = Number(totalExpense._sum?.amount || 0);
+        const netBalance = totalIncomeAmount - totalExpenseAmount;
 
         modules.push({
           module: 'accounting',
           icon: 'IconReportMoney',
           color: 'green',
           stats: [
-            { label: 'Bu Ay Gelir', value: formatCurrency(thisMonthRevenue), change: revenueChange, changeLabel: 'geçen aya göre' },
-            { label: 'Bu Ay Gider', value: formatCurrency(thisMonthExpenses) },
-            { label: 'Net', value: formatCurrency(thisMonthRevenue - thisMonthExpenses) },
+            { label: 'Toplam Gelir', value: formatCurrency(totalIncomeAmount) },
+            { label: 'Toplam Gider', value: formatCurrency(totalExpenseAmount) },
+            { label: 'Mevcut Bakiye', value: formatCurrency(netBalance) },
+            { label: 'İşlem Sayısı', value: transactionCount },
           ],
           quickActions: [
             { label: 'Kasa İşlemleri', href: '/modules/accounting/cash-transactions', icon: 'IconCash' },
