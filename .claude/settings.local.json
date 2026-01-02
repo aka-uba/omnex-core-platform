@@ -154,7 +154,9 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nfix: Improve audit history popup display\n\n- Increase popup width from 320px to 400px for better readability\n- Filter out automatic fields (updatedAt, createdAt, id, etc.) from change summary\n- Show up to 3 meaningful field changes per log entry\n- Truncate long values to keep display clean\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit -m \"$(cat <<''EOF''\nfix: Filter relation objects from audit log display\n\n- Add IGNORED_FIELDS for relation objects (property, contracts, etc.)\n- Skip nested objects with id property in getChangedFields\n- Improve value formatting with better truncation\n- Format boolean values as checkmarks\n- Format numbers with locale\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(for file in src/modules/accounting/components/InvoiceList.tsx src/modules/accounting/components/ExpenseList.tsx src/modules/accounting/components/PaymentList.tsx src/modules/accounting/components/SubscriptionList.tsx src/modules/hr/components/EmployeeList.tsx src/modules/hr/components/LeaveList.tsx src/modules/hr/components/PayrollList.tsx src/modules/production/components/ProductList.tsx src/modules/production/components/ProductionOrderList.tsx src/modules/production/components/StockMovementList.tsx)",
-      "Bash(do echo \"=== $file ===\" grep -n \"tableId\\|showAuditHistory\\|auditEntityName\" \"$file\")"
+      "Bash(do echo \"=== $file ===\" grep -n \"tableId\\|showAuditHistory\\|auditEntityName\" \"$file\")",
+      "Bash(ssh -p 2222 deploy@146.190.224.121 \"cd /opt/omnex && cat .env 2>/dev/null || echo ''.env dosyası yok''\")",
+      "Bash(gh run list:*)"
     ],
     "deny": [],
     "ask": []
