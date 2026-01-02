@@ -62,6 +62,7 @@ function ThemeConfiguratorComponent() {
   const [opened, setOpened] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Client-side'da mount olduktan sonra localStorage'dan oku
 
@@ -244,16 +245,23 @@ function ThemeConfiguratorComponent() {
       {/* Floating Buttons Container */}
       <div className={styles.floatingButtonsContainer}>
         {/* Chat Button */}
-        <button
-          type="button"
-          onClick={() => setChatOpen(!chatOpen)}
-          className={styles.floatingButton}
-          aria-label="Sohbet panelini aç"
-          title="Sohbet"
-        >
-          <span className={styles.srOnly}>Chat</span>
-          <IconMessageCircle size={24} className={styles.icon} />
-        </button>
+        <div className={styles.floatingButtonWrapper}>
+          <button
+            type="button"
+            onClick={() => setChatOpen(!chatOpen)}
+            className={styles.floatingButton}
+            aria-label="Sohbet panelini aç"
+            title="Sohbet"
+          >
+            <span className={styles.srOnly}>Chat</span>
+            <IconMessageCircle size={24} className={styles.icon} />
+          </button>
+          {unreadCount > 0 && (
+            <span className={styles.floatingButtonBadge}>
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          )}
+        </div>
 
         {/* Theme Settings Button */}
         <button
@@ -272,7 +280,11 @@ function ThemeConfiguratorComponent() {
       </div>
 
       {/* Floating Chat Widget */}
-      <FloatingChatWidget isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+      <FloatingChatWidget
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+        onUnreadCountChange={setUnreadCount}
+      />
 
       {opened && (
         <div

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Avatar, Badge } from '@mantine/core';
-import { IconMessageCircle, IconX, IconSend, IconArrowLeft, IconUsers, IconMessage } from '@tabler/icons-react';
+import { Avatar, Badge, TextInput, Checkbox, ScrollArea } from '@mantine/core';
+import { IconMessageCircle, IconX, IconSend, IconArrowLeft, IconUsers, IconMessage, IconPlus, IconSearch } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
-import { useChatRooms } from '@/hooks/useChatRooms';
+import { useChatRooms, useCreateChatRoom } from '@/hooks/useChatRooms';
 import { useChatMessages, useCreateChatMessage } from '@/hooks/useChatMessages';
 import { useUsers } from '@/hooks/useUsers';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,24 +14,30 @@ import styles from '@/components/layouts/configurator/ThemeConfigurator.module.c
 interface FloatingChatWidgetProps {
     isOpen: boolean;
     onClose: () => void;
+    onUnreadCountChange?: (count: number) => void;
 }
 
-export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps) {
+export function FloatingChatWidget({ isOpen, onClose, onUnreadCountChange }: FloatingChatWidgetProps) {
     const { t } = useTranslation('modules/sohbet');
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState<'chats' | 'groups'>('chats');
     const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
     const [messageInput, setMessageInput] = useState('');
+    const [showNewChat, setShowNewChat] = useState(false);
+    const [newChatType, setNewChatType] = useState<'direct' | 'group'>('direct');
+    const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+    const [groupName, setGroupName] = useState('');
+    const [userSearchQuery, setUserSearchQuery] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Fetch chat rooms
-    const { data: roomsData } = useChatRooms({
+    const { data: roomsData, refetch: refetchRooms } = useChatRooms({
         page: 1,
         pageSize: 50,
         isActive: true
     });
 
-    // Fetch users for display names
+    // Fetch users for display names and new chat selection
     const { data: usersData } = useUsers({ pageSize: 100 });
 
     // Fetch messages for selected room
@@ -44,15 +50,35 @@ export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps)
     // Send message mutation
     const sendMessageMutation = useCreateChatMessage();
 
+    // Create chat room mutation
+    const createRoomMutation = useCreateChatRoom();
+
     // Filter rooms by type
     const directRooms = roomsData?.rooms?.filter(r => r.type === 'direct') || [];
     const groupRooms = roomsData?.rooms?.filter(r => r.type === 'group' || r.type === 'channel') || [];
     const displayedRooms = activeTab === 'chats' ? directRooms : groupRooms;
 
+    // Calculate total unread count
+    const totalUnreadCount = (roomsData?.rooms || []).reduce((acc, room) => {
+        const unread = room.messages?.filter(m => !m.isRead && m.senderId !== user?.id).length || 0;
+        return acc + unread;
+    }, 0);
+
+    // Notify parent about unread count changes
+    useEffect(() => {
+        onUnreadCountChange?.(totalUnreadCount);
+    }, [totalUnreadCount, onUnreadCountChange]);
+
     // Scroll to bottom when messages change
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messagesData?.messages]);
+
+    // Filter users for new chat (exclude current user)
+    const availableUsers = (usersData?.users || []).filter(u =>
+        u.id !== user?.id &&
+        u.name?.toLowerCase().includes(userSearchQuery.toLowerCase())
+    );
 
     // Get user display name
     const getUserName = (odaId: string) => {
@@ -106,14 +132,74 @@ export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps)
         }
     };
 
+    // Handle user selection for new chat
+    const toggleUserSelection = (odaId: string) => {
+        setSelectedUsers(prev =>
+            prev.includes(odaId)
+                ? prev.filter(id => id !== odaId)
+                : [...prev, odaId]
+        );
+    };
+
+    // Handle create new chat
+    const handleCreateChat = async () => {
+        if (selectedUsers.length === 0) return;
+
+        try {
+            const roomData = {
+                type: newChatType,
+                name: newChatType === 'group' ? groupName || undefined : undefined,
+                participants: selectedUsers,
+            };
+
+            const result = await createRoomMutation.mutateAsync(roomData);
+
+            // Reset form
+            setShowNewChat(false);
+            setSelectedUsers([]);
+            setGroupName('');
+            setUserSearchQuery('');
+
+            // Refresh rooms and select the new room
+            await refetchRooms();
+            if (result?.room) {
+                setSelectedRoom(result.room);
+            }
+        } catch {
+            console.error('Failed to create chat room');
+        }
+    };
+
+    // Reset new chat form
+    const resetNewChatForm = () => {
+        setShowNewChat(false);
+        setNewChatType('direct');
+        setSelectedUsers([]);
+        setGroupName('');
+        setUserSearchQuery('');
+    };
+
     if (!isOpen) return null;
 
     return (
         <div className={styles.chatWidgetPanel}>
-            {/* Header */}
+            {/* Header - dynamic based on view */}
             <div className={styles.chatWidgetHeader}>
                 <div className={styles.chatWidgetHeaderInfo}>
-                    {selectedRoom ? (
+                    {showNewChat ? (
+                        <>
+                            <button
+                                className={styles.chatWidgetBackBtn}
+                                onClick={resetNewChatForm}
+                            >
+                                <IconArrowLeft size={20} />
+                            </button>
+                            <div className={styles.chatWidgetHeaderText}>
+                                <h3>{newChatType === 'direct' ? t('actions.newChat') : t('actions.newGroup')}</h3>
+                                <p>{t('forms.selectUser')}</p>
+                            </div>
+                        </>
+                    ) : selectedRoom ? (
                         <>
                             <button
                                 className={styles.chatWidgetBackBtn}
@@ -167,7 +253,102 @@ export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps)
                 </button>
             </div>
 
-            {selectedRoom ? (
+            {showNewChat ? (
+                /* New Chat View */
+                <>
+
+                    {/* Chat Type Selection */}
+                    <div className={styles.chatWidgetTabs}>
+                        <button
+                            className={`${styles.chatWidgetTab} ${newChatType === 'direct' ? styles.active : ''}`}
+                            onClick={() => {
+                                setNewChatType('direct');
+                                setSelectedUsers([]);
+                            }}
+                        >
+                            {t('menu.items.messages')}
+                        </button>
+                        <button
+                            className={`${styles.chatWidgetTab} ${newChatType === 'group' ? styles.active : ''}`}
+                            onClick={() => setNewChatType('group')}
+                        >
+                            {t('menu.items.groups')}
+                        </button>
+                    </div>
+
+                    <div className={styles.chatWidgetContent}>
+                        {/* Group Name (only for group chats) */}
+                        {newChatType === 'group' && (
+                            <div className={styles.chatWidgetNewChatInput}>
+                                <TextInput
+                                    placeholder={t('forms.groupNamePlaceholder')}
+                                    value={groupName}
+                                    onChange={(e) => setGroupName(e.target.value)}
+                                    size="sm"
+                                />
+                            </div>
+                        )}
+
+                        {/* User Search */}
+                        <div className={styles.chatWidgetNewChatInput}>
+                            <TextInput
+                                leftSection={<IconSearch size={16} />}
+                                placeholder={t('actions.searchChats')}
+                                value={userSearchQuery}
+                                onChange={(e) => setUserSearchQuery(e.target.value)}
+                                size="sm"
+                            />
+                        </div>
+
+                        {/* User List */}
+                        <ScrollArea h={200} className={styles.chatWidgetUserList}>
+                            {availableUsers.length > 0 ? (
+                                availableUsers.map((u) => (
+                                    <div
+                                        key={u.id}
+                                        className={styles.chatWidgetUserItem}
+                                        onClick={() => {
+                                            if (newChatType === 'direct') {
+                                                setSelectedUsers([u.id]);
+                                            } else {
+                                                toggleUserSelection(u.id);
+                                            }
+                                        }}
+                                    >
+                                        <Checkbox
+                                            checked={selectedUsers.includes(u.id)}
+                                            onChange={() => {}}
+                                            size="sm"
+                                            styles={{ input: { cursor: 'pointer' } }}
+                                        />
+                                        <Avatar size="sm" radius="xl" color="blue">
+                                            {u.name?.charAt(0).toUpperCase() || 'U'}
+                                        </Avatar>
+                                        <span className={styles.chatWidgetUserName}>
+                                            {u.name || u.email}
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className={styles.chatWidgetEmpty}>
+                                    <p>{t('actions.noUsersFound')}</p>
+                                </div>
+                            )}
+                        </ScrollArea>
+
+                        {/* Create Button */}
+                        <div className={styles.chatWidgetNewChatActions}>
+                            <button
+                                className={styles.chatWidgetCreateBtn}
+                                onClick={handleCreateChat}
+                                disabled={selectedUsers.length === 0 || createRoomMutation.isPending}
+                            >
+                                {createRoomMutation.isPending ? t('actions.loading') : t('actions.create')}
+                            </button>
+                        </div>
+                    </div>
+                </>
+            ) : selectedRoom ? (
                 /* Chat View */
                 <>
                     <div className={styles.chatWidgetMessages}>
@@ -222,6 +403,17 @@ export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps)
                             onClick={() => setActiveTab('groups')}
                         >
                             {t('menu.items.groups')}
+                        </button>
+                        {/* New Chat Button */}
+                        <button
+                            className={styles.chatWidgetNewChatBtn}
+                            onClick={() => {
+                                setShowNewChat(true);
+                                setNewChatType(activeTab === 'chats' ? 'direct' : 'group');
+                            }}
+                            title={activeTab === 'chats' ? t('actions.newChat') : t('actions.newGroup')}
+                        >
+                            <IconPlus size={18} />
                         </button>
                     </div>
 
