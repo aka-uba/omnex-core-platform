@@ -27,6 +27,7 @@ const cashTransactionUpdateSchema = z.object({
   reference: z.string().optional().nullable(),
   notes: z.string().optional().nullable(),
   status: z.enum(['pending', 'completed', 'cancelled']).optional(),
+  createdBy: z.string().optional().nullable(),
 });
 
 // GET /api/accounting/cash-transactions/[id] - Get cash transaction by ID
@@ -114,6 +115,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           ...(validatedData.reference !== undefined && { reference: validatedData.reference }),
           ...(validatedData.notes !== undefined && { notes: validatedData.notes }),
           ...(validatedData.status && { status: validatedData.status }),
+          ...(validatedData.createdBy !== undefined && { createdBy: validatedData.createdBy }),
         },
       });
 

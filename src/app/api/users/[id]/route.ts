@@ -196,6 +196,13 @@ export async function PATCH(
         if (data.preferences.defaultTheme !== undefined) updateData.defaultTheme = data.preferences.defaultTheme;
         if (data.preferences.defaultLayout !== undefined) updateData.defaultLayout = data.preferences.defaultLayout;
       }
+
+      // Documents
+      if (data.documents) {
+        if (data.documents.otherDocuments !== undefined) {
+          updateData.otherDocuments = data.documents.otherDocuments || null;
+        }
+      }
     } else {
       // Handle FormData for file uploads
       const formData = await request.formData();
@@ -282,6 +289,13 @@ export async function PATCH(
             if (data.preferences.defaultLanguage !== undefined) updateData.defaultLanguage = data.preferences.defaultLanguage;
             if (data.preferences.defaultTheme !== undefined) updateData.defaultTheme = data.preferences.defaultTheme;
             if (data.preferences.defaultLayout !== undefined) updateData.defaultLayout = data.preferences.defaultLayout;
+          }
+
+          // Documents
+          if (data.documents) {
+            if (data.documents.otherDocuments !== undefined) {
+              updateData.otherDocuments = data.documents.otherDocuments || null;
+            }
           }
         } catch (e) {
           console.error('Error parsing JSON data:', e);

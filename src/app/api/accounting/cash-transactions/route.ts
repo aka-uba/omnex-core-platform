@@ -398,6 +398,9 @@ export async function POST(request: NextRequest) {
         companyId = firstCompany.id;
       }
 
+      // Get audit context for createdBy
+      const auditContext = await getAuditContext(request);
+
       // Create manual cash transaction
       const newTransaction = await tenantPrisma.cashTransaction.create({
         data: {
@@ -416,11 +419,11 @@ export async function POST(request: NextRequest) {
           reference: body.reference || null,
           notes: body.notes || null,
           status: body.status || 'completed',
+          createdBy: auditContext.userId || null,
         },
       });
 
       // Log audit event
-      const auditContext = await getAuditContext(request);
       logCreate(tenantContext, auditContext, 'CashTransaction', newTransaction.id, companyId, {
         type: newTransaction.type,
         category: newTransaction.category,

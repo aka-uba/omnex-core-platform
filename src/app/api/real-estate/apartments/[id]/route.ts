@@ -154,6 +154,21 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       if (validatedData.livingRoom !== undefined) updateData.livingRoom = validatedData.livingRoom;
       if (validatedData.bathroomCount !== undefined) updateData.bathroomCount = validatedData.bathroomCount;
       if (validatedData.balcony !== undefined) updateData.balcony = validatedData.balcony;
+      if (validatedData.apartmentType !== undefined) updateData.apartmentType = validatedData.apartmentType || null;
+      if (validatedData.bedroomCount !== undefined) updateData.bedroomCount = validatedData.bedroomCount ?? null;
+      if (validatedData.basementSize !== undefined) updateData.basementSize = validatedData.basementSize ?? null;
+      if (validatedData.lastRenovationDate !== undefined) updateData.lastRenovationDate = validatedData.lastRenovationDate || null;
+      if (validatedData.internetSpeed !== undefined) updateData.internetSpeed = validatedData.internetSpeed || null;
+      if (validatedData.heatingSystems !== undefined) {
+        updateData.heatingSystems = validatedData.heatingSystems ? (validatedData.heatingSystems as Prisma.InputJsonValue) : Prisma.JsonNull;
+      }
+      if (validatedData.coldRent !== undefined) updateData.coldRent = validatedData.coldRent ?? null;
+      if (validatedData.heatingCosts !== undefined) updateData.heatingCosts = validatedData.heatingCosts ?? null;
+      if (validatedData.additionalCosts !== undefined) updateData.additionalCosts = validatedData.additionalCosts ?? null;
+      if (validatedData.deposit !== undefined) updateData.deposit = validatedData.deposit ?? null;
+      if (validatedData.usageRights !== undefined) {
+        updateData.usageRights = validatedData.usageRights ? (validatedData.usageRights as Prisma.InputJsonValue) : Prisma.JsonNull;
+      }
       if (validatedData.ownerId !== undefined) updateData.ownerId = validatedData.ownerId || null;
       if (validatedData.ownerType !== undefined) updateData.ownerType = validatedData.ownerType || null;
       if (validatedData.ownershipType !== undefined) updateData.ownershipType = validatedData.ownershipType || null;
@@ -169,6 +184,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       }
       if (validatedData.description !== undefined) updateData.description = validatedData.description || null;
       if (validatedData.images !== undefined) updateData.images = validatedData.images;
+      if (validatedData.coverImage !== undefined) updateData.coverImage = validatedData.coverImage || null;
       if (validatedData.documents !== undefined) updateData.documents = validatedData.documents;
       if (validatedData.metadata !== undefined) {
         updateData.metadata = validatedData.metadata ? (validatedData.metadata as Prisma.InputJsonValue) : {};
