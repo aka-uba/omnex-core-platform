@@ -15,6 +15,7 @@ import {
   ThemeIcon,
   List,
   LoadingOverlay,
+  Select,
 } from '@mantine/core';
 import {
   IconDatabase,
@@ -24,6 +25,7 @@ import {
   IconAlertCircle,
   IconInfoCircle,
   IconArrowRight,
+  IconWorld,
 } from '@tabler/icons-react';
 import { ClientIcon } from '@/components/common/ClientIcon';
 import { useState, useEffect, useCallback } from 'react';
@@ -37,6 +39,12 @@ interface DemoDataStatus {
   hasData: boolean;
   count: number;
   dependencies?: string[];
+}
+
+interface LocaleOption {
+  code: string;
+  currency: string;
+  name: string;
 }
 
 interface DemoDataTabProps {
@@ -54,6 +62,23 @@ export function DemoDataTab({ moduleSlug }: DemoDataTabProps) {
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [removing, setRemoving] = useState(false);
+  const [locales, setLocales] = useState<LocaleOption[]>([]);
+  const [selectedLocale, setSelectedLocale] = useState<string>('tr');
+
+  // Fetch available locales
+  const fetchLocales = useCallback(async () => {
+    try {
+      const response = await fetch('/api/modules/locales/demo-data');
+      const result = await response.json();
+
+      if (result.success) {
+        setLocales(result.data.locales);
+        setSelectedLocale(result.data.defaultLocale || 'tr');
+      }
+    } catch (error) {
+      console.error('Error fetching locales:', error);
+    }
+  }, []);
 
   const fetchStatus = useCallback(async () => {
     try {
@@ -74,21 +99,27 @@ export function DemoDataTab({ moduleSlug }: DemoDataTabProps) {
   }, [moduleSlug]);
 
   useEffect(() => {
+    fetchLocales();
     fetchStatus();
-  }, [fetchStatus]);
+  }, [fetchLocales, fetchStatus]);
 
   const handleSeed = async () => {
     try {
       setSeeding(true);
-      const response = await fetch(`/api/modules/${moduleSlug}/demo-data`, {
+      const response = await fetch(`/api/modules/${moduleSlug}/demo-data?locale=${selectedLocale}`, {
         method: 'POST',
       });
       const result = await response.json();
 
       if (result.success) {
+        const localeInfo = locales.find(l => l.code === selectedLocale);
         showSuccess(
           td('notifications.seedSuccess'),
-          td('notifications.seedSuccessMessage', { count: result.data.itemsCreated })
+          td('notifications.seedSuccessMessage', {
+            count: result.data.itemsCreated,
+            locale: localeInfo?.name || selectedLocale,
+            currency: result.data.currency || localeInfo?.currency || ''
+          })
         );
         await fetchStatus();
       } else {
@@ -139,6 +170,11 @@ export function DemoDataTab({ moduleSlug }: DemoDataTabProps) {
     );
   }
 
+  const localeSelectData = locales.map((loc) => ({
+    value: loc.code,
+    label: `${loc.name} (${loc.currency})`,
+  }));
+
   return (
     <Paper shadow="xs" p="xl" withBorder>
       <Stack gap="lg">
@@ -180,6 +216,33 @@ export function DemoDataTab({ moduleSlug }: DemoDataTabProps) {
         >
           {td('infoMessage')}
         </Alert>
+
+        {/* Locale Selection - only show when no data exists */}
+        {!status?.hasData && locales.length > 0 && (
+          <Paper p="md" withBorder radius="md" bg="gray.0">
+            <Group gap="md" align="flex-end">
+              <Box style={{ flex: 1 }}>
+                <Select
+                  label={td('locale.label')}
+                  description={td('locale.description')}
+                  placeholder={td('locale.placeholder')}
+                  data={localeSelectData}
+                  value={selectedLocale}
+                  onChange={(value) => setSelectedLocale(value || 'tr')}
+                  leftSection={
+                    <ClientIcon>
+                      <IconWorld size={16} />
+                    </ClientIcon>
+                  }
+                  allowDeselect={false}
+                />
+              </Box>
+              <Badge size="lg" variant="light" color="blue">
+                {locales.find(l => l.code === selectedLocale)?.currency || 'TRY'}
+              </Badge>
+            </Group>
+          </Paper>
+        )}
 
         {/* Status */}
         {status && (

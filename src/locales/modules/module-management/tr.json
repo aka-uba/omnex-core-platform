@@ -297,6 +297,11 @@
       "infoMessage": "Demo veriler sisteminizi test etmenize yardımcı olur. Üretim ortamında kullanılmamalıdır. Demo veriler [DEMO] ön eki ile işaretlenir ve kolayca ayırt edilebilir.",
       "warningTitle": "Dikkat",
       "warningMessage": "Demo verileri kaldırmak geri alınamaz. Bu işlem sadece demo olarak işaretlenmiş verileri siler, gerçek verilerinizi etkilemez.",
+      "locale": {
+        "label": "Demo Veri Dili",
+        "description": "Demo veriler seçilen dil ve para biriminde oluşturulacak",
+        "placeholder": "Dil seçin"
+      },
       "status": {
         "loaded": "{{count}} kayıt yüklü",
         "hasData": "Demo veri yüklü",
@@ -311,7 +316,7 @@
       },
       "notifications": {
         "seedSuccess": "Başarılı",
-        "seedSuccessMessage": "{{count}} demo kayıt oluşturuldu",
+        "seedSuccessMessage": "{{count}} demo kayıt {{locale}} dilinde ({{currency}}) oluşturuldu",
         "seedError": "Hata",
         "seedErrorMessage": "Demo veriler yüklenemedi",
         "removeSuccess": "Başarılı",

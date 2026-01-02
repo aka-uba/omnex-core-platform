@@ -2,16 +2,29 @@
  * Demo Data API Endpoint
  *
  * Modül bazlı demo veri yükleme ve silme işlemleri
+ * Supports localized demo data (tr, en, de, ar)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantFromRequest, getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
 import { corePrisma } from '@/lib/corePrisma';
-import { getSeeder, checkAllModulesStatus, seedAllModules, unseedAllModules } from '../../../../../../prisma/seed/modules';
-import type { SeederContext } from '../../../../../../prisma/seed/modules';
+import {
+  getSeeder,
+  checkAllModulesStatus,
+  seedAllModules,
+  unseedAllModules,
+  loadDemoData,
+  getAvailableLocales,
+  LOCALE_CURRENCIES,
+  DEFAULT_LOCALE,
+} from '../../../../../../prisma/seed/modules';
+import type { SeederContext, SupportedLocale } from '../../../../../../prisma/seed/modules';
 
-// Helper function to create seeder context
-async function createSeederContext(request: NextRequest): Promise<SeederContext | null> {
+// Helper function to create seeder context with locale support
+async function createSeederContext(
+  request: NextRequest,
+  locale: SupportedLocale = DEFAULT_LOCALE
+): Promise<SeederContext | null> {
   const tenant = await getTenantFromRequest(request);
   if (!tenant) {
     return null;
@@ -36,6 +49,9 @@ async function createSeederContext(request: NextRequest): Promise<SeederContext 
     return null;
   }
 
+  // Load localized demo data
+  const demoData = loadDemoData(locale);
+
   return {
     tenantPrisma,
     corePrisma,
@@ -43,7 +59,20 @@ async function createSeederContext(request: NextRequest): Promise<SeederContext 
     companyId: company.id,
     adminUserId: adminUser.id,
     tenantSlug: tenant.slug,
+    locale,
+    currency: demoData.currency,
+    demoData,
   };
+}
+
+// Helper to parse locale from request
+function getLocaleFromRequest(request: NextRequest): SupportedLocale {
+  const url = new URL(request.url);
+  const localeParam = url.searchParams.get('locale');
+  if (localeParam && ['tr', 'en', 'de', 'ar'].includes(localeParam)) {
+    return localeParam as SupportedLocale;
+  }
+  return DEFAULT_LOCALE;
 }
 
 // GET: Demo veri durumunu kontrol et
@@ -53,8 +82,25 @@ export async function GET(
 ) {
   try {
     const { slug } = await context.params;
+    const locale = getLocaleFromRequest(request);
 
-    const ctx = await createSeederContext(request);
+    // Special endpoint to get available locales
+    if (slug === 'locales') {
+      const locales = getAvailableLocales();
+      return NextResponse.json({
+        success: true,
+        data: {
+          locales: locales.map((loc) => ({
+            code: loc,
+            currency: LOCALE_CURRENCIES[loc],
+            name: loc === 'tr' ? 'Türkçe' : loc === 'en' ? 'English' : loc === 'de' ? 'Deutsch' : 'العربية',
+          })),
+          defaultLocale: DEFAULT_LOCALE,
+        },
+      });
+    }
+
+    const ctx = await createSeederContext(request, locale);
     if (!ctx) {
       return NextResponse.json(
         { success: false, error: 'Tenant context not available' },
@@ -112,8 +158,9 @@ export async function POST(
 ) {
   try {
     const { slug } = await context.params;
+    const locale = getLocaleFromRequest(request);
 
-    const ctx = await createSeederContext(request);
+    const ctx = await createSeederContext(request, locale);
     if (!ctx) {
       return NextResponse.json(
         { success: false, error: 'Tenant context not available' },
@@ -134,6 +181,8 @@ export async function POST(
         data: {
           totalCreated,
           results,
+          locale,
+          currency: ctx.currency,
           errors: errors.length > 0 ? errors : undefined,
         },
       });
@@ -170,6 +219,8 @@ export async function POST(
         moduleName: seeder.moduleName,
         itemsCreated: result.itemsCreated,
         details: result.details,
+        locale,
+        currency: ctx.currency,
         error: result.error,
       },
     });

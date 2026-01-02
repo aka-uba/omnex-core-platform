@@ -5,8 +5,12 @@
 
 import { PrismaClient as TenantPrismaClient, Prisma } from '@prisma/tenant-client';
 import { PrismaClient as CorePrismaClient } from '@prisma/core-client';
-import * as fs from 'fs';
-import * as path from 'path';
+
+// Static imports for demo data (works in both CLI and Next.js bundled environment)
+import demoDataTr from '../locales/demo-data.tr.json';
+import demoDataEn from '../locales/demo-data.en.json';
+import demoDataDe from '../locales/demo-data.de.json';
+import demoDataAr from '../locales/demo-data.ar.json';
 
 // Supported locales for demo data
 export type SupportedLocale = 'tr' | 'en' | 'de' | 'ar';
@@ -198,18 +202,22 @@ export const LOCALE_CURRENCIES: Record<SupportedLocale, string> = {
   ar: 'SAR',
 };
 
+// Static demo data map (no fs operations needed)
+const DEMO_DATA_MAP: Record<SupportedLocale, DemoData> = {
+  tr: demoDataTr as DemoData,
+  en: demoDataEn as DemoData,
+  de: demoDataDe as DemoData,
+  ar: demoDataAr as DemoData,
+};
+
 // Load demo data for a specific locale
 export function loadDemoData(locale: SupportedLocale = DEFAULT_LOCALE): DemoData {
-  const localesDir = path.join(__dirname, '..', 'locales');
-  const filePath = path.join(localesDir, `demo-data.${locale}.json`);
-
-  if (!fs.existsSync(filePath)) {
-    console.warn(`Demo data file not found for locale "${locale}", falling back to "${DEFAULT_LOCALE}"`);
-    const fallbackPath = path.join(localesDir, `demo-data.${DEFAULT_LOCALE}.json`);
-    return JSON.parse(fs.readFileSync(fallbackPath, 'utf-8'));
+  const data = DEMO_DATA_MAP[locale];
+  if (!data) {
+    console.warn(`Demo data not found for locale "${locale}", falling back to "${DEFAULT_LOCALE}"`);
+    return DEMO_DATA_MAP[DEFAULT_LOCALE];
   }
-
-  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  return data;
 }
 
 // Create seeder context with locale support
@@ -228,16 +236,6 @@ export function createSeederContext(
 
 // Get available locales
 export function getAvailableLocales(): SupportedLocale[] {
-  const localesDir = path.join(__dirname, '..', 'locales');
-  const files = fs.readdirSync(localesDir);
-  const locales: SupportedLocale[] = [];
-
-  for (const file of files) {
-    const match = file.match(/^demo-data\.(\w+)\.json$/);
-    if (match && ['tr', 'en', 'de', 'ar'].includes(match[1])) {
-      locales.push(match[1] as SupportedLocale);
-    }
-  }
-
-  return locales;
+  // Return all supported locales (statically defined)
+  return ['tr', 'en', 'de', 'ar'];
 }
