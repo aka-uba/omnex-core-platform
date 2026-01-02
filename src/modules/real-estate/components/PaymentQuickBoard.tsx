@@ -145,7 +145,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
                 )}
               </span>
             </div>
-            <div className="flex items-end gap-2">
+            <div className={styles.amountRow}>
               <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
               <div className={styles.cardActions}>
                 {!isOverdue && !isProjected && (

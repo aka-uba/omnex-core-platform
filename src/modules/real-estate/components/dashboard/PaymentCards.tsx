@@ -129,46 +129,47 @@ export function PaymentCards({ locale }: PaymentCardsProps) {
             </div>
           </div>
 
-          {/* Right side */}
+          {/* Right side - amount, days badge and actions */}
           <div className={styles.rightContent}>
-            <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
-            <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
-              {isOverdue
-                ? `${days} Gün Gecikmiş`
-                : `${days} Gün Kaldı`
-              }
-            </span>
+            <div className={styles.amountInfo}>
+              <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
+              <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
+                {isOverdue
+                  ? `${days} Gün Gecikmiş`
+                  : `${days} Gün Kaldı`
+                }
+              </span>
+            </div>
+            {/* Actions */}
+            <div className={styles.cardActions}>
+              {!isOverdue && !isProjected && (
+                <Tooltip label={t('payments.markAsPaid')} withArrow>
+                  <ActionIcon
+                    variant="light"
+                    color="green"
+                    size="sm"
+                    onClick={(e) => handleMarkAsPaid(payment.id, e)}
+                    loading={markAsPaid.isPending}
+                  >
+                    <IconCheck size={14} />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+              <Tooltip label={isProjected ? t('payments.quickBoard.viewContract') : t('actions.view')} withArrow>
+                <ActionIcon
+                  variant="light"
+                  color="blue"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleViewPayment(payment);
+                  }}
+                >
+                  <IconEye size={14} />
+                </ActionIcon>
+              </Tooltip>
+            </div>
           </div>
-        </div>
-
-        {/* Hover Actions */}
-        <div className={styles.cardActions}>
-          {!isOverdue && !isProjected && (
-            <Tooltip label={t('payments.markAsPaid')} withArrow>
-              <ActionIcon
-                variant="light"
-                color="green"
-                size="sm"
-                onClick={(e) => handleMarkAsPaid(payment.id, e)}
-                loading={markAsPaid.isPending}
-              >
-                <IconCheck size={14} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-          <Tooltip label={isProjected ? t('payments.quickBoard.viewContract') : t('actions.view')} withArrow>
-            <ActionIcon
-              variant="light"
-              color="blue"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleViewPayment(payment);
-              }}
-            >
-              <IconEye size={14} />
-            </ActionIcon>
-          </Tooltip>
         </div>
       </div>
     );

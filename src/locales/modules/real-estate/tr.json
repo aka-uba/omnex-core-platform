@@ -450,7 +450,8 @@
       "daysLeft": "gün kaldı",
       "daysLate": "gün gecikmiş",
       "projected": "Tahmini",
-      "viewContract": "Sözleşmeyi Görüntüle"
+      "viewContract": "Sözleşmeyi Görüntüle",
+      "rentPayment": "Kira Ödemesi"
     },
     "exportDescription": "Emlak Ödemeler Raporu",
     "exportSuccess": "Ödemeler başarıyla dışa aktarıldı",

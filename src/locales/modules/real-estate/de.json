@@ -450,7 +450,8 @@
       "daysLeft": "Tage verbleibend",
       "daysLate": "Tage überfällig",
       "projected": "Prognostiziert",
-      "viewContract": "Vertrag anzeigen"
+      "viewContract": "Vertrag anzeigen",
+      "rentPayment": "Mietzahlung"
     },
     "exportDescription": "Immobilien-Zahlungsbericht",
     "exportSuccess": "Zahlungen erfolgreich exportiert",

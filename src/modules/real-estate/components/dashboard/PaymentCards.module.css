@@ -277,6 +277,13 @@
   gap: 0.5rem;
 }
 
+.amountInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
 .amountText {
   font-size: 1.125rem;
   font-weight: 700;
@@ -338,9 +345,6 @@
 
 /* Card Actions - shown on hover */
 .cardActions {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
   display: flex;
   gap: 0.25rem;
   opacity: 0;
@@ -468,15 +472,116 @@
     height: 500px;
   }
 
-  .cardActions {
-    opacity: 1;
-  }
-
   .scrollContainer {
     padding: 1rem;
   }
 
   .cardList {
     gap: 0.75rem;
+  }
+
+  .cardContent {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .rightContent {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .amountInfo {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cardActions {
+    opacity: 1;
+  }
+
+  .panelHeader {
+    padding: 1rem;
+  }
+
+  .headerIconWrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .headerText h2 {
+    font-size: 1rem;
+  }
+
+  .amountText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .boardPanel {
+    height: 450px;
+  }
+
+  .panelHeader {
+    padding: 0.75rem;
+  }
+
+  .headerIconWrapper {
+    width: 32px;
+    height: 32px;
+  }
+
+  .headerIconWrapper svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .headerText h2 {
+    font-size: 0.9375rem;
+  }
+
+  .headerText p {
+    font-size: 0.6875rem;
+  }
+
+  .scrollContainer {
+    padding: 0.75rem;
+  }
+
+  .paymentCard {
+    padding: 0.75rem;
+  }
+
+  .propertyBadge {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .tenantName {
+    font-size: 0.8125rem;
+  }
+
+  .dateInfo {
+    font-size: 0.6875rem;
+  }
+
+  .amountText {
+    font-size: 0.9375rem;
+  }
+
+  .daysBadge {
+    font-size: 0.5625rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  .viewAllLink {
+    padding: 0.75rem;
+  }
+
+  .viewAllLink span {
+    font-size: 0.8125rem;
   }
 }

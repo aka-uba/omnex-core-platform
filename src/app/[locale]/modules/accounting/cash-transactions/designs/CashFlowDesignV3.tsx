@@ -267,52 +267,54 @@ export function CashFlowDesignV3({
           </div>
 
           <Paper withBorder className={styles.tableCard} shadow="sm">
-            <table className={styles.dataTable}>
-              <thead>
-                <tr className={styles.income}>
-                  <th style={{ width: 40 }}>
-                    <Checkbox size="xs" color="green" />
-                  </th>
-                  <th>Tarih</th>
-                  <th>Kayıt Tarihi</th>
-                  <th>Tip</th>
-                  <th>Pozisyon</th>
-                  <th>Numara</th>
-                  <th style={{ textAlign: 'right' }}>Tutar EUR</th>
-                  <th style={{ width: 48 }}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {incomeTransactions.slice(0, 5).map((tx, index) => (
-                  <tr
-                    key={tx.id}
-                    className={index === 1 ? `${styles.borderLeft}` : ''}
-                  >
-                    <td>
+            <div className={styles.tableContainer}>
+              <table className={styles.dataTable}>
+                <thead>
+                  <tr className={styles.income}>
+                    <th style={{ width: 40 }}>
                       <Checkbox size="xs" color="green" />
-                    </td>
-                    <td className={styles.date}>{dayjs(tx.transactionDate).format('DD.MM')}</td>
-                    <td>{getStatusBadge(tx.status)}</td>
-                    <td>{tx.category}</td>
-                    <td>
-                      <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
-                      {tx.paymentMethod && (
-                        <div className={styles.positionSecondary}>/{tx.paymentMethod}</div>
-                      )}
-                    </td>
-                    <td>
-                      <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
-                    </td>
-                    <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
-                    <td className={styles.actions}>
-                      <ActionIcon variant="subtle" size="sm" color="gray">
-                        <IconDotsVertical size={14} />
-                      </ActionIcon>
-                    </td>
+                    </th>
+                    <th>Tarih</th>
+                    <th>Kayıt Tarihi</th>
+                    <th>Tip</th>
+                    <th>Pozisyon</th>
+                    <th>Numara</th>
+                    <th style={{ textAlign: 'right' }}>Tutar EUR</th>
+                    <th style={{ width: 48 }}></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {incomeTransactions.slice(0, 5).map((tx, index) => (
+                    <tr
+                      key={tx.id}
+                      className={index === 1 ? `${styles.borderLeft}` : ''}
+                    >
+                      <td>
+                        <Checkbox size="xs" color="green" />
+                      </td>
+                      <td className={styles.date}>{dayjs(tx.transactionDate).format('DD.MM')}</td>
+                      <td>{getStatusBadge(tx.status)}</td>
+                      <td>{tx.category}</td>
+                      <td>
+                        <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
+                        {tx.paymentMethod && (
+                          <div className={styles.positionSecondary}>/{tx.paymentMethod}</div>
+                        )}
+                      </td>
+                      <td>
+                        <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
+                      </td>
+                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.actions}>
+                        <ActionIcon variant="subtle" size="sm" color="gray">
+                          <IconDotsVertical size={14} />
+                        </ActionIcon>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Paper>
         </div>
 
@@ -349,51 +351,53 @@ export function CashFlowDesignV3({
           </div>
 
           <Paper withBorder className={styles.tableCard} shadow="sm">
-            <table className={styles.dataTable}>
-              <thead>
-                <tr className={styles.expense}>
-                  <th style={{ width: 40 }}>
-                    <Checkbox size="xs" color="red" />
-                  </th>
-                  <th>Tarih</th>
-                  <th>Kayıt Tarihi</th>
-                  <th>Tip</th>
-                  <th>Pozisyon</th>
-                  <th>Numara</th>
-                  <th style={{ textAlign: 'right' }}>Tutar EUR</th>
-                  <th style={{ width: 48 }}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {expenseTransactions.slice(0, 5).map((tx, index) => (
-                  <tr
-                    key={tx.id}
-                    className={index > 0 && index < 4 ? `${styles.borderLeft} ${styles.borderLeftGreen}` : ''}
-                  >
-                    <td>
+            <div className={styles.tableContainer}>
+              <table className={styles.dataTable}>
+                <thead>
+                  <tr className={styles.expense}>
+                    <th style={{ width: 40 }}>
                       <Checkbox size="xs" color="red" />
-                    </td>
-                    <td className={styles.date}>{dayjs(tx.transactionDate).format('DD.MM')}</td>
-                    <td>{getStatusBadge(tx.status)}</td>
-                    <td className={index > 0 && index < 4 ? styles.typeBordered : ''}>
-                      {tx.category}
-                    </td>
-                    <td>
-                      <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
-                    </td>
-                    <td>
-                      <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
-                    </td>
-                    <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
-                    <td className={styles.actions}>
-                      <ActionIcon variant="subtle" size="sm" color="gray">
-                        <IconDotsVertical size={14} />
-                      </ActionIcon>
-                    </td>
+                    </th>
+                    <th>Tarih</th>
+                    <th>Kayıt Tarihi</th>
+                    <th>Tip</th>
+                    <th>Pozisyon</th>
+                    <th>Numara</th>
+                    <th style={{ textAlign: 'right' }}>Tutar EUR</th>
+                    <th style={{ width: 48 }}></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {expenseTransactions.slice(0, 5).map((tx, index) => (
+                    <tr
+                      key={tx.id}
+                      className={index > 0 && index < 4 ? `${styles.borderLeft} ${styles.borderLeftGreen}` : ''}
+                    >
+                      <td>
+                        <Checkbox size="xs" color="red" />
+                      </td>
+                      <td className={styles.date}>{dayjs(tx.transactionDate).format('DD.MM')}</td>
+                      <td>{getStatusBadge(tx.status)}</td>
+                      <td className={index > 0 && index < 4 ? styles.typeBordered : ''}>
+                        {tx.category}
+                      </td>
+                      <td>
+                        <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
+                      </td>
+                      <td>
+                        <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
+                      </td>
+                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.actions}>
+                        <ActionIcon variant="subtle" size="sm" color="gray">
+                          <IconDotsVertical size={14} />
+                        </ActionIcon>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Paper>
         </div>
       </div>

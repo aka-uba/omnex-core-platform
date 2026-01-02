@@ -3,6 +3,16 @@
 
 .container {
   padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0.5rem;
+  }
 }
 
 /* Net Balance Card */
@@ -96,6 +106,12 @@
   background: linear-gradient(to bottom, var(--mantine-color-green-0) 0%, var(--mantine-color-white) 100%);
 }
 
+@media (max-width: 576px) {
+  .incomeHeader {
+    padding: 0.75rem;
+  }
+}
+
 [data-mantine-color-scheme="dark"] .incomeHeader {
   background: linear-gradient(to bottom, rgba(34, 197, 94, 0.1) 0%, var(--mantine-color-dark-6) 100%);
   border-bottom-color: var(--mantine-color-dark-4);
@@ -106,6 +122,12 @@
   padding: 1.5rem;
   border-bottom: 1px solid var(--mantine-color-gray-2);
   background: linear-gradient(to bottom, var(--mantine-color-red-0) 0%, var(--mantine-color-white) 100%);
+}
+
+@media (max-width: 576px) {
+  .expenseHeader {
+    padding: 0.75rem;
+  }
 }
 
 [data-mantine-color-scheme="dark"] .expenseHeader {
@@ -159,10 +181,24 @@
   margin-top: 1.5rem;
 }
 
+@media (max-width: 576px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+}
+
 .summaryBox {
   padding: 1rem;
   border-radius: 0.75rem;
   border: 1px solid;
+}
+
+@media (max-width: 576px) {
+  .summaryBox {
+    padding: 0.75rem;
+  }
 }
 
 .summaryBox.income {
@@ -253,10 +289,13 @@
 .tableContainer {
   flex-grow: 1;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .dataTable {
   width: 100%;
+  min-width: 450px;
   text-align: left;
   border-collapse: collapse;
 }
@@ -278,6 +317,14 @@
   padding: 0.75rem 1rem;
   font-weight: 600;
   color: var(--mantine-color-gray-6);
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .dataTable th {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.6875rem;
+  }
 }
 
 [data-mantine-color-scheme="dark"] .dataTable th {
@@ -304,6 +351,14 @@
 .dataTable td {
   padding: 1rem;
   font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .dataTable td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.75rem;
+  }
 }
 
 .dataTable td.date {

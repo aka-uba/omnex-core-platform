@@ -16,6 +16,7 @@ import {
   Center,
   Stack,
   RingProgress,
+  CloseButton,
   useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
@@ -193,6 +194,45 @@ function MonthCellWithPopover({
     </Stack>
   );
 
+  // Popover content with close button for mobile
+  const popoverContent = (
+    <Box>
+      <Group justify="space-between" mb="xs">
+        <Text size="xs" fw={600}>{fullMonthNames[monthIndex]} {currentYear}</Text>
+        <CloseButton size="xs" onClick={close} />
+      </Group>
+      <Stack gap={4}>
+        <Text size="xs" fw={500}>{formatCurrency(info.amount)}</Text>
+        {info.status === 'partial' && info.paidAmount > 0 && (
+          <Text size="xs" c="green">
+            {t('payments.monthlyTracker.paidAmount')}: {formatCurrency(info.paidAmount)}
+          </Text>
+        )}
+        <Badge size="xs" color={colors.badgeColor}>
+          {t(`payments.status.${info.status}`)}
+        </Badge>
+        {info.dueDate && (
+          <Text size="xs">
+            {t('table.dueDate')}: {dayjs(info.dueDate).format('DD.MM.YYYY')}
+          </Text>
+        )}
+        {info.paidDate && (
+          <Text size="xs">
+            {t('table.paidDate')}: {dayjs(info.paidDate).format('DD.MM.YYYY')}
+          </Text>
+        )}
+        {info.paymentMethod && (
+          <Group gap={4}>
+            {methodIcon}
+            <Text size="xs">
+              {t(`payments.methods.${info.paymentMethod}`)}
+            </Text>
+          </Group>
+        )}
+      </Stack>
+    </Box>
+  );
+
   // V2 Design - Card style cell with visible details
   const cellContent = (
     <Box
@@ -272,15 +312,24 @@ function MonthCellWithPopover({
     </Box>
   );
 
-  // Mobile: Use Popover with click
+  // Mobile: Use Popover with click - closeOnClickOutside enabled
   if (isMobile) {
     return (
-      <Popover opened={opened} onClose={close} position="bottom" withArrow shadow="md" width={220}>
+      <Popover
+        opened={opened}
+        onClose={close}
+        position="bottom"
+        withArrow
+        shadow="md"
+        width={220}
+        closeOnClickOutside={true}
+        closeOnEscape={true}
+      >
         <Popover.Target>
           {cellContent}
         </Popover.Target>
-        <Popover.Dropdown>
-          {tooltipContent}
+        <Popover.Dropdown p="sm">
+          {popoverContent}
         </Popover.Dropdown>
       </Popover>
     );

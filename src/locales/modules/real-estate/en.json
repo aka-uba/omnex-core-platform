@@ -450,7 +450,8 @@
       "daysLeft": "days left",
       "daysLate": "days late",
       "projected": "Projected",
-      "viewContract": "View Contract"
+      "viewContract": "View Contract",
+      "rentPayment": "Rent Payment"
     },
     "exportDescription": "Real Estate Payments Report",
     "exportSuccess": "Payments successfully exported",

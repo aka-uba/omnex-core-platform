@@ -5,8 +5,14 @@
   padding: 1rem;
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0.5rem;
+  }
 }
 
 /* Net Cash Flow Card */
@@ -100,9 +106,15 @@
 .sectionColumn {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   min-width: 0;
   overflow: hidden;
+}
+
+@media (max-width: 576px) {
+  .sectionColumn {
+    gap: 0.75rem;
+  }
 }
 
 /* Summary Card with Gradient */
@@ -117,7 +129,7 @@
 
 @media (max-width: 576px) {
   .summaryCard {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 }
 

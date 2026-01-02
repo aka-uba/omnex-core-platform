@@ -450,7 +450,8 @@
       "daysLeft": "أيام متبقية",
       "daysLate": "أيام متأخرة",
       "projected": "متوقع",
-      "viewContract": "عرض العقد"
+      "viewContract": "عرض العقد",
+      "rentPayment": "دفع الإيجار"
     },
     "exportDescription": "تقرير مدفوعات العقارات",
     "exportSuccess": "تم تصدير المدفوعات بنجاح",
