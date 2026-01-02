@@ -13,6 +13,7 @@ export const extraChargeSchema = z.object({
 export const paymentSchema = z.object({
   apartmentId: z.string().min(1, 'Apartment is required'),
   contractId: z.string().optional().nullable(),
+  tenantRecordId: z.string().optional().nullable(),
   type: paymentTypeSchema,
   amount: z.number().min(0, 'Amount must be positive'),
   currency: z.string().default('TRY'),

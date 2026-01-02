@@ -178,6 +178,7 @@ export async function POST(request: NextRequest) {
           companyId: companyId,
           apartmentId: validatedData.apartmentId,
           contractId: validatedData.contractId || null,
+          tenantRecordId: validatedData.tenantRecordId || null,
           type: validatedData.type,
           amount: validatedData.amount,
           currency: validatedData.currency || 'TRY',

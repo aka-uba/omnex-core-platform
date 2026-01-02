@@ -125,6 +125,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       // Prepare update data
       const updateData: Prisma.PaymentUpdateInput = {};
       // Note: apartmentId and contractId updates are handled by Prisma relations, not directly
+      if (validatedData.tenantRecordId !== undefined) updateData.tenantRecordId = validatedData.tenantRecordId || null;
       if (validatedData.type !== undefined) updateData.type = validatedData.type;
       if (validatedData.amount !== undefined) updateData.amount = validatedData.amount;
       if (validatedData.currency !== undefined) updateData.currency = validatedData.currency;
