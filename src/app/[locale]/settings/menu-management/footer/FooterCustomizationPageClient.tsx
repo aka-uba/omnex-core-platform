@@ -24,7 +24,8 @@ interface FooterSettings {
 }
 
 export function FooterCustomizationPageClient() {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [assignedMenu, setAssignedMenu] = useState<{ id: string; name: string; slug: string } | null>(null);

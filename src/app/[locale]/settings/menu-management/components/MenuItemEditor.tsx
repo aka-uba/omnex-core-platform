@@ -46,7 +46,8 @@ export function MenuItemEditor({
     onUpdate,
     roles
 }: MenuItemEditorProps) {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeTab, setActiveTab] = useState<string | null>('general');
 

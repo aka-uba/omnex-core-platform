@@ -146,6 +146,9 @@ export function showToast({
         backgroundColor: `var(--toast-${type}-bg)`,
         borderLeft: `4px solid var(--toast-${type}-border)`,
         color: `var(--toast-${type}-text)`,
+        minWidth: '320px',
+        width: '100%',
+        maxWidth: '440px',
       },
       title: {
         color: `var(--toast-${type}-text)`,
@@ -166,7 +169,7 @@ export function showToast({
         color: `var(--toast-${type}-icon)`,
       },
       closeButton: {
-        color: `var(--toast-${type}-text)`,
+        color: `var(--toast-${type}-icon)`,
       },
     },
   });

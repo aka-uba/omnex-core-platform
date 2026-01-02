@@ -255,6 +255,15 @@
   color: var(--text-secondary-dark);
 }
 
+/* Toast Notification - Close button hover fix */
+.mantine-Notification-root .mantine-Notification-closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-root .mantine-Notification-closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
 /* Dark mode - Mantine ActionIcon */
 [data-mantine-color-scheme="dark"] .mantine-ActionIcon-root {
   color: var(--text-primary-dark);

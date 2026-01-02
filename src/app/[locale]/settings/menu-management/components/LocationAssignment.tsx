@@ -43,7 +43,8 @@ interface LocationAssignmentProps {
 }
 
 export function LocationAssignment({ menuId, menuName }: LocationAssignmentProps) {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const { confirm, ConfirmDialog } = useConfirmDialog();
     const [locations, setLocations] = useState<Location[]>([]);
     const [roles, setRoles] = useState<Role[]>([]);

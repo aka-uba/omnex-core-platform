@@ -31,7 +31,8 @@ interface PageSelectorProps {
 }
 
 export function PageSelector({ menuId, onItemsAdded }: PageSelectorProps) {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const params = useParams();
     const locale = (params?.locale as string) || 'tr';
     const [pages, setPages] = useState<PageItem[]>([]);

@@ -65,7 +65,8 @@ export function MenuList({
     onMenuDeleted,
     isLoading
 }: MenuListProps) {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const [createModalOpen, { open: openCreateModal, close: closeCreateModal }] = useDisclosure(false);
     const [editModalOpen, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
     const [deleteModalOpen, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);

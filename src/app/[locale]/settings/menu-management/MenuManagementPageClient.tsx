@@ -12,7 +12,8 @@ import { MenuItemEditor } from './components/MenuItemEditor';
 import { useDisclosure } from '@mantine/hooks';
 
 export function MenuManagementPageClient() {
-  const { t } = useTranslation('modules/menu-management');
+  const { t: tGlobal } = useTranslation('global');
+  const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
   const [menus, setMenus] = useState<any[]>([]);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [activeMenu, setActiveMenu] = useState<any | null>(null);

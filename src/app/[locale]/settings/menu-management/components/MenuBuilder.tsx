@@ -67,7 +67,8 @@ const flattenTree = (items: MenuItem[], depth = 0): MenuItem[] => {
 };
 
 export function MenuBuilder({ menuId, items, onUpdateItems, onEditItem }: MenuBuilderProps) {
-    const { t } = useTranslation('modules/menu-management');
+    const { t: tGlobal } = useTranslation('global');
+    const t = (key: string) => tGlobal(`settings.menuManagement.${key}`);
     const { confirm, ConfirmDialog } = useConfirmDialog();
     const params = useParams();
     const locale = (params?.locale as string) || 'tr';
@@ -243,9 +244,9 @@ export function MenuBuilder({ menuId, items, onUpdateItems, onEditItem }: MenuBu
 
     const handleDelete = async (itemId: string) => {
         const confirmed = await confirm({
-            title: t('deleteItemTitle'),
+            title: tGlobal('modal.delete.title'),
             message: t('confirmDeleteItem'),
-            confirmLabel: t('delete'),
+            confirmLabel: tGlobal('modal.delete.confirm'),
             confirmColor: 'red',
         });
 
