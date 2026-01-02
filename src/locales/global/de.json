@@ -630,6 +630,7 @@
         "fromEmail": "Absender-E-Mail",
         "advanced": "Erweiterte Einstellungen",
         "timeout": "Zeitüberschreitung",
+        "timeoutSuffix": " ms",
         "retryAttempts": "Wiederholungsversuche",
         "connectionPool": "Verbindungspool",
         "sendTestEmail": "Test-E-Mail senden",
@@ -706,8 +707,10 @@
         "lockoutDuration": "Sperrdauer",
         "ipWhitelist": "IP-Whitelist",
         "ipWhitelistDescription": "Geben Sie eine IP-Adresse pro Zeile ein",
+        "ipWhitelistPlaceholder": "192.168.1.1\n10.0.0.1",
         "apiSecurity": "API-Sicherheit",
         "apiRateLimit": "API-Ratenlimit",
+        "requestsPerMinuteSuffix": " Anfragen/Min",
         "apiKeyExpiration": "API-Schlüsselablauf (Tage)"
       }
     },

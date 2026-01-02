@@ -4,12 +4,89 @@
   "menu": {
     "label": "الدردشة",
     "items": {
-      "dashboard": "لوحة التحكم",
+      "dashboard": "المحادثات",
       "rooms": "غرف الدردشة",
       "messages": "الرسائل المباشرة",
       "groups": "الدردشات الجماعية"
     }
+  },
+  "tabs": {
+    "details": "التفاصيل",
+    "members": "الأعضاء",
+    "files": "الملفات"
+  },
+  "details": {
+    "description": "الوصف",
+    "type": "النوع",
+    "participants": "المشاركون"
+  },
+  "roomTypes": {
+    "direct": "رسالة مباشرة",
+    "group": "دردشة جماعية",
+    "channel": "قناة"
+  },
+  "rooms": {
+    "title": "غرف الدردشة",
+    "description": "إدارة غرف الدردشة والانضمام إليها"
+  },
+  "actions": {
+    "newChat": "دردشة جديدة",
+    "newGroup": "مجموعة جديدة",
+    "newGroupChat": "دردشة جماعية جديدة",
+    "uploadFile": "رفع ملف",
+    "uploading": "جاري الرفع...",
+    "download": "تحميل",
+    "downloadFile": "تحميل الملف",
+    "delete": "حذف",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "create": "إنشاء",
+    "select": "تحديد",
+    "selectImage": "اختيار صورة",
+    "uploadAvatar": "رفع الصورة الرمزية",
+    "changeAvatar": "تغيير الصورة الرمزية",
+    "searchChats": "البحث في المحادثات...",
+    "noChats": "لا توجد محادثات بعد",
+    "loading": "جاري التحميل...",
+    "noFiles": "لا توجد ملفات بعد",
+    "noParticipants": "لا يوجد مشاركون",
+    "noUsersFound": "لم يتم العثور على مستخدمين",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "view": "عرض",
+    "back": "رجوع",
+    "change": "تغيير",
+    "saving": "جاري الحفظ"
+  },
+  "forms": {
+    "groupName": "اسم المجموعة (اختياري)",
+    "groupNamePlaceholder": "أدخل اسم المجموعة...",
+    "selectUser": "اختيار مستخدم"
+  },
+  "chat": {
+    "messagePlaceholder": "اكتب رسالة...",
+    "title": "الدردشة",
+    "searchRooms": "البحث في غرف الدردشة...",
+    "searchMessages": "البحث في الرسائل...",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "directMessage": "رسالة مباشرة",
+    "groupChat": "دردشة جماعية",
+    "channel": "قناة",
+    "selectChat": "اختر محادثة",
+    "noMessages": "لا توجد رسائل بعد",
+    "loadingMessages": "جاري تحميل الرسائل...",
+    "chatDetails": "تفاصيل المحادثة",
+    "participants": "المشاركون",
+    "member": "عضو",
+    "members": "أعضاء",
+    "ago": "منذ",
+    "day": "يوم",
+    "days": "أيام",
+    "hour": "ساعة",
+    "hours": "ساعات",
+    "minute": "دقيقة",
+    "minutes": "دقائق",
+    "justNow": "الآن"
   }
 }
-
-

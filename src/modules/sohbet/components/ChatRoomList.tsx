@@ -24,7 +24,7 @@ interface ChatRoomListProps {
 }
 
 export function ChatRoomList({ rooms, isLoading, onRoomSelect, searchQuery, onSearchChange }: ChatRoomListProps) {
-  const { t } = useTranslation('modules/chat');
+  const { t } = useTranslation('modules/sohbet');
 
   if (isLoading) {
     return <Loader />;
@@ -92,16 +92,17 @@ export function ChatRoomList({ rooms, isLoading, onRoomSelect, searchQuery, onSe
             >
               <Group justify="space-between" align="flex-start">
                 <Group align="flex-start" style={{ flex: 1 }}>
-                  <Avatar 
-                    size="md" 
+                  <Avatar
+                    size="md"
                     radius="xl"
                     {...(room.avatarUrl ? { src: room.avatarUrl } : {})}
-                    style={{ 
-                      backgroundColor: room.avatarUrl ? 'transparent' : 'var(--mantine-color-blue-6)'
+                    style={{
+                      backgroundColor: room.avatarUrl ? 'transparent' : 'var(--mantine-color-blue-6)',
+                      color: '#ffffff'
                     }}
                   >
                     {!room.avatarUrl && (
-                      room.type === 'group' ? <IconUsers size={20} /> : <IconMessageCircle size={20} />
+                      room.type === 'group' ? <IconUsers size={20} color="#ffffff" /> : <IconMessageCircle size={20} color="#ffffff" />
                     )}
                   </Avatar>
                   <div style={{ flex: 1, minWidth: 0 }}>

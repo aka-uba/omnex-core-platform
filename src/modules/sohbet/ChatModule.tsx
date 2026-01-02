@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useMantineColorScheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useCoreFileManager } from '@/hooks/useCoreFileManager';
 import { useAuth } from '@/hooks/useAuth';
 import { useChatRooms } from '@/hooks/useChatRooms';
@@ -74,6 +75,9 @@ export function ChatModule() {
     const [searchQuery, setSearchQuery] = useState('');
     const { colorScheme } = useMantineColorScheme();
     const [showRightSidebar, setShowRightSidebar] = useState(false);
+    const isMobileQuery = useMediaQuery('(max-width: 768px)');
+    const isMobile = isMobileQuery === true; // Ensures false when undefined (SSR)
+    const [mobileView, setMobileView] = useState<'list' | 'chat'>('list');
     const { user } = useAuth();
     const createChatRoom = useCreateChatRoom();
     const updateChatRoom = useUpdateChatRoom();
@@ -126,7 +130,7 @@ export function ChatModule() {
         pageSize: 100,
     });
 
-    const messages = messagesData?.messages || [];
+    const allMessages = messagesData?.messages || [];
 
     // Get active room
     const activeRoom = rooms.find(r => r.id === selectedRoomId);
@@ -146,11 +150,11 @@ export function ChatModule() {
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(yesterday.getDate() - 1);
-        
+
         if (d.toDateString() === today.toDateString()) {
-            return 'Today';
+            return t('chat.today');
         } else if (d.toDateString() === yesterday.toDateString()) {
-            return 'Yesterday';
+            return t('chat.yesterday');
         } else {
             return d.toLocaleDateString();
         }
@@ -165,7 +169,7 @@ export function ChatModule() {
                 time: formatTime(lastMsg?.createdAt || new Date()),
             };
         }
-        return { text: 'No messages yet', time: '' };
+        return { text: t('chat.noMessages'), time: '' };
     };
 
     // Get room display name
@@ -174,9 +178,15 @@ export function ChatModule() {
         if (room.type === 'direct' && room.participants.length > 0) {
             // For direct messages, show other participant's name
             const otherParticipantId = room.participants.find(id => id !== user?.id);
-            return otherParticipantId || 'Direct Message';
+            if (otherParticipantId) {
+                const otherUser = usersData?.users?.find(u => u.id === otherParticipantId);
+                if (otherUser) {
+                    return otherUser.name || otherUser.email || t('chat.directMessage');
+                }
+            }
+            return t('chat.directMessage');
         }
-        return 'Chat Room';
+        return t('rooms.title');
     };
 
     // Get room avatar - for direct messages, get participant's avatar
@@ -201,7 +211,16 @@ export function ChatModule() {
     const [isRecording, setIsRecording] = useState(false);
     const [recordingDuration, setRecordingDuration] = useState(0);
     const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-    const [showCallModal, setShowCallModal] = useState<'video' | 'audio' | null>(null);
+    const [showMessageSearch, setShowMessageSearch] = useState(false);
+    const [messageSearchQuery, setMessageSearchQuery] = useState('');
+
+    // Filter messages based on search query
+    const messages = messageSearchQuery.trim()
+        ? allMessages.filter(msg =>
+            msg.content?.toLowerCase().includes(messageSearchQuery.toLowerCase())
+          )
+        : allMessages;
+
     const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
     const [showCreateDirectModal, setShowCreateDirectModal] = useState(false);
     const [selectedUsersForGroup, setSelectedUsersForGroup] = useState<string[]>([]);
@@ -790,14 +809,16 @@ export function ChatModule() {
             }}
         >
             {/* Conversation List */}
-            <div 
-                id="chat-list-panel" 
+            <div
+                id="chat-list-panel"
                 className={`flex flex-col border-r ${showRightSidebar ? 'w-[360px]' : 'w-full max-w-sm'}`}
                 style={{
                     height: '100%',
                     borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)',
                     backgroundColor: colorScheme === 'dark' ? 'var(--bg-secondary)' : 'var(--bg-surface)',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    display: isMobile && mobileView === 'chat' ? 'none' : 'flex',
+                    ...(isMobile ? { maxWidth: '100%', width: '100%' } : {})
                 }}
             >
                 <div className="p-4 border-b" style={{ borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)' }}>
@@ -884,7 +905,12 @@ export function ChatModule() {
                                             e.currentTarget.style.backgroundColor = 'transparent';
                                         }
                                     }}
-                                    onClick={() => setSelectedRoomId(room.id)}
+                                    onClick={() => {
+                                        setSelectedRoomId(room.id);
+                                        if (isMobile) {
+                                            setMobileView('chat');
+                                        }
+                                    }}
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className="relative">
@@ -924,11 +950,35 @@ export function ChatModule() {
             </div>
 
             {/* Main Chat Window */}
-            <div id="chat-main-area" className="flex flex-1 flex-col" style={{ height: '100%', maxHeight: '100%', minHeight: 0, backgroundColor: colorScheme === 'dark' ? 'var(--bg-primary)' : 'var(--bg-secondary)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div
+                id="chat-main-area"
+                className="flex flex-1 flex-col"
+                style={{
+                    height: '100%',
+                    maxHeight: '100%',
+                    minHeight: 0,
+                    backgroundColor: colorScheme === 'dark' ? 'var(--bg-primary)' : 'var(--bg-secondary)',
+                    overflow: 'hidden',
+                    display: isMobile && mobileView === 'list' ? 'none' : 'flex',
+                    flexDirection: 'column'
+                }}
+            >
                 {/* Chat Header */}
                 {activeRoom ? (
                     <div className="flex items-center justify-between p-4 border-b chat-header flex-shrink-0" style={{ borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)', backgroundColor: colorScheme === 'dark' ? 'var(--bg-secondary)' : 'var(--bg-surface)' }}>
                         <div className="flex items-center gap-3">
+                            {/* Mobile back button */}
+                            {isMobile && (
+                                <button
+                                    onClick={() => setMobileView('list')}
+                                    className="p-2 rounded-lg transition-colors flex items-center justify-center"
+                                    style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>arrow_back</span>
+                                </button>
+                            )}
                             <div className="relative">
                                 <div
                                     className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
@@ -946,50 +996,60 @@ export function ChatModule() {
                             </div>
                             <div>
                                 <h2 className="font-semibold text-base" style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}>{getRoomName(activeRoom)}</h2>
-                                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{activeRoom.type === 'direct' ? 'Direct message' : activeRoom.type === 'group' ? 'Group chat' : 'Channel'}</p>
+                                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{activeRoom.type === 'direct' ? t('chat.directMessage') : activeRoom.type === 'group' ? t('chat.groupChat') : t('chat.channel')}</p>
                             </div>
                         </div>
                     <div className="flex items-center gap-2">
-                        <button 
-                            onClick={() => setShowCallModal('video')} 
-                            className="p-2 rounded-lg transition-colors"
-                            style={{ color: 'var(--text-secondary)' }}
+                        <button
+                            onClick={() => setShowMessageSearch(!showMessageSearch)}
+                            className="p-2 rounded-lg transition-colors flex items-center justify-center"
+                            style={{ color: showMessageSearch ? 'var(--primary)' : 'var(--text-secondary)' }}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>videocam</span>
-                        </button>
-                        <button 
-                            onClick={() => setShowCallModal('audio')} 
-                            className="p-2 rounded-lg transition-colors"
-                            style={{ color: 'var(--text-secondary)' }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>call</span>
-                        </button>
-                        <button 
-                            className="p-2 rounded-lg transition-colors"
-                            style={{ color: 'var(--text-secondary)' }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>search</span>
+                            <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>search</span>
                         </button>
                         <button
-                            className="p-2 rounded-lg transition-colors"
+                            className="p-2 rounded-lg transition-colors flex items-center justify-center"
                             style={{ color: 'var(--text-secondary)' }}
                             onClick={() => setShowRightSidebar(!showRightSidebar)}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>more_vert</span>
+                            <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>more_vert</span>
                         </button>
                     </div>
                     </div>
                 ) : (
                     <div className="flex items-center justify-center flex-1">
-                        <p style={{ color: colorScheme === 'dark' ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>Bir sohbet seçin</p>
+                        <p style={{ color: colorScheme === 'dark' ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>{t('chat.selectChat')}</p>
+                    </div>
+                )}
+
+                {/* Message Search Bar */}
+                {showMessageSearch && activeRoom && (
+                    <div className="px-4 py-2 border-b flex-shrink-0" style={{ borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)', backgroundColor: colorScheme === 'dark' ? 'var(--bg-primary)' : 'var(--bg-secondary)' }}>
+                        <div className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: colorScheme === 'dark' ? 'var(--bg-secondary)' : 'var(--bg-surface)' }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--text-secondary)', lineHeight: 1 }}>search</span>
+                            <input
+                                type="text"
+                                placeholder="Mesajlarda ara..."
+                                value={messageSearchQuery}
+                                onChange={(e) => setMessageSearchQuery(e.target.value)}
+                                className="flex-1 bg-transparent border-none outline-none text-sm"
+                                style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}
+                                autoFocus
+                            />
+                            {messageSearchQuery && (
+                                <button
+                                    onClick={() => setMessageSearchQuery('')}
+                                    className="p-1 rounded transition-colors flex items-center justify-center"
+                                    style={{ color: 'var(--text-secondary)' }}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: '18px', lineHeight: 1 }}>close</span>
+                                </button>
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -1236,24 +1296,24 @@ export function ChatModule() {
                     )}
 
                     <div className="flex items-center gap-2 p-2 rounded-lg" style={{ backgroundColor: colorScheme === 'dark' ? 'var(--bg-secondary)' : 'var(--bg-secondary)' }}>
-                        <button 
-                            onClick={() => setShowEmojiPicker(!showEmojiPicker)} 
-                            className="p-2 rounded-lg shrink-0 transition-colors"
+                        <button
+                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                            className="p-2 rounded-lg shrink-0 transition-colors flex items-center justify-center"
                             style={{ color: 'var(--text-secondary)' }}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>add_reaction</span>
+                            <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>add_reaction</span>
                         </button>
                         <input type="file" multiple onChange={handleFileSelect} className="hidden" id="file-upload" />
-                        <button 
-                            onClick={() => document.getElementById('file-upload')?.click()} 
-                            className="p-2 rounded-lg shrink-0 transition-colors"
+                        <button
+                            onClick={() => document.getElementById('file-upload')?.click()}
+                            className="p-2 rounded-lg shrink-0 transition-colors flex items-center justify-center"
                             style={{ color: 'var(--text-secondary)' }}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         >
-                            <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>attach_file</span>
+                            <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>attach_file</span>
                         </button>
                         {!isRecording ? (
                             <>
@@ -1273,23 +1333,23 @@ export function ChatModule() {
                                         }
                                     }}
                                 />
-                                <button 
-                                    onClick={startRecording} 
-                                    className="p-2 rounded-lg shrink-0 transition-colors"
+                                <button
+                                    onClick={startRecording}
+                                    className="p-2 rounded-lg shrink-0 transition-colors flex items-center justify-center"
                                     style={{ color: 'var(--text-secondary)' }}
                                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
                                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
-                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>mic</span>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>mic</span>
                                 </button>
                                 <button
-                                    className="p-2 rounded-lg shrink-0 text-white transition-colors"
+                                    className="p-2 rounded-lg shrink-0 text-white transition-colors flex items-center justify-center"
                                     style={{ backgroundColor: 'var(--primary)' }}
                                     onClick={handleSendMessage}
                                     onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                                     onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                                 >
-                                    <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>send</span>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>send</span>
                                 </button>
                             </>
                         ) : null}
@@ -1297,16 +1357,16 @@ export function ChatModule() {
                 </div>
                 ) : (
                     <div className="flex items-center justify-center h-full">
-                        <p style={{ color: colorScheme === 'dark' ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>Bir sohbet seçin</p>
+                        <p style={{ color: colorScheme === 'dark' ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>{t('chat.selectChat')}</p>
                     </div>
                 )}
             </div>
 
             {/* Conversation Details (Right Sidebar) */}
             {showRightSidebar && activeRoom && (
-                <div 
+                <div
                     id="chat-right-sidebar"
-                    className="w-[320px] border-l flex flex-col"
+                    className={isMobile ? "fixed inset-0 z-50 flex flex-col" : "w-[320px] border-l flex flex-col"}
                     style={{
                         height: '100%',
                         maxHeight: '100%',
@@ -1316,6 +1376,21 @@ export function ChatModule() {
                         overflow: 'hidden'
                     }}
                 >
+                    {/* Mobile header with close button */}
+                    {isMobile && (
+                        <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)' }}>
+                            <h2 className="font-semibold" style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}>Sohbet Detayları</h2>
+                            <button
+                                onClick={() => setShowRightSidebar(false)}
+                                className="p-2 rounded-lg transition-colors flex items-center justify-center"
+                                style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                            >
+                                <span className="material-symbols-outlined" style={{ fontSize: '24px', lineHeight: 1 }}>close</span>
+                            </button>
+                        </div>
+                    )}
                     <div className="flex flex-col items-center p-6 border-b" style={{ borderColor: colorScheme === 'dark' ? 'var(--border-dark)' : 'var(--border-color)' }}>
                         <div className="relative">
                         <div
@@ -2107,63 +2182,6 @@ export function ChatModule() {
                                     disabled={createChatRoom.isPending || !selectedUserForDirect}
                                 >
                                     {createChatRoom.isPending ? t('actions.uploading') : t('actions.create')}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Call Modal */}
-            {showCallModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCallModal(null)}>
-                    <div 
-                        className="rounded-xl p-6 max-w-md w-full mx-4" 
-                        style={{ backgroundColor: 'var(--bg-surface)' }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold" style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}>
-                                {showCallModal === 'video' ? 'Video Call' : 'Voice Call'}
-                            </h3>
-                            <button 
-                                onClick={() => setShowCallModal(null)} 
-                                className="p-1 rounded transition-colors"
-                                style={{ color: 'var(--text-secondary)' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}
-                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                            >
-                                <span className="material-symbols-outlined">close</span>
-                            </button>
-                        </div>
-                        <div className="text-center py-8">
-                            {activeRoom && (
-                                <>
-                                    <div className="mb-4">
-                                        <div
-                                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20 mx-auto"
-                                            style={{ 
-                                                backgroundImage: activeRoom.avatarUrl ? `url("${activeRoom.avatarUrl}")` : 'none',
-                                                backgroundColor: activeRoom.avatarUrl ? 'transparent' : 'var(--primary)'
-                                            }}
-                                        >
-                                            {!activeRoom.avatarUrl && (
-                                                <span className="flex items-center justify-center h-full text-white text-3xl font-semibold">
-                                                    {getRoomName(activeRoom).charAt(0).toUpperCase()}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <p className="text-lg font-medium mb-2" style={{ color: colorScheme === 'dark' ? 'var(--text-dark)' : 'var(--text-primary)' }}>{getRoomName(activeRoom)}</p>
-                                </>
-                            )}
-                            <p className="text-sm mb-6" style={{ color: colorScheme === 'dark' ? 'var(--text-secondary-dark)' : 'var(--text-secondary)' }}>Calling...</p>
-                            <div className="flex gap-4 justify-center">
-                                <button className="p-4 bg-red-500 text-white rounded-full transition-colors hover:bg-red-600">
-                                    <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>call_end</span>
-                                </button>
-                                <button className="p-4 bg-green-500 text-white rounded-full transition-colors hover:bg-green-600">
-                                    <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>call</span>
                                 </button>
                             </div>
                         </div>

@@ -134,9 +134,10 @@ export function SessionTimeoutWarning() {
         // Clear any existing countdown
         if (countdownIntervalRef.current) {
             clearInterval(countdownIntervalRef.current);
+            countdownIntervalRef.current = null;
         }
 
-        let remaining = initialSeconds;
+        let remaining = Math.max(1, initialSeconds);
         setCountdown(remaining);
 
         countdownIntervalRef.current = setInterval(() => {
@@ -144,6 +145,11 @@ export function SessionTimeoutWarning() {
             setCountdown(remaining);
 
             if (remaining <= 0) {
+                // Clear interval immediately to prevent multiple calls
+                if (countdownIntervalRef.current) {
+                    clearInterval(countdownIntervalRef.current);
+                    countdownIntervalRef.current = null;
+                }
                 handleSessionExpired();
             }
         }, COUNTDOWN_INTERVAL);

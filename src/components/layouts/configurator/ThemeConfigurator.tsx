@@ -35,6 +35,7 @@ import {
   IconDeviceTablet,
   IconDeviceMobile,
   IconWorld,
+  IconMessageCircle,
 } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '../core/LayoutProvider';
@@ -43,6 +44,7 @@ import { setCompanyDefaults, STORAGE_KEYS } from '../core/LayoutConfig';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 import { useCompany } from '@/context/CompanyContext';
 import { useTranslation } from '@/lib/i18n/client';
+import { FloatingChatWidget } from '@/modules/sohbet/FloatingChatWidget';
 import styles from './ThemeConfigurator.module.css';
 
 // Admin rolleri
@@ -58,6 +60,7 @@ function ThemeConfiguratorComponent() {
   // Panel state'ini localStorage'da sakla (layout değiştiğinde korunması için)
   // Hydration hatasını önlemek için ilk render'da her zaman false
   const [opened, setOpened] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Client-side'da mount olduktan sonra localStorage'dan oku
@@ -238,19 +241,38 @@ function ThemeConfiguratorComponent() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={open}
-        className={styles.themeCustomizerToggleButton}
-        data-testid="theme-configurator-toggle"
-        aria-label="Tema ayarlarını aç"
-        title="Tema Ayarları"
-      >
-        <span className={styles.srOnly}>Setting</span>
-        <span className={styles.iconWrapper}>
-          {mounted && <IconSettings size={24} className={styles.icon} />}
-        </span>
-      </button>
+      {/* Floating Buttons Container */}
+      <div className={styles.floatingButtonsContainer}>
+        {/* Chat Button */}
+        <button
+          type="button"
+          onClick={() => setChatOpen(!chatOpen)}
+          className={styles.floatingButton}
+          aria-label="Sohbet panelini aç"
+          title="Sohbet"
+        >
+          <span className={styles.srOnly}>Chat</span>
+          <IconMessageCircle size={24} className={styles.icon} />
+        </button>
+
+        {/* Theme Settings Button */}
+        <button
+          type="button"
+          onClick={open}
+          className={styles.floatingButton}
+          data-testid="theme-configurator-toggle"
+          aria-label="Tema ayarlarını aç"
+          title="Tema Ayarları"
+        >
+          <span className={styles.srOnly}>Setting</span>
+          <span className={styles.iconWrapper}>
+            {mounted && <IconSettings size={24} className={styles.icon} />}
+          </span>
+        </button>
+      </div>
+
+      {/* Floating Chat Widget */}
+      <FloatingChatWidget isOpen={chatOpen} onClose={() => setChatOpen(false)} />
 
       {opened && (
         <div

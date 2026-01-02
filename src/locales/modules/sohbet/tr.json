@@ -227,6 +227,28 @@
   },
   "chat": {
     "messagePlaceholder": "Mesaj yazın...",
-    "title": "Sohbet"
+    "title": "Sohbet",
+    "searchRooms": "Sohbet odalarında ara...",
+    "searchMessages": "Mesajlarda ara...",
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "directMessage": "Doğrudan Mesaj",
+    "groupChat": "Grup Sohbeti",
+    "channel": "Kanal",
+    "selectChat": "Bir sohbet seçin",
+    "noMessages": "Henüz mesaj yok",
+    "loadingMessages": "Mesajlar yükleniyor...",
+    "chatDetails": "Sohbet Detayları",
+    "participants": "Katılımcılar",
+    "member": "üye",
+    "members": "üye",
+    "ago": "önce",
+    "day": "gün",
+    "days": "gün",
+    "hour": "saat",
+    "hours": "saat",
+    "minute": "dakika",
+    "minutes": "dakika",
+    "justNow": "Az önce"
   }
 }

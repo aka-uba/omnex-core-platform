@@ -4,15 +4,89 @@
   "menu": {
     "label": "Chat",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Chats",
       "rooms": "Chat Rooms",
       "messages": "Direct Messages",
       "groups": "Group Chats"
     }
+  },
+  "tabs": {
+    "details": "Details",
+    "members": "Members",
+    "files": "Files"
+  },
+  "details": {
+    "description": "Description",
+    "type": "Type",
+    "participants": "Participants"
+  },
+  "roomTypes": {
+    "direct": "Direct Message",
+    "group": "Group Chat",
+    "channel": "Channel"
+  },
+  "rooms": {
+    "title": "Chat Rooms",
+    "description": "Manage and join chat rooms"
+  },
+  "actions": {
+    "newChat": "New Chat",
+    "newGroup": "New Group",
+    "newGroupChat": "New Group Chat",
+    "uploadFile": "Upload File",
+    "uploading": "Uploading...",
+    "download": "Download",
+    "downloadFile": "Download File",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "select": "Select",
+    "selectImage": "Select Image",
+    "uploadAvatar": "Upload Avatar",
+    "changeAvatar": "Change avatar",
+    "searchChats": "Search chats...",
+    "noChats": "No chats yet",
+    "loading": "Loading...",
+    "noFiles": "No files yet",
+    "noParticipants": "No participants",
+    "noUsersFound": "No users found",
+    "edit": "Edit",
+    "update": "Update",
+    "view": "View",
+    "back": "Back",
+    "change": "Change",
+    "saving": "Saving"
+  },
+  "forms": {
+    "groupName": "Group Name (Optional)",
+    "groupNamePlaceholder": "Enter group name...",
+    "selectUser": "Select User"
+  },
+  "chat": {
+    "messagePlaceholder": "Type a message...",
+    "title": "Chat",
+    "searchRooms": "Search chat rooms...",
+    "searchMessages": "Search messages...",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "directMessage": "Direct Message",
+    "groupChat": "Group Chat",
+    "channel": "Channel",
+    "selectChat": "Select a chat",
+    "noMessages": "No messages yet",
+    "loadingMessages": "Loading messages...",
+    "chatDetails": "Chat Details",
+    "participants": "Participants",
+    "member": "member",
+    "members": "members",
+    "ago": "ago",
+    "day": "day",
+    "days": "days",
+    "hour": "hour",
+    "hours": "hours",
+    "minute": "minute",
+    "minutes": "minutes",
+    "justNow": "Just now"
   }
 }
-
-
-
-
-

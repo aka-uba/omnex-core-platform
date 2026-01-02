@@ -1,128 +1,276 @@
 'use client';
 
-import { useState } from 'react';
-import {
-    Affix,
-    Button,
-    Transition,
-    Paper,
-    Text,
-    Group,
-    ActionIcon,
-    Avatar,
-    TextInput,
-    ScrollArea,
-    Stack,
-} from '@mantine/core';
-import { IconMessageCircle, IconX, IconSend, IconMinus } from '@tabler/icons-react';
+import { useState, useEffect, useRef } from 'react';
+import { Avatar, Badge } from '@mantine/core';
+import { IconMessageCircle, IconX, IconSend, IconArrowLeft, IconUsers, IconMessage } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
+import { useChatRooms } from '@/hooks/useChatRooms';
+import { useChatMessages, useCreateChatMessage } from '@/hooks/useChatMessages';
+import { useUsers } from '@/hooks/useUsers';
+import { useAuth } from '@/hooks/useAuth';
+import type { ChatRoom } from '@/modules/sohbet/types/chat';
+import styles from '@/components/layouts/configurator/ThemeConfigurator.module.css';
 
-export function FloatingChatWidget() {
+interface FloatingChatWidgetProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export function FloatingChatWidget({ isOpen, onClose }: FloatingChatWidgetProps) {
     const { t } = useTranslation('modules/sohbet');
-    const [isOpen, setIsOpen] = useState(false);
+    const { user } = useAuth();
+    const [activeTab, setActiveTab] = useState<'chats' | 'groups'>('chats');
+    const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
     const [messageInput, setMessageInput] = useState('');
-    const [messages, setMessages] = useState([
-        { id: 1, text: 'Hello! How can I help you today?', sender: 'agent' }
-    ]);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const handleSendMessage = () => {
-        if (!messageInput.trim()) return;
-        setMessages([...messages, { id: Date.now(), text: messageInput, sender: 'user' }]);
-        setMessageInput('');
+    // Fetch chat rooms
+    const { data: roomsData } = useChatRooms({
+        page: 1,
+        pageSize: 50,
+        isActive: true
+    });
 
-        // Simulate response
-        setTimeout(() => {
-            setMessages(prev => [...prev, { id: Date.now(), text: 'Thanks for your message. Someone will be with you shortly.', sender: 'agent' }]);
-        }, 1000);
+    // Fetch users for display names
+    const { data: usersData } = useUsers({ pageSize: 100 });
+
+    // Fetch messages for selected room
+    const { data: messagesData, refetch: refetchMessages } = useChatMessages({
+        roomId: selectedRoom?.id || '',
+        page: 1,
+        pageSize: 50
+    });
+
+    // Send message mutation
+    const sendMessageMutation = useCreateChatMessage();
+
+    // Filter rooms by type
+    const directRooms = roomsData?.rooms?.filter(r => r.type === 'direct') || [];
+    const groupRooms = roomsData?.rooms?.filter(r => r.type === 'group' || r.type === 'channel') || [];
+    const displayedRooms = activeTab === 'chats' ? directRooms : groupRooms;
+
+    // Scroll to bottom when messages change
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messagesData?.messages]);
+
+    // Get user display name
+    const getUserName = (odaId: string) => {
+        const foundUser = usersData?.users?.find(u => u.id === odaId);
+        return foundUser?.name || foundUser?.email || odaId;
     };
 
+    // Get room display name
+    const getRoomName = (room: ChatRoom) => {
+        if (room.name) return room.name;
+        if (room.type === 'direct' && room.participants.length > 0) {
+            const otherParticipantId = room.participants.find(id => id !== user?.id);
+            if (otherParticipantId) {
+                return getUserName(otherParticipantId);
+            }
+        }
+        return t('chat.directMessage');
+    };
+
+    // Get last message preview
+    const getLastMessage = (room: ChatRoom) => {
+        if (room.messages && room.messages.length > 0) {
+            const content = room.messages[0]?.content || '';
+            return content.substring(0, 40) + (content.length > 40 ? '...' : '');
+        }
+        return t('chat.noMessages');
+    };
+
+    // Handle send message
+    const handleSendMessage = async () => {
+        if (!messageInput.trim() || !selectedRoom) return;
+
+        try {
+            await sendMessageMutation.mutateAsync({
+                roomId: selectedRoom.id,
+                content: messageInput.trim(),
+                type: 'text'
+            });
+            setMessageInput('');
+            refetchMessages();
+        } catch {
+            console.error('Failed to send message');
+        }
+    };
+
+    // Handle key press
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+
+    if (!isOpen) return null;
+
     return (
-        <>
-            <Affix position={{ bottom: 20, right: 20 }}>
-                <Transition transition="slide-up" mounted={!isOpen}>
-                    {(transitionStyles) => (
-                        <Button
-                            style={transitionStyles}
-                            leftSection={<IconMessageCircle size={20} />}
-                            radius="xl"
-                            size="lg"
-                            color="blue"
-                            onClick={() => setIsOpen(true)}
-                            className="shadow-lg"
-                        >
-                            Chat
-                        </Button>
-                    )}
-                </Transition>
-            </Affix>
-
-            <Affix position={{ bottom: 20, right: 20 }}>
-                <Transition transition="slide-up" mounted={isOpen}>
-                    {(transitionStyles) => (
-                        <Paper
-                            style={transitionStyles}
-                            shadow="xl"
-                            radius="lg"
-                            withBorder
-                            className="w-[350px] h-[500px] flex flex-col overflow-hidden bg-white dark:bg-[#15202b] border-gray-200 dark:border-gray-800"
-                        >
-                            {/* Header */}
-                            <div className="p-3 bg-blue-600 text-white flex justify-between items-center">
-                                <Group gap="xs">
-                                    <Avatar radius="xl" size="sm" color="white" variant="light">OC</Avatar>
-                                    <Text size="sm" fw={600}>Omnex Support</Text>
-                                </Group>
-                                <Group gap={4}>
-                                    <ActionIcon variant="transparent" color="white" size="sm" onClick={() => setIsOpen(false)}>
-                                        <IconMinus size={16} />
-                                    </ActionIcon>
-                                    <ActionIcon variant="transparent" color="white" size="sm" onClick={() => setIsOpen(false)}>
-                                        <IconX size={16} />
-                                    </ActionIcon>
-                                </Group>
+        <div className={styles.chatWidgetPanel}>
+            {/* Header */}
+            <div className={styles.chatWidgetHeader}>
+                <div className={styles.chatWidgetHeaderInfo}>
+                    {selectedRoom ? (
+                        <>
+                            <button
+                                className={styles.chatWidgetBackBtn}
+                                onClick={() => setSelectedRoom(null)}
+                            >
+                                <IconArrowLeft size={20} />
+                            </button>
+                            <Avatar
+                                size="sm"
+                                radius="xl"
+                                color="white"
+                                variant="light"
+                            >
+                                {selectedRoom.type === 'direct' ? (
+                                    <IconMessage size={16} />
+                                ) : (
+                                    <IconUsers size={16} />
+                                )}
+                            </Avatar>
+                            <div className={styles.chatWidgetHeaderText}>
+                                <h3>{getRoomName(selectedRoom)}</h3>
+                                <p>
+                                    {selectedRoom.type === 'direct'
+                                        ? t('chat.directMessage')
+                                        : `${selectedRoom.participants.length} ${t('chat.members')}`}
+                                </p>
                             </div>
-
-                            {/* Messages */}
-                            <ScrollArea className="flex-1 p-4 bg-gray-50 dark:bg-[#101922]">
-                                <Stack gap="sm">
-                                    {messages.map(msg => (
-                                        <Group
-                                            key={msg.id}
-                                            justify={msg.sender === 'user' ? 'flex-end' : 'flex-start'}
-                                        >
-                                            <div
-                                                className={`max-w-[80%] p-2 rounded-lg text-sm ${msg.sender === 'user'
-                                                        ? 'bg-blue-600 text-white rounded-br-none'
-                                                        : 'bg-white dark:bg-[#15202b] border border-gray-200 dark:border-gray-800 rounded-bl-none'
-                                                    }`}
-                                            >
-                                                {msg.text}
-                                            </div>
-                                        </Group>
-                                    ))}
-                                </Stack>
-                            </ScrollArea>
-
-                            {/* Input */}
-                            <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#15202b]">
-                                <Group gap="xs">
-                                    <TextInput
-                                        className="flex-1"
-                                        placeholder={t('chat.messagePlaceholder')}
-                                        size="sm"
-                                        value={messageInput}
-                                        onChange={(e) => setMessageInput(e.currentTarget.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    />
-                                    <ActionIcon variant="filled" color="blue" onClick={handleSendMessage}>
-                                        <IconSend size={18} />
-                                    </ActionIcon>
-                                </Group>
+                        </>
+                    ) : (
+                        <>
+                            <Avatar
+                                size="sm"
+                                radius="xl"
+                                color="white"
+                                variant="light"
+                            >
+                                <IconMessageCircle size={16} />
+                            </Avatar>
+                            <div className={styles.chatWidgetHeaderText}>
+                                <h3>{t('title')}</h3>
+                                <p>{t('description')}</p>
                             </div>
-                        </Paper>
+                        </>
                     )}
-                </Transition>
-            </Affix>
-        </>
+                </div>
+                <button
+                    className={styles.chatWidgetBackBtn}
+                    onClick={onClose}
+                >
+                    <IconX size={20} />
+                </button>
+            </div>
+
+            {selectedRoom ? (
+                /* Chat View */
+                <>
+                    <div className={styles.chatWidgetMessages}>
+                        {messagesData?.messages && messagesData.messages.length > 0 ? (
+                            [...messagesData.messages].reverse().map((msg) => (
+                                <div
+                                    key={msg.id}
+                                    className={`${styles.chatWidgetMessage} ${msg.senderId === user?.id ? styles.sent : styles.received}`}
+                                >
+                                    {msg.content}
+                                </div>
+                            ))
+                        ) : (
+                            <div className={styles.chatWidgetEmpty}>
+                                <IconMessageCircle size={48} />
+                                <p>{t('chat.noMessages')}</p>
+                            </div>
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <div className={styles.chatWidgetInputArea}>
+                        <input
+                            type="text"
+                            className={styles.chatWidgetInput}
+                            placeholder={t('chat.messagePlaceholder')}
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            onKeyDown={handleKeyPress}
+                        />
+                        <button
+                            className={styles.chatWidgetSendBtn}
+                            onClick={handleSendMessage}
+                            disabled={!messageInput.trim() || sendMessageMutation.isPending}
+                        >
+                            <IconSend size={18} />
+                        </button>
+                    </div>
+                </>
+            ) : (
+                /* Room List View */
+                <>
+                    <div className={styles.chatWidgetTabs}>
+                        <button
+                            className={`${styles.chatWidgetTab} ${activeTab === 'chats' ? styles.active : ''}`}
+                            onClick={() => setActiveTab('chats')}
+                        >
+                            {t('menu.items.messages')}
+                        </button>
+                        <button
+                            className={`${styles.chatWidgetTab} ${activeTab === 'groups' ? styles.active : ''}`}
+                            onClick={() => setActiveTab('groups')}
+                        >
+                            {t('menu.items.groups')}
+                        </button>
+                    </div>
+
+                    <div className={styles.chatWidgetContent}>
+                        {displayedRooms.length > 0 ? (
+                            displayedRooms.map((room) => (
+                                <div
+                                    key={room.id}
+                                    className={styles.chatWidgetRoomItem}
+                                    onClick={() => setSelectedRoom(room)}
+                                >
+                                    <Avatar
+                                        size="md"
+                                        radius="xl"
+                                        src={room.avatarUrl}
+                                        color="blue"
+                                    >
+                                        {!room.avatarUrl && (
+                                            room.type === 'direct' ? (
+                                                getRoomName(room).charAt(0).toUpperCase()
+                                            ) : (
+                                                <IconUsers size={18} />
+                                            )
+                                        )}
+                                    </Avatar>
+                                    <div className={styles.chatWidgetRoomInfo}>
+                                        <p className={styles.chatWidgetRoomName}>
+                                            {getRoomName(room)}
+                                        </p>
+                                        <p className={styles.chatWidgetRoomLastMsg}>
+                                            {getLastMessage(room)}
+                                        </p>
+                                    </div>
+                                    {room.messages && room.messages.filter(m => !m.isRead).length > 0 && (
+                                        <Badge size="sm" circle color="blue">
+                                            {room.messages.filter(m => !m.isRead).length}
+                                        </Badge>
+                                    )}
+                                </div>
+                            ))
+                        ) : (
+                            <div className={styles.chatWidgetEmpty}>
+                                <IconMessageCircle size={48} />
+                                <p>{t('actions.noChats')}</p>
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
+        </div>
     );
 }

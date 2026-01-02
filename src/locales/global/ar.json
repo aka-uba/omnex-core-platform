@@ -630,6 +630,7 @@
         "fromEmail": "بريد المرسل",
         "advanced": "إعدادات متقدمة",
         "timeout": "مهلة الاتصال",
+        "timeoutSuffix": " مللي ثانية",
         "retryAttempts": "محاولات الإعادة",
         "connectionPool": "تجمع الاتصالات",
         "sendTestEmail": "إرسال بريد تجريبي",
@@ -706,8 +707,10 @@
         "lockoutDuration": "مدة القفل",
         "ipWhitelist": "القائمة البيضاء لعناوين IP",
         "ipWhitelistDescription": "أدخل عنوان IP واحداً في كل سطر",
+        "ipWhitelistPlaceholder": "192.168.1.1\n10.0.0.1",
         "apiSecurity": "أمن API",
         "apiRateLimit": "حد معدل طلبات API",
+        "requestsPerMinuteSuffix": " طلب/دقيقة",
         "apiKeyExpiration": "انتهاء صلاحية مفتاح API (أيام)"
       }
     },

@@ -4,12 +4,89 @@
   "menu": {
     "label": "Chat",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Chats",
       "rooms": "Chaträume",
       "messages": "Direktnachrichten",
       "groups": "Gruppenchats"
     }
+  },
+  "tabs": {
+    "details": "Details",
+    "members": "Mitglieder",
+    "files": "Dateien"
+  },
+  "details": {
+    "description": "Beschreibung",
+    "type": "Typ",
+    "participants": "Teilnehmer"
+  },
+  "roomTypes": {
+    "direct": "Direktnachricht",
+    "group": "Gruppenchat",
+    "channel": "Kanal"
+  },
+  "rooms": {
+    "title": "Chaträume",
+    "description": "Chaträume verwalten und beitreten"
+  },
+  "actions": {
+    "newChat": "Neuer Chat",
+    "newGroup": "Neue Gruppe",
+    "newGroupChat": "Neuer Gruppenchat",
+    "uploadFile": "Datei hochladen",
+    "uploading": "Wird hochgeladen...",
+    "download": "Herunterladen",
+    "downloadFile": "Datei herunterladen",
+    "delete": "Löschen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "create": "Erstellen",
+    "select": "Auswählen",
+    "selectImage": "Bild auswählen",
+    "uploadAvatar": "Avatar hochladen",
+    "changeAvatar": "Avatar ändern",
+    "searchChats": "Chats durchsuchen...",
+    "noChats": "Noch keine Chats",
+    "loading": "Wird geladen...",
+    "noFiles": "Noch keine Dateien",
+    "noParticipants": "Keine Teilnehmer",
+    "noUsersFound": "Keine Benutzer gefunden",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "view": "Ansehen",
+    "back": "Zurück",
+    "change": "Ändern",
+    "saving": "Wird gespeichert"
+  },
+  "forms": {
+    "groupName": "Gruppenname (Optional)",
+    "groupNamePlaceholder": "Gruppenname eingeben...",
+    "selectUser": "Benutzer auswählen"
+  },
+  "chat": {
+    "messagePlaceholder": "Nachricht eingeben...",
+    "title": "Chat",
+    "searchRooms": "Chaträume durchsuchen...",
+    "searchMessages": "Nachrichten durchsuchen...",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "directMessage": "Direktnachricht",
+    "groupChat": "Gruppenchat",
+    "channel": "Kanal",
+    "selectChat": "Chat auswählen",
+    "noMessages": "Noch keine Nachrichten",
+    "loadingMessages": "Nachrichten werden geladen...",
+    "chatDetails": "Chat-Details",
+    "participants": "Teilnehmer",
+    "member": "Mitglied",
+    "members": "Mitglieder",
+    "ago": "vor",
+    "day": "Tag",
+    "days": "Tage",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "minute": "Minute",
+    "minutes": "Minuten",
+    "justNow": "Gerade eben"
   }
 }
-
-

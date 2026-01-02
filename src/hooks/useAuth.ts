@@ -75,7 +75,10 @@ export function useAuth() {
 
   const logout = () => {
     if (typeof window !== 'undefined') {
+      // Clear all auth-related localStorage items
       localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       setUser(null);
       // Login sayfasına yönlendir (locale'i koru)
       // Hard navigation kullan - cache sorunlarını önler
