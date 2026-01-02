@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/permissions - List permissions
 export async function GET(request: NextRequest) {
@@ -164,6 +165,14 @@ export async function POST(request: NextRequest) {
 
     const newPermission = await tenantPrisma.permissionDefinition.create({
       data: permissionData,
+    });
+
+    // Log audit event
+    const auditContext = await getAuditContext(request);
+    logCreate(tenantContext, auditContext, 'Permission', newPermission.id, companyId, {
+      permissionKey: newPermission.permissionKey,
+      name: newPermission.permissionName,
+      category: newPermission.category,
     });
 
     return NextResponse.json({

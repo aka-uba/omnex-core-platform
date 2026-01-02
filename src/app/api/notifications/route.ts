@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest, getCompanyIdFromBody } from '@/lib/api/companyContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/notifications
 export async function GET(request: NextRequest) {
@@ -218,6 +219,14 @@ export async function POST(request: NextRequest) {
         },
         attachments: true,
       },
+    });
+
+    // Log audit event
+    const auditContext = await getAuditContext(request);
+    logCreate(tenantContext, auditContext, 'Notification', notification.id, companyId, {
+      title: notification.title,
+      type: notification.type,
+      priority: notification.priority,
     });
 
     return NextResponse.json({

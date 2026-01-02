@@ -3,6 +3,7 @@ import { withTenant } from '@/lib/api/withTenant';
 import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/users - List users
 export async function GET(request: NextRequest) {
@@ -148,6 +149,9 @@ export async function POST(request: NextRequest) {
         return errorResponse('Tenant context required', 'Tenant not found', 400);
       }
 
+      // Get audit context
+      const auditContext = await getAuditContext(request);
+
       const formData = await request.formData();
 
       // Extract form data
@@ -288,6 +292,13 @@ export async function POST(request: NextRequest) {
         updatedAt: true,
       },
     });
+
+      // Log audit
+      logCreate(tenant, auditContext, 'User', newUser.id, '', {
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      });
 
       return successResponse({
         user: {

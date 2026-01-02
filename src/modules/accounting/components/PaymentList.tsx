@@ -244,7 +244,7 @@ export function PaymentList({ locale, paymentType }: PaymentListProps) {
         exportNamespace="modules/accounting"
         tableId="accounting-payments"
         showAuditHistory={true}
-        auditEntityName="Payment"
+        auditEntityName="AccountingPayment"
         auditIdKey="id"
       />
 

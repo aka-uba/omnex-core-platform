@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantFromRequest, getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET - Get single payment method
 export async function GET(
@@ -55,6 +56,9 @@ export async function PUT(
     if (!prisma) {
       return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
     }
+
+    // Get audit context
+    const auditContext = await getAuditContext(request);
 
     const body = await request.json();
 
@@ -118,6 +122,9 @@ export async function PUT(
       },
     });
 
+    // Log audit
+    logUpdate(tenant, auditContext, 'PaymentMethodConfig', id, existing, paymentMethod, existing.companyId);
+
     return NextResponse.json({ paymentMethod });
   } catch (error: any) {
     console.error('Error updating payment method:', error);
@@ -153,6 +160,9 @@ export async function DELETE(
       return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
     }
 
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     // Check if exists
     const existing = await prisma.paymentMethodConfig.findFirst({
       where: {
@@ -167,6 +177,12 @@ export async function DELETE(
 
     await prisma.paymentMethodConfig.delete({
       where: { id },
+    });
+
+    // Log audit
+    logDelete(tenant, auditContext, 'PaymentMethodConfig', id, existing.companyId, {
+      name: existing.name,
+      code: existing.code,
     });
 
     return NextResponse.json({ success: true });

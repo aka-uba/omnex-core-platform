@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { locationQuerySchema, locationCreateSchema } from '@/lib/schemas/location';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { requireCompanyId } from '@/lib/api/companyContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 import { Prisma } from '@prisma/tenant-client';
 import type { ZodIssue } from 'zod';
 // GET /api/locations - List locations
@@ -263,6 +264,14 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'Location', newLocation.id, companyId, {
+        name: newLocation.name,
+        type: newLocation.type,
+        code: newLocation.code,
       });
 
       return successResponse({

@@ -6,6 +6,7 @@ import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { agreementReportTemplateCreateSchema } from '@/modules/real-estate/schemas/agreement-report-template.schema';
 import { Prisma } from '@prisma/tenant-client';
 import { z } from 'zod';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/agreement-report-templates - List templates
 export async function GET(request: NextRequest) {
@@ -91,6 +92,9 @@ export async function POST(request: NextRequest) {
           return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
         }
 
+        // Get audit context
+        const auditContext = await getAuditContext(request);
+
         // Get companyId from query or use first company
         const searchParams = request.nextUrl.searchParams;
         let companyId = searchParams.get('companyId') || undefined;
@@ -127,6 +131,13 @@ export async function POST(request: NextRequest) {
             isDefault: validatedData.isDefault || false,
             isActive: validatedData.isActive !== undefined ? validatedData.isActive : true,
           },
+        });
+
+        // Log audit
+        logCreate(tenantContext, auditContext, 'AgreementReportTemplate', template.id, companyId || '', {
+          name: template.name,
+          category: template.category,
+          isDefault: template.isDefault,
         });
 
         return successResponse({ template });

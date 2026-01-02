@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { contractTemplateUpdateSchema } from '@/modules/real-estate/schemas/contract-template.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/contract-templates/[id] - Get single contract template
 export async function GET(
@@ -82,6 +83,9 @@ export async function PATCH(
         return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
       }
 
+      // Get audit context
+      const auditContext = await getAuditContext(request);
+
       // Find template
       const existingTemplate = await (tenantPrisma as any).contractTemplate.findFirst({
         where: {
@@ -125,6 +129,9 @@ export async function PATCH(
         data: updateData,
       });
 
+      // Log audit
+      logUpdate(tenantContext, auditContext, 'ContractTemplate', id, existingTemplate, template, existingTemplate.companyId);
+
       return successResponse({
         template: {
           ...template,
@@ -153,6 +160,9 @@ export async function DELETE(
       if (!tenantContext) {
         return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
       }
+
+      // Get audit context
+      const auditContext = await getAuditContext(request);
 
       // Find template
       const template = await tenantPrisma.contractTemplate.findFirst({
@@ -185,6 +195,12 @@ export async function DELETE(
       // Delete template
       await tenantPrisma.contractTemplate.delete({
         where: { id },
+      });
+
+      // Log audit
+      logDelete(tenantContext, auditContext, 'ContractTemplate', id, template.companyId, {
+        name: template.name,
+        type: template.type,
       });
 
       return successResponse(undefined);

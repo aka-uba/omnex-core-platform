@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { contractTemplateCreateSchema } from '@/modules/real-estate/schemas/contract-template.schema';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/contract-templates - List contract templates
 export async function GET(request: NextRequest) {
@@ -112,6 +113,9 @@ export async function POST(request: NextRequest) {
         return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
       }
 
+      // Get audit context
+      const auditContext = await getAuditContext(request);
+
       // Get companyId from body or use first company
       let companyId = body.companyId;
       if (!companyId) {
@@ -153,6 +157,13 @@ export async function POST(request: NextRequest) {
           isDefault: data.isDefault || false,
           isActive: true,
         },
+      });
+
+      // Log audit
+      logCreate(tenantContext, auditContext, 'ContractTemplate', template.id, companyId, {
+        name: template.name,
+        type: template.type,
+        isDefault: template.isDefault,
       });
 
       return successResponse({

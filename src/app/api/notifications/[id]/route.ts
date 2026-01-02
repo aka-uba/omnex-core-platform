@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
+import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET /api/notifications/[id]
 export async function GET(
@@ -140,6 +142,11 @@ export async function PATCH(
       );
     }
 
+    // Get existing notification for audit
+    const existingNotification = await tenantPrisma.notification.findUnique({
+      where: { id: resolvedParams.id },
+    });
+
     const notification = await tenantPrisma.notification.update({
       where: { id: resolvedParams.id },
       data: updateData,
@@ -185,6 +192,16 @@ export async function PATCH(
       }
     }
 
+    // Log audit event
+    if (existingNotification) {
+      const tenantContext = await getTenantFromRequest(request);
+      if (tenantContext) {
+        const companyId = await getCompanyIdFromRequest(request, tenantPrisma);
+        const auditContext = await getAuditContext(request);
+        logUpdate(tenantContext, auditContext, 'Notification', resolvedParams.id, existingNotification, notification, companyId || '');
+      }
+    }
+
     return NextResponse.json({
       success: true,
       notification,
@@ -213,9 +230,28 @@ export async function DELETE(
     }
 
     const resolvedParams = await params;
+
+    // Get existing notification for audit
+    const existingNotification = await tenantPrisma.notification.findUnique({
+      where: { id: resolvedParams.id },
+    });
+
     await tenantPrisma.notification.delete({
       where: { id: resolvedParams.id },
     });
+
+    // Log audit event
+    if (existingNotification) {
+      const tenantContext = await getTenantFromRequest(request);
+      if (tenantContext) {
+        const companyId = await getCompanyIdFromRequest(request, tenantPrisma);
+        const auditContext = await getAuditContext(request);
+        logDelete(tenantContext, auditContext, 'Notification', resolvedParams.id, companyId || '', {
+          title: existingNotification.title,
+          type: existingNotification.type,
+        });
+      }
+    }
 
     return NextResponse.json({
       success: true,

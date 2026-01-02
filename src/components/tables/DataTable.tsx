@@ -1146,24 +1146,30 @@ export function DataTable({
                             color: cellTextColor,
                           }}
                         >
-                          <div style={{
-                            display: 'flex',
-                            justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
-                            alignItems: 'center',
-                            width: '100%',
-                            color: 'inherit',
-                            gap: '4px',
-                          }}>
-                            {/* Audit History Icon - shown before actions column content */}
-                            {isActionsColumn && showAuditHistory && auditEntityName && (
-                              <AuditHistoryPopup
-                                entityId={row[auditIdKey]}
-                                entityName={auditEntityName}
-                                onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
-                              />
-                            )}
-                            {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
-                          </div>
+                          {isActionsColumn ? (
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', width: '100%', gap: 'var(--mantine-spacing-xs)' }}>
+                              {/* Audit History Icon - shown before actions column content */}
+                              {showAuditHistory && auditEntityName && (
+                                <AuditHistoryPopup
+                                  entityId={row[auditIdKey]}
+                                  entityName={auditEntityName}
+                                  onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
+                                />
+                              )}
+                              {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
+                            </div>
+                          ) : (
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
+                              alignItems: 'center',
+                              width: '100%',
+                              color: 'inherit',
+                              gap: '4px',
+                            }}>
+                              {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}
+                            </div>
+                          )}
                         </Table.Td>
                       );
                     })}

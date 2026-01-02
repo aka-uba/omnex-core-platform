@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import bcrypt from 'bcryptjs';
 import { logger } from '@/lib/utils/logger';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // Helper function to sanitize user name for folder
 function sanitizeUserNameForFolder(name: string): string {
@@ -123,9 +124,13 @@ export async function PATCH(
       );
     }
 
+    // Get tenant and audit context
+    const tenantContext = await getTenantFromRequest(request);
+    const auditContext = await getAuditContext(request);
+
     const { id } = await params;
     const contentType = request.headers.get('content-type');
-    
+
     // Check if user exists
     const existingUser = await tenantPrisma.user.findUnique({
       where: { id },
@@ -375,6 +380,11 @@ export async function PATCH(
       },
     });
 
+    // Log audit
+    if (tenantContext) {
+      logUpdate(tenantContext, auditContext, 'User', id, existingUser, updatedUser, '');
+    }
+
     // Sync profile picture and documents to linked RealEstateStaff
     // This ensures changes made in users page are reflected in real-estate staff page
     try {
@@ -448,6 +458,10 @@ export async function DELETE(
       );
     }
 
+    // Get tenant and audit context
+    const tenantContext = await getTenantFromRequest(request);
+    const auditContext = await getAuditContext(request);
+
     // Check if user exists
     const existingUser = await tenantPrisma.user.findUnique({
       where: { id },
@@ -464,6 +478,14 @@ export async function DELETE(
     await tenantPrisma.user.delete({
       where: { id },
     });
+
+    // Log audit
+    if (tenantContext) {
+      logDelete(tenantContext, auditContext, 'User', id, '', {
+        name: existingUser.name,
+        email: existingUser.email,
+      });
+    }
 
     return NextResponse.json({
       success: true,

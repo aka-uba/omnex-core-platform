@@ -3,6 +3,7 @@ import { withTenant } from '@/lib/api/withTenant';
 import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // Unified transaction interface for all sources
 interface UnifiedTransaction {
@@ -416,6 +417,15 @@ export async function POST(request: NextRequest) {
           notes: body.notes || null,
           status: body.status || 'completed',
         },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logCreate(tenantContext, auditContext, 'CashTransaction', newTransaction.id, companyId, {
+        type: newTransaction.type,
+        category: newTransaction.category,
+        amount: Number(newTransaction.amount),
+        description: newTransaction.description,
       });
 
       return successResponse({

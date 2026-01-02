@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Tenant, TenantCreateInput, TenantUpdateInput, TenantListParams } from '@/modules/real-estate/types/tenant';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 const API_BASE = '/api/real-estate/tenants';
 
@@ -14,7 +15,7 @@ export function useTenants(params?: TenantListParams) {
       if (params?.search) searchParams.set('search', params.search);
       if (params?.isActive !== undefined) searchParams.set('isActive', params.isActive.toString());
 
-      const response = await fetch(`${API_BASE}?${searchParams.toString()}`);
+      const response = await fetchWithAuth(`${API_BASE}?${searchParams.toString()}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tenants');
       }
@@ -29,7 +30,7 @@ export function useTenant(id: string) {
   return useQuery({
     queryKey: ['tenant', id],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE}/${id}`);
+      const response = await fetchWithAuth(`${API_BASE}/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tenant');
       }
@@ -46,9 +47,8 @@ export function useCreateTenant() {
 
   return useMutation({
     mutationFn: async (input: TenantCreateInput) => {
-      const response = await fetch(API_BASE, {
+      const response = await fetchWithAuth(API_BASE, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(input),
       });
 
@@ -72,9 +72,8 @@ export function useUpdateTenant() {
 
   return useMutation({
     mutationFn: async ({ id, input }: { id: string; input: TenantUpdateInput }) => {
-      const response = await fetch(`${API_BASE}/${id}`, {
+      const response = await fetchWithAuth(`${API_BASE}/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(input),
       });
 
@@ -99,7 +98,7 @@ export function useDeleteTenant() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const response = await fetch(`${API_BASE}/${id}`, {
+      const response = await fetchWithAuth(`${API_BASE}/${id}`, {
         method: 'DELETE',
       });
 
@@ -152,7 +151,7 @@ export function useTenantAnalytics(id: string) {
   return useQuery({
     queryKey: ['tenant-analytics', id],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE}/${id}/analytics`);
+      const response = await fetchWithAuth(`${API_BASE}/${id}/analytics`);
       if (!response.ok) {
         throw new Error('Failed to fetch tenant analytics');
       }
@@ -169,7 +168,7 @@ export function useRecalculateTenantAnalytics() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const response = await fetch(`${API_BASE}/${id}/analytics`, {
+      const response = await fetchWithAuth(`${API_BASE}/${id}/analytics`, {
         method: 'POST',
       });
 

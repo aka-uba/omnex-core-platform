@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET /api/permissions/[id] - Get single permission
 export async function GET(
@@ -155,6 +156,10 @@ export async function PATCH(
       data: updateData,
     });
 
+    // Log audit event
+    const auditContext = await getAuditContext(request);
+    logUpdate(tenantContext, auditContext, 'Permission', id, existingPermission, updatedPermission, companyId);
+
     return NextResponse.json({
       success: true,
       permission: {
@@ -240,6 +245,13 @@ export async function DELETE(
 
     await tenantPrisma.permissionDefinition.delete({
       where: { id },
+    });
+
+    // Log audit event
+    const auditContext = await getAuditContext(request);
+    logDelete(tenantContext, auditContext, 'Permission', id, companyId, {
+      permissionKey: existingPermission.permissionKey,
+      name: existingPermission.permissionName,
     });
 
     return NextResponse.json({

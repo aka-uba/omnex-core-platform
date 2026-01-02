@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ExportTemplateService } from '@/lib/export/ExportTemplateService';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { logger } from '@/lib/utils/logger';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 /**
  * GET /api/export-templates
  * List all export templates
@@ -50,13 +51,17 @@ export async function POST(request: NextRequest) {
   try {
     const tenantPrisma = await getTenantPrismaFromRequest(request);
     const tenantContext = await getTenantFromRequest(request);
-    
+
     if (!tenantPrisma || !tenantContext) {
       return NextResponse.json(
         { success: false, error: 'Tenant context not found' },
         { status: 400 }
       );
     }
+
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const service = new ExportTemplateService(tenantPrisma);
 
     const body = await request.json();
@@ -79,6 +84,13 @@ export async function POST(request: NextRequest) {
       locationId,
       templateData,
       isDefault,
+    });
+
+    // Log audit
+    logCreate(tenantContext, auditContext, 'ExportTemplate', template.id, companyId || '', {
+      name: template.name,
+      type: template.type,
+      isDefault: template.isDefault,
     });
 
     logger.info('Export template created', { templateId: template.id }, 'api-export-templates');

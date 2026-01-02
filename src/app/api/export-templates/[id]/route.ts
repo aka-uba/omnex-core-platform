@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ExportTemplateService } from '@/lib/export/ExportTemplateService';
-import { getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
+import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { logger } from '@/lib/utils/logger';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 /**
  * GET /api/export-templates/[id]
  * Get single export template
@@ -62,13 +63,21 @@ export async function PUT(
     const { id } = await params;
 
     const tenantPrisma = await getTenantPrismaFromRequest(request);
-    if (!tenantPrisma) {
+    const tenantContext = await getTenantFromRequest(request);
+    if (!tenantPrisma || !tenantContext) {
       return NextResponse.json(
         { success: false, error: 'Tenant context not found' },
         { status: 400 }
       );
     }
+
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const service = new ExportTemplateService(tenantPrisma);
+
+    // Get existing template for audit
+    const existing = await service.getTemplate(id);
 
     const body = await request.json();
     const { name, templateData, isDefault, isActive } = body;
@@ -79,6 +88,11 @@ export async function PUT(
       isDefault,
       isActive,
     });
+
+    // Log audit
+    if (existing) {
+      logUpdate(tenantContext, auditContext, 'ExportTemplate', id, existing, template, existing.companyId || '');
+    }
 
     logger.info('Export template updated', { templateId: id }, 'api-export-templates');
 
@@ -110,15 +124,31 @@ export async function DELETE(
     const { id } = await params;
 
     const tenantPrisma = await getTenantPrismaFromRequest(request);
-    if (!tenantPrisma) {
+    const tenantContext = await getTenantFromRequest(request);
+    if (!tenantPrisma || !tenantContext) {
       return NextResponse.json(
         { success: false, error: 'Tenant context not found' },
         { status: 400 }
       );
     }
+
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const service = new ExportTemplateService(tenantPrisma);
 
+    // Get existing template for audit
+    const existing = await service.getTemplate(id);
+
     await service.deleteTemplate(id);
+
+    // Log audit
+    if (existing) {
+      logDelete(tenantContext, auditContext, 'ExportTemplate', id, existing.companyId || '', {
+        name: existing.name,
+        type: existing.type,
+      });
+    }
 
     logger.info('Export template deleted', { templateId: id }, 'api-export-templates');
 

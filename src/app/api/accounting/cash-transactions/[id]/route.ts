@@ -3,6 +3,7 @@ import { withTenant } from '@/lib/api/withTenant';
 import { successResponse, errorResponse } from '@/lib/api/errorHandler';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 import { z } from 'zod';
 
 interface RouteParams {
@@ -116,6 +117,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         },
       });
 
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'CashTransaction', id, existingTransaction, updatedTransaction, existingTransaction.companyId);
+
       return successResponse({
         transaction: {
           ...updatedTransaction,
@@ -158,6 +163,14 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       // Hard delete
       await tenantPrisma.cashTransaction.delete({
         where: { id },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'CashTransaction', id, existingTransaction.companyId, {
+        type: existingTransaction.type,
+        category: existingTransaction.category,
+        amount: Number(existingTransaction.amount),
       });
 
       return successResponse({ message: 'Cash transaction deleted successfully' });

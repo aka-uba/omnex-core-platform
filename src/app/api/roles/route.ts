@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/roles - List roles
 export async function GET(request: NextRequest) {
@@ -139,6 +140,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const companyId = await getCompanyIdFromRequest(request, tenantPrisma);
     if (!companyId) {
       return NextResponse.json(
@@ -179,6 +183,12 @@ export async function POST(request: NextRequest) {
 
     const newRole = await tenantPrisma.role.create({
       data: roleData,
+    });
+
+    // Log audit
+    logCreate(tenantContext, auditContext, 'Role', newRole.id, companyId, {
+      name: newRole.name,
+      description: newRole.description,
     });
 
     return NextResponse.json({

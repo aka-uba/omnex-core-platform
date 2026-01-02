@@ -7,6 +7,7 @@ import { requireAuth } from '@/lib/middleware/authMiddleware';
 import { bulkOperationCreateSchema } from '@/modules/real-estate/schemas/bulk-operation.schema';
 import { z } from 'zod';
 import { Prisma } from '@prisma/tenant-client';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/bulk-operations - List bulk operations
 export async function GET(request: NextRequest) {
@@ -123,6 +124,9 @@ export async function POST(request: NextRequest) {
         }
         const userId = authResult.userId;
 
+        // Get audit context
+        const auditContext = await getAuditContext(request);
+
         // Get companyId from query or use first company
         const searchParams = request.nextUrl.searchParams;
         let companyId = searchParams.get('companyId') || undefined;
@@ -154,6 +158,12 @@ export async function POST(request: NextRequest) {
             createdBy: userId,
             startedAt: new Date(),
           },
+        });
+
+        // Log audit
+        logCreate(tenantContext, auditContext, 'BulkOperation', operation.id, companyId || '', {
+          type: operation.type,
+          title: operation.title,
         });
 
         // Execute operation based on type

@@ -140,18 +140,64 @@ export async function POST(request: NextRequest) {
         data: {
           tenantId: tenantContext.id,
           companyId: companyId,
+
+          // System fields
           userId: validatedData.userId || null,
           contactId: validatedData.contactId || null,
           tenantNumber: validatedData.tenantNumber || null,
+
+          // Type
+          tenantType: validatedData.tenantType || null,
+          companyName: validatedData.companyName || null,
+
+          // Personal information
+          salutation: validatedData.salutation || null,
+          firstName: validatedData.firstName || null,
+          lastName: validatedData.lastName || null,
+          birthDate: validatedData.birthDate || null,
+          birthPlace: validatedData.birthPlace || null,
+
+          // Address
+          street: validatedData.street || null,
+          houseNumber: validatedData.houseNumber || null,
+          postalCode: validatedData.postalCode || null,
+          city: validatedData.city || null,
+
+          // Contact
+          phone: validatedData.phone || null,
+          mobile: validatedData.mobile || null,
+          email: validatedData.email || null,
+
+          // Additional information
+          nationality: validatedData.nationality || null,
+          taxNumber: validatedData.taxNumber || null,
+
+          // Dates
           moveInDate: validatedData.moveInDate || null,
           moveOutDate: validatedData.moveOutDate || null,
+
+          // Scores
           paymentScore: validatedData.paymentScore || 100,
           contactScore: validatedData.contactScore || 100,
           maintenanceScore: validatedData.maintenanceScore || 100,
           overallScore: validatedData.overallScore || 100,
+
+          // Notes and analysis
           notes: validatedData.notes || null,
           analysis: validatedData.analysis ? (validatedData.analysis as Prisma.InputJsonValue) : Prisma.JsonNull,
+
+          // Media
+          images: validatedData.images || [],
+          documents: validatedData.documents || [],
+          coverImage: validatedData.coverImage || null,
+
+          // Status
           isActive: true,
+
+          // Apartment relation
+          ...(validatedData.apartmentId && {
+            apartment: { connect: { id: validatedData.apartmentId } },
+          }),
         },
         include: {
           _count: {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantFromRequest, getTenantPrismaFromRequest } from '@/lib/api/tenantContext';
+import { getAuditContext, logCreate } from '@/lib/api/auditHelper';
 
 // GET - List all payment methods
 export async function GET(request: NextRequest) {
@@ -62,6 +63,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
     }
 
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const body = await request.json();
 
     const {
@@ -118,6 +122,13 @@ export async function POST(request: NextRequest) {
         sortOrder: sortOrder || 0,
         isActive: isActive !== false,
       },
+    });
+
+    // Log audit
+    logCreate(tenant, auditContext, 'PaymentMethodConfig', paymentMethod.id, companyId, {
+      name: paymentMethod.name,
+      code: paymentMethod.code,
+      isDefault: paymentMethod.isDefault,
     });
 
     return NextResponse.json({ paymentMethod }, { status: 201 });

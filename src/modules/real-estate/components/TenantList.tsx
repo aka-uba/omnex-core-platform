@@ -176,7 +176,7 @@ export function TenantList({ locale }: TenantListProps) {
   ), []);
 
   const renderActions = useCallback((value: any, row: any) => (
-    <Group gap="xs" justify="flex-end">
+    <>
       <Tooltip label={t('actions.view')} withArrow>
         <ActionIcon
           variant="subtle"
@@ -213,7 +213,7 @@ export function TenantList({ locale }: TenantListProps) {
           <IconTrash size={18} />
         </ActionIcon>
       </Tooltip>
-    </Group>
+    </>
   ), [router, locale, handleDeleteClick, t]);
 
   // Define columns with memoization - Customer table order
@@ -382,7 +382,7 @@ export function TenantList({ locale }: TenantListProps) {
         exportTitle={t('tenants.title')}
         exportNamespace="modules/real-estate"
         showAuditHistory={true}
-        auditEntityName="TenantRecord"
+        auditEntityName="Tenant"
         auditIdKey="id"
       />
     </>

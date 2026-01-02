@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { agreementReportTemplateUpdateSchema } from '@/modules/real-estate/schemas/agreement-report-template.schema';
 import { z } from 'zod';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET /api/real-estate/agreement-report-templates/[id] - Get single template
 export async function GET(
@@ -59,6 +60,9 @@ export async function PATCH(
           return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
         }
 
+        // Get audit context
+        const auditContext = await getAuditContext(request);
+
         // Get existing template
         const existing = await tenantPrisma.agreementReportTemplate.findUnique({
           where: { id },
@@ -104,6 +108,9 @@ export async function PATCH(
           },
         });
 
+        // Log audit
+        logUpdate(tenantContext, auditContext, 'AgreementReportTemplate', id, existing, template, existing.companyId || '');
+
         return successResponse({ template });
       } catch (error) {
         if (error instanceof z.ZodError) {
@@ -137,6 +144,9 @@ export async function DELETE(
         return errorResponse('Tenant context required', 'Tenant context could not be determined', 400);
       }
 
+      // Get audit context
+      const auditContext = await getAuditContext(request);
+
       // Get existing template
       const existing = await tenantPrisma.agreementReportTemplate.findUnique({
         where: { id },
@@ -154,6 +164,12 @@ export async function DELETE(
       // Delete template
       await tenantPrisma.agreementReportTemplate.delete({
         where: { id },
+      });
+
+      // Log audit
+      logDelete(tenantContext, auditContext, 'AgreementReportTemplate', id, existing.companyId || '', {
+        name: existing.name,
+        category: existing.category,
       });
 
       return successResponse({ success: true });

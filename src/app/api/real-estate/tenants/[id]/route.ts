@@ -166,23 +166,68 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
       // Prepare update data
       const updateData: Prisma.TenantUpdateInput = {};
+
+      // System fields
       if (validatedData.userId !== undefined) updateData.userId = validatedData.userId || null;
       if (validatedData.contactId !== undefined) updateData.contactId = validatedData.contactId || null;
       if (validatedData.tenantNumber !== undefined) updateData.tenantNumber = validatedData.tenantNumber || null;
+
+      // Type
+      if (validatedData.tenantType !== undefined) updateData.tenantType = validatedData.tenantType || null;
+      if (validatedData.companyName !== undefined) updateData.companyName = validatedData.companyName || null;
+
+      // Personal information
+      if (validatedData.salutation !== undefined) updateData.salutation = validatedData.salutation || null;
+      if (validatedData.firstName !== undefined) updateData.firstName = validatedData.firstName || null;
+      if (validatedData.lastName !== undefined) updateData.lastName = validatedData.lastName || null;
+      if (validatedData.birthDate !== undefined) updateData.birthDate = validatedData.birthDate || null;
+      if (validatedData.birthPlace !== undefined) updateData.birthPlace = validatedData.birthPlace || null;
+
+      // Address
+      if (validatedData.street !== undefined) updateData.street = validatedData.street || null;
+      if (validatedData.houseNumber !== undefined) updateData.houseNumber = validatedData.houseNumber || null;
+      if (validatedData.postalCode !== undefined) updateData.postalCode = validatedData.postalCode || null;
+      if (validatedData.city !== undefined) updateData.city = validatedData.city || null;
+
+      // Contact
+      if (validatedData.phone !== undefined) updateData.phone = validatedData.phone || null;
+      if (validatedData.mobile !== undefined) updateData.mobile = validatedData.mobile || null;
+      if (validatedData.email !== undefined) updateData.email = validatedData.email || null;
+
+      // Additional information
+      if (validatedData.nationality !== undefined) updateData.nationality = validatedData.nationality || null;
+      if (validatedData.taxNumber !== undefined) updateData.taxNumber = validatedData.taxNumber || null;
+
+      // Dates
       if (validatedData.moveInDate !== undefined) updateData.moveInDate = validatedData.moveInDate || null;
       if (validatedData.moveOutDate !== undefined) updateData.moveOutDate = validatedData.moveOutDate || null;
+
+      // Scores
       if (validatedData.paymentScore !== undefined) updateData.paymentScore = validatedData.paymentScore;
       if (validatedData.contactScore !== undefined) updateData.contactScore = validatedData.contactScore;
       if (validatedData.maintenanceScore !== undefined) updateData.maintenanceScore = validatedData.maintenanceScore;
       if (validatedData.overallScore !== undefined) updateData.overallScore = validatedData.overallScore;
+
+      // Notes and analysis
       if (validatedData.notes !== undefined) updateData.notes = validatedData.notes || null;
       if (validatedData.analysis !== undefined) {
         updateData.analysis = validatedData.analysis ? (validatedData.analysis as Prisma.InputJsonValue) : Prisma.JsonNull;
       }
+
+      // Status and media
       if (validatedData.isActive !== undefined) updateData.isActive = validatedData.isActive;
       if (validatedData.images !== undefined) updateData.images = validatedData.images;
       if (validatedData.documents !== undefined) updateData.documents = validatedData.documents;
       if (validatedData.coverImage !== undefined) updateData.coverImage = validatedData.coverImage || null;
+
+      // Apartment relation
+      if (validatedData.apartmentId !== undefined) {
+        if (validatedData.apartmentId) {
+          updateData.apartment = { connect: { id: validatedData.apartmentId } };
+        } else {
+          updateData.apartment = { disconnect: true };
+        }
+      }
 
       // Update tenant
       const updatedTenant = await tenantPrisma.tenant.update({

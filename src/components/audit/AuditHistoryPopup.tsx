@@ -62,35 +62,10 @@ const ACTION_COLORS: Record<string, string> = {
   delete: 'red',
 };
 
-// Alan adlarını kullanıcı dostu metinlere çevir
-const FIELD_LABELS: Record<string, string> = {
-  images: 'Resimler',
-  documents: 'Belgeler',
-  isActive: 'Aktif',
-  status: 'Durum',
-  unitNumber: 'Birim No',
-  floor: 'Kat',
-  area: 'Alan',
-  roomCount: 'Oda Sayısı',
-  bathroomCount: 'Banyo',
-  balcony: 'Balkon',
-  rentPrice: 'Kira',
-  salePrice: 'Satış Fiyatı',
-  description: 'Açıklama',
-  coldRent: 'Soğuk Kira',
-  additionalCosts: 'Ek Masraflar',
-  heatingCosts: 'Isıtma',
-  deposit: 'Depozito',
-  livingRoom: 'Oturma Odası',
-  block: 'Blok',
-  ownerType: 'Malik Tipi',
-  ownershipType: 'Mülkiyet Tipi',
-  ownerId: 'Malik',
-  metadata: 'Meta Veri',
-  inventory: 'Envanter',
-  keys: 'Anahtarlar',
-  qrCode: 'QR Kod',
-  deliveryDate: 'Teslim Tarihi',
+// Çeviride bulunamayan alanlar için fallback (eski formatlar vb.)
+const FIELD_FALLBACKS: Record<string, string> = {
+  bathroomCount: 'Banyo Sayısı',
+  rentPrice: 'Kira Bedeli',
 };
 
 export function AuditHistoryPopup({
@@ -156,6 +131,21 @@ export function AuditHistoryPopup({
     '_count', 'user', 'company', 'tenant', 'propertyId'
   ];
 
+  // Alan adını çeviriden al, bulamazsa fallback veya alan adını kullan
+  const getFieldLabel = (field: string): string => {
+    // Önce çeviriden dene
+    const translatedLabel = t(`form.fields.${field}`, { defaultValue: '' });
+    if (translatedLabel && translatedLabel !== `form.fields.${field}`) {
+      return translatedLabel;
+    }
+    // Fallback'ten dene
+    if (FIELD_FALLBACKS[field]) {
+      return FIELD_FALLBACKS[field];
+    }
+    // Son çare: alan adını döndür
+    return field;
+  };
+
   // Değişiklik özetini kullanıcı dostu formatta oluştur
   const getChangeDescription = (log: AuditLog): React.ReactNode => {
     if (!log.metadata) return null;
@@ -177,7 +167,7 @@ export function AuditHistoryPopup({
     for (const field of meaningfulFields.slice(0, 2)) {
       const oldVal = oldValue[field];
       const newVal = newValue[field];
-      const label = FIELD_LABELS[field] || field;
+      const label = getFieldLabel(field);
 
       // Array değişiklikleri (resimler, belgeler)
       if (Array.isArray(oldVal) && Array.isArray(newVal)) {
@@ -279,13 +269,12 @@ export function AuditHistoryPopup({
           <ActionIcon
             variant="subtle"
             color="gray"
-            size="sm"
             onClick={(e) => {
               e.stopPropagation();
               handleToggle();
             }}
           >
-            <IconHistory size={16} />
+            <IconHistory size={18} />
           </ActionIcon>
         </Tooltip>
       </Popover.Target>

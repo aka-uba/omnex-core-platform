@@ -5,6 +5,7 @@ import type { ApiResponse } from '@/lib/api/errorHandler';
 import { locationUpdateSchema } from '@/lib/schemas/location';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import { requireCompanyId } from '@/lib/api/companyContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 import { Prisma } from '@prisma/tenant-client';
 interface RouteParams {
   params: Promise<{
@@ -273,6 +274,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         }
       }
       
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logUpdate(tenantContext, auditContext, 'Location', id, existingLocation, updatedLocation, companyId);
+
       return successResponse({
         location: {
           ...updatedLocation,
@@ -345,6 +350,14 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       // Delete location
       await tenantPrisma.location.delete({
         where: { id },
+      });
+
+      // Log audit event
+      const auditContext = await getAuditContext(request);
+      logDelete(tenantContext, auditContext, 'Location', id, companyId, {
+        name: existingLocation.name,
+        type: existingLocation.type,
+        code: existingLocation.code,
       });
 
       return successResponse({

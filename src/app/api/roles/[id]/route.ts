@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantPrismaFromRequest, getTenantFromRequest } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
+import { getAuditContext, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
 // GET /api/roles/[id] - Get single role
 export async function GET(
@@ -103,6 +104,9 @@ export async function PATCH(
       );
     }
 
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const companyId = await getCompanyIdFromRequest(request, tenantPrisma);
     if (!companyId) {
       return NextResponse.json(
@@ -157,6 +161,9 @@ export async function PATCH(
       data: updateData,
     });
 
+    // Log audit
+    logUpdate(tenantContext, auditContext, 'Role', id, existingRole, updatedRole, companyId);
+
     return NextResponse.json({
       success: true,
       role: {
@@ -202,6 +209,9 @@ export async function DELETE(
       );
     }
 
+    // Get audit context
+    const auditContext = await getAuditContext(request);
+
     const companyId = await getCompanyIdFromRequest(request, tenantPrisma);
     if (!companyId) {
       return NextResponse.json(
@@ -240,6 +250,12 @@ export async function DELETE(
 
     await tenantPrisma.role.delete({
       where: { id },
+    });
+
+    // Log audit
+    logDelete(tenantContext, auditContext, 'Role', id, companyId, {
+      name: existingRole.name,
+      description: existingRole.description,
     });
 
     return NextResponse.json({
