@@ -304,38 +304,40 @@ export async function GET(request: NextRequest) {
         const lastMonthStart = dayjs(now).subtract(1, 'month').startOf('month').toDate();
         const lastMonthEnd = dayjs(now).subtract(1, 'month').endOf('month').toDate();
 
-        const [invoicesThisMonth, expensesThisMonth, invoicesLastMonth] = await Promise.all([
-          tenantPrisma.invoice.aggregate({
+        // CashTransaction verilerini çek (ana veri kaynağı)
+        const [cashIncomeThisMonth, cashExpenseThisMonth, cashIncomeLastMonth] = await Promise.all([
+          tenantPrisma.cashTransaction.aggregate({
             where: {
               tenantId: tenantContext.id,
               companyId,
-              createdAt: { gte: thisMonthStart },
-              status: 'paid',
-            },
-            _sum: { totalAmount: true },
-          }),
-          tenantPrisma.expense.aggregate({
-            where: {
-              tenantId: tenantContext.id,
-              companyId,
-              createdAt: { gte: thisMonthStart },
+              transactionDate: { gte: thisMonthStart },
+              type: 'income',
             },
             _sum: { amount: true },
           }),
-          tenantPrisma.invoice.aggregate({
+          tenantPrisma.cashTransaction.aggregate({
             where: {
               tenantId: tenantContext.id,
               companyId,
-              createdAt: { gte: lastMonthStart, lte: lastMonthEnd },
-              status: 'paid',
+              transactionDate: { gte: thisMonthStart },
+              type: 'expense',
             },
-            _sum: { totalAmount: true },
+            _sum: { amount: true },
+          }),
+          tenantPrisma.cashTransaction.aggregate({
+            where: {
+              tenantId: tenantContext.id,
+              companyId,
+              transactionDate: { gte: lastMonthStart, lte: lastMonthEnd },
+              type: 'income',
+            },
+            _sum: { amount: true },
           }),
         ]);
 
-        const thisMonthRevenue = Number(invoicesThisMonth._sum?.totalAmount || 0);
-        const lastMonthRevenue = Number(invoicesLastMonth._sum?.totalAmount || 0);
-        const thisMonthExpenses = Number(expensesThisMonth._sum?.amount || 0);
+        const thisMonthRevenue = Number(cashIncomeThisMonth._sum?.amount || 0);
+        const lastMonthRevenue = Number(cashIncomeLastMonth._sum?.amount || 0);
+        const thisMonthExpenses = Number(cashExpenseThisMonth._sum?.amount || 0);
         const revenueChange = lastMonthRevenue > 0
           ? Math.round(((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100)
           : 0;
@@ -350,8 +352,8 @@ export async function GET(request: NextRequest) {
             { label: 'Net', value: formatCurrency(thisMonthRevenue - thisMonthExpenses) },
           ],
           quickActions: [
-            { label: 'Yeni Fatura', href: '/modules/accounting/invoices/new', icon: 'IconPlus' },
-            { label: 'Giderler', href: '/modules/accounting/expenses', icon: 'IconReceipt' },
+            { label: 'Kasa İşlemleri', href: '/modules/accounting/cash-transactions', icon: 'IconCash' },
+            { label: 'Yeni İşlem', href: '/modules/accounting/cash-transactions', icon: 'IconPlus' },
           ],
         });
       } catch (e) {
