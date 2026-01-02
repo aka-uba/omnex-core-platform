@@ -8,7 +8,6 @@ import {
   Stack,
   Badge,
   ActionIcon,
-  ThemeIcon,
   Paper,
   Skeleton,
   Button,
@@ -167,6 +166,30 @@ const moduleColorMap: Record<string, { bg: string; text: string; hoverBg: string
   },
 };
 
+// CSS Module class mapping for V2 card style
+const moduleStyleMap: Record<string, string> = {
+  'real-estate': 'realEstate',
+  calendar: 'calendar',
+  hr: 'hr',
+  accounting: 'accounting',
+  production: 'production',
+  maintenance: 'maintenance',
+};
+
+const getModuleStyleClass = (moduleSlug: string): string => {
+  return moduleStyleMap[moduleSlug] || 'default';
+};
+
+// Mantine color mapping for buttons
+const moduleButtonColorMap: Record<string, string> = {
+  'real-estate': 'blue',
+  calendar: 'cyan',
+  hr: 'violet',
+  accounting: 'green',
+  production: 'orange',
+  maintenance: 'yellow',
+};
+
 const eventTypeColors: Record<string, { bg: string; icon: React.ElementType }> = {
   delivery: {
     bg: 'bg-indigo-500 dark:bg-indigo-600',
@@ -317,132 +340,130 @@ export function Dashboard() {
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, xl: 3 }} spacing="lg" mb="xl">
           {data?.modules.map((module) => {
-            const colors = getModuleColors(module.module);
-            const hasOccupancy = module.stats.some((s) => s.label === 'Doluluk');
-            const occupancyStat = module.stats.find((s) => s.label === 'Doluluk');
-            const pendingStat = module.stats.find(
-              (s) => s.label === 'Bekleyen Odeme' || s.label === 'Bekleyen Ödeme'
-            );
+            const styleClass = getModuleStyleClass(module.module);
+            const buttonColor = moduleButtonColorMap[module.module] || 'gray';
 
             return (
               <Paper
                 key={module.module}
-                className={styles.moduleCard}
-                p="lg"
-                radius="lg"
-                withBorder
-                style={{
-                  cursor: 'pointer',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
+                className={`${styles.moduleCard} ${styles[styleClass as keyof typeof styles] || ''}`}
+                shadow="xl"
+                style={{ cursor: 'pointer' }}
                 onClick={() =>
                   router.push(`/${currentLocale}/modules/${module.module}/dashboard`)
                 }
               >
-                {/* Corner Decoration */}
-                <div
-                  className={`${styles.cornerDecoration} absolute top-0 right-0 w-24 h-24 rounded-bl-full -mr-4 -mt-4 ${colors.bg}`}
-                />
+                {/* Sağ üst köşede arka plan ikonu */}
+                <div className={styles.moduleCardIconWrapper}>
+                  {mounted && (
+                    <div className={styles.moduleCardBgIcon}>
+                      {getIcon(module.icon, 48)}
+                    </div>
+                  )}
+                </div>
 
-                {/* Header */}
-                <Group justify="space-between" mb="lg" style={{ position: 'relative', zIndex: 10 }}>
-                  <Group gap="sm">
-                    <div className={`p-2 rounded-lg ${colors.bg} ${colors.text}`}>
+                {/* Card Content */}
+                <div className={styles.moduleCardContent}>
+                  {/* Header */}
+                  <div className={styles.moduleCardHeader}>
+                    <div className={`${styles.moduleCardIconBox} ${styles[styleClass as keyof typeof styles] || ''}`}>
                       {mounted && getIcon(module.icon, 20)}
                     </div>
-                    <Text fw={600} size="lg">
+                    <Text className={styles.moduleCardTitle}>
                       {moduleNameMap[module.module] || module.module}
                     </Text>
-                  </Group>
-                  <IconChevronRight size={16} className="text-gray-300 dark:text-gray-600" />
-                </Group>
+                  </div>
 
-                {/* Stats Grid */}
-                <SimpleGrid cols={2} spacing="md" mb="lg">
-                  {module.stats.slice(0, 4).map((stat, index) => (
-                    <Box key={index}>
-                      <Text
-                        size="xs"
-                        fw={500}
-                        c="dimmed"
-                        tt="uppercase"
-                        style={{ letterSpacing: '0.05em' }}
-                        mb={4}
-                      >
-                        {stat.label}
-                      </Text>
-                      <Group gap="xs" align="center">
+                  {/* Stats Grid */}
+                  <SimpleGrid cols={2} spacing="md">
+                    {module.stats.slice(0, 4).map((stat, index) => (
+                      <Box key={index}>
                         <Text
-                          size="xl"
-                          fw={700}
-                          c={
-                            stat.label === 'Bekleyen Odeme' ||
-                            stat.label === 'Bekleyen Ödeme'
-                              ? 'orange'
-                              : undefined
-                          }
+                          size="xs"
+                          fw={500}
+                          c="dimmed"
+                          tt="uppercase"
+                          style={{ letterSpacing: '0.05em' }}
+                          mb={4}
                         >
-                          {stat.value}
+                          {stat.label}
                         </Text>
-                        {stat.label === 'Doluluk' && (
-                          <Progress
-                            value={parseInt(String(stat.value))}
-                            size="sm"
-                            color="blue"
-                            w={48}
-                            radius="xl"
-                          />
-                        )}
-                        {stat.change !== undefined && (
-                          <Badge
-                            size="xs"
-                            color={stat.change >= 0 ? 'green' : 'red'}
-                            variant="light"
-                            leftSection={
-                              stat.change >= 0 ? (
-                                <IconArrowUpRight size={10} />
-                              ) : (
-                                <IconArrowDownRight size={10} />
-                              )
+                        <Group gap="xs" align="center">
+                          <Text
+                            size="xl"
+                            fw={700}
+                            c={
+                              stat.label === 'Bekleyen Odeme' ||
+                              stat.label === 'Bekleyen Ödeme'
+                                ? 'orange'
+                                : undefined
                             }
                           >
-                            {stat.change >= 0 ? '+' : ''}
-                            {stat.change}%
-                          </Badge>
-                        )}
-                      </Group>
-                    </Box>
-                  ))}
-                </SimpleGrid>
-
-                {/* Quick Actions */}
-                {module.quickActions && module.quickActions.length > 0 && (
-                  <Group gap="xs">
-                    {module.quickActions.slice(0, 2).map((action, index) => (
-                      <Button
-                        key={index}
-                        size="xs"
-                        variant="light"
-                        color={module.color}
-                        className={`flex-1 ${colors.bg} ${colors.hoverBg}`}
-                        leftSection={mounted && getIcon(action.icon, 14)}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(`/${currentLocale}${action.href}`);
-                        }}
-                        styles={{
-                          root: {
-                            fontWeight: 600,
-                            fontSize: '0.75rem',
-                          },
-                        }}
-                      >
-                        {action.label}
-                      </Button>
+                            {stat.value}
+                          </Text>
+                          {stat.label === 'Doluluk' && (
+                            <Progress
+                              value={parseInt(String(stat.value))}
+                              size="sm"
+                              color={buttonColor}
+                              w={48}
+                              radius="xl"
+                            />
+                          )}
+                          {stat.change !== undefined && (
+                            <Badge
+                              size="xs"
+                              color={stat.change >= 0 ? 'green' : 'red'}
+                              variant="light"
+                              leftSection={
+                                stat.change >= 0 ? (
+                                  <IconArrowUpRight size={10} />
+                                ) : (
+                                  <IconArrowDownRight size={10} />
+                                )
+                              }
+                            >
+                              {stat.change >= 0 ? '+' : ''}
+                              {stat.change}%
+                            </Badge>
+                          )}
+                        </Group>
+                      </Box>
                     ))}
-                  </Group>
-                )}
+                  </SimpleGrid>
+
+                  {/* Footer with Quick Actions */}
+                  {module.quickActions && module.quickActions.length > 0 && (
+                    <div className={`${styles.moduleCardFooter} ${styles[styleClass as keyof typeof styles] || ''}`}>
+                      <Group gap="xs" style={{ flex: 1 }}>
+                        {module.quickActions.slice(0, 2).map((action, index) => (
+                          <Button
+                            key={index}
+                            size="xs"
+                            variant="subtle"
+                            color={buttonColor}
+                            leftSection={mounted && getIcon(action.icon, 14)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(`/${currentLocale}${action.href}`);
+                            }}
+                            styles={{
+                              root: {
+                                fontWeight: 600,
+                                fontSize: '0.75rem',
+                              },
+                            }}
+                          >
+                            {action.label}
+                          </Button>
+                        ))}
+                      </Group>
+                      <Text size="xs" c="dimmed" style={{ cursor: 'pointer' }}>
+                        Detayları Gör →
+                      </Text>
+                    </div>
+                  )}
+                </div>
               </Paper>
             );
           })}
@@ -589,8 +610,8 @@ export function Dashboard() {
                   </Stack>
                 ) : data?.upcomingEvents && data.upcomingEvents.length > 0 ? (
                   data.upcomingEvents.slice(0, 5).map((event, index) => {
-                    const eventColor =
-                      eventTypeColors[event.type] || eventTypeColors.delivery;
+                    const defaultColor = { bg: 'bg-indigo-500 dark:bg-indigo-600', icon: IconBuilding };
+                    const eventColor = eventTypeColors[event.type] ?? defaultColor;
                     const EventIcon = eventColor.icon;
                     const hoverColors = [
                       'hover:shadow-indigo-100/20',

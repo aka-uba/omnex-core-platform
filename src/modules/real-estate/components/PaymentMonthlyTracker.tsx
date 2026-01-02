@@ -15,7 +15,6 @@ import {
   Loader,
   Center,
   Stack,
-  Progress,
   RingProgress,
   useMantineColorScheme,
 } from '@mantine/core';
@@ -25,7 +24,6 @@ import {
   IconChevronRight,
   IconCheck,
   IconClock,
-  IconAlertCircle,
   IconCurrencyDollar,
   IconCash,
   IconCreditCard,
@@ -55,48 +53,58 @@ const paymentMethodIcons: Record<string, React.ReactNode> = {
   check: <IconReceipt size={12} />,
 };
 
-// Status colors for cell backgrounds (dark mode compatible)
-const getStatusColors = (status: string) => {
+// Status colors for cell backgrounds (dark mode compatible) - V2 Design with stronger colors
+const getStatusColors = (status: string, isDark: boolean) => {
   switch (status) {
     case 'paid':
       return {
-        bg: 'var(--mantine-color-green-light)',
-        border: 'var(--mantine-color-green-6)',
-        text: 'var(--mantine-color-green-text)',
+        bg: isDark ? 'rgba(34, 197, 94, 0.18)' : 'rgb(220, 252, 231)',
+        border: isDark ? 'rgba(34, 197, 94, 0.4)' : 'rgb(134, 239, 172)',
+        stripe: 'rgb(34, 197, 94)',
+        text: isDark ? 'rgb(134, 239, 172)' : 'rgb(21, 128, 61)',
+        statusText: isDark ? 'rgb(74, 222, 128)' : 'rgb(22, 101, 52)',
         badgeColor: 'green',
       };
     case 'pending':
       return {
-        bg: 'var(--mantine-color-yellow-light)',
-        border: 'var(--mantine-color-yellow-6)',
-        text: 'var(--mantine-color-yellow-text)',
+        bg: isDark ? 'rgba(245, 158, 11, 0.18)' : 'rgb(254, 243, 199)',
+        border: isDark ? 'rgba(245, 158, 11, 0.4)' : 'rgb(252, 211, 77)',
+        stripe: 'rgb(245, 158, 11)',
+        text: isDark ? 'rgb(252, 211, 77)' : 'rgb(146, 64, 14)',
+        statusText: isDark ? 'rgb(251, 191, 36)' : 'rgb(161, 98, 7)',
         badgeColor: 'yellow',
       };
     case 'overdue':
       return {
-        bg: 'var(--mantine-color-red-light)',
-        border: 'var(--mantine-color-red-6)',
-        text: 'var(--mantine-color-red-text)',
+        bg: isDark ? 'rgba(239, 68, 68, 0.18)' : 'rgb(254, 226, 226)',
+        border: isDark ? 'rgba(239, 68, 68, 0.4)' : 'rgb(252, 165, 165)',
+        stripe: 'rgb(239, 68, 68)',
+        text: isDark ? 'rgb(252, 165, 165)' : 'rgb(153, 27, 27)',
+        statusText: isDark ? 'rgb(248, 113, 113)' : 'rgb(185, 28, 28)',
         badgeColor: 'red',
       };
     case 'partial':
       return {
-        bg: 'var(--mantine-color-orange-light)',
-        border: 'var(--mantine-color-orange-6)',
-        text: 'var(--mantine-color-orange-text)',
+        bg: isDark ? 'rgba(249, 115, 22, 0.18)' : 'rgb(255, 237, 213)',
+        border: isDark ? 'rgba(249, 115, 22, 0.4)' : 'rgb(253, 186, 116)',
+        stripe: 'rgb(249, 115, 22)',
+        text: isDark ? 'rgb(253, 186, 116)' : 'rgb(154, 52, 18)',
+        statusText: isDark ? 'rgb(251, 146, 60)' : 'rgb(194, 65, 12)',
         badgeColor: 'orange',
       };
     default:
       return {
         bg: 'transparent',
         border: 'transparent',
+        stripe: 'transparent',
         text: 'var(--mantine-color-dimmed)',
+        statusText: 'var(--mantine-color-dimmed)',
         badgeColor: 'gray',
       };
   }
 };
 
-// Mobile-friendly Month Cell Component
+// V2 Design - Detailed Month Cell Component
 function MonthCellWithPopover({
   info,
   monthIndex,
@@ -120,6 +128,35 @@ function MonthCellWithPopover({
 }) {
   const [opened, { close, toggle }] = useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Get status icon based on status
+  const getStatusIcon = () => {
+    switch (info.status) {
+      case 'paid':
+        return <IconCheck size={14} />;
+      case 'overdue':
+        return <IconClock size={14} />;
+      default:
+        return null;
+    }
+  };
+
+  // Get payment method label
+  const getMethodLabel = () => {
+    if (!info.paymentMethod) return null;
+    const methodLabels: Record<string, string> = {
+      cash: 'Nakit',
+      bank_transfer: 'Havale',
+      credit_card: 'K. Kartı',
+      check: 'Çek',
+    };
+    return methodLabels[info.paymentMethod] || info.paymentMethod;
+  };
+
+  // Format date short
+  const formatDateShort = (date: string | Date) => {
+    return dayjs(date).format('DD.MM.YY');
+  };
 
   const tooltipContent = (
     <Stack gap={4} p={4}>
@@ -156,31 +193,82 @@ function MonthCellWithPopover({
     </Stack>
   );
 
+  // V2 Design - Card style cell with visible details
   const cellContent = (
     <Box
       onClick={isMobile ? toggle : undefined}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: '100%',
         backgroundColor: colors.bg,
-        borderLeft: `3px solid ${colors.border}`,
-        padding: '4px 6px',
-        borderRadius: 4,
+        border: `1px solid ${colors.border}`,
+        borderRadius: 8,
+        padding: '8px 10px 8px 12px',
+        position: 'relative',
         cursor: 'pointer',
-        minHeight: 32,
-        transition: 'all 0.15s ease',
+        transition: 'all 0.2s ease',
+        height: 68,
+        minWidth: 100,
+        boxSizing: 'border-box',
       }}
+      className="hover:shadow-md"
     >
-      <Text size="xs" fw={600} style={{ color: colors.text, lineHeight: 1.2 }}>
-        {formatShortCurrency(info.amount)}
+      {/* Left stripe indicator */}
+      <Box
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 4,
+          bottom: 4,
+          width: 3,
+          backgroundColor: colors.stripe,
+          borderRadius: '0 2px 2px 0',
+        }}
+      />
+
+      {/* Header row: Amount + Status icon */}
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 4,
+        }}
+      >
+        <Text size="sm" fw={700} style={{ color: 'var(--mantine-color-text)', whiteSpace: 'nowrap' }}>
+          {formatShortCurrency(info.amount)}
+        </Text>
+        {getStatusIcon() && (
+          <Box style={{ color: colors.stripe, flexShrink: 0, marginLeft: 4 }}>
+            {getStatusIcon()}
+          </Box>
+        )}
+      </Box>
+
+      {/* Status row: Left aligned */}
+      <Text
+        fw={700}
+        tt="uppercase"
+        style={{
+          color: colors.statusText,
+          letterSpacing: '-0.02em',
+          fontSize: '9px',
+          lineHeight: 1.3,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {t(`payments.status.${info.status}`)}
       </Text>
-      {info.paymentMethod && (
-        <Box style={{ color: colors.text, opacity: 0.7, marginTop: 2 }}>
-          {methodIcon}
-        </Box>
-      )}
+      {/* Method/Date row: Left aligned */}
+      <Box style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--mantine-color-dimmed)', marginTop: 2 }}>
+        {methodIcon}
+        <Text style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
+          {info.paidDate
+            ? formatDateShort(info.paidDate)
+            : info.dueDate
+            ? formatDateShort(info.dueDate)
+            : getMethodLabel()}
+        </Text>
+      </Box>
     </Box>
   );
 
@@ -221,7 +309,33 @@ interface StatsCardProps {
   ringProgress?: number;
   ringColor?: string;
   isDark: boolean;
+  variant?: 'blue' | 'green' | 'yellow' | 'violet';
 }
+
+// Gradient backgrounds for inset area based on variant
+const getInsetGradient = (variant: string, isDark: boolean): string => {
+  const defaultGradient = {
+    light: 'linear-gradient(135deg, var(--mantine-color-blue-0) 0%, #ffffff 100%)',
+    dark: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, var(--mantine-color-dark-7) 100%)',
+  };
+  const gradients: Record<string, { light: string; dark: string }> = {
+    blue: defaultGradient,
+    green: {
+      light: 'linear-gradient(135deg, var(--mantine-color-green-0) 0%, #ffffff 100%)',
+      dark: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, var(--mantine-color-dark-7) 100%)',
+    },
+    yellow: {
+      light: 'linear-gradient(135deg, var(--mantine-color-yellow-0) 0%, #ffffff 100%)',
+      dark: 'linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, var(--mantine-color-dark-7) 100%)',
+    },
+    violet: {
+      light: 'linear-gradient(135deg, var(--mantine-color-violet-0) 0%, #ffffff 100%)',
+      dark: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, var(--mantine-color-dark-7) 100%)',
+    },
+  };
+  const colors = gradients[variant] ?? defaultGradient;
+  return isDark ? colors.dark : colors.light;
+};
 
 function LayeredDepthCard({
   title,
@@ -237,10 +351,11 @@ function LayeredDepthCard({
   ringProgress,
   ringColor = 'blue',
   isDark,
+  variant = 'blue',
 }: StatsCardProps) {
   const cardBg = isDark ? 'var(--mantine-color-dark-6)' : '#ffffff';
   const cardBorder = isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0';
-  const insetBg = isDark ? 'var(--mantine-color-dark-7)' : '#f8fafc';
+  const insetBg = getInsetGradient(variant, isDark);
   const insetShadow = isDark
     ? 'inset 2px 2px 5px rgba(0, 0, 0, 0.3), inset -1px -1px 0px rgba(255, 255, 255, 0.05)'
     : 'inset 2px 2px 5px rgba(0, 0, 0, 0.05), inset -1px -1px 0px rgba(255, 255, 255, 1)';
@@ -262,6 +377,9 @@ function LayeredDepthCard({
           ? '0 1px 3px rgba(0,0,0,0.3)'
           : '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
         zIndex: 1,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}
       className="hover:shadow-md"
     >
@@ -347,12 +465,13 @@ function LayeredDepthCard({
       <Box
         p="md"
         style={{
-          backgroundColor: insetBg,
+          background: insetBg,
           borderRadius: 8,
           boxShadow: insetShadow,
           borderBottom: isDark ? '1px solid rgba(255,255,255,0.03)' : '1px solid rgba(0,0,0,0.03)',
           position: 'relative',
           overflow: 'hidden',
+          marginTop: 'auto',
         }}
       >
         <Group justify="space-between" align="center">
@@ -497,7 +616,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
       return <Text size="xs" c="dimmed" ta="center">-</Text>;
     }
 
-    const colors = getStatusColors(info.status);
+    const colors = getStatusColors(info.status, isDark);
     const methodIcon = info.paymentMethod ? paymentMethodIcons[info.paymentMethod] : null;
 
     return (
@@ -513,7 +632,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         t={t}
       />
     );
-  }, [formatCurrency, formatShortCurrency, fullMonthNames, currentYear, t]);
+  }, [formatCurrency, formatShortCurrency, fullMonthNames, currentYear, t, isDark]);
 
   // Build columns for DataTable
   const columns: DataTableColumn[] = useMemo(() => {
@@ -790,6 +909,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             progress={summary?.totalPayments ? Math.min((summary.paidPayments / summary.totalPayments) * 100, 100) : 0}
             progressColor="blue"
             isDark={isDark}
+            variant="blue"
           />
         </Grid.Col>
 
@@ -804,6 +924,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             badgeColor="green"
             badgeIcon={<IconTrendingUp size={12} />}
             isDark={isDark}
+            variant="green"
           />
         </Grid.Col>
 
@@ -817,6 +938,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             badgeText={summary?.pendingPayments ? t('payments.status.pending') : undefined}
             badgeColor="yellow"
             isDark={isDark}
+            variant="yellow"
           />
         </Grid.Col>
 
@@ -833,6 +955,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
             ringProgress={Math.round(summary?.collectionRate || 0)}
             ringColor="violet"
             isDark={isDark}
+            variant="violet"
           />
         </Grid.Col>
       </Grid>

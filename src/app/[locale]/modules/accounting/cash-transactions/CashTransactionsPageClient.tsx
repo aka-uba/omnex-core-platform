@@ -19,6 +19,7 @@ import {
   Tooltip,
   ThemeIcon,
   Menu,
+  Divider,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
@@ -51,6 +52,9 @@ import { useExportTemplates, useDefaultExportTemplate } from '@/hooks/useExportT
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
+
+// Design Variants
+import { CashFlowDesignV1, CashFlowDesignV2, CashFlowDesignV3 } from './designs';
 
 // Source icons and labels
 const SOURCE_CONFIG: Record<string, { icon: typeof IconHome; label: string; color: string }> = {
@@ -656,6 +660,42 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
         onConfirm={handleDelete}
         variant="danger"
       />
+
+      {/* Design Variants Section */}
+      <Divider my="xl" label="Tasarım Alternatifleri" labelPosition="center" />
+
+      {/* V1 - Card-Centric Cash Flow Display */}
+      <Paper withBorder p="md" mt="xl" radius="md">
+        <CashFlowDesignV1
+          transactions={data?.transactions || []}
+          summary={data?.summary || null}
+          exportTemplates={exportTemplates || []}
+          selectedTemplateId={selectedTemplateId}
+          onTemplateChange={setSelectedTemplateId}
+        />
+      </Paper>
+
+      {/* V2 - Dynamic Cash Flow Breakdown */}
+      <Paper withBorder p="md" mt="xl" radius="md">
+        <CashFlowDesignV2
+          transactions={data?.transactions || []}
+          summary={data?.summary || null}
+          exportTemplates={exportTemplates || []}
+          selectedTemplateId={selectedTemplateId}
+          onTemplateChange={setSelectedTemplateId}
+        />
+      </Paper>
+
+      {/* V3 - Two-Column Cash Flow Overview */}
+      <Paper withBorder p="md" mt="xl" radius="md">
+        <CashFlowDesignV3
+          transactions={data?.transactions || []}
+          summary={data?.summary || null}
+          exportTemplates={exportTemplates || []}
+          selectedTemplateId={selectedTemplateId}
+          onTemplateChange={setSelectedTemplateId}
+        />
+      </Paper>
     </Container>
   );
 }

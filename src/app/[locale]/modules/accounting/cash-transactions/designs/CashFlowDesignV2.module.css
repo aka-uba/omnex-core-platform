@@ -1,0 +1,664 @@
+/* V2 - Dynamic Cash Flow Breakdown */
+/* Bu dosya karar sonrası silinebilir */
+
+.container {
+  padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Net Cash Flow Card */
+.netCashFlowCard {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.netCashFlowInner {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.netCashFlowInner:hover {
+  transform: scale(1.02);
+}
+
+.netCashFlowLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.netCashFlowValue {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+@media (max-width: 576px) {
+  .netCashFlowValue {
+    font-size: 1.75rem;
+  }
+}
+
+.netCashFlowValue.negative {
+  color: var(--mantine-color-red-6);
+}
+
+.netCashFlowValue.positive {
+  color: var(--mantine-color-green-6);
+}
+
+[data-mantine-color-scheme="dark"] .netCashFlowValue.negative {
+  color: var(--mantine-color-red-4);
+}
+
+[data-mantine-color-scheme="dark"] .netCashFlowValue.positive {
+  color: var(--mantine-color-green-4);
+}
+
+.trendPill {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--mantine-color-red-0);
+  color: var(--mantine-color-red-6);
+}
+
+[data-mantine-color-scheme="dark"] .trendPill {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--mantine-color-red-4);
+}
+
+/* Two Column Grid */
+.columnsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .columnsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Section Column */
+.sectionColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Summary Card with Gradient */
+.summaryCard {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .summaryCard {
+    padding: 1rem;
+  }
+}
+
+.summaryCard.income {
+  background: linear-gradient(135deg, var(--mantine-color-green-0) 0%, var(--mantine-color-white) 100%);
+  border: 1px solid var(--mantine-color-green-2);
+}
+
+[data-mantine-color-scheme="dark"] .summaryCard.income {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, var(--mantine-color-dark-6) 100%);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.summaryCard.expense {
+  background: linear-gradient(135deg, var(--mantine-color-red-0) 0%, var(--mantine-color-white) 100%);
+  border: 1px solid var(--mantine-color-red-2);
+}
+
+[data-mantine-color-scheme="dark"] .summaryCard.expense {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, var(--mantine-color-dark-6) 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Sağ tarafta yüzde grafiği ve altında ortalı ikon */
+.summaryCardIconWrapper {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  z-index: 1;
+}
+
+.summaryCardIcon {
+  opacity: 0.15;
+  margin-top: -0.5rem;
+}
+
+.summaryCard:hover .summaryCardIcon {
+  opacity: 0.25;
+}
+
+@media (max-width: 768px) {
+  .summaryCardIconWrapper {
+    right: 0.5rem;
+    top: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .summaryCardIconWrapper {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .summaryCardIcon {
+    display: none;
+  }
+}
+
+.summaryContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.summaryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .summaryHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.summaryTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.summaryIconBox {
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+}
+
+.summaryIconBox.income {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: var(--mantine-color-green-6);
+}
+
+[data-mantine-color-scheme="dark"] .summaryIconBox.income {
+  background-color: rgba(34, 197, 94, 0.25);
+  color: var(--mantine-color-green-4);
+}
+
+.summaryIconBox.expense {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--mantine-color-red-6);
+}
+
+[data-mantine-color-scheme="dark"] .summaryIconBox.expense {
+  background-color: rgba(239, 68, 68, 0.25);
+  color: var(--mantine-color-red-4);
+}
+
+.summaryTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.summaryAmount {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+@media (max-width: 576px) {
+  .summaryAmount {
+    font-size: 1.5rem;
+  }
+}
+
+.openBadge {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.openBadgeCount {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+  border: 1px solid;
+}
+
+.openBadgeCount.income {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-8);
+  border-color: var(--mantine-color-red-2);
+}
+
+[data-mantine-color-scheme="dark"] .openBadgeCount.income {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--mantine-color-red-3);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.openBadgeCount.expense {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-8);
+  border-color: var(--mantine-color-red-2);
+}
+
+[data-mantine-color-scheme="dark"] .openBadgeCount.expense {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--mantine-color-red-3);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.openBadgeText {
+  font-size: 0.75rem;
+  color: var(--mantine-color-gray-5);
+}
+
+/* Circular Progress - Düzeltilmiş */
+.progressContainer {
+  width: 5.5rem;
+  height: 5.5rem;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .progressContainer {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+}
+
+.progressCircle {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.progressTrack {
+  stroke: var(--mantine-color-gray-2);
+}
+
+[data-mantine-color-scheme="dark"] .progressTrack {
+  stroke: var(--mantine-color-dark-4);
+}
+
+.progressBar.income {
+  stroke: var(--mantine-color-green-5);
+}
+
+.progressBar.expense {
+  stroke: var(--mantine-color-red-5);
+}
+
+.progressLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+@media (max-width: 576px) {
+  .progressLabel {
+    font-size: 0.75rem;
+  }
+}
+
+.progressLabel.income {
+  color: var(--mantine-color-green-6);
+}
+
+[data-mantine-color-scheme="dark"] .progressLabel.income {
+  color: var(--mantine-color-green-4);
+}
+
+.progressLabel.expense {
+  color: var(--mantine-color-red-6);
+}
+
+[data-mantine-color-scheme="dark"] .progressLabel.expense {
+  color: var(--mantine-color-red-4);
+}
+
+/* Card Footer */
+.cardFooter {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cardFooter.income {
+  border-top-color: var(--mantine-color-green-2);
+}
+
+[data-mantine-color-scheme="dark"] .cardFooter.income {
+  border-top-color: rgba(34, 197, 94, 0.3);
+}
+
+.cardFooter.expense {
+  border-top-color: var(--mantine-color-red-2);
+}
+
+[data-mantine-color-scheme="dark"] .cardFooter.expense {
+  border-top-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Search and Actions Row */
+.searchActionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (max-width: 576px) {
+  .searchActionsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Table Card */
+.tableCard {
+  overflow: hidden;
+  width: 100%;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.dataTable {
+  width: 100%;
+  min-width: 500px;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.dataTable thead tr.income {
+  background-color: rgba(34, 197, 94, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable thead tr.income {
+  background-color: rgba(34, 197, 94, 0.08);
+}
+
+.dataTable thead tr.expense {
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable thead tr.expense {
+  background-color: rgba(239, 68, 68, 0.08);
+}
+
+.dataTable th {
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mantine-color-gray-5);
+  white-space: nowrap;
+}
+
+[data-mantine-color-scheme="dark"] .dataTable th {
+  color: var(--mantine-color-gray-4);
+}
+
+.dataTable tbody tr {
+  border-bottom: 1px solid var(--mantine-color-gray-1);
+  transition: background-color 0.15s ease;
+}
+
+[data-mantine-color-scheme="dark"] .dataTable tbody tr {
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.dataTable tbody tr:hover {
+  background-color: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable tbody tr:hover {
+  background-color: var(--mantine-color-dark-5);
+}
+
+.dataTable tbody tr.highlighted {
+  background-color: rgba(139, 92, 246, 0.05);
+  border-left: 4px solid var(--mantine-color-violet-5);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable tbody tr.highlighted {
+  background-color: rgba(139, 92, 246, 0.08);
+}
+
+.dataTable tbody tr.highlighted:hover {
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.dataTable td {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.dataTable td.date {
+  color: var(--mantine-color-gray-5);
+}
+
+.dataTable td.type {
+  color: var(--mantine-color-gray-7);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable td.type {
+  color: var(--mantine-color-gray-3);
+}
+
+.dataTable td.amount {
+  text-align: right;
+  font-weight: 500;
+}
+
+.dataTable td.actions {
+  text-align: right;
+}
+
+/* Position Cell */
+.positionPrimary {
+  font-weight: 500;
+}
+
+.positionSecondary {
+  font-size: 0.75rem;
+  color: var(--mantine-color-gray-4);
+}
+
+/* Status Badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.statusBadge.outstanding {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-8);
+}
+
+[data-mantine-color-scheme="dark"] .statusBadge.outstanding {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--mantine-color-red-3);
+}
+
+.statusBadge.paid {
+  background-color: var(--mantine-color-green-1);
+  color: var(--mantine-color-green-8);
+}
+
+[data-mantine-color-scheme="dark"] .statusBadge.paid {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: var(--mantine-color-green-3);
+}
+
+/* Deposit Account Summary */
+.depositSummary {
+  margin-top: 2rem;
+}
+
+.depositTable {
+  width: 100%;
+  max-width: 32rem;
+}
+
+@media (max-width: 576px) {
+  .depositTable {
+    max-width: 100%;
+    font-size: 0.75rem;
+  }
+}
+
+.depositTable thead tr {
+  background-color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-white);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable thead tr {
+  background-color: var(--mantine-color-dark-8);
+}
+
+.depositTable th {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 576px) {
+  .depositTable th {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.6875rem;
+  }
+}
+
+.depositTable th.income {
+  background-color: var(--mantine-color-green-1);
+  color: var(--mantine-color-green-8);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable th.income {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: var(--mantine-color-green-2);
+}
+
+.depositTable th.expense {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-8);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable th.expense {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--mantine-color-red-2);
+}
+
+.depositTable tbody tr {
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable tbody tr {
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.depositTable td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+@media (max-width: 576px) {
+  .depositTable td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+.depositTable td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.depositTable td.total {
+  font-weight: 700;
+}
+
+/* Design Label */
+.designLabel {
+  background: linear-gradient(135deg, var(--mantine-color-teal-6), var(--mantine-color-cyan-6));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: inline-block;
+}

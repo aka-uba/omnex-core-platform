@@ -1,0 +1,483 @@
+/* V3 - Two-Column Cash Flow Overview */
+/* Bu dosya karar sonrası silinebilir */
+
+.container {
+  padding: 1rem;
+}
+
+/* Top Controls Row */
+.topControlsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 1280px) {
+  .topControlsRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.monthSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.monthDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  min-width: 12rem;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Main Content Grid */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
+
+/* Search Section */
+.searchSection {
+  width: 100%;
+}
+
+/* Balance Section */
+.balanceSection {
+  display: flex;
+  justify-content: center;
+}
+
+.balanceCard {
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.balanceLabel {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--mantine-color-gray-5);
+}
+
+.balanceValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.balanceValue.negative {
+  color: var(--mantine-color-red-6);
+}
+
+.balanceValue.positive {
+  color: var(--mantine-color-green-6);
+}
+
+[data-mantine-color-scheme="dark"] .balanceValue.negative {
+  color: var(--mantine-color-red-4);
+}
+
+[data-mantine-color-scheme="dark"] .balanceValue.positive {
+  color: var(--mantine-color-green-4);
+}
+
+/* Deposit Summary Section */
+.depositSection {
+  width: 100%;
+  max-width: 20rem;
+}
+
+.depositCard {
+  font-size: 0.75rem;
+  overflow: hidden;
+}
+
+.depositHeader {
+  padding: 0.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme="dark"] .depositHeader {
+  background-color: var(--mantine-color-dark-5);
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.depositTable {
+  width: 100%;
+  text-align: right;
+}
+
+.depositTable thead tr {
+  background-color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-white);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable thead tr {
+  background-color: var(--mantine-color-dark-8);
+}
+
+.depositTable th {
+  padding: 0.5rem;
+  font-weight: 400;
+  font-size: 0.6875rem;
+}
+
+.depositTable th.income {
+  background-color: var(--mantine-color-green-1);
+  color: var(--mantine-color-green-8);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable th.income {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: var(--mantine-color-green-2);
+}
+
+.depositTable th.expense {
+  background-color: var(--mantine-color-red-1);
+  color: var(--mantine-color-red-8);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable th.expense {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--mantine-color-red-2);
+}
+
+.depositTable tbody tr {
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+[data-mantine-color-scheme="dark"] .depositTable tbody tr {
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.depositTable td {
+  padding: 0.5rem;
+}
+
+.depositTable td:first-child {
+  text-align: left;
+}
+
+/* Two Column Content */
+.columnsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1280px) {
+  .columnsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Section Column */
+.sectionColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section Header */
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.sectionTitle.income {
+  color: var(--mantine-color-green-7);
+}
+
+[data-mantine-color-scheme="dark"] .sectionTitle.income {
+  color: var(--mantine-color-green-4);
+}
+
+.sectionTitle.expense {
+  color: var(--mantine-color-red-7);
+}
+
+[data-mantine-color-scheme="dark"] .sectionTitle.expense {
+  color: var(--mantine-color-red-4);
+}
+
+/* Summary Card */
+.summaryCard {
+  width: 100%;
+  max-width: 28rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summaryCard.income {
+  background-color: var(--mantine-color-green-1);
+  border: 1px solid var(--mantine-color-green-2);
+}
+
+[data-mantine-color-scheme="dark"] .summaryCard.income {
+  background-color: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.summaryCard.expense {
+  background-color: var(--mantine-color-red-1);
+  border: 1px solid var(--mantine-color-red-2);
+}
+
+[data-mantine-color-scheme="dark"] .summaryCard.expense {
+  background-color: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.summaryAmount {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.summaryAmount.income {
+  color: var(--mantine-color-green-8);
+}
+
+[data-mantine-color-scheme="dark"] .summaryAmount.income {
+  color: var(--mantine-color-green-4);
+}
+
+.summaryAmount.expense {
+  color: var(--mantine-color-red-8);
+}
+
+[data-mantine-color-scheme="dark"] .summaryAmount.expense {
+  color: var(--mantine-color-red-4);
+}
+
+.openBookingsPill {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.openBookingsPill.income {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--mantine-color-green-8);
+}
+
+[data-mantine-color-scheme="dark"] .openBookingsPill.income {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--mantine-color-green-2);
+}
+
+.openBookingsPill.expense {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--mantine-color-red-8);
+}
+
+[data-mantine-color-scheme="dark"] .openBookingsPill.expense {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--mantine-color-red-2);
+}
+
+.downloadFilesBtn {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+}
+
+/* Booking Date Action */
+.bookingDateAction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Data Table */
+.tableCard {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.dataTable {
+  width: 100%;
+  text-align: left;
+}
+
+.dataTable thead tr.income {
+  background-color: var(--mantine-color-green-0);
+  border-bottom: 1px solid var(--mantine-color-green-1);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable thead tr.income {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-bottom-color: rgba(34, 197, 94, 0.2);
+}
+
+.dataTable thead tr.expense {
+  background-color: var(--mantine-color-red-0);
+  border-bottom: 1px solid var(--mantine-color-red-1);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable thead tr.expense {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-bottom-color: rgba(239, 68, 68, 0.2);
+}
+
+.dataTable th {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.dataTable tbody tr {
+  border-bottom: 1px solid var(--mantine-color-gray-1);
+  transition: background-color 0.15s ease;
+}
+
+[data-mantine-color-scheme="dark"] .dataTable tbody tr {
+  border-bottom-color: var(--mantine-color-dark-4);
+}
+
+.dataTable tbody tr:hover {
+  background-color: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable tbody tr:hover {
+  background-color: var(--mantine-color-dark-5);
+}
+
+.dataTable tbody tr.borderLeft {
+  border-left: 4px solid transparent;
+}
+
+.dataTable tbody tr.borderLeft:hover {
+  border-left-color: var(--mantine-color-violet-5);
+}
+
+.dataTable tbody tr.borderLeftGreen {
+  border-left-color: var(--mantine-color-green-5);
+}
+
+.dataTable td {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.dataTable td.date {
+  color: var(--mantine-color-gray-6);
+}
+
+[data-mantine-color-scheme="dark"] .dataTable td.date {
+  color: var(--mantine-color-gray-4);
+}
+
+.dataTable td.amount {
+  text-align: right;
+  font-weight: 500;
+}
+
+.dataTable td.actions {
+  text-align: center;
+  width: 48px;
+}
+
+/* Position Cell */
+.positionPrimary {
+  font-weight: 500;
+}
+
+.positionSecondary {
+  font-size: 0.75rem;
+  color: var(--mantine-color-gray-4);
+}
+
+/* Status Badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.statusBadge.outstanding {
+  background-color: var(--mantine-color-red-6);
+  color: var(--mantine-color-white);
+}
+
+.statusBadge.paid {
+  background-color: var(--mantine-color-green-6);
+  color: var(--mantine-color-white);
+}
+
+/* Number Pill */
+.numberPill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: var(--mantine-color-gray-1);
+  width: fit-content;
+}
+
+[data-mantine-color-scheme="dark"] .numberPill {
+  background-color: var(--mantine-color-dark-5);
+}
+
+/* Type with Border */
+.typeBordered {
+  border-left: 2px solid var(--mantine-color-green-5);
+  padding-left: 0.75rem;
+}
+
+/* Design Label */
+.designLabel {
+  background: linear-gradient(135deg, var(--mantine-color-violet-6), var(--mantine-color-grape-6));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
