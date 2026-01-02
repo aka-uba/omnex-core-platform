@@ -374,8 +374,7 @@ export async function GET(request: NextRequest) {
           ],
         });
       } catch (e) {
-        // Module not available - log error for debugging
-        console.error('[Dashboard] Accounting module error:', e);
+        // Module not available
       }
 
       // Production Module
