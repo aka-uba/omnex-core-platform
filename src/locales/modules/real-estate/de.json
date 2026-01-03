@@ -1,6 +1,16 @@
 {
   "title": "Immobilienverwaltung",
   "description": "Umfassendes Immobilienverwaltungsmodul",
+  "stats": {
+    "properties": "Immobilien",
+    "apartments": "Wohnungen",
+    "occupancy": "Belegung",
+    "pendingPayments": "Ausstehende Zahlungen"
+  },
+  "notifications": {
+    "expiringContracts": "Ablaufende Verträge",
+    "pendingPayments": "Ausstehende Zahlungen"
+  },
   "menu": {
     "label": "Immobilien",
     "items": {
@@ -1170,7 +1180,9 @@
     "preview": "Vorschau",
     "clear": "Löschen",
     "execute": "Ausführen",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "newContract": "Neuer Vertrag",
+    "payments": "Zahlungen"
   },
   "table": {
     "name": "Name",

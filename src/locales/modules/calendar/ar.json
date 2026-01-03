@@ -1,6 +1,10 @@
 {
   "title": "التقويم",
   "description": "عرض الفعاليات والتسجيلات",
+  "stats": {
+    "todayAppointments": "مواعيد اليوم",
+    "thisWeek": "هذا الأسبوع"
+  },
   "dashboard": {
     "title": "التقويم",
     "description": "عرض الفعاليات وإدارتها ومتابعتها"
@@ -108,7 +112,8 @@
     "save": "حفظ",
     "cancel": "إلغاء",
     "back": "رجوع",
-    "refresh": "تحديث"
+    "refresh": "تحديث",
+    "newAppointment": "موعد جديد"
   },
   "toolbar": {
     "today": "اليوم",

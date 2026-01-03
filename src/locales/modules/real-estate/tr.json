@@ -1,6 +1,16 @@
 {
   "title": "Emlak Yönetimi",
   "description": "Kapsamlı emlak yönetim modülü",
+  "stats": {
+    "properties": "Gayrimenkul",
+    "apartments": "Daire",
+    "occupancy": "Doluluk",
+    "pendingPayments": "Bekleyen Ödeme"
+  },
+  "notifications": {
+    "expiringContracts": "Süresi Dolan Sözleşmeler",
+    "pendingPayments": "Bekleyen Ödemeler"
+  },
   "menu": {
     "label": "Emlak",
     "items": {
@@ -1170,7 +1180,9 @@
     "preview": "Önizleme",
     "clear": "Temizle",
     "execute": "Çalıştır",
-    "remove": "Kaldır"
+    "remove": "Kaldır",
+    "newContract": "Yeni Sözleşme",
+    "payments": "Ödemeler"
   },
   "table": {
     "name": "Ad",

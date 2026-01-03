@@ -1,6 +1,9 @@
 {
   "title": "Benachrichtigungen",
   "description": "Systemweite Benachrichtigungen und Warnungen verwalten",
+  "stats": {
+    "unreadNotifications": "Ungelesene Benachrichtigungen"
+  },
   "dashboard": {
     "title": "Alle Benachrichtigungen",
     "description": "Alle Benachrichtigungen anzeigen, verwalten und verfolgen"
@@ -26,7 +29,8 @@
     "mark_unread": "Als ungelesen markieren",
     "create": "Erstellen",
     "update": "Aktualisieren",
-    "back": "Zurück"
+    "back": "Zurück",
+    "viewAll": "Alle anzeigen"
   },
   "create": "Benachrichtigung erstellen",
   "edit": "Benachrichtigung bearbeiten",

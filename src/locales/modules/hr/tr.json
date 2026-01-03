@@ -1,6 +1,10 @@
 {
   "title": "İnsan Kaynakları",
   "description": "Personel yönetimi, izin takibi ve bordro sistemi",
+  "stats": {
+    "employees": "Çalışan",
+    "departments": "Departman"
+  },
   "menu": {
     "label": "İnsan Kaynakları",
     "items": {
@@ -249,7 +253,8 @@
     "update": "Güncelle",
     "save": "Kaydet",
     "cancel": "İptal",
-    "back": "Geri"
+    "back": "Geri",
+    "employees": "Çalışanlar"
   },
   "filter": {
     "all": "Tümü"

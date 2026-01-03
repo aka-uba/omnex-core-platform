@@ -1,6 +1,9 @@
 {
   "title": "Bildirimler",
   "description": "Sistem genelindeki bildirimleri ve uyarıları yönetin",
+  "stats": {
+    "unreadNotifications": "Okunmamış Bildirim"
+  },
   "dashboard": {
     "title": "Tüm Bildirimler",
     "description": "Tüm bildirimlerinizi görüntüleyin, yönetin ve takip edin"
@@ -26,7 +29,8 @@
     "mark_unread": "Okunmadı İşaretle",
     "create": "Oluştur",
     "update": "Güncelle",
-    "back": "Geri"
+    "back": "Geri",
+    "viewAll": "Tümünü Gör"
   },
   "create": "Bildirim Oluştur",
   "edit": "Bildirim Düzenle",

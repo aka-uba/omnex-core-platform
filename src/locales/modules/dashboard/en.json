@@ -52,7 +52,8 @@
       "key": "Key Handover",
       "showing": "Showing",
       "maintenance": "Maintenance",
-      "completed": "Completed"
+      "completed": "Completed",
+      "appointment": "Appointment"
     }
   },
   "quickOverview": {
@@ -64,6 +65,8 @@
     "notifications": "Notifications",
     "hr": "Human Resources",
     "accounting": "Accounting",
-    "production": "Production"
+    "production": "Production",
+    "maintenance": "Maintenance",
+    "fileManager": "File Manager"
   }
 }

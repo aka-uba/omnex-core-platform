@@ -1,6 +1,16 @@
 {
   "title": "Real Estate Management",
   "description": "Comprehensive real estate management module",
+  "stats": {
+    "properties": "Properties",
+    "apartments": "Apartments",
+    "occupancy": "Occupancy",
+    "pendingPayments": "Pending Payments"
+  },
+  "notifications": {
+    "expiringContracts": "Expiring Contracts",
+    "pendingPayments": "Pending Payments"
+  },
   "menu": {
     "label": "Real Estate",
     "items": {
@@ -1170,7 +1180,9 @@
     "preview": "Preview",
     "clear": "Clear",
     "execute": "Execute",
-    "remove": "Remove"
+    "remove": "Remove",
+    "newContract": "New Contract",
+    "payments": "Payments"
   },
   "table": {
     "name": "Name",

@@ -1,6 +1,11 @@
 {
   "title": "Dosya Yöneticisi",
   "description": "Dosyalarınızı yönetin ve düzenleyin",
+  "stats": {
+    "files": "Dosya",
+    "folders": "Klasör",
+    "totalSize": "Toplam Boyut"
+  },
   "menu": {
     "label": "Dosya Yöneticisi",
     "items": {
@@ -94,7 +99,8 @@
     "save": "Kaydet",
     "cancel": "İptal",
     "back": "Geri",
-    "cannotDownloadFolder": "Klasör indirilemez"
+    "cannotDownloadFolder": "Klasör indirilemez",
+    "uploadFile": "Dosya Yükle"
   },
   "share": {
     "modalTitle": "Öğe Paylaş",

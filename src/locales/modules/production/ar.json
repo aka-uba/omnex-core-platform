@@ -1,6 +1,10 @@
 {
   "title": "الإنتاج والمنتجات",
   "description": "وحدة شاملة لإدارة الإنتاج والمنتجات",
+  "stats": {
+    "products": "المنتجات",
+    "activeOrders": "الطلبات النشطة"
+  },
   "menu": {
     "label": "الإنتاج",
     "items": {
@@ -378,7 +382,9 @@
     "view": "عرض",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "back": "رجوع"
+    "back": "رجوع",
+    "products": "المنتجات",
+    "orders": "الطلبات"
   },
   "messages": {
     "success": "نجح",

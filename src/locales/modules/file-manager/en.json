@@ -1,6 +1,11 @@
 {
   "title": "File Manager",
   "description": "Manage and organize your files",
+  "stats": {
+    "files": "Files",
+    "folders": "Folders",
+    "totalSize": "Total Size"
+  },
   "menu": {
     "label": "File Manager",
     "items": {
@@ -94,7 +99,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "back": "Back",
-    "cannotDownloadFolder": "Folder cannot be downloaded"
+    "cannotDownloadFolder": "Folder cannot be downloaded",
+    "uploadFile": "Upload File"
   },
   "share": {
     "modalTitle": "Share Item",

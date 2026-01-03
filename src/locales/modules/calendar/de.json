@@ -1,6 +1,10 @@
 {
   "title": "Kalender",
   "description": "Veranstaltungen und Registrierungen anzeigen",
+  "stats": {
+    "todayAppointments": "Heutige Termine",
+    "thisWeek": "Diese Woche"
+  },
   "dashboard": {
     "title": "Kalender",
     "description": "Veranstaltungen anzeigen, verwalten und verfolgen"
@@ -108,7 +112,8 @@
     "save": "Speichern",
     "cancel": "Abbrechen",
     "back": "Zurück",
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "newAppointment": "Neuer Termin"
   },
   "toolbar": {
     "today": "Heute",

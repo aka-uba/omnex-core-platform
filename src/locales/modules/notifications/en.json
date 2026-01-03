@@ -1,6 +1,9 @@
 {
   "title": "Notifications",
   "description": "Manage system-wide notifications and alerts",
+  "stats": {
+    "unreadNotifications": "Unread Notifications"
+  },
   "dashboard": {
     "title": "All Notifications",
     "description": "View, manage and track all your notifications"
@@ -26,7 +29,8 @@
     "mark_unread": "Mark as Unread",
     "create": "Create",
     "update": "Update",
-    "back": "Back"
+    "back": "Back",
+    "viewAll": "View All"
   },
   "create": "Create Notification",
   "edit": "Edit Notification",

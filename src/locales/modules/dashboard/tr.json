@@ -52,7 +52,8 @@
       "key": "Anahtar",
       "showing": "Sunum",
       "maintenance": "Tamirat",
-      "completed": "Tamamlandı"
+      "completed": "Tamamlandı",
+      "appointment": "Randevu"
     }
   },
   "quickOverview": {
@@ -64,6 +65,8 @@
     "notifications": "Bildirimler",
     "hr": "İnsan Kaynakları",
     "accounting": "Muhasebe",
-    "production": "Üretim"
+    "production": "Üretim",
+    "maintenance": "Bakım",
+    "fileManager": "Dosya Yönetimi"
   }
 }

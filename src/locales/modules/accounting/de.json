@@ -1,6 +1,12 @@
 {
   "title": "Buchhaltung",
   "description": "Umfassendes Buchhaltungsmodul",
+  "stats": {
+    "totalIncome": "Gesamteinnahmen",
+    "totalExpense": "Gesamtausgaben",
+    "currentBalance": "Aktueller Saldo",
+    "transactionCount": "Transaktionen"
+  },
   "menu": {
     "label": "Buchhaltung",
     "items": {
@@ -372,7 +378,9 @@
     "update": "Aktualisieren",
     "save": "Speichern",
     "cancel": "Abbrechen",
-    "back": "Zurück"
+    "back": "Zurück",
+    "cashTransactions": "Kassenbuchungen",
+    "newTransaction": "Neue Transaktion"
   },
   "templates": {
     "edit": {
@@ -524,16 +532,40 @@
     "categories": {
       "rent": "Miete",
       "deposit": "Kaution",
+      "fee": "Gebühr",
       "sale": "Verkauf",
       "commission": "Provision",
       "other_income": "Sonstige Einnahmen",
       "maintenance": "Wartung",
       "repair": "Reparatur",
+      "utilities": "Nebenkosten",
+      "cleaning": "Reinigung",
+      "insurance": "Versicherung",
+      "taxes": "Steuern",
+      "management": "Verwaltung",
+      "heating": "Heizung",
       "salary": "Gehalt",
       "utility": "Nebenkosten",
       "tax": "Steuer",
-      "insurance": "Versicherung",
-      "other_expense": "Sonstige Ausgaben"
+      "other": "Sonstiges",
+      "other_expense": "Sonstige Ausgaben",
+      "invoice": "Rechnung"
+    },
+    "sources": {
+      "payment": "Mietzahlung",
+      "expense": "Ausgabe",
+      "invoice": "Rechnung",
+      "property_expense": "Immobilienausgabe",
+      "manual": "Manueller Eintrag"
+    },
+    "sourceSummary": "Zusammenfassung nach Quelle",
+    "transaction": "Transaktion",
+    "manualEntryDescription": "Sie können manuelle Einnahmen/Ausgaben eingeben. Automatische Transaktionen (Mietzahlungen, Rechnungen usw.) kommen aus den entsprechenden Modulen.",
+    "designVariants": "Design-Varianten",
+    "export": {
+      "template": "Export-Vorlage",
+      "selectTemplate": "Vorlage auswählen...",
+      "default": "Standard"
     },
     "validation": {
       "required": "Bitte füllen Sie alle erforderlichen Felder aus"
@@ -545,6 +577,15 @@
     "delete": {
       "title": "Transaktion löschen",
       "confirm": "Sind Sie sicher, dass Sie diese Transaktion löschen möchten? Dies kann nicht rückgängig gemacht werden."
+    },
+    "table": {
+      "date": "Datum",
+      "type": "Typ",
+      "category": "Kategorie",
+      "description": "Beschreibung",
+      "paymentMethod": "Zahlungsmethode",
+      "amount": "Betrag",
+      "source": "Quelle"
     }
   }
 }

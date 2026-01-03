@@ -1,6 +1,10 @@
 {
   "title": "Takvim",
   "description": "Etkinlikleri ve kayıtları görüntüleyin",
+  "stats": {
+    "todayAppointments": "Bugünkü Randevu",
+    "thisWeek": "Bu Hafta"
+  },
   "dashboard": {
     "title": "Takvim",
     "description": "Etkinlikleri görüntüleyin, yönetin ve takip edin"
@@ -108,7 +112,8 @@
     "save": "Kaydet",
     "cancel": "İptal",
     "back": "Geri",
-    "refresh": "Yenile"
+    "refresh": "Yenile",
+    "newAppointment": "Yeni Randevu"
   },
   "toolbar": {
     "today": "Bugün",

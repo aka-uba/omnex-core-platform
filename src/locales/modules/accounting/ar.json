@@ -1,6 +1,12 @@
 {
   "title": "المحاسبة",
   "description": "وحدة محاسبية شاملة",
+  "stats": {
+    "totalIncome": "إجمالي الدخل",
+    "totalExpense": "إجمالي المصروفات",
+    "currentBalance": "الرصيد الحالي",
+    "transactionCount": "عدد المعاملات"
+  },
   "menu": {
     "label": "المحاسبة",
     "items": {
@@ -372,7 +378,9 @@
     "update": "تحديث",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "back": "رجوع"
+    "back": "رجوع",
+    "cashTransactions": "معاملات الصندوق",
+    "newTransaction": "معاملة جديدة"
   },
   "templates": {
     "edit": {
@@ -523,17 +531,41 @@
     },
     "categories": {
       "rent": "إيجار",
-      "deposit": "تأمين (depozito)",
+      "deposit": "تأمين",
+      "fee": "رسوم",
       "sale": "بيع",
       "commission": "عمولة",
       "other_income": "إيرادات أخرى",
       "maintenance": "صيانة",
       "repair": "إصلاح",
+      "utilities": "فواتير الخدمات",
+      "cleaning": "تنظيف",
+      "insurance": "تأمين",
+      "taxes": "ضرائب",
+      "management": "إدارة",
+      "heating": "تدفئة",
       "salary": "راتب",
       "utility": "فاتورة خدمات",
       "tax": "ضريبة",
-      "insurance": "تأمين (sigorta)",
-      "other_expense": "مصاريف أخرى"
+      "other": "أخرى",
+      "other_expense": "مصاريف أخرى",
+      "invoice": "فاتورة"
+    },
+    "sources": {
+      "payment": "دفعة إيجار",
+      "expense": "مصروف",
+      "invoice": "فاتورة",
+      "property_expense": "مصاريف العقار",
+      "manual": "إدخال يدوي"
+    },
+    "sourceSummary": "ملخص حسب المصدر",
+    "transaction": "عملية",
+    "manualEntryDescription": "يمكنك إدخال الإيرادات/المصاريف يدوياً. العمليات التلقائية (دفعات الإيجار، الفواتير، إلخ) تأتي من الوحدات ذات الصلة.",
+    "designVariants": "بدائل التصميم",
+    "export": {
+      "template": "قالب التصدير",
+      "selectTemplate": "اختر قالب...",
+      "default": "افتراضي"
     },
     "validation": {
       "required": "يرجى ملء جميع الحقول المطلوبة"
@@ -545,6 +577,15 @@
     "delete": {
       "title": "حذف العملية",
       "confirm": "هل أنت متأكد أنك تريد حذف هذه العملية؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "table": {
+      "date": "التاريخ",
+      "type": "النوع",
+      "category": "الفئة",
+      "description": "الوصف",
+      "paymentMethod": "طريقة الدفع",
+      "amount": "المبلغ",
+      "source": "المصدر"
     }
   }
 }

@@ -1,6 +1,12 @@
 {
   "title": "Accounting",
   "description": "Comprehensive accounting module",
+  "stats": {
+    "totalIncome": "Total Income",
+    "totalExpense": "Total Expense",
+    "currentBalance": "Current Balance",
+    "transactionCount": "Transactions"
+  },
   "menu": {
     "label": "Accounting",
     "items": {
@@ -372,7 +378,9 @@
     "update": "Update",
     "save": "Save",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "cashTransactions": "Cash Transactions",
+    "newTransaction": "New Transaction"
   },
   "templates": {
     "edit": {
@@ -524,16 +532,40 @@
     "categories": {
       "rent": "Rent",
       "deposit": "Deposit",
+      "fee": "Fee",
       "sale": "Sale",
       "commission": "Commission",
       "other_income": "Other Income",
       "maintenance": "Maintenance",
       "repair": "Repair",
+      "utilities": "Utilities",
+      "cleaning": "Cleaning",
+      "insurance": "Insurance",
+      "taxes": "Taxes",
+      "management": "Management",
+      "heating": "Heating",
       "salary": "Salary",
       "utility": "Utility",
       "tax": "Tax",
-      "insurance": "Insurance",
-      "other_expense": "Other Expense"
+      "other": "Other",
+      "other_expense": "Other Expense",
+      "invoice": "Invoice"
+    },
+    "sources": {
+      "payment": "Rent Payment",
+      "expense": "Expense",
+      "invoice": "Invoice",
+      "property_expense": "Property Expense",
+      "manual": "Manual Entry"
+    },
+    "sourceSummary": "Summary by Source",
+    "transaction": "transaction",
+    "manualEntryDescription": "You can enter manual income/expense entries. Automatic transactions (rent payments, invoices, etc.) come from related modules.",
+    "designVariants": "Design Variants",
+    "export": {
+      "template": "Export Template",
+      "selectTemplate": "Select template...",
+      "default": "Default"
     },
     "validation": {
       "required": "Please fill in all required fields"
@@ -545,6 +577,15 @@
     "delete": {
       "title": "Delete Transaction",
       "confirm": "Are you sure you want to delete this transaction? This action cannot be undone."
+    },
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "category": "Category",
+      "description": "Description",
+      "paymentMethod": "Payment Method",
+      "amount": "Amount",
+      "source": "Source"
     }
   }
 }

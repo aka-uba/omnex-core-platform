@@ -1,6 +1,10 @@
 {
-  "title": "Human Resources",
-  "description": "Personnel management, leave tracking and payroll system",
+  "title": "Personalwesen",
+  "description": "Personalverwaltung, Urlaubsverfolgung und Lohnabrechnungssystem",
+  "stats": {
+    "employees": "Mitarbeiter",
+    "departments": "Abteilungen"
+  },
   "menu": {
     "label": "Human Resources",
     "items": {
@@ -239,17 +243,18 @@
     "of": "of"
   },
   "actions": {
-    "view": "View",
-    "edit": "Edit",
-    "delete": "Delete",
-    "newEmployee": "New Employee",
-    "newLeave": "New Leave",
-    "newPayroll": "New Payroll",
-    "create": "Create",
-    "update": "Update",
-    "save": "Save",
-    "cancel": "Cancel",
-    "back": "Back"
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "newEmployee": "Neuer Mitarbeiter",
+    "newLeave": "Neuer Urlaub",
+    "newPayroll": "Neue Lohnabrechnung",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "employees": "Mitarbeiter"
   },
   "filter": {
     "all": "All"

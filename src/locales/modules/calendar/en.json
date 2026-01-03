@@ -1,6 +1,10 @@
 {
   "title": "Calendar",
   "description": "View events and registrations",
+  "stats": {
+    "todayAppointments": "Today's Appointments",
+    "thisWeek": "This Week"
+  },
   "dashboard": {
     "title": "Calendar",
     "description": "View, manage, and track events"
@@ -108,7 +112,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "back": "Back",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "newAppointment": "New Appointment"
   },
   "toolbar": {
     "today": "Today",

@@ -1,6 +1,10 @@
 {
   "title": "Production and Products",
   "description": "Comprehensive production and product management module",
+  "stats": {
+    "products": "Products",
+    "activeOrders": "Active Orders"
+  },
   "menu": {
     "label": "Production",
     "items": {
@@ -378,7 +382,9 @@
     "view": "View",
     "save": "Save",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "products": "Products",
+    "orders": "Orders"
   },
   "messages": {
     "success": "Success",

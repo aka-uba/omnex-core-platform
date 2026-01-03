@@ -52,7 +52,8 @@
       "key": "تسليم المفاتيح",
       "showing": "عرض",
       "maintenance": "صيانة",
-      "completed": "مكتمل"
+      "completed": "مكتمل",
+      "appointment": "موعد"
     }
   },
   "quickOverview": {
@@ -64,6 +65,8 @@
     "notifications": "الإشعارات",
     "hr": "الموارد البشرية",
     "accounting": "المحاسبة",
-    "production": "الإنتاج"
+    "production": "الإنتاج",
+    "maintenance": "الصيانة",
+    "fileManager": "مدير الملفات"
   }
 }

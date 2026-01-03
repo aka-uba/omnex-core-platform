@@ -1,6 +1,10 @@
 {
   "title": "Human Resources",
   "description": "Personnel management, leave tracking and payroll system",
+  "stats": {
+    "employees": "Employees",
+    "departments": "Departments"
+  },
   "menu": {
     "label": "Human Resources",
     "items": {
@@ -249,7 +253,8 @@
     "update": "Update",
     "save": "Save",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "employees": "Employees"
   },
   "filter": {
     "all": "All"

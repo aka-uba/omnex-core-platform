@@ -1,6 +1,10 @@
 {
   "title": "Üretim ve Ürün",
   "description": "Kapsamlı üretim ve ürün yönetim modülü",
+  "stats": {
+    "products": "Ürün",
+    "activeOrders": "Aktif Sipariş"
+  },
   "menu": {
     "label": "Üretim",
     "items": {
@@ -378,7 +382,9 @@
     "view": "Görüntüle",
     "save": "Kaydet",
     "cancel": "İptal",
-    "back": "Geri"
+    "back": "Geri",
+    "products": "Ürünler",
+    "orders": "Siparişler"
   },
   "messages": {
     "success": "Başarılı",

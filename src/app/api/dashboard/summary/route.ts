@@ -120,14 +120,14 @@ export async function GET(request: NextRequest) {
           icon: 'IconBuilding',
           color: 'blue',
           stats: [
-            { label: 'Gayrimenkul', value: properties },
-            { label: 'Daire', value: apartments.length },
-            { label: 'Doluluk', value: `${occupancyRate}%` },
-            { label: 'Bekleyen Ödeme', value: pendingPayments.length },
+            { label: 'stats.properties', value: properties },
+            { label: 'stats.apartments', value: apartments.length },
+            { label: 'stats.occupancy', value: `${occupancyRate}%` },
+            { label: 'stats.pendingPayments', value: pendingPayments.length },
           ],
           quickActions: [
-            { label: 'Yeni Sözleşme', href: '/modules/real-estate/contracts/new', icon: 'IconPlus' },
-            { label: 'Ödemeler', href: '/modules/real-estate/payments', icon: 'IconCash' },
+            { label: 'actions.newContract', href: '/modules/real-estate/contracts/new', icon: 'IconPlus' },
+            { label: 'actions.payments', href: '/modules/real-estate/payments', icon: 'IconCash' },
           ],
         });
 
@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
             id: apt.id,
             module: 'real-estate',
             type: 'appointment',
-            title: apt.title || 'Randevu',
+            title: apt.title || '',
             date: apt.startDate.toISOString(),
             icon: 'IconCalendar',
             color: 'blue',
@@ -149,8 +149,8 @@ export async function GET(request: NextRequest) {
           notifications.push({
             id: 'expiring-contracts',
             type: 'warning',
-            title: `${expiringContracts.length} sözleşme sona ermek üzere`,
-            description: 'Önümüzdeki 30 gün içinde sona erecek sözleşmeler var.',
+            title: 'notifications.expiringContracts',
+            description: String(expiringContracts.length),
             module: 'real-estate',
           });
         }
@@ -160,8 +160,8 @@ export async function GET(request: NextRequest) {
           notifications.push({
             id: 'pending-payments',
             type: pendingPayments.some((p: any) => p.status === 'overdue') ? 'error' : 'warning',
-            title: `${pendingPayments.length} bekleyen ödeme`,
-            description: `Toplam ${pendingAmount.toLocaleString('tr-TR')} TL bekleyen ödeme bulunuyor.`,
+            title: 'notifications.pendingPayments',
+            description: JSON.stringify({ count: pendingPayments.length, amount: pendingAmount }),
             module: 'real-estate',
           });
         }
@@ -193,12 +193,12 @@ export async function GET(request: NextRequest) {
             icon: 'IconFolder',
             color: 'orange',
             stats: [
-              { label: 'Dosya', value: files },
-              { label: 'Klasör', value: folders },
-              { label: 'Toplam Boyut', value: formatBytes(Number(totalStorage)) },
+              { label: 'stats.files', value: files },
+              { label: 'stats.folders', value: folders },
+              { label: 'stats.totalSize', value: formatBytes(Number(totalStorage)) },
             ],
             quickActions: [
-              { label: 'Dosya Yükle', href: '/modules/file-manager/dashboard', icon: 'IconUpload' },
+              { label: 'actions.uploadFile', href: '/modules/file-manager/dashboard', icon: 'IconUpload' },
             ],
           });
         }
@@ -233,11 +233,11 @@ export async function GET(request: NextRequest) {
           icon: 'IconCalendar',
           color: 'grape',
           stats: [
-            { label: 'Bugünkü Randevu', value: todayAppointments },
-            { label: 'Bu Hafta', value: upcomingAppointmentsCount },
+            { label: 'stats.todayAppointments', value: todayAppointments },
+            { label: 'stats.thisWeek', value: upcomingAppointmentsCount },
           ],
           quickActions: [
-            { label: 'Yeni Randevu', href: '/modules/calendar/appointments', icon: 'IconPlus' },
+            { label: 'actions.newAppointment', href: '/modules/calendar/appointments', icon: 'IconPlus' },
           ],
         });
       } catch (e) {
@@ -259,10 +259,10 @@ export async function GET(request: NextRequest) {
             icon: 'IconBell',
             color: 'red',
             stats: [
-              { label: 'Okunmamış Bildirim', value: unreadNotifications },
+              { label: 'stats.unreadNotifications', value: unreadNotifications },
             ],
             quickActions: [
-              { label: 'Tümünü Gör', href: '/modules/notifications/dashboard', icon: 'IconList' },
+              { label: 'actions.viewAll', href: '/modules/notifications/dashboard', icon: 'IconList' },
             ],
           });
         }
@@ -286,11 +286,11 @@ export async function GET(request: NextRequest) {
             icon: 'IconUsers',
             color: 'teal',
             stats: [
-              { label: 'Çalışan', value: employees },
-              { label: 'Departman', value: departments },
+              { label: 'stats.employees', value: employees },
+              { label: 'stats.departments', value: departments },
             ],
             quickActions: [
-              { label: 'Çalışanlar', href: '/modules/hr/employees', icon: 'IconUsers' },
+              { label: 'actions.employees', href: '/modules/hr/employees', icon: 'IconUsers' },
             ],
           });
         }
@@ -363,14 +363,14 @@ export async function GET(request: NextRequest) {
           icon: 'IconReportMoney',
           color: 'green',
           stats: [
-            { label: 'Toplam Gelir', value: formatCurrency(totalIncomeAmount) },
-            { label: 'Toplam Gider', value: formatCurrency(totalExpenseAmount) },
-            { label: 'Mevcut Bakiye', value: formatCurrency(netBalance) },
-            { label: 'İşlem Sayısı', value: transactionCount },
+            { label: 'stats.totalIncome', value: totalIncomeAmount, isCurrency: true },
+            { label: 'stats.totalExpense', value: totalExpenseAmount, isCurrency: true },
+            { label: 'stats.currentBalance', value: netBalance, isCurrency: true },
+            { label: 'stats.transactionCount', value: transactionCount },
           ],
           quickActions: [
-            { label: 'Kasa İşlemleri', href: '/modules/accounting/cash-transactions', icon: 'IconCash' },
-            { label: 'Yeni İşlem', href: '/modules/accounting/cash-transactions', icon: 'IconPlus' },
+            { label: 'actions.cashTransactions', href: '/modules/accounting/cash-transactions', icon: 'IconCash' },
+            { label: 'actions.newTransaction', href: '/modules/accounting/cash-transactions', icon: 'IconPlus' },
           ],
         });
       } catch (e) {
@@ -393,12 +393,12 @@ export async function GET(request: NextRequest) {
             icon: 'IconBox',
             color: 'indigo',
             stats: [
-              { label: 'Ürün', value: products },
-              { label: 'Aktif Sipariş', value: orders },
+              { label: 'stats.products', value: products },
+              { label: 'stats.activeOrders', value: orders },
             ],
             quickActions: [
-              { label: 'Ürünler', href: '/modules/production/products', icon: 'IconBox' },
-              { label: 'Siparişler', href: '/modules/production/orders', icon: 'IconShoppingCart' },
+              { label: 'actions.products', href: '/modules/production/products', icon: 'IconBox' },
+              { label: 'actions.orders', href: '/modules/production/orders', icon: 'IconShoppingCart' },
             ],
           });
         }
@@ -425,6 +425,3 @@ function formatBytes(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ₺';
-}

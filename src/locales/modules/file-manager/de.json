@@ -1,6 +1,11 @@
 {
   "title": "Dateimanager",
   "description": "Verwalten und organisieren Sie Ihre Dateien",
+  "stats": {
+    "files": "Dateien",
+    "folders": "Ordner",
+    "totalSize": "Gesamtgröße"
+  },
   "menu": {
     "label": "Dateimanager",
     "items": {
@@ -94,7 +99,8 @@
     "save": "Speichern",
     "cancel": "Abbrechen",
     "back": "Zurück",
-    "cannotDownloadFolder": "Ordner kann nicht heruntergeladen werden"
+    "cannotDownloadFolder": "Ordner kann nicht heruntergeladen werden",
+    "uploadFile": "Datei hochladen"
   },
   "share": {
     "modalTitle": "Element teilen",

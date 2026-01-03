@@ -1,6 +1,10 @@
 {
   "title": "Produktion und Produkte",
   "description": "Umfassendes Produktions- und Produktverwaltungsmodul",
+  "stats": {
+    "products": "Produkte",
+    "activeOrders": "Aktive Aufträge"
+  },
   "menu": {
     "label": "Produktion",
     "items": {
@@ -378,7 +382,9 @@
     "view": "Anzeigen",
     "save": "Speichern",
     "cancel": "Abbrechen",
-    "back": "Zurück"
+    "back": "Zurück",
+    "products": "Produkte",
+    "orders": "Aufträge"
   },
   "messages": {
     "success": "Erfolgreich",

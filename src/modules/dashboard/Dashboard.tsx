@@ -47,15 +47,29 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import { useParams, useRouter } from 'next/navigation';
+
+// Module translation namespaces
+const moduleNamespaces: Record<string, string> = {
+  'real-estate': 'modules/real-estate',
+  'file-manager': 'modules/file-manager',
+  calendar: 'modules/calendar',
+  notifications: 'modules/notifications',
+  hr: 'modules/hr',
+  accounting: 'modules/accounting',
+  production: 'modules/production',
+  maintenance: 'modules/maintenance',
+};
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/tr';
+import 'dayjs/locale/en';
+import 'dayjs/locale/de';
+import 'dayjs/locale/ar';
 import styles from './Dashboard.module.css';
 
 dayjs.extend(relativeTime);
-dayjs.locale('tr');
 
 interface ModuleSummary {
   module: string;
@@ -66,6 +80,7 @@ interface ModuleSummary {
     value: number | string;
     change?: number;
     changeLabel?: string;
+    isCurrency?: boolean;
   }[];
   quickActions?: {
     label: string;
@@ -123,14 +138,16 @@ const iconMap: Record<string, React.ElementType> = {
   IconCheck,
 };
 
-const moduleNameMap: Record<string, string> = {
-  'real-estate': 'Gayrimenkul',
-  'file-manager': 'Dosya Yonetimi',
-  calendar: 'Takvim',
-  notifications: 'Bildirimler',
-  hr: 'Insan Kaynaklari',
-  accounting: 'Muhasebe',
-  production: 'Uretim',
+// Module name translation keys
+const moduleNameKeys: Record<string, string> = {
+  'real-estate': 'modules.realEstate',
+  'file-manager': 'modules.fileManager',
+  calendar: 'modules.calendar',
+  notifications: 'modules.notifications',
+  hr: 'modules.hr',
+  accounting: 'modules.accounting',
+  production: 'modules.production',
+  maintenance: 'modules.maintenance',
 };
 
 const moduleColorMap: Record<string, { bg: string; text: string; hoverBg: string }> = {
@@ -216,6 +233,13 @@ const eventTypeColors: Record<string, { bg: string; icon: React.ElementType }> =
 export function Dashboard() {
   const { t } = useTranslation('modules/dashboard');
   const { t: tGlobal } = useTranslation('global');
+  const { t: tRealEstate } = useTranslation('modules/real-estate');
+  const { t: tFileManager } = useTranslation('modules/file-manager');
+  const { t: tCalendar } = useTranslation('modules/calendar');
+  const { t: tNotifications } = useTranslation('modules/notifications');
+  const { t: tHr } = useTranslation('modules/hr');
+  const { t: tAccounting } = useTranslation('modules/accounting');
+  const { t: tProduction } = useTranslation('modules/production');
   const params = useParams();
   const router = useRouter();
   const currentLocale = (params?.locale as string) || 'tr';
@@ -224,9 +248,61 @@ export function Dashboard() {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
 
+  // Helper function to translate module-specific labels
+  const translateModuleLabel = (moduleSlug: string, key: string): string => {
+    const translators: Record<string, (key: string) => string> = {
+      'real-estate': tRealEstate,
+      'file-manager': tFileManager,
+      calendar: tCalendar,
+      notifications: tNotifications,
+      hr: tHr,
+      accounting: tAccounting,
+      production: tProduction,
+    };
+    const translator = translators[moduleSlug];
+    if (translator) {
+      const translated = translator(key);
+      // Return translated value - the t() function handles missing keys
+      return translated;
+    }
+    return key;
+  };
+
+  // Locale mapping for number/currency formatting
+  const localeMap: Record<string, { locale: string; currency: string }> = {
+    tr: { locale: 'tr-TR', currency: 'TRY' },
+    en: { locale: 'en-US', currency: 'USD' },
+    de: { locale: 'de-DE', currency: 'EUR' },
+    ar: { locale: 'ar-SA', currency: 'SAR' },
+  };
+
+  // Helper to format currency based on current locale
+  const formatCurrency = (value: number | string): string => {
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    if (isNaN(numValue)) return String(value);
+
+    const localeConfig = localeMap[currentLocale] || localeMap.tr;
+    return new Intl.NumberFormat(localeConfig.locale, {
+      style: 'currency',
+      currency: localeConfig.currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numValue);
+  };
+
+  // Helper to format stat value (handles currency flag)
+  const formatStatValue = (stat: ModuleSummary['stats'][0]): string => {
+    if (stat.isCurrency && typeof stat.value === 'number') {
+      return formatCurrency(stat.value);
+    }
+    return String(stat.value);
+  };
+
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Set dayjs locale based on current locale
+    dayjs.locale(currentLocale);
+  }, [currentLocale]);
 
   const { data, isLoading, refetch } = useQuery<DashboardSummary>({
     queryKey: ['dashboard-summary'],
@@ -370,7 +446,7 @@ export function Dashboard() {
                       {mounted && getIcon(module.icon, 20)}
                     </div>
                     <Text className={styles.moduleCardTitle}>
-                      {moduleNameMap[module.module] || module.module}
+                      {t(moduleNameKeys[module.module]) || module.module}
                     </Text>
                   </div>
 
@@ -386,22 +462,21 @@ export function Dashboard() {
                           style={{ letterSpacing: '0.05em' }}
                           mb={4}
                         >
-                          {stat.label}
+                          {translateModuleLabel(module.module, stat.label)}
                         </Text>
                         <Group gap="xs" align="center">
                           <Text
                             size="xl"
                             fw={700}
                             c={
-                              stat.label === 'Bekleyen Odeme' ||
-                              stat.label === 'Bekleyen Ödeme'
+                              stat.label === 'stats.pendingPayments'
                                 ? 'orange'
                                 : undefined
                             }
                           >
-                            {stat.value}
+                            {formatStatValue(stat)}
                           </Text>
-                          {stat.label === 'Doluluk' && (
+                          {stat.label === 'stats.occupancy' && (
                             <Progress
                               value={parseInt(String(stat.value))}
                               size="sm"
@@ -454,12 +529,12 @@ export function Dashboard() {
                               },
                             }}
                           >
-                            {action.label}
+                            {translateModuleLabel(module.module, action.label)}
                           </Button>
                         ))}
                       </Group>
                       <Text size="xs" c="dimmed" style={{ cursor: 'pointer' }}>
-                        Detayları Gör →
+                        {tGlobal('common.actions.viewDetails')} →
                       </Text>
                     </div>
                   )}
@@ -547,14 +622,14 @@ export function Dashboard() {
                       style={{ letterSpacing: '0.1em' }}
                       c="indigo"
                     >
-                      Canli Veri Akisi
+                      {t('upcomingEvents.liveData')}
                     </Text>
                   </div>
                   <Text size="xl" fw={700} className="text-gray-900 dark:text-white">
-                    Yaklasan Etkinlikler
+                    {t('upcomingEvents.title')}
                   </Text>
                   <Text size="sm" c="dimmed" mt={4}>
-                    Onumuzdeki gunlerde planlanan isler ve randevular.
+                    {t('upcomingEvents.subtitle')}
                   </Text>
                 </div>
 
@@ -573,10 +648,10 @@ export function Dashboard() {
                   <Group gap="lg">
                     <div className="text-right">
                       <Text size="xs" fw={700} c="dimmed" tt="uppercase">
-                        Toplam
+                        {t('upcomingEvents.total')}
                       </Text>
                       <Text size="sm" fw={600} c="dimmed">
-                        Bekleyen Is
+                        {t('upcomingEvents.pendingWork')}
                       </Text>
                     </div>
                     <div
@@ -653,15 +728,7 @@ export function Dashboard() {
                                 tt="uppercase"
                                 fw={700}
                               >
-                                {event.type === 'delivery'
-                                  ? 'Teslimat'
-                                  : event.type === 'key'
-                                    ? 'Anahtar'
-                                    : event.type === 'showing'
-                                      ? 'Sunum'
-                                      : event.type === 'maintenance'
-                                        ? 'Tamirat'
-                                        : 'Tamamlandi'}
+                                {t(`upcomingEvents.types.${event.type}`)}
                               </Badge>
                             </Group>
                             <Group gap="sm" mt={4}>
@@ -688,7 +755,7 @@ export function Dashboard() {
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12">
                     <IconCalendar size={48} className="text-gray-300 dark:text-gray-600 mb-4" />
-                    <Text c="dimmed">Yaklasan etkinlik bulunmuyor</Text>
+                    <Text c="dimmed">{t('upcomingEvents.empty')}</Text>
                   </div>
                 )}
               </div>
@@ -707,7 +774,7 @@ export function Dashboard() {
                   rightSection={<IconArrowRight size={14} />}
                   onClick={() => router.push(`/${currentLocale}/modules/calendar`)}
                 >
-                  Tum Takvimi Goruntule
+                  {t('upcomingEvents.viewAll')}
                 </Button>
               </div>
             </div>
@@ -722,7 +789,7 @@ export function Dashboard() {
                 <IconTrendingUp size={20} />
               </div>
               <Text fw={700} size="lg">
-                Hizli Bakis
+                {t('quickOverview.title')}
               </Text>
             </Group>
 
@@ -752,11 +819,11 @@ export function Dashboard() {
                       <Group justify="space-between">
                         <div>
                           <Text size="sm" fw={600} className="text-gray-700 dark:text-gray-200">
-                            {moduleNameMap[module.module]}
+                            {t(moduleNameKeys[module.module]) || module.module}
                           </Text>
                           <Text size="xs" c="dimmed" mt={2}>
-                            {mainStat?.label}: {mainStat?.value}
-                            {secondaryStat && ` - ${secondaryStat.label}: ${secondaryStat.value}`}
+                            {mainStat && `${translateModuleLabel(module.module, mainStat.label)}: ${formatStatValue(mainStat)}`}
+                            {secondaryStat && ` - ${translateModuleLabel(module.module, secondaryStat.label)}: ${formatStatValue(secondaryStat)}`}
                           </Text>
                         </div>
                         <ActionIcon variant="subtle" color="gray" size="sm">

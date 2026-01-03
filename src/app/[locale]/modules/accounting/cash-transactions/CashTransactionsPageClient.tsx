@@ -56,40 +56,19 @@ import dayjs from 'dayjs';
 // Design Variants
 import { CashFlowDesignV1, CashFlowDesignV2, CashFlowDesignV3 } from './designs';
 
-// Source icons and labels
-const SOURCE_CONFIG: Record<string, { icon: typeof IconHome; label: string; color: string }> = {
-  payment: { icon: IconHome, label: 'Kira Ödemesi', color: 'green' },
-  expense: { icon: IconReceipt, label: 'Gider', color: 'red' },
-  invoice: { icon: IconFileInvoice, label: 'Fatura', color: 'blue' },
-  property_expense: { icon: IconBuildingBank, label: 'Gayrimenkul Gideri', color: 'orange' },
-  manual: { icon: IconHandClick, label: 'Manuel Giriş', color: 'gray' },
+// Source icons - labels are loaded from translations
+const SOURCE_ICONS: Record<string, { icon: typeof IconHome; color: string }> = {
+  payment: { icon: IconHome, color: 'green' },
+  expense: { icon: IconReceipt, color: 'red' },
+  invoice: { icon: IconFileInvoice, color: 'blue' },
+  property_expense: { icon: IconBuildingBank, color: 'orange' },
+  manual: { icon: IconHandClick, color: 'gray' },
 };
 
-const CATEGORIES = {
-  income: [
-    { value: 'rent', label: 'Kira' },
-    { value: 'deposit', label: 'Depozito' },
-    { value: 'fee', label: 'Ücret' },
-    { value: 'maintenance', label: 'Bakım Geliri' },
-    { value: 'utility', label: 'Aidat' },
-    { value: 'invoice', label: 'Fatura' },
-    { value: 'sale', label: 'Satış' },
-    { value: 'commission', label: 'Komisyon' },
-    { value: 'other_income', label: 'Diğer Gelir' },
-  ],
-  expense: [
-    { value: 'maintenance', label: 'Bakım' },
-    { value: 'repair', label: 'Onarım' },
-    { value: 'utilities', label: 'Faturalar' },
-    { value: 'cleaning', label: 'Temizlik' },
-    { value: 'insurance', label: 'Sigorta' },
-    { value: 'taxes', label: 'Vergiler' },
-    { value: 'management', label: 'Yönetim' },
-    { value: 'heating', label: 'Isınma' },
-    { value: 'salary', label: 'Maaş' },
-    { value: 'other', label: 'Diğer' },
-    { value: 'other_expense', label: 'Diğer Gider' },
-  ],
+// Category values - labels are loaded from translations
+const CATEGORY_VALUES = {
+  income: ['rent', 'deposit', 'fee', 'maintenance', 'utility', 'invoice', 'sale', 'commission', 'other_income'],
+  expense: ['maintenance', 'repair', 'utilities', 'cleaning', 'insurance', 'taxes', 'management', 'heating', 'salary', 'other', 'other_expense'],
 };
 
 interface FormData {
@@ -120,6 +99,27 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const params = useParams();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
+  const { t: tGlobal } = useTranslation('global');
+
+  // Locale mapping for number formatting
+  const localeMap: Record<string, string> = {
+    tr: 'tr-TR',
+    en: 'en-US',
+    de: 'de-DE',
+    ar: 'ar-SA',
+  };
+  const numberLocale = localeMap[currentLocale] || 'tr-TR';
+
+  // Helper to format currency based on current locale
+  const formatCurrency = (value: number, currency = '₺') => {
+    return `${value.toLocaleString(numberLocale)} ${currency}`;
+  };
+
+  // Helper to get source label from translations
+  const getSourceLabel = (source: string) => t(`cashTransactions.sources.${source}`);
+
+  // Helper to get category label from translations
+  const getCategoryTranslation = (category: string) => t(`cashTransactions.categories.${category}`);
 
   // State
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
@@ -152,9 +152,9 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     if (!exportTemplates) return [];
     return exportTemplates.map((template) => ({
       value: template.id,
-      label: template.isDefault ? `${template.name} (Varsayılan)` : template.name,
+      label: template.isDefault ? `${template.name} (${t('cashTransactions.export.default')})` : template.name,
     }));
-  }, [exportTemplates]);
+  }, [exportTemplates, t]);
 
   // Mutations
   const createMutation = useCreateCashTransaction();
@@ -173,21 +173,29 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
 
   // Category options based on type
   const categoryOptions = useMemo(() => {
-    return CATEGORIES[formData.type] || [];
-  }, [formData.type]);
+    const values = CATEGORY_VALUES[formData.type] || [];
+    return values.map((value) => ({
+      value,
+      label: getCategoryTranslation(value),
+    }));
+  }, [formData.type, getCategoryTranslation]);
 
   // All categories for display
   const allCategoryOptions = useMemo(() => {
-    return [...CATEGORIES.income, ...CATEGORIES.expense];
-  }, []);
+    const allValues = [...CATEGORY_VALUES.income, ...CATEGORY_VALUES.expense];
+    return allValues.map((value) => ({
+      value,
+      label: getCategoryTranslation(value),
+    }));
+  }, [getCategoryTranslation]);
 
   // Source filter options
   const sourceOptions = useMemo(() => {
-    return Object.entries(SOURCE_CONFIG).map(([value, config]) => ({
+    return Object.entries(SOURCE_ICONS).map(([value]) => ({
       value,
-      label: config.label,
+      label: getSourceLabel(value),
     }));
-  }, []);
+  }, [getSourceLabel]);
 
   // Handlers
   const handleOpenCreate = () => {
@@ -281,7 +289,8 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
 
   // Get source info
   const getSourceInfo = (source: string) => {
-    return SOURCE_CONFIG[source] || { icon: IconCash, label: source, color: 'gray' };
+    const iconConfig = SOURCE_ICONS[source] || { icon: IconCash, color: 'gray' };
+    return { ...iconConfig, label: getSourceLabel(source) };
   };
 
   // DataTable columns
@@ -294,7 +303,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     },
     {
       key: 'source',
-      label: 'Kaynak',
+      label: t('cashTransactions.table.source'),
       sortable: true,
       render: (value) => {
         const sourceConfig = getSourceInfo(value);
@@ -356,7 +365,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       render: (value, row) => (
         <Text fw={600} c={row.type === 'income' ? 'green' : 'red'}>
           {row.type === 'income' ? '+' : '-'}
-          {Number(value).toLocaleString('tr-TR')} {row.currency}
+          {Number(value).toLocaleString(numberLocale)} {row.currency}
         </Text>
       ),
     },
@@ -410,7 +419,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
     },
     {
       key: 'source',
-      label: 'Kaynak',
+      label: t('cashTransactions.table.source'),
       type: 'select',
       options: sourceOptions,
     },
@@ -453,7 +462,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.totalIncome')}
                 </Text>
                 <Text size="xl" fw={700} c="green">
-                  {data.summary.totalIncome.toLocaleString('tr-TR')} ₺
+                  {formatCurrency(data.summary.totalIncome)}
                 </Text>
               </div>
               <IconArrowUp size={32} color="var(--mantine-color-green-6)" />
@@ -466,7 +475,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.totalExpense')}
                 </Text>
                 <Text size="xl" fw={700} c="red">
-                  {data.summary.totalExpense.toLocaleString('tr-TR')} ₺
+                  {formatCurrency(data.summary.totalExpense)}
                 </Text>
               </div>
               <IconArrowDown size={32} color="var(--mantine-color-red-6)" />
@@ -479,7 +488,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                   {t('cashTransactions.balance')}
                 </Text>
                 <Text size="xl" fw={700} c={data.summary.balance >= 0 ? 'green' : 'red'}>
-                  {data.summary.balance.toLocaleString('tr-TR')} ₺
+                  {formatCurrency(data.summary.balance)}
                 </Text>
               </div>
               <IconWallet size={32} color="var(--mantine-color-blue-6)" />
@@ -491,7 +500,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       {/* Source Summary */}
       {data?.summary?.bySource && Object.keys(data.summary.bySource).length > 0 && (
         <Paper p="md" withBorder mt="md">
-          <Text size="sm" fw={600} mb="sm">Kaynak Bazında Özet</Text>
+          <Text size="sm" fw={600} mb="sm">{t('cashTransactions.sourceSummary')}</Text>
           <Group gap="lg">
             {Object.entries(data.summary.bySource).map(([source, info]) => {
               const sourceConfig = getSourceInfo(source);
@@ -502,11 +511,11 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
                     <SourceIcon size={14} />
                   </ThemeIcon>
                   <Text size="sm">
-                    {sourceConfig.label}: <Text component="span" fw={600} c="green">{info.income.toLocaleString('tr-TR')} ₺</Text>
+                    {sourceConfig.label}: <Text component="span" fw={600} c="green">{formatCurrency(info.income)}</Text>
                     {info.expense > 0 && (
-                      <Text component="span" c="red"> / -{info.expense.toLocaleString('tr-TR')} ₺</Text>
+                      <Text component="span" c="red"> / -{formatCurrency(info.expense)}</Text>
                     )}
-                    <Text component="span" c="dimmed"> ({info.count} işlem)</Text>
+                    <Text component="span" c="dimmed"> ({info.count} {t('cashTransactions.transaction')})</Text>
                   </Text>
                 </Group>
               );
@@ -519,10 +528,10 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       {templateOptions.length > 0 && (
         <Paper p="sm" withBorder mt="md">
           <Group justify="space-between" align="center">
-            <Text size="sm" c="dimmed">Export Şablonu:</Text>
+            <Text size="sm" c="dimmed">{t('cashTransactions.export.template')}:</Text>
             <Select
               size="xs"
-              placeholder="Şablon seçin..."
+              placeholder={t('cashTransactions.export.selectTemplate')}
               data={templateOptions}
               value={selectedTemplateId || defaultTemplate?.id || null}
               onChange={(value) => setSelectedTemplateId(value || undefined)}
@@ -569,7 +578,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       >
         <Stack>
           <Text size="sm" c="dimmed">
-            Manuel gelir/gider girişi yapabilirsiniz. Otomatik işlemler (kira ödemeleri, faturalar vb.) ilgili modüllerden gelir.
+            {t('cashTransactions.manualEntryDescription')}
           </Text>
           <Select
             label={t('cashTransactions.form.type')}
@@ -662,7 +671,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       />
 
       {/* Design Variants Section */}
-      <Divider my="xl" label="Tasarım Alternatifleri" labelPosition="center" />
+      <Divider my="xl" label={t('cashTransactions.designVariants')} labelPosition="center" />
 
       {/* V1 - Card-Centric Cash Flow Display */}
       <Paper withBorder p="md" mt="xl" radius="md">

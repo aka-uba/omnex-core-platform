@@ -1,6 +1,11 @@
 {
   "title": "مدير الملفات",
   "description": "إدارة وتنظيم ملفاتك",
+  "stats": {
+    "files": "الملفات",
+    "folders": "المجلدات",
+    "totalSize": "الحجم الإجمالي"
+  },
   "menu": {
     "label": "مدير الملفات",
     "items": {
@@ -94,7 +99,8 @@
     "save": "حفظ",
     "cancel": "إلغاء",
     "back": "رجوع",
-    "cannotDownloadFolder": "لا يمكن تنزيل المجلد"
+    "cannotDownloadFolder": "لا يمكن تنزيل المجلد",
+    "uploadFile": "رفع ملف"
   },
   "share": {
     "modalTitle": "مشاركة العنصر",

@@ -52,7 +52,8 @@
       "key": "Schlüsselübergabe",
       "showing": "Besichtigung",
       "maintenance": "Wartung",
-      "completed": "Abgeschlossen"
+      "completed": "Abgeschlossen",
+      "appointment": "Termin"
     }
   },
   "quickOverview": {
@@ -64,6 +65,8 @@
     "notifications": "Benachrichtigungen",
     "hr": "Personalwesen",
     "accounting": "Buchhaltung",
-    "production": "Produktion"
+    "production": "Produktion",
+    "maintenance": "Wartung",
+    "fileManager": "Dateimanager"
   }
 }

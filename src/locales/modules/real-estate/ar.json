@@ -1,6 +1,16 @@
 {
   "title": "إدارة العقارات",
   "description": "وحدة إدارة عقارات شاملة",
+  "stats": {
+    "properties": "العقارات",
+    "apartments": "الشقق",
+    "occupancy": "الإشغال",
+    "pendingPayments": "المدفوعات المعلقة"
+  },
+  "notifications": {
+    "expiringContracts": "العقود المنتهية",
+    "pendingPayments": "المدفوعات المعلقة"
+  },
   "menu": {
     "label": "العقارات",
     "items": {
@@ -1170,7 +1180,9 @@
     "preview": "معاينة",
     "clear": "مسح",
     "execute": "تنفيذ",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "newContract": "عقد جديد",
+    "payments": "المدفوعات"
   },
   "table": {
     "name": "الاسم",

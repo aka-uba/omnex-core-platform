@@ -1,6 +1,12 @@
 {
   "title": "Muhasebe",
   "description": "Kapsamlı muhasebe modülü",
+  "stats": {
+    "totalIncome": "Toplam Gelir",
+    "totalExpense": "Toplam Gider",
+    "currentBalance": "Mevcut Bakiye",
+    "transactionCount": "İşlem Sayısı"
+  },
   "menu": {
     "label": "Muhasebe",
     "items": {
@@ -372,7 +378,9 @@
     "update": "Güncelle",
     "save": "Kaydet",
     "cancel": "İptal",
-    "back": "Geri"
+    "back": "Geri",
+    "cashTransactions": "Kasa İşlemleri",
+    "newTransaction": "Yeni İşlem"
   },
   "templates": {
     "edit": {
@@ -524,16 +532,40 @@
     "categories": {
       "rent": "Kira",
       "deposit": "Depozito",
+      "fee": "Ücret",
       "sale": "Satış",
       "commission": "Komisyon",
       "other_income": "Diğer Gelir",
       "maintenance": "Bakım",
       "repair": "Onarım",
+      "utilities": "Faturalar",
+      "cleaning": "Temizlik",
+      "insurance": "Sigorta",
+      "taxes": "Vergiler",
+      "management": "Yönetim",
+      "heating": "Isınma",
       "salary": "Maaş",
       "utility": "Fatura",
       "tax": "Vergi",
-      "insurance": "Sigorta",
-      "other_expense": "Diğer Gider"
+      "other": "Diğer",
+      "other_expense": "Diğer Gider",
+      "invoice": "Fatura"
+    },
+    "sources": {
+      "payment": "Kira Ödemesi",
+      "expense": "Gider",
+      "invoice": "Fatura",
+      "property_expense": "Gayrimenkul Gideri",
+      "manual": "Manuel Giriş"
+    },
+    "sourceSummary": "Kaynak Bazında Özet",
+    "transaction": "işlem",
+    "manualEntryDescription": "Manuel gelir/gider girişi yapabilirsiniz. Otomatik işlemler (kira ödemeleri, faturalar vb.) ilgili modüllerden gelir.",
+    "designVariants": "Tasarım Alternatifleri",
+    "export": {
+      "template": "Export Şablonu",
+      "selectTemplate": "Şablon seçin...",
+      "default": "Varsayılan"
     },
     "validation": {
       "required": "Lütfen tüm gerekli alanları doldurun"
@@ -545,6 +577,15 @@
     "delete": {
       "title": "İşlemi Sil",
       "confirm": "Bu işlemi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    },
+    "table": {
+      "date": "Tarih",
+      "type": "Tip",
+      "category": "Kategori",
+      "description": "Açıklama",
+      "paymentMethod": "Ödeme Yöntemi",
+      "amount": "Tutar",
+      "source": "Kaynak"
     }
   }
 }
