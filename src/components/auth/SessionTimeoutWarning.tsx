@@ -5,243 +5,221 @@ import { Modal, Text, Button, Stack, Group, Progress, Center } from '@mantine/co
 import { IconClock, IconLogout, IconRefresh } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
-
-// JWT decode utility (without verification - client side only)
-function decodeJWT(token: string): { exp?: number } | null {
-    try {
-        const parts = token.split('.');
-        if (parts.length !== 3) return null;
-        const base64 = parts[1];
-        if (!base64) return null;
-        const payload = JSON.parse(atob(base64));
-        return payload;
-    } catch {
-        return null;
-    }
-}
-
-// Get access token from localStorage (set during login)
-function getAccessToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('accessToken');
-}
-
-// Get refresh token from localStorage (set during login)
-function getRefreshToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('refreshToken');
-}
+import { useTranslation } from '@/lib/i18n/client';
 
 // Activity tracking constants
 const ACTIVITY_EVENTS = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'click'];
-const ACTIVITY_THROTTLE = 30000; // Throttle activity detection to every 30 seconds
-const TOKEN_REFRESH_THRESHOLD = 300; // Refresh token if less than 5 minutes left and user is active
-const WARNING_TIME = 60; // Show warning 60 seconds before expiry (only if inactive)
-const COUNTDOWN_INTERVAL = 1000; // Update countdown every second
-const INACTIVE_THRESHOLD = 120000; // Consider user inactive after 2 minutes
+const WARNING_BEFORE_TIMEOUT = 60; // Show warning 60 seconds before timeout
+const CHECK_INTERVAL = 1000; // Check every second
+
+// Storage keys
+const LAST_ACTIVITY_KEY = 'omnex-last-activity';
+const SESSION_MARKER_KEY = 'omnex-session-active';
 
 export function SessionTimeoutWarning() {
     const { logout, isAuthenticated } = useAuth();
     const pathname = usePathname();
+    const { t } = useTranslation('global');
     const [showWarning, setShowWarning] = useState(false);
-    const [countdown, setCountdown] = useState(WARNING_TIME);
+    const [countdown, setCountdown] = useState(WARNING_BEFORE_TIMEOUT);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [sessionTimeout, setSessionTimeout] = useState(30); // Default 30 minutes
     const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
-    const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasLoggedOutRef = useRef(false);
-    const lastActivityRef = useRef<number>(Date.now());
-    const lastActivityCheckRef = useRef<number>(0);
-    const isRefreshingRef = useRef(false);
+    const lastActivityUpdateRef = useRef<number>(0);
+    const showWarningRef = useRef(false);
+
+    // Keep ref in sync with state
+    useEffect(() => {
+        showWarningRef.current = showWarning;
+    }, [showWarning]);
 
     // Check if on auth page
     const isAuthPage = pathname?.includes('/login') ||
                        pathname?.includes('/register') ||
-                       pathname?.includes('/welcome');
+                       pathname?.includes('/welcome') ||
+                       pathname?.includes('/forgot-password');
 
-    // Handle session expired - defined first as it has no dependencies
+    // Get last activity timestamp from localStorage (persists across tabs)
+    const getLastActivity = useCallback((): number => {
+        if (typeof window === 'undefined') return Date.now();
+        const stored = localStorage.getItem(LAST_ACTIVITY_KEY);
+        return stored ? parseInt(stored, 10) : Date.now();
+    }, []);
+
+    // Update last activity timestamp
+    const updateLastActivity = useCallback(() => {
+        if (typeof window === 'undefined') return;
+        const now = Date.now();
+        // Throttle updates to prevent excessive writes
+        if (now - lastActivityUpdateRef.current < 1000) return;
+        lastActivityUpdateRef.current = now;
+        localStorage.setItem(LAST_ACTIVITY_KEY, String(now));
+    }, []);
+
+    // Initialize session marker
+    const initSession = useCallback(() => {
+        if (typeof window === 'undefined') return;
+
+        // Set session marker in sessionStorage (clears on browser close)
+        sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
+
+        // Initialize last activity if not set
+        if (!localStorage.getItem(LAST_ACTIVITY_KEY)) {
+            localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now()));
+        }
+    }, []);
+
+    // Check if this is a fresh browser session (after restart)
+    const checkSessionValidity = useCallback(() => {
+        if (typeof window === 'undefined') return true;
+
+        // If sessionStorage marker is missing, browser was closed/restarted
+        const sessionMarker = sessionStorage.getItem(SESSION_MARKER_KEY);
+        if (!sessionMarker && isAuthenticated) {
+            // Browser was restarted - force logout
+            return false;
+        }
+        return true;
+    }, [isAuthenticated]);
+
+    // Handle session expired
     const handleSessionExpired = useCallback(() => {
         if (hasLoggedOutRef.current) return;
         hasLoggedOutRef.current = true;
 
         // Clear intervals
-        if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
-        if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+        if (checkIntervalRef.current) {
+            clearInterval(checkIntervalRef.current);
+            checkIntervalRef.current = null;
+        }
+
+        // Clear storage
+        localStorage.removeItem(LAST_ACTIVITY_KEY);
+        sessionStorage.removeItem(SESSION_MARKER_KEY);
 
         setShowWarning(false);
         logout();
     }, [logout]);
 
-    // Silent token refresh (no UI, just extend session)
-    const silentRefreshToken = useCallback(async () => {
-        if (isRefreshingRef.current) return false;
-        isRefreshingRef.current = true;
-
-        try {
-            const refreshToken = getRefreshToken();
-            if (!refreshToken) return false;
-
-            const response = await fetch('/api/auth/refresh', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refreshToken }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.data?.accessToken) {
-                    localStorage.setItem('accessToken', data.data.accessToken);
-                    return true;
-                }
-            }
-            return false;
-        } catch {
-            return false;
-        } finally {
-            isRefreshingRef.current = false;
-        }
-    }, []);
-
-    // Track user activity
-    const handleUserActivity = useCallback(() => {
-        const now = Date.now();
-        // Throttle activity updates
-        if (now - lastActivityCheckRef.current < ACTIVITY_THROTTLE) return;
-        lastActivityCheckRef.current = now;
-        lastActivityRef.current = now;
-
-        // If warning is showing and user is active, auto-extend session
-        if (showWarning) {
-            silentRefreshToken().then((success) => {
-                if (success) {
-                    if (countdownIntervalRef.current) {
-                        clearInterval(countdownIntervalRef.current);
-                    }
-                    setShowWarning(false);
-                    setCountdown(WARNING_TIME);
-                }
-            });
-        }
-    }, [showWarning, silentRefreshToken]);
-
-    // Check if user has been active recently
-    const isUserActive = useCallback(() => {
-        const inactiveTime = Date.now() - lastActivityRef.current;
-        return inactiveTime < INACTIVE_THRESHOLD;
-    }, []);
-
-    // Start countdown timer
-    const startCountdown = useCallback((initialSeconds: number) => {
-        // Clear any existing countdown
-        if (countdownIntervalRef.current) {
-            clearInterval(countdownIntervalRef.current);
-            countdownIntervalRef.current = null;
-        }
-
-        let remaining = Math.max(1, initialSeconds);
-        setCountdown(remaining);
-
-        countdownIntervalRef.current = setInterval(() => {
-            remaining -= 1;
-            setCountdown(remaining);
-
-            if (remaining <= 0) {
-                // Clear interval immediately to prevent multiple calls
-                if (countdownIntervalRef.current) {
-                    clearInterval(countdownIntervalRef.current);
-                    countdownIntervalRef.current = null;
-                }
-                handleSessionExpired();
-            }
-        }, COUNTDOWN_INTERVAL);
-    }, [handleSessionExpired]);
-
-    // Check token expiration with activity awareness
-    const checkTokenExpiration = useCallback(() => {
-        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current) return;
-
-        const accessToken = getAccessToken();
-        if (!accessToken) return;
-
-        const payload = decodeJWT(accessToken);
-        if (!payload?.exp) return;
-
-        const now = Math.floor(Date.now() / 1000);
-        const timeLeft = payload.exp - now;
-
-        // If token expired, logout immediately
-        if (timeLeft <= 0) {
-            handleSessionExpired();
-            return;
-        }
-
-        // If user is active and token is about to expire, silently refresh
-        if (timeLeft <= TOKEN_REFRESH_THRESHOLD && isUserActive()) {
-            silentRefreshToken();
-            return;
-        }
-
-        // Only show warning if user has been INACTIVE and token is about to expire
-        if (timeLeft <= WARNING_TIME && !showWarning && !isUserActive()) {
-            setShowWarning(true);
-            setCountdown(timeLeft);
-            startCountdown(timeLeft);
-        }
-    }, [isAuthenticated, isAuthPage, showWarning, isUserActive, silentRefreshToken, startCountdown, handleSessionExpired]);
-
-    // Extend session by refreshing token (manual button click)
-    const handleExtendSession = async () => {
+    // Extend session
+    const handleExtendSession = useCallback(async () => {
         setIsRefreshing(true);
 
         try {
-            const refreshToken = getRefreshToken();
-            if (!refreshToken) {
-                handleSessionExpired();
-                return;
+            // Update last activity
+            const now = Date.now();
+            localStorage.setItem(LAST_ACTIVITY_KEY, String(now));
+            lastActivityUpdateRef.current = now;
+
+            // Try to refresh token if available
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (refreshToken) {
+                const response = await fetch('/api/auth/refresh', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refreshToken }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data?.accessToken) {
+                        localStorage.setItem('accessToken', data.data.accessToken);
+                    }
+                }
             }
 
-            const response = await fetch('/api/auth/refresh', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refreshToken }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-
-                // Update access token in localStorage
-                if (data.data?.accessToken) {
-                    localStorage.setItem('accessToken', data.data.accessToken);
-                }
-
-                // Clear countdown and hide warning
-                if (countdownIntervalRef.current) {
-                    clearInterval(countdownIntervalRef.current);
-                }
-                setShowWarning(false);
-                setCountdown(WARNING_TIME);
-                hasLoggedOutRef.current = false;
-                // Reset activity timestamp
-                lastActivityRef.current = Date.now();
-            } else {
-                // Refresh failed - logout
-                handleSessionExpired();
-            }
+            setShowWarning(false);
+            setCountdown(WARNING_BEFORE_TIMEOUT);
+            hasLoggedOutRef.current = false;
         } catch (error) {
-            console.error('Failed to refresh session:', error);
-            handleSessionExpired();
+            console.error('Failed to extend session:', error);
         } finally {
             setIsRefreshing(false);
         }
-    };
+    }, []);
+
+    // Fetch session timeout setting
+    useEffect(() => {
+        if (!isAuthenticated || isAuthPage) return;
+
+        const fetchSettings = async () => {
+            try {
+                const response = await fetch('/api/general-settings');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data?.sessionTimeout) {
+                        setSessionTimeout(data.data.sessionTimeout);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch session settings:', error);
+            }
+        };
+
+        fetchSettings();
+    }, [isAuthenticated, isAuthPage]);
+
+    // Check for fresh browser session (PC restart scenario)
+    useEffect(() => {
+        if (!isAuthenticated || isAuthPage) return;
+
+        // Check if browser was restarted
+        if (!checkSessionValidity()) {
+            // Browser was restarted while user was logged in - force logout
+            handleSessionExpired();
+            return;
+        }
+
+        // Initialize session marker
+        initSession();
+    }, [isAuthenticated, isAuthPage, checkSessionValidity, handleSessionExpired, initSession]);
+
+    // Check inactivity timeout - using ref for showWarning to avoid stale closure
+    const checkInactivityTimeout = useCallback(() => {
+        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current) return;
+
+        const lastActivity = getLastActivity();
+        const now = Date.now();
+        const inactiveMs = now - lastActivity;
+        const timeoutMs = sessionTimeout * 60 * 1000; // Convert minutes to ms
+        const warningMs = timeoutMs - (WARNING_BEFORE_TIMEOUT * 1000);
+
+        // If inactive time exceeds timeout, logout immediately
+        if (inactiveMs >= timeoutMs) {
+            handleSessionExpired();
+            return;
+        }
+
+        // If approaching timeout, show warning
+        if (inactiveMs >= warningMs) {
+            const remainingSeconds = Math.ceil((timeoutMs - inactiveMs) / 1000);
+            setCountdown(remainingSeconds);
+            if (!showWarningRef.current) {
+                setShowWarning(true);
+            }
+        } else {
+            // Not in warning zone, reset
+            if (showWarningRef.current) {
+                setShowWarning(false);
+                setCountdown(WARNING_BEFORE_TIMEOUT);
+            }
+        }
+    }, [isAuthenticated, isAuthPage, sessionTimeout, getLastActivity, handleSessionExpired]);
 
     // Set up activity tracking
     useEffect(() => {
         if (!isAuthenticated || isAuthPage) return;
 
-        // Add activity event listeners
-        const activityHandler = () => handleUserActivity();
+        // Track user activity
+        const activityHandler = () => {
+            updateLastActivity();
+            // If warning is showing, user activity should extend session
+            if (showWarningRef.current) {
+                handleExtendSession();
+            }
+        };
+
         ACTIVITY_EVENTS.forEach(event => {
             window.addEventListener(event, activityHandler, { passive: true });
         });
@@ -251,34 +229,57 @@ export function SessionTimeoutWarning() {
                 window.removeEventListener(event, activityHandler);
             });
         };
-    }, [isAuthenticated, isAuthPage, handleUserActivity]);
+    }, [isAuthenticated, isAuthPage, updateLastActivity, handleExtendSession]);
 
-    // Set up token expiration check
+    // Set up inactivity check interval
     useEffect(() => {
         if (!isAuthenticated || isAuthPage) {
-            // Clear intervals when not authenticated or on auth page
-            if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
-            if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+            if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+            }
             setShowWarning(false);
             return;
         }
 
-        // Reset logout flag when authenticated
+        // Reset logout flag
         hasLoggedOutRef.current = false;
-        // Reset activity timestamp on mount
-        lastActivityRef.current = Date.now();
 
         // Check immediately
-        checkTokenExpiration();
+        checkInactivityTimeout();
 
-        // Check every 10 seconds
-        checkIntervalRef.current = setInterval(checkTokenExpiration, 10000);
+        // Check every second
+        checkIntervalRef.current = setInterval(checkInactivityTimeout, CHECK_INTERVAL);
 
         return () => {
-            if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
-            if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+            if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+            }
         };
-    }, [isAuthenticated, isAuthPage, checkTokenExpiration]);
+    }, [isAuthenticated, isAuthPage, checkInactivityTimeout]);
+
+    // Handle visibility change
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && isAuthenticated) {
+                // When tab becomes visible, check if session is still valid
+                if (!checkSessionValidity()) {
+                    handleSessionExpired();
+                    return;
+                }
+                checkInactivityTimeout();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [isAuthenticated, checkInactivityTimeout, checkSessionValidity, handleSessionExpired]);
 
     // Don't render on auth pages
     if (isAuthPage) return null;
@@ -303,20 +304,19 @@ export function SessionTimeoutWarning() {
 
                 <Stack gap="xs" ta="center">
                     <Text size="xl" fw={600}>
-                        Oturum Süresi Doluyor
+                        {t('session.timeoutWarning.title')}
                     </Text>
                     <Text size="sm" c="dimmed">
-                        Güvenliğiniz için oturumunuz sonlandırılmak üzere.
-                        Devam etmek için aşağıdaki butona tıklayın.
+                        {t('session.timeoutWarning.message')}
                     </Text>
                 </Stack>
 
                 <Stack gap="xs">
                     <Text ta="center" size="lg" fw={600} c="orange">
-                        {countdown} saniye
+                        {countdown} {t('session.timeoutWarning.seconds')}
                     </Text>
                     <Progress
-                        value={(countdown / WARNING_TIME) * 100}
+                        value={(countdown / WARNING_BEFORE_TIMEOUT) * 100}
                         color="orange"
                         size="sm"
                         radius="xl"
@@ -331,7 +331,7 @@ export function SessionTimeoutWarning() {
                         leftSection={<IconLogout size={18} />}
                         onClick={handleSessionExpired}
                     >
-                        Çıkış Yap
+                        {t('session.timeoutWarning.logout')}
                     </Button>
                     <Button
                         color="green"
@@ -339,7 +339,7 @@ export function SessionTimeoutWarning() {
                         onClick={handleExtendSession}
                         loading={isRefreshing}
                     >
-                        Oturuma Devam Et
+                        {t('session.timeoutWarning.extend')}
                     </Button>
                 </Group>
             </Stack>

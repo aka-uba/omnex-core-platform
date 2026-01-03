@@ -535,6 +535,7 @@
     "timeoutWarning": {
       "title": "Oturum Zaman Aşımı",
       "message": "Oturumunuz yakında sonlanacak. Devam etmek istiyor musunuz?",
+      "seconds": "saniye",
       "extend": "Oturumu Uzat",
       "logout": "Çıkış Yap"
     }

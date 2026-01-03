@@ -533,6 +533,7 @@
     "timeoutWarning": {
       "title": "Session Timeout",
       "message": "Your session is about to end. Do you want to continue?",
+      "seconds": "seconds",
       "extend": "Extend Session",
       "logout": "Logout"
     }

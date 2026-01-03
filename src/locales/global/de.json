@@ -533,6 +533,7 @@
     "timeoutWarning": {
       "title": "Sitzungsablauf",
       "message": "Ihre Sitzung läuft bald ab. Möchten Sie fortfahren?",
+      "seconds": "Sekunden",
       "extend": "Sitzung verlängern",
       "logout": "Abmelden"
     }
