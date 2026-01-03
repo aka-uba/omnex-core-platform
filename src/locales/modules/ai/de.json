@@ -1,75 +1,116 @@
 {
-    "title": "AI Studio",
-    "description": "Erstellen Sie Inhalte mit fortgeschrittenen KI-Modellen",
-    "page": {
-        "title": "KI-Anwendung",
-        "description": "Wählen Sie einen Generator aus, um mit der Erstellung von Inhalten zu beginnen.",
-        "textGenerator": {
-            "title": "Textgenerator",
-            "description": "Generieren Sie Artikel, Blog-Beiträge und Social-Media-Beschriftungen."
-        },
-        "codeGenerator": {
-            "title": "Codegenerator",
-            "description": "Generieren Sie Code-Snippets, Funktionen und Komponenten."
-        },
-        "imageGenerator": {
-            "title": "Bildgenerator",
-            "description": "Erstellen Sie atemberaubende Bilder aus Textaufforderungen."
-        },
-        "voiceGenerator": {
-            "title": "Sprachgenerator",
-            "description": "Konvertieren Sie Text in lebensechte Sprache."
-        },
-        "videoGenerator": {
-            "title": "Videogenerator",
-            "description": "Generieren Sie Videos aus Text oder Bildern.",
-            "badge": "Beta"
-        }
+  "common": {
+    "comingSoon": "Diese Funktion ist in Kürze verfügbar..."
+  },
+  "title": "AI Studio",
+  "description": "Erstellen Sie Inhalte mit fortschrittlichen KI-Modellen",
+  "menu": {
+    "label": "AI Studio",
+    "items": {
+      "dashboard": "Dashboard",
+      "text": "Textgenerator",
+      "image": "Bildgenerator",
+      "code": "Codegenerator",
+      "audio": "Audiogenerator",
+      "video": "Videogenerator",
+      "history": "Verlauf"
+    }
+  },
+  "page": {
+    "title": "KI-Anwendung",
+    "description": "Wählen Sie einen Generator aus, um mit der Erstellung von Inhalten zu beginnen.",
+    "textGenerator": {
+      "title": "Textgenerator",
+      "description": "Erstellen Sie Artikel, Blog-Posts und Social-Media-Untertitel."
     },
-    "textGenerator": "Textgenerator",
-    "imageGenerator": "Bildgenerator",
-    "codeGenerator": "Codegenerator",
-    "audioGenerator": "Audiogenerator",
-    "videoGenerator": "Videogenerator",
-    "model": "Modell",
-    "selectModel": "Wählen Sie ein Modell",
-    "typeMessage": "Geben Sie eine Nachricht ein...",
-    "send": "Senden",
-    "attach": "Anhängen",
-    "voiceInput": "Spracheingabe",
-    "imageSettings": {
-        "aspectRatio": "Seitenverhältnis",
-        "style": "Stil",
-        "selectStyle": "Stil auswählen",
-        "resolution": "Auflösung",
-        "selectResolution": "Auflösung auswählen",
-        "quality": "Qualität",
-        "numberOfImages": "Anzahl der Bilder"
+    "codeGenerator": {
+      "title": "Codegenerator",
+      "description": "Erzeugen Sie Code-Snippets, Funktionen und Komponenten."
     },
-    "imagePromptPlaceholder": "Beschreiben Sie das Bild, das Sie erstellen möchten...",
-    "codePromptPlaceholder": "Beschreiben Sie den Code, den Sie erstellen möchten...",
-    "audioPromptPlaceholder": "Beschreiben Sie das Audio, das Sie erstellen möchten...",
-    "videoPromptPlaceholder": "Beschreiben Sie das Video, das Sie erstellen möchten...",
-    "instructions": "Anweisungen",
-    "codeGeneratorInstructions": "Beschreiben Sie die Funktionalität, die Sie benötigen. Seien Sie spezifisch zu Eingabe-/Ausgabeformaten, zu verwendenden Bibliotheken und Einschränkungen.",
-    "voice": "Stimme",
-    "selectVoice": "Wählen Sie eine Stimme",
-    "noAudioGenerated": "Noch kein Audio generiert",
-    "videoSettings": {
-        "aspectRatio": "Seitenverhältnis",
-        "style": "Stil",
-        "selectStyle": "Stil auswählen",
-        "resolution": "Auflösung",
-        "selectResolution": "Auflösung auswählen",
-        "duration": "Dauer",
-        "motion": "Bewegung"
+    "imageGenerator": {
+      "title": "Bildgenerator",
+      "description": "Erstellen Sie beeindruckende Visuals aus Text-Prompts."
     },
-    "noVideoGenerated": "Noch kein Video generiert",
-    "copied": "Kopiert!",
-    "copy": "Kopieren",
-    "download": "Herunterladen"
+    "voiceGenerator": {
+      "title": "Sprachgenerator",
+      "description": "Wandeln Sie Text in realistische Sprache um."
+    },
+    "videoGenerator": {
+      "title": "Videogenerator",
+      "description": "Erstellen Sie Videos aus Texten oder Bildern.",
+      "badge": "Beta"
+    }
+  },
+  "textGenerator": "Textgenerator",
+  "imageGenerator": "Bildgenerator",
+  "codeGenerator": "Codegenerator",
+  "audioGenerator": "Audiogenerator",
+  "videoGenerator": "Videogenerator",
+  "model": "Modell",
+  "selectModel": "Wählen Sie bir Modell",
+  "typeMessage": "Schreiben Sie eine Nachricht...",
+  "send": "Senden",
+  "attach": "Anhängen",
+  "voiceInput": "Spracheingabe",
+  "imageSettings": {
+    "aspectRatio": "Seitenverhältnis",
+    "style": "Stil",
+    "selectStyle": "Stil wählen",
+    "resolution": "Auflösung",
+    "selectResolution": "Auflösung wählen",
+    "quality": "Qualität",
+    "numberOfImages": "Anzahl der Bilder"
+  },
+  "imagePromptPlaceholder": "Beschreiben Sie das Bild, das Sie erstellen möchten...",
+  "codePromptPlaceholder": "Beschreiben Sie den Code, den Sie erstellen möchten...",
+  "audioPromptPlaceholder": "Beschreiben Sie den Ton, den Sie erzeugen möchten...",
+  "videoPromptPlaceholder": "Beschreiben Sie das Video, das Sie erstellen möchten...",
+  "instructions": "Anweisungen",
+  "codeGeneratorInstructions": "Beschreiben Sie die benötigte Funktionalität. Seien Sie spezifisch bei Ein-/Ausgabeformaten, Bibliotheken und Einschränkungen.",
+  "voice": "Stimme",
+  "selectVoice": "Wählen Sie eine Stimme",
+  "noAudioGenerated": "Noch kein Audio erzeugt",
+  "videoSettings": {
+    "aspectRatio": "Seitenverhältnis",
+    "style": "Stil",
+    "selectStyle": "Stil wählen",
+    "resolution": "Auflösung",
+    "selectResolution": "Auflösung wählen",
+    "duration": "Dauer",
+    "motion": "Bewegung"
+  },
+  "noVideoGenerated": "Noch kein Video erzeugt",
+  "copied": "Kopiert!",
+  "copy": "Kopieren",
+  "download": "Herunterladen",
+  "history": {
+    "title": "Verlauf",
+    "description": "Zeigen Sie Ihren KI-Erstellungsverlauf an",
+    "generationHistory": "Erstellungsverlauf",
+    "viewHistory": "Zeigen Sie Ihren KI-Erstellungsverlauf an"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "aiStudio": "AI Studio",
+  "attachFile": "Datei anhängen",
+  "clearChat": "Chat leeren",
+  "settings": {
+    "title": "KI-Moduleinstellungen",
+    "description": "Konfigurieren Sie die Standardeinstellungen des KI-Moduls",
+    "saved": "Einstellungen gespeichert",
+    "savedMessage": "KI-Moduleinstellungen wurden erfolgreich gespeichert.",
+    "saveFailed": "Speichern fehlgeschlagen",
+    "saveFailedMessage": "Einstellungen konnten nicht gespeichert werden"
+  }
 }
-
-
-
-

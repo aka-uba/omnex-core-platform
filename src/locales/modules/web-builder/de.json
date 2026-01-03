@@ -1,11 +1,14 @@
 {
+  "common": {
+    "comingSoon": "Diese Funktion kommt bald..."
+  },
   "title": "Web-Builder",
   "description": "Drag-and-Drop-Website-Builder-Modul",
   "menu": {
     "label": "Web-Builder",
     "items": {
       "dashboard": "Dashboard",
-      "websites": "Websites",
+      "websites": "Webseiten",
       "pages": "Seiten",
       "templates": "Vorlagen",
       "themes": "Themen",
@@ -18,14 +21,70 @@
     }
   },
   "dashboard": {
-    "title": "Web-Builder-Dashboard",
-    "description": "Überblick über Ihre Website-Erstellung",
+    "title": "Web-Builder Dashboard",
+    "description": "Übersicht über Ihre Website-Erstellungsaktivitäten",
     "totalPages": "Gesamtseiten",
     "templates": "Vorlagen",
     "mediaFiles": "Mediendateien",
-    "recentActivity": "Letzte Aktivitäten",
-    "noActivity": "Keine letzten Aktivitäten"
+    "recentActivity": "Letzte Aktivität",
+    "noActivity": "Keine kürzliche Aktivität"
+  },
+  "templates": {
+    "title": "Vorlagen",
+    "description": "Website-Vorlagen anzeigen und verwenden"
+  },
+  "pages": {
+    "title": "Seiten",
+    "description": "Verwalten Sie Ihre Website-Seiten",
+    "newPage": "Neue Seite"
+  },
+  "media": {
+    "title": "Medienbibliothek",
+    "description": "Verwalten Sie Ihre Mediendateien"
+  },
+  "components": {
+    "title": "Komponenten",
+    "description": "Wiederverwendbare Komponenten verwalten"
+  },
+  "analytics": {
+    "title": "Analytik",
+    "description": "Website-Performance und Besucheranalyse"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Ansehen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "seo": {
+    "title": "SEO-Einstellungen",
+    "description": "Seitenoptimierung für Suchmaschinen",
+    "metaTitle": "Meta-Titel",
+    "metaTitlePlaceholder": "Seitentitel (50-60 Zeichen empfohlen)",
+    "metaTitleWarning": "Titel ist länger als 60 Zeichen. Kann in Suchmaschinen gekürzt werden.",
+    "metaDescription": "Meta-Beschreibung",
+    "metaDescriptionPlaceholder": "Seitenbeschreibung (150-160 Zeichen empfohlen)",
+    "metaDescriptionWarning": "Beschreibung ist länger als 160 Zeichen. Kann in Suchmaschinen gekürzt werden.",
+    "metaKeywords": "Meta-Schlüsselwörter",
+    "metaKeywordsPlaceholder": "Schlüsselwörter hinzufügen (Enter drücken)",
+    "metaKeywordsDescription": "Schlüsselwörter zur Seite (maximal 10)",
+    "tipsTitle": "SEO-Tipps",
+    "tips": {
+      "tip1": "Titel und Beschreibung sollten den Seiteninhalt widerspiegeln",
+      "tip2": "Schlüsselwörter sollten natürlich und relevant sein",
+      "tip3": "Verwenden Sie eindeutige SEO-Inhalte für jede Seite",
+      "tip4": "Vorschau, wie es in Suchmaschinenergebnissen erscheint"
+    },
+    "saveButton": "SEO-Einstellungen speichern"
+  },
+  "preview": {
+    "title": "Seitenvorschau"
+  },
+  "widgetConfig": {
+    "placeholder": "Wert eingeben"
   }
 }
-
-

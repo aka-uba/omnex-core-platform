@@ -1,92 +1,123 @@
 {
-    "title": "Notifications",
-    "description": "Manage system-wide notifications and alerts",
-    "menu": {
-        "label": "Notifications",
-        "items": {
-            "dashboard": "Dashboard",
-            "list": "All Notifications",
-            "templates": "Templates"
-        }
-    },
-    "create": "Create Notification",
-    "edit": "Edit Notification",
-    "status": {
-        "read": "Read",
-        "unread": "Unread",
-        "global": "Global",
-        "archived": "Archived"
-    },
-    "priority": {
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High",
-        "urgent": "Urgent"
-    },
-    "type": {
-        "info": "Info",
-        "warning": "Warning",
-        "error": "Error",
-        "success": "Success",
-        "task": "Task",
-        "alert": "Alert"
-    },
-    "fields": {
-        "title": "Title",
-        "message": "Message",
-        "type": "Type",
-        "priority": "Priority",
-        "user": "User",
-        "module": "Module",
-        "status": "Status",
-        "data": "Data (JSON)",
-        "expires_at": "Expires At",
-        "is_global": "Global Notification",
-        "location": "Location",
-        "action_url": "Action URL",
-        "action_text": "Action Text",
-        "attachments": "Attachments",
-        "sender": "Sender",
-        "recipient": "Recipient",
-        "created_at": "Created At",
-        "read_at": "Read At",
-        "archived_at": "Archived At",
-        "search": "Search...",
-        "actions": "Actions"
-    },
-    "validation": {
-        "required": "This field is required",
-        "user_required": "User is required for non-global notifications",
-        "action_required": "Action details are required for tasks",
-        "confirm_delete": "Are you sure you want to delete this notification?",
-        "confirm_archive": "Are you sure you want to archive this notification?"
-    },
-    "actions": {
-        "view": "View Details",
-        "edit": "Edit",
-        "archive": "Archive",
-        "unarchive": "Unarchive",
-        "delete": "Delete",
-        "save": "Save Notification",
-        "cancel": "Cancel",
-        "mark_read": "Mark as Read",
-        "mark_unread": "Mark as Unread"
-    },
-    "filters": "Filters",
-    "toast": {
-        "success": "Success",
-        "error": "Error",
-        "warning": "Warning",
-        "info": "Info"
-    },
-    "modal": {
-        "confirm": "Confirm",
-        "cancel": "Cancel",
-        "delete_title": "Delete Notification",
-        "archive_title": "Archive Notification"
+  "title": "Notifications",
+  "description": "Manage system-wide notifications and alerts",
+  "dashboard": {
+    "title": "All Notifications",
+    "description": "View, manage and track all your notifications"
+  },
+  "menu": {
+    "label": "Notifications",
+    "items": {
+      "dashboard": "All Notifications",
+      "list": "All Notifications",
+      "templates": "Templates"
     }
+  },
+  "actions": {
+    "view": "View Details",
+    "quick_view": "Quick View",
+    "edit": "Edit",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "delete": "Delete",
+    "save": "Save Notification",
+    "cancel": "Cancel",
+    "mark_read": "Mark as Read",
+    "mark_unread": "Mark as Unread",
+    "create": "Create",
+    "update": "Update",
+    "back": "Back"
+  },
+  "create": "Create Notification",
+  "edit": "Edit Notification",
+  "status": {
+    "read": "Read",
+    "unread": "Unread",
+    "global": "Global",
+    "archived": "Archived",
+    "success": "Success",
+    "error": "Error",
+    "created_success": "Notification created successfully",
+    "create_error": "Failed to create notification",
+    "updated_success": "Notification updated successfully",
+    "update_error": "Failed to update notification",
+    "no_notifications": "No notifications"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  },
+  "type": {
+    "info": "Info",
+    "warning": "Warning",
+    "error": "Error",
+    "success": "Success",
+    "task": "Task",
+    "alert": "Alert"
+  },
+  "fields": {
+    "title": "Title",
+    "message": "Message",
+    "type": "Type",
+    "priority": "Priority",
+    "user": "User",
+    "module": "Module",
+    "status": "Status",
+    "data": "Data (JSON)",
+    "expires_at": "Expires At",
+    "is_global": "Global Notification",
+    "location": "Location",
+    "action_url": "Action URL",
+    "action_text": "Action Text",
+    "attachments": "Attachments",
+    "sender": "Sender",
+    "recipient": "Recipient",
+    "created_at": "Created At",
+    "read_at": "Read At",
+    "archived_at": "Archived At",
+    "search": "Search...",
+    "actions": "Actions"
+  },
+  "validation": {
+    "required": "This field is required",
+    "user_required": "User is required for non-global notifications",
+    "action_required": "Action details are required for tasks",
+    "confirm_delete": "Are you sure you want to delete this notification?",
+    "confirm_archive": "Are you sure you want to archive this notification?",
+    "not_found": "Notification not found"
+  },
+  "filters": "Filters",
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "modal": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "delete_title": "Delete Notification",
+    "archive_title": "Archive Notification"
+  },
+  "placeholders": {
+    "loading_users": "Loading users...",
+    "select_sender": "Select sender",
+    "select_recipient": "Select recipient",
+    "pick_date": "Pick a date",
+    "select_location": "Select location",
+    "upload_files": "Upload files"
+  },
+  "task_details": {
+    "title": "Task Details"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "view": "View",
+  "bell": {
+    "ariaLabel": "Notifications"
+  },
+  "close": "Close notification"
 }
-
-
-
-

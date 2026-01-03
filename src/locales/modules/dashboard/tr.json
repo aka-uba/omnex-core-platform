@@ -1,69 +1,69 @@
 {
   "title": "Panel",
-  "description": "Genel bakis ve istatistikler",
+  "description": "Genel bakış ve istatistikler",
   "kpi": {
-    "totalActiveClients": "Toplam Aktif Musteri",
-    "monthlyRecurringRevenue": "Aylik Tekrarlayan Gelir",
-    "newLeadsThisMonth": "Bu Ay Yeni Potansiyel Musteri",
+    "totalActiveClients": "Toplam Aktif Müşteri",
+    "monthlyRecurringRevenue": "Aylık Tekrarlayan Gelir",
+    "newLeadsThisMonth": "Bu Ay Yeni Potansiyel Müşteri",
     "activeProjects": "Aktif Projeler",
-    "changeThisMonth": "Bu Ay Degisim",
-    "change": "Degisim"
+    "changeThisMonth": "Bu Ay Değişim",
+    "change": "Değişim"
   },
   "contentPerformance": {
-    "title": "Icerik Performansi",
-    "subtitle": "Son 30 gun"
+    "title": "İçerik Performansı",
+    "subtitle": "Son 30 gün"
   },
   "upcomingPosts": {
-    "title": "Yaklasan Gonderiler",
-    "viewAll": "Tumunu Goruntule"
+    "title": "Yaklaşan Gönderiler",
+    "viewAll": "Tümünü Görüntüle"
   },
   "financeOverview": {
-    "title": "Finansal Genel Bakis",
+    "title": "Finansal Genel Bakış",
     "revenue": "Gelir",
     "expenses": "Giderler",
-    "profit": "Kar"
+    "profit": "Kâr"
   },
   "recentActivity": {
     "title": "Son Aktiviteler"
   },
   "actions": {
-    "create": "Olustur",
-    "edit": "Duzenle",
-    "update": "Guncelle",
+    "create": "Oluştur",
+    "edit": "Düzenle",
+    "update": "Güncelle",
     "delete": "Sil",
-    "view": "Goruntule",
+    "view": "Görüntüle",
     "save": "Kaydet",
-    "cancel": "Iptal",
+    "cancel": "İptal",
     "back": "Geri"
   },
   "navigation": {
     "dashboard": "Panel"
   },
   "upcomingEvents": {
-    "title": "Yaklasan Etkinlikler",
-    "subtitle": "Onumuzdeki gunlerde planlanan isler ve randevular",
-    "liveData": "Canli Veri Akisi",
+    "title": "Yaklaşan Etkinlikler",
+    "subtitle": "Önümüzdeki günlerde planlanan işler ve randevular",
+    "liveData": "Canlı Veri Akışı",
     "total": "Toplam",
-    "pendingWork": "Bekleyen Is",
-    "viewAll": "Tum Takvimi Goruntule",
-    "empty": "Yaklasan etkinlik bulunmuyor",
+    "pendingWork": "Bekleyen İş",
+    "viewAll": "Tüm Takvimi Görüntüle",
+    "empty": "Yaklaşan etkinlik bulunmuyor",
     "types": {
       "delivery": "Teslimat",
       "key": "Anahtar",
       "showing": "Sunum",
       "maintenance": "Tamirat",
-      "completed": "Tamamlandi"
+      "completed": "Tamamlandı"
     }
   },
   "quickOverview": {
-    "title": "Hizli Bakis"
+    "title": "Hızlı Bakış"
   },
   "modules": {
     "realEstate": "Gayrimenkul",
     "calendar": "Takvim",
     "notifications": "Bildirimler",
-    "hr": "Insan Kaynaklari",
+    "hr": "İnsan Kaynakları",
     "accounting": "Muhasebe",
-    "production": "Uretim"
+    "production": "Üretim"
   }
 }

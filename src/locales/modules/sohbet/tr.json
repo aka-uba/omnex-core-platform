@@ -1,9 +1,10 @@
 {
-  "common": {
-    "loading": "Yükleniyor..."
-  },
   "title": "Sohbet",
   "description": "Gerçek zamanlı sohbet ve mesajlaşma modülü",
+  "common": {
+    "loading": "Yükleniyor...",
+    "confirmDeleteFile": "Bu dosyayı silmek istediğinizden emin misiniz?"
+  },
   "menu": {
     "label": "Sohbet",
     "items": {
@@ -58,8 +59,8 @@
     "update": "Güncelle",
     "view": "Görüntüle",
     "back": "Geri",
-    "change": "Change",
-    "saving": "Saving"
+    "change": "Değiştir",
+    "saving": "Kaydediliyor"
   },
   "forms": {
     "groupName": "Grup Adı (Opsiyonel)",
@@ -77,140 +78,33 @@
   },
   "roomId": "Oda ID",
   "titles": {
-    "avatar": {
-      "guncellenirken": {
-        "hata": {
-          "olustu": "Avatar güncellenirken hata oluştu"
-        }
-      },
-      "guncellendi": "Avatar güncellendi"
-    },
     "success": "Başarılı",
     "download": "İndir",
-    "onizle": "Önizle",
-    "tenant": {
-      "context": {
-        "bulunamadi": "Tenant context bulunamadı"
-      }
-    },
-    "mikrofon": {
-      "erisimi": {
-        "reddedildi": "Mikrofon erişimi reddedildi"
-      }
-    },
-    "ses": {
-      "kaydi": {
-        "yuklenirken": {
-          "hata": {
-            "olustu": "Ses kaydı yüklenirken hata oluştu"
-          }
-        },
-        "hazir": "Ses kaydı hazır"
-      },
-      "kaydini": {
-        "gondermek": {
-          "icin": {
-            "gonder": {
-              "butonu": "Ses kaydını göndermek için gönder butonu"
-            }
-          }
-        }
-      }
-    },
-    "filename": {
-      "yuklenirken": {
-        "hata": {
-          "olustu": "Dosya yüklenirken hata oluştu"
-        }
-      },
-      "basariyla": {
-        "yuklendi": "Dosya başarıyla yüklendi"
-      }
-    },
-    "dosya": {
-      "yuklendi": "Dosya yüklendi",
-      "indirilirken": {
-        "hata": {
-          "olustu": "Dosya indirilirken hata oluştu"
-        }
-      },
-      "silinirken": {
-        "hata": {
-          "olustu": "Dosya silinirken hata oluştu"
-        }
-      },
-      "basariyla": {
-        "silindi": "Dosya başarıyla silindi",
-        "yuklendi": "Dosya başarıyla yüklendi"
-      }
-    },
-    "mesaj": {
-      "gonderilirken": {
-        "hata": {
-          "olustu": "Mesaj gönderilirken hata oluştu"
-        }
-      }
-    },
-    "kullanici": {
-      "bilgisi": {
-        "bulunamadi": "Kullanıcı bilgisi bulunamadı"
-      }
-    },
-    "sohbet": {
-      "olusturulurken": {
-        "hata": {
-          "olustu": "Sohbet oluşturulurken hata oluştu"
-        }
-      },
-      "baslatildi": "Sohbet başlatıldı"
-    },
-    "bir": {
-      "kullanici": {
-        "secmelisiniz": "Bir kullanıcı seçmelisiniz"
-      }
-    },
-    "grup": {
-      "sohbeti": {
-        "olusturulurken": {
-          "hata": {
-            "olustu": "Grup sohbeti oluşturulurken hata oluştu"
-          }
-        },
-        "olusturuldu": "Grup sohbeti oluşturuldu"
-      }
-    },
-    "en": {
-      "az": {
-        "bir": {
-          "kullanici": {
-            "secmelisiniz": "En az bir kullanıcı seçmelisiniz"
-          }
-        }
-      }
-    }
+    "preview": "Önizle",
+    "avatarUpdated": "Avatar güncellendi",
+    "avatarUpdateError": "Avatar güncellenirken hata oluştu",
+    "tenantContextNotFound": "Tenant context bulunamadı",
+    "microphoneAccessDenied": "Mikrofon erişimi reddedildi",
+    "voiceRecordReady": "Ses kaydı hazır",
+    "voiceRecordUploadError": "Ses kaydı yüklenirken hata oluştu",
+    "voiceRecordSendHint": "Ses kaydını göndermek için gönder butonuna tıklayın",
+    "fileUploadError": "Dosya yüklenirken hata oluştu",
+    "fileUploadSuccess": "Dosya başarıyla yüklendi",
+    "fileDownloadError": "Dosya indirilirken hata oluştu",
+    "fileDeleteError": "Dosya silinirken hata oluştu",
+    "fileDeleteSuccess": "Dosya başarıyla silindi",
+    "messageSendError": "Mesaj gönderilirken hata oluştu",
+    "userNotFound": "Kullanıcı bilgisi bulunamadı",
+    "chatCreateError": "Sohbet oluşturulurken hata oluştu",
+    "chatStarted": "Sohbet başlatıldı",
+    "selectUserRequired": "Bir kullanıcı seçmelisiniz",
+    "groupChatCreateError": "Grup sohbeti oluşturulurken hata oluştu",
+    "groupChatCreated": "Grup sohbeti oluşturuldu",
+    "selectAtLeastOneUser": "En az bir kullanıcı seçmelisiniz"
   },
   "messages": {
-    "dosya": {
-      "gonderildi": {
-        "fileinfosmapf": {
-          "fnamejoin": "Dosya gönderildi"
-        }
-      }
-    },
-    "gonderildi": "Gönderildi"
-  },
-  "common": {
-    "bu": {
-      "dosyayi": {
-        "silmek": {
-          "istediginizden": {
-            "emin": {
-              "mi": "Bu dosyayı silmek istediğinizden emin misiniz?"
-            }
-          }
-        }
-      }
-    }
+    "fileSent": "Dosya gönderildi",
+    "sent": "Gönderildi"
   },
   "table": {
     "description": "Açıklama"

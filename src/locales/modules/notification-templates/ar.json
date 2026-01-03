@@ -1,0 +1,83 @@
+{
+  "title": "قوالب الإشعارات",
+  "description": "إنشاء وإدارة قوالب البريد الإلكتروني وSMS وPush ووسائل التواصل الاجتماعي",
+  "create": "قالب جديد",
+  "search": "بحث عن قالب...",
+  "refresh": "تحديث",
+  "error": "خطأ",
+  "loadError": "حدث خطأ أثناء تحميل القوالب",
+  "noTemplates": "لم يتم العثور على قوالب",
+  "confirmDelete": "هل أنت متأكد من حذف هذا القالب؟",
+  "delete": {
+    "title": "حذف القالب",
+    "confirm": "حذف",
+    "message": "هل أنت متأكد من حذف هذا القالب؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+  "tabs": {
+    "email": "البريد الإلكتروني",
+    "sms": "SMS",
+    "push": "Push",
+    "whatsapp": "واتساب",
+    "telegram": "تلغرام",
+    "basic": "معلومات أساسية",
+    "content": "المحتوى",
+    "signature": "التوقيع",
+    "design": "التصميم",
+    "preview": "معاينة"
+  },
+  "categories": {
+    "system": "نظام",
+    "user": "مستخدم",
+    "task": "مهمة",
+    "urgent": "عاجل"
+  },
+  "types": {
+    "taskAssignment": "إسناد مهمة",
+    "urgentAlert": "تنبيه عاجل",
+    "systemUpdate": "تحديث النظام"
+  },
+  "styles": {
+    "corporate": "مؤسسي",
+    "visionary": "رؤيوي",
+    "elegant": "أنيق",
+    "modern": "مودرن"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "setDefault": "تعيين كافتراضي",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "table": {
+    "name": "اسم القالب",
+    "category": "الفئة",
+    "notificationType": "نوع الإشعار",
+    "emailSubject": "الموضوع",
+    "status": "الحالة"
+  },
+  "form": {
+    "name": "اسم القالب",
+    "description": "الوصف",
+    "emailSubject": "عنوان موضوع البريد",
+    "emailPlainText": "محتوى النص العادي",
+    "smsContent": "محتوى SMS",
+    "pushTitle": "عنوان Push"
+  },
+  "variables": {
+    "title": "المتغيرات الديناميكية",
+    "description": "المتغيرات المتاحة: {{userName}}, {{companyName}}, {{taskTitle}}, إلخ."
+  },
+  "notifications": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "deleted": "تم حذف القالب بنجاح",
+    "updated": "تم تحديث القالب بنجاح",
+    "created": "تم إنشاء القالب بنجاح"
+  }
+}

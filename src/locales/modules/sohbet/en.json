@@ -1,6 +1,10 @@
 {
   "title": "Chat",
   "description": "Real-time chat and messaging module",
+  "common": {
+    "loading": "Loading...",
+    "confirmDeleteFile": "Are you sure you want to delete this file?"
+  },
   "menu": {
     "label": "Chat",
     "items": {
@@ -62,6 +66,58 @@
     "groupName": "Group Name (Optional)",
     "groupNamePlaceholder": "Enter group name...",
     "selectUser": "Select User"
+  },
+  "fileTypes": {
+    "wordDocument": "Word Document",
+    "excelFile": "Excel File",
+    "cannotPreview": "This file type cannot be previewed in the browser. You can download the file and open it in the appropriate application.",
+    "browserNotSupported": {
+      "video": "Your browser does not support video playback.",
+      "audio": "Your browser does not support audio playback."
+    }
+  },
+  "roomId": "Room ID",
+  "titles": {
+    "success": "Success",
+    "download": "Download",
+    "preview": "Preview",
+    "avatarUpdated": "Avatar updated",
+    "avatarUpdateError": "Error updating avatar",
+    "tenantContextNotFound": "Tenant context not found",
+    "microphoneAccessDenied": "Microphone access denied",
+    "voiceRecordReady": "Voice recording ready",
+    "voiceRecordUploadError": "Error uploading voice recording",
+    "voiceRecordSendHint": "Click send button to send voice recording",
+    "fileUploadError": "Error uploading file",
+    "fileUploadSuccess": "File uploaded successfully",
+    "fileDownloadError": "Error downloading file",
+    "fileDeleteError": "Error deleting file",
+    "fileDeleteSuccess": "File deleted successfully",
+    "messageSendError": "Error sending message",
+    "userNotFound": "User information not found",
+    "chatCreateError": "Error creating chat",
+    "chatStarted": "Chat started",
+    "selectUserRequired": "You must select a user",
+    "groupChatCreateError": "Error creating group chat",
+    "groupChatCreated": "Group chat created",
+    "selectAtLeastOneUser": "You must select at least one user"
+  },
+  "messages": {
+    "fileSent": "File sent",
+    "sent": "Sent"
+  },
+  "table": {
+    "description": "Description"
+  },
+  "errors": {
+    "videoLoadFailed": {
+      "title": "Video Loading Error",
+      "message": "An error occurred while loading the video. The file format may not be supported or the file may be corrupted."
+    },
+    "audioLoadFailed": {
+      "title": "Audio Loading Error",
+      "message": "An error occurred while loading the audio. The file format may not be supported or the file may be corrupted."
+    }
   },
   "chat": {
     "messagePlaceholder": "Type a message...",

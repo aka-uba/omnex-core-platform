@@ -1,188 +1,273 @@
 {
-    "title": "Dateimanager",
-    "description": "Verwalten und organisieren Sie Ihre Dateien",
-    "breadcrumbs": {
-        "home": "Startseite"
-    },
-    "toolbar": {
-        "search": "Dateien suchen...",
-        "searchPlaceholder": "Nach Name oder Tag suchen...",
-        "newFolder": "Neuer Ordner",
-        "upload": "Hochladen",
-        "delete": "Löschen",
-        "download": "Herunterladen",
-        "fileType": "Dateityp",
-        "dateRange": "Datumsbereich",
-        "tags": "Tags",
-        "sortBy": "Sortieren nach",
-        "allTypes": "Alle Typen",
-        "allTags": "Alle Tags",
-        "selectDateRange": "Datumsbereich auswählen",
-        "dateRangePlaceholder": "Start - Ende",
-        "startDate": "Startdatum",
-        "startDatePlaceholder": "Startdatum auswählen",
-        "endDate": "Enddatum",
-        "endDatePlaceholder": "Enddatum auswählen",
-        "apply": "Anwenden",
-        "clear": "Löschen",
-        "close": "Schließen",
-        "cancel": "Abbrechen",
-        "downloadSelected": "Ausgewählte herunterladen",
-        "deleteSelected": "Ausgewählte löschen",
-        "shareServer": "Web-Server",
-        "webServer": "Web-Server",
-        "selectTags": "Tags auswählen",
-        "types": {
-            "image": "Bild",
-            "pdf": "PDF",
-            "document": "Dokument",
-            "video": "Video",
-            "archive": "Archiv"
-        },
-        "sortOptions": {
-            "newest": "Neueste",
-            "oldest": "Älteste",
-            "nameAsc": "Name (A-Z)",
-            "nameDesc": "Name (Z-A)",
-            "sizeAsc": "Größe (Klein-Groß)",
-            "sizeDesc": "Größe (Groß-Klein)"
-        }
-    },
-    "table": {
-        "name": "Name",
-        "size": "Größe",
-        "type": "Typ",
-        "modified": "Geändert",
-        "actions": "Aktionen"
-    },
-    "type": {
-        "folder": "Ordner",
-        "file": "Datei"
-    },
-    "actions": {
-        "open": "Öffnen",
-        "openFile": "Datei öffnen",
-        "rename": "Umbenennen",
-        "delete": "Löschen",
-        "download": "Herunterladen",
-        "move": "Verschieben",
-        "share": "Teilen",
-        "properties": "Eigenschaften"
-    },
-    "share": {
-        "success": "Erfolg",
-        "copied": "Freigabelink in die Zwischenablage kopiert",
-        "error": "Fehler",
-        "failed": "Freigabe fehlgeschlagen"
-    },
-    "newFolder": {
-        "title": "Neuen Ordner erstellen",
-        "create": "Erstellen",
-        "success": "Erfolg",
-        "created": "Ordner erfolgreich erstellt",
-        "selectParent": "Verzeichnis auswählen",
-        "selectParentPlaceholder": "Wählen Sie das Verzeichnis aus, in dem Sie den Ordner erstellen möchten",
-        "rootFolder": "Stammverzeichnis"
-    },
-    "upload": {
-        "title": "Neue Datei hochladen",
-        "dragDrop": "Dateien hierher ziehen",
-        "clickToSelect": "oder klicken, um Dateien von Ihrem Computer auszuwählen",
-        "browseFiles": "Dateien durchsuchen",
-        "maxSize": "Maximale Dateigröße: 50MB",
-        "files": "Dateien",
-        "button": "Datei hochladen",
-        "success": "Erfolg",
-        "filesUploaded": "Dateien erfolgreich hochgeladen",
-        "fileDetails": "Dateidetails",
-        "fileDetailsDesc": "Geben Sie wichtige Informationen zur Datei an",
-        "fileName": "Dateiname",
-        "fileNamePlaceholder": "Dateiname eingeben",
-        "category": "Kategorie",
-        "categoryPlaceholder": "Kategorie auswählen",
-        "categories": {
-            "design": "Design-Asset",
-            "contract": "Vertrag",
-            "invoice": "Rechnung",
-            "report": "Bericht"
-        },
-        "description": "Beschreibung",
-        "descriptionPlaceholder": "Fügen Sie eine kurze Beschreibung für die Datei hinzu...",
-        "tags": "Tags",
-        "tagPlaceholder": "Tag hinzufügen...",
-        "accessAssociation": "Zugriff & Zuordnung",
-        "accessAssociationDesc": "Steuern Sie, wer anzeigen kann und womit diese Datei verknüpft ist",
-        "accessLevel": "Zugriffsebene",
-        "private": "Privat",
-        "public": "Öffentlich",
-        "associateProject": "Mit Projekt verknüpfen",
-        "associateProjectPlaceholder": "Projekt auswählen (optional)"
-    },
-    "rename": {
-        "title": "Umbenennen",
-        "button": "Umbenennen",
-        "success": "Erfolg",
-        "renamed": "Erfolgreich umbenannt"
-    },
-    "delete": {
-        "title": "Löschen bestätigen",
-        "confirm": "Sind Sie sicher, dass Sie '{name}' löschen möchten?",
-        "button": "Löschen",
-        "success": "Erfolg",
-        "deleted": "Erfolgreich gelöscht"
-    },
-    "form": {
-        "folderName": "Ordnername",
-        "folderNamePlaceholder": "Ordnername eingeben",
-        "folderNameRequired": "Ordnername ist erforderlich",
-        "invalidFolderName": "Ungültiger Ordnername",
-        "newName": "Neuer Name",
-        "newNamePlaceholder": "Neuen Namen eingeben",
-        "nameRequired": "Name ist erforderlich",
-        "cancel": "Abbrechen"
-    },
-    "empty": {
-        "noFiles": "Noch keine Dateien",
-        "noResults": "Keine Ergebnisse gefunden"
-    },
-    "error": {
-        "title": "Fehler",
-        "createFolder": "Ordner konnte nicht erstellt werden",
-        "rename": "Umbenennen fehlgeschlagen",
-        "delete": "Löschen fehlgeschlagen",
-        "upload": "Hochladen fehlgeschlagen"
-    },
-    "preview": {
-        "videoPreview": "Video-Vorschau",
-        "pdfPreview": "PDF-Datei kann nicht angezeigt werden. Verwenden Sie die Schaltfläche Herunterladen, um herunterzuladen.",
-        "officePreview": "Office-Datei kann nicht angezeigt werden. Verwenden Sie die Schaltfläche Herunterladen, um herunterzuladen.",
-        "textPreview": "Textdateiinhalt wird hier angezeigt...",
-        "noPreview": "Vorschau für diesen Dateityp nicht verfügbar."
-    },
-    "shareServer": {
-        "title": "Freigabeserver",
-        "selectFolder": "Ordner auswählen",
-        "selectFolderPlaceholder": "Wählen Sie den freizugebenden Ordner aus",
-        "rootFolder": "Stammverzeichnis",
-        "start": "Server starten",
-        "stop": "Server stoppen",
-        "running": "Läuft",
-        "shareUrl": "Freigabe-URL",
-        "shareUrlDescription": "Teilen Sie diese URL mit anderen in Ihrem Netzwerk, um auf Dateien zuzugreifen",
-        "copy": "Kopieren",
-        "copied": "Kopiert",
-        "urlCopied": "URL in die Zwischenablage kopiert",
-        "copyFailed": "URL konnte nicht kopiert werden",
-        "serverStarted": "Server gestartet",
-        "serverStartedMessage": "Dateifreigabeserver läuft jetzt",
-        "serverStopped": "Server gestoppt",
-        "serverStoppedMessage": "Dateifreigabeserver wurde gestoppt",
-        "error": "Fehler",
-        "startFailed": "Server konnte nicht gestartet werden",
-        "stopFailed": "Server konnte nicht gestoppt werden"
+  "title": "Dateimanager",
+  "description": "Verwalten und organisieren Sie Ihre Dateien",
+  "menu": {
+    "label": "Dateimanager",
+    "items": {
+      "dashboard": "Dateimanager"
     }
+  },
+  "breadcrumbs": {
+    "home": "Startseite"
+  },
+  "toolbar": {
+    "search": "Datei suchen...",
+    "searchPlaceholder": "Nach Namen oder Tag suchen...",
+    "newFolder": "Neuer Ordner",
+    "upload": "Hochladen",
+    "delete": "Löschen",
+    "download": "Herunterladen",
+    "fileType": "Dateityp",
+    "dateRange": "Zeitraum",
+    "tags": "Tags",
+    "sortBy": "Sortieren nach",
+    "allTypes": "Alle Typen",
+    "allTags": "Alle Tags",
+    "selectDateRange": "Zeitraum wählen",
+    "dateRangePlaceholder": "Anfang - Ende",
+    "startDate": "Startdatum",
+    "startDatePlaceholder": "Startdatum wählen",
+    "endDate": "Enddatum",
+    "endDatePlaceholder": "Enddatum wählen",
+    "apply": "Anwenden",
+    "clear": "Leeren",
+    "close": "Schließen",
+    "cancel": "Abbrechen",
+    "downloadSelected": "Ausgewählte herunterladen",
+    "deleteSelected": "Ausgewählte löschen",
+    "shareServer": "Webserver",
+    "webServer": "Webserver",
+    "selectTags": "Tags auswählen",
+    "types": {
+      "image": "Bild",
+      "document": "Dokument",
+      "video": "Video",
+      "archive": "Archiv"
+    },
+    "sortOptions": {
+      "newest": "Neueste",
+      "oldest": "Älteste",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "sizeAsc": "Größe (Klein-Groß)",
+      "sizeDesc": "Größe (Groß-Klein)"
+    },
+    "refresh": "Aktualisieren"
+  },
+  "table": {
+    "name": "Name",
+    "size": "Größe",
+    "type": "Typ",
+    "modified": "Geändert",
+    "permissions": "Berechtigungen",
+    "actions": "Aktionen"
+  },
+  "permissions": {
+    "canRead": "Leseberechtigung vorhanden",
+    "canWrite": "Schreibberechtigung vorhanden",
+    "noRead": "Keine Leseberechtigung",
+    "noWrite": "Keine Schreibberechtigung"
+  },
+  "type": {
+    "folder": "Ordner",
+    "file": "Datei"
+  },
+  "actions": {
+    "open": "Öffnen",
+    "openFile": "Datei öffnen",
+    "preview": "Vorschau",
+    "rename": "Umbenennen",
+    "delete": "Löschen",
+    "download": "Herunterladen",
+    "downloading": "Wird heruntergeladen",
+    "downloadAsZip": "Als ZIP herunterladen",
+    "files": "Dateien",
+    "move": "Verschieben",
+    "share": "Teilen",
+    "properties": "Eigenschaften",
+    "cut": "Ausschneiden",
+    "paste": "Einfügen",
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "cannotDownloadFolder": "Ordner kann nicht heruntergeladen werden"
+  },
+  "share": {
+    "modalTitle": "Element teilen",
+    "shareLinkFor": "Freigabelink",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "note": "Hinweis: Für den Zugriff auf diesen Link ist eine Authentifizierung erforderlich.",
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "failed": "Teilen fehlgeschlagen",
+    "sharing": "Wird geteilt"
+  },
+  "newFolder": {
+    "title": "Neuen Ordner erstellen",
+    "create": "Erstellen",
+    "success": "Erfolgreich",
+    "created": "Ordner erfolgreich erstellt",
+    "selectParent": "Verzeichnis wählen",
+    "selectParentPlaceholder": "Zielverzeichnis für neuen Ordner wählen",
+    "rootFolder": "Stammverzeichnis (Root)"
+  },
+  "upload": {
+    "title": "Neue Datei hinzufügen",
+    "dragDrop": "Dateien hierher ziehen",
+    "clickToSelect": "oder klicken, um vom Computer auszuwählen",
+    "browseFiles": "Dateien auswählen",
+    "maxSize": "Maximale Dateigröße: 50MB",
+    "files": "Dateien",
+    "button": "Datei hochladen",
+    "success": "Erfolgreich",
+    "filesUploaded": "Dateien erfolgreich hochgeladen",
+    "fileDetails": "Dateidetails",
+    "fileDetailsDesc": "Geben Sie Basisinformationen zur Datei an",
+    "fileName": "Dateiname",
+    "fileNamePlaceholder": "Dateinamen eingeben",
+    "category": "Kategorie",
+    "categoryPlaceholder": "Kategorie wählen",
+    "categories": {
+      "design": "Design-Asset",
+      "contract": "Vertrag",
+      "invoice": "Rechnung",
+      "report": "Bericht"
+    },
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Fügen Sie eine kurze Beschreibung hinzu...",
+    "tags": "Tags",
+    "tagPlaceholder": "Tag hinzufügen...",
+    "accessAssociation": "Zugriff und Zuordnung",
+    "accessAssociationDesc": "Steuern Sie, wer die Datei sehen kann und womit sie verknüpft ist",
+    "accessLevel": "Zugriffsstufe",
+    "private": "Privat",
+    "public": "Öffentlich",
+    "associateProject": "Mit Projekt verknüpfen",
+    "associateProjectPlaceholder": "Projekt wählen (optional)"
+  },
+  "rename": {
+    "title": "Umbenennen",
+    "button": "Umbenennen",
+    "success": "Erfolgreich",
+    "renamed": "Erfolgreich umbenannt"
+  },
+  "delete": {
+    "title": "Löschbestätigung",
+    "confirm": "Sind Sie sicher, dass Sie '{name}' löschen möchten?",
+    "cannotUndo": "Dieser Vorgang kann nicht rückgängig gemacht werden.",
+    "button": "Löschen",
+    "success": "Erfolgreich",
+    "deleted": "Erfolgreich gelöscht"
+  },
+  "form": {
+    "folderName": "Ordnername",
+    "folderNamePlaceholder": "Ordnernamen eingeben",
+    "folderNameRequired": "Ordnername ist erforderlich",
+    "invalidFolderName": "Ungültiger Ordnername",
+    "newName": "Neuer Name",
+    "newNamePlaceholder": "Neuen Namen eingeben",
+    "nameRequired": "Name ist erforderlich",
+    "cancel": "Abbrechen"
+  },
+  "empty": {
+    "noFiles": "Noch keine Dateien",
+    "noResults": "Keine Ergebnisse gefunden"
+  },
+  "error": {
+    "title": "Fehler",
+    "createFolder": "Ordner konnte nicht erstellt werden",
+    "rename": "Konnte nicht umbenannt werden",
+    "delete": "Konnte nicht gelöscht werden",
+    "upload": "Konnte nicht hochgeladen werden"
+  },
+  "preview": {
+    "videoPreview": "Video-Vorschau",
+    "pdfPreview": "PDF-Vorschau nicht verfügbar. Bitte herunterladen.",
+    "officePreview": "Office-Vorschau nicht verfügbar. Bitte herunterladen.",
+    "textPreview": "Textinhalt wird hier angezeigt...",
+    "noPreview": "Keine Vorschau für diesen Dateityp verfügbar."
+  },
+  "shareServer": {
+    "title": "Freigabe-Server",
+    "selectFolder": "Ordner wählen",
+    "selectFolderPlaceholder": "Zu teilenden Ordner wählen",
+    "rootFolder": "Stammverzeichnis",
+    "start": "Server starten",
+    "stop": "Server stoppen",
+    "running": "Läuft",
+    "shareUrl": "Freigabe-URL",
+    "shareUrlDescription": "Teilen Sie diese URL mit anderen Geräten in Ihrem Netzwerk",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "urlCopied": "URL in Zwischenablage kopiert",
+    "copyFailed": "URL konnte nicht kopiert werden",
+    "serverStarted": "Server gestartet",
+    "serverStartedMessage": "Dateifreigabe-Server läuft jetzt",
+    "serverStopped": "Server gestoppt",
+    "serverStoppedMessage": "Dateifreigabe-Server wurde gestoppt",
+    "error": "Fehler",
+    "startFailed": "Server konnte nicht gestartet werden",
+    "stopFailed": "Server konnte nicht gestoppt werden",
+    "expiresInHours": "Laufzeit (Stunden)",
+    "expiresInHoursDescription": "Server stoppt automatisch nach der Zeit. 0 = unbegrenzt"
+  },
+  "messages": {
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "folderCreated": "Ordner erstellt",
+    "itemRenamed": "Element umbenannt",
+    "itemDeleted": "Element gelöscht",
+    "itemMoved": "Element verschoben",
+    "itemCopied": "Element kopiert",
+    "fileUploaded": "Datei hochgeladen",
+    "uploading": "Lädt hoch...",
+    "failedToLoadTree": "Verzeichnisstruktur konnte nicht geladen werden",
+    "failedToLoadFiles": "Dateien konnten nicht geladen werden",
+    "failedToDownload": "Download fehlgeschlagen"
+  },
+  "dashboard": {
+    "title": "Dateimanager",
+    "description": "Verwalten Sie Dateien zwischen Tenants und Modulen",
+    "tenant": "Tenant",
+    "module": "Modul",
+    "folders": "Verzeichnisbaum",
+    "files": "Dateien",
+    "noFiles": "Keine Dateien in diesem Verzeichnis",
+    "allTenants": "Alle Tenants (Super Admin)",
+    "allModules": "Alle Module",
+    "modules": {
+      "accounting": "Buchhaltung",
+      "hr": "Personalwesen",
+      "maintenance": "Wartung",
+      "production": "Produktion",
+      "realEstate": "Immobilien",
+      "documents": "Dokumente"
+    }
+  },
+  "copy": {
+    "title": "Kopieren",
+    "modalTitle": "Element kopieren",
+    "selectDestination": "Ziel wählen",
+    "loadingFolders": "Ordner werden geladen...",
+    "button": "Kopieren"
+  },
+  "move": {
+    "title": "Verschieben",
+    "modalTitle": "Element verschieben",
+    "selectDestination": "Ziel wählen",
+    "loadingFolders": "Ordner werden geladen...",
+    "button": "Verschieben"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "input": "Eingabe",
+  "modifiedAt": "Geändert am",
+  "name": "Name",
+  "size": "Größe"
 }
-
-
-
-

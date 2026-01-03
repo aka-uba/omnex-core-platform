@@ -2,7 +2,7 @@
   "title": "Export Templates",
   "description": "Create and manage custom header and footer templates for export documents",
   "create": "New Template",
-  "search": "Search templates...",
+  "search": "Search template...",
   "refresh": "Refresh",
   "filterType": "Filter Type",
   "filterScope": "Filter Scope",
@@ -63,24 +63,24 @@
     "title": "Load Ready Templates",
     "confirm": "Load"
   },
-  "seedConfirm": "20 ready templates will be created. Do you want to continue?",
+  "seedConfirm": "20 ready-to-use templates will be created. Do you want to continue?",
   "notifications": {
     "success": "Success",
     "error": "Error",
     "warning": "Warning",
-    "deleted": "Template successfully deleted",
+    "deleted": "Template deleted successfully",
     "defaultUpdated": "Default template updated",
     "defaultError": "An error occurred while setting default template",
     "deleteError": "An error occurred while deleting template",
     "submitError": "An error occurred while saving template",
     "autoFilled": "Auto Filled",
-    "autoFilledDesc": "Company information has been transferred to the form",
-    "seeded": "{{count}} templates successfully created",
+    "autoFilledDesc": "Company information transferred to the form",
+    "seeded": "{{count}} templates created successfully",
     "seedError": "An error occurred while creating templates",
-    "exported": "Template successfully exported",
+    "exported": "Template exported successfully",
     "exportError": "An error occurred while exporting template",
-    "bulkDeleted": "{{count}} templates successfully deleted",
-    "bulkDeleteError": "Error occurred while deleting {{count}} templates",
+    "bulkDeleted": "{{count}} templates deleted successfully",
+    "bulkDeleteError": "An error occurred while deleting {{count}} templates",
     "cannotDeleteDefault": "Default template cannot be deleted. Remove from default first.",
     "defaultRemoved": "Default status removed"
   },
@@ -101,7 +101,7 @@
     "isDefault": "Set as Default",
     "isDefaultDesc": "Use this template as default",
     "isActive": "Active",
-    "isActiveDesc": "Template is active and usable",
+    "isActiveDesc": "Template is active and available",
     "logos": "Logos",
     "addLogo": "Add Logo",
     "logo": "Logo",
@@ -122,7 +122,7 @@
     "noFooters": "No footers added yet",
     "contactInfo": "Contact Information",
     "address": "Address",
-    "addressPlaceholder": "123 Main Street, City, Country",
+    "addressPlaceholder": "123 Main St, City, Country",
     "phone": "Phone",
     "email": "Email",
     "website": "Website",
@@ -134,28 +134,28 @@
     "cancel": "Cancel",
     "create": "Create Template",
     "update": "Update Template",
-    "refillFromCompany": "Refill from company info"
+    "refillFromCompany": "Refill from company information"
   },
   "preview": {
     "title": "Live Preview",
-    "description": "View your form changes in real-time",
+    "description": "View your form changes instantly",
     "sampleContent": "Sample Content Area",
-    "empty": "Preview is empty",
-    "emptyHint": "Add logo, header or contact information",
-    "noHeaderSections": "No header sections added",
-    "noFooterSections": "No footer sections added"
+    "empty": "Preview empty",
+    "emptyHint": "Add logo, header, or contact information",
+    "noHeaderSections": "No header section added",
+    "noFooterSections": "No footer section added"
   },
   "sections": {
     "headerSections": "Header Sections",
     "footerSections": "Footer Sections",
     "addSection": "Add Section",
-    "removeSection": "Remove Section",
+    "removeSection": "Delete Section",
     "section": "Section",
     "column": "Column",
     "columnLabel": "Column",
-    "columns": "Column Count",
+    "columns": "Number of Columns",
     "addItem": "Add Item",
-    "emptyColumn": "Click + to add an item",
+    "emptyColumn": "Click + button to add item",
     "noSections": "No sections added yet. Start by adding a section.",
     "selectLogo": "Select logo",
     "enterText": "Enter text or use {{placeholder}}",
@@ -179,21 +179,21 @@
   },
   "placeholders": {
     "title": "Available Placeholders",
-    "description": "You can use the following placeholders in text fields. They can also be combined with regular text.",
+    "description": "You can use the following placeholders in text fields. They can be used together with text.",
     "example": "Example: \"Report - {{pageTitle}} - {{date}}\"",
     "placeholder": "Placeholder",
     "value": "Value",
     "items": {
-      "pageTitle": "Current page title",
+      "pageTitle": "Title of the current page",
       "companyName": "Company name",
       "companyAddress": "Company address",
       "companyPhone": "Company phone",
       "companyEmail": "Company email",
       "companyWebsite": "Company website",
-      "companyTaxId": "Tax ID number",
+      "companyTaxId": "Tax number",
       "companyLogo": "Company logo URL",
       "date": "Today's date",
-      "year": "Current year"
+      "year": "This year"
     }
   },
   "navigation": {
@@ -201,9 +201,9 @@
     "settings": "Settings"
   },
   "edit": {
-    "title": "Title",
-    "description": "Description"
+    "title": "Edit Template",
+    "description": "Update export template configuration"
   },
   "export": "Export",
-  "exportComingSoon": "Export in {{format}} format coming soon"
+  "exportComingSoon": "Export in {{format}} format will be added soon"
 }

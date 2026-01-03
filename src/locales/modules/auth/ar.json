@@ -1,46 +1,46 @@
 {
   "login": {
     "title": "تسجيل الدخول",
-    "subtitle": "قم بتسجيل الدخول إلى حسابك",
+    "subtitle": "تسجيل الدخول إلى حسابك",
     "username": "اسم المستخدم",
-    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم الخاص بك",
     "password": "كلمة المرور",
-    "passwordPlaceholder": "أدخل كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور الخاصة بك",
     "rememberMe": "تذكرني",
-    "forgotPassword": "نسيت كلمة المرور؟",
+    "forgotPassword": "نسيت كلمة المرور",
     "submit": "تسجيل الدخول",
     "noAccount": "ليس لديك حساب؟",
-    "register": "التسجيل",
+    "register": "إنشاء حساب",
     "or": "أو",
     "errors": {
       "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
-      "accountPending": "حسابك في انتظار الموافقة. يرجى انتظار موافقة المسؤول.",
-      "accountInactive": "حسابك غير نشط. يرجى الاتصال بالمسؤول.",
+      "accountPending": "حسابك بانتظار الموافقة. يرجى انتظار موافقة المسؤول.",
+      "accountInactive": "حسابك غير نشط. يرجى التواصل مع المسؤول.",
       "required": "يرجى ملء جميع الحقول"
     }
   },
   "register": {
-    "title": "التسجيل",
+    "title": "إنشاء حساب",
     "subtitle": "إنشاء حساب جديد",
-    "name": "الاسم الكامل",
+    "name": "الاسم واللقب",
     "namePlaceholder": "أدخل اسمك الكامل",
     "username": "اسم المستخدم",
-    "usernamePlaceholder": "أدخل اسم المستخدم",
-    "usernameHint": "يُسمح فقط بالأحرف والأرقام والشرطة السفلية",
+    "usernamePlaceholder": "أدخل اسم المستخدم الخاص بك",
+    "usernameHint": "يمكنك استخدام الحروف والأرقام والشرطة السفلية فقط",
     "email": "البريد الإلكتروني",
-    "emailPlaceholder": "مثال@email.com",
+    "emailPlaceholder": "example@email.com",
     "password": "كلمة المرور",
     "passwordPlaceholder": "8 أحرف على الأقل",
-    "passwordHint": "يجب أن تحتوي على حرف كبير وحرف صغير ورقم واحد على الأقل",
+    "passwordHint": "يجب أن تحتوي على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد",
     "confirmPassword": "تأكيد كلمة المرور",
-    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
-    "submit": "التسجيل",
-    "hasAccount": "هل لديك حساب بالفعل؟",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور الخاصة بك",
+    "submit": "إنشاء حساب",
+    "hasAccount": "لديك حساب بالفعل؟",
     "login": "تسجيل الدخول",
     "success": {
       "title": "تم التسجيل بنجاح!",
-      "message": "حسابك في انتظار الموافقة. ستتمكن من تسجيل الدخول بعد الموافقة.",
-      "redirecting": "إعادة التوجيه إلى صفحة تسجيل الدخول..."
+      "message": "حسابك بانتظار موافقة المسؤول. ستتمكن من تسجيل الدخول بعد الموافقة.",
+      "redirecting": "جاري التوجيه إلى صفحة تسجيل الدخول..."
     },
     "errors": {
       "usernameExists": "اسم المستخدم هذا مستخدم بالفعل",
@@ -48,9 +48,19 @@
       "passwordMismatch": "كلمات المرور غير متطابقة",
       "required": "يرجى ملء جميع الحقول"
     }
-  }
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "common": {
+    "error": "خطأ"
+  },
+  "user-updated": "تم تحديث المستخدم"
 }
-
-
-
-

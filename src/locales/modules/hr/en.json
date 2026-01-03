@@ -1,6 +1,6 @@
 {
   "title": "Human Resources",
-  "description": "Employee management, leave tracking, and payroll system",
+  "description": "Personnel management, leave tracking and payroll system",
   "menu": {
     "label": "Human Resources",
     "items": {
@@ -11,9 +11,13 @@
       "reports": "Reports"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "description": "View HR analytics and reports"
+  },
   "employees": {
     "title": "Employees",
-    "description": "Employee management",
+    "description": "Personnel management",
     "create": "New Employee",
     "createDescription": "Create a new employee record",
     "edit": "Edit Employee",
@@ -27,7 +31,7 @@
       "contract": "Contract"
     },
     "table": {
-      "employeeNumber": "Employee Number",
+      "employeeNumber": "Employee No",
       "name": "Name",
       "email": "Email",
       "department": "Department",
@@ -58,7 +62,10 @@
       "salaryGroupPlaceholder": "Enter salary group",
       "currency": "Currency",
       "currencyPlaceholder": "Select currency",
-      "isActive": "Active"
+      "isActive": "Active",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
     },
     "filter": {
       "department": "Department",
@@ -73,12 +80,12 @@
     "delete": {
       "confirm": "Are you sure you want to delete this employee?",
       "success": "Employee deleted successfully",
-      "error": "An error occurred while deleting the employee"
+      "error": "An error occurred while deleting employee"
     }
   },
   "leaves": {
     "title": "Leaves",
-    "description": "Employee leave management",
+    "description": "Personnel leave management",
     "create": "New Leave",
     "createDescription": "Create a new leave record",
     "edit": "Edit Leave",
@@ -118,12 +125,12 @@
       "endDatePlaceholder": "Select end date",
       "endDateAfterStart": "End date must be after start date",
       "days": "Days",
-      "daysPlaceholder": "Enter days",
+      "daysPlaceholder": "Enter number of days",
       "reason": "Reason",
       "reasonPlaceholder": "Enter reason",
       "status": "Status",
       "statusPlaceholder": "Select status",
-      "approvedAt": "Approved At"
+      "approvedAt": "Approval Date"
     },
     "filter": {
       "employee": "Employee",
@@ -138,12 +145,15 @@
     "delete": {
       "confirm": "Are you sure you want to delete this leave?",
       "success": "Leave deleted successfully",
-      "error": "An error occurred while deleting the leave"
+      "error": "An error occurred while deleting leave"
+    },
+    "empty": {
+      "noLeaves": "No leave records found"
     }
   },
   "payrolls": {
     "title": "Payrolls",
-    "description": "Employee payroll management",
+    "description": "Personnel payroll management",
     "create": "New Payroll",
     "createDescription": "Create a new payroll record",
     "edit": "Edit Payroll",
@@ -181,8 +191,8 @@
       "netSalaryPlaceholder": "Net salary",
       "taxDeduction": "Tax Deduction",
       "taxDeductionPlaceholder": "Enter tax deduction",
-      "sgkDeduction": "SGK Deduction",
-      "sgkDeductionPlaceholder": "Enter SGK deduction",
+      "sgkDeduction": "Social Security Deduction",
+      "sgkDeductionPlaceholder": "Enter social security deduction",
       "otherDeductions": "Other Deductions",
       "otherDeductionsPlaceholder": "Enter other deductions",
       "bonuses": "Bonuses",
@@ -207,17 +217,14 @@
     "delete": {
       "confirm": "Are you sure you want to delete this payroll?",
       "success": "Payroll deleted successfully",
-      "error": "An error occurred while deleting the payroll"
+      "error": "An error occurred while deleting payroll"
     }
   },
   "search": {
     "placeholder": "Search..."
   },
   "export": {
-    "title": "Export",
-    "excel": "Export to Excel",
-    "pdf": "Export to PDF",
-    "csv": "Export to CSV"
+    "title": "Export"
   },
   "messages": {
     "createSuccess": "Created successfully",
@@ -230,7 +237,43 @@
   "pagination": {
     "showing": "Showing",
     "of": "of"
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "newEmployee": "New Employee",
+    "newLeave": "New Leave",
+    "newPayroll": "New Payroll",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "filter": {
+    "all": "All"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "common": {
+    "back": "Back",
+    "edit": "Edit",
+    "errorLoading": "Error loading",
+    "noData": "No data found",
+    "required": "Required"
+  },
+  "form": {
+    "cancel": "Cancel",
+    "create": "Create",
+    "createdAt": "Created At",
+    "save": "Save",
+    "updatedAt": "Updated At"
+  },
+  "loading": "Loading...",
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
   }
 }
-
-

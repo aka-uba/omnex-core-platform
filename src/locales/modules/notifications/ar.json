@@ -1,84 +1,123 @@
 {
-    "title": "الإشعارات",
-    "description": "إدارة الإشعارات والتنبيهات على مستوى النظام",
-    "create": "إنشاء إشعار",
-    "edit": "تعديل الإشعار",
-    "status": {
-        "read": "مقروء",
-        "unread": "غير مقروء",
-        "global": "عام",
-        "archived": "مؤرشف"
-    },
-    "priority": {
-        "low": "منخفض",
-        "medium": "متوسط",
-        "high": "عالي",
-        "urgent": "عاجل"
-    },
-    "type": {
-        "info": "معلومات",
-        "warning": "تحذير",
-        "error": "خطأ",
-        "success": "نجاح",
-        "task": "مهمة",
-        "alert": "تنبيه"
-    },
-    "fields": {
-        "title": "العنوان",
-        "message": "الرسالة",
-        "type": "النوع",
-        "priority": "الأولوية",
-        "user": "المستخدم",
-        "module": "الوحدة",
-        "status": "الحالة",
-        "data": "البيانات (JSON)",
-        "expires_at": "ينتهي في",
-        "is_global": "إشعار عام",
-        "location": "الموقع",
-        "action_url": "رابط الإجراء",
-        "action_text": "نص الإجراء",
-        "attachments": "المرفقات",
-        "sender": "المرسل",
-        "recipient": "المستقبل",
-        "created_at": "تم الإنشاء في",
-        "read_at": "تم القراءة في",
-        "archived_at": "تم الأرشفة في",
-        "search": "بحث...",
-        "actions": "الإجراءات"
-    },
-    "validation": {
-        "required": "هذا الحقل مطلوب",
-        "user_required": "المستخدم مطلوب للإشعارات غير العامة",
-        "action_required": "تفاصيل الإجراء مطلوبة للمهام",
-        "confirm_delete": "هل أنت متأكد أنك تريد حذف هذا الإشعار؟",
-        "confirm_archive": "هل أنت متأكد أنك تريد أرشفة هذا الإشعار؟"
-    },
-    "actions": {
-        "view": "عرض التفاصيل",
-        "edit": "تعديل",
-        "archive": "أرشفة",
-        "unarchive": "إلغاء الأرشفة",
-        "delete": "حذف",
-        "save": "حفظ الإشعار",
-        "cancel": "إلغاء",
-        "mark_read": "وضع علامة كمقروء",
-        "mark_unread": "وضع علامة كغير مقروء"
-    },
-    "filters": "المرشحات",
-    "toast": {
-        "success": "نجاح",
-        "error": "خطأ",
-        "warning": "تحذير",
-        "info": "معلومات"
-    },
-    "modal": {
-        "confirm": "تأكيد",
-        "cancel": "إلغاء",
-        "delete_title": "حذف الإشعار",
-        "archive_title": "أرشفة الإشعار"
+  "title": "الإشعارات",
+  "description": "إدارة الإشعارات والتنبيهات على مستوى النظام",
+  "dashboard": {
+    "title": "كافة الإشعارات",
+    "description": "عرض وإدارة وتتبع كافة الإشعارات الخاصة بك"
+  },
+  "menu": {
+    "label": "الإشعارات",
+    "items": {
+      "dashboard": "كافة الإشعارات",
+      "list": "كافة الإشعارات",
+      "templates": "القوالب"
     }
+  },
+  "actions": {
+    "view": "عرض التفاصيل",
+    "quick_view": "عرض سريع",
+    "edit": "تعديل",
+    "archive": "أرشفة",
+    "unarchive": "إلغاء الأرشفة",
+    "delete": "حذف",
+    "save": "حفظ الإشعار",
+    "cancel": "إلغاء",
+    "mark_read": "تحديد كمقروء",
+    "mark_unread": "تحديد كغير مقروء",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "back": "رجوع"
+  },
+  "create": "إنشاء إشعار",
+  "edit": "تعديل إشعار",
+  "status": {
+    "read": "مقروء",
+    "unread": "غير مقروء",
+    "global": "عام (Global)",
+    "archived": "مؤرشف",
+    "success": "نجاح",
+    "error": "خطأ",
+    "created_success": "تم إنشاء الإشعار بنجاح",
+    "create_error": "فشل إنشاء الإشعار",
+    "updated_success": "تم تحديث الإشعار بنجاح",
+    "update_error": "فشل تحديث الإشعار",
+    "no_notifications": "لا توجد إشعارات"
+  },
+  "priority": {
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "عالي",
+    "urgent": "عاجل"
+  },
+  "type": {
+    "info": "معلومات",
+    "warning": "تحذير",
+    "error": "خطأ",
+    "success": "نجاح",
+    "task": "مهمة",
+    "alert": "تنبيه"
+  },
+  "fields": {
+    "title": "العنوان",
+    "message": "الرسالة",
+    "type": "النوع",
+    "priority": "الأولوية",
+    "user": "المستخدم",
+    "module": "الوحدة",
+    "status": "الحالة",
+    "data": "البيانات (JSON)",
+    "expires_at": "تاريخ الانتهاء",
+    "is_global": "إشعار عام",
+    "location": "الموقع",
+    "action_url": "رابط الإجراء",
+    "action_text": "نص الإجراء",
+    "attachments": "المرفقات",
+    "sender": "المرسل",
+    "recipient": "المستلم",
+    "created_at": "تاريخ الإنشاء",
+    "read_at": "تاريخ القراءة",
+    "archived_at": "تاريخ الأرشفة",
+    "search": "بحث...",
+    "actions": "الإجراءات"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "user_required": "المستخدم مطلوب للإشعارات غير العامة",
+    "action_required": "تفاصيل الإجراء مطلوبة للمهام",
+    "confirm_delete": "هل أنت متأكد من حذف هذا الإشعار؟",
+    "confirm_archive": "هل أنت متأكد من أرشفة هذا الإشعار؟",
+    "not_found": "الإشعار غير موجود"
+  },
+  "filters": "الفلاتر",
+  "toast": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "warning": "تحذير",
+    "info": "معلومات"
+  },
+  "modal": {
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "delete_title": "حذف الإشعار",
+    "archive_title": "أرشفة الإشعار"
+  },
+  "placeholders": {
+    "loading_users": "جاري تحميل المستخدمين...",
+    "select_sender": "اختر المرسل",
+    "select_recipient": "اختر المستلم",
+    "pick_date": "اختر تاريخاً",
+    "select_location": "اختر الموقع",
+    "upload_files": "تحميل ملفات"
+  },
+  "task_details": {
+    "title": "تفاصيل المهمة"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "view": "عرض",
+  "bell": {
+    "ariaLabel": "الإشعارات"
+  },
+  "close": "إغلاق الإشعار"
 }
-
-
-
-

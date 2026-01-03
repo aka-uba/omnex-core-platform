@@ -1,16 +1,225 @@
 {
   "title": "Berichte",
-  "description": "Modul zum Erstellen, Anzeigen und Exportieren von System- und Benutzerberichten",
+  "description": "System- und Benutzerberichte erstellen, anzeigen und exportieren",
   "menu": {
     "label": "Berichte",
     "items": {
       "all": "Alle Berichte",
       "create": "Bericht erstellen",
       "templates": "Vorlagen",
-      "scheduled": "Geplante Berichte",
+      "scheduled": "Geplant",
       "exports": "Export-Verlauf"
     }
+  },
+  "page": {
+    "allReports": {
+      "title": "Alle Berichte",
+      "description": "System- und Benutzerberichte erstellen, anzeigen und exportieren"
+    },
+    "exports": {
+      "title": "Export-Verlauf",
+      "description": "Verlauf der generierten und exportierten Berichte anzeigen"
+    },
+    "scheduled": {
+      "title": "Geplante Berichte",
+      "description": "Automatisch zu generierende Berichte verwalten"
+    }
+  },
+  "actions": {
+    "create": "Neuen Bericht erstellen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "export": "Exportieren",
+    "view": "Ansehen",
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "back": "Zurück",
+    "backToList": "Zurück zur Berichtsliste",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "filters": {
+    "title": "Filter",
+    "description": "Wählen Sie Ihre Parameter aus, um einen Bericht zu erstellen",
+    "search": "Suchen",
+    "type": "Berichtstyp",
+    "status": "Status",
+    "dateRange": "Datumsbereich",
+    "allReports": "Alle Berichte",
+    "coreReports": "Kernberichte",
+    "moduleReports": "Modulberichte",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "typeOptions": {
+      "userActivity": "Benutzeraktivität",
+      "systemStats": "Systemstatistiken",
+      "loginHistory": "Anmeldeverlauf"
+    }
+  },
+  "list": {
+    "title": "Berichte",
+    "columns": {
+      "name": "Berichtsname",
+      "type": "Typ",
+      "status": "Status",
+      "createdAt": "Erstellt",
+      "fileSize": "Dateigröße"
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "Bericht löschen",
+      "confirm": "Sind Sie sicher, dass Sie diesen Bericht löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "success": "Bericht erfolgreich gelöscht",
+      "error": "Beim Löschen des Berichts ist ein Fehler aufgetreten"
+    },
+    "bulkDelete": {
+      "title": "Massenlöschung",
+      "confirm": "{{count}} Berichte werden gelöscht. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher?",
+      "success": "{{count}} Berichte erfolgreich gelöscht",
+      "error": "Beim Löschen der Berichte ist ein Fehler aufgetreten"
+    },
+    "warning": {
+      "noReportsToExport": "Keine Berichte zum Exportieren gefunden",
+      "noSelectedReports": "Keine ausgewählten Berichte gefunden",
+      "noReportsToDelete": "Keine Berichte zum Löschen ausgewählt"
+    },
+    "info": {
+      "multipleReportsFound": "{{count}} Berichte gefunden. Erster Bericht exportiert. Verwenden Sie die Schaltfläche \"Massenexport\" für Massenexport.",
+      "multipleReportsSelected": "{{count}} Berichte ausgewählt. Erster Bericht exportiert. Verwenden Sie die Schaltfläche \"Massenexport\" für Massenexport."
+    }
+  },
+  "status": {
+    "pending": "Ausstehend",
+    "completed": "Abgeschlossen",
+    "failed": "Fehlgeschlagen",
+    "generating": "Wird generiert"
+  },
+  "empty": {
+    "noReports": "Keine Berichte gefunden",
+    "createFirst": "Erstellen Sie Ihren ersten Bericht"
+  },
+  "errors": {
+    "loadFailed": "Beim Laden der Berichte ist ein Fehler aufgetreten",
+    "deleteFailed": "Beim Löschen des Berichts ist ein Fehler aufgetreten",
+    "createFailed": "Beim Erstellen des Berichts ist ein Fehler aufgetreten",
+    "exportsLoadFailed": "Beim Laden des Export-Verlaufs ist ein Fehler aufgetreten",
+    "scheduledLoadFailed": "Beim Laden der geplanten Berichte ist ein Fehler aufgetreten",
+    "reportNotFound": "Bericht nicht gefunden",
+    "reportGenerationFailed": "Bericht konnte nicht generiert werden",
+    "exportFailed": "Export-Operation fehlgeschlagen"
+  },
+  "tooltips": {
+    "deleteSelected": "Ausgewählte Berichte löschen",
+    "columnSettings": "Spalteneinstellungen",
+    "view": "Ansehen",
+    "downloadPdf": "PDF herunterladen"
+  },
+  "search": {
+    "placeholder": "Berichte durchsuchen..."
+  },
+  "bulkActions": {
+    "export": "Massenexport",
+    "exportWithCount": "Massenexport ({{count}})"
+  },
+  "metrics": {
+    "total": "Gesamtberichte",
+    "completed": "Abgeschlossen",
+    "pending": "Ausstehend",
+    "failed": "Fehlgeschlagen"
+  },
+  "charts": {
+    "statusDistribution": "Statusverteilung",
+    "typeDistribution": "Berichtstypverteilung",
+    "trend30Days": "Bericht-Trend der letzten 30 Tage",
+    "noData": "Keine Daten gefunden",
+    "reportCount": "Berichtsanzahl",
+    "statusCompleted": "Abgeschlossen",
+    "statusPending": "Ausstehend",
+    "statusGenerating": "Wird generiert",
+    "statusFailed": "Fehlgeschlagen"
+  },
+  "scheduled": {
+    "empty": "Keine geplanten Berichte gefunden",
+    "createNew": "Neuen geplanten Bericht erstellen",
+    "status": {
+      "active": "Aktiv",
+      "paused": "Pausiert",
+      "completed": "Abgeschlossen"
+    },
+    "frequency": {
+      "daily": "Täglich",
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich"
+    },
+    "fields": {
+      "type": "Typ",
+      "frequency": "Häufigkeit",
+      "time": "Zeit",
+      "nextRun": "Nächster Lauf",
+      "lastRun": "Letzter Lauf"
+    },
+    "actions": {
+      "pause": "Pausieren",
+      "activate": "Aktivieren",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "confirmations": {
+      "toggleTitle": "Status ändern",
+      "pauseMessage": "Sind Sie sicher, dass Sie den geplanten Bericht pausieren möchten?",
+      "activateMessage": "Sind Sie sicher, dass Sie den geplanten Bericht aktivieren möchten?",
+      "deleteTitle": "Geplanten Bericht löschen",
+      "deleteMessage": "Sind Sie sicher, dass Sie diesen geplanten Bericht löschen möchten?"
+    },
+    "messages": {
+      "statusUpdated": "Status erfolgreich aktualisiert",
+      "deleted": "Geplanter Bericht erfolgreich gelöscht"
+    }
+  },
+  "exports": {
+    "empty": "Kein Export-Verlauf gefunden",
+    "createNew": "Neuen Bericht erstellen"
+  },
+  "create": {
+    "sections": {
+      "details": "Berichtsdetails",
+      "configuration": "Konfiguration",
+      "output": "Ausgabe"
+    },
+    "fields": {
+      "name": "Berichtsname",
+      "namePlaceholder": "Geben Sie einen Namen für Ihren Bericht ein",
+      "description": "Berichtsbeschreibung (Optional)",
+      "descriptionPlaceholder": "Geben Sie eine kurze Beschreibung des Berichtszwecks an",
+      "type": "Berichtstyp",
+      "typePlaceholder": "Berichtstyp auswählen",
+      "startDate": "Startdatum",
+      "startDatePlaceholder": "Startdatum auswählen",
+      "endDate": "Enddatum",
+      "endDatePlaceholder": "Enddatum auswählen",
+      "format": "Format"
+    },
+    "formats": {
+      "table": "Tabelle",
+      "bar": "Balkendiagramm",
+      "line": "Liniendiagramm"
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "generate": "Bericht generieren"
+    },
+    "messages": {
+      "success": "Bericht erstellt",
+      "error": "Beim Erstellen des Berichts ist ein Fehler aufgetreten"
+    },
+    "description": "Füllen Sie das untenstehende Formular aus, um einen neuen Bericht zu erstellen"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "table": {
+    "actions": "Aktionen"
   }
 }
-
-

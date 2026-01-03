@@ -1,0 +1,125 @@
+{
+  "title": "Notification Templates",
+  "description": "Create and manage templates for Email, SMS, Push, and social media notifications",
+  "create": "New Template",
+  "search": "Search template...",
+  "refresh": "Refresh",
+  "error": "Error",
+  "loadError": "An error occurred while loading templates",
+  "noTemplates": "No templates found",
+  "confirmDelete": "Are you sure you want to delete this template?",
+  "delete": {
+    "title": "Delete Template",
+    "confirm": "Delete",
+    "message": "Are you sure you want to delete this template? This action cannot be undone."
+  },
+  "bulkDelete": {
+    "title": "Bulk Delete",
+    "message": "Are you sure you want to delete {{count}} templates?",
+    "confirm": "Delete All",
+    "button": "Delete {{count}} Selected"
+  },
+  "comingSoon": "Coming soon...",
+  "tabs": {
+    "email": "Email",
+    "sms": "SMS",
+    "push": "Push",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "basic": "Basic Info",
+    "content": "Content",
+    "signature": "Signature",
+    "design": "Design",
+    "preview": "Preview"
+  },
+  "categories": {
+    "system": "System",
+    "user": "User",
+    "task": "Task",
+    "urgent": "Urgent"
+  },
+  "types": {
+    "taskAssignment": "Task Assignment",
+    "urgentAlert": "Urgent Notification",
+    "systemUpdate": "System Update"
+  },
+  "styles": {
+    "corporate": "Corporate",
+    "visionary": "Visionary",
+    "elegant": "Elegant",
+    "modern": "Modern"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "setDefault": "Set as Default",
+    "unsetDefault": "Remove from Default",
+    "preview": "Preview",
+    "create": "Create",
+    "update": "Update",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "table": {
+    "name": "Template Name",
+    "category": "Category",
+    "notificationType": "Notification Type",
+    "emailSubject": "Subject",
+    "style": "Style",
+    "status": "Status",
+    "actions": "Actions",
+    "smsSubject": "Subject",
+    "smsContent": "Content",
+    "pushTitle": "Title",
+    "pushBody": "Content",
+    "socialContent": "Content",
+    "hasImage": "Image"
+  },
+  "yes": "Yes",
+  "no": "No",
+  "seed": {
+    "title": "Load Ready-to-Use Templates",
+    "confirm": "Load",
+    "button": "Load Ready Templates",
+    "message": "Missing templates will be created. Existing templates will be preserved. Do you want to continue?"
+  },
+  "form": {
+    "name": "Template Name",
+    "namePlaceholder": "e.g., Task Assignment Email Template",
+    "description": "Description",
+    "descriptionPlaceholder": "Template description",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "notificationType": "Notification Type",
+    "notificationTypePlaceholder": "Select notification type",
+    "isDefault": "Set as Default",
+    "isActive": "Active",
+    "emailSubject": "Email Subject Line",
+    "emailSubjectPlaceholder": "{{notificationTitle}} - {{companyName}}",
+    "emailSubjectDescription": "You can use dynamic variables: {{userName}}, {{companyName}}, etc.",
+    "emailPlainText": "Plain Text Content",
+    "emailTemplateStyle": "Template Style",
+    "emailHtmlTemplate": "HTML Template (Advanced)",
+    "smsContent": "SMS Content",
+    "smsContentDescription": "You can use dynamic variables. Character limit: 160",
+    "pushTitle": "Push Title",
+    "pushBody": "Push Content"
+  },
+  "variables": {
+    "title": "Dynamic Variables",
+    "description": "Available variables: {{userName}}, {{userEmail}}, {{companyName}}, {{companyLogo}}, {{taskTitle}}, {{notificationMessage}}, etc."
+  },
+  "notifications": {
+    "success": "Success",
+    "error": "Error",
+    "deleted": "Template deleted successfully",
+    "updated": "Template updated successfully",
+    "created": "Template created successfully"
+  }
+}

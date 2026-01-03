@@ -1,0 +1,51 @@
+{
+  "title": "Einrichtung",
+  "description": "Systemeinrichtung und -konfiguration",
+  "setup": {
+    "install": "Installation durchführen",
+    "databaseWizard": "Datenbank-Einrichtungsassistent"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Übersicht und Statistiken"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Ansehen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "titles": {
+    "accessDenied": "Zugriff verweigert",
+    "noPermission": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen",
+    "resetFailed": "Zurücksetzen fehlgeschlagen",
+    "all": "Alle",
+    "setupComplete": "Einrichtung erfolgreich abgeschlossen",
+    "downloadReport": "Bericht herunterladen",
+    "allStepsComplete": "Alle Schritte abgeschlossen"
+  },
+  "errors": {
+    "accessDenied": "Zugriff verweigert",
+    "accessCheckFailed": "Zugriffsprüfung fehlgeschlagen",
+    "description": "Beschreibung"
+  },
+  "messages": {
+    "tenantSchemaApplied": "Tenant-Datenbankschema angewendet",
+    "coreSchemaApplied": "Core-Datenbankschema angewendet",
+    "bothSchemasApplied": "Beide Datenbankschemata angewendet",
+    "bothConnectionsSuccess": "Beide Datenbankverbindungen erfolgreich",
+    "databasesCreated": "Datenbanken erstellt/verifiziert",
+    "stepSuccess": "Schritt erfolgreich abgeschlossen",
+    "stepFailed": "Schritt fehlgeschlagen"
+  },
+  "common": {
+    "all": "Alle",
+    "no": "Nein",
+    "success": "Erfolgreich",
+    "configuration": "Konfiguration"
+  }
+}

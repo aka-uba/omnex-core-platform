@@ -1,83 +1,116 @@
 {
-    "title": "AI Studio",
-    "description": "Generate content using advanced AI models",
-    "menu": {
-        "label": "AI Studio",
-        "items": {
-            "dashboard": "Dashboard",
-            "text": "Text Generator",
-            "image": "Image Generator",
-            "code": "Code Generator",
-            "audio": "Audio Generator",
-            "video": "Video Generator",
-            "history": "History"
-        }
+  "common": {
+    "comingSoon": "This feature is coming soon..."
+  },
+  "title": "AI Studio",
+  "description": "Create content using advanced artificial intelligence models",
+  "menu": {
+    "label": "AI Studio",
+    "items": {
+      "dashboard": "Dashboard",
+      "text": "Text Generator",
+      "image": "Image Generator",
+      "code": "Code Generator",
+      "audio": "Audio Generator",
+      "video": "Video Generator",
+      "history": "History"
+    }
+  },
+  "page": {
+    "title": "AI Application",
+    "description": "Select a generator to start creating content.",
+    "textGenerator": {
+      "title": "Text Generator",
+      "description": "Create articles, blog posts, and social media captions."
     },
-    "page": {
-        "title": "AI Application",
-        "description": "Select a generator to start creating content.",
-        "textGenerator": {
-            "title": "Text Generator",
-            "description": "Generate articles, blog posts, and social media captions."
-        },
-        "codeGenerator": {
-            "title": "Code Generator",
-            "description": "Generate code snippets, functions, and components."
-        },
-        "imageGenerator": {
-            "title": "Image Generator",
-            "description": "Create stunning images from text prompts."
-        },
-        "voiceGenerator": {
-            "title": "Voice Generator",
-            "description": "Convert text to lifelike speech."
-        },
-        "videoGenerator": {
-            "title": "Video Generator",
-            "description": "Generate videos from text or images.",
-            "badge": "Beta"
-        }
+    "codeGenerator": {
+      "title": "Code Generator",
+      "description": "Generate code snippets, functions, and components."
     },
-    "textGenerator": "Text Generator",
-    "imageGenerator": "Image Generator",
-    "codeGenerator": "Code Generator",
-    "audioGenerator": "Audio Generator",
-    "videoGenerator": "Video Generator",
-    "model": "Model",
-    "selectModel": "Select a model",
-    "typeMessage": "Type a message...",
-    "send": "Send",
-    "attach": "Attach",
-    "voiceInput": "Voice Input",
-    "imageSettings": {
-        "aspectRatio": "Aspect Ratio",
-        "style": "Style",
-        "selectStyle": "Select style",
-        "resolution": "Resolution",
-        "selectResolution": "Select resolution",
-        "quality": "Quality",
-        "numberOfImages": "Number of Images"
+    "imageGenerator": {
+      "title": "Image Generator",
+      "description": "Create stunning visuals from text prompts."
     },
-    "imagePromptPlaceholder": "Describe the image you want to generate...",
-    "codePromptPlaceholder": "Describe the code you want to generate...",
-    "audioPromptPlaceholder": "Describe the audio you want to generate...",
-    "videoPromptPlaceholder": "Describe the video you want to generate...",
-    "instructions": "Instructions",
-    "codeGeneratorInstructions": "Describe the functionality you need. Be specific about input/output formats, libraries to use, and any constraints.",
-    "voice": "Voice",
-    "selectVoice": "Select a voice",
-    "noAudioGenerated": "No audio generated yet",
-    "videoSettings": {
-        "aspectRatio": "Aspect Ratio",
-        "style": "Style",
-        "selectStyle": "Select style",
-        "resolution": "Resolution",
-        "selectResolution": "Select resolution",
-        "duration": "Duration",
-        "motion": "Motion"
+    "voiceGenerator": {
+      "title": "Voice Generator",
+      "description": "Convert text into realistic speech."
     },
-    "noVideoGenerated": "No video generated yet",
-    "copied": "Copied!",
-    "copy": "Copy",
-    "download": "Download"
+    "videoGenerator": {
+      "title": "Video Generator",
+      "description": "Create videos from text or images.",
+      "badge": "Beta"
+    }
+  },
+  "textGenerator": "Text Generator",
+  "imageGenerator": "Image Generator",
+  "codeGenerator": "Code Generator",
+  "audioGenerator": "Audio Generator",
+  "videoGenerator": "Video Generator",
+  "model": "Model",
+  "selectModel": "Select a model",
+  "typeMessage": "Type a message...",
+  "send": "Send",
+  "attach": "Attach",
+  "voiceInput": "Voice Input",
+  "imageSettings": {
+    "aspectRatio": "Aspect Ratio",
+    "style": "Style",
+    "selectStyle": "Select style",
+    "resolution": "Resolution",
+    "selectResolution": "Select resolution",
+    "quality": "Quality",
+    "numberOfImages": "Number of Images"
+  },
+  "imagePromptPlaceholder": "Describe the image you want to create...",
+  "codePromptPlaceholder": "Describe the code you want to create...",
+  "audioPromptPlaceholder": "Describe the audio you want to create...",
+  "videoPromptPlaceholder": "Describe the video you want to create...",
+  "instructions": "Instructions",
+  "codeGeneratorInstructions": "Describe the functionality you need. Be specific about input/output formats, libraries to use, and constraints.",
+  "voice": "Voice",
+  "selectVoice": "Select a voice",
+  "noAudioGenerated": "No audio generated yet",
+  "videoSettings": {
+    "aspectRatio": "Aspect Ratio",
+    "style": "Style",
+    "selectStyle": "Select style",
+    "resolution": "Resolution",
+    "selectResolution": "Select resolution",
+    "duration": "Duration",
+    "motion": "Motion"
+  },
+  "noVideoGenerated": "No video generated yet",
+  "copied": "Copied!",
+  "copy": "Copy",
+  "download": "Download",
+  "history": {
+    "title": "History",
+    "description": "View your AI generation history",
+    "generationHistory": "Generation History",
+    "viewHistory": "View your AI generation history"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "aiStudio": "AI Studio",
+  "attachFile": "Attach File",
+  "clearChat": "Clear Chat",
+  "settings": {
+    "title": "AI Module Settings",
+    "description": "Configure default settings for the AI module",
+    "saved": "Settings Saved",
+    "savedMessage": "AI module settings have been successfully saved.",
+    "saveFailed": "Save Failed",
+    "saveFailedMessage": "Settings could not be saved"
+  }
 }

@@ -1,6 +1,22 @@
 {
+  "common": {
+    "comingSoon": "Diese Funktion ist in Kürze verfügbar..."
+  },
   "title": "Lizenzdienst",
-  "description": "Lizenzpaketverwaltung und Tenant-Lizenzverfolgungssystem",
+  "description": "Lizenzpaket-Management und Tenant-Lizenzverfolgungssystem",
+  "menu": {
+    "label": "Lizenz",
+    "items": {
+      "dashboard": "Dashboard",
+      "packages": "Lizenzpakete",
+      "tenants": "Tenant-Lizenzen",
+      "my-license": "Meine Lizenz"
+    }
+  },
+  "myLicensePage": {
+    "title": "Meine Lizenz",
+    "description": "Zeigen Sie Ihre Lizenzinformationen an"
+  },
   "packages": {
     "title": "Lizenzpakete",
     "description": "Lizenzpakete verwalten",
@@ -17,14 +33,14 @@
       "basePrice": "Preis",
       "currency": "Währung",
       "billingCycle": "Abrechnungszyklus",
-      "maxUsers": "Max Benutzer",
-      "maxStorage": "Max Speicher (GB)",
+      "maxUsers": "Max. Benutzer",
+      "maxStorage": "Max. Speicher (GB)",
       "isActive": "Aktiv",
       "actions": "Aktionen"
     },
     "form": {
       "name": "Paketname",
-      "namePlaceholder": "Paketname eingeben",
+      "namePlaceholder": "Paketnamen eingeben",
       "description": "Beschreibung",
       "descriptionPlaceholder": "Paketbeschreibung eingeben",
       "modules": "Module",
@@ -34,10 +50,10 @@
       "currency": "Währung",
       "currencyPlaceholder": "Währung auswählen",
       "billingCycle": "Abrechnungszyklus",
-      "billingCyclePlaceholder": "Abrechnungszyklus auswählen",
-      "maxUsers": "Max Benutzer",
-      "maxUsersPlaceholder": "Maximale Anzahl von Benutzern",
-      "maxStorage": "Max Speicher (GB)",
+      "billingCyclePlaceholder": "Abrechnungszyklus wählen",
+      "maxUsers": "Max. Benutzer",
+      "maxUsersPlaceholder": "Maximale Anzahl der Benutzer",
+      "maxStorage": "Max. Speicher (GB)",
       "maxStoragePlaceholder": "Maximaler Speicher (GB)",
       "isActive": "Aktiv"
     },
@@ -48,10 +64,12 @@
     },
     "createSuccess": "Paket erfolgreich erstellt",
     "updateSuccess": "Paket erfolgreich aktualisiert",
+    "createError": "Fehler beim Erstellen des Pakets",
+    "updateError": "Fehler beim Aktualisieren des Pakets",
     "delete": {
-      "confirm": "Möchten Sie dieses Paket wirklich löschen?",
+      "confirm": "Sind Sie sicher, dass Sie dieses Paket löschen möchten?",
       "success": "Paket erfolgreich gelöscht",
-      "error": "Beim Löschen des Pakets ist ein Fehler aufgetreten"
+      "error": "Fehler beim Löschen des Pakets"
     }
   },
   "tenantLicenses": {
@@ -66,7 +84,7 @@
     "table": {
       "tenant": "Tenant",
       "package": "Paket",
-      "startDate": "Start",
+      "startDate": "Beginn",
       "endDate": "Ende",
       "status": "Status",
       "paymentStatus": "Zahlungsstatus",
@@ -78,22 +96,22 @@
       "package": "Paket",
       "packagePlaceholder": "Paket auswählen",
       "startDate": "Startdatum",
-      "startDatePlaceholder": "Startdatum auswählen",
+      "startDatePlaceholder": "Startdatum wählen",
       "endDate": "Enddatum",
-      "endDatePlaceholder": "Enddatum auswählen",
+      "endDatePlaceholder": "Enddatum wählen",
       "renewalDate": "Erneuerungsdatum",
-      "renewalDatePlaceholder": "Erneuerungsdatum auswählen",
+      "renewalDatePlaceholder": "Erneuerungsdatum wählen",
       "status": "Status",
-      "statusPlaceholder": "Status auswählen",
+      "statusPlaceholder": "Status wählen",
       "paymentStatus": "Zahlungsstatus",
-      "paymentStatusPlaceholder": "Zahlungsstatus auswählen",
+      "paymentStatusPlaceholder": "Zahlungsstatus wählen",
       "notes": "Notizen",
       "notesPlaceholder": "Notizen eingeben"
     },
     "status": {
       "active": "Aktiv",
       "expired": "Abgelaufen",
-      "suspended": "Ausgesetzt",
+      "suspended": "Suspendiert",
       "cancelled": "Storniert"
     },
     "paymentStatus": {
@@ -104,10 +122,12 @@
     "createSuccess": "Lizenz erfolgreich erstellt",
     "updateSuccess": "Lizenz erfolgreich aktualisiert",
     "delete": {
-      "confirm": "Möchten Sie diese Lizenz wirklich löschen?",
+      "confirm": "Sind Sie sicher, dass Sie diese Lizenz löschen möchten?",
       "success": "Lizenz erfolgreich gelöscht",
-      "error": "Beim Löschen der Lizenz ist ein Fehler aufgetreten"
-    }
+      "error": "Fehler beim Löschen der Lizenz"
+    },
+    "updateError": "Fehler beim Aktualisieren der Lizenz",
+    "createError": "Fehler beim Erstellen der Lizenz"
   },
   "payments": {
     "title": "Zahlungen",
@@ -122,7 +142,7 @@
       "paymentDate": "Zahlungsdatum",
       "status": "Status",
       "approvedBy": "Genehmigt von",
-      "approvedAt": "Genehmigt am",
+      "approvedAt": "Genehmigungsdatum",
       "actions": "Aktionen"
     },
     "form": {
@@ -131,9 +151,9 @@
       "currency": "Währung",
       "currencyPlaceholder": "Währung auswählen",
       "paymentMethod": "Zahlungsmethode",
-      "paymentMethodPlaceholder": "Zahlungsmethode auswählen",
+      "paymentMethodPlaceholder": "Zahlungsmethode wählen",
       "paymentDate": "Zahlungsdatum",
-      "paymentDatePlaceholder": "Zahlungsdatum auswählen",
+      "paymentDatePlaceholder": "Zahlungsdatum wählen",
       "receiptUrl": "Beleg-URL",
       "receiptUrlPlaceholder": "Beleg-URL eingeben",
       "notes": "Notizen",
@@ -152,15 +172,16 @@
     "createSuccess": "Zahlung erfolgreich erstellt",
     "updateSuccess": "Zahlung erfolgreich aktualisiert",
     "delete": {
-      "confirm": "Möchten Sie diese Zahlung wirklich löschen?",
+      "confirm": "Sind Sie sicher, dass Sie diese Zahlung löschen möchten?",
       "success": "Zahlung erfolgreich gelöscht",
-      "error": "Beim Löschen der Zahlung ist ein Fehler aufgetreten"
+      "error": "Fehler beim Löschen der Zahlung"
     }
   },
   "myLicense": {
     "title": "Meine Lizenz",
-    "description": "Ihre aktuelle Lizenzinformationen anzeigen",
+    "description": "Zeigen Sie Ihre aktuellen Lizenzinformationen an",
     "noLicense": "Sie haben keine aktive Lizenz",
+    "notFound": "Lizenz nicht gefunden",
     "package": "Paket",
     "startDate": "Startdatum",
     "endDate": "Enddatum",
@@ -169,20 +190,58 @@
     "paymentStatus": "Zahlungsstatus",
     "modules": "Module",
     "features": "Funktionen",
-    "paymentHistory": "Zahlungshistorie"
+    "paymentHistory": "Zahlungshistorie",
+    "history": {
+      "title": "Lizenzhistorie",
+      "description": "Zeigen Sie Ihre Lizenzzahlungshistorie an",
+      "loadError": "Fehler beim Laden der Lizenzhistorie"
+    }
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "active": "Aktiv",
+    "back": "Zurück",
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "inactive": "Inaktiv",
+    "modules": "Module",
+    "of": "von",
+    "required": "Erforderlich",
+    "search": "Suchen",
+    "showing": "Wird angezeigt",
+    "update": "Aktualisieren"
   },
   "messages": {
     "createSuccess": "Erfolgreich erstellt",
-    "createError": "Beim Erstellen ist ein Fehler aufgetreten",
+    "createError": "Fehler beim Erstellen",
     "updateSuccess": "Erfolgreich aktualisiert",
-    "updateError": "Beim Aktualisieren ist ein Fehler aufgetreten",
-    "success": "Erfolg",
+    "updateError": "Fehler beim Aktualisieren",
+    "success": "Erfolgreich",
     "error": "Fehler"
+  },
+  "actions": {
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "newLicense": "Neue Lizenz",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "search": {
+    "placeholder": "Suchen..."
+  },
+  "pagination": {
+    "showing": "Wird angezeigt",
+    "of": "von"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "form": {
+    "cancel": "Abbrechen"
   }
 }
-
-
-
-
-
-

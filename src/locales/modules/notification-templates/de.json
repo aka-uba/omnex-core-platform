@@ -1,0 +1,64 @@
+{
+  "title": "Benachrichtigungsvorlagen",
+  "description": "Erstellen und verwalten Sie Vorlagen für E-Mail-, SMS-, Push- und Social-Media-Benachrichtigungen",
+  "create": "Neue Vorlage",
+  "search": "Vorlage suchen...",
+  "refresh": "Aktualisieren",
+  "error": "Fehler",
+  "loadError": "Fehler beim Laden der Vorlagen",
+  "noTemplates": "Keine Vorlagen gefunden",
+  "confirmDelete": "Sind Sie sicher, dass Sie diese Vorlage löschen möchten?",
+  "delete": {
+    "title": "Vorlage löschen",
+    "confirm": "Löschen",
+    "message": "Diese Vorlage wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden."
+  },
+  "tabs": {
+    "email": "E-Mail",
+    "sms": "SMS",
+    "push": "Push",
+    "basic": "Basisinfo",
+    "content": "Inhalt",
+    "signature": "Signatur",
+    "design": "Design",
+    "preview": "Vorschau"
+  },
+  "categories": {
+    "system": "System",
+    "user": "Benutzer",
+    "task": "Aufgabe",
+    "urgent": "Dringend"
+  },
+  "styles": {
+    "corporate": "Unternehmen",
+    "elegant": "Elegant",
+    "modern": "Modern"
+  },
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
+  },
+  "actions": {
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "setDefault": "Als Standard festlegen",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "form": {
+    "name": "Vorlagenname",
+    "emailSubject": "E-Mail-Betreff",
+    "emailPlainText": "Nur-Text-Inhalt",
+    "smsContent": "SMS-Inhalt",
+    "pushTitle": "Push-Titel"
+  },
+  "variables": {
+    "title": "Dynamische Variablen",
+    "description": "Verfügbare Variablen: {{userName}}, {{userEmail}}, {{companyName}}, etc."
+  },
+  "notifications": {
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "deleted": "Vorlage erfolgreich gelöscht"
+  }
+}

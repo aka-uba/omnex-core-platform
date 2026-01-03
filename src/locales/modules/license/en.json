@@ -1,4 +1,7 @@
 {
+  "common": {
+    "comingSoon": "This feature is coming soon..."
+  },
   "title": "License Service",
   "description": "License package management and tenant license tracking system",
   "menu": {
@@ -9,6 +12,10 @@
       "tenants": "Tenant Licenses",
       "my-license": "My License"
     }
+  },
+  "myLicensePage": {
+    "title": "My License",
+    "description": "View your license information"
   },
   "packages": {
     "title": "License Packages",
@@ -57,10 +64,12 @@
     },
     "createSuccess": "Package created successfully",
     "updateSuccess": "Package updated successfully",
+    "createError": "An error occurred while creating package",
+    "updateError": "An error occurred while updating package",
     "delete": {
       "confirm": "Are you sure you want to delete this package?",
       "success": "Package deleted successfully",
-      "error": "An error occurred while deleting the package"
+      "error": "An error occurred while deleting package"
     }
   },
   "tenantLicenses": {
@@ -115,8 +124,10 @@
     "delete": {
       "confirm": "Are you sure you want to delete this license?",
       "success": "License deleted successfully",
-      "error": "An error occurred while deleting the license"
-    }
+      "error": "An error occurred while deleting license"
+    },
+    "updateError": "An error occurred while updating license",
+    "createError": "An error occurred while creating license"
   },
   "payments": {
     "title": "Payments",
@@ -131,7 +142,7 @@
       "paymentDate": "Payment Date",
       "status": "Status",
       "approvedBy": "Approved By",
-      "approvedAt": "Approved At",
+      "approvedAt": "Approval Date",
       "actions": "Actions"
     },
     "form": {
@@ -163,13 +174,14 @@
     "delete": {
       "confirm": "Are you sure you want to delete this payment?",
       "success": "Payment deleted successfully",
-      "error": "An error occurred while deleting the payment"
+      "error": "An error occurred while deleting payment"
     }
   },
   "myLicense": {
     "title": "My License",
     "description": "View your current license information",
     "noLicense": "You do not have an active license",
+    "notFound": "License Not Found",
     "package": "Package",
     "startDate": "Start Date",
     "endDate": "End Date",
@@ -178,7 +190,27 @@
     "paymentStatus": "Payment Status",
     "modules": "Modules",
     "features": "Features",
-    "paymentHistory": "Payment History"
+    "paymentHistory": "Payment History",
+    "history": {
+      "title": "License History",
+      "description": "View your license payment history",
+      "loadError": "An error occurred while loading license history"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "active": "Active",
+    "back": "Back",
+    "create": "Create",
+    "edit": "Edit",
+    "inactive": "Inactive",
+    "modules": "Modules",
+    "of": "of",
+    "required": "Required",
+    "search": "Search",
+    "showing": "Showing",
+    "update": "Update"
   },
   "messages": {
     "createSuccess": "Created successfully",
@@ -187,7 +219,29 @@
     "updateError": "An error occurred while updating",
     "success": "Success",
     "error": "Error"
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "newLicense": "New License",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "form": {
+    "cancel": "Cancel"
   }
 }
-
-

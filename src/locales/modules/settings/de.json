@@ -1,16 +1,6 @@
 {
   "title": "Einstellungen",
   "description": "System- und Firmeneinstellungen verwalten",
-  "menu": {
-    "label": "Einstellungen",
-    "items": {
-      "dashboard": "Dashboard",
-      "general": "Allgemein",
-      "company": "Firma",
-      "modules": "Module",
-      "users": "Benutzer"
-    }
-  },
   "addCompany": {
     "title": "Neue Firma hinzufügen",
     "description": "Vervollständigen Sie die folgenden Schritte, um Ihre Firma hinzuzufügen"
@@ -35,13 +25,13 @@
       "features": {
         "title": "Dieses Modul bietet die folgenden Funktionen:",
         "realEstate": {
-          "properties": "Immobilien- und Wohnungsverwaltung mit detaillierten Informationen",
-          "tenants": "Mieter- und Vertragsverfolgung",
-          "payments": "Zahlungsverfolgung und Finanzberichte",
+          "properties": "Immobilien und Wohnungen mit detaillierten Informationen verwalten",
+          "tenants": "Mieter und Verträge verfolgen",
+          "payments": "Zahlungen überwachen und Finanzberichte erstellen",
           "appointments": "Immobilientermine planen und verwalten",
           "email": "E-Mail-Kampagnen für Mieter erstellen und versenden",
           "reports": "Umfassende Berichte und Analysen erstellen",
-          "staff": "Personal- und Leistungsmanagement"
+          "staff": "Personal und deren Leistung verwalten"
         }
       }
     },
@@ -49,7 +39,7 @@
       "title": "Moduleinstellungen",
       "resetToDefault": "Auf Standard zurücksetzen",
       "saveChanges": "Änderungen speichern",
-      "noSettings": "Für dieses Modul gibt es keine Einstellungen",
+      "noSettings": "Für dieses Modul sind keine Einstellungen verfügbar",
       "setting": "Einstellung",
       "settings_plural": "Einstellungen",
       "categories": {
@@ -96,7 +86,7 @@
         "hide": "Ausblenden",
         "show": "Anzeigen",
         "delete": "Löschen",
-        "dragHandle": "Ziehen"
+        "dragHandle": "Ziehen zum Neuanordnen"
       },
       "notifications": {
         "saved": "Erfolgreich",
@@ -118,5 +108,3 @@
     }
   }
 }
-
-

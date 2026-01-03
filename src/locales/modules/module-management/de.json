@@ -1,0 +1,142 @@
+{
+  "moduleSettings": {
+    "tabs": {
+      "summary": "Zusammenfassung",
+      "settings": "Einstellungen",
+      "menu": "Menü",
+      "demoData": "Demodaten"
+    },
+    "summary": {
+      "title": "Modulzusammenfassung",
+      "version": "Version",
+      "lastUpdated": "Zuletzt aktualisiert",
+      "category": "Kategorie",
+      "author": "Autor",
+      "whatYouCanDo": "Funktionen",
+      "changeLog": "Änderungsprotokoll",
+      "versionHistory": "Versionsverlauf",
+      "current": "Aktuell",
+      "changes": "Änderungen",
+      "features": {
+        "title": "Dieses Modul bietet folgende Funktionen:",
+        "realEstate": {
+          "properties": "Immobilien- und Einheitenverwaltung mit detaillierten Informationen",
+          "tenants": "Mieter- und Vertragsverfolgung",
+          "payments": "Zahlungsverfolgung und Finanzberichte",
+          "appointments": "Planung und Verwaltung von Besichtigungsterminen",
+          "email": "Erstellung und Versand von E-Mail-Kampagnen an Mieter",
+          "reports": "Erstellung umfassender Berichte und Analysen",
+          "staff": "Personal- und Leistungsmanagement"
+        }
+      }
+    },
+    "settings": {
+      "title": "Moduleinstellungen",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "saveChanges": "Änderungen speichern",
+      "noSettings": "Keine Einstellungen für dieses Modul gefunden",
+      "setting": "Einstellung",
+      "settings_plural": "Einstellungen",
+      "categories": {
+        "general": "Allgemein",
+        "email": "E-Mail",
+        "payments": "Zahlungen",
+        "contracts": "Verträge",
+        "maintenance": "Wartung",
+        "appearance": "Erscheinungsbild",
+        "files": "Dateien",
+        "appointments": "Termine",
+        "properties": "Immobilien",
+        "scheduling": "Planung",
+        "stock": "Lagerbestand",
+        "products": "Produkte",
+        "invoices": "Rechnungen",
+        "expenses": "Ausgaben",
+        "subscriptions": "Abonnements",
+        "leaves": "Abwesenheiten",
+        "payrolls": "Gehaltsabrechnungen",
+        "notifications": "Benachrichtigungen",
+        "display": "Anzeige",
+        "push": "Push-Benachrichtigungen",
+        "sms": "SMS",
+        "export": "Export",
+        "media": "Medien",
+        "ai": "KI",
+        "api": "API",
+        "reporting": "Berichterstattung"
+      },
+      "controls": {
+        "enabled": "Aktiviert",
+        "disabled": "Deaktiviert"
+      },
+      "notifications": {
+        "saved": "Erfolgreich",
+        "savedMessage": "Einstellungen erfolgreich gespeichert",
+        "error": "Fehler",
+        "errorMessage": "Einstellungen konnten nicht gespeichert werden"
+      }
+    },
+    "menu": {
+      "title": "Menükonfiguration",
+      "description": "Per Drag-and-Drop neu anordnen. Zum Konfigurieren auf Elemente klicken.",
+      "addMenuItem": "Menüpunkt hinzufügen",
+      "saveMenu": "Menü speichern",
+      "resetToDefault": "Auf Standard zurücksetzen",
+      "itemConfig": {
+        "title": "Titel",
+        "icon": "Symbol",
+        "selectIcon": "Symbol wählen",
+        "path": "Pfad",
+        "openIn": "Öffnen in",
+        "sameTab": "Gleicher Tab",
+        "newTab": "Neuer Tab"
+      },
+      "tooltips": {
+        "decreaseIndent": "Einzug verringern",
+        "atRootLevel": "Auf Stammebene",
+        "increaseIndent": "Einzug vergrößern",
+        "maxIndentLevel": "Maximale Einzugsebene",
+        "hide": "Ausblenden",
+        "show": "Anzeigen",
+        "delete": "Löschen",
+        "dragHandle": "Ziehen"
+      },
+      "notifications": {
+        "saved": "Erfolgreich",
+        "savedMessage": "Menükonfiguration erfolgreich gespeichert",
+        "reset": "Erfolgreich",
+        "resetMessage": "Menü auf Standardeinstellungen zurückgesetzt",
+        "error": "Fehler",
+        "errorMessage": "Menü konnte nicht gespeichert werden"
+      }
+    },
+    "demoData": {
+      "title": "Demodaten",
+      "description": "Sie können Demodaten für dieses Modul laden oder entfernen.",
+      "infoTitle": "Über Demodaten",
+      "infoMessage": "Demodaten helfen beim Testen des Systems. Sie sollten nicht in Produktionsumgebungen verwendet werden. Demodaten sind zur Identifizierung mit dem Präfix [DEMO] gekennzeichnet.",
+      "warningTitle": "Achtung",
+      "warningMessage": "Das Entfernen von Demodaten kann nicht rückgängig gemacht werden. Es werden nur als Demo markierte Daten gelöscht.",
+      "locale": {
+        "label": "Sprache der Demodaten",
+        "description": "Demodaten werden in der gewählten Sprache und Währung erstellt",
+        "placeholder": "Sprache wählen"
+      },
+      "status": {
+        "loaded": "{{count}} Datensätze geladen",
+        "hasData": "Demodaten vorhanden",
+        "noData": "Keine Demodaten"
+      }
+    }
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  }
+}

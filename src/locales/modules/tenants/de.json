@@ -1,35 +1,24 @@
 {
-  "title": "Mieterverwaltung",
-  "description": "Multi-Tenant-Verwaltung",
-  "menu": {
-    "label": "Mieter",
-    "items": {
-      "dashboard": "Dashboard",
-      "list": "Mieterliste",
-      "create": "Mieter erstellen",
-      "settings": "Einstellungen"
-    }
-  },
   "tenants": {
-    "title": "Mieterverwaltung",
-    "subtitle": "Alle Mieter anzeigen und verwalten",
-    "createTenant": "Neuen Mieter erstellen",
-    "tenantList": "Mieterliste",
-    "tenantDetails": "Mieterdetails",
+    "title": "Mandantenverwaltung",
+    "subtitle": "Alle Mandanten anzeigen und verwalten",
+    "createTenant": "Neuen Mandanten erstellen",
+    "tenantList": "Mandantenliste",
+    "tenantDetails": "Mandantendetails",
     "wizard": {
-      "title": "Neuen Mieter erstellen",
-      "step1": "Grundlegende Informationen",
+      "title": "Neuen Mandanten erstellen",
+      "step1": "Grundinformationen",
       "step2": "Firmeninformationen",
       "step3": "Standort",
       "step4": "Zusammenfassung",
       "step5": "Wird erstellt",
       "step6": "Abgeschlossen",
       "basicInfo": {
-        "tenantName": "Mietername",
+        "tenantName": "Mandantenname",
         "tenantNamePlaceholder": "ACME Corporation",
         "slug": "Slug",
         "slugPlaceholder": "acme",
-        "slugDescription": "Wird bei der Datenbankbenennung verwendet (Kleinbuchstaben, Zahlen, Bindestrich)",
+        "slugDescription": "Wird in Datenbankbenennung verwendet (Kleinbuchstaben, Zahlen, Bindestriche)",
         "subdomain": "Subdomain",
         "subdomainPlaceholder": "acme",
         "subdomainDescription": "Zugriffs-URL: acme.onwindos.com",
@@ -41,7 +30,7 @@
         "companyNamePlaceholder": "ACME Corporation",
         "logo": "Firmenlogo",
         "logoPlaceholder": "Logo hochladen",
-        "logoDescription": "Wird in exportierten Dokumenten verwendet (PDF, Excel usw.)",
+        "logoDescription": "Wird in Exportdokumenten verwendet (PDF, Excel usw.)",
         "favicon": "Favicon",
         "faviconPlaceholder": "Favicon hochladen",
         "faviconDescription": "Im Browser-Tab angezeigtes Symbol (16x16 oder 32x32 px)",
@@ -60,18 +49,18 @@
       "location": {
         "optional": "Optionaler Schritt",
         "optionalMessage": "Sie können diesen Schritt überspringen und Standorte später hinzufügen.",
-        "skip": "Standorteinrichtung überspringen",
+        "skip": "Standort-Einrichtung überspringen",
         "skipped": "Standort übersprungen",
-        "skippedMessage": "Sie können Standorte später auf der Einstellungsseite hinzufügen.",
+        "skippedMessage": "Sie können Standorte später über die Einstellungsseite hinzufügen.",
         "addLocation": "Ersten Standort hinzufügen",
         "locationName": "Standortname",
-        "locationNamePlaceholder": "Hauptbüro",
+        "locationNamePlaceholder": "Hauptsitz",
         "locationType": "Standorttyp",
         "locationTypePlaceholder": "Typ auswählen",
         "types": {
           "firma": "Firma",
           "lokasyon": "Standort",
-          "isletme": "Betrieb",
+          "isletme": "Einrichtung",
           "koridor": "Korridor",
           "oda": "Raum"
         },
@@ -83,12 +72,12 @@
         "countryPlaceholder": "Türkei"
       },
       "review": {
-        "title": "Überprüfen Sie Ihre Konfiguration",
-        "subtitle": "Bitte überprüfen Sie alle Informationen, bevor Sie den Mieter erstellen.",
-        "basicInfo": "Grundlegende Informationen",
+        "title": "Ihre Konfiguration überprüfen",
+        "subtitle": "Bitte überprüfen Sie alle Informationen, bevor Sie den Mandanten erstellen.",
+        "basicInfo": "Grundinformationen",
         "companyInfo": "Firmeninformationen",
         "initialLocation": "Anfangsstandort",
-        "tenantName": "Mietername:",
+        "tenantName": "Mandantenname:",
         "slug": "Slug:",
         "subdomain": "Subdomain:",
         "customDomain": "Benutzerdefinierte Domain:",
@@ -107,8 +96,8 @@
         "notConfigured": "Standort nicht konfiguriert"
       },
       "progress": {
-        "title": "Mieter wird erstellt...",
-        "subtitle": "Bitte warten Sie, während die Mietereinrichtung abgeschlossen wird. Dies kann eine Minute dauern.",
+        "title": "Mandant wird erstellt...",
+        "subtitle": "Bitte warten Sie, während die Mandanteneinrichtung abgeschlossen wird. Dies kann eine Minute dauern.",
         "steps": {
           "database": "Datenbank wird erstellt",
           "databaseDesc": "PostgreSQL-Datenbank wird eingerichtet",
@@ -116,21 +105,21 @@
           "migrationsDesc": "Datenbankschema wird angewendet",
           "storage": "Speicher wird erstellt",
           "storageDesc": "Dateiverzeichnisse werden eingerichtet",
-          "seeding": "Daten werden hinzugefügt",
+          "seeding": "Daten werden eingefügt",
           "seedingDesc": "Standardbenutzer und -rollen werden erstellt",
           "exportTemplate": "Export-Vorlage wird erstellt",
           "exportTemplateDesc": "Firmenvorlage wird eingerichtet",
           "location": "Standort wird erstellt",
-          "locationDesc": "Erster Standort wird eingerichtet"
+          "locationDesc": "Anfangsstandort wird eingerichtet"
         }
       },
       "credentials": {
-        "title": "Mieter erfolgreich erstellt!",
-        "subtitle": "Ihr Mieter wurde erstellt und ist einsatzbereit.",
+        "title": "Mandant erfolgreich erstellt!",
+        "subtitle": "Ihr Mandant wurde erstellt und ist einsatzbereit.",
         "accessUrl": "Zugriffs-URL",
-        "superAdmin": "SuperAdmin-Informationen",
-        "tenantAdmin": "Mieter-Admin-Informationen",
-        "defaultUser": "Standardbenutzer-Informationen",
+        "superAdmin": "SuperAdmin-Anmeldedaten",
+        "tenantAdmin": "Mandanten-Admin-Anmeldedaten",
+        "defaultUser": "Standard-Benutzer-Anmeldedaten",
         "email": "E-Mail:",
         "username": "Benutzername:",
         "password": "Passwort:",
@@ -139,27 +128,46 @@
         "openInNewTab": "In neuem Tab öffnen",
         "exportTemplate": "Export-Vorlage",
         "exportTemplateCreated": "Standard-Export-Vorlage erstellt, ID:",
-        "location": "Erster Standort",
-        "locationCreated": "Erster Standort erstellt, ID:",
+        "location": "Anfangsstandort",
+        "locationCreated": "Anfangsstandort erstellt, ID:",
         "finish": "Zum Firmen-Dashboard gehen"
       },
       "buttons": {
         "back": "Zurück",
         "next": "Weiter",
-        "create": "Mieter erstellen",
-        "finish": "Fertigstellen"
+        "create": "Mandant erstellen",
+        "finish": "Fertig"
       }
     },
     "errors": {
-      "nameRequired": "Mietername ist erforderlich",
+      "nameRequired": "Mandantenname ist erforderlich",
       "slugRequired": "Slug ist erforderlich",
-      "slugInvalid": "Slug kann nur Kleinbuchstaben, Zahlen und Bindestriche enthalten",
+      "slugInvalid": "Slug darf nur Kleinbuchstaben, Zahlen und Bindestriche enthalten",
       "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein",
       "urlInvalid": "Geben Sie eine gültige URL ein",
-      "createFailed": "Mieter konnte nicht erstellt werden",
-      "loadFailed": "Mieter konnte nicht geladen werden"
+      "createFailed": "Mandant konnte nicht erstellt werden",
+      "loadFailed": "Mandant konnte nicht geladen werden"
     }
+  },
+  "title": "Mandantenverwaltung",
+  "description": "Multi-Mandanten-Verwaltungssystem",
+  "menu": {
+    "label": "Mandanten",
+    "items": {
+      "dashboard": "Dashboard",
+      "list": "Mandantenliste",
+      "create": "Mandant erstellen",
+      "settings": "Einstellungen"
+    }
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Ansehen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   }
 }
-
-

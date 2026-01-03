@@ -1,0 +1,300 @@
+{
+  "moduleSettings": {
+    "tabs": {
+      "summary": "Summary",
+      "settings": "Settings",
+      "menu": "Menu",
+      "demoData": "Demo Data"
+    },
+    "summary": {
+      "title": "Module Summary",
+      "version": "Version",
+      "lastUpdated": "Last Updated",
+      "category": "Category",
+      "author": "Author",
+      "whatYouCanDo": "Features",
+      "changeLog": "Changelog",
+      "versionHistory": "Version History",
+      "current": "Current",
+      "changes": "Changes",
+      "features": {
+        "title": "This module provides the following features:",
+        "realEstate": {
+          "properties": "Property and unit management with detailed information",
+          "tenants": "Tenant and contract tracking",
+          "payments": "Payment tracking and financial reports",
+          "appointments": "Scheduling and managing property viewings",
+          "email": "Creating and sending email campaigns to tenants",
+          "reports": "Generating comprehensive reports and analytics",
+          "staff": "Staff and performance management"
+        }
+      }
+    },
+    "settings": {
+      "title": "Module Settings",
+      "resetToDefault": "Reset to Default",
+      "saveChanges": "Save Changes",
+      "noSettings": "No settings found for this module",
+      "setting": "setting",
+      "settings_plural": "settings",
+      "categories": {
+        "general": "General",
+        "email": "Email",
+        "payments": "Payments",
+        "contracts": "Contracts",
+        "maintenance": "Maintenance",
+        "appearance": "Appearance",
+        "files": "Files",
+        "appointments": "Appointments",
+        "properties": "Properties",
+        "scheduling": "Scheduling",
+        "stock": "Stock",
+        "products": "Products",
+        "invoices": "Invoices",
+        "expenses": "Expenses",
+        "subscriptions": "Subscriptions",
+        "leaves": "Leaves",
+        "payrolls": "Payrolls",
+        "notifications": "Notifications",
+        "display": "Display",
+        "push": "Push Notifications",
+        "sms": "SMS",
+        "export": "Export",
+        "media": "Media",
+        "ai": "Artificial Intelligence",
+        "api": "API",
+        "reporting": "Reporting"
+      },
+      "controls": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "notifications": {
+        "saved": "Success",
+        "savedMessage": "Settings saved successfully",
+        "error": "Error",
+        "errorMessage": "Failed to save settings"
+      }
+    },
+    "menu": {
+      "title": "Menu Configuration",
+      "description": "Drag and drop to reorder menu items. Click items to configure.",
+      "addMenuItem": "Add Menu Item",
+      "saveMenu": "Save Menu",
+      "resetToDefault": "Reset to Default",
+      "itemConfig": {
+        "title": "Title",
+        "icon": "Icon",
+        "selectIcon": "Select Icon",
+        "path": "Path",
+        "openIn": "Open In",
+        "sameTab": "Same Tab",
+        "newTab": "New Tab"
+      },
+      "tooltips": {
+        "decreaseIndent": "Decrease Indent",
+        "atRootLevel": "At root level",
+        "increaseIndent": "Increase Indent",
+        "maxIndentLevel": "Maximum indent level",
+        "hide": "Hide",
+        "show": "Show",
+        "delete": "Delete",
+        "dragHandle": "Drag"
+      },
+      "notifications": {
+        "saved": "Success",
+        "savedMessage": "Menu configuration saved successfully",
+        "reset": "Success",
+        "resetMessage": "Menu reset to default settings",
+        "error": "Error",
+        "errorMessage": "Failed to save menu"
+      }
+    },
+    "icon": {
+      "upload": "Upload Icon",
+      "change": "Change Icon",
+      "uploading": "Uploading...",
+      "uploadSuccess": "Icon uploaded successfully",
+      "uploadError": "Failed to upload icon",
+      "maxSize": "Maximum file size: 2MB",
+      "allowedTypes": "Allowed formats: PNG, JPG, SVG, WebP"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "installed": "Installed",
+      "error": "Error"
+    },
+    "general": "General",
+    "versionHistory": {
+      "currentVersion": "Current version",
+      "resetMenuError": "Failed to reset menu"
+    },
+    "commonSettings": {
+      "enableNotifications": "Enable Notifications",
+      "enableNotificationsDesc": "Send notifications for HR events",
+      "primaryColor": "Primary Color",
+      "primaryColorDesc": "Primary theme color for the module",
+      "maxUploadSize": "Maximum Upload Size (MB)",
+      "maxUploadSizeDesc": "Maximum file upload size",
+      "autoSave": "Enable Auto-Save",
+      "autoSaveDesc": "Save changes automatically",
+      "autoSaveInterval": "Auto-Save Interval (seconds)",
+      "autoSaveIntervalDesc": "Seconds between auto-saves",
+      "defaultCurrency": "Default Currency",
+      "defaultCurrencyDesc": "Default currency for invoices and payments",
+      "defaultWorkHours": "Default Work Hours (daily)",
+      "defaultWorkHoursDesc": "Daily default working hours",
+      "leaveAutoApproval": "Auto-Approve Leaves",
+      "leaveAutoApprovalDesc": "Automatically approve leave requests",
+      "payrollAutoCalculation": "Auto-Calculate Payroll",
+      "payrollAutoCalculationDesc": "Automatically calculate payroll amounts",
+      "invoiceAutoNumbering": "Auto-Invoice Numbering",
+      "invoiceAutoNumberingDesc": "Generate invoice numbers automatically",
+      "expenseApprovalRequired": "Expense Approval Required",
+      "expenseApprovalRequiredDesc": "Require approval for all expenses",
+      "subscriptionAutoRenewal": "Subscription Auto-Renewal",
+      "subscriptionAutoRenewalDesc": "Renew subscriptions automatically",
+      "taxRate": "Default Tax Rate (%)",
+      "taxRateDesc": "Default tax rate for invoices",
+      "paymentReminderDays": "Payment Reminder (Days)",
+      "paymentReminderDaysDesc": "Days before due date to send reminder",
+      "enableEmailCampaigns": "Enable Email Campaigns",
+      "enableEmailCampaignsDesc": "Allow sending email campaigns to tenants",
+      "contractAutoRenewal": "Contract Auto-Renewal",
+      "contractAutoRenewalDesc": "Renew contracts automatically",
+      "maintenanceRequestsEnabled": "Maintenance Requests",
+      "maintenanceRequestsEnabledDesc": "Enable maintenance request system",
+      "appointmentDuration": "Default Appointment Duration (Minutes)",
+      "appointmentDurationDesc": "Default duration for property viewings",
+      "enableMapView": "Enable Map View",
+      "enableMapViewDesc": "Show properties on map view",
+      "autoScheduleReminders": "Auto-Schedule Reminders",
+      "autoScheduleRemindersDesc": "Send reminders automatically before scheduled maintenance",
+      "reminderDaysBefore": "Days Before Reminder",
+      "reminderDaysBeforeDesc": "Days before maintenance to send reminder",
+      "autoStockUpdate": "Auto-Stock Update",
+      "autoStockUpdateDesc": "Update stock automatically after production",
+      "defaultUnit": "Default Unit",
+      "defaultUnitDesc": "Default unit of measurement",
+      "lowStockThreshold": "Low Stock Threshold",
+      "lowStockThresholdDesc": "Alert when stock falls below this amount",
+      "enableGeocoding": "Enable Geocoding",
+      "enableGeocodingDesc": "Geocode addresses automatically",
+      "defaultCountry": "Default Country",
+      "defaultCountryDesc": "Default country for new locations",
+      "enableEmailNotifications": "Enable Email Notifications",
+      "enableEmailNotificationsDesc": "Send notifications via email",
+      "enablePushNotifications": "Enable Push Notifications",
+      "enablePushNotificationsDesc": "Send browser push notifications",
+      "enableSMSNotifications": "Enable SMS Notifications",
+      "enableSMSNotificationsDesc": "Send notifications via SMS",
+      "retentionDays": "Notification Retention (Days)",
+      "retentionDaysDesc": "Number of days to keep notifications",
+      "enableExpirationNotifications": "Enable Expiration Notifications",
+      "enableExpirationNotificationsDesc": "Send notification before license expires",
+      "notificationDaysBefore": "Notification Days Before",
+      "notificationDaysBeforeDesc": "Days before expiration to send notification",
+      "autoRenewal": "Auto-Renewal",
+      "autoRenewalDesc": "Renew licenses automatically",
+      "allowedFileTypes": "Allowed File Types",
+      "allowedFileTypesDesc": "Comma-separated list of allowed file extensions",
+      "enableSharing": "Enable File Sharing",
+      "enableSharingDesc": "Allow users to share files with others",
+      "enableVersioning": "Enable Versioning",
+      "enableVersioningDesc": "Keep file version history",
+      "messageRetentionDays": "Message Retention (Days)",
+      "messageRetentionDaysDesc": "Number of days to keep messages",
+      "maxFileSize": "Maximum File Size (MB)",
+      "maxFileSizeDesc": "Maximum file size for attachments",
+      "enableAutoExport": "Enable Auto-Export",
+      "enableAutoExportDesc": "Export scheduled reports automatically",
+      "defaultFormat": "Default Export Format",
+      "defaultFormatDesc": "Default format for exports",
+      "maxExportSize": "Maximum Export Size (MB)",
+      "maxExportSizeDesc": "Maximum size for exported files",
+      "defaultView": "Default View",
+      "defaultViewDesc": "Default calendar view",
+      "reminderMinutesBefore": "Reminder Minutes Before",
+      "reminderMinutesBeforeDesc": "Minutes before event to send reminder",
+      "openai_api_key": "OpenAI API Key",
+      "openai_api_keyDesc": "OpenAI API key for text and code generation",
+      "default_model": "Default Model",
+      "default_modelDesc": "Default AI model to use",
+      "maxTokens": "Max Tokens",
+      "maxTokensDesc": "Maximum tokens per generation",
+      "enableImageGeneration": "Enable Image Generation",
+      "enableImageGenerationDesc": "Allow AI image generation",
+      "enableAudioGeneration": "Enable Audio Generation",
+      "enableAudioGenerationDesc": "Allow AI audio generation",
+      "enableVideoGeneration": "Enable Video Generation",
+      "enableVideoGenerationDesc": "Allow AI video generation"
+    },
+    "options": {
+      "currency": {
+        "USD": "US Dollar",
+        "EUR": "Euro",
+        "TRY": "Turkish Lira",
+        "GBP": "British Pound"
+      },
+      "view": {
+        "month": "Month",
+        "week": "Week",
+        "day": "Day",
+        "agenda": "Agenda"
+      },
+      "unit": {
+        "pcs": "Pieces",
+        "kg": "Kilogram"
+      }
+    },
+    "demoData": {
+      "title": "Demo Data",
+      "description": "You can load or remove demo data for this module.",
+      "infoTitle": "About Demo Data",
+      "infoMessage": "Demo data helps you test your system. It should not be used in production. Demo data is marked with a [DEMO] prefix for easy identification.",
+      "warningTitle": "Attention",
+      "warningMessage": "Removing demo data is irreversible. This action only deletes data marked as demo and does not affect your real data.",
+      "locale": {
+        "label": "Demo Data Language",
+        "description": "Demo data will be created in the selected language and currency",
+        "placeholder": "Select language"
+      },
+      "status": {
+        "loaded": "{{count}} records loaded",
+        "hasData": "Demo data loaded",
+        "noData": "No demo data"
+      },
+      "recordCount": "Record count",
+      "dependencies": "Dependencies",
+      "actions": {
+        "load": "Load Demo Data",
+        "remove": "Remove Demo Data",
+        "verify": "Verify Data"
+      },
+      "notifications": {
+        "seedSuccess": "Success",
+        "seedSuccessMessage": "{{count}} demo records created in {{locale}} ({{currency}})",
+        "seedError": "Error",
+        "seedErrorMessage": "Failed to load demo data",
+        "removeSuccess": "Success",
+        "removeSuccessMessage": "{{count}} demo records deleted",
+        "removeError": "Error",
+        "removeErrorMessage": "Failed to delete demo data"
+      }
+    }
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "card": {
+    "noDescription": "No description"
+  }
+}

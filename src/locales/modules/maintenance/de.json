@@ -1,13 +1,26 @@
 {
-  "title": "Wartungsverwaltung",
-  "description": "Wartungsaufzeichnungen für Geräte verwalten",
-  "create": "Neue Wartungsaufzeichnung",
-  "createDescription": "Neue Wartungsaufzeichnung erstellen",
-  "edit": "Wartungsaufzeichnung bearbeiten",
-  "editDescription": "Wartungsaufzeichnungsinformationen aktualisieren",
-  "detail": "Wartungsaufzeichnung Detail",
-  "detailDescription": "Wartungsaufzeichnungsdetails anzeigen",
-  "notFound": "Wartungsaufzeichnung nicht gefunden",
+  "title": "Instandhaltungsmanagement",
+  "description": "Wartungsprotokolle für Geräte verwalten",
+  "menu": {
+    "label": "Wartung",
+    "items": {
+      "dashboard": "Dashboard",
+      "records": "Aufzeichnungen",
+      "calendar": "Kalender",
+      "reports": "Berichte"
+    }
+  },
+  "reports": {
+    "title": "Berichte",
+    "description": "Wartungsanalysen und -berichte anzeigen"
+  },
+  "create": "Neues Wartungsprotokoll",
+  "createDescription": "Ein neues Wartungsprotokoll erstellen",
+  "edit": "Wartungsprotokoll bearbeiten",
+  "editDescription": "Informationen zum Wartungsprotokoll aktualisieren",
+  "detail": "Details zum Wartungsprotokoll",
+  "detailDescription": "Details des Wartungsprotokolls anzeigen",
+  "notFound": "Wartungsprotokoll nicht gefunden",
   "types": {
     "preventive": "Präventiv",
     "corrective": "Korrektiv",
@@ -17,14 +30,16 @@
     "scheduled": "Geplant",
     "in_progress": "In Bearbeitung",
     "completed": "Abgeschlossen",
-    "cancelled": "Abgebrochen"
+    "cancelled": "Abgebrochen",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "table": {
     "title": "Titel",
     "type": "Typ",
     "status": "Status",
     "location": "Standort",
-    "equipment": "Gerät",
+    "equipment": "Ausrüstung",
     "scheduledDate": "Geplantes Datum",
     "estimatedCost": "Geschätzte Kosten",
     "actualCost": "Tatsächliche Kosten",
@@ -33,8 +48,8 @@
   "form": {
     "location": "Standort",
     "locationPlaceholder": "Standort auswählen",
-    "equipment": "Gerät",
-    "equipmentPlaceholder": "Gerät auswählen",
+    "equipment": "Ausrüstung",
+    "equipmentPlaceholder": "Ausrüstung auswählen",
     "type": "Typ",
     "typePlaceholder": "Typ auswählen",
     "title": "Titel",
@@ -42,11 +57,11 @@
     "description": "Beschreibung",
     "descriptionPlaceholder": "Wartungsbeschreibung eingeben",
     "scheduledDate": "Geplantes Datum",
-    "scheduledDatePlaceholder": "Geplantes Datum auswählen",
+    "scheduledDatePlaceholder": "Geplantes Datum wählen",
     "startDate": "Startdatum",
-    "startDatePlaceholder": "Startdatum auswählen",
+    "startDatePlaceholder": "Startdatum wählen",
     "endDate": "Enddatum",
-    "endDatePlaceholder": "Enddatum auswählen",
+    "endDatePlaceholder": "Enddatum wählen",
     "estimatedCost": "Geschätzte Kosten",
     "estimatedCostPlaceholder": "Geschätzte Kosten eingeben",
     "actualCost": "Tatsächliche Kosten",
@@ -56,48 +71,63 @@
     "documents": "Dokumente",
     "status": "Status",
     "statusPlaceholder": "Status auswählen",
-    "isActive": "Aktiv"
+    "isActive": "Aktiv",
+    "documentsDescription": "Dokumente zur Wartung hochladen",
+    "cancel": "Abbrechen",
+    "create": "Erstellen",
+    "createdAt": "Erstellt am",
+    "save": "Speichern",
+    "updatedAt": "Aktualisiert am"
   },
   "filter": {
     "type": "Typ",
     "status": "Status",
-    "location": "Standort"
+    "location": "Standort",
+    "all": "Alle"
   },
   "search": {
-    "placeholder": "Wartungsaufzeichnungen suchen..."
+    "placeholder": "In Wartungsprotokollen suchen..."
   },
   "delete": {
-    "confirm": "Möchten Sie diese Wartungsaufzeichnung wirklich löschen?",
-    "success": "Wartungsaufzeichnung erfolgreich gelöscht",
-    "error": "Beim Löschen der Wartungsaufzeichnung ist ein Fehler aufgetreten"
+    "confirm": "Sind Sie sicher, dass Sie dieses Wartungsprotokoll löschen möchten?",
+    "success": "Wartungsprotokoll erfolgreich gelöscht",
+    "error": "Fehler beim Löschen des Wartungsprotokolls"
   },
   "messages": {
-    "createSuccess": "Wartungsaufzeichnung erfolgreich erstellt",
-    "createError": "Beim Erstellen der Wartungsaufzeichnung ist ein Fehler aufgetreten",
-    "updateSuccess": "Wartungsaufzeichnung erfolgreich aktualisiert",
-    "updateError": "Beim Aktualisieren der Wartungsaufzeichnung ist ein Fehler aufgetreten",
-    "success": "Erfolg",
+    "createSuccess": "Wartungsprotokoll erfolgreich erstellt",
+    "createError": "Fehler beim Erstellen des Wartungsprotokolls",
+    "updateSuccess": "Wartungsprotokoll erfolgreich aktualisiert",
+    "updateError": "Fehler beim Aktualisieren des Wartungsprotokolls",
+    "success": "Erfolgreich",
     "error": "Fehler"
   },
   "export": {
-    "title": "Exportieren",
-    "excel": "Nach Excel exportieren",
-    "pdf": "Nach PDF exportieren",
-    "csv": "Nach CSV exportieren"
+    "title": "Exportieren"
   },
-  "exportSuccess": "Wartungsaufzeichnungen erfolgreich exportiert",
-  "exportError": "Beim Exportieren der Wartungsaufzeichnungen ist ein Fehler aufgetreten",
-  "exportDescription": "Wartungsaufzeichnungen Bericht",
+  "exportSuccess": "Wartungsprotokolle erfolgreich exportiert",
+  "exportError": "Fehler beim Exportieren der Wartungsprotokolle",
+  "exportDescription": "Bericht über Wartungsprotokolle",
   "pagination": {
-    "showing": "Anzeigen",
+    "showing": "Wird angezeigt",
     "of": "von"
+  },
+  "actions": {
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "newRecord": "Neues Wartungsprotokoll",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   },
   "dashboard": {
     "title": "Wartungs-Dashboard",
-    "description": "Übersicht über Wartungsaktivitäten und Analysen",
-    "dateFrom": "Von Datum",
-    "dateTo": "Bis Datum",
-    "totalRecords": "Gesamtaufzeichnungen",
+    "description": "Überblick über Wartungsaktivitäten und Analysen",
+    "dateFrom": "Startdatum",
+    "dateTo": "Enddatum",
+    "totalRecords": "Gesamtanzahl Aufzeichnungen",
     "completed": "Abgeschlossen",
     "totalCost": "Gesamtkosten",
     "scheduled": "Geplant",
@@ -111,7 +141,13 @@
   },
   "calendar": {
     "title": "Wartungskalender",
-    "description": "Wartungsaufzeichnungen in Kalenderansicht anzeigen"
+    "description": "Wartungsprotokolle in der Kalenderansicht anzeigen"
+  },
+  "common": {
+    "back": "Zurück",
+    "edit": "Bearbeiten",
+    "errorLoading": "Fehler beim Laden",
+    "noData": "Keine Daten gefunden",
+    "required": "Erforderlich"
   }
 }
-

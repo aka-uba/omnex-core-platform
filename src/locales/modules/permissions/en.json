@@ -1,5 +1,5 @@
 {
-  "title": "Permissions Management",
+  "title": "Permission Management",
   "description": "Manage system-wide user permissions and access levels.",
   "create": {
     "title": "Create New Permission",
@@ -38,12 +38,18 @@
     "category": "Category",
     "categoryPlaceholder": "Select category",
     "module": "Module",
-    "modulePlaceholder": "Select module"
+    "modulePlaceholder": "Select module",
+    "cancel": "Cancel"
   },
   "actions": {
     "view": "View",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
   },
   "validation": {
     "keyRequired": "Permission key is required",
@@ -65,6 +71,9 @@
     "scheduler": "Scheduler",
     "finance": "Finance"
   },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
   "notifications": {
     "error": {
       "permissionSaveFailed": "Failed to save permission",
@@ -75,7 +84,7 @@
       "permissionUpdated": "Permission updated successfully"
     },
     "validation": {
-      "requiredFields": "Please fill in required fields",
+      "requiredFields": "Fill in the required fields",
       "title": "Validation Error"
     }
   }

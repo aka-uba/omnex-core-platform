@@ -1,17 +1,114 @@
 {
   "title": "Calendar",
   "description": "View events and registrations",
+  "dashboard": {
+    "title": "Calendar",
+    "description": "View, manage, and track events"
+  },
+  "appointments": {
+    "title": "Appointments",
+    "description": "View, manage, and track your appointments",
+    "table": {
+      "title": "Title",
+      "client": "Client",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "empty": "No appointments found yet",
+    "createNew": "Create New Appointment",
+    "delete": {
+      "title": "Delete Appointment",
+      "confirm": "Are you sure you want to delete this appointment? This action cannot be undone."
+    },
+    "form": {
+      "createTitle": "Create New Appointment",
+      "editTitle": "Edit Appointment",
+      "viewTitle": "Appointment Details",
+      "title": "Title",
+      "titlePlaceholder": "Enter appointment title",
+      "titleRequired": "Title is required",
+      "client": "Client",
+      "clientPlaceholder": "Enter client name",
+      "date": "Date",
+      "dateRequired": "Date is required",
+      "time": "Time",
+      "timePlaceholder": "Select time",
+      "duration": "Duration (minutes)",
+      "durationPlaceholder": "Enter duration",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter appointment description",
+      "status": "Status",
+      "reminder": "Reminder",
+      "reminderPlaceholder": "Select reminder time",
+      "reminderNone": "No reminder",
+      "reminder5min": "5 minutes before",
+      "reminder15min": "15 minutes before",
+      "reminder30min": "30 minutes before",
+      "reminder1hour": "1 hour before",
+      "reminder2hours": "2 hours before",
+      "reminder1day": "1 day before"
+    }
+  },
   "menu": {
     "label": "Calendar",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Calendar",
       "events": "Events",
-      "appointments": "Appointments",
-      "view": "Calendar View"
+      "appointments": "Appointments"
+    }
+  },
+  "events": {
+    "title": "Events",
+    "description": "View, manage, and organize all your events",
+    "table": {
+      "title": "Title",
+      "client": "Client",
+      "date": "Date",
+      "status": "Status",
+      "color": "Color",
+      "actions": "Actions"
+    },
+    "filters": {
+      "status": "Status",
+      "dateRange": "Date Range",
+      "client": "Client"
+    },
+    "sync": {
+      "title": "Calendar Integration",
+      "description": "Sync with your online calendar services",
+      "google": "Google Calendar",
+      "outlook": "Microsoft Outlook",
+      "icloud": "Apple iCloud",
+      "yandex": "Yandex Calendar",
+      "syncNow": "Sync Now",
+      "lastSync": "Last Sync",
+      "never": "Not synced yet",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "configure": "Go to Settings"
     }
   },
   "actions": {
-    "createEvent": "New Event"
+    "createEvent": "New Event",
+    "createAppointment": "New Appointment",
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "refresh": "Refresh"
   },
   "toolbar": {
     "today": "Today",
@@ -22,7 +119,7 @@
     "view": "View",
     "edit": "Edit",
     "event": "Event",
-    "events": "Events"
+    "events": "Event"
   },
   "summary": {
     "title": "This Month Summary",
@@ -31,11 +128,11 @@
     "upcomingEvents": "Upcoming Events"
   },
   "calendar": {
-    "registrations": "Registrations",
+    "registrations": "Registration",
     "more": "more..."
   },
   "form": {
-    "createEvent": "Create Event",
+    "createEvent": "Create New Event",
     "editEvent": "Edit Event",
     "viewEvent": "View Event",
     "title": "Title",
@@ -65,7 +162,32 @@
     "update": "Update",
     "cancel": "Cancel",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save"
+  },
+  "messages": {
+    "createSuccess": "Event created successfully",
+    "updateSuccess": "Event updated successfully",
+    "deleteSuccess": "Event deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete this event?",
+    "exportError": "Export failed",
+    "exportSuccess": "Export completed successfully",
+    "noEvents": "No events found",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "export": {
+    "filename": "events"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "notifications": {
+    "error": {
+      "title": "Error"
+    },
+    "success": {
+      "title": "Success"
+    }
   }
 }
-

@@ -1,39 +1,145 @@
 {
   "title": "التقويم",
-  "description": "عرض الأحداث والتسجيلات",
+  "description": "عرض الفعاليات والتسجيلات",
+  "dashboard": {
+    "title": "التقويم",
+    "description": "عرض الفعاليات وإدارتها ومتابعتها"
+  },
+  "appointments": {
+    "title": "المواعيد",
+    "description": "عرض مواعيدك وإدارتها ومتابعتها",
+    "table": {
+      "title": "العنوان",
+      "client": "العميل",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "duration": "المدة",
+      "status": "الحالة",
+      "actions": "العمليات"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "cancelled": "ملغى",
+      "completed": "مكتمل"
+    },
+    "empty": "لا توجد مواعيد بعد",
+    "createNew": "إنشاء موعد جديد",
+    "delete": {
+      "title": "حذف الموعد",
+      "confirm": "هل أنت متأكد أنك تريد حذف هذا الموعد؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "form": {
+      "createTitle": "إنشاء موعد جديد",
+      "editTitle": "تعديل الموعد",
+      "viewTitle": "تفاصيل الموعد",
+      "title": "العنوان",
+      "titlePlaceholder": "أدخل عنوان الموعد",
+      "titleRequired": "العنوان مطلوب",
+      "client": "العميل",
+      "clientPlaceholder": "أدخل اسم العميل",
+      "date": "التاريخ",
+      "dateRequired": "التاريخ مطلوب",
+      "time": "الوقت",
+      "timePlaceholder": "اختر الوقت",
+      "duration": "المدة (بالدقائق)",
+      "durationPlaceholder": "أدخل المدة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف الموعد",
+      "status": "الحالة",
+      "reminder": "تذكير",
+      "reminderPlaceholder": "اختر وقت التذكير",
+      "reminderNone": "بدون تذكير",
+      "reminder5min": "قبل 5 دقائق",
+      "reminder15min": "قبل 15 دقيقة",
+      "reminder30min": "قبل 30 دقيقة",
+      "reminder1hour": "قبل ساعة واحدة",
+      "reminder2hours": "قبل ساعتين",
+      "reminder1day": "قبل يوم واحد"
+    }
+  },
+  "menu": {
+    "label": "التقويم",
+    "items": {
+      "dashboard": "التقويم",
+      "events": "الفعاليات",
+      "appointments": "المواعيد"
+    }
+  },
+  "events": {
+    "title": "الفعاليات",
+    "description": "عرض وإدارة وتنظيم جميع الفعاليات الخاصة بك",
+    "table": {
+      "title": "العنوان",
+      "client": "العميل",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "color": "اللون",
+      "actions": "العمليات"
+    },
+    "filters": {
+      "status": "الحالة",
+      "dateRange": "نطاق التاريخ",
+      "client": "العميل"
+    },
+    "sync": {
+      "title": "تكامل التقويم",
+      "description": "مزامنة مع خدمات التقويم عبر الإنترنت",
+      "google": "Google Calendar",
+      "outlook": "Microsoft Outlook",
+      "icloud": "Apple iCloud",
+      "yandex": "Yandex Calendar",
+      "syncNow": "مزامنة الآن",
+      "lastSync": "آخر مزامنة",
+      "never": "لم يتم المزامنة بعد",
+      "enabled": "مفعل",
+      "disabled": "معطل",
+      "configure": "ذهاب إلى الإعدادات"
+    }
+  },
   "actions": {
-    "createEvent": "حدث جديد"
+    "createEvent": "فعالية جديدة",
+    "createAppointment": "موعد جديد",
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "refresh": "تحديث"
   },
   "toolbar": {
     "today": "اليوم",
-    "month": "الشهر",
-    "week": "الأسبوع",
-    "day": "اليوم",
-    "addEvent": "إضافة حدث",
+    "month": "شهر",
+    "week": "أسبوع",
+    "day": "يوم",
+    "addEvent": "إضافة فعالية",
     "view": "عرض",
     "edit": "تعديل",
-    "event": "حدث",
-    "events": "أحداث"
+    "event": "فعالية",
+    "events": "فعالية"
   },
   "summary": {
     "title": "ملخص هذا الشهر",
-    "totalEvents": "إجمالي الأحداث",
+    "totalEvents": "إجمالي الفعاليات",
     "totalRegistrations": "إجمالي التسجيلات",
-    "upcomingEvents": "الأحداث القادمة"
+    "upcomingEvents": "الفعاليات القادمة"
   },
   "calendar": {
-    "registrations": "التسجيلات",
+    "registrations": "تسجيل",
     "more": "المزيد..."
   },
   "form": {
-    "createEvent": "إنشاء حدث جديد",
-    "editEvent": "تعديل الحدث",
-    "viewEvent": "عرض الحدث",
+    "createEvent": "إنشاء فعالية جديدة",
+    "editEvent": "تعديل الفعالية",
+    "viewEvent": "عرض الفعالية",
     "title": "العنوان",
-    "titlePlaceholder": "أدخل عنوان الحدث",
+    "titlePlaceholder": "أدخل عنوان الفعالية",
     "titleRequired": "العنوان مطلوب",
     "description": "الوصف",
-    "descriptionPlaceholder": "أدخل وصف الحدث",
+    "descriptionPlaceholder": "أدخل وصف الفعالية",
     "client": "العميل",
     "clientPlaceholder": "أدخل اسم العميل",
     "date": "التاريخ",
@@ -42,24 +148,46 @@
     "timePlaceholder": "اختر الوقت",
     "status": "الحالة",
     "statusDraft": "مسودة",
-    "statusScheduled": "مجدول",
+    "statusScheduled": "مخطط",
     "statusPublished": "منشور",
-    "statusNeedsRevision": "يحتاج إلى مراجعة",
+    "statusNeedsRevision": "بحاجة لمراجعة",
     "color": "اللون",
     "colorYellow": "أصفر",
     "colorGreen": "أخضر",
     "colorRed": "أحمر",
     "colorBlue": "أزرق",
-    "colorPurple": "بنفسجي",
+    "colorPurple": "أرجواني",
     "colorSlate": "رمادي",
     "create": "إنشاء",
     "update": "تحديث",
     "cancel": "إلغاء",
     "edit": "تعديل",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "save": "حفظ"
+  },
+  "messages": {
+    "createSuccess": "تم إنشاء الفعالية بنجاح",
+    "updateSuccess": "تم تحديث الفعالية بنجاح",
+    "deleteSuccess": "تم حذف الفعالية بنجاح",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه الفعالية؟",
+    "exportError": "فشلت عملية التصدير",
+    "exportSuccess": "تمت عملية التصدير بنجاح",
+    "noEvents": "لم يتم العثور على فعاليات",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما"
+  },
+  "export": {
+    "filename": "الفعاليات"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "notifications": {
+    "error": {
+      "title": "خطأ"
+    },
+    "success": {
+      "title": "نجاح"
+    }
   }
 }
-
-
-
-

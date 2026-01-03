@@ -1,14 +1,14 @@
 {
   "title": "إدارة الأدوار",
-  "description": "إدارة أدوار المستخدمين ومستويات الوصول على مستوى النظام.",
+  "description": "إدارة أدوار المستخدمين ومستويات الوصول عبر النظام.",
   "create": {
     "title": "إنشاء دور جديد",
-    "description": "إنشاء دور جديد وتكوين صلاحياته.",
+    "description": "إنشاء دور جديد وتكوين أذوناته.",
     "button": "إنشاء دور"
   },
   "edit": {
     "title": "تعديل الدور",
-    "description": "تحديث معلومات الدور والصلاحيات.",
+    "description": "تحديث معلومات الدور والأذونات.",
     "button": "حفظ التغييرات"
   },
   "view": {
@@ -22,21 +22,27 @@
     "actions": "الإجراءات",
     "searchPlaceholder": "البحث باسم الدور...",
     "allRoles": "جميع الأدوار",
-    "withUsers": "مع المستخدمين"
+    "withUsers": "الأدوار مع المستخدمين"
   },
   "form": {
     "name": "اسم الدور",
     "namePlaceholder": "مثال: مدير المحتوى",
     "description": "الوصف",
     "descriptionPlaceholder": "أدخل وصف الدور",
-    "permissions": "الصلاحيات",
-    "selectPermissions": "اختر الصلاحيات"
+    "permissions": "الأذونات",
+    "selectPermissions": "اختر الأذونات",
+    "cancel": "إلغاء"
   },
   "actions": {
     "view": "عرض",
     "edit": "تعديل",
     "delete": "حذف",
-    "assignUsers": "تعيين المستخدمين"
+    "assignUsers": "تعيين المستخدمين",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "validation": {
     "nameRequired": "اسم الدور مطلوب",
@@ -44,11 +50,24 @@
   },
   "permissions": {
     "clientCreate": "إنشاء عميل",
-    "clientEdit": "تعديل عميل",
-    "aiGenerate": "إنشاء محتوى بالذكاء الاصطناعي"
+    "clientEdit": "تعديل العميل",
+    "aiGenerate": "إنشاء محتوى AI"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "notifications": {
+    "error": {
+      "roleSaveFailed": "فشل حفظ الدور",
+      "title": "خطأ"
+    },
+    "success": {
+      "roleCreated": "تم إنشاء الدور بنجاح",
+      "roleUpdated": "تم تحديث الدور بنجاح"
+    },
+    "validation": {
+      "requiredFields": "يرجى ملء الحقول المطلوبة",
+      "title": "خطأ في التحقق"
+    }
   }
 }
-
-
-
-

@@ -1,16 +1,225 @@
 {
   "title": "التقارير",
-  "description": "وحدة إنشاء وعرض وتصدير تقارير النظام والمستخدم",
+  "description": "إنشاء وعرض وتصدير تقارير النظام والمستخدم",
   "menu": {
     "label": "التقارير",
     "items": {
       "all": "جميع التقارير",
       "create": "إنشاء تقرير",
       "templates": "القوالب",
-      "scheduled": "التقارير المجدولة",
+      "scheduled": "المجدولة",
       "exports": "سجل التصدير"
     }
+  },
+  "page": {
+    "allReports": {
+      "title": "جميع التقارير",
+      "description": "إنشاء وعرض وتصدير تقارير النظام والمستخدم"
+    },
+    "exports": {
+      "title": "سجل التصدير",
+      "description": "عرض سجل التقارير المنشأة والمصدرة"
+    },
+    "scheduled": {
+      "title": "التقارير المجدولة",
+      "description": "إدارة التقارير التي سيتم إنشاؤها تلقائيًا"
+    }
+  },
+  "actions": {
+    "create": "إنشاء تقرير جديد",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "export": "تصدير",
+    "view": "عرض",
+    "success": "نجح",
+    "error": "خطأ",
+    "back": "رجوع",
+    "backToList": "العودة إلى قائمة التقارير",
+    "update": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "filters": {
+    "title": "الفلاتر",
+    "description": "حدد المعلمات الخاصة بك لإنشاء تقرير",
+    "search": "بحث",
+    "type": "نوع التقرير",
+    "status": "الحالة",
+    "dateRange": "نطاق التاريخ",
+    "allReports": "جميع التقارير",
+    "coreReports": "التقارير الأساسية",
+    "moduleReports": "تقارير الوحدات",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "typeOptions": {
+      "userActivity": "نشاط المستخدم",
+      "systemStats": "إحصائيات النظام",
+      "loginHistory": "سجل تسجيل الدخول"
+    }
+  },
+  "list": {
+    "title": "التقارير",
+    "columns": {
+      "name": "اسم التقرير",
+      "type": "النوع",
+      "status": "الحالة",
+      "createdAt": "تم الإنشاء",
+      "fileSize": "حجم الملف"
+    }
+  },
+  "messages": {
+    "delete": {
+      "title": "حذف التقرير",
+      "confirm": "هل أنت متأكد من حذف هذا التقرير؟ لا يمكن التراجع عن هذا الإجراء.",
+      "success": "تم حذف التقرير بنجاح",
+      "error": "حدث خطأ أثناء حذف التقرير"
+    },
+    "bulkDelete": {
+      "title": "حذف جماعي",
+      "confirm": "سيتم حذف {{count}} تقرير. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟",
+      "success": "تم حذف {{count}} تقرير بنجاح",
+      "error": "حدث خطأ أثناء حذف التقارير"
+    },
+    "warning": {
+      "noReportsToExport": "لم يتم العثور على تقارير للتصدير",
+      "noSelectedReports": "لم يتم العثور على تقارير محددة",
+      "noReportsToDelete": "لم يتم تحديد تقارير للحذف"
+    },
+    "info": {
+      "multipleReportsFound": "تم العثور على {{count}} تقرير. تم تصدير التقرير الأول. استخدم زر \"التصدير الجماعي\" للتصدير الجماعي.",
+      "multipleReportsSelected": "تم تحديد {{count}} تقرير. تم تصدير التقرير الأول. استخدم زر \"التصدير الجماعي\" للتصدير الجماعي."
+    }
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "failed": "فشل",
+    "generating": "قيد الإنشاء"
+  },
+  "empty": {
+    "noReports": "لم يتم العثور على تقارير",
+    "createFirst": "أنشئ تقريرك الأول"
+  },
+  "errors": {
+    "loadFailed": "حدث خطأ أثناء تحميل التقارير",
+    "deleteFailed": "حدث خطأ أثناء حذف التقرير",
+    "createFailed": "حدث خطأ أثناء إنشاء التقرير",
+    "exportsLoadFailed": "حدث خطأ أثناء تحميل سجل التصدير",
+    "scheduledLoadFailed": "حدث خطأ أثناء تحميل التقارير المجدولة",
+    "reportNotFound": "لم يتم العثور على التقرير",
+    "reportGenerationFailed": "تعذر إنشاء التقرير",
+    "exportFailed": "فشلت عملية التصدير"
+  },
+  "tooltips": {
+    "deleteSelected": "حذف التقارير المحددة",
+    "columnSettings": "إعدادات الأعمدة",
+    "view": "عرض",
+    "downloadPdf": "تنزيل PDF"
+  },
+  "search": {
+    "placeholder": "البحث في التقارير..."
+  },
+  "bulkActions": {
+    "export": "تصدير جماعي",
+    "exportWithCount": "تصدير جماعي ({{count}})"
+  },
+  "metrics": {
+    "total": "إجمالي التقارير",
+    "completed": "مكتمل",
+    "pending": "قيد الانتظار",
+    "failed": "فشل"
+  },
+  "charts": {
+    "statusDistribution": "توزيع الحالة",
+    "typeDistribution": "توزيع نوع التقرير",
+    "trend30Days": "اتجاه التقارير لآخر 30 يومًا",
+    "noData": "لم يتم العثور على بيانات",
+    "reportCount": "عدد التقارير",
+    "statusCompleted": "مكتمل",
+    "statusPending": "قيد الانتظار",
+    "statusGenerating": "قيد الإنشاء",
+    "statusFailed": "فشل"
+  },
+  "scheduled": {
+    "empty": "لم يتم العثور على تقارير مجدولة",
+    "createNew": "إنشاء تقرير مجدول جديد",
+    "status": {
+      "active": "نشط",
+      "paused": "متوقف مؤقتًا",
+      "completed": "مكتمل"
+    },
+    "frequency": {
+      "daily": "يومي",
+      "weekly": "أسبوعي",
+      "monthly": "شهري"
+    },
+    "fields": {
+      "type": "النوع",
+      "frequency": "التكرار",
+      "time": "الوقت",
+      "nextRun": "التشغيل التالي",
+      "lastRun": "آخر تشغيل"
+    },
+    "actions": {
+      "pause": "إيقاف مؤقت",
+      "activate": "تفعيل",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "confirmations": {
+      "toggleTitle": "تغيير الحالة",
+      "pauseMessage": "هل أنت متأكد من إيقاف التقرير المجدول مؤقتًا؟",
+      "activateMessage": "هل أنت متأكد من تفعيل التقرير المجدول؟",
+      "deleteTitle": "حذف التقرير المجدول",
+      "deleteMessage": "هل أنت متأكد من حذف هذا التقرير المجدول؟"
+    },
+    "messages": {
+      "statusUpdated": "تم تحديث الحالة بنجاح",
+      "deleted": "تم حذف التقرير المجدول بنجاح"
+    }
+  },
+  "exports": {
+    "empty": "لم يتم العثور على سجل تصدير",
+    "createNew": "إنشاء تقرير جديد"
+  },
+  "create": {
+    "sections": {
+      "details": "تفاصيل التقرير",
+      "configuration": "التكوين",
+      "output": "الإخراج"
+    },
+    "fields": {
+      "name": "اسم التقرير",
+      "namePlaceholder": "أدخل اسمًا لتقريرك",
+      "description": "وصف التقرير (اختياري)",
+      "descriptionPlaceholder": "قدم وصفًا موجزًا لغرض التقرير",
+      "type": "نوع التقرير",
+      "typePlaceholder": "حدد نوع التقرير",
+      "startDate": "تاريخ البدء",
+      "startDatePlaceholder": "حدد تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "endDatePlaceholder": "حدد تاريخ الانتهاء",
+      "format": "التنسيق"
+    },
+    "formats": {
+      "table": "جدول",
+      "bar": "رسم بياني شريطي",
+      "line": "رسم بياني خطي"
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "generate": "إنشاء التقرير"
+    },
+    "messages": {
+      "success": "تم إنشاء التقرير",
+      "error": "حدث خطأ أثناء إنشاء التقرير"
+    },
+    "description": "املأ النموذج أدناه لإنشاء تقرير جديد"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "table": {
+    "actions": "الإجراءات"
   }
 }
-
-

@@ -1,11 +1,14 @@
 {
+  "common": {
+    "comingSoon": "هذه الميزة قادمة قريبًا..."
+  },
   "title": "منشئ الويب",
   "description": "وحدة منشئ مواقع الويب بالسحب والإفلات",
   "menu": {
     "label": "منشئ الويب",
     "items": {
       "dashboard": "لوحة التحكم",
-      "websites": "المواقع الإلكترونية",
+      "websites": "مواقع الويب",
       "pages": "الصفحات",
       "templates": "القوالب",
       "themes": "السمات",
@@ -19,13 +22,69 @@
   },
   "dashboard": {
     "title": "لوحة تحكم منشئ الويب",
-    "description": "نظرة عامة على عمليات إنشاء موقع الويب",
+    "description": "نظرة عامة على أنشطة إنشاء موقع الويب الخاص بك",
     "totalPages": "إجمالي الصفحات",
     "templates": "القوالب",
     "mediaFiles": "ملفات الوسائط",
     "recentActivity": "النشاط الأخير",
     "noActivity": "لا يوجد نشاط حديث"
+  },
+  "templates": {
+    "title": "القوالب",
+    "description": "عرض واستخدام قوالب المواقع"
+  },
+  "pages": {
+    "title": "الصفحات",
+    "description": "إدارة صفحات موقعك",
+    "newPage": "صفحة جديدة"
+  },
+  "media": {
+    "title": "مكتبة الوسائط",
+    "description": "إدارة ملفات الوسائط الخاصة بك"
+  },
+  "components": {
+    "title": "المكونات",
+    "description": "إدارة المكونات القابلة لإعادة الاستخدام"
+  },
+  "analytics": {
+    "title": "التحليلات",
+    "description": "أداء الموقع وتحليلات الزوار"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "seo": {
+    "title": "إعدادات SEO",
+    "description": "تحسين الصفحة لمحركات البحث",
+    "metaTitle": "عنوان Meta",
+    "metaTitlePlaceholder": "عنوان الصفحة (يوصى بـ 50-60 حرفًا)",
+    "metaTitleWarning": "العنوان أطول من 60 حرفًا. قد يتم اقتطاعه في محركات البحث.",
+    "metaDescription": "وصف Meta",
+    "metaDescriptionPlaceholder": "وصف الصفحة (يوصى بـ 150-160 حرفًا)",
+    "metaDescriptionWarning": "الوصف أطول من 160 حرفًا. قد يتم اقتطاعه في محركات البحث.",
+    "metaKeywords": "كلمات Meta الرئيسية",
+    "metaKeywordsPlaceholder": "أضف كلمات رئيسية (اضغط Enter)",
+    "metaKeywordsDescription": "كلمات رئيسية متعلقة بالصفحة (الحد الأقصى 10)",
+    "tipsTitle": "نصائح SEO",
+    "tips": {
+      "tip1": "يجب أن يعكس العنوان والوصف محتوى الصفحة",
+      "tip2": "يجب أن تكون الكلمات الرئيسية طبيعية وذات صلة",
+      "tip3": "استخدم محتوى SEO فريدًا لكل صفحة",
+      "tip4": "معاينة كيف سيظهر في نتائج محرك البحث"
+    },
+    "saveButton": "حفظ إعدادات SEO"
+  },
+  "preview": {
+    "title": "معاينة الصفحة"
+  },
+  "widgetConfig": {
+    "placeholder": "أدخل القيمة"
   }
 }
-
-

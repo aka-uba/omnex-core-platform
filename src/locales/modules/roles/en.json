@@ -1,6 +1,6 @@
 {
-  "title": "Roles Management",
-  "description": "Manage system-wide user roles and access levels.",
+  "title": "Role Management",
+  "description": "Manage user roles and access levels across the system.",
   "create": {
     "title": "Create New Role",
     "description": "Create a new role and configure its permissions.",
@@ -18,25 +18,31 @@
   "table": {
     "roleName": "Role Name",
     "description": "Description",
-    "usersAssigned": "Users Assigned",
+    "usersAssigned": "Assigned Users",
     "actions": "Actions",
     "searchPlaceholder": "Search by role name...",
     "allRoles": "All Roles",
-    "withUsers": "With Users"
+    "withUsers": "Roles with Users"
   },
   "form": {
     "name": "Role Name",
-    "namePlaceholder": "e.g., Content Manager",
+    "namePlaceholder": "E.g: Content Manager",
     "description": "Description",
     "descriptionPlaceholder": "Enter role description",
     "permissions": "Permissions",
-    "selectPermissions": "Select permissions"
+    "selectPermissions": "Select permissions",
+    "cancel": "Cancel"
   },
   "actions": {
     "view": "View",
     "edit": "Edit",
     "delete": "Delete",
-    "assignUsers": "Assign Users"
+    "assignUsers": "Assign Users",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
   },
   "validation": {
     "nameRequired": "Role name is required",
@@ -46,9 +52,22 @@
     "clientCreate": "Create Client",
     "clientEdit": "Edit Client",
     "aiGenerate": "Generate AI Content"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "notifications": {
+    "error": {
+      "roleSaveFailed": "Failed to save role",
+      "title": "Error"
+    },
+    "success": {
+      "roleCreated": "Role created successfully",
+      "roleUpdated": "Role updated successfully"
+    },
+    "validation": {
+      "requiredFields": "Please fill in required fields",
+      "title": "Validation Error"
+    }
   }
 }
-
-
-
-

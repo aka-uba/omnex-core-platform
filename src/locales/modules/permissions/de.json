@@ -8,12 +8,12 @@
   },
   "edit": {
     "title": "Berechtigung bearbeiten",
-    "description": "Aktualisieren Sie Berechtigungsinformationen.",
+    "description": "Aktualisieren Sie die Berechtigungsinformationen.",
     "button": "Änderungen speichern"
   },
   "view": {
     "title": "Berechtigungsdetails",
-    "description": "Zeigen Sie Berechtigungsinformationen an."
+    "description": "Berechtigungsinformationen anzeigen."
   },
   "table": {
     "permissionKey": "Berechtigungsschlüssel",
@@ -22,7 +22,7 @@
     "category": "Kategorie",
     "module": "Modul",
     "actions": "Aktionen",
-    "searchPlaceholder": "Nach Name oder Schlüssel suchen...",
+    "searchPlaceholder": "Suche nach Name oder Schlüssel...",
     "categoryFilter": "Kategorie",
     "moduleFilter": "Modul",
     "clearFilters": "Filter löschen",
@@ -32,36 +32,40 @@
     "permissionKey": "Berechtigungsschlüssel",
     "permissionKeyPlaceholder": "z.B. client.create",
     "name": "Name",
-    "namePlaceholder": "z.B. Kunde erstellen",
+    "namePlaceholder": "z.B. Kunden erstellen",
     "description": "Beschreibung",
-    "descriptionPlaceholder": "Geben Sie die Berechtigungsbeschreibung ein",
+    "descriptionPlaceholder": "Berechtigungsbeschreibung eingeben",
     "category": "Kategorie",
-    "categoryPlaceholder": "Kategorie auswählen",
     "module": "Modul",
-    "modulePlaceholder": "Modul auswählen"
+    "cancel": "Abbrechen"
   },
   "actions": {
     "view": "Anzeigen",
     "edit": "Bearbeiten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   },
   "validation": {
     "keyRequired": "Berechtigungsschlüssel ist erforderlich",
-    "keyFormat": "Berechtigungsschlüsselformat: module.action (z.B. client.create)",
+    "keyFormat": "Format: module.action (z.B. client.create)",
     "nameRequired": "Name ist erforderlich",
     "descriptionRequired": "Beschreibung ist erforderlich",
     "categoryRequired": "Kategorie ist erforderlich"
   },
   "categories": {
     "clientManagement": "Kundenverwaltung",
-    "contentAI": "Content AI",
+    "contentAI": "Inhalt KI",
     "scheduling": "Planung",
     "finance": "Finanzen",
     "general": "Allgemein"
   },
   "modules": {
     "crm": "CRM",
-    "contentAI": "Content AI",
+    "contentAI": "Inhalt KI",
     "scheduler": "Planer",
     "finance": "Finanzen"
   },
@@ -75,7 +79,7 @@
       "permissionUpdated": "Berechtigung erfolgreich aktualisiert"
     },
     "validation": {
-      "requiredFields": "Bitte füllen Sie die erforderlichen Felder aus",
+      "requiredFields": "Pflichtfelder ausfüllen",
       "title": "Validierungsfehler"
     }
   }

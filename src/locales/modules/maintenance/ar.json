@@ -1,23 +1,38 @@
 {
   "title": "إدارة الصيانة",
   "description": "إدارة سجلات صيانة المعدات",
+  "menu": {
+    "label": "الصيانة",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "records": "السجلات",
+      "calendar": "التقويم",
+      "reports": "التقارير"
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "description": "عرض تحليلات وتقارير الصيانة"
+  },
   "create": "سجل صيانة جديد",
   "createDescription": "إنشاء سجل صيانة جديد",
   "edit": "تعديل سجل الصيانة",
   "editDescription": "تحديث معلومات سجل الصيانة",
   "detail": "تفاصيل سجل الصيانة",
   "detailDescription": "عرض تفاصيل سجل الصيانة",
-  "notFound": "لم يتم العثور على سجل الصيانة",
+  "notFound": "سجل الصيانة غير موجود",
   "types": {
-    "preventive": "وقائي",
-    "corrective": "تصحيحي",
-    "emergency": "طوارئ"
+    "preventive": "وقائية",
+    "corrective": "تصحيحية",
+    "emergency": "طارئة"
   },
   "status": {
     "scheduled": "مجدول",
     "in_progress": "قيد التنفيذ",
     "completed": "مكتمل",
-    "cancelled": "ملغي"
+    "cancelled": "ملغى",
+    "active": "نشط",
+    "inactive": "غير نشط"
   },
   "table": {
     "title": "العنوان",
@@ -26,7 +41,7 @@
     "location": "الموقع",
     "equipment": "المعدات",
     "scheduledDate": "التاريخ المجدول",
-    "estimatedCost": "التكلفة المقدرة",
+    "estimatedCost": "التكلفة التقديرية",
     "actualCost": "التكلفة الفعلية",
     "actions": "الإجراءات"
   },
@@ -47,21 +62,28 @@
     "startDatePlaceholder": "اختر تاريخ البدء",
     "endDate": "تاريخ الانتهاء",
     "endDatePlaceholder": "اختر تاريخ الانتهاء",
-    "estimatedCost": "التكلفة المقدرة",
-    "estimatedCostPlaceholder": "أدخل التكلفة المقدرة",
+    "estimatedCost": "التكلفة التقديرية",
+    "estimatedCostPlaceholder": "أدخل التكلفة التقديرية",
     "actualCost": "التكلفة الفعلية",
     "actualCostPlaceholder": "أدخل التكلفة الفعلية",
     "notes": "ملاحظات",
-    "notesPlaceholder": "أدخل الملاحظات",
+    "notesPlaceholder": "أدخل ملاحظات",
     "documents": "المستندات",
     "status": "الحالة",
     "statusPlaceholder": "اختر الحالة",
-    "isActive": "نشط"
+    "isActive": "نشط",
+    "documentsDescription": "تحميل المستندات المتعلقة بالصيانة",
+    "cancel": "إلغاء",
+    "create": "إنشاء",
+    "createdAt": "تاريخ الإنشاء",
+    "save": "حفظ",
+    "updatedAt": "تاريخ التحديث"
   },
   "filter": {
     "type": "النوع",
     "status": "الحالة",
-    "location": "الموقع"
+    "location": "الموقع",
+    "all": "الكل"
   },
   "search": {
     "placeholder": "البحث في سجلات الصيانة..."
@@ -76,31 +98,39 @@
     "createError": "حدث خطأ أثناء إنشاء سجل الصيانة",
     "updateSuccess": "تم تحديث سجل الصيانة بنجاح",
     "updateError": "حدث خطأ أثناء تحديث سجل الصيانة",
-    "success": "نجح",
+    "success": "نجاح",
     "error": "خطأ"
   },
   "export": {
-    "title": "تصدير",
-    "excel": "تصدير إلى Excel",
-    "pdf": "تصدير إلى PDF",
-    "csv": "تصدير إلى CSV"
+    "title": "تصدير"
   },
   "exportSuccess": "تم تصدير سجلات الصيانة بنجاح",
   "exportError": "حدث خطأ أثناء تصدير سجلات الصيانة",
   "exportDescription": "تقرير سجلات الصيانة",
   "pagination": {
     "showing": "عرض",
-    "of": "من"
+    "of": "من إجمالي"
+  },
+  "actions": {
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "newRecord": "سجل صيانة جديد",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "dashboard": {
     "title": "لوحة تحكم الصيانة",
     "description": "نظرة عامة على أنشطة الصيانة والتحليلات",
-    "dateFrom": "من تاريخ",
-    "dateTo": "إلى تاريخ",
+    "dateFrom": "تاريخ البدء",
+    "dateTo": "تاريخ الانتهاء",
     "totalRecords": "إجمالي السجلات",
-    "completed": "مكتمل",
-    "totalCost": "التكلفة الإجمالية",
-    "scheduled": "مجدول",
+    "completed": "المكتملة",
+    "totalCost": "إجمالي التكلفة",
+    "scheduled": "المجدولة",
     "maintenanceTrend": "اتجاه الصيانة",
     "byType": "حسب النوع",
     "upcomingMaintenance": "الصيانة القادمة",
@@ -112,6 +142,12 @@
   "calendar": {
     "title": "تقويم الصيانة",
     "description": "عرض سجلات الصيانة في عرض التقويم"
+  },
+  "common": {
+    "back": "رجوع",
+    "edit": "تعديل",
+    "errorLoading": "خطأ أثناء التحميل",
+    "noData": "لم يتم العثور على بيانات",
+    "required": "مطلوب"
   }
 }
-

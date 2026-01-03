@@ -1,6 +1,6 @@
 {
   "title": "Rollenverwaltung",
-  "description": "Verwalten Sie systemweite Benutzerrollen und Zugriffsebenen.",
+  "description": "Verwalten Sie Benutzerrollen und Zugriffsebenen im gesamten System.",
   "create": {
     "title": "Neue Rolle erstellen",
     "description": "Erstellen Sie eine neue Rolle und konfigurieren Sie deren Berechtigungen.",
@@ -8,35 +8,41 @@
   },
   "edit": {
     "title": "Rolle bearbeiten",
-    "description": "Aktualisieren Sie Rolleninformationen und Berechtigungen.",
+    "description": "Rolleninformationen und Berechtigungen aktualisieren.",
     "button": "Änderungen speichern"
   },
   "view": {
-    "title": "Rolldetails",
-    "description": "Zeigen Sie Rolleninformationen und zugewiesene Benutzer an."
+    "title": "Rollendetails",
+    "description": "Rolleninformationen und zugewiesene Benutzer anzeigen."
   },
   "table": {
     "roleName": "Rollenname",
     "description": "Beschreibung",
     "usersAssigned": "Zugewiesene Benutzer",
     "actions": "Aktionen",
-    "searchPlaceholder": "Nach Rollennamen suchen...",
+    "searchPlaceholder": "Nach Rollenname suchen...",
     "allRoles": "Alle Rollen",
-    "withUsers": "Mit Benutzern"
+    "withUsers": "Rollen mit Benutzern"
   },
   "form": {
     "name": "Rollenname",
-    "namePlaceholder": "z.B. Content Manager",
+    "namePlaceholder": "Z.B: Content Manager",
     "description": "Beschreibung",
-    "descriptionPlaceholder": "Geben Sie die Rollenbeschreibung ein",
+    "descriptionPlaceholder": "Rollenbeschreibung eingeben",
     "permissions": "Berechtigungen",
-    "selectPermissions": "Berechtigungen auswählen"
+    "selectPermissions": "Berechtigungen auswählen",
+    "cancel": "Abbrechen"
   },
   "actions": {
-    "view": "Anzeigen",
+    "view": "Ansehen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
-    "assignUsers": "Benutzer zuweisen"
+    "assignUsers": "Benutzer zuweisen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
   },
   "validation": {
     "nameRequired": "Rollenname ist erforderlich",
@@ -46,9 +52,22 @@
     "clientCreate": "Kunde erstellen",
     "clientEdit": "Kunde bearbeiten",
     "aiGenerate": "KI-Inhalt generieren"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "notifications": {
+    "error": {
+      "roleSaveFailed": "Rolle konnte nicht gespeichert werden",
+      "title": "Fehler"
+    },
+    "success": {
+      "roleCreated": "Rolle erfolgreich erstellt",
+      "roleUpdated": "Rolle erfolgreich aktualisiert"
+    },
+    "validation": {
+      "requiredFields": "Bitte füllen Sie die erforderlichen Felder aus",
+      "title": "Validierungsfehler"
+    }
   }
 }
-
-
-
-

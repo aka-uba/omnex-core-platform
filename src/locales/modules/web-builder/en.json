@@ -1,6 +1,9 @@
 {
+  "common": {
+    "comingSoon": "This feature is coming soon..."
+  },
   "title": "Web Builder",
-  "description": "Drag & drop website builder module",
+  "description": "Drag-and-drop website builder module",
   "menu": {
     "label": "Web Builder",
     "items": {
@@ -12,18 +15,76 @@
       "components": "Components",
       "forms": "Forms",
       "media": "Media Library",
-      "assets": "Assets",
+      "assets": "Media & Assets",
       "analytics": "Analytics",
       "settings": "Settings"
     }
   },
   "dashboard": {
     "title": "Web Builder Dashboard",
-    "description": "Overview of your website building",
+    "description": "Overview of your website building activities",
     "totalPages": "Total Pages",
     "templates": "Templates",
     "mediaFiles": "Media Files",
     "recentActivity": "Recent Activity",
     "noActivity": "No recent activity"
+  },
+  "templates": {
+    "title": "Templates",
+    "description": "View and use website templates"
+  },
+  "pages": {
+    "title": "Pages",
+    "description": "Manage your website pages",
+    "newPage": "New Page"
+  },
+  "media": {
+    "title": "Media Library",
+    "description": "Manage your media files"
+  },
+  "components": {
+    "title": "Components",
+    "description": "Manage reusable components"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Website performance and visitor analytics"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "seo": {
+    "title": "SEO Settings",
+    "description": "Page optimization for search engines",
+    "metaTitle": "Meta Title",
+    "metaTitlePlaceholder": "Page title (50-60 characters recommended)",
+    "metaTitleWarning": "Title is longer than 60 characters. May be truncated in search engines.",
+    "metaDescription": "Meta Description",
+    "metaDescriptionPlaceholder": "Page description (150-160 characters recommended)",
+    "metaDescriptionWarning": "Description is longer than 160 characters. May be truncated in search engines.",
+    "metaKeywords": "Meta Keywords",
+    "metaKeywordsPlaceholder": "Add keywords (press Enter)",
+    "metaKeywordsDescription": "Keywords related to the page (maximum 10)",
+    "tipsTitle": "SEO Tips",
+    "tips": {
+      "tip1": "Title and description should reflect page content",
+      "tip2": "Keywords should be natural and relevant",
+      "tip3": "Use unique SEO content for each page",
+      "tip4": "Preview how it will appear in search engine results"
+    },
+    "saveButton": "Save SEO Settings"
+  },
+  "preview": {
+    "title": "Page Preview"
+  },
+  "widgetConfig": {
+    "placeholder": "Enter value"
   }
 }

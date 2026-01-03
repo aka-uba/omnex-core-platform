@@ -1,12 +1,12 @@
 {
-  "title": "Production & Product",
+  "title": "Production and Products",
   "description": "Comprehensive production and product management module",
   "menu": {
     "label": "Production",
     "items": {
       "dashboard": "Dashboard",
       "products": "Products",
-      "bom": "BOM",
+      "bom": "Bill of Materials",
       "orders": "Production Orders",
       "stock": "Stock",
       "reports": "Reports"
@@ -14,23 +14,200 @@
   },
   "dashboard": {
     "title": "Production Dashboard",
-    "description": "Overview of production activities and analytics"
+    "description": "Overview of production activities and analytics",
+    "dateFrom": "Start Date",
+    "dateTo": "End Date",
+    "totalProducts": "Total Products",
+    "totalOrders": "Total Orders",
+    "activeOrders": "Active Orders",
+    "stockValue": "Stock Value",
+    "ordersByMonth": "Orders by Month",
+    "total": "Total",
+    "completed": "Completed",
+    "ordersByStatus": "Orders by Status",
+    "lowStockAlert": "Low Stock Alert",
+    "lowStockCount": "Low Stock Count"
   },
   "products": {
     "title": "Products",
-    "description": "Manage your products and inventory"
+    "description": "Manage your products and inventory",
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Success",
+    "exportError": "Export Error",
+    "create": "Create"
   },
   "bom": {
     "title": "Bill of Materials",
-    "description": "Manage product bill of materials"
+    "description": "Manage product bill of materials",
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "add": "Add",
+    "empty": "Bill of materials is empty",
+    "order": "Order",
+    "product": "Product",
+    "component": "Component",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "wasteRate": "Waste Rate",
+    "edit": "Edit",
+    "form": {
+      "productId": "Product",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "componentId": "Component",
+      "wasteRate": "Waste Rate",
+      "order": "Order"
+    },
+    "update": {
+      "success": "Success"
+    },
+    "create": {
+      "success": "Success"
+    },
+    "save": {
+      "error": "Error"
+    },
+    "selectProduct": "Select Product",
+    "selectProductPlaceholder": "Select a product",
+    "selectProductFirst": "Select a product first"
   },
   "orders": {
+    "form": {
+      "orderNumber": "Order Number",
+      "orderNumberPlaceholder": "Enter order number",
+      "location": "Location",
+      "locationPlaceholder": "Select location",
+      "product": "Product",
+      "productPlaceholder": "Select product",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "unit": "Unit",
+      "unitPlaceholder": "Select unit",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "priority": "Priority",
+      "priorityPlaceholder": "Select priority",
+      "plannedStartDate": "Planned Start Date",
+      "plannedStartDatePlaceholder": "Select planned start date",
+      "plannedEndDate": "Planned End Date",
+      "plannedEndDatePlaceholder": "Select planned end date",
+      "estimatedCost": "Estimated Cost",
+      "estimatedCostPlaceholder": "Enter estimated cost (optional)",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes (optional)",
+      "isActive": "Active",
+      "isActiveDescription": "Is this production order active?",
+      "mustBePositive": "must be positive"
+    },
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "createSuccess": "Production order created successfully",
+    "updateSuccess": "Production order updated successfully",
     "title": "Production Orders",
-    "description": "Manage production orders and schedules"
+    "description": "Manage production orders and schedules",
+    "table": {
+      "orderNumber": "Order No",
+      "product": "Product",
+      "quantity": "Quantity",
+      "status": "Status",
+      "priority": "Priority",
+      "plannedStart": "Planned Start",
+      "plannedEnd": "Planned End",
+      "actualStart": "Actual Start",
+      "actualEnd": "Actual End",
+      "actions": "Actions"
+    },
+    "empty": {
+      "noOrders": "No production orders found"
+    },
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Success",
+    "exportError": "Export Error",
+    "filter": {
+      "product": "Product",
+      "location": "Location",
+      "status": "Status",
+      "priority": "Priority"
+    },
+    "create": "Create"
   },
   "stock": {
+    "form": {
+      "product": "Product",
+      "productPlaceholder": "Select product",
+      "location": "Location",
+      "locationPlaceholder": "Select location (optional)",
+      "type": "Movement Type",
+      "typePlaceholder": "Select movement type",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "unit": "Unit",
+      "unitPlaceholder": "Select unit",
+      "referenceType": "Reference Type",
+      "referenceTypePlaceholder": "Select reference type (optional)",
+      "referenceId": "Reference ID",
+      "referenceIdPlaceholder": "Enter reference ID (optional)",
+      "movementDate": "Movement Date",
+      "movementDatePlaceholder": "Select movement date",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes (optional)",
+      "none": "None",
+      "mustBePositive": "must be positive"
+    },
+    "types": {
+      "in": "In",
+      "out": "Out",
+      "transfer": "Transfer",
+      "adjustment": "Adjustment"
+    },
+    "referenceTypes": {
+      "production": "Production",
+      "sale": "Sale",
+      "purchase": "Purchase",
+      "maintenance": "Maintenance"
+    },
+    "createSuccess": "Stock movement created successfully",
     "title": "Stock Management",
-    "description": "Track and manage stock levels"
+    "description": "Track and manage stock levels",
+    "menu": {
+      "label": "Stock"
+    },
+    "table": {
+      "product": "Product",
+      "type": "Type",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "movementDate": "Movement Date",
+      "referenceType": "Reference Type",
+      "notes": "Notes"
+    },
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Success",
+    "exportError": "Export Error",
+    "filter": {
+      "product": "Product",
+      "location": "Location",
+      "type": "Type"
+    },
+    "create": "Create"
   },
   "reports": {
     "title": "Reports",
@@ -46,6 +223,7 @@
       "plannedStart": "Planned Start",
       "plannedEnd": "Planned End",
       "assignedTo": "Assigned To (User ID)",
+      "assignedToPlaceholder": "Enter user ID",
       "laborHours": "Labor Hours",
       "actualStart": "Actual Start",
       "actualEnd": "Actual End",
@@ -65,12 +243,186 @@
     },
     "save": {
       "error": "Failed to save production step"
+    },
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "title": "Production Steps",
+    "filter": {
+      "status": "Status",
+      "all": "All"
+    },
+    "add": "Add Step",
+    "empty": "No production steps found",
+    "stepNumber": "Step No",
+    "name": "Name",
+    "plannedStart": "Planned Start",
+    "plannedEnd": "Planned End",
+    "assignedTo": "Assigned To",
+    "laborHours": "Labor Hours",
+    "edit": "Edit"
+  },
+  "form": {
+    "name": "Product Name",
+    "namePlaceholder": "Enter product name",
+    "code": "Product Code",
+    "codePlaceholder": "Enter product code",
+    "sku": "SKU",
+    "skuPlaceholder": "Enter SKU (optional)",
+    "barcode": "Barcode",
+    "barcodePlaceholder": "Enter barcode (optional)",
+    "category": "Category",
+    "categoryPlaceholder": "Enter category",
+    "type": "Product Type",
+    "typePlaceholder": "Select product type",
+    "location": "Location",
+    "locationPlaceholder": "Select location (optional)",
+    "unit": "Unit",
+    "unitPlaceholder": "Select unit",
+    "stockQuantity": "Stock Quantity",
+    "stockQuantityPlaceholder": "Enter stock quantity",
+    "minStockLevel": "Min Stock Level",
+    "minStockLevelPlaceholder": "Enter min stock level (optional)",
+    "maxStockLevel": "Max Stock Level",
+    "maxStockLevelPlaceholder": "Enter max stock level (optional)",
+    "costPrice": "Cost Price",
+    "costPricePlaceholder": "Enter cost price (optional)",
+    "sellingPrice": "Selling Price",
+    "sellingPricePlaceholder": "Enter selling price (optional)",
+    "currency": "Currency",
+    "currencyPlaceholder": "Select currency",
+    "isProducible": "Producible",
+    "isProducibleDescription": "Can this product be produced?",
+    "productionTime": "Production Time (hours)",
+    "productionTimePlaceholder": "Enter production time (optional)",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "isActive": "Active",
+    "isActiveDescription": "Is this product active?",
+    "mustBeNonNegative": "cannot be negative",
+    "create": "Create",
+    "update": "Update",
+    "edit": "Edit",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "units": {
+    "adet": "Piece",
+    "kg": "Kilogram",
+    "lt": "Liter",
+    "m2": "Square Meter",
+    "m3": "Cubic Meter",
+    "paket": "Package",
+    "kutu": "Box",
+    "palet": "Pallet"
+  },
+  "types": {
+    "hammadde": "Raw Material",
+    "yarı_mamul": "Semi-Finished",
+    "mamul": "Finished Product"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "common": {
+    "notFound": "Not Found",
+    "errorLoading": "Error loading",
+    "actions": "Actions",
+    "back": "Back",
+    "cancel": "Cancel",
+    "create": "Create",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "required": "Required",
+    "save": "Save"
+  },
+  "tabs": {
+    "details": "Details",
+    "bom": "Bill of Materials",
+    "steps": "Production Steps"
+  },
+  "templates": {
+    "edit": {
+      "product": {
+        "title": "Edit Product",
+        "description": "Update product information"
+      },
+      "order": {
+        "title": "Edit Production Order",
+        "description": "Update production order information"
+      }
+    },
+    "create": {
+      "product": {
+        "title": "Create Product",
+        "description": "Add new product to your production system"
+      },
+      "order": {
+        "title": "Create Production Order",
+        "description": "Add new production order"
+      }
     }
+  },
+  "actions": {
+    "newProduct": "New Product",
+    "newOrder": "New Production Order",
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
   },
   "messages": {
     "success": "Success",
+    "error": "Error",
+    "createSuccess": "Product created successfully",
+    "updateSuccess": "Product updated successfully",
+    "createError": "An error occurred while creating product"
+  },
+  "filter": {
+    "all": "All",
+    "location": "Location",
+    "category": "Category",
+    "type": "Type",
+    "status": "Status"
+  },
+  "export": {
+    "title": "Title"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of"
+  },
+  "delete": {
+    "confirm": "Confirm",
+    "success": "Success",
     "error": "Error"
-  }
+  },
+  "table": {
+    "code": "Code",
+    "name": "Name",
+    "category": "Category",
+    "type": "Type",
+    "stockQuantity": "Stock Quantity",
+    "unit": "Unit",
+    "costPrice": "Cost Price",
+    "sellingPrice": "Selling Price",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "loading": "Loading..."
 }
-
-

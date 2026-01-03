@@ -1,15 +1,4 @@
 {
-  "title": "إدارة المستأجرين",
-  "description": "إدارة المستأجرين متعددين",
-  "menu": {
-    "label": "المستأجرون",
-    "items": {
-      "dashboard": "لوحة التحكم",
-      "list": "قائمة المستأجرين",
-      "create": "إنشاء مستأجر",
-      "settings": "الإعدادات"
-    }
-  },
   "tenants": {
     "title": "إدارة المستأجرين",
     "subtitle": "عرض وإدارة جميع المستأجرين",
@@ -22,14 +11,14 @@
       "step2": "معلومات الشركة",
       "step3": "الموقع",
       "step4": "الملخص",
-      "step5": "جاري الإنشاء",
-      "step6": "اكتمل",
+      "step5": "قيد الإنشاء",
+      "step6": "مكتمل",
       "basicInfo": {
         "tenantName": "اسم المستأجر",
         "tenantNamePlaceholder": "شركة ACME",
-        "slug": "الاسم المختصر",
+        "slug": "المعرف",
         "slugPlaceholder": "acme",
-        "slugDescription": "يستخدم في تسمية قاعدة البيانات (أحرف صغيرة، أرقام، شرطة)",
+        "slugDescription": "يستخدم في تسمية قاعدة البيانات (أحرف صغيرة، أرقام، شرطات)",
         "subdomain": "النطاق الفرعي",
         "subdomainPlaceholder": "acme",
         "subdomainDescription": "عنوان URL للوصول: acme.onwindos.com",
@@ -41,10 +30,10 @@
         "companyNamePlaceholder": "شركة ACME",
         "logo": "شعار الشركة",
         "logoPlaceholder": "تحميل الشعار",
-        "logoDescription": "يستخدم في المستندات المصدرة (PDF، Excel، إلخ)",
+        "logoDescription": "يستخدم في مستندات التصدير (PDF، Excel، إلخ)",
         "favicon": "أيقونة المفضلة",
         "faviconPlaceholder": "تحميل أيقونة المفضلة",
-        "faviconDescription": "الرمز المعروض في علامة تبويب المتصفح (16x16 أو 32x32 بكسل)",
+        "faviconDescription": "الأيقونة المعروضة في علامة تبويب المتصفح (16×16 أو 32×32 بكسل)",
         "preview": "معاينة:",
         "address": "العنوان",
         "addressPlaceholder": "123 الشارع الرئيسي، المدينة، البلد",
@@ -65,13 +54,13 @@
         "skippedMessage": "يمكنك إضافة المواقع لاحقًا من صفحة الإعدادات.",
         "addLocation": "إضافة الموقع الأول",
         "locationName": "اسم الموقع",
-        "locationNamePlaceholder": "المكتب الرئيسي",
+        "locationNamePlaceholder": "المقر الرئيسي",
         "locationType": "نوع الموقع",
-        "locationTypePlaceholder": "اختر النوع",
+        "locationTypePlaceholder": "حدد النوع",
         "types": {
           "firma": "شركة",
           "lokasyon": "موقع",
-          "isletme": "عملية",
+          "isletme": "منشأة",
           "koridor": "ممر",
           "oda": "غرفة"
         },
@@ -83,15 +72,15 @@
         "countryPlaceholder": "تركيا"
       },
       "review": {
-        "title": "مراجعة التكوين الخاص بك",
+        "title": "مراجعة الإعدادات الخاصة بك",
         "subtitle": "يرجى مراجعة جميع المعلومات قبل إنشاء المستأجر.",
         "basicInfo": "المعلومات الأساسية",
         "companyInfo": "معلومات الشركة",
         "initialLocation": "الموقع الأولي",
         "tenantName": "اسم المستأجر:",
-        "slug": "الاسم المختصر:",
+        "slug": "المعرف:",
         "subdomain": "النطاق الفرعي:",
-        "customDomain": "نطاق مخصص:",
+        "customDomain": "النطاق المخصص:",
         "companyName": "اسم الشركة:",
         "logo": "الشعار:",
         "favicon": "أيقونة المفضلة:",
@@ -104,33 +93,33 @@
         "name": "الاسم:",
         "type": "النوع:",
         "skipped": "تم التخطي - يمكن إضافته لاحقًا",
-        "notConfigured": "الموقع غير مكون"
+        "notConfigured": "الموقع غير مكوّن"
       },
       "progress": {
         "title": "جاري إنشاء المستأجر...",
-        "subtitle": "يرجى الانتظار حتى يكتمل إعداد المستأجر. قد يستغرق هذا دقيقة.",
+        "subtitle": "يرجى الانتظار بينما يتم إكمال إعداد المستأجر. قد يستغرق ذلك دقيقة.",
         "steps": {
-          "database": "جاري إنشاء قاعدة البيانات",
+          "database": "إنشاء قاعدة البيانات",
           "databaseDesc": "جاري إعداد قاعدة بيانات PostgreSQL",
-          "migrations": "جاري تشغيل الترحيلات",
-          "migrationsDesc": "جاري تطبيق مخطط قاعدة البيانات",
-          "storage": "جاري إنشاء التخزين",
-          "storageDesc": "جاري إعداد أدلة الملفات",
-          "seeding": "جاري إضافة البيانات",
-          "seedingDesc": "جاري إنشاء المستخدمين والأدوار الافتراضية",
-          "exportTemplate": "جاري إنشاء قالب التصدير",
-          "exportTemplateDesc": "جاري إعداد قالب الشركة",
-          "location": "جاري إنشاء الموقع",
-          "locationDesc": "جاري إعداد الموقع الأول"
+          "migrations": "تشغيل عمليات الترحيل",
+          "migrationsDesc": "تطبيق مخطط قاعدة البيانات",
+          "storage": "إنشاء وحدة التخزين",
+          "storageDesc": "إعداد أدلة الملفات",
+          "seeding": "إدخال البيانات",
+          "seedingDesc": "إنشاء المستخدمين والأدوار الافتراضية",
+          "exportTemplate": "إنشاء قالب التصدير",
+          "exportTemplateDesc": "إعداد قالب الشركة",
+          "location": "إنشاء الموقع",
+          "locationDesc": "إعداد الموقع الأولي"
         }
       },
       "credentials": {
         "title": "تم إنشاء المستأجر بنجاح!",
         "subtitle": "تم إنشاء المستأجر الخاص بك وهو جاهز للاستخدام.",
         "accessUrl": "عنوان URL للوصول",
-        "superAdmin": "معلومات المسؤول الفائق",
-        "tenantAdmin": "معلومات مسؤول المستأجر",
-        "defaultUser": "معلومات المستخدم الافتراضي",
+        "superAdmin": "بيانات اعتماد SuperAdmin",
+        "tenantAdmin": "بيانات اعتماد مسؤول المستأجر",
+        "defaultUser": "بيانات اعتماد المستخدم الافتراضي",
         "email": "البريد الإلكتروني:",
         "username": "اسم المستخدم:",
         "password": "كلمة المرور:",
@@ -139,27 +128,46 @@
         "openInNewTab": "فتح في علامة تبويب جديدة",
         "exportTemplate": "قالب التصدير",
         "exportTemplateCreated": "تم إنشاء قالب التصدير الافتراضي، المعرف:",
-        "location": "الموقع الأول",
-        "locationCreated": "تم إنشاء الموقع الأول، المعرف:",
-        "finish": "الانتقال إلى لوحة تحكم الشركات"
+        "location": "الموقع الأولي",
+        "locationCreated": "تم إنشاء الموقع الأولي، المعرف:",
+        "finish": "الذهاب إلى لوحة تحكم الشركات"
       },
       "buttons": {
-        "back": "السابق",
+        "back": "رجوع",
         "next": "التالي",
-        "create": "إنشاء مستأجر",
+        "create": "إنشاء المستأجر",
         "finish": "إنهاء"
       }
     },
     "errors": {
       "nameRequired": "اسم المستأجر مطلوب",
-      "slugRequired": "الاسم المختصر مطلوب",
-      "slugInvalid": "يمكن أن يحتوي الاسم المختصر على أحرف صغيرة وأرقام وشرطات فقط",
+      "slugRequired": "المعرف مطلوب",
+      "slugInvalid": "يمكن أن يحتوي المعرف على أحرف صغيرة وأرقام وشرطات فقط",
       "emailInvalid": "أدخل عنوان بريد إلكتروني صالح",
       "urlInvalid": "أدخل عنوان URL صالح",
       "createFailed": "فشل إنشاء المستأجر",
       "loadFailed": "فشل تحميل المستأجر"
     }
+  },
+  "title": "إدارة المستأجرين",
+  "description": "نظام إدارة متعدد المستأجرين",
+  "menu": {
+    "label": "المستأجرون",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "list": "قائمة المستأجرين",
+      "create": "إنشاء مستأجر",
+      "settings": "الإعدادات"
+    }
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
   }
 }
-
-

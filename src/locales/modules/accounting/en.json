@@ -24,32 +24,418 @@
     "totalExpenses": "Total Expenses",
     "netProfit": "Net Profit",
     "recentActivity": "Recent Activity",
-    "noActivity": "No recent activity"
+    "noActivity": "No recent activity",
+    "dateFrom": "Start Date",
+    "dateTo": "End Date",
+    "revenueByMonth": "Monthly Revenue",
+    "revenue": "Revenue",
+    "expenses": "Expenses",
+    "profit": "Profit",
+    "expensesByCategory": "Expenses by Category"
   },
   "reports": {
     "title": "Reports",
-    "description": "Accounting reports and analytics"
+    "description": "Accounting reports and analytics",
+    "reportType": "Report Type",
+    "financial": "Financial Report",
+    "subscriptions": "Subscription Report",
+    "invoices": "Invoice Report",
+    "expenses": "Expense Report",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "exportExcel": "Export to Excel",
+    "exportPDF": "Export to PDF",
+    "totalRevenue": "Total Revenue",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "completedPayments": "Completed Payments",
+    "financialDescription": "Financial Report",
+    "subscriptionsDescription": "Subscription report will be displayed here",
+    "invoicesDescription": "Invoice report will be displayed here",
+    "expensesDescription": "Expense report will be displayed here",
+    "metric": "Metric",
+    "value": "Value"
+  },
+  "invoices": {
+    "title": "Invoices",
+    "description": "Manage and track your invoices",
+    "empty": {
+      "noInvoices": "No invoices found"
+    },
+    "table": {
+      "invoiceNumber": "Invoice Number",
+      "invoiceDate": "Invoice Date",
+      "dueDate": "Due Date",
+      "totalAmount": "Total Amount",
+      "status": "Status",
+      "paidDate": "Paid Date",
+      "customer": "Customer"
+    },
+    "filter": {
+      "subscription": "Subscription",
+      "status": "Status"
+    },
+    "form": {
+      "invoiceNumber": "Invoice Number",
+      "invoiceNumberPlaceholder": "Enter invoice number",
+      "subscription": "Subscription",
+      "subscriptionPlaceholder": "Select subscription (optional)",
+      "invoiceDate": "Invoice Date",
+      "invoiceDatePlaceholder": "Select invoice date",
+      "dueDate": "Due Date",
+      "dueDatePlaceholder": "Select due date",
+      "subtotal": "Subtotal",
+      "subtotalPlaceholder": "Enter subtotal",
+      "taxRate": "Tax Rate (%)",
+      "taxRatePlaceholder": "Enter tax rate",
+      "totalAmount": "Total Amount",
+      "totalAmountPlaceholder": "Total amount",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "isActive": "Active",
+      "isActiveDescription": "Is this invoice active?",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter description (optional)",
+      "taxAmount": "Tax Amount"
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled",
+      "pending": "Pending"
+    },
+    "createSuccess": "Invoice created successfully",
+    "updateSuccess": "Invoice updated successfully",
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Successful",
+    "exportError": "Export Error"
+  },
+  "expenses": {
+    "title": "Expenses",
+    "description": "Track and manage your expenses",
+    "table": {
+      "name": "Name",
+      "category": "Category",
+      "type": "Type",
+      "amount": "Amount",
+      "expenseDate": "Expense Date",
+      "status": "Status"
+    },
+    "filter": {
+      "location": "Location",
+      "subscription": "Subscription",
+      "category": "Category",
+      "type": "Type",
+      "status": "Status"
+    },
+    "form": {
+      "name": "Expense Name",
+      "namePlaceholder": "Enter expense name",
+      "expenseNumber": "Expense Number",
+      "expenseNumberPlaceholder": "Enter expense number",
+      "category": "Category",
+      "categoryPlaceholder": "Enter category",
+      "type": "Expense Type",
+      "typePlaceholder": "Select expense type",
+      "amount": "Amount",
+      "amountPlaceholder": "Enter amount",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "expenseDate": "Expense Date",
+      "expenseDatePlaceholder": "Select expense date",
+      "location": "Location",
+      "locationPlaceholder": "Select location (optional)",
+      "subscription": "Subscription",
+      "subscriptionPlaceholder": "Select subscription (optional)",
+      "vendor": "Vendor",
+      "vendorPlaceholder": "Enter vendor (optional)",
+      "receiptUrl": "Receipt URL",
+      "receiptUrlPlaceholder": "Enter receipt URL (optional)",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter description (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "isActive": "Active",
+      "isActiveDescription": "Is this expense active?"
+    },
+    "types": {
+      "operational": "Operational",
+      "subscription": "Subscription",
+      "maintenance": "Maintenance",
+      "rent": "Rent",
+      "utility": "Utility",
+      "other": "Other"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "paid": "Paid"
+    },
+    "createSuccess": "Expense created successfully",
+    "updateSuccess": "Expense updated successfully",
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Successful",
+    "exportError": "Export Error"
   },
   "payments": {
+    "title": "Payments",
+    "description": "Manage payment records and transactions",
     "tabs": {
       "collections": "Collections",
-      "outgoing": "Outgoing Payments"
-    }
-  },
-  "common": {
-    "search": "Search",
-    "error": "Error",
-    "success": "Success",
-    "actions": "Actions",
-    "edit": "Edit",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "save": "Save",
+      "outgoing": "Our Payments"
+    },
+    "table": {
+      "paymentNumber": "Payment Number",
+      "amount": "Amount",
+      "paymentDate": "Payment Date",
+      "paymentMethod": "Payment Method",
+      "status": "Status",
+      "reference": "Reference"
+    },
+    "filter": {
+      "invoice": "Invoice",
+      "subscription": "Subscription",
+      "status": "Status",
+      "paymentMethod": "Payment Method"
+    },
+    "form": {
+      "paymentNumber": "Payment Number",
+      "paymentNumberPlaceholder": "Enter payment number",
+      "invoice": "Invoice",
+      "invoicePlaceholder": "Select invoice (optional)",
+      "subscription": "Subscription",
+      "subscriptionPlaceholder": "Select subscription (optional)",
+      "amount": "Amount",
+      "amountPlaceholder": "Enter amount",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "paymentDate": "Payment Date",
+      "paymentDatePlaceholder": "Select payment date",
+      "paymentMethod": "Payment Method",
+      "paymentMethodPlaceholder": "Select payment method",
+      "paymentReference": "Payment Reference",
+      "paymentReferencePlaceholder": "Enter payment reference (optional)",
+      "reference": "Reference",
+      "referencePlaceholder": "Enter reference (optional)",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes (optional)",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter description (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Select status"
+    },
+    "methods": {
+      "cash": "Cash",
+      "bank_transfer": "Bank Transfer",
+      "card": "Card",
+      "check": "Check",
+      "other": "Other"
+    },
+    "status": {
+      "pending": "Pending",
+      "completed": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "createSuccess": "Payment created successfully",
+    "updateSuccess": "Payment updated successfully",
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Successful",
+    "exportError": "Export Error",
     "create": "Create"
   },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "description": "Manage subscription plans and billing cycles",
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "status": "Status",
+      "basePrice": "Base Price",
+      "billingCycle": "Billing Cycle",
+      "startDate": "Start Date",
+      "endDate": "End Date"
+    },
+    "filter": {
+      "type": "Type",
+      "status": "Status"
+    },
+    "form": {
+      "name": "Subscription Name",
+      "namePlaceholder": "Enter subscription name",
+      "type": "Type",
+      "typePlaceholder": "Select subscription type",
+      "basePrice": "Base Price",
+      "basePricePlaceholder": "Enter base price",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter description (optional)",
+      "amount": "Amount",
+      "amountPlaceholder": "Enter amount",
+      "currency": "Currency",
+      "currencyPlaceholder": "Select currency",
+      "billingCycle": "Billing Cycle",
+      "billingCyclePlaceholder": "Select billing cycle",
+      "startDate": "Start Date",
+      "startDatePlaceholder": "Select start date",
+      "endDate": "End Date",
+      "endDatePlaceholder": "Select end date (optional)",
+      "commissionRate": "Commission Rate",
+      "commissionRatePlaceholder": "Enter commission rate",
+      "commissionType": "Commission Type",
+      "commissionTypePlaceholder": "Select commission type",
+      "terms": "Terms",
+      "termsPlaceholder": "Enter terms (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "isActive": "Active",
+      "isActiveDescription": "Is this subscription active?"
+    },
+    "types": {
+      "rental": "Rental",
+      "subscription": "Subscription",
+      "commission": "Commission"
+    },
+    "billingCycle": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly",
+      "one_time": "One Time"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended",
+      "inactive": "Inactive",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "commissionType": {
+      "percentage": "Percentage",
+      "fixed": "Fixed"
+    },
+    "createSuccess": "Subscription created successfully",
+    "updateSuccess": "Subscription updated successfully",
+    "delete": {
+      "confirm": "Confirm",
+      "success": "Success",
+      "error": "Error"
+    },
+    "exportDescription": "Export Description",
+    "exportSuccess": "Export Successful",
+    "exportError": "Export Error"
+  },
+  "form": {
+    "create": "Create",
+    "update": "Update",
+    "edit": "Edit",
+    "mustBeNonNegative": "must not be negative",
+    "mustBePositive": "must be positive",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "cancel": "Cancel"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "common": {
+    "notFound": "Not Found",
+    "errorLoading": "Error loading",
+    "back": "Back",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "required": "Required"
+  },
+  "actions": {
+    "newInvoice": "New Invoice",
+    "newExpense": "New Expense",
+    "newSubscription": "New Subscription",
+    "newPayment": "New Payment",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "templates": {
+    "edit": {
+      "invoice": {
+        "title": "Edit Invoice",
+        "description": "Update invoice information"
+      },
+      "expense": {
+        "title": "Edit Expense",
+        "description": "Update expense information"
+      },
+      "subscription": {
+        "title": "Edit Subscription",
+        "description": "Update subscription information"
+      }
+    },
+    "create": {
+      "invoice": {
+        "title": "Create Invoice",
+        "description": "Add new invoice"
+      },
+      "expense": {
+        "title": "Create Expense",
+        "description": "Add new expense"
+      },
+      "subscription": {
+        "title": "Create Subscription",
+        "description": "Add new subscription"
+      }
+    }
+  },
+  "messages": {
+    "createSuccess": "Created successfully",
+    "createError": "Error occurred while creating",
+    "updateSuccess": "Updated successfully",
+    "updateError": "Error occurred while updating",
+    "success": "Success",
+    "error": "Error"
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "filter": {
+    "all": "All",
+    "status": "Status"
+  },
+  "table": {
+    "actions": "Actions"
+  },
+  "export": {
+    "title": "Export"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "loading": "Loading...",
   "paymentMethods": {
     "title": "Payment Methods",
-    "description": "Configure payment methods and add bank accounts",
+    "description": "Configure payment methods, add bank accounts",
     "create": "New Payment Method",
     "edit": "Edit Payment Method",
     "empty": "No payment methods added yet.",
@@ -60,14 +446,14 @@
     "created": "Payment method created",
     "updated": "Payment method updated",
     "deleted": "Payment method deleted",
-    "companyRequired": "No company selected",
+    "companyRequired": "Company not selected",
     "delete": {
       "title": "Delete Payment Method",
       "confirm": "Are you sure you want to delete this payment method? This action cannot be undone."
     },
     "form": {
       "name": "Name",
-      "namePlaceholder": "E.g.: Cash",
+      "namePlaceholder": "e.g., Cash",
       "code": "Code",
       "codePlaceholder": "Select or type",
       "description": "Description",
@@ -75,16 +461,16 @@
       "icon": "Icon",
       "bankInfo": "Bank Information",
       "bankName": "Bank Name",
-      "bankNamePlaceholder": "E.g.: Chase Bank",
+      "bankNamePlaceholder": "e.g., Central Bank",
       "accountHolder": "Account Holder",
-      "accountHolderPlaceholder": "Name / Company Name",
+      "accountHolderPlaceholder": "Name Surname / Company Name",
       "iban": "IBAN",
-      "ibanPlaceholder": "XX00 0000 0000 0000 0000 0000 00",
+      "ibanPlaceholder": "TR00 0000 0000 0000 0000 0000 00",
       "swiftCode": "SWIFT Code",
-      "swiftCodePlaceholder": "CHASUS33",
+      "swiftCodePlaceholder": "SWIFTCODE",
       "branchCode": "Branch Code",
       "branchCodePlaceholder": "0000",
-      "accountNumber": "Account No",
+      "accountNumber": "Account Number",
       "accountNumberPlaceholder": "0000000000",
       "settings": "Settings",
       "sortOrder": "Sort Order",
@@ -101,8 +487,8 @@
     }
   },
   "cashTransactions": {
-    "title": "Cash Transactions",
-    "description": "Track cash flow and ledger movements",
+    "title": "Income-Expense",
+    "description": "Track cash flow and cash movements",
     "create": "New Transaction",
     "edit": "Edit Transaction",
     "income": "Income",
@@ -150,7 +536,7 @@
       "other_expense": "Other Expense"
     },
     "validation": {
-      "required": "Please fill all required fields"
+      "required": "Please fill in all required fields"
     },
     "deleteConfirm": {
       "title": "Delete Transaction",
@@ -162,5 +548,3 @@
     }
   }
 }
-
-

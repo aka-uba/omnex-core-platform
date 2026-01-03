@@ -1,6 +1,6 @@
 {
   "title": "المحاسبة",
-  "description": "وحدة محاسبة شاملة",
+  "description": "وحدة محاسبية شاملة",
   "menu": {
     "label": "المحاسبة",
     "items": {
@@ -8,28 +8,543 @@
       "subscriptions": "الاشتراكات",
       "invoices": "الفواتير",
       "payments": "المدفوعات",
-      "expenses": "المصروفات",
+      "expenses": "المصاريف",
       "reports": "التقارير",
-      "cashTransactions": "معاملات الصندوق",
-      "cash-transactions": "معاملات الصندوق"
+      "cashTransactions": "حركات الصندوق",
+      "cash-transactions": "حركات الصندوق"
     }
   },
   "dashboard": {
     "title": "لوحة تحكم المحاسبة",
-    "description": "نظرة عامة على الإدارة المحاسبية والمالية",
+    "description": "نظرة عامة على المحاسبة والإدارة المالية",
     "totalRevenue": "إجمالي الإيرادات",
     "activeSubscriptions": "الاشتراكات النشطة",
     "pendingInvoices": "الفواتير المعلقة",
-    "outstandingPayments": "المدفوعات المعلقة",
-    "totalExpenses": "إجمالي المصروفات",
+    "outstandingPayments": "المدفوعات المستحقة",
+    "totalExpenses": "إجمالي المصاريف",
     "netProfit": "صافي الربح",
-    "recentActivity": "النشاط الأخير",
-    "noActivity": "لا يوجد نشاط حديث"
+    "recentActivity": "الأنشطة الأخيرة",
+    "noActivity": "لا توجد أنشطة حديثة",
+    "dateFrom": "من تاريخ",
+    "dateTo": "إلى تاريخ",
+    "revenueByMonth": "الإيرادات الشهرية",
+    "revenue": "الإيرادات",
+    "expenses": "المصاريف",
+    "profit": "الربح",
+    "expensesByCategory": "المصاريف حسب الفئة"
   },
   "reports": {
     "title": "التقارير",
-    "description": "تقارير المحاسبة والتحليلات"
+    "description": "تقارير محاسبية وتحليلات",
+    "reportType": "نوع التقرير",
+    "financial": "تقرير مالي",
+    "subscriptions": "تقرير الاشتراكات",
+    "invoices": "تقرير الفواتير",
+    "expenses": "تقرير المصاريف",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "exportExcel": "تصدير إلى Excel",
+    "exportPDF": "تصدير إلى PDF",
+    "totalRevenue": "إجمالي الإيرادات",
+    "totalExpenses": "إجمالي المصاريف",
+    "netProfit": "صافي الربح",
+    "completedPayments": "المدفوعات المكتملة",
+    "financialDescription": "التقرير المالي",
+    "subscriptionsDescription": "سيتم عرض تقرير الاشتراكات هنا",
+    "invoicesDescription": "سيتم عرض تقرير الفواتير هنا",
+    "expensesDescription": "سيتم عرض تقرير المصاريف هنا",
+    "metric": "المقياس",
+    "value": "القيمة"
+  },
+  "invoices": {
+    "title": "الفواتير",
+    "description": "إدارة وتتبع الفواتير الخاصة بك",
+    "empty": {
+      "noInvoices": "لم يتم العثور على فواتير"
+    },
+    "table": {
+      "invoiceNumber": "رقم الفاتورة",
+      "invoiceDate": "تاريخ الفاتورة",
+      "dueDate": "تاريخ الاستحقاق",
+      "totalAmount": "المبلغ الإجمالي",
+      "status": "الحالة",
+      "paidDate": "تاريخ الدفع",
+      "customer": "العميل"
+    },
+    "filter": {
+      "subscription": "الاشتراك",
+      "status": "الحالة"
+    },
+    "form": {
+      "invoiceNumber": "رقم الفاتورة",
+      "invoiceNumberPlaceholder": "أدخل رقم الفاتورة",
+      "subscription": "الاشتراك",
+      "subscriptionPlaceholder": "اختر اشتراكاً (اختياري)",
+      "invoiceDate": "تاريخ الفاتورة",
+      "invoiceDatePlaceholder": "اختر تاريخ الفاتورة",
+      "dueDate": "تاريخ الاستحقاق",
+      "dueDatePlaceholder": "اختر تاريخ الاستحقاق",
+      "subtotal": "المجموع الفرعي",
+      "subtotalPlaceholder": "أدخل المجموع الفرعي",
+      "taxRate": "نسبة الضريبة (%)",
+      "taxRatePlaceholder": "أدخل نسبة الضريبة",
+      "totalAmount": "المبلغ الإجمالي",
+      "totalAmountPlaceholder": "المبلغ الإجمالي",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "isActive": "نشط",
+      "isActiveDescription": "هل هذه الفاتورة نشطة؟",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصفاً (اختياري)",
+      "taxAmount": "مبلغ الضريبة"
+    },
+    "status": {
+      "draft": "مسودة",
+      "sent": "تم الإرسال",
+      "paid": "مدفوع",
+      "overdue": "متأخر",
+      "cancelled": "ملغى",
+      "pending": "قيد الانتظار"
+    },
+    "createSuccess": "تم إنشاء الفاتورة بنجاح",
+    "updateSuccess": "تم تحديث الفاتورة بنجاح",
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "ناجح",
+      "error": "خطأ"
+    },
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "تم التصدير بنجاح",
+    "exportError": "خطأ في التصدير"
+  },
+  "expenses": {
+    "title": "المصاريف",
+    "description": "تتبع وإدارة المصاريف الخاصة بك",
+    "table": {
+      "name": "الاسم",
+      "category": "الفئة",
+      "type": "النوع",
+      "amount": "المبلغ",
+      "expenseDate": "تاريخ المصروف",
+      "status": "الحالة"
+    },
+    "filter": {
+      "location": "الموقع",
+      "subscription": "الاشتراك",
+      "category": "الفئة",
+      "type": "النوع",
+      "status": "الحالة"
+    },
+    "form": {
+      "name": "اسم المصروف",
+      "namePlaceholder": "أدخل اسم المصروف",
+      "expenseNumber": "رقم المصروف",
+      "expenseNumberPlaceholder": "أدخل رقم المصروف",
+      "category": "الفئة",
+      "categoryPlaceholder": "أدخل الفئة",
+      "type": "نوع المصروف",
+      "typePlaceholder": "اختر نوع المصروف",
+      "amount": "المبلغ",
+      "amountPlaceholder": "أدخل المبلغ",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "expenseDate": "تاريخ المصروف",
+      "expenseDatePlaceholder": "اختر تاريخ المصروف",
+      "location": "الموقع",
+      "locationPlaceholder": "اختر موقعاً (اختياري)",
+      "subscription": "الاشتراك",
+      "subscriptionPlaceholder": "اختر اشتراكاً (اختياري)",
+      "vendor": "المورد",
+      "vendorPlaceholder": "أدخل اسم المورد (اختياري)",
+      "receiptUrl": "رابط الإيصال",
+      "receiptUrlPlaceholder": "أدخل رابط الإيصال (اختياري)",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصفاً (اختياري)",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "isActive": "نشط",
+      "isActiveDescription": "هل هذا المصروف نشط؟"
+    },
+    "types": {
+      "operational": "تشغيلي",
+      "subscription": "اشتراك",
+      "maintenance": "صيانة",
+      "rent": "إيجار",
+      "utility": "خدمات (مرافق)",
+      "other": "أخرى"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "approved": "تمت الموافقة",
+      "rejected": "مرفوض",
+      "paid": "مدفوع"
+    },
+    "createSuccess": "تم إنشاء المصروف بنجاح",
+    "updateSuccess": "تم تحديث المصروف بنجاح",
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "ناجح",
+      "error": "خطأ"
+    },
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "تم التصدير بنجاح",
+    "exportError": "خطأ في التصدير"
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "description": "إدارة سجلات المدفوعات والمعاملات",
+    "tabs": {
+      "collections": "التحصيلات",
+      "outgoing": "مدفوعاتنا"
+    },
+    "table": {
+      "paymentNumber": "رقم الدفعة",
+      "amount": "المبلغ",
+      "paymentDate": "تاريخ الدفع",
+      "paymentMethod": "طريقة الدفع",
+      "status": "الحالة",
+      "reference": "المرجع"
+    },
+    "filter": {
+      "invoice": "الفاتورة",
+      "subscription": "الاشتراك",
+      "status": "الحالة",
+      "paymentMethod": "طريقة الدفع"
+    },
+    "form": {
+      "paymentNumber": "رقم الدفعة",
+      "paymentNumberPlaceholder": "أدخل رقم الدفعة",
+      "invoice": "الفاتورة",
+      "invoicePlaceholder": "اختر فاتورة (اختياري)",
+      "subscription": "الاشتراك",
+      "subscriptionPlaceholder": "اختر اشتراكاً (اختياري)",
+      "amount": "المبلغ",
+      "amountPlaceholder": "أدخل المبلغ",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "paymentDate": "تاريخ الدفع",
+      "paymentDatePlaceholder": "اختر تاريخ الدفع",
+      "paymentMethod": "طريقة الدفع",
+      "paymentMethodPlaceholder": "اختر طريقة الدفع",
+      "paymentReference": "مرجع الدفع",
+      "paymentReferencePlaceholder": "أدخل مرجع الدفع (اختياري)",
+      "reference": "المرجع",
+      "referencePlaceholder": "أدخل المرجع (اختياري)",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل ملاحظات (اختياري)",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصفاً (اختياري)",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة"
+    },
+    "methods": {
+      "cash": "نقداً",
+      "bank_transfer": "تحويل بنكي",
+      "card": "بطاقة",
+      "check": "شيك",
+      "other": "أخرى"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "completed": "مكتمل",
+      "failed": "فاشل",
+      "cancelled": "ملغى"
+    },
+    "createSuccess": "تم إنشاء الدفعة بنجاح",
+    "updateSuccess": "تم تحديث الدفعة بنجاح",
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "تم التصدير بنجاح",
+    "exportError": "خطأ في التصدير",
+    "create": "إنشاء"
+  },
+  "subscriptions": {
+    "title": "الاشتراكات",
+    "description": "إدارة خطط الاشتراك ودورات الفوترة",
+    "table": {
+      "name": "الاسم",
+      "type": "النوع",
+      "status": "الحالة",
+      "basePrice": "السعر الأساسي",
+      "billingCycle": "دورة الفوترة",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء"
+    },
+    "filter": {
+      "type": "النوع",
+      "status": "الحالة"
+    },
+    "form": {
+      "name": "اسم الاشتراك",
+      "namePlaceholder": "أدخل اسم الاشتراك",
+      "type": "النوع",
+      "typePlaceholder": "اختر نوع الاشتراك",
+      "basePrice": "السعر الأساسي",
+      "basePricePlaceholder": "أدخل السعر الأساسي",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصفاً (اختياري)",
+      "amount": "المبلغ",
+      "amountPlaceholder": "أدخل المبلغ",
+      "currency": "العملة",
+      "currencyPlaceholder": "اختر العملة",
+      "billingCycle": "دورة الفوترة",
+      "billingCyclePlaceholder": "اختر دورة الفوترة",
+      "startDate": "تاريخ البدء",
+      "startDatePlaceholder": "اختر تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "endDatePlaceholder": "اختر تاريخ الانتهاء (اختياري)",
+      "commissionRate": "نسبة العمولة",
+      "commissionRatePlaceholder": "أدخل نسبة العمولة",
+      "commissionType": "نوع العمولة",
+      "commissionTypePlaceholder": "اختر نوع العمولة",
+      "terms": "الشروط",
+      "termsPlaceholder": "أدخل الشروط (اختياري)",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "isActive": "نشط",
+      "isActiveDescription": "هل هذا الاشتراك نشط؟"
+    },
+    "types": {
+      "rental": "تأجير",
+      "subscription": "اشتراك",
+      "commission": "عمولة"
+    },
+    "billingCycle": {
+      "monthly": "شهري",
+      "quarterly": "ربع سنوي",
+      "yearly": "سنوي",
+      "one_time": "مرة واحدة"
+    },
+    "status": {
+      "active": "نشط",
+      "suspended": "معلق",
+      "inactive": "غير نشط",
+      "cancelled": "ملغى",
+      "expired": "منتهي الصلاحية"
+    },
+    "commissionType": {
+      "percentage": "نسبة مئوية",
+      "fixed": "ثابت"
+    },
+    "createSuccess": "تم إنشاء الاشتراك بنجاح",
+    "updateSuccess": "تم تحديث الاشتراك بنجاح",
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "ناجح",
+      "error": "خطأ"
+    },
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "تم التصدير بنجاح",
+    "exportError": "خطأ في التصدير"
+  },
+  "form": {
+    "create": "إنشاء",
+    "update": "تحديث",
+    "edit": "تعديل",
+    "mustBeNonNegative": "لا يمكن أن يكون سالباً",
+    "mustBePositive": "يجب أن يكون موجباً",
+    "createdAt": "تاريخ الإنشاء",
+    "updatedAt": "تاريخ التحديث",
+    "cancel": "إلغاء"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "common": {
+    "notFound": "غير موجود",
+    "errorLoading": "خطأ في التحميل",
+    "back": "رجوع",
+    "loading": "جاري التحميل...",
+    "noData": "لا توجد بيانات",
+    "required": "مطلوب"
+  },
+  "actions": {
+    "newInvoice": "فاتورة جديدة",
+    "newExpense": "مصروف جديد",
+    "newSubscription": "اشتراك جديد",
+    "newPayment": "دفعة جديدة",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "templates": {
+    "edit": {
+      "invoice": {
+        "title": "تعديل الفاتورة",
+        "description": "تحديث معلومات الفاتورة"
+      },
+      "expense": {
+        "title": "تعديل المصروف",
+        "description": "تحديث معلومات المصروف"
+      },
+      "subscription": {
+        "title": "تعديل الاشتراك",
+        "description": "تحديث معلومات الاشتراك"
+      }
+    },
+    "create": {
+      "invoice": {
+        "title": "إنشاء فاتورة",
+        "description": "إضافة فاتورة جديدة"
+      },
+      "expense": {
+        "title": "إنشاء مصروف",
+        "description": "إضافة مصروف جديد"
+      },
+      "subscription": {
+        "title": "إنشاء اشتراك",
+        "description": "إضافة اشتراك جديد"
+      }
+    }
+  },
+  "messages": {
+    "createSuccess": "تم الإنشاء بنجاح",
+    "createError": "حدث خطأ أثناء الإنشاء",
+    "updateSuccess": "تم التحديث بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث",
+    "success": "ناجح",
+    "error": "خطأ"
+  },
+  "search": {
+    "placeholder": "بحث..."
+  },
+  "filter": {
+    "all": "الكل",
+    "status": "الحالة"
+  },
+  "table": {
+    "actions": "العمليات"
+  },
+  "export": {
+    "title": "تصدير"
+  },
+  "pagination": {
+    "showing": "عرض",
+    "of": "من إجمالي"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "loading": "جاري التحميل...",
+  "paymentMethods": {
+    "title": "طرق الدفع",
+    "description": "تكوين طرق الدفع وإضافة الحسابات البنكية",
+    "create": "طريقة دفع جديدة",
+    "edit": "تعديل طريقة الدفع",
+    "empty": "لم يتم إضافة طرق دفع بعد.",
+    "createFirst": "إضافة أول طريقة دفع",
+    "default": "افتراضي",
+    "inactive": "غير نشط",
+    "code": "الكود",
+    "created": "تم إنشاء طريقة الدفع",
+    "updated": "تم تحديث طريقة الدفع",
+    "deleted": "تم حذف طريقة الدفع",
+    "companyRequired": "لم يتم اختيار الشركة",
+    "delete": {
+      "title": "حذف طريقة الدفع",
+      "confirm": "هل أنت متأكد أنك تريد حذف طريقة الدفع هذه؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "form": {
+      "name": "الاسم",
+      "namePlaceholder": "مثال: نقداً",
+      "code": "الكود",
+      "codePlaceholder": "اختر أو اكتب",
+      "description": "الوصف",
+      "descriptionPlaceholder": "وصف اختياري",
+      "icon": "الأيقونة",
+      "bankInfo": "المعلومات البنكية",
+      "bankName": "اسم البنك",
+      "bankNamePlaceholder": "مثال: بنك الراجحي",
+      "accountHolder": "صاحب الحساب",
+      "accountHolderPlaceholder": "الاسم الكامل / اسم الشركة",
+      "iban": "IBAN",
+      "ibanPlaceholder": "أدخل رقم الآيبان",
+      "swiftCode": "كود SWIFT",
+      "swiftCodePlaceholder": "أدخل كود سويفت",
+      "branchCode": "كود الفرع",
+      "branchCodePlaceholder": "0000",
+      "accountNumber": "رقم الحساب",
+      "accountNumberPlaceholder": "0000000000",
+      "settings": "الإعدادات",
+      "sortOrder": "الترتيب",
+      "isDefault": "الطريقة الافتراضية",
+      "isActive": "نشط"
+    },
+    "icons": {
+      "cash": "نقداً",
+      "bank": "بنك",
+      "card": "بطاقة",
+      "receipt": "إيصال",
+      "repeat": "تكرار",
+      "other": "أخرى"
+    }
+  },
+  "cashTransactions": {
+    "title": "الإيرادات والمصاريف",
+    "description": "تتبع التدفق النقدي وحركات الصندوق",
+    "create": "عملية جديدة",
+    "edit": "تعديل العملية",
+    "income": "إيراد",
+    "expense": "مصروف",
+    "totalIncome": "إجمالي الإيرادات",
+    "totalExpense": "إجمالي المصاريف",
+    "balance": "الرصيد",
+    "filterByType": "تصفية حسب النوع",
+    "filterByCategory": "تصفية حسب الفئة",
+    "noData": "لم يتم العثور على سجلات",
+    "created": "تم إنشاء العملية بنجاح",
+    "updated": "تم تحديث العملية بنجاح",
+    "deleted": "تم حذف العملية بنجاح",
+    "table": {
+      "date": "التاريخ",
+      "type": "النوع",
+      "category": "الفئة",
+      "description": "الوصف",
+      "paymentMethod": "طريقة الدفع",
+      "amount": "المبلغ"
+    },
+    "form": {
+      "type": "نوع العملية",
+      "category": "الفئة",
+      "amount": "المبلغ",
+      "date": "التاريخ",
+      "paymentMethod": "طريقة الدفع",
+      "reference": "رقم المرجع",
+      "referencePlaceholder": "رقم الإيصال/السند",
+      "description": "الوصف",
+      "notes": "ملاحظات"
+    },
+    "categories": {
+      "rent": "إيجار",
+      "deposit": "تأمين (depozito)",
+      "sale": "بيع",
+      "commission": "عمولة",
+      "other_income": "إيرادات أخرى",
+      "maintenance": "صيانة",
+      "repair": "إصلاح",
+      "salary": "راتب",
+      "utility": "فاتورة خدمات",
+      "tax": "ضريبة",
+      "insurance": "تأمين (sigorta)",
+      "other_expense": "مصاريف أخرى"
+    },
+    "validation": {
+      "required": "يرجى ملء جميع الحقول المطلوبة"
+    },
+    "deleteConfirm": {
+      "title": "حذف العملية",
+      "message": "هل أنت متأكد أنك تريد حذف هذه العملية؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "delete": {
+      "title": "حذف العملية",
+      "confirm": "هل أنت متأكد أنك تريد حذف هذه العملية؟ لا يمكن التراجع عن هذا الإجراء."
+    }
   }
 }
-
-

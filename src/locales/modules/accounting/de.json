@@ -4,19 +4,19 @@
   "menu": {
     "label": "Buchhaltung",
     "items": {
-      "dashboard": "Dashboard",
+      "dashboard": "Panel",
       "subscriptions": "Abonnements",
       "invoices": "Rechnungen",
       "payments": "Zahlungen",
       "expenses": "Ausgaben",
       "reports": "Berichte",
-      "cashTransactions": "Kassenbuchungen",
-      "cash-transactions": "Kassenbuchungen"
+      "cashTransactions": "Kassenvorgänge",
+      "cash-transactions": "Kassenvorgänge"
     }
   },
   "dashboard": {
-    "title": "Buchhaltungs-Dashboard",
-    "description": "Überblick über Ihre Buchhaltung und Finanzverwaltung",
+    "title": "Buchhaltungs-Panel",
+    "description": "Übersicht über Ihre Buchhaltung und Finanzverwaltung",
     "totalRevenue": "Gesamtumsatz",
     "activeSubscriptions": "Aktive Abonnements",
     "pendingInvoices": "Ausstehende Rechnungen",
@@ -24,12 +24,527 @@
     "totalExpenses": "Gesamtausgaben",
     "netProfit": "Nettogewinn",
     "recentActivity": "Letzte Aktivitäten",
-    "noActivity": "Keine letzten Aktivitäten"
+    "noActivity": "Keine aktuellen Aktivitäten",
+    "dateFrom": "Startdatum",
+    "dateTo": "Enddatum",
+    "revenueByMonth": "Monatlicher Umsatz",
+    "revenue": "Umsatz",
+    "expenses": "Ausgaben",
+    "profit": "Gewinn",
+    "expensesByCategory": "Ausgaben nach Kategorie"
   },
   "reports": {
     "title": "Berichte",
-    "description": "Buchhaltungsberichte und Analysen"
+    "description": "Buchhaltungsberichte und Analysen",
+    "reportType": "Berichtstyp",
+    "financial": "Finanzbericht",
+    "subscriptions": "Abonnementbericht",
+    "invoices": "Rechnungsbericht",
+    "expenses": "Ausgabenbericht",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "exportExcel": "Nach Excel exportieren",
+    "exportPDF": "Nach PDF exportieren",
+    "totalRevenue": "Gesamtumsatz",
+    "totalExpenses": "Gesamtausgaben",
+    "netProfit": "Nettogewinn",
+    "completedPayments": "Abgeschlossene Zahlungen",
+    "financialDescription": "Finanzbericht",
+    "subscriptionsDescription": "Abonnementbericht wird hier angezeigt",
+    "invoicesDescription": "Rechnungsbericht wird hier angezeigt",
+    "expensesDescription": "Ausgabenbericht wird hier angezeigt",
+    "metric": "Metrik",
+    "value": "Wert"
+  },
+  "invoices": {
+    "title": "Rechnungen",
+    "description": "Verwalten und verfolgen Sie Ihre Rechnungen",
+    "empty": {
+      "noInvoices": "Keine Rechnungen gefunden"
+    },
+    "table": {
+      "invoiceNumber": "Rechnungsnummer",
+      "invoiceDate": "Rechnungsdatum",
+      "dueDate": "Fälligkeitsdatum",
+      "totalAmount": "Gesamtbetrag",
+      "status": "Status",
+      "paidDate": "Zahlungsdatum",
+      "customer": "Kunde"
+    },
+    "filter": {
+      "subscription": "Abonnement",
+      "status": "Status"
+    },
+    "form": {
+      "invoiceNumber": "Rechnungsnummer",
+      "invoiceNumberPlaceholder": "Rechnungsnummer eingeben",
+      "subscription": "Abonnement",
+      "subscriptionPlaceholder": "Abonnement wählen (optional)",
+      "invoiceDate": "Rechnungsdatum",
+      "invoiceDatePlaceholder": "Rechnungsdatum wählen",
+      "dueDate": "Fälligkeitsdatum",
+      "dueDatePlaceholder": "Fälligkeitsdatum wählen",
+      "subtotal": "Zwischensumme",
+      "subtotalPlaceholder": "Zwischensumme eingeben",
+      "taxRate": "Steuersatz (%)",
+      "taxRatePlaceholder": "Steuersatz eingeben",
+      "totalAmount": "Gesamtbetrag",
+      "totalAmountPlaceholder": "Gesamtbetrag",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung wählen",
+      "status": "Status",
+      "statusPlaceholder": "Status wählen",
+      "isActive": "Aktiv",
+      "isActiveDescription": "Ist diese Rechnung aktiv?",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreibung eingeben (optional)",
+      "taxAmount": "Steuerbetrag"
+    },
+    "status": {
+      "draft": "Entwurf",
+      "sent": "Gesendet",
+      "paid": "Bezahlt",
+      "overdue": "Überfällig",
+      "cancelled": "Storniert",
+      "pending": "Ausstehend"
+    },
+    "createSuccess": "Rechnung erfolgreich erstellt",
+    "updateSuccess": "Rechnung erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "exportDescription": "Exportbeschreibung",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler"
+  },
+  "expenses": {
+    "title": "Ausgaben",
+    "description": "Verfolgen und verwalten Sie Ihre Ausgaben",
+    "table": {
+      "name": "Name",
+      "category": "Kategorie",
+      "type": "Typ",
+      "amount": "Betrag",
+      "expenseDate": "Ausgabendatum",
+      "status": "Status"
+    },
+    "filter": {
+      "location": "Standort",
+      "subscription": "Abonnement",
+      "category": "Kategorie",
+      "type": "Typ",
+      "status": "Status"
+    },
+    "form": {
+      "name": "Ausgabenname",
+      "namePlaceholder": "Ausgabenname eingeben",
+      "expenseNumber": "Ausgabennummer",
+      "expenseNumberPlaceholder": "Ausgabennummer eingeben",
+      "category": "Kategorie",
+      "categoryPlaceholder": "Kategorie eingeben",
+      "type": "Ausgabentyp",
+      "typePlaceholder": "Ausgabentyp wählen",
+      "amount": "Betrag",
+      "amountPlaceholder": "Betrag eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung wählen",
+      "expenseDate": "Ausgabendatum",
+      "expenseDatePlaceholder": "Ausgabendatum wählen",
+      "location": "Standort",
+      "locationPlaceholder": "Standort wählen (optional)",
+      "subscription": "Abonnement",
+      "subscriptionPlaceholder": "Abonnement wählen (optional)",
+      "vendor": "Lieferant",
+      "vendorPlaceholder": "Lieferant eingeben (optional)",
+      "receiptUrl": "Beleg-URL",
+      "receiptUrlPlaceholder": "Beleg-URL eingeben (optional)",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreibung eingeben (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Status wählen",
+      "isActive": "Aktiv",
+      "isActiveDescription": "Ist diese Ausgabe aktiv?"
+    },
+    "types": {
+      "operational": "Operativ",
+      "subscription": "Abonnement",
+      "maintenance": "Wartung",
+      "rent": "Miete",
+      "utility": "Nebenkosten",
+      "other": "Sonstiges"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "paid": "Bezahlt"
+    },
+    "createSuccess": "Ausgabe erfolgreich erstellt",
+    "updateSuccess": "Ausgabe erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "exportDescription": "Exportbeschreibung",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler"
+  },
+  "payments": {
+    "title": "Zahlungen",
+    "description": "Zahlungsdatensätze und Transaktionen verwalten",
+    "tabs": {
+      "collections": "Einnahmen",
+      "outgoing": "Unsere Zahlungen"
+    },
+    "table": {
+      "paymentNumber": "Zahlungsnummer",
+      "amount": "Betrag",
+      "paymentDate": "Zahlungsdatum",
+      "paymentMethod": "Zahlungsmethode",
+      "status": "Status",
+      "reference": "Referenz"
+    },
+    "filter": {
+      "invoice": "Rechnung",
+      "subscription": "Abonnement",
+      "status": "Status",
+      "paymentMethod": "Zahlungsmethode"
+    },
+    "form": {
+      "paymentNumber": "Zahlungsnummer",
+      "paymentNumberPlaceholder": "Zahlungsnummer eingeben",
+      "invoice": "Rechnung",
+      "invoicePlaceholder": "Rechnung wählen (optional)",
+      "subscription": "Abonnement",
+      "subscriptionPlaceholder": "Abonnement wählen (optional)",
+      "amount": "Betrag",
+      "amountPlaceholder": "Betrag eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung wählen",
+      "paymentDate": "Zahlungsdatum",
+      "paymentDatePlaceholder": "Zahlungsdatum wählen",
+      "paymentMethod": "Zahlungsmethode",
+      "paymentMethodPlaceholder": "Zahlungsmethode wählen",
+      "paymentReference": "Zahlungsreferenz",
+      "paymentReferencePlaceholder": "Zahlungsreferenz eingeben (optional)",
+      "reference": "Referenz",
+      "referencePlaceholder": "Referenz eingeben (optional)",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben (optional)",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreibung eingeben (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Status wählen"
+    },
+    "methods": {
+      "cash": "Bar",
+      "bank_transfer": "Banküberweisung",
+      "card": "Karte",
+      "check": "Scheck",
+      "other": "Sonstiges"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "completed": "Abgeschlossen",
+      "failed": "Fehlgeschlagen",
+      "cancelled": "Storniert"
+    },
+    "createSuccess": "Zahlung erfolgreich erstellt",
+    "updateSuccess": "Zahlung erfolgreich aktualisiert",
+    "exportDescription": "Exportbeschreibung",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler",
+    "create": "Erstellen"
+  },
+  "subscriptions": {
+    "title": "Abonnements",
+    "description": "Abonnementpläne und Abrechnungszyklen verwalten",
+    "table": {
+      "name": "Name",
+      "type": "Typ",
+      "status": "Status",
+      "basePrice": "Basispreis",
+      "billingCycle": "Abrechnungszyklus",
+      "startDate": "Startdatum",
+      "endDate": "Enddatum"
+    },
+    "filter": {
+      "type": "Typ",
+      "status": "Status"
+    },
+    "form": {
+      "name": "Abonnementname",
+      "namePlaceholder": "Abonnementname eingeben",
+      "type": "Typ",
+      "typePlaceholder": "Abonnementtyp wählen",
+      "basePrice": "Basispreis",
+      "basePricePlaceholder": "Basispreis eingeben",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreibung eingeben (optional)",
+      "amount": "Betrag",
+      "amountPlaceholder": "Betrag eingeben",
+      "currency": "Währung",
+      "currencyPlaceholder": "Währung wählen",
+      "billingCycle": "Abrechnungszyklus",
+      "billingCyclePlaceholder": "Abrechnungszyklus wählen",
+      "startDate": "Startdatum",
+      "startDatePlaceholder": "Startdatum wählen",
+      "endDate": "Enddatum",
+      "endDatePlaceholder": "Enddatum wählen (optional)",
+      "commissionRate": "Provisionssatz",
+      "commissionRatePlaceholder": "Provisionssatz eingeben",
+      "commissionType": "Provisionstyp",
+      "commissionTypePlaceholder": "Provisionstyp wählen",
+      "terms": "Bedingungen",
+      "termsPlaceholder": "Bedingungen eingeben (optional)",
+      "status": "Status",
+      "statusPlaceholder": "Status wählen",
+      "isActive": "Aktiv",
+      "isActiveDescription": "Ist dieses Abonnement aktiv?"
+    },
+    "types": {
+      "rental": "Vermietung",
+      "subscription": "Abonnement",
+      "commission": "Provision"
+    },
+    "billingCycle": {
+      "monthly": "Monatlich",
+      "quarterly": "Vierteljährlich",
+      "yearly": "Jährlich",
+      "one_time": "Einmalig"
+    },
+    "status": {
+      "active": "Aktiv",
+      "suspended": "Ausgesetzt",
+      "inactive": "Inaktiv",
+      "cancelled": "Storniert",
+      "expired": "Abgelaufen"
+    },
+    "commissionType": {
+      "percentage": "Prozentsatz",
+      "fixed": "Festbetrag"
+    },
+    "createSuccess": "Abonnement erfolgreich erstellt",
+    "updateSuccess": "Abonnement erfolgreich aktualisiert",
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "exportDescription": "Exportbeschreibung",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler"
+  },
+  "form": {
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "edit": "Bearbeiten",
+    "mustBeNonNegative": "darf nicht negativ sein",
+    "mustBePositive": "muss positiv sein",
+    "createdAt": "Erstellt am",
+    "updatedAt": "Aktualisiert am",
+    "cancel": "Abbrechen"
+  },
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
+  },
+  "common": {
+    "notFound": "Nicht gefunden",
+    "errorLoading": "Fehler beim Laden",
+    "back": "Zurück",
+    "loading": "Lädt...",
+    "noData": "Keine Daten gefunden",
+    "required": "Erforderlich"
+  },
+  "actions": {
+    "newInvoice": "Neue Rechnung",
+    "newExpense": "Neue Ausgabe",
+    "newSubscription": "Neues Abonnement",
+    "newPayment": "Neue Zahlung",
+    "view": "Anzeigen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "templates": {
+    "edit": {
+      "invoice": {
+        "title": "Rechnung bearbeiten",
+        "description": "Rechnungsinformationen aktualisieren"
+      },
+      "expense": {
+        "title": "Ausgabe bearbeiten",
+        "description": "Ausgabeninformationen aktualisieren"
+      },
+      "subscription": {
+        "title": "Abonnement bearbeiten",
+        "description": "Abonnementinformationen aktualisieren"
+      }
+    },
+    "create": {
+      "invoice": {
+        "title": "Rechnung erstellen",
+        "description": "Neue Rechnung hinzufügen"
+      },
+      "expense": {
+        "title": "Ausgabe erstellen",
+        "description": "Neue Ausgabe hinzufügen"
+      },
+      "subscription": {
+        "title": "Abonnement erstellen",
+        "description": "Neues Abonnement hinzufügen"
+      }
+    }
+  },
+  "messages": {
+    "createSuccess": "Erfolgreich erstellt",
+    "createError": "Fehler beim Erstellen",
+    "updateSuccess": "Erfolgreich aktualisiert",
+    "updateError": "Fehler beim Aktualisieren",
+    "success": "Erfolgreich",
+    "error": "Fehler"
+  },
+  "search": {
+    "placeholder": "Suche..."
+  },
+  "filter": {
+    "all": "Alle",
+    "status": "Status"
+  },
+  "table": {
+    "actions": "Aktionen"
+  },
+  "export": {
+    "title": "Exportieren"
+  },
+  "pagination": {
+    "showing": "Anzeige",
+    "of": "von"
+  },
+  "navigation": {
+    "dashboard": "Panel"
+  },
+  "loading": "Lädt...",
+  "paymentMethods": {
+    "title": "Zahlungsmethoden",
+    "description": "Zahlungsmethoden konfigurieren, Bankkonten hinzufügen",
+    "create": "Neue Zahlungsmethode",
+    "edit": "Zahlungsmethode bearbeiten",
+    "empty": "Noch keine Zahlungsmethode hinzugefügt.",
+    "createFirst": "Erste Zahlungsmethode hinzufügen",
+    "default": "Standard",
+    "inactive": "Inaktiv",
+    "code": "Code",
+    "created": "Zahlungsmethode erstellt",
+    "updated": "Zahlungsmethode aktualisiert",
+    "deleted": "Zahlungsmethode gelöscht",
+    "companyRequired": "Firma nicht ausgewählt",
+    "delete": {
+      "title": "Zahlungsmethode löschen",
+      "confirm": "Sind Sie sicher, dass Sie diese Zahlungsmethode löschen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "z.B. Barzahlung",
+      "code": "Code",
+      "codePlaceholder": "Wählen oder eingeben",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Optionale Beschreibung",
+      "icon": "Symbol",
+      "bankInfo": "Bankinformationen",
+      "bankName": "Bankname",
+      "bankNamePlaceholder": "z.B. Deutsche Bank",
+      "accountHolder": "Kontoinhaber",
+      "accountHolderPlaceholder": "Vorname Nachname / Firmenname",
+      "iban": "IBAN",
+      "ibanPlaceholder": "DE00 0000 0000 0000 0000 00",
+      "swiftCode": "SWIFT-Code",
+      "swiftCodePlaceholder": "SWIFTCODE",
+      "branchCode": "Bankleitzahl",
+      "branchCodePlaceholder": "0000",
+      "accountNumber": "Kontonummer",
+      "accountNumberPlaceholder": "0000000000",
+      "settings": "Einstellungen",
+      "sortOrder": "Sortierung",
+      "isDefault": "Standardmethode",
+      "isActive": "Aktiv"
+    },
+    "icons": {
+      "cash": "Bar",
+      "bank": "Bank",
+      "card": "Karte",
+      "receipt": "Beleg",
+      "repeat": "Wiederholung",
+      "other": "Sonstiges"
+    }
+  },
+  "cashTransactions": {
+    "title": "Einnahmen-Ausgaben",
+    "description": "Cashflow und Kassenbewegungen verfolgen",
+    "create": "Neue Transaktion",
+    "edit": "Transaktion bearbeiten",
+    "income": "Einnahme",
+    "expense": "Ausgabe",
+    "totalIncome": "Gesamteinnahmen",
+    "totalExpense": "Gesamtausgaben",
+    "balance": "Saldo",
+    "filterByType": "Nach Typ filtern",
+    "filterByCategory": "Nach Kategorie filtern",
+    "noData": "Keine Datensätze gefunden",
+    "created": "Transaktion erfolgreich erstellt",
+    "updated": "Transaktion erfolgreich aktualisiert",
+    "deleted": "Transaktion erfolgreich gelöscht",
+    "table": {
+      "date": "Datum",
+      "type": "Typ",
+      "category": "Kategorie",
+      "description": "Beschreibung",
+      "paymentMethod": "Zahlungsmethode",
+      "amount": "Betrag"
+    },
+    "form": {
+      "type": "Transaktionstyp",
+      "category": "Kategorie",
+      "amount": "Betrag",
+      "date": "Datum",
+      "paymentMethod": "Zahlungsmethode",
+      "reference": "Referenznummer",
+      "referencePlaceholder": "Beleg-/Vouchnummer",
+      "description": "Beschreibung",
+      "notes": "Notizen"
+    },
+    "categories": {
+      "rent": "Miete",
+      "deposit": "Kaution",
+      "sale": "Verkauf",
+      "commission": "Provision",
+      "other_income": "Sonstige Einnahmen",
+      "maintenance": "Wartung",
+      "repair": "Reparatur",
+      "salary": "Gehalt",
+      "utility": "Nebenkosten",
+      "tax": "Steuer",
+      "insurance": "Versicherung",
+      "other_expense": "Sonstige Ausgaben"
+    },
+    "validation": {
+      "required": "Bitte füllen Sie alle erforderlichen Felder aus"
+    },
+    "deleteConfirm": {
+      "title": "Transaktion löschen",
+      "message": "Sind Sie sicher, dass Sie diese Transaktion löschen möchten? Dies kann nicht rückgängig gemacht werden."
+    },
+    "delete": {
+      "title": "Transaktion löschen",
+      "confirm": "Sind Sie sicher, dass Sie diese Transaktion löschen möchten? Dies kann nicht rückgängig gemacht werden."
+    }
   }
 }
-
-

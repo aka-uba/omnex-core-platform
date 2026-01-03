@@ -14,23 +14,200 @@
   },
   "dashboard": {
     "title": "Produktions-Dashboard",
-    "description": "Überblick über Produktionsaktivitäten und Analysen"
+    "description": "Überblick über Produktionsaktivitäten und Analysen",
+    "dateFrom": "Startdatum",
+    "dateTo": "Enddatum",
+    "totalProducts": "Produkte gesamt",
+    "totalOrders": "Aufträge gesamt",
+    "activeOrders": "Aktive Aufträge",
+    "stockValue": "Lagerwert",
+    "ordersByMonth": "Aufträge nach Monat",
+    "total": "Gesamt",
+    "completed": "Abgeschlossen",
+    "ordersByStatus": "Aufträge nach Status",
+    "lowStockAlert": "Niedrigbestandswarnung",
+    "lowStockCount": "Anzahl niedriger Bestände"
   },
   "products": {
     "title": "Produkte",
-    "description": "Verwalten Sie Ihre Produkte und Bestände"
+    "description": "Verwalten Sie Ihre Produkte und Bestände",
+    "exportDescription": "Beschreibung exportieren",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler",
+    "create": "Erstellen"
   },
   "bom": {
     "title": "Stückliste",
-    "description": "Verwalten Sie Produktmateriallisten"
+    "description": "Verwalten Sie Produktmateriallisten",
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "add": "Hinzufügen",
+    "empty": "Stückliste ist leer",
+    "order": "Reihenfolge",
+    "product": "Produkt",
+    "component": "Komponente",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "wasteRate": "Ausschussrate",
+    "edit": "Bearbeiten",
+    "form": {
+      "productId": "Produkt",
+      "quantity": "Menge",
+      "unit": "Einheit",
+      "componentId": "Komponente",
+      "wasteRate": "Ausschussrate",
+      "order": "Reihenfolge"
+    },
+    "update": {
+      "success": "Erfolgreich"
+    },
+    "create": {
+      "success": "Erfolgreich"
+    },
+    "save": {
+      "error": "Fehler"
+    },
+    "selectProduct": "Produkt auswählen",
+    "selectProductPlaceholder": "Wählen Sie ein Produkt",
+    "selectProductFirst": "Wählen Sie zuerst ein Produkt"
   },
   "orders": {
+    "form": {
+      "orderNumber": "Auftragsnummer",
+      "orderNumberPlaceholder": "Auftragsnummer eingeben",
+      "location": "Standort",
+      "locationPlaceholder": "Standort auswählen",
+      "product": "Produkt",
+      "productPlaceholder": "Produkt auswählen",
+      "quantity": "Menge",
+      "quantityPlaceholder": "Menge eingeben",
+      "unit": "Einheit",
+      "unitPlaceholder": "Einheit auswählen",
+      "status": "Status",
+      "statusPlaceholder": "Status auswählen",
+      "priority": "Priorität",
+      "priorityPlaceholder": "Priorität auswählen",
+      "plannedStartDate": "Geplantes Startdatum",
+      "plannedStartDatePlaceholder": "Geplantes Startdatum auswählen",
+      "plannedEndDate": "Geplantes Enddatum",
+      "plannedEndDatePlaceholder": "Geplantes Enddatum auswählen",
+      "estimatedCost": "Geschätzte Kosten",
+      "estimatedCostPlaceholder": "Geschätzte Kosten eingeben (optional)",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben (optional)",
+      "isActive": "Aktiv",
+      "isActiveDescription": "Ist dieser Produktionsauftrag aktiv?",
+      "mustBePositive": "muss positiv sein"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "in_progress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "cancelled": "Abgebrochen"
+    },
+    "priority": {
+      "low": "Niedrig",
+      "normal": "Normal",
+      "high": "Hoch",
+      "urgent": "Dringend"
+    },
+    "createSuccess": "Produktionsauftrag erfolgreich erstellt",
+    "updateSuccess": "Produktionsauftrag erfolgreich aktualisiert",
     "title": "Produktionsaufträge",
-    "description": "Verwalten Sie Produktionsaufträge und Zeitpläne"
+    "description": "Verwalten Sie Produktionsaufträge und Zeitpläne",
+    "table": {
+      "orderNumber": "Auftrags-Nr.",
+      "product": "Produkt",
+      "quantity": "Menge",
+      "status": "Status",
+      "priority": "Priorität",
+      "plannedStart": "Geplanter Start",
+      "plannedEnd": "Geplantes Ende",
+      "actualStart": "Tatsächlicher Start",
+      "actualEnd": "Tatsächliches Ende",
+      "actions": "Aktionen"
+    },
+    "empty": {
+      "noOrders": "Keine Produktionsaufträge gefunden"
+    },
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "exportDescription": "Beschreibung exportieren",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler",
+    "filter": {
+      "product": "Produkt",
+      "location": "Standort",
+      "status": "Status",
+      "priority": "Priorität"
+    },
+    "create": "Erstellen"
   },
   "stock": {
+    "form": {
+      "product": "Produkt",
+      "productPlaceholder": "Produkt auswählen",
+      "location": "Standort",
+      "locationPlaceholder": "Standort auswählen (optional)",
+      "type": "Bewegungstyp",
+      "typePlaceholder": "Bewegungstyp auswählen",
+      "quantity": "Menge",
+      "quantityPlaceholder": "Menge eingeben",
+      "unit": "Einheit",
+      "unitPlaceholder": "Einheit auswählen",
+      "referenceType": "Referenztyp",
+      "referenceTypePlaceholder": "Referenztyp auswählen (optional)",
+      "referenceId": "Referenz-ID",
+      "referenceIdPlaceholder": "Referenz-ID eingeben (optional)",
+      "movementDate": "Bewegungsdatum",
+      "movementDatePlaceholder": "Bewegungsdatum auswählen",
+      "notes": "Notizen",
+      "notesPlaceholder": "Notizen eingeben (optional)",
+      "none": "Keine",
+      "mustBePositive": "muss positiv sein"
+    },
+    "types": {
+      "in": "Eingang",
+      "out": "Ausgang",
+      "transfer": "Transfer",
+      "adjustment": "Anpassung"
+    },
+    "referenceTypes": {
+      "production": "Produktion",
+      "sale": "Verkauf",
+      "purchase": "Einkauf",
+      "maintenance": "Wartung"
+    },
+    "createSuccess": "Lagerbewegung erfolgreich erstellt",
     "title": "Bestandsverwaltung",
-    "description": "Verfolgen und verwalten Sie Lagerbestände"
+    "description": "Verfolgen und verwalten Sie Lagerbestände",
+    "menu": {
+      "label": "Lagerbestand"
+    },
+    "table": {
+      "product": "Produkt",
+      "type": "Typ",
+      "quantity": "Menge",
+      "unit": "Einheit",
+      "movementDate": "Bewegungsdatum",
+      "referenceType": "Referenztyp",
+      "notes": "Notizen"
+    },
+    "exportDescription": "Beschreibung exportieren",
+    "exportSuccess": "Export erfolgreich",
+    "exportError": "Exportfehler",
+    "filter": {
+      "product": "Produkt",
+      "location": "Standort",
+      "type": "Typ"
+    },
+    "create": "Erstellen"
   },
   "reports": {
     "title": "Berichte",
@@ -46,6 +223,7 @@
       "plannedStart": "Geplanter Start",
       "plannedEnd": "Geplantes Ende",
       "assignedTo": "Zugewiesen an (Benutzer-ID)",
+      "assignedToPlaceholder": "Benutzer-ID eingeben",
       "laborHours": "Arbeitsstunden",
       "actualStart": "Tatsächlicher Start",
       "actualEnd": "Tatsächliches Ende",
@@ -65,12 +243,186 @@
     },
     "save": {
       "error": "Produktionsschritt konnte nicht gespeichert werden"
+    },
+    "delete": {
+      "confirm": "Bestätigen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
+    },
+    "title": "Produktionsschritte",
+    "filter": {
+      "status": "Status",
+      "all": "Alle"
+    },
+    "add": "Schritt hinzufügen",
+    "empty": "Keine Produktionsschritte gefunden",
+    "stepNumber": "Schritt-Nr.",
+    "name": "Name",
+    "plannedStart": "Geplanter Start",
+    "plannedEnd": "Geplantes Ende",
+    "assignedTo": "Zugewiesen an",
+    "laborHours": "Arbeitsstunden",
+    "edit": "Bearbeiten"
+  },
+  "form": {
+    "name": "Produktname",
+    "namePlaceholder": "Produktname eingeben",
+    "code": "Produktcode",
+    "codePlaceholder": "Produktcode eingeben",
+    "sku": "SKU",
+    "skuPlaceholder": "SKU eingeben (optional)",
+    "barcode": "Barcode",
+    "barcodePlaceholder": "Barcode eingeben (optional)",
+    "category": "Kategorie",
+    "categoryPlaceholder": "Kategorie eingeben",
+    "type": "Produkttyp",
+    "typePlaceholder": "Produkttyp auswählen",
+    "location": "Standort",
+    "locationPlaceholder": "Standort auswählen (optional)",
+    "unit": "Einheit",
+    "unitPlaceholder": "Einheit auswählen",
+    "stockQuantity": "Lagerbestand",
+    "stockQuantityPlaceholder": "Lagerbestand eingeben",
+    "minStockLevel": "Mindestbestand",
+    "minStockLevelPlaceholder": "Mindestbestand eingeben (optional)",
+    "maxStockLevel": "Maximalbestand",
+    "maxStockLevelPlaceholder": "Maximalbestand eingeben (optional)",
+    "costPrice": "Einstandspreis",
+    "costPricePlaceholder": "Einstandspreis eingeben (optional)",
+    "sellingPrice": "Verkaufspreis",
+    "sellingPricePlaceholder": "Verkaufspreis eingeben (optional)",
+    "currency": "Währung",
+    "currencyPlaceholder": "Währung auswählen",
+    "isProducible": "Produzierbar",
+    "isProducibleDescription": "Kann dieses Produkt produziert werden?",
+    "productionTime": "Produktionszeit (Stunden)",
+    "productionTimePlaceholder": "Produktionszeit eingeben (optional)",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung eingeben (optional)",
+    "isActive": "Aktiv",
+    "isActiveDescription": "Ist dieses Produkt aktiv?",
+    "mustBeNonNegative": "kann nicht negativ sein",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "edit": "Bearbeiten",
+    "createdAt": "Erstellt am",
+    "updatedAt": "Aktualisiert am",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  },
+  "units": {
+    "adet": "Stück",
+    "kg": "Kilogramm",
+    "lt": "Liter",
+    "m2": "Quadratmeter",
+    "m3": "Kubikmeter",
+    "paket": "Paket",
+    "kutu": "Karton",
+    "palet": "Palette"
+  },
+  "types": {
+    "hammadde": "Rohmaterial",
+    "yarı_mamul": "Halbfertigprodukt",
+    "mamul": "Fertigprodukt"
+  },
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
+  },
+  "common": {
+    "notFound": "Nicht gefunden",
+    "errorLoading": "Fehler beim Laden",
+    "actions": "Aktionen",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "create": "Erstellen",
+    "loading": "Wird geladen...",
+    "noData": "Keine Daten gefunden",
+    "required": "Erforderlich",
+    "save": "Speichern"
+  },
+  "tabs": {
+    "details": "Details",
+    "bom": "Stückliste",
+    "steps": "Produktionsschritte"
+  },
+  "templates": {
+    "edit": {
+      "product": {
+        "title": "Produkt bearbeiten",
+        "description": "Produktinformationen aktualisieren"
+      },
+      "order": {
+        "title": "Produktionsauftrag bearbeiten",
+        "description": "Produktionsauftragsinformationen aktualisieren"
+      }
+    },
+    "create": {
+      "product": {
+        "title": "Produkt erstellen",
+        "description": "Neues Produkt zu Ihrem Produktionssystem hinzufügen"
+      },
+      "order": {
+        "title": "Produktionsauftrag erstellen",
+        "description": "Neuen Produktionsauftrag hinzufügen"
+      }
     }
   },
+  "actions": {
+    "newProduct": "Neues Produkt",
+    "newOrder": "Neuer Produktionsauftrag",
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
   "messages": {
-    "success": "Erfolg",
+    "success": "Erfolgreich",
+    "error": "Fehler",
+    "createSuccess": "Produkt erfolgreich erstellt",
+    "updateSuccess": "Produkt erfolgreich aktualisiert",
+    "createError": "Fehler beim Erstellen des Produkts"
+  },
+  "filter": {
+    "all": "Alle",
+    "location": "Standort",
+    "category": "Kategorie",
+    "type": "Typ",
+    "status": "Status"
+  },
+  "export": {
+    "title": "Titel"
+  },
+  "pagination": {
+    "showing": "Anzeige",
+    "of": "von"
+  },
+  "delete": {
+    "confirm": "Bestätigen",
+    "success": "Erfolgreich",
     "error": "Fehler"
-  }
+  },
+  "table": {
+    "code": "Code",
+    "name": "Name",
+    "category": "Kategorie",
+    "type": "Typ",
+    "stockQuantity": "Lagerbestand",
+    "unit": "Einheit",
+    "costPrice": "Einstandspreis",
+    "sellingPrice": "Verkaufspreis",
+    "status": "Status",
+    "actions": "Aktionen"
+  },
+  "search": {
+    "placeholder": "Suchen..."
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "loading": "Wird geladen..."
 }
-
-

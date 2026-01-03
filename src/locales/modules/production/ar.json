@@ -14,23 +14,200 @@
   },
   "dashboard": {
     "title": "لوحة تحكم الإنتاج",
-    "description": "نظرة عامة على أنشطة الإنتاج والتحليلات"
+    "description": "نظرة عامة على أنشطة الإنتاج والتحليلات",
+    "dateFrom": "تاريخ البداية",
+    "dateTo": "تاريخ النهاية",
+    "totalProducts": "إجمالي المنتجات",
+    "totalOrders": "إجمالي الطلبات",
+    "activeOrders": "الطلبات النشطة",
+    "stockValue": "قيمة المخزون",
+    "ordersByMonth": "الطلبات حسب الشهر",
+    "total": "الإجمالي",
+    "completed": "المكتملة",
+    "ordersByStatus": "الطلبات حسب الحالة",
+    "lowStockAlert": "تنبيه المخزون المنخفض",
+    "lowStockCount": "عدد المخزون المنخفض"
   },
   "products": {
     "title": "المنتجات",
-    "description": "إدارة المنتجات والمخزون الخاص بك"
+    "description": "إدارة المنتجات والمخزون الخاص بك",
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "نجح التصدير",
+    "exportError": "خطأ في التصدير",
+    "create": "إنشاء"
   },
   "bom": {
     "title": "قائمة المواد",
-    "description": "إدارة قوائم مواد المنتجات"
+    "description": "إدارة قوائم مواد المنتجات",
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "نجح",
+      "error": "خطأ"
+    },
+    "add": "إضافة",
+    "empty": "قائمة المواد فارغة",
+    "order": "الترتيب",
+    "product": "المنتج",
+    "component": "المكون",
+    "quantity": "الكمية",
+    "unit": "الوحدة",
+    "wasteRate": "معدل الفاقد",
+    "edit": "تحرير",
+    "form": {
+      "productId": "المنتج",
+      "quantity": "الكمية",
+      "unit": "الوحدة",
+      "componentId": "المكون",
+      "wasteRate": "معدل الفاقد",
+      "order": "الترتيب"
+    },
+    "update": {
+      "success": "نجح"
+    },
+    "create": {
+      "success": "نجح"
+    },
+    "save": {
+      "error": "خطأ"
+    },
+    "selectProduct": "اختر منتج",
+    "selectProductPlaceholder": "اختر منتجاً",
+    "selectProductFirst": "اختر منتجاً أولاً"
   },
   "orders": {
+    "form": {
+      "orderNumber": "رقم الطلب",
+      "orderNumberPlaceholder": "أدخل رقم الطلب",
+      "location": "الموقع",
+      "locationPlaceholder": "اختر الموقع",
+      "product": "المنتج",
+      "productPlaceholder": "اختر المنتج",
+      "quantity": "الكمية",
+      "quantityPlaceholder": "أدخل الكمية",
+      "unit": "الوحدة",
+      "unitPlaceholder": "اختر الوحدة",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "priority": "الأولوية",
+      "priorityPlaceholder": "اختر الأولوية",
+      "plannedStartDate": "تاريخ البداية المخطط",
+      "plannedStartDatePlaceholder": "اختر تاريخ البداية المخطط",
+      "plannedEndDate": "تاريخ النهاية المخطط",
+      "plannedEndDatePlaceholder": "اختر تاريخ النهاية المخطط",
+      "estimatedCost": "التكلفة المقدرة",
+      "estimatedCostPlaceholder": "أدخل التكلفة المقدرة (اختياري)",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل الملاحظات (اختياري)",
+      "isActive": "نشط",
+      "isActiveDescription": "هل أمر الإنتاج هذا نشط؟",
+      "mustBePositive": "يجب أن يكون موجباً"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "in_progress": "قيد التنفيذ",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "priority": {
+      "low": "منخفض",
+      "normal": "عادي",
+      "high": "مرتفع",
+      "urgent": "عاجل"
+    },
+    "createSuccess": "تم إنشاء أمر الإنتاج بنجاح",
+    "updateSuccess": "تم تحديث أمر الإنتاج بنجاح",
     "title": "أوامر الإنتاج",
-    "description": "إدارة أوامر وجداول الإنتاج"
+    "description": "إدارة أوامر وجداول الإنتاج",
+    "table": {
+      "orderNumber": "رقم الأمر",
+      "product": "المنتج",
+      "quantity": "الكمية",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "plannedStart": "البداية المخططة",
+      "plannedEnd": "النهاية المخططة",
+      "actualStart": "البداية الفعلية",
+      "actualEnd": "النهاية الفعلية",
+      "actions": "الإجراءات"
+    },
+    "empty": {
+      "noOrders": "لم يتم العثور على أوامر إنتاج"
+    },
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "نجح",
+      "error": "خطأ"
+    },
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "نجح التصدير",
+    "exportError": "خطأ في التصدير",
+    "filter": {
+      "product": "المنتج",
+      "location": "الموقع",
+      "status": "الحالة",
+      "priority": "الأولوية"
+    },
+    "create": "إنشاء"
   },
   "stock": {
+    "form": {
+      "product": "المنتج",
+      "productPlaceholder": "اختر المنتج",
+      "location": "الموقع",
+      "locationPlaceholder": "اختر الموقع (اختياري)",
+      "type": "نوع الحركة",
+      "typePlaceholder": "اختر نوع الحركة",
+      "quantity": "الكمية",
+      "quantityPlaceholder": "أدخل الكمية",
+      "unit": "الوحدة",
+      "unitPlaceholder": "اختر الوحدة",
+      "referenceType": "نوع المرجع",
+      "referenceTypePlaceholder": "اختر نوع المرجع (اختياري)",
+      "referenceId": "معرف المرجع",
+      "referenceIdPlaceholder": "أدخل معرف المرجع (اختياري)",
+      "movementDate": "تاريخ الحركة",
+      "movementDatePlaceholder": "اختر تاريخ الحركة",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "أدخل الملاحظات (اختياري)",
+      "none": "لا شيء",
+      "mustBePositive": "يجب أن يكون موجباً"
+    },
+    "types": {
+      "in": "وارد",
+      "out": "صادر",
+      "transfer": "تحويل",
+      "adjustment": "تعديل"
+    },
+    "referenceTypes": {
+      "production": "إنتاج",
+      "sale": "بيع",
+      "purchase": "شراء",
+      "maintenance": "صيانة"
+    },
+    "createSuccess": "تم إنشاء حركة المخزون بنجاح",
     "title": "إدارة المخزون",
-    "description": "تتبع وإدارة مستويات المخزون"
+    "description": "تتبع وإدارة مستويات المخزون",
+    "menu": {
+      "label": "المخزون"
+    },
+    "table": {
+      "product": "المنتج",
+      "type": "النوع",
+      "quantity": "الكمية",
+      "unit": "الوحدة",
+      "movementDate": "تاريخ الحركة",
+      "referenceType": "نوع المرجع",
+      "notes": "ملاحظات"
+    },
+    "exportDescription": "وصف التصدير",
+    "exportSuccess": "نجح التصدير",
+    "exportError": "خطأ في التصدير",
+    "filter": {
+      "product": "المنتج",
+      "location": "الموقع",
+      "type": "النوع"
+    },
+    "create": "إنشاء"
   },
   "reports": {
     "title": "التقارير",
@@ -46,6 +223,7 @@
       "plannedStart": "البداية المخططة",
       "plannedEnd": "النهاية المخططة",
       "assignedTo": "مخصص لـ (معرف المستخدم)",
+      "assignedToPlaceholder": "أدخل معرف المستخدم",
       "laborHours": "ساعات العمل",
       "actualStart": "البداية الفعلية",
       "actualEnd": "النهاية الفعلية",
@@ -65,12 +243,186 @@
     },
     "save": {
       "error": "فشل حفظ خطوة الإنتاج"
+    },
+    "delete": {
+      "confirm": "تأكيد",
+      "success": "نجح",
+      "error": "خطأ"
+    },
+    "title": "خطوات الإنتاج",
+    "filter": {
+      "status": "الحالة",
+      "all": "الكل"
+    },
+    "add": "إضافة خطوة",
+    "empty": "لم يتم العثور على خطوات إنتاج",
+    "stepNumber": "رقم الخطوة",
+    "name": "الاسم",
+    "plannedStart": "البداية المخططة",
+    "plannedEnd": "النهاية المخططة",
+    "assignedTo": "مخصص لـ",
+    "laborHours": "ساعات العمل",
+    "edit": "تحرير"
+  },
+  "form": {
+    "name": "اسم المنتج",
+    "namePlaceholder": "أدخل اسم المنتج",
+    "code": "رمز المنتج",
+    "codePlaceholder": "أدخل رمز المنتج",
+    "sku": "رمز التخزين التعريفي",
+    "skuPlaceholder": "أدخل رمز التخزين التعريفي (اختياري)",
+    "barcode": "الباركود",
+    "barcodePlaceholder": "أدخل الباركود (اختياري)",
+    "category": "الفئة",
+    "categoryPlaceholder": "أدخل الفئة",
+    "type": "نوع المنتج",
+    "typePlaceholder": "اختر نوع المنتج",
+    "location": "الموقع",
+    "locationPlaceholder": "اختر الموقع (اختياري)",
+    "unit": "الوحدة",
+    "unitPlaceholder": "اختر الوحدة",
+    "stockQuantity": "كمية المخزون",
+    "stockQuantityPlaceholder": "أدخل كمية المخزون",
+    "minStockLevel": "الحد الأدنى للمخزون",
+    "minStockLevelPlaceholder": "أدخل الحد الأدنى للمخزون (اختياري)",
+    "maxStockLevel": "الحد الأقصى للمخزون",
+    "maxStockLevelPlaceholder": "أدخل الحد الأقصى للمخزون (اختياري)",
+    "costPrice": "سعر التكلفة",
+    "costPricePlaceholder": "أدخل سعر التكلفة (اختياري)",
+    "sellingPrice": "سعر البيع",
+    "sellingPricePlaceholder": "أدخل سعر البيع (اختياري)",
+    "currency": "العملة",
+    "currencyPlaceholder": "اختر العملة",
+    "isProducible": "قابل للإنتاج",
+    "isProducibleDescription": "هل يمكن إنتاج هذا المنتج؟",
+    "productionTime": "وقت الإنتاج (ساعات)",
+    "productionTimePlaceholder": "أدخل وقت الإنتاج (اختياري)",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل الوصف (اختياري)",
+    "isActive": "نشط",
+    "isActiveDescription": "هل هذا المنتج نشط؟",
+    "mustBeNonNegative": "لا يمكن أن يكون سالباً",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "edit": "تحرير",
+    "createdAt": "تاريخ الإنشاء",
+    "updatedAt": "تاريخ التحديث",
+    "cancel": "إلغاء",
+    "save": "حفظ"
+  },
+  "units": {
+    "adet": "قطعة",
+    "kg": "كيلوجرام",
+    "lt": "لتر",
+    "m2": "متر مربع",
+    "m3": "متر مكعب",
+    "paket": "طرد",
+    "kutu": "صندوق",
+    "palet": "منصة نقالة"
+  },
+  "types": {
+    "hammadde": "مادة خام",
+    "yarı_mamul": "شبه منتهي",
+    "mamul": "منتج نهائي"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "common": {
+    "notFound": "غير موجود",
+    "errorLoading": "خطأ في التحميل",
+    "actions": "الإجراءات",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "create": "إنشاء",
+    "loading": "جارٍ التحميل...",
+    "noData": "لا توجد بيانات",
+    "required": "مطلوب",
+    "save": "حفظ"
+  },
+  "tabs": {
+    "details": "التفاصيل",
+    "bom": "قائمة المواد",
+    "steps": "خطوات الإنتاج"
+  },
+  "templates": {
+    "edit": {
+      "product": {
+        "title": "تحرير المنتج",
+        "description": "تحديث معلومات المنتج"
+      },
+      "order": {
+        "title": "تحرير أمر الإنتاج",
+        "description": "تحديث معلومات أمر الإنتاج"
+      }
+    },
+    "create": {
+      "product": {
+        "title": "إنشاء منتج",
+        "description": "إضافة منتج جديد إلى نظام الإنتاج الخاص بك"
+      },
+      "order": {
+        "title": "إنشاء أمر إنتاج",
+        "description": "إضافة أمر إنتاج جديد"
+      }
     }
+  },
+  "actions": {
+    "newProduct": "منتج جديد",
+    "newOrder": "أمر إنتاج جديد",
+    "create": "إنشاء",
+    "edit": "تحرير",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "messages": {
     "success": "نجح",
+    "error": "خطأ",
+    "createSuccess": "تم إنشاء المنتج بنجاح",
+    "updateSuccess": "تم تحديث المنتج بنجاح",
+    "createError": "حدث خطأ أثناء إنشاء المنتج"
+  },
+  "filter": {
+    "all": "الكل",
+    "location": "الموقع",
+    "category": "الفئة",
+    "type": "النوع",
+    "status": "الحالة"
+  },
+  "export": {
+    "title": "العنوان"
+  },
+  "pagination": {
+    "showing": "عرض",
+    "of": "من"
+  },
+  "delete": {
+    "confirm": "تأكيد",
+    "success": "نجح",
     "error": "خطأ"
-  }
+  },
+  "table": {
+    "code": "الرمز",
+    "name": "الاسم",
+    "category": "الفئة",
+    "type": "النوع",
+    "stockQuantity": "كمية المخزون",
+    "unit": "الوحدة",
+    "costPrice": "سعر التكلفة",
+    "sellingPrice": "سعر البيع",
+    "status": "الحالة",
+    "actions": "الإجراءات"
+  },
+  "search": {
+    "placeholder": "بحث..."
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "loading": "جارٍ التحميل..."
 }
-
-

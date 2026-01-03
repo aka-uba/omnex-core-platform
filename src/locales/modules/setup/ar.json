@@ -1,0 +1,51 @@
+{
+  "title": "الإعداد",
+  "description": "إعداد النظام والتكوين",
+  "setup": {
+    "install": "تثبيت الإعداد",
+    "databaseWizard": "معالج إعداد قاعدة البيانات"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "description": "نظرة عامة وإحصائيات"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "titles": {
+    "accessDenied": "تم رفض الوصول",
+    "noPermission": "ليس لديك إذن للوصول إلى هذه الصفحة",
+    "resetFailed": "فشلت إعادة التعيين",
+    "all": "الكل",
+    "setupComplete": "اكتمل الإعداد بنجاح",
+    "downloadReport": "تنزيل التقرير",
+    "allStepsComplete": "اكتملت جميع الخطوات"
+  },
+  "errors": {
+    "accessDenied": "تم رفض الوصول",
+    "accessCheckFailed": "فشل فحص الوصول",
+    "description": "الوصف"
+  },
+  "messages": {
+    "tenantSchemaApplied": "تم تطبيق مخطط قاعدة بيانات المستأجر",
+    "coreSchemaApplied": "تم تطبيق مخطط قاعدة البيانات الأساسية",
+    "bothSchemasApplied": "تم تطبيق كلا مخططي قاعدة البيانات",
+    "bothConnectionsSuccess": "نجح كلا اتصالي قاعدة البيانات",
+    "databasesCreated": "تم إنشاء/التحقق من قواعد البيانات",
+    "stepSuccess": "اكتملت الخطوة بنجاح",
+    "stepFailed": "فشلت الخطوة"
+  },
+  "common": {
+    "all": "الكل",
+    "no": "لا",
+    "success": "بنجاح",
+    "configuration": "التكوين"
+  }
+}

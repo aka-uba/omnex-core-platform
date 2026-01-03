@@ -3,7 +3,7 @@
   "description": "إدارة صلاحيات المستخدمين ومستويات الوصول على مستوى النظام.",
   "create": {
     "title": "إنشاء صلاحية جديدة",
-    "description": "إنشاء صلاحية جديدة.",
+    "description": "قم بإنشاء صلاحية جديدة.",
     "button": "إنشاء صلاحية"
   },
   "edit": {
@@ -25,8 +25,8 @@
     "searchPlaceholder": "البحث بالاسم أو المفتاح...",
     "categoryFilter": "الفئة",
     "moduleFilter": "الوحدة",
-    "clearFilters": "مسح المرشحات",
-    "empty": "لم يتم تحديد صلاحيات بعد"
+    "clearFilters": "مسح الفلاتر",
+    "empty": "لم يتم تعريف أي صلاحيات بعد"
   },
   "form": {
     "permissionKey": "مفتاح الصلاحية",
@@ -38,36 +38,42 @@
     "category": "الفئة",
     "categoryPlaceholder": "اختر الفئة",
     "module": "الوحدة",
-    "modulePlaceholder": "اختر الوحدة"
+    "modulePlaceholder": "اختر الوحدة",
+    "cancel": "إلغاء"
   },
   "actions": {
     "view": "عرض",
     "edit": "تعديل",
-    "delete": "حذف"
+    "delete": "حذف",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "validation": {
     "keyRequired": "مفتاح الصلاحية مطلوب",
-    "keyFormat": "تنسيق مفتاح الصلاحية: module.action (مثال: client.create)",
+    "keyFormat": "تنسيق المفتاح: module.action (مثال: client.create)",
     "nameRequired": "الاسم مطلوب",
     "descriptionRequired": "الوصف مطلوب",
     "categoryRequired": "الفئة مطلوبة"
   },
   "categories": {
     "clientManagement": "إدارة العملاء",
-    "contentAI": "محتوى الذكاء الاصطناعي",
+    "contentAI": "المحتوى الذكي",
     "scheduling": "الجدولة",
     "finance": "المالية",
     "general": "عام"
   },
   "modules": {
     "crm": "إدارة علاقات العملاء",
-    "contentAI": "محتوى الذكاء الاصطناعي",
+    "contentAI": "المحتوى الذكي",
     "scheduler": "المجدول",
     "finance": "المالية"
   },
   "notifications": {
     "error": {
-      "permissionSaveFailed": "فشل في حفظ الصلاحية",
+      "permissionSaveFailed": "فشل حفظ الصلاحية",
       "title": "خطأ"
     },
     "success": {

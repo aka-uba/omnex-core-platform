@@ -3,7 +3,7 @@
   "description": "Manage all users, roles, and permissions within the agency.",
   "create": {
     "title": "Create New User",
-    "description": "Fill in the details below to add a new user to the system.",
+    "description": "Add a new user to the system by filling in the details below.",
     "button": "Create User"
   },
   "edit": {
@@ -13,8 +13,8 @@
     "userStatus": "User Status",
     "toggleStatus": "Toggle Status",
     "statusUpdated": "Status Updated",
-    "userActivated": "User has been activated",
-    "userDeactivated": "User has been deactivated"
+    "userActivated": "User activated",
+    "userDeactivated": "User deactivated"
   },
   "profile": {
     "title": "User Profile",
@@ -30,7 +30,8 @@
     "searchPlaceholder": "Search by name or email...",
     "filters": "Filters",
     "rowsPerPage": "Rows per page:",
-    "showing": "results"
+    "showing": "showing records",
+    "noUsers": "No users found"
   },
   "status": {
     "active": "Active",
@@ -47,10 +48,11 @@
   },
   "form": {
     "personal": {
+      "title": "Personal Information",
       "profilePicture": "Profile Picture",
       "profilePictureDescription": "Upload a profile picture for the new user.",
       "userDetails": "User Details",
-      "userDetailsDescription": "Provide the user's name, email, and role.",
+      "userDetailsDescription": "Enter the user's name, email, and role.",
       "credentials": "Credentials",
       "credentialsDescription": "Set a secure password for the new user.",
       "fullName": "Full Name",
@@ -75,12 +77,13 @@
       "hireDatePlaceholder": "Select date",
       "manager": "Manager",
       "managerPlaceholder": "Manager name",
-      "assignAgency": "Assign to Agency/Company",
-      "assignAgencyPlaceholder": "Select agencies"
+      "assignAgency": "Assign Agency/Company",
+      "assignAgencyPlaceholder": "Select agencies",
+      "role": "Role"
     },
     "contact": {
       "title": "Contact Information",
-      "description": "Enter contact information",
+      "description": "Enter contact details",
       "address": "Address",
       "addressPlaceholder": "Street address",
       "city": "City",
@@ -90,6 +93,7 @@
       "postalCode": "Postal Code",
       "postalCodePlaceholder": "12345",
       "emergencySection": "Emergency Contact",
+      "emergency": "Emergency Contact",
       "emergencyContact": "Contact Person",
       "emergencyContactPlaceholder": "Emergency contact name",
       "emergencyPhone": "Contact Phone",
@@ -101,6 +105,7 @@
       "passport": "Passport Copy",
       "idCard": "ID Card",
       "contract": "Contract",
+      "cv": "CV",
       "otherDocuments": "Other Documents"
     },
     "cv": {
@@ -117,32 +122,66 @@
       "themeLight": "Light",
       "themeDark": "Dark",
       "defaultLayout": "Default Layout",
-      "layoutSidebar": "Sidebar Menu",
-      "layoutTopHeader": "Top Header Menu"
-    }
+      "layoutSidebar": "Sidebar (Left Menu)",
+      "layoutTopHeader": "Top Header",
+      "language": "Language",
+      "theme": "Theme",
+      "layout": "Layout"
+    },
+    "cancel": "Cancel",
+    "upload": "Upload"
   },
   "actions": {
     "view": "View",
+    "download": "Download",
     "edit": "Edit",
     "delete": "Delete",
     "activate": "Activate",
     "deactivate": "Deactivate",
     "resetPassword": "Reset Password",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
     "statusUpdated": "Status Updated",
-    "userActivated": "User has been activated",
-    "userDeactivated": "User has been deactivated"
+    "userActivated": "User activated",
+    "userDeactivated": "User deactivated"
   },
   "quickView": {
     "title": "Quick View",
-    "createdAt": "Created At"
+    "createdAt": "Created Date"
+  },
+  "detail": {
+    "title": "User Detail",
+    "description": "View user profile information.",
+    "userNotFound": "User not found",
+    "systemInfo": "System Information",
+    "updatedAt": "Last Updated",
+    "noDocuments": "No documents uploaded yet",
+    "tabs": {
+      "info": "General Information",
+      "contact": "Contact",
+      "documents": "Documents",
+      "preferences": "Preferences"
+    }
   },
   "validation": {
     "fullNameRequired": "Full name is required",
     "emailRequired": "Email is required",
-    "emailInvalid": "Please enter a valid email address",
+    "emailInvalid": "Enter a valid email address",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters",
     "passwordMismatch": "Passwords do not match"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "common": {
+    "errorLoading": "Error loading"
+  },
+  "export": {
+    "report": "Report"
   },
   "departments": {
     "management": "Management",
@@ -162,6 +201,24 @@
     "operations": "Operations",
     "operasyon": "Operations",
     "other": "Other"
-  }
+  },
+  "notifications": {
+    "error": {
+      "title": "Error",
+      "userCreateFailed": "Failed to create user",
+      "userUpdateFailed": "Failed to update user"
+    },
+    "success": {
+      "userCreated": "User created successfully",
+      "userUpdated": "User updated successfully"
+    },
+    "validation": {
+      "invalidEmail": "Invalid email address",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "requiredFields": "Please fill in required fields",
+      "title": "Validation Error"
+    }
+  },
+  "userUpdated": "User updated"
 }
-

@@ -1,13 +1,17 @@
 {
   "title": "الدردشة",
-  "description": "وحدة دردشة ورسائل في الوقت الفعلي",
+  "description": "وحدة الدردشة والرسائل في الوقت الفعلي",
+  "common": {
+    "loading": "جاري التحميل...",
+    "confirmDeleteFile": "هل أنت متأكد من حذف هذا الملف؟"
+  },
   "menu": {
     "label": "الدردشة",
     "items": {
       "dashboard": "المحادثات",
       "rooms": "غرف الدردشة",
       "messages": "الرسائل المباشرة",
-      "groups": "الدردشات الجماعية"
+      "groups": "محادثات المجموعة"
     }
   },
   "tabs": {
@@ -22,28 +26,28 @@
   },
   "roomTypes": {
     "direct": "رسالة مباشرة",
-    "group": "دردشة جماعية",
+    "group": "محادثة جماعية",
     "channel": "قناة"
   },
   "rooms": {
     "title": "غرف الدردشة",
-    "description": "إدارة غرف الدردشة والانضمام إليها"
+    "description": "إدارة والانضمام إلى غرف الدردشة"
   },
   "actions": {
-    "newChat": "دردشة جديدة",
+    "newChat": "محادثة جديدة",
     "newGroup": "مجموعة جديدة",
-    "newGroupChat": "دردشة جماعية جديدة",
-    "uploadFile": "رفع ملف",
-    "uploading": "جاري الرفع...",
-    "download": "تحميل",
-    "downloadFile": "تحميل الملف",
+    "newGroupChat": "محادثة جماعية جديدة",
+    "uploadFile": "تحميل ملف",
+    "uploading": "جاري التحميل...",
+    "download": "تنزيل",
+    "downloadFile": "تنزيل الملف",
     "delete": "حذف",
     "cancel": "إلغاء",
     "save": "حفظ",
     "create": "إنشاء",
-    "select": "تحديد",
+    "select": "اختيار",
     "selectImage": "اختيار صورة",
-    "uploadAvatar": "رفع الصورة الرمزية",
+    "uploadAvatar": "تحميل الصورة الرمزية",
     "changeAvatar": "تغيير الصورة الرمزية",
     "searchChats": "البحث في المحادثات...",
     "noChats": "لا توجد محادثات بعد",
@@ -61,7 +65,59 @@
   "forms": {
     "groupName": "اسم المجموعة (اختياري)",
     "groupNamePlaceholder": "أدخل اسم المجموعة...",
-    "selectUser": "اختيار مستخدم"
+    "selectUser": "اختر المستخدم"
+  },
+  "fileTypes": {
+    "wordDocument": "مستند Word",
+    "excelFile": "ملف Excel",
+    "cannotPreview": "لا يمكن معاينة هذا النوع من الملفات في المتصفح. يمكنك تنزيل الملف وفتحه في التطبيق المناسب.",
+    "browserNotSupported": {
+      "video": "متصفحك لا يدعم تشغيل الفيديو.",
+      "audio": "متصفحك لا يدعم تشغيل الصوت."
+    }
+  },
+  "roomId": "معرّف الغرفة",
+  "titles": {
+    "success": "نجح",
+    "download": "تنزيل",
+    "preview": "معاينة",
+    "avatarUpdated": "تم تحديث الصورة الرمزية",
+    "avatarUpdateError": "خطأ في تحديث الصورة الرمزية",
+    "tenantContextNotFound": "لم يتم العثور على سياق المستأجر",
+    "microphoneAccessDenied": "تم رفض الوصول إلى الميكروفون",
+    "voiceRecordReady": "التسجيل الصوتي جاهز",
+    "voiceRecordUploadError": "خطأ في تحميل التسجيل الصوتي",
+    "voiceRecordSendHint": "انقر فوق زر الإرسال لإرسال التسجيل الصوتي",
+    "fileUploadError": "خطأ في تحميل الملف",
+    "fileUploadSuccess": "تم تحميل الملف بنجاح",
+    "fileDownloadError": "خطأ في تنزيل الملف",
+    "fileDeleteError": "خطأ في حذف الملف",
+    "fileDeleteSuccess": "تم حذف الملف بنجاح",
+    "messageSendError": "خطأ في إرسال الرسالة",
+    "userNotFound": "لم يتم العثور على معلومات المستخدم",
+    "chatCreateError": "خطأ في إنشاء المحادثة",
+    "chatStarted": "بدأت المحادثة",
+    "selectUserRequired": "يجب عليك اختيار مستخدم",
+    "groupChatCreateError": "خطأ في إنشاء محادثة المجموعة",
+    "groupChatCreated": "تم إنشاء محادثة المجموعة",
+    "selectAtLeastOneUser": "يجب عليك اختيار مستخدم واحد على الأقل"
+  },
+  "messages": {
+    "fileSent": "تم إرسال الملف",
+    "sent": "تم الإرسال"
+  },
+  "table": {
+    "description": "الوصف"
+  },
+  "errors": {
+    "videoLoadFailed": {
+      "title": "خطأ في تحميل الفيديو",
+      "message": "حدث خطأ أثناء تحميل الفيديو. قد لا يكون تنسيق الملف مدعومًا أو قد يكون الملف تالفًا."
+    },
+    "audioLoadFailed": {
+      "title": "خطأ في تحميل الصوت",
+      "message": "حدث خطأ أثناء تحميل الصوت. قد لا يكون تنسيق الملف مدعومًا أو قد يكون الملف تالفًا."
+    }
   },
   "chat": {
     "messagePlaceholder": "اكتب رسالة...",
@@ -71,7 +127,7 @@
     "today": "اليوم",
     "yesterday": "أمس",
     "directMessage": "رسالة مباشرة",
-    "groupChat": "دردشة جماعية",
+    "groupChat": "محادثة جماعية",
     "channel": "قناة",
     "selectChat": "اختر محادثة",
     "noMessages": "لا توجد رسائل بعد",

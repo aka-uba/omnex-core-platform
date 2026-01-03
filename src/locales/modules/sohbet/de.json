@@ -1,6 +1,10 @@
 {
   "title": "Chat",
   "description": "Echtzeit-Chat- und Messaging-Modul",
+  "common": {
+    "loading": "Lädt...",
+    "confirmDeleteFile": "Sind Sie sicher, dass Sie diese Datei löschen möchten?"
+  },
   "menu": {
     "label": "Chat",
     "items": {
@@ -47,7 +51,7 @@
     "changeAvatar": "Avatar ändern",
     "searchChats": "Chats durchsuchen...",
     "noChats": "Noch keine Chats",
-    "loading": "Wird geladen...",
+    "loading": "Lädt...",
     "noFiles": "Noch keine Dateien",
     "noParticipants": "Keine Teilnehmer",
     "noUsersFound": "Keine Benutzer gefunden",
@@ -56,12 +60,64 @@
     "view": "Ansehen",
     "back": "Zurück",
     "change": "Ändern",
-    "saving": "Wird gespeichert"
+    "saving": "Speichert"
   },
   "forms": {
     "groupName": "Gruppenname (Optional)",
-    "groupNamePlaceholder": "Gruppenname eingeben...",
+    "groupNamePlaceholder": "Gruppennamen eingeben...",
     "selectUser": "Benutzer auswählen"
+  },
+  "fileTypes": {
+    "wordDocument": "Word-Dokument",
+    "excelFile": "Excel-Datei",
+    "cannotPreview": "Dieser Dateityp kann im Browser nicht in der Vorschau angezeigt werden. Sie können die Datei herunterladen und in der entsprechenden Anwendung öffnen.",
+    "browserNotSupported": {
+      "video": "Ihr Browser unterstützt keine Videowiedergabe.",
+      "audio": "Ihr Browser unterstützt keine Audiowiedergabe."
+    }
+  },
+  "roomId": "Raum-ID",
+  "titles": {
+    "success": "Erfolgreich",
+    "download": "Herunterladen",
+    "preview": "Vorschau",
+    "avatarUpdated": "Avatar aktualisiert",
+    "avatarUpdateError": "Fehler beim Aktualisieren des Avatars",
+    "tenantContextNotFound": "Tenant-Kontext nicht gefunden",
+    "microphoneAccessDenied": "Mikrofonzugriff verweigert",
+    "voiceRecordReady": "Sprachaufnahme bereit",
+    "voiceRecordUploadError": "Fehler beim Hochladen der Sprachaufnahme",
+    "voiceRecordSendHint": "Klicken Sie auf die Senden-Schaltfläche, um die Sprachaufnahme zu senden",
+    "fileUploadError": "Fehler beim Hochladen der Datei",
+    "fileUploadSuccess": "Datei erfolgreich hochgeladen",
+    "fileDownloadError": "Fehler beim Herunterladen der Datei",
+    "fileDeleteError": "Fehler beim Löschen der Datei",
+    "fileDeleteSuccess": "Datei erfolgreich gelöscht",
+    "messageSendError": "Fehler beim Senden der Nachricht",
+    "userNotFound": "Benutzerinformationen nicht gefunden",
+    "chatCreateError": "Fehler beim Erstellen des Chats",
+    "chatStarted": "Chat gestartet",
+    "selectUserRequired": "Sie müssen einen Benutzer auswählen",
+    "groupChatCreateError": "Fehler beim Erstellen des Gruppenchats",
+    "groupChatCreated": "Gruppenchat erstellt",
+    "selectAtLeastOneUser": "Sie müssen mindestens einen Benutzer auswählen"
+  },
+  "messages": {
+    "fileSent": "Datei gesendet",
+    "sent": "Gesendet"
+  },
+  "table": {
+    "description": "Beschreibung"
+  },
+  "errors": {
+    "videoLoadFailed": {
+      "title": "Video-Ladefehler",
+      "message": "Beim Laden des Videos ist ein Fehler aufgetreten. Das Dateiformat wird möglicherweise nicht unterstützt oder die Datei ist beschädigt."
+    },
+    "audioLoadFailed": {
+      "title": "Audio-Ladefehler",
+      "message": "Beim Laden des Audios ist ein Fehler aufgetreten. Das Dateiformat wird möglicherweise nicht unterstützt oder die Datei ist beschädigt."
+    }
   },
   "chat": {
     "messagePlaceholder": "Nachricht eingeben...",
@@ -73,7 +129,7 @@
     "directMessage": "Direktnachricht",
     "groupChat": "Gruppenchat",
     "channel": "Kanal",
-    "selectChat": "Chat auswählen",
+    "selectChat": "Wählen Sie einen Chat",
     "noMessages": "Noch keine Nachrichten",
     "loadingMessages": "Nachrichten werden geladen...",
     "chatDetails": "Chat-Details",

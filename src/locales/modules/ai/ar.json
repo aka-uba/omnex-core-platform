@@ -1,75 +1,116 @@
 {
-    "title": "استوديو الذكاء الاصطناعي",
-    "description": "إنشاء محتوى باستخدام نماذج الذكاء الاصطناعي المتقدمة",
-    "page": {
-        "title": "تطبيق الذكاء الاصطناعي",
-        "description": "اختر مولداً لبدء إنشاء المحتوى.",
-        "textGenerator": {
-            "title": "مولد النصوص",
-            "description": "إنشاء مقالات ومنشورات مدونة وتسميات وسائل التواصل الاجتماعي."
-        },
-        "codeGenerator": {
-            "title": "مولد الكود",
-            "description": "إنشاء أجزاء الكود والدوال والمكونات."
-        },
-        "imageGenerator": {
-            "title": "مولد الصور",
-            "description": "إنشاء صور مذهلة من أوامر النص."
-        },
-        "voiceGenerator": {
-            "title": "مولد الصوت",
-            "description": "تحويل النص إلى كلام واقعي."
-        },
-        "videoGenerator": {
-            "title": "مولد الفيديو",
-            "description": "إنشاء مقاطع فيديو من النص أو الصور.",
-            "badge": "بيتا"
-        }
+  "common": {
+    "comingSoon": "هذه الميزة ستتوفر قريباً..."
+  },
+  "title": "استوديو الذكاء الاصطناعي",
+  "description": "أنشئ محتوى باستخدام نماذج ذكاء اصطناعي متقدمة",
+  "menu": {
+    "label": "AI Studio",
+    "items": {
+      "dashboard": "لوحة التحكم",
+      "text": "منشئ النصوص",
+      "image": "منشئ الصور",
+      "code": "منشئ الأكواد",
+      "audio": "منشئ الصوت",
+      "video": "منشئ الفيديو",
+      "history": "السجل"
+    }
+  },
+  "page": {
+    "title": "تطبيق الذكاء الاصطناعي",
+    "description": "اختر منشئاً للبدء في إنشاء المحتوى.",
+    "textGenerator": {
+      "title": "منشئ النصوص",
+      "description": "أنشئ مقالات، تدوينات، وعناوين لوسائل التواصل الاجتماعي."
     },
-    "textGenerator": "مولد النصوص",
-    "imageGenerator": "مولد الصور",
-    "codeGenerator": "مولد الكود",
-    "audioGenerator": "مولد الصوت",
-    "videoGenerator": "مولد الفيديو",
-    "model": "النموذج",
-    "selectModel": "اختر نموذجاً",
-    "typeMessage": "اكتب رسالة...",
-    "send": "إرسال",
-    "attach": "إرفاق",
-    "voiceInput": "إدخال صوتي",
-    "imageSettings": {
-        "aspectRatio": "نسبة العرض إلى الارتفاع",
-        "style": "النمط",
-        "selectStyle": "اختر النمط",
-        "resolution": "الدقة",
-        "selectResolution": "اختر الدقة",
-        "quality": "الجودة",
-        "numberOfImages": "عدد الصور"
+    "codeGenerator": {
+      "title": "منشئ الأكواد",
+      "description": "أنشئ مقتطفات برمجية، دوال، ومكونات."
     },
-    "imagePromptPlaceholder": "اوصف الصورة التي تريد إنشاءها...",
-    "codePromptPlaceholder": "اوصف الكود الذي تريد إنشاءه...",
-    "audioPromptPlaceholder": "اوصف الصوت الذي تريد إنشاءه...",
-    "videoPromptPlaceholder": "اوصف الفيديو الذي تريد إنشاءه...",
-    "instructions": "التعليمات",
-    "codeGeneratorInstructions": "اوصف الوظيفة التي تحتاجها. كن محدداً بشأن تنسيقات الإدخال/الإخراج والمكتبات المستخدمة وأي قيود.",
-    "voice": "الصوت",
-    "selectVoice": "اختر صوتاً",
-    "noAudioGenerated": "لم يتم إنشاء صوت بعد",
-    "videoSettings": {
-        "aspectRatio": "نسبة العرض إلى الارتفاع",
-        "style": "النمط",
-        "selectStyle": "اختر النمط",
-        "resolution": "الدقة",
-        "selectResolution": "اختر الدقة",
-        "duration": "المدة",
-        "motion": "الحركة"
+    "imageGenerator": {
+      "title": "منشئ الصور",
+      "description": "أنشئ صوراً مذهلة من النصوص."
     },
-    "noVideoGenerated": "لم يتم إنشاء فيديو بعد",
-    "copied": "تم النسخ!",
-    "copy": "نسخ",
-    "download": "تحميل"
+    "voiceGenerator": {
+      "title": "منشئ الصوت",
+      "description": "حول النص إلى حديث واقعي."
+    },
+    "videoGenerator": {
+      "title": "منشئ الفيديو",
+      "description": "أنشئ مقاطع فيديو من نصوص أو صور.",
+      "badge": "بيتا"
+    }
+  },
+  "textGenerator": "منشئ النصوص",
+  "imageGenerator": "منشئ الصور",
+  "codeGenerator": "منشئ الأكواد",
+  "audioGenerator": "منشئ الصوت",
+  "videoGenerator": "منشئ الفيديو",
+  "model": "النموذج",
+  "selectModel": "اختر نموذجاً",
+  "typeMessage": "اكتب رسالة...",
+  "send": "إرسال",
+  "attach": "إرفاق",
+  "voiceInput": "إدخال صوتي",
+  "imageSettings": {
+    "aspectRatio": "نسبة العرض إلى الارتفاع",
+    "style": "النمط",
+    "selectStyle": "اختر نمطاً",
+    "resolution": "الدقة",
+    "selectResolution": "اختر الدقة",
+    "quality": "الجودة",
+    "numberOfImages": "عدد الصور"
+  },
+  "imagePromptPlaceholder": "صف الصورة التي تريد إنشاءها...",
+  "codePromptPlaceholder": "صف الكود الذي تريد إنشاءه...",
+  "audioPromptPlaceholder": "صف الصوت الذي تريد إنشاءه...",
+  "videoPromptPlaceholder": "صف الفيديو الذي تريد إنشاءه...",
+  "instructions": "التعليمات",
+  "codeGeneratorInstructions": "صف الوظيفة التي تحتاجها. كن محدداً بشأن تنسيقات الإدخال/الإخراج، المكتبات المستخدمة، والقيود.",
+  "voice": "الصوت",
+  "selectVoice": "اختر صوتاً",
+  "noAudioGenerated": "لم يتم إنشاء صوت بعد",
+  "videoSettings": {
+    "aspectRatio": "نسبة العرض إلى الارتفاع",
+    "style": "النمط",
+    "selectStyle": "اختر نمطاً",
+    "resolution": "الدقة",
+    "selectResolution": "اختر الدقة",
+    "duration": "المدة",
+    "motion": "الحركة"
+  },
+  "noVideoGenerated": "لم يتم إنشاء فيديو بعد",
+  "copied": "تم النسخ!",
+  "copy": "نسخ",
+  "download": "تنزيل",
+  "history": {
+    "title": "السجل",
+    "description": "عرض سجل إنشاء الذكاء الاصطناعي الخاص بك",
+    "generationHistory": "سجل الإنشاء",
+    "viewHistory": "عرض سجل إنشاء الذكاء الاصطناعي الخاص بك"
+  },
+  "actions": {
+    "create": "إنشاء",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "delete": "حذف",
+    "view": "عرض",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم"
+  },
+  "aiStudio": "AI Studio",
+  "attachFile": "إرفاق ملف",
+  "clearChat": "مسح المحادثة",
+  "settings": {
+    "title": "إعدادات وحدة الذكاء الاصطناعي",
+    "description": "تكوين الإعدادات الافتراضية لوحدة الذكاء الاصطناعي",
+    "saved": "تم حفظ الإعدادات",
+    "savedMessage": "تم حفظ إعدادات وحدة الذكاء الاصطناعي بنجاح.",
+    "saveFailed": "فشل الحفظ",
+    "saveFailedMessage": "تعذر حفظ الإعدادات"
+  }
 }
-
-
-
-

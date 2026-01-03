@@ -10,6 +10,10 @@
       "reports": "Reports"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "description": "View maintenance analytics and reports"
+  },
   "create": "New Maintenance Record",
   "createDescription": "Create a new maintenance record",
   "edit": "Edit Maintenance Record",
@@ -26,7 +30,9 @@
     "scheduled": "Scheduled",
     "in_progress": "In Progress",
     "completed": "Completed",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "table": {
     "title": "Title",
@@ -65,34 +71,38 @@
     "documents": "Documents",
     "status": "Status",
     "statusPlaceholder": "Select status",
-    "isActive": "Active"
+    "isActive": "Active",
+    "documentsDescription": "Upload documents related to maintenance",
+    "cancel": "Cancel",
+    "create": "Create",
+    "createdAt": "Created At",
+    "save": "Save",
+    "updatedAt": "Updated At"
   },
   "filter": {
     "type": "Type",
     "status": "Status",
-    "location": "Location"
+    "location": "Location",
+    "all": "All"
   },
   "search": {
-    "placeholder": "Search maintenance records..."
+    "placeholder": "Search in maintenance records..."
   },
   "delete": {
     "confirm": "Are you sure you want to delete this maintenance record?",
     "success": "Maintenance record deleted successfully",
-    "error": "An error occurred while deleting the maintenance record"
+    "error": "An error occurred while deleting maintenance record"
   },
   "messages": {
     "createSuccess": "Maintenance record created successfully",
-    "createError": "An error occurred while creating the maintenance record",
+    "createError": "An error occurred while creating maintenance record",
     "updateSuccess": "Maintenance record updated successfully",
-    "updateError": "An error occurred while updating the maintenance record",
+    "updateError": "An error occurred while updating maintenance record",
     "success": "Success",
     "error": "Error"
   },
   "export": {
-    "title": "Export",
-    "excel": "Export to Excel",
-    "pdf": "Export to PDF",
-    "csv": "Export to CSV"
+    "title": "Export"
   },
   "exportSuccess": "Maintenance records exported successfully",
   "exportError": "An error occurred while exporting maintenance records",
@@ -101,11 +111,22 @@
     "showing": "Showing",
     "of": "of"
   },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "newRecord": "New Maintenance Record",
+    "create": "Create",
+    "update": "Update",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
   "dashboard": {
     "title": "Maintenance Dashboard",
     "description": "Overview of maintenance activities and analytics",
-    "dateFrom": "From Date",
-    "dateTo": "To Date",
+    "dateFrom": "Start Date",
+    "dateTo": "End Date",
     "totalRecords": "Total Records",
     "completed": "Completed",
     "totalCost": "Total Cost",
@@ -121,6 +142,12 @@
   "calendar": {
     "title": "Maintenance Calendar",
     "description": "View maintenance records in calendar view"
+  },
+  "common": {
+    "back": "Back",
+    "edit": "Edit",
+    "errorLoading": "Error loading",
+    "noData": "No data found",
+    "required": "Required"
   }
 }
-

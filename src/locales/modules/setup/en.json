@@ -1,0 +1,51 @@
+{
+  "title": "Setup",
+  "description": "System setup and configuration",
+  "setup": {
+    "install": "Install Setup",
+    "databaseWizard": "Database Setup Wizard"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Overview and statistics"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "titles": {
+    "accessDenied": "Access denied",
+    "noPermission": "You do not have permission to access this page",
+    "resetFailed": "Reset failed",
+    "all": "All",
+    "setupComplete": "Setup completed successfully",
+    "downloadReport": "Download report",
+    "allStepsComplete": "All steps completed"
+  },
+  "errors": {
+    "accessDenied": "Access denied",
+    "accessCheckFailed": "Access check failed",
+    "description": "Description"
+  },
+  "messages": {
+    "tenantSchemaApplied": "Tenant database schema applied",
+    "coreSchemaApplied": "Core database schema applied",
+    "bothSchemasApplied": "Both database schemas applied",
+    "bothConnectionsSuccess": "Both database connections successful",
+    "databasesCreated": "Databases created/verified",
+    "stepSuccess": "Step completed successfully",
+    "stepFailed": "Step failed"
+  },
+  "common": {
+    "all": "All",
+    "no": "No",
+    "success": "Successfully",
+    "configuration": "Configuration"
+  }
+}

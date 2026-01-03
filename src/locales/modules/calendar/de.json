@@ -1,45 +1,151 @@
 {
   "title": "Kalender",
-  "description": "Ereignisse und Registrierungen anzeigen",
+  "description": "Veranstaltungen und Registrierungen anzeigen",
+  "dashboard": {
+    "title": "Kalender",
+    "description": "Veranstaltungen anzeigen, verwalten und verfolgen"
+  },
+  "appointments": {
+    "title": "Termine",
+    "description": "Zeigen Sie Ihre Termine an, verwalten und verfolgen Sie diese",
+    "table": {
+      "title": "Titel",
+      "client": "Kunde",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "duration": "Dauer",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Abgesagt",
+      "completed": "Abgeschlossen"
+    },
+    "empty": "Noch keine Termine vorhanden",
+    "createNew": "Neuen Termin erstellen",
+    "delete": {
+      "title": "Termin löschen",
+      "confirm": "Sind Sie sicher, dass Sie diesen Termin löschen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden."
+    },
+    "form": {
+      "createTitle": "Neuen Termin erstellen",
+      "editTitle": "Termin bearbeiten",
+      "viewTitle": "Termindetails",
+      "title": "Titel",
+      "titlePlaceholder": "Termintitel eingeben",
+      "titleRequired": "Titel ist erforderlich",
+      "client": "Kunde",
+      "clientPlaceholder": "Kundenname eingeben",
+      "date": "Datum",
+      "dateRequired": "Datum ist erforderlich",
+      "time": "Uhrzeit",
+      "timePlaceholder": "Uhrzeit wählen",
+      "duration": "Dauer (Minuten)",
+      "durationPlaceholder": "Dauer eingeben",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Terminbeschreibung eingeben",
+      "status": "Status",
+      "reminder": "Erinnerung",
+      "reminderPlaceholder": "Erinnerungszeit wählen",
+      "reminderNone": "Keine Erinnerung",
+      "reminder5min": "5 Minuten vorher",
+      "reminder15min": "15 Minuten vorher",
+      "reminder30min": "30 Minuten vorher",
+      "reminder1hour": "1 Stunde vorher",
+      "reminder2hours": "2 Stunden vorher",
+      "reminder1day": "1 Tag vorher"
+    }
+  },
+  "menu": {
+    "label": "Kalender",
+    "items": {
+      "dashboard": "Kalender",
+      "events": "Veranstaltungen",
+      "appointments": "Termine"
+    }
+  },
+  "events": {
+    "title": "Veranstaltungen",
+    "description": "Alle Ihre Veranstaltungen anzeigen, verwalten und organisieren",
+    "table": {
+      "title": "Titel",
+      "client": "Kunde",
+      "date": "Datum",
+      "status": "Status",
+      "color": "Farbe",
+      "actions": "Aktionen"
+    },
+    "filters": {
+      "status": "Status",
+      "dateRange": "Zeitraum",
+      "client": "Kunde"
+    },
+    "sync": {
+      "title": "Kalender-Integration",
+      "description": "Mit Ihren Online-Kalenderdiensten synchronisieren",
+      "google": "Google Calendar",
+      "outlook": "Microsoft Outlook",
+      "icloud": "Apple iCloud",
+      "yandex": "Yandex Calendar",
+      "syncNow": "Jetzt synchronisieren",
+      "lastSync": "Letzte Synchronisierung",
+      "never": "Noch nicht synchronisiert",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert",
+      "configure": "Zu den Einstellungen"
+    }
+  },
   "actions": {
-    "createEvent": "Neues Ereignis"
+    "createEvent": "Neue Veranstaltung",
+    "createAppointment": "Neuer Termin",
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "refresh": "Aktualisieren"
   },
   "toolbar": {
     "today": "Heute",
     "month": "Monat",
     "week": "Woche",
     "day": "Tag",
-    "addEvent": "Ereignis hinzufügen",
+    "addEvent": "Veranstaltung hinzufügen",
     "view": "Anzeigen",
     "edit": "Bearbeiten",
-    "event": "Ereignis",
-    "events": "Ereignisse"
+    "event": "Veranstaltung",
+    "events": "Veranstaltung"
   },
   "summary": {
     "title": "Zusammenfassung dieses Monats",
-    "totalEvents": "Gesamte Ereignisse",
-    "totalRegistrations": "Gesamte Registrierungen",
-    "upcomingEvents": "Bevorstehende Ereignisse"
+    "totalEvents": "Veranstaltungen insgesamt",
+    "totalRegistrations": "Registrierungen insgesamt",
+    "upcomingEvents": "Anstehende Veranstaltungen"
   },
   "calendar": {
-    "registrations": "Registrierungen",
+    "registrations": "Registrierung",
     "more": "mehr..."
   },
   "form": {
-    "createEvent": "Neues Ereignis erstellen",
-    "editEvent": "Ereignis bearbeiten",
-    "viewEvent": "Ereignis anzeigen",
+    "createEvent": "Neue Veranstaltung erstellen",
+    "editEvent": "Veranstaltung bearbeiten",
+    "viewEvent": "Veranstaltung anzeigen",
     "title": "Titel",
-    "titlePlaceholder": "Ereignistitel eingeben",
+    "titlePlaceholder": "Veranstaltungstitel eingeben",
     "titleRequired": "Titel ist erforderlich",
     "description": "Beschreibung",
-    "descriptionPlaceholder": "Ereignisbeschreibung eingeben",
+    "descriptionPlaceholder": "Veranstaltungsbeschreibung eingeben",
     "client": "Kunde",
     "clientPlaceholder": "Kundenname eingeben",
     "date": "Datum",
     "dateRequired": "Datum ist erforderlich",
     "time": "Uhrzeit",
-    "timePlaceholder": "Uhrzeit auswählen",
+    "timePlaceholder": "Uhrzeit wählen",
     "status": "Status",
     "statusDraft": "Entwurf",
     "statusScheduled": "Geplant",
@@ -51,15 +157,37 @@
     "colorRed": "Rot",
     "colorBlue": "Blau",
     "colorPurple": "Lila",
-    "colorSlate": "Grau",
+    "colorSlate": "Schiefergrau",
     "create": "Erstellen",
     "update": "Aktualisieren",
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
-    "close": "Schließen"
+    "close": "Schließen",
+    "save": "Speichern"
+  },
+  "messages": {
+    "createSuccess": "Veranstaltung erfolgreich erstellt",
+    "updateSuccess": "Veranstaltung erfolgreich aktualisiert",
+    "deleteSuccess": "Veranstaltung erfolgreich gelöscht",
+    "deleteConfirm": "Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten?",
+    "exportError": "Export fehlgeschlagen",
+    "exportSuccess": "Export erfolgreich abgeschlossen",
+    "noEvents": "Keine Veranstaltungen gefunden",
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten"
+  },
+  "export": {
+    "filename": "veranstaltungen"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  },
+  "notifications": {
+    "error": {
+      "title": "Fehler"
+    },
+    "success": {
+      "title": "Erfolg"
+    }
   }
 }
-
-
-
-
