@@ -537,6 +537,10 @@
   "email": {
     "title": "البريد الإلكتروني",
     "edit": "تعديل قالب البريد الإلكتروني",
+    "notificationTemplates": "قوالب الإشعارات",
+    "customTemplates": "القوالب المخصصة",
+    "allNotificationTemplates": "جميع قوالب الإشعارات",
+    "filterType": "تصفية حسب نوع الإشعار",
     "update": {
       "success": "تم تحديث قالب البريد الإلكتروني بنجاح"
     },

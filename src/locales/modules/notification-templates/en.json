@@ -36,12 +36,22 @@
     "system": "System",
     "user": "User",
     "task": "Task",
-    "urgent": "Urgent"
+    "urgent": "Urgent",
+    "realEstate": "Real Estate"
   },
   "types": {
     "taskAssignment": "Task Assignment",
     "urgentAlert": "Urgent Notification",
-    "systemUpdate": "System Update"
+    "systemUpdate": "System Update",
+    "userActivation": "User Activation",
+    "welcome": "Welcome",
+    "passwordReset": "Password Reset",
+    "passwordChanged": "Password Changed",
+    "realEstateLeaseExpiry": "Lease Expiry",
+    "realEstateRentReminder": "Rent Payment Reminder",
+    "realEstatePaymentReceived": "Payment Received",
+    "realEstateTenantWelcome": "Tenant Welcome",
+    "realEstateMaintenanceUpdate": "Maintenance Update"
   },
   "styles": {
     "corporate": "Corporate",
@@ -114,6 +124,17 @@
   "variables": {
     "title": "Dynamic Variables",
     "description": "Available variables: {{userName}}, {{userEmail}}, {{companyName}}, {{companyLogo}}, {{taskTitle}}, {{notificationMessage}}, etc."
+  },
+  "preview": {
+    "description": "Preview coming soon...",
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "refresh": "Refresh",
+    "loading": "Loading preview...",
+    "saveFirst": "Please save the template first to see the preview.",
+    "clickRefresh": "Click refresh to load the preview.",
+    "loadPreview": "Load Preview",
+    "info": "The preview is displayed with sample data. In actual delivery, user and company information will be filled dynamically."
   },
   "notifications": {
     "success": "Success",

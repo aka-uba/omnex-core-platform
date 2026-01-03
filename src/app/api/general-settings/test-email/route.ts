@@ -36,6 +36,9 @@ export async function POST(request: NextRequest) {
                     subject?: string;
                     message?: string;
                     companyId?: string;
+                    useTemplate?: boolean;
+                    templateStyle?: EmailTemplateStyle;
+                    templateType?: EmailTemplateType;
                 };
                 try {
                     body = await request.json();
@@ -47,7 +50,7 @@ export async function POST(request: NextRequest) {
                     );
                 }
 
-                const { to, subject, message } = body;
+                const { to, subject, message, useTemplate, templateStyle, templateType } = body;
 
                 if (!to) {
                     return errorResponse('EMAIL_REQUIRED', 'EMAIL_REQUIRED_MESSAGE', 400);
@@ -190,24 +193,64 @@ export async function POST(request: NextRequest) {
                     );
                 }
 
-                // Prepare email content (use provided values or defaults)
-                const emailSubject = subject || 'OMNEX - Test Email';
-                const emailMessage = message || 'This is a test email sent from your OMNEX platform.\n\nIf you received this email, your SMTP configuration is working correctly.';
-                
-                // Convert message to HTML (preserve line breaks)
-                const htmlMessage = emailMessage
-                    .split('\n')
-                    .map((line: string) => `<p>${line || '&nbsp;'}</p>`)
-                    .join('');
+                // Get company info for template
+                const company = await tenantPrisma.company.findUnique({
+                    where: { id: companyId },
+                    select: {
+                        name: true,
+                        address: true,
+                        phone: true,
+                        email: true,
+                        website: true,
+                        taxNumber: true,
+                        logo: true,
+                    }
+                });
 
-                // Send test email
-                const mailOptions = {
-                    from: settings.smtpFromName 
-                        ? `${settings.smtpFromName} <${settings.smtpFromEmail}>`
-                        : settings.smtpFromEmail,
-                    to: to,
-                    subject: emailSubject,
-                    html: `
+                // Prepare email content
+                let emailSubject: string;
+                let emailHtml: string;
+                let emailText: string;
+
+                if (useTemplate && templateStyle) {
+                    // Use template rendering
+                    const rendered = renderEmailTemplate({
+                        locale: 'tr', // TODO: Get from request or user preference
+                        templateType: templateType || 'user-activation',
+                        templateStyle: templateStyle,
+                        companyInfo: {
+                            name: company?.name || settings.smtpFromName || 'Company',
+                            logoUrl: company?.logo || undefined,
+                            address: company?.address || undefined,
+                            phone: company?.phone || undefined,
+                            email: company?.email || settings.smtpFromEmail || undefined,
+                            website: company?.website || undefined,
+                            taxId: company?.taxNumber || undefined,
+                        },
+                        userData: {
+                            name: 'Test User',
+                            email: to,
+                            activationUrl: 'https://example.com/activate?token=test-token',
+                            registrationDate: new Date().toLocaleDateString(),
+                            accountType: 'Standard',
+                        },
+                    });
+
+                    emailSubject = rendered.subject;
+                    emailHtml = rendered.html;
+                    emailText = rendered.text;
+                } else {
+                    // Use simple email format
+                    emailSubject = subject || 'OMNEX - Test Email';
+                    const emailMessage = message || 'This is a test email sent from your OMNEX platform.\n\nIf you received this email, your SMTP configuration is working correctly.';
+
+                    // Convert message to HTML (preserve line breaks)
+                    const htmlMessage = emailMessage
+                        .split('\n')
+                        .map((line: string) => `<p>${line || '&nbsp;'}</p>`)
+                        .join('');
+
+                    emailHtml = `
                         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                                 <h2 style="color: #228be6; margin-top: 0;">${emailSubject}</h2>
@@ -223,8 +266,19 @@ export async function POST(request: NextRequest) {
                                 Encryption: ${settings.smtpEncryption || 'TLS'}
                             </p>
                         </div>
-                    `,
-                    text: `${emailSubject}\n\n${emailMessage}\n\n---\nSent at: ${new Date().toLocaleString()}\nSMTP Host: ${settings.smtpHost}\nSMTP Port: ${settings.smtpPort || 587}\nEncryption: ${settings.smtpEncryption || 'TLS'}`,
+                    `;
+                    emailText = `${emailSubject}\n\n${emailMessage}\n\n---\nSent at: ${new Date().toLocaleString()}\nSMTP Host: ${settings.smtpHost}\nSMTP Port: ${settings.smtpPort || 587}\nEncryption: ${settings.smtpEncryption || 'TLS'}`;
+                }
+
+                // Send test email
+                const mailOptions = {
+                    from: settings.smtpFromName
+                        ? `${settings.smtpFromName} <${settings.smtpFromEmail}>`
+                        : settings.smtpFromEmail,
+                    to: to,
+                    subject: emailSubject,
+                    html: emailHtml,
+                    text: emailText,
                 };
 
                 // Verify connection before sending (with timeout)

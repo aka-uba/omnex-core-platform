@@ -537,6 +537,10 @@
   "email": {
     "title": "E-Mail",
     "edit": "E-Mail-Vorlage bearbeiten",
+    "notificationTemplates": "Benachrichtigungsvorlagen",
+    "customTemplates": "Benutzerdefinierte Vorlagen",
+    "allNotificationTemplates": "Alle Benachrichtigungsvorlagen",
+    "filterType": "Nach Benachrichtigungstyp filtern",
     "update": {
       "success": "E-Mail-Vorlage erfolgreich aktualisiert"
     },

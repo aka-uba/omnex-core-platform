@@ -90,7 +90,7 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 setResult({
                     success: true,
@@ -111,15 +111,15 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
                 const translationKey = `settings.general.email.errors.${errorKey}`;
                 const translated = t(translationKey);
                 // If translation not found (returns the key), use fallback
-                const errorMessage = translated !== translationKey 
-                    ? translated 
+                const errorMessage = translated !== translationKey
+                    ? translated
                     : (data.message || t('settings.general.email.testEmailError'));
-                
+
                 // Get error details
-                const errorDetails = data.details || 
+                const errorDetails = data.details ||
                                    (data.error && typeof data.error === 'string' ? data.error : undefined) ||
                                    `${t('settings.general.email.errors.status')}: ${response.status} ${response.statusText}`;
-                
+
                 setResult({
                     success: false,
                     error: errorMessage,
@@ -127,10 +127,10 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
                 });
             }
         } catch (error) {
-            const errorMessage = error instanceof Error 
-                ? error.message 
+            const errorMessage = error instanceof Error
+                ? error.message
                 : t('settings.general.email.testEmailError');
-            
+
             setResult({
                 success: false,
                 error: errorMessage,
@@ -174,10 +174,10 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
                             color={result.success ? 'green' : 'red'}
                         >
                             <Stack gap="xs">
-                                <Text 
-                                    size="sm" 
+                                <Text
+                                    size="sm"
                                     fw={500}
-                                    style={{ 
+                                    style={{
                                         userSelect: 'text',
                                         cursor: 'text',
                                         wordBreak: 'break-word'
@@ -193,19 +193,19 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
                                 >
                                     {result.success ? result.message : result.error}
                                 </Text>
-                                
+
                                 {!result.success && (
                                     <Text size="xs" c="dimmed" style={{ fontStyle: 'italic' }}>
                                         {t('settings.general.email.testEmailModal.checkCredentials')}
                                     </Text>
                                 )}
-                                
+
                                 {result.details && (
-                                    <Paper 
-                                        p="xs" 
-                                        bg="gray.0" 
-                                        style={{ 
-                                            fontSize: '11px', 
+                                    <Paper
+                                        p="xs"
+                                        bg="gray.0"
+                                        style={{
+                                            fontSize: '11px',
                                             fontFamily: 'monospace',
                                             userSelect: 'text',
                                             cursor: 'text',
@@ -278,4 +278,3 @@ export function TestEmailModal({ opened, onClose, defaultEmail, smtpSettings }: 
         </Modal>
     );
 }
-

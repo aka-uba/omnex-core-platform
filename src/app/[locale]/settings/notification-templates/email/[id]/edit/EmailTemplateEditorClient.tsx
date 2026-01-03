@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Stack,
@@ -13,6 +13,11 @@ import {
   Paper,
   Text,
   Alert,
+  Button,
+  Center,
+  Loader,
+  SegmentedControl,
+  Box,
 } from '@mantine/core';
 import {
   IconMail,
@@ -22,6 +27,9 @@ import {
   IconCode,
   IconSignature,
   IconPalette,
+  IconRefresh,
+  IconDeviceDesktop,
+  IconDeviceMobile,
 } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useRouter, useParams } from 'next/navigation';
@@ -88,6 +96,38 @@ export function EmailTemplateEditorClient({
   });
 
   const [, setLoading] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState<string>('');
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewDevice, setPreviewDevice] = useState<string>('desktop');
+  const [activeTab, setActiveTab] = useState<string | null>('basic');
+
+  // Fetch preview HTML
+  const fetchPreview = useCallback(async () => {
+    if (!templateId) return;
+    setPreviewLoading(true);
+    try {
+      const response = await fetchWithAuth(`/api/notification-templates/${templateId}/preview`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      const result = await response.json();
+      if (result.success && result.data?.html) {
+        setPreviewHtml(result.data.html);
+      }
+    } catch (error) {
+      console.error('Failed to fetch preview:', error);
+    } finally {
+      setPreviewLoading(false);
+    }
+  }, [templateId]);
+
+  // Load preview when tab changes to preview
+  useEffect(() => {
+    if (activeTab === 'preview' && templateId && !previewHtml) {
+      fetchPreview();
+    }
+  }, [activeTab, templateId, previewHtml, fetchPreview]);
 
   // Fetch template if editing
   const { data: template, isLoading } = useQuery<EmailTemplate>({
@@ -181,7 +221,7 @@ export function EmailTemplateEditorClient({
       />
 
       <Stack gap="md" mt="xl">
-        <Tabs defaultValue="basic">
+        <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.List>
             <Tabs.Tab value="basic" leftSection={<IconMail size={16} />}>
               {t('tabs.basic')}
@@ -363,11 +403,119 @@ export function EmailTemplateEditorClient({
           </Tabs.Panel>
 
           <Tabs.Panel value="preview" pt="xl">
-            <Paper p="md" withBorder>
-              <Text size="sm" c="dimmed" mb="md">
-                {t('preview.description')}
-              </Text>
-            </Paper>
+            <Stack gap="md">
+              {/* Preview Controls */}
+              <Group justify="space-between">
+                <SegmentedControl
+                  value={previewDevice}
+                  onChange={setPreviewDevice}
+                  data={[
+                    {
+                      value: 'desktop',
+                      label: (
+                        <Center style={{ gap: 6 }}>
+                          <IconDeviceDesktop size={16} />
+                          <span>{t('preview.desktop')}</span>
+                        </Center>
+                      ),
+                    },
+                    {
+                      value: 'mobile',
+                      label: (
+                        <Center style={{ gap: 6 }}>
+                          <IconDeviceMobile size={16} />
+                          <span>{t('preview.mobile')}</span>
+                        </Center>
+                      ),
+                    },
+                  ]}
+                />
+                <Button
+                  variant="light"
+                  leftSection={<IconRefresh size={16} />}
+                  onClick={() => {
+                    setPreviewHtml('');
+                    fetchPreview();
+                  }}
+                  loading={previewLoading}
+                >
+                  {t('preview.refresh')}
+                </Button>
+              </Group>
+
+              {/* Preview Frame */}
+              <Paper
+                shadow="sm"
+                p={0}
+                style={{
+                  backgroundColor: '#f5f5f5',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box
+                  style={{
+                    width: previewDevice === 'mobile' ? '375px' : '100%',
+                    maxWidth: '100%',
+                    transition: 'width 0.3s ease',
+                    backgroundColor: 'white',
+                    minHeight: '500px',
+                  }}
+                >
+                  {previewLoading ? (
+                    <Center h={500}>
+                      <Stack align="center" gap="md">
+                        <Loader size="lg" />
+                        <Text size="sm" c="dimmed">{t('preview.loading')}</Text>
+                      </Stack>
+                    </Center>
+                  ) : previewHtml ? (
+                    <iframe
+                      srcDoc={previewHtml}
+                      style={{
+                        width: '100%',
+                        height: '600px',
+                        border: 'none',
+                      }}
+                      title="Email Preview"
+                    />
+                  ) : !templateId ? (
+                    <Center h={500}>
+                      <Stack align="center" gap="md">
+                        <IconEye size={48} style={{ opacity: 0.3 }} />
+                        <Text size="sm" c="dimmed" ta="center">
+                          {t('preview.saveFirst')}
+                        </Text>
+                      </Stack>
+                    </Center>
+                  ) : (
+                    <Center h={500}>
+                      <Stack align="center" gap="md">
+                        <IconEye size={48} style={{ opacity: 0.3 }} />
+                        <Text size="sm" c="dimmed" ta="center">
+                          {t('preview.clickRefresh')}
+                        </Text>
+                        <Button
+                          variant="light"
+                          leftSection={<IconRefresh size={16} />}
+                          onClick={fetchPreview}
+                        >
+                          {t('preview.loadPreview')}
+                        </Button>
+                      </Stack>
+                    </Center>
+                  )}
+                </Box>
+              </Paper>
+
+              {/* Info */}
+              <Alert color="blue" variant="light">
+                <Text size="sm">
+                  {t('preview.info')}
+                </Text>
+              </Alert>
+            </Stack>
           </Tabs.Panel>
         </Tabs>
       </Stack>

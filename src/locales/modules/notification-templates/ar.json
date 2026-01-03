@@ -29,12 +29,22 @@
     "system": "نظام",
     "user": "مستخدم",
     "task": "مهمة",
-    "urgent": "عاجل"
+    "urgent": "عاجل",
+    "realEstate": "عقارات"
   },
   "types": {
     "taskAssignment": "إسناد مهمة",
     "urgentAlert": "تنبيه عاجل",
-    "systemUpdate": "تحديث النظام"
+    "systemUpdate": "تحديث النظام",
+    "userActivation": "تفعيل المستخدم",
+    "welcome": "مرحباً",
+    "passwordReset": "إعادة تعيين كلمة المرور",
+    "passwordChanged": "تم تغيير كلمة المرور",
+    "realEstateLeaseExpiry": "انتهاء عقد الإيجار",
+    "realEstateRentReminder": "تذكير دفع الإيجار",
+    "realEstatePaymentReceived": "تم استلام الدفع",
+    "realEstateTenantWelcome": "ترحيب بالمستأجر",
+    "realEstateMaintenanceUpdate": "تحديث الصيانة"
   },
   "styles": {
     "corporate": "مؤسسي",
@@ -72,6 +82,17 @@
   "variables": {
     "title": "المتغيرات الديناميكية",
     "description": "المتغيرات المتاحة: {{userName}}, {{companyName}}, {{taskTitle}}, إلخ."
+  },
+  "preview": {
+    "description": "المعاينة قريباً...",
+    "desktop": "سطح المكتب",
+    "mobile": "الهاتف",
+    "refresh": "تحديث",
+    "loading": "جارٍ تحميل المعاينة...",
+    "saveFirst": "يرجى حفظ القالب أولاً لرؤية المعاينة.",
+    "clickRefresh": "انقر على تحديث لتحميل المعاينة.",
+    "loadPreview": "تحميل المعاينة",
+    "info": "يتم عرض المعاينة ببيانات نموذجية. في الإرسال الفعلي، سيتم ملء معلومات المستخدم والشركة ديناميكياً."
   },
   "notifications": {
     "success": "نجاح",

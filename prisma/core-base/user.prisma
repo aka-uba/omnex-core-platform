@@ -39,6 +39,18 @@ model User {
   defaultTheme    String? @default("auto")
   defaultLayout   String? @default("sidebar")
 
+  // Email Verification & Activation
+  emailVerified           Boolean   @default(false)
+  activationToken         String?   @unique
+  activationTokenExpiry   DateTime?
+  activationSentAt        DateTime?
+  activatedAt             DateTime?
+
+  // Password Reset
+  passwordResetToken       String?   @unique
+  passwordResetTokenExpiry DateTime?
+  passwordResetSentAt      DateTime?
+
   // Timestamps
   lastActive DateTime?
   createdAt  DateTime  @default(now())
@@ -62,5 +74,7 @@ model User {
   @@index([username])
   @@index([role])
   @@index([status])
+  @@index([activationToken])
+  @@index([passwordResetToken])
 }
 

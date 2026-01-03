@@ -27,7 +27,22 @@
     "system": "System",
     "user": "Benutzer",
     "task": "Aufgabe",
-    "urgent": "Dringend"
+    "urgent": "Dringend",
+    "realEstate": "Immobilien"
+  },
+  "types": {
+    "taskAssignment": "Aufgabenzuweisung",
+    "urgentAlert": "Dringende Benachrichtigung",
+    "systemUpdate": "Systemaktualisierung",
+    "userActivation": "Benutzeraktivierung",
+    "welcome": "Willkommen",
+    "passwordReset": "Passwort zurücksetzen",
+    "passwordChanged": "Passwort geändert",
+    "realEstateLeaseExpiry": "Mietvertragsende",
+    "realEstateRentReminder": "Mietzahlungserinnerung",
+    "realEstatePaymentReceived": "Zahlung eingegangen",
+    "realEstateTenantWelcome": "Mieter Willkommen",
+    "realEstateMaintenanceUpdate": "Wartungsaktualisierung"
   },
   "styles": {
     "corporate": "Unternehmen",
@@ -55,6 +70,17 @@
   "variables": {
     "title": "Dynamische Variablen",
     "description": "Verfügbare Variablen: {{userName}}, {{userEmail}}, {{companyName}}, etc."
+  },
+  "preview": {
+    "description": "Vorschau kommt bald...",
+    "desktop": "Desktop",
+    "mobile": "Mobil",
+    "refresh": "Aktualisieren",
+    "loading": "Vorschau wird geladen...",
+    "saveFirst": "Bitte speichern Sie die Vorlage zuerst, um die Vorschau zu sehen.",
+    "clickRefresh": "Klicken Sie auf Aktualisieren, um die Vorschau zu laden.",
+    "loadPreview": "Vorschau laden",
+    "info": "Die Vorschau wird mit Beispieldaten angezeigt. Bei der tatsächlichen Zustellung werden Benutzer- und Firmeninformationen dynamisch ausgefüllt."
   },
   "notifications": {
     "success": "Erfolgreich",

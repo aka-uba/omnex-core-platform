@@ -537,6 +537,10 @@
   "email": {
     "title": "E-posta",
     "edit": "E-posta Şablonu Düzenle",
+    "notificationTemplates": "Bildirim Şablonları",
+    "customTemplates": "Özel Şablonlar",
+    "allNotificationTemplates": "Tüm Bildirim Şablonları",
+    "filterType": "Bildirim Tipine Göre Filtrele",
     "update": {
       "success": "E-posta şablonu başarıyla güncellendi"
     },

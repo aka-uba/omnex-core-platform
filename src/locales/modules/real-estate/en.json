@@ -537,6 +537,10 @@
   "email": {
     "title": "Email",
     "edit": "Edit Email Template",
+    "notificationTemplates": "Notification Templates",
+    "customTemplates": "Custom Templates",
+    "allNotificationTemplates": "All Notification Templates",
+    "filterType": "Filter by Notification Type",
     "update": {
       "success": "Email template successfully updated"
     },

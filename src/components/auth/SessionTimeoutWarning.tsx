@@ -25,17 +25,27 @@ export function SessionTimeoutWarning() {
     const [showWarning, setShowWarning] = useState(false);
     const [countdown, setCountdown] = useState(WARNING_BEFORE_TIMEOUT);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [sessionTimeout, setSessionTimeout] = useState(30); // Default 30 minutes
+    const [sessionTimeout, setSessionTimeout] = useState<number | null>(null); // null until loaded
     const [isInitialized, setIsInitialized] = useState(false);
     const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasLoggedOutRef = useRef(false);
     const lastActivityUpdateRef = useRef<number>(0);
     const showWarningRef = useRef(false);
+    const sessionTimeoutRef = useRef<number | null>(null);
+    const logoutRef = useRef(logout);
 
-    // Keep ref in sync with state
+    // Keep refs in sync with values
     useEffect(() => {
         showWarningRef.current = showWarning;
     }, [showWarning]);
+
+    useEffect(() => {
+        sessionTimeoutRef.current = sessionTimeout;
+    }, [sessionTimeout]);
+
+    useEffect(() => {
+        logoutRef.current = logout;
+    }, [logout]);
 
     // Check if on auth page
     const isAuthPage = pathname?.includes('/login') ||
@@ -60,7 +70,7 @@ export function SessionTimeoutWarning() {
         localStorage.setItem(LAST_ACTIVITY_KEY, String(now));
     }, []);
 
-    // Handle session expired
+    // Handle session expired - use ref to avoid dependency issues
     const handleSessionExpired = useCallback(() => {
         if (hasLoggedOutRef.current) return;
         hasLoggedOutRef.current = true;
@@ -77,8 +87,8 @@ export function SessionTimeoutWarning() {
         sessionStorage.removeItem(SESSION_MARKER_KEY);
 
         setShowWarning(false);
-        logout();
-    }, [logout]);
+        logoutRef.current();
+    }, []); // No dependencies - uses refs
 
     // Extend session
     const handleExtendSession = useCallback(async () => {
@@ -168,14 +178,18 @@ export function SessionTimeoutWarning() {
 
     }, [isAuthenticated, isAuthPage, handleSessionExpired]);
 
-    // Check inactivity timeout - using ref for showWarning to avoid stale closure
+    // Check inactivity timeout - using refs to avoid stale closures and dependency issues
     const checkInactivityTimeout = useCallback(() => {
-        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current || !isInitialized) return;
+        // Don't check until settings are loaded
+        const currentTimeout = sessionTimeoutRef.current;
+        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current || !isInitialized || currentTimeout === null) {
+            return;
+        }
 
         const lastActivity = getLastActivity();
         const now = Date.now();
         const inactiveMs = now - lastActivity;
-        const timeoutMs = sessionTimeout * 60 * 1000; // Convert minutes to ms
+        const timeoutMs = currentTimeout * 60 * 1000; // Convert minutes to ms
         const warningMs = timeoutMs - (WARNING_BEFORE_TIMEOUT * 1000);
 
         // If inactive time exceeds timeout, logout immediately
@@ -198,7 +212,7 @@ export function SessionTimeoutWarning() {
                 setCountdown(WARNING_BEFORE_TIMEOUT);
             }
         }
-    }, [isAuthenticated, isAuthPage, sessionTimeout, getLastActivity, handleSessionExpired, isInitialized]);
+    }, [isAuthenticated, isAuthPage, getLastActivity, handleSessionExpired, isInitialized]); // Removed sessionTimeout - using ref
 
     // Set up activity tracking
     useEffect(() => {
@@ -224,9 +238,10 @@ export function SessionTimeoutWarning() {
         };
     }, [isAuthenticated, isAuthPage, updateLastActivity, handleExtendSession, isInitialized]);
 
-    // Set up inactivity check interval
+    // Set up inactivity check interval - only start when settings are loaded
     useEffect(() => {
-        if (!isAuthenticated || isAuthPage || !isInitialized) {
+        // Wait for settings to load before starting checks
+        if (!isAuthenticated || isAuthPage || !isInitialized || sessionTimeout === null) {
             if (checkIntervalRef.current) {
                 clearInterval(checkIntervalRef.current);
                 checkIntervalRef.current = null;
@@ -238,10 +253,12 @@ export function SessionTimeoutWarning() {
         // Reset logout flag
         hasLoggedOutRef.current = false;
 
-        // Check immediately
-        checkInactivityTimeout();
+        // Update last activity when starting (fresh session)
+        const now = Date.now();
+        localStorage.setItem(LAST_ACTIVITY_KEY, String(now));
+        lastActivityUpdateRef.current = now;
 
-        // Check every second
+        // Check every second (first check will happen after 1 second)
         checkIntervalRef.current = setInterval(checkInactivityTimeout, CHECK_INTERVAL);
 
         return () => {
@@ -250,7 +267,7 @@ export function SessionTimeoutWarning() {
                 checkIntervalRef.current = null;
             }
         };
-    }, [isAuthenticated, isAuthPage, checkInactivityTimeout, isInitialized]);
+    }, [isAuthenticated, isAuthPage, checkInactivityTimeout, isInitialized, sessionTimeout]);
 
     // Handle visibility change
     useEffect(() => {

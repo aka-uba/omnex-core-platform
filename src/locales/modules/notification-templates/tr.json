@@ -36,12 +36,22 @@
     "system": "Sistem",
     "user": "Kullanıcı",
     "task": "Görev",
-    "urgent": "Acil"
+    "urgent": "Acil",
+    "realEstate": "Emlak"
   },
   "types": {
     "taskAssignment": "Görev Atama",
     "urgentAlert": "Acil Bildirim",
-    "systemUpdate": "Sistem Güncellemesi"
+    "systemUpdate": "Sistem Güncellemesi",
+    "userActivation": "Kullanıcı Aktivasyonu",
+    "welcome": "Hoşgeldiniz",
+    "passwordReset": "Şifre Sıfırlama",
+    "passwordChanged": "Şifre Değişikliği",
+    "realEstateLeaseExpiry": "Kira Sözleşmesi Sonu",
+    "realEstateRentReminder": "Kira Ödeme Hatırlatma",
+    "realEstatePaymentReceived": "Ödeme Alındı",
+    "realEstateTenantWelcome": "Kiracı Hoşgeldiniz",
+    "realEstateMaintenanceUpdate": "Bakım Talebi Güncelleme"
   },
   "styles": {
     "corporate": "Kurumsal",
@@ -178,7 +188,15 @@
     "description": "Kullanılabilir değişkenler: {{userName}}, {{userEmail}}, {{companyName}}, {{companyLogo}}, {{taskTitle}}, {{notificationMessage}}, vb."
   },
   "preview": {
-    "description": "Önizleme yakında eklenecek..."
+    "description": "Önizleme yakında eklenecek...",
+    "desktop": "Masaüstü",
+    "mobile": "Mobil",
+    "refresh": "Yenile",
+    "loading": "Önizleme yükleniyor...",
+    "saveFirst": "Önizleme görmek için önce şablonu kaydedin.",
+    "clickRefresh": "Önizlemeyi görmek için yenile butonuna tıklayın.",
+    "loadPreview": "Önizlemeyi Yükle",
+    "info": "Önizleme, örnek verilerle gösterilmektedir. Gerçek gönderimde kullanıcı ve firma bilgileri dinamik olarak doldurulacaktır."
   },
   "notifications": {
     "success": "Başarılı",

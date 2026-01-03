@@ -218,6 +218,7 @@ model NotificationTemplate {
   
   // Durum
   isDefault Boolean @default(false)
+  defaultForType String? // Hangi bildirim tipi için varsayılan: 'user_activation', 'welcome', 'password_reset', vb.
   isActive  Boolean @default(true)
   isPublished Boolean @default(true)
   
@@ -235,6 +236,7 @@ model NotificationTemplate {
   @@index([category])
   @@index([notificationType])
   @@index([isDefault])
+  @@index([defaultForType])
   @@index([isActive])
   @@map("notification_templates")
 }

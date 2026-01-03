@@ -1272,6 +1272,247 @@ cacheComponents: true
 
 ---
 
-**Son Güncelleme**: 2026-01-01
-**Platform Versiyonu**: 1.0.9
+## 19. EMAIL SİSTEMİ VE KULLANICI AKTİVASYONU
+
+### 19.1 Email Servisi
+**Dosya**: `src/lib/email/EmailService.ts`
+
+Merkezi email gönderim servisi. SMTP ayarlarını GeneralSettings'ten okur ve NotificationTemplate şablonlarını kullanır.
+
+**Kullanım:**
+```typescript
+import { createEmailService } from '@/lib/email';
+
+const emailService = createEmailService(tenantPrisma, tenantId, companyId);
+
+// Aktivasyon maili
+await emailService.sendActivationEmail(email, userName, activationUrl, 24);
+
+// Hoşgeldin maili
+await emailService.sendWelcomeEmail(email, userName);
+
+// Şifre sıfırlama maili
+await emailService.sendPasswordResetEmail(email, userName, resetUrl, 60);
+
+// Şifre değişti bildirimi
+await emailService.sendPasswordChangedEmail(email, userName);
+
+// Şablon ile email
+await emailService.sendWithTemplate(email, 'user_activation', {
+  userName: 'John',
+  activationUrl: 'https://...',
+  activationExpiry: '24 saat',
+});
+```
+
+### 19.2 Token Yardımcıları
+**Dosya**: `src/lib/email/tokenUtils.ts`
+
+```typescript
+import {
+  generateToken,          // 32 byte hex token
+  generateNumericCode,    // 6 haneli sayısal kod
+  getTokenExpiry,         // Saat bazlı süre (24 saat)
+  getTokenExpiryMinutes,  // Dakika bazlı süre (60 dk)
+  isTokenExpired,         // Token süresi dolmuş mu
+  buildActivationUrl,     // Aktivasyon URL'i oluştur
+  buildPasswordResetUrl,  // Şifre sıfırlama URL'i oluştur
+  getBaseUrl,             // Uygulama base URL'ini al
+} from '@/lib/email/tokenUtils';
+```
+
+### 19.3 User Model Alanları
+**Dosya**: `prisma/core-base/user.prisma`
+
+```prisma
+// Email Verification & Activation
+emailVerified           Boolean   @default(false)
+activationToken         String?   @unique
+activationTokenExpiry   DateTime?
+activationSentAt        DateTime?
+activatedAt             DateTime?
+
+// Password Reset
+passwordResetToken       String?   @unique
+passwordResetTokenExpiry DateTime?
+passwordResetSentAt      DateTime?
+```
+
+### 19.4 Auth API Endpoint'leri
+
+| Endpoint | Method | Açıklama |
+|----------|--------|----------|
+| `/api/auth/register` | POST | Kullanıcı kaydı + aktivasyon maili |
+| `/api/auth/activate` | GET/POST | Token kontrolü ve hesap aktivasyonu |
+| `/api/auth/resend-activation` | POST | Yeni aktivasyon maili gönderme |
+| `/api/auth/forgot-password` | POST | Şifre sıfırlama maili gönderme |
+| `/api/auth/reset-password` | GET/POST | Token kontrolü ve şifre sıfırlama |
+
+### 19.5 Auth Sayfaları
+
+| Sayfa | Yol | Açıklama |
+|-------|-----|----------|
+| Aktivasyon | `/[locale]/auth/activate?token=xxx` | Hesap aktivasyonu |
+| Şifremi Unuttum | `/[locale]/auth/forgot-password` | Şifre sıfırlama talebi |
+| Şifre Sıfırlama | `/[locale]/auth/reset-password?token=xxx` | Yeni şifre belirleme |
+| Aktivasyon Yeniden Gönder | `/[locale]/auth/resend-activation` | Yeni aktivasyon bağlantısı |
+
+### 19.6 Email Template Tipleri
+```typescript
+type EmailTemplateType =
+  | 'user_activation'      // Hesap aktivasyonu
+  | 'welcome'              // Hoşgeldin
+  | 'password_reset'       // Şifre sıfırlama
+  | 'password_changed'     // Şifre değişti bildirimi
+  | 'real_estate_lease_expiry'
+  | 'real_estate_rent_reminder'
+  | 'real_estate_payment_received'
+  | 'real_estate_tenant_welcome'
+  | 'real_estate_maintenance_update'
+  | 'task_assignment'
+  | 'urgent_alert'
+  | 'system_update';
+```
+
+### 19.7 Email Akışı
+
+**Kullanıcı Kaydı:**
+1. Kullanıcı kayıt formunu doldurur
+2. Sistem aktivasyon token'ı oluşturur (24 saat geçerli)
+3. SMTP aktifse aktivasyon maili gönderilir
+4. Kullanıcı maildeki linke tıklar
+5. Hesap aktifleştirilir (`status: 'active'`, `emailVerified: true`)
+6. Hoşgeldin maili gönderilir
+
+**Şifre Sıfırlama:**
+1. Kullanıcı e-posta adresini girer
+2. Sistem reset token oluşturur (60 dakika geçerli)
+3. Şifre sıfırlama maili gönderilir
+4. Kullanıcı linke tıklayıp yeni şifre belirler
+5. Şifre değişikliği onay maili gönderilir
+
+### 19.8 SMTP Ayarları
+SMTP ayarları `GeneralSettings` tablosundan okunur:
+- `smtpEnabled` - SMTP aktif mi
+- `smtpHost` - SMTP sunucu adresi
+- `smtpPort` - Port (varsayılan: 587)
+- `smtpEncryption` - TLS/SSL/None
+- `smtpUsername` - Kullanıcı adı
+- `smtpPassword` - Şifre
+- `smtpFromName` - Gönderen adı
+- `smtpFromEmail` - Gönderen e-posta
+
+---
+
+## 20. BİLDİRİM ŞABLONLARI SİSTEMİ
+
+### 20.1 NotificationTemplate Modeli
+**Dosya**: `prisma/extensions/files.prisma`
+
+```prisma
+model NotificationTemplate {
+  id                    String   @id @default(uuid())
+  tenantId              String
+  companyId             String?
+
+  // Temel bilgiler
+  name                  String
+  channel               String   // email, sms, push, whatsapp, telegram
+  category              String?  // system, user, task, urgent, real_estate
+  notificationType      String?  // user_activation, password_reset, vb.
+
+  // Email alanları
+  emailSubject          String?
+  emailPlainText        String?
+  emailHtmlTemplate     String?
+  emailTemplateStyle    String?  // corporate, visionary, elegant, modern
+
+  // Varsayılan ayarları
+  isDefault             Boolean  @default(false)
+  defaultForType        String?  // Bildirim tipi için varsayılan
+  isActive              Boolean  @default(true)
+}
+```
+
+### 20.2 Seed Şablonları
+**Dosya**: `src/app/api/notification-templates/seed/route.ts`
+
+"Hazır Şablonları Yükle" butonu ile 32+ şablon oluşturulur:
+- Kullanıcı aktivasyonu, hoşgeldin, şifre sıfırlama
+- Emlak: kira hatırlatma, ödeme alındı, kiracı hoşgeldin
+- SMS, Push, WhatsApp, Telegram şablonları
+
+### 20.3 Şablon Değişkenleri
+```typescript
+interface TemplateVariables {
+  // Kullanıcı
+  userName?: string;
+  userEmail?: string;
+
+  // Aktivasyon
+  activationUrl?: string;
+  activationCode?: string;
+  activationExpiry?: string;
+
+  // Şifre Sıfırlama
+  resetUrl?: string;
+  resetCode?: string;
+  resetExpiry?: string;
+
+  // Firma
+  companyName?: string;
+  companyAddress?: string;
+  companyPhone?: string;
+  companyEmail?: string;
+  companyWebsite?: string;
+  companyLogo?: string;
+
+  // Tarih
+  date?: string;   // Otomatik: bugünün tarihi
+  year?: string;   // Otomatik: yıl
+
+  // Emlak
+  propertyName?: string;
+  tenantName?: string;
+  rentAmount?: string;
+  currency?: string;
+  dueDate?: string;
+  // ... diğer emlak alanları
+}
+```
+
+### 20.4 Kategori Filtreleme
+Bildirim şablonları sayfasında kategoriye göre filtreleme:
+- `system` - Sistem bildirimleri
+- `user` - Kullanıcı bildirimleri
+- `task` - Görev bildirimleri
+- `urgent` - Acil bildirimler
+- `real_estate` - Emlak bildirimleri
+
+---
+
+## 21. DOSYA KONUMLARI HIZLI REFERANS (Ek)
+
+| Amaç | Dosya |
+|------|-------|
+| Email Servisi | `src/lib/email/EmailService.ts` |
+| Token Yardımcıları | `src/lib/email/tokenUtils.ts` |
+| Email Index | `src/lib/email/index.ts` |
+| Kayıt API | `src/app/api/auth/register/route.ts` |
+| Aktivasyon API | `src/app/api/auth/activate/route.ts` |
+| Aktivasyon Yeniden Gönder | `src/app/api/auth/resend-activation/route.ts` |
+| Şifremi Unuttum API | `src/app/api/auth/forgot-password/route.ts` |
+| Şifre Sıfırlama API | `src/app/api/auth/reset-password/route.ts` |
+| Aktivasyon Sayfası | `src/app/[locale]/auth/activate/page.tsx` |
+| Şifremi Unuttum Sayfası | `src/app/[locale]/auth/forgot-password/page.tsx` |
+| Şifre Sıfırlama Sayfası | `src/app/[locale]/auth/reset-password/page.tsx` |
+| Aktivasyon Yeniden Gönder Sayfası | `src/app/[locale]/auth/resend-activation/page.tsx` |
+| User Model | `prisma/core-base/user.prisma` |
+| NotificationTemplate Model | `prisma/extensions/files.prisma` |
+| Seed Route | `src/app/api/notification-templates/seed/route.ts` |
+
+---
+
+**Son Güncelleme**: 2026-01-03
+**Platform Versiyonu**: 1.1.0
 **Next.js Versiyonu**: 16.1.1
