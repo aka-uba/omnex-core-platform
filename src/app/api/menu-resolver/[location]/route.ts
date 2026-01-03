@@ -259,22 +259,28 @@ export async function GET(
                 });
 
                 // Enrich module GROUP icons with current module icons from module.config.yaml
-                // Only apply to module group items (items that have children AND moduleSlug)
-                // Individual pages (even if top-level) should keep their own icons from the database
+                // Only apply to module ROOT items (the main module entry point, not individual pages)
+                // Individual pages should ALWAYS keep their own icons from the database
                 const enrichWithModuleIcons = (items: any[]): any[] => {
                     return items.map(item => {
                         let enrichedItem = { ...item };
 
-                        // Only enrich module group icons:
+                        // Only enrich module ROOT icons (the main module entry):
                         // - Item must have moduleSlug
-                        // - Item must have children (meaning it's a group, not an individual page)
-                        // - If item has no children, it's a standalone page and should keep its own icon
-                        const isModuleGroup = item.moduleSlug &&
-                                              moduleIconMap.has(item.moduleSlug) &&
-                                              item.children &&
-                                              item.children.length > 0;
+                        // - Module icon must exist in moduleIconMap
+                        // - Item must have children (meaning it's the module group, not an individual page)
+                        // - Item's href must be the module root (e.g., /modules/{slug} or /modules/{slug}/dashboard)
+                        // This prevents individual pages (like Payments) from getting the parent module's icon
+                        const isModuleRoot = item.moduleSlug &&
+                                             moduleIconMap.has(item.moduleSlug) &&
+                                             item.children &&
+                                             item.children.length > 0 &&
+                                             (item.href === `/modules/${item.moduleSlug}` ||
+                                              item.href === `/modules/${item.moduleSlug}/dashboard` ||
+                                              item.href?.endsWith(`/modules/${item.moduleSlug}`) ||
+                                              item.href?.endsWith(`/modules/${item.moduleSlug}/dashboard`));
 
-                        if (isModuleGroup) {
+                        if (isModuleRoot) {
                             enrichedItem.icon = moduleIconMap.get(item.moduleSlug);
                         }
 

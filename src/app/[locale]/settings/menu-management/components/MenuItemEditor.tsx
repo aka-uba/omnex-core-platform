@@ -53,12 +53,12 @@ export function MenuItemEditor({
 
     const form = useForm({
         initialValues: {
-            label: { tr: '', en: '' },
+            label: { tr: '', en: '', de: '', ar: '' },
             href: '',
             icon: '',
             target: '_self',
             cssClass: '',
-            description: { tr: '', en: '' },
+            description: { tr: '', en: '', de: '', ar: '' },
             visible: true,
             requiredRole: '',
             requiredPermission: '',
@@ -68,12 +68,26 @@ export function MenuItemEditor({
     useEffect(() => {
         if (item) {
             form.setValues({
-                label: typeof item.label === 'string' ? { tr: item.label, en: item.label } : { tr: item.label?.tr || '', en: item.label?.en || '' },
+                label: typeof item.label === 'string'
+                    ? { tr: item.label, en: item.label, de: item.label, ar: item.label }
+                    : {
+                        tr: item.label?.tr || '',
+                        en: item.label?.en || '',
+                        de: item.label?.de || '',
+                        ar: item.label?.ar || ''
+                    },
                 href: item.href || '',
                 icon: item.icon || '',
                 target: item.target || '_self',
                 cssClass: item.cssClass || '',
-                description: typeof item.description === 'string' ? { tr: item.description, en: item.description } : { tr: item.description?.tr || '', en: item.description?.en || '' },
+                description: typeof item.description === 'string'
+                    ? { tr: item.description, en: item.description, de: item.description, ar: item.description }
+                    : {
+                        tr: item.description?.tr || '',
+                        en: item.description?.en || '',
+                        de: item.description?.de || '',
+                        ar: item.description?.ar || ''
+                    },
                 visible: item.visible ?? true,
                 requiredRole: item.requiredRole || '',
                 requiredPermission: item.requiredPermission || '',
@@ -153,6 +167,19 @@ export function MenuItemEditor({
                                     {...form.getInputProps('label.en')}
                                 />
                             </Group>
+                            <Group grow>
+                                <TextInput
+                                    label="Deutsch"
+                                    placeholder="Menübezeichnung"
+                                    {...form.getInputProps('label.de')}
+                                />
+                                <TextInput
+                                    label="العربية"
+                                    placeholder="اسم القائمة"
+                                    dir="rtl"
+                                    {...form.getInputProps('label.ar')}
+                                />
+                            </Group>
 
                             <TextInput
                                 label={t('url')}
@@ -198,6 +225,19 @@ export function MenuItemEditor({
                                     label="English"
                                     placeholder="Description"
                                     {...form.getInputProps('description.en')}
+                                />
+                            </Group>
+                            <Group grow>
+                                <TextInput
+                                    label="Deutsch"
+                                    placeholder="Beschreibung"
+                                    {...form.getInputProps('description.de')}
+                                />
+                                <TextInput
+                                    label="العربية"
+                                    placeholder="الوصف"
+                                    dir="rtl"
+                                    {...form.getInputProps('description.ar')}
                                 />
                             </Group>
 
