@@ -422,7 +422,7 @@ export function RealEstateDashboardClient() {
                         label={
                           <div className="text-center">
                             <Text size="xl" fw={700}>{data.statistics.apartments.occupancyRate}%</Text>
-                            <Text size="xs" c="dimmed">Dolu</Text>
+                            <Text size="xs" c="dimmed">{t('dashboard.occupied')}</Text>
                           </div>
                         }
                       />

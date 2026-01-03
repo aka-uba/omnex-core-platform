@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { Paper, Text, Stack, Loader, Alert, Button, useMantineColorScheme } from '@mantine/core';
+import { Text, Stack, Loader, Alert, Button, useMantineColorScheme } from '@mantine/core';
 import { IconBuilding, IconHome, IconAlertCircle } from '@tabler/icons-react';
 import { useProperties } from '@/hooks/useProperties';
 import { useApartments } from '@/hooks/useApartments';
@@ -341,31 +341,31 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
 
   if (loadingSettings || isLoadingProperties || isLoadingApartments || !cssLoaded) {
     return (
-      <Paper shadow="xs" p="md" style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ height: '100%', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Stack align="center" gap="md">
           <Loader />
           <Text c="dimmed">{tGlobal('loading')}</Text>
         </Stack>
-      </Paper>
+      </div>
     );
   }
 
   if (geocodingInProgress) {
     return (
-      <Paper shadow="xs" p="md" style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ height: '100%', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Stack align="center" gap="md">
         <Loader />
           <Text c="dimmed">
             {t('map.geocodingInProgress')}
           </Text>
         </Stack>
-      </Paper>
+      </div>
     );
   }
 
   if (mapProvider === 'mapbox' && !mapboxToken) {
   return (
-      <Paper shadow="xs" p="md">
+      <div style={{ padding: '1rem' }}>
         <Alert icon={<IconAlertCircle size={16} />} title={t('map.mapboxTokenMissing')} color="yellow">
           <Text mb="md">
             {t('map.mapboxTokenMissingDescription')}
@@ -377,15 +377,14 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
             {t('map.goToSettings')}
           </Button>
         </Alert>
-      </Paper>
+      </div>
     );
   }
 
   // Render Mapbox map
   if (mapProvider === 'mapbox') {
     return (
-      <Paper shadow="xs" p="md">
-        <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+      <div style={{ width: '100%', height: '100%', minHeight: '300px', position: 'relative' }}>
           <MapboxMap
             {...viewState}
             onMove={(evt: any) => setViewState(evt.viewState)}
@@ -443,8 +442,7 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
               );
             })}
           </MapboxMap>
-        </div>
-      </Paper>
+      </div>
     );
   }
 
@@ -512,15 +510,14 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
   // Render Leaflet/OpenStreetMap
   if (!leafletLoaded) {
     return (
-      <Paper shadow="xs" p="md" style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ height: '100%', minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Loader />
-      </Paper>
+      </div>
     );
   }
 
   return (
-    <Paper shadow="xs" p="md">
-      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', minHeight: '300px', position: 'relative' }}>
         <LeafletMap
           center={[viewState.latitude, viewState.longitude]}
           zoom={viewState.zoom}
@@ -667,7 +664,6 @@ export function PropertyMap({ locale, propertyId, apartmentId, onPropertyClick, 
             );
           })}
         </LeafletMap>
-      </div>
-    </Paper>
+    </div>
   );
 }

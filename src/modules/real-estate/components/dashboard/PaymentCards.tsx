@@ -34,14 +34,26 @@ export function PaymentCards({ locale }: PaymentCardsProps) {
   const { data, isLoading, refetch } = usePaymentAnalytics();
   const markAsPaid = useMarkPaymentAsPaid();
 
-  const formatCurrency = useCallback((amount: number) => {
-    return new Intl.NumberFormat('tr-TR', {
+  const formatCurrency = useCallback((amount: number, currency?: string) => {
+    const localeMap: Record<string, string> = {
+      tr: 'tr-TR',
+      en: 'en-US',
+      de: 'de-DE',
+      ar: 'ar-SA',
+    };
+    const currencyMap: Record<string, string> = {
+      tr: 'TRY',
+      en: 'USD',
+      de: 'EUR',
+      ar: 'SAR',
+    };
+    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
       style: 'currency',
-      currency: 'TRY',
+      currency: currency || currencyMap[locale] || 'EUR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
-  }, []);
+  }, [locale]);
 
   const handleMarkAsPaid = useCallback(async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -86,10 +98,10 @@ export function PaymentCards({ locale }: PaymentCardsProps) {
   }, []);
 
   const getMonthName = useCallback((date: string) => {
-    const monthNames = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+    const monthKeys = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
     const d = dayjs(date);
-    return monthNames[d.month()];
-  }, []);
+    return t(`dashboard.months.${monthKeys[d.month()]}`);
+  }, [t]);
 
   const renderPaymentCard = useCallback((
     payment: QuickPaymentItem,
@@ -135,8 +147,8 @@ export function PaymentCards({ locale }: PaymentCardsProps) {
               <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
               <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
                 {isOverdue
-                  ? `${days} Gün Gecikmiş`
-                  : `${days} Gün Kaldı`
+                  ? `${days} ${t('payments.quickBoard.daysLate').toUpperCase()}`
+                  : `${days} ${t('payments.quickBoard.daysLeft').toUpperCase()}`
                 }
               </span>
             </div>

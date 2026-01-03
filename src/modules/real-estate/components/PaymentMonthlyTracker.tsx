@@ -116,6 +116,7 @@ function MonthCellWithPopover({
   formatCurrency,
   formatShortCurrency,
   t,
+  isDark,
 }: {
   info: MonthPaymentInfo;
   monthIndex: number;
@@ -126,6 +127,7 @@ function MonthCellWithPopover({
   formatCurrency: (amount: number) => string;
   formatShortCurrency: (amount: number) => string;
   t: (key: string) => string;
+  isDark: boolean;
 }) {
   const [opened, { close, toggle }] = useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -274,7 +276,7 @@ function MonthCellWithPopover({
           marginBottom: 4,
         }}
       >
-        <Text size="sm" fw={700} style={{ color: 'var(--mantine-color-text)', whiteSpace: 'nowrap' }}>
+        <Text size="sm" fw={700} style={{ color: isDark ? '#e9ecef' : '#212529', whiteSpace: 'nowrap' }}>
           {formatShortCurrency(info.amount)}
         </Text>
         {getStatusIcon() && (
@@ -299,7 +301,7 @@ function MonthCellWithPopover({
         {t(`payments.status.${info.status}`)}
       </Text>
       {/* Method/Date row: Left aligned */}
-      <Box style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--mantine-color-dimmed)', marginTop: 2 }}>
+      <Box style={{ display: 'flex', alignItems: 'center', gap: 3, color: isDark ? '#909296' : '#868e96', marginTop: 2 }}>
         {methodIcon}
         <Text style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
           {info.paidDate
@@ -609,26 +611,50 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     },
   });
 
-  // Format currency
+  // Format currency with locale support
   const formatCurrency = useCallback((amount: number) => {
-    return new Intl.NumberFormat(locale === 'tr' ? 'tr-TR' : 'en-US', {
+    const localeMap: Record<string, string> = {
+      tr: 'tr-TR',
+      en: 'en-US',
+      de: 'de-DE',
+      ar: 'ar-SA',
+    };
+    const currencyMap: Record<string, string> = {
+      tr: 'TRY',
+      en: 'USD',
+      de: 'EUR',
+      ar: 'SAR',
+    };
+    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
       style: 'currency',
-      currency: 'TRY',
+      currency: currencyMap[locale] || 'EUR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   }, [locale]);
 
-  // Format short currency (for cells)
+  // Format compact currency for cells (still shows full number with currency symbol)
   const formatShortCurrency = useCallback((amount: number) => {
-    if (amount >= 1000000) {
-      return `${(amount / 1000000).toFixed(1)}M`;
-    }
-    if (amount >= 1000) {
-      return `${(amount / 1000).toFixed(0)}K`;
-    }
-    return amount.toFixed(0);
-  }, []);
+    const localeMap: Record<string, string> = {
+      tr: 'tr-TR',
+      en: 'en-US',
+      de: 'de-DE',
+      ar: 'ar-SA',
+    };
+    const currencyMap: Record<string, string> = {
+      tr: 'TRY',
+      en: 'USD',
+      de: 'EUR',
+      ar: 'SAR',
+    };
+    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
+      style: 'currency',
+      currency: currencyMap[locale] || 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+      notation: 'standard',
+    }).format(amount);
+  }, [locale]);
 
   // Navigate years
   const navigatePrevious = useCallback(() => {
@@ -679,6 +705,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
         formatCurrency={formatCurrency}
         formatShortCurrency={formatShortCurrency}
         t={t}
+        isDark={isDark}
       />
     );
   }, [formatCurrency, formatShortCurrency, fullMonthNames, currentYear, t, isDark]);

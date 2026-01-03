@@ -150,7 +150,7 @@
 /* Timeline Line */
 .timelineLine {
   position: absolute;
-  left: 86px;
+  left: 80px;
   top: 1.5rem;
   bottom: 1.5rem;
   width: 2px;
@@ -208,12 +208,13 @@
 
 /* Date Column */
 .dateColumn {
-  width: 64px;
+  width: 50px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-right: 2rem;
+  margin-right: 3rem;
   padding-top: 0.5rem;
+  flex-shrink: 0;
 }
 
 .dateDay {
@@ -240,7 +241,7 @@
 /* Timeline Dot */
 .timelineDot {
   position: absolute;
-  left: 55px;
+  left: 75px;
   top: 0.75rem;
   width: 12px;
   height: 12px;
@@ -506,16 +507,16 @@
   }
 
   .dateColumn {
-    width: 48px;
-    margin-right: 1.5rem;
+    width: 36px;
+    margin-right: 2rem;
   }
 
   .timelineLine {
-    left: 70px;
+    left: 56px;
   }
 
   .timelineDot {
-    left: 42px;
+    left: 50px;
   }
 
   .cardActions {
@@ -559,16 +560,16 @@
   }
 
   .dateColumn {
-    width: 40px;
-    margin-right: 1rem;
+    width: 32px;
+    margin-right: 1.75rem;
   }
 
   .timelineLine {
-    left: 60px;
+    left: 50px;
   }
 
   .timelineDot {
-    left: 34px;
+    left: 44px;
     width: 10px;
     height: 10px;
   }
@@ -611,5 +612,13 @@
 
   .paymentList {
     gap: 1rem;
+  }
+
+  .dateDay {
+    font-size: 0.75rem;
+  }
+
+  .dateMonth {
+    font-size: 0.625rem;
   }
 }
