@@ -318,28 +318,26 @@ export function SessionTimeoutWarning() {
                     />
                 </Stack>
 
-                <Stack gap="sm" mt="md">
+                <Group grow mt="md">
+                    <Button
+                        variant="outline"
+                        color="red"
+                        size="lg"
+                        leftSection={<IconLogout size={20} />}
+                        onClick={handleSessionExpired}
+                    >
+                        {t('session.timeoutWarning.logout')}
+                    </Button>
                     <Button
                         color="green"
                         size="lg"
-                        fullWidth
-                        leftSection={<IconRefresh size={22} />}
+                        leftSection={<IconRefresh size={20} />}
                         onClick={handleExtendSession}
                         loading={isRefreshing}
                     >
                         {t('session.timeoutWarning.extend')}
                     </Button>
-                    <Button
-                        variant="outline"
-                        color="red"
-                        size="lg"
-                        fullWidth
-                        leftSection={<IconLogout size={22} />}
-                        onClick={handleSessionExpired}
-                    >
-                        {t('session.timeoutWarning.logout')}
-                    </Button>
-                </Stack>
+                </Group>
             </Stack>
         </Modal>
     );
