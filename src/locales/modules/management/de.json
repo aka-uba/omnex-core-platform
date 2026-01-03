@@ -1,14 +1,52 @@
 {
   "title": "Modulverwaltung",
-  "description": "Verwalten, hochladen und konfigurieren Sie Systemmodule",
+  "description": "Systemmodule verwalten, installieren und konfigurieren",
   "upload": {
     "title": "Neues Modul hochladen",
-    "description": "Wählen Sie eine .zip-Datei aus, um ein neues Modul hochzuladen"
+    "description": "Wählen Sie eine .zip-Datei aus, um ein neues Modul hochzuladen",
+    "dropzone": {
+      "dragDrop": "Modul .zip-Datei hierher ziehen und ablegen",
+      "clickToSelect": "oder klicken, um eine Datei auszuwählen",
+      "acceptedFormat": "Akzeptiertes Format: .zip. Maximale Größe: 50MB.",
+      "selected": "Ausgewählt"
+    },
+    "form": {
+      "moduleName": "Modulname",
+      "moduleNamePlaceholder": "Wird nach dem Hochladen automatisch ausgefüllt",
+      "version": "Version",
+      "versionPlaceholder": "z.B.: 1.0.0",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Die Modulbeschreibung erscheint hier nach dem Hochladen."
+    },
+    "manifest": {
+      "title": "Modul-Konfigurationsdatei",
+      "description1": "Die .zip-Datei Ihres Moduls muss eine module.config.yaml-Datei im Stammverzeichnis enthalten. Diese Datei liefert grundlegende Informationen über Ihr Modul.",
+      "description2": "Das System analysiert diese Datei automatisch, um Modulnamen, Version und Beschreibungsfelder auszufüllen.",
+      "fileName": "Dateiname",
+      "example": "name: Mein Tolles Modul\nslug: mein-modul\nversion: 1.0.0\ndescription: Eine kurze Beschreibung dessen, was das Modul tut.\nauthor: Ihr Name\nicon: Apps\ncategory: business\nminCoreVersion: 1.0.0\n\nmenu:\n  main:\n    label: Mein Modul\n    icon: Apps\n    href: /modules/mein-modul\n    order: 10\n    items:\n      - title: Dashboard\n        path: /modules/mein-modul/dashboard\n        icon: Dashboard\n        order: 1\n\nsettings:\n  - key: funktionAktiv\n    label: Funktion aktivieren\n    type: boolean\n    defaultValue: true\n    category: Allgemein\n\npermissions:\n  - key: mein-modul.anzeigen\n    name: Modul anzeigen\n    description: Ermöglicht dem Benutzer, das Modul anzuzeigen\n    category: Zugriff"
+    },
+    "errors": {
+      "onlyZip": "Es werden nur .zip-Dateien akzeptiert",
+      "fileSize": "Die Dateigröße muss weniger als 50MB betragen",
+      "selectFile": "Bitte wählen Sie eine Moduldatei aus",
+      "readManifest": "module.config.yaml konnte nicht aus dem Archiv gelesen werden",
+      "error": "Fehler"
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "uploadInstall": "Hochladen und Installieren"
+    },
+    "notifications": {
+      "installed": "Modul installiert",
+      "installedSuccess": "{{name}} wurde erfolgreich installiert.",
+      "installationFailed": "Installation fehlgeschlagen",
+      "installationFailedMessage": "Modul konnte nicht installiert werden"
+    }
   },
   "listing": {
     "title": "Module",
     "description": "Liste der installierten und aktiven Module",
-    "searchPlaceholder": "Module nach Namen suchen...",
+    "searchPlaceholder": "Nach Modulnamen suchen...",
     "statusAll": "Status: Alle",
     "categoryAll": "Kategorie: Alle",
     "all": "Alle",
@@ -32,11 +70,12 @@
     },
     "tooltips": {
       "configure": "Konfigurieren",
-      "uninstall": "Deinstallieren"
+      "uninstall": "Deinstallieren",
+      "settings": "Modul-Einstellungen"
     },
     "category": "Kategorie:",
     "noDescription": "Keine Beschreibung für dieses Modul verfügbar.",
-    "moduleHasErrors": "Modul hat Fehler"
+    "moduleHasErrors": "Modul weist Fehler auf"
   },
   "notifications": {
     "moduleActivated": "Modul aktiviert",
@@ -48,14 +87,82 @@
     "activationFailedMessage": "Modul konnte nicht aktiviert werden",
     "deactivationFailedMessage": "Modul konnte nicht deaktiviert werden",
     "uninstallModule": "Modul deinstallieren",
-    "uninstallConfirm": "Sind Sie sicher, dass Sie \"{{name}}\" deinstallieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "uninstallConfirm": "Sind Sie sicher, dass Sie das Modul \"{{name}}\" deinstallieren möchten? Dieser Vorgang kann nicht rückgängig gemacht werden.",
     "moduleUninstalled": "Modul deinstalliert",
     "moduleUninstalledSuccess": "{{name}} wurde deinstalliert.",
     "uninstallFailed": "Deinstallation fehlgeschlagen",
     "uninstallFailedMessage": "Modul konnte nicht deinstalliert werden"
+  },
+  "names": {
+    "hr": "Personalwesen",
+    "accounting": "Buchhaltung",
+    "real-estate": "Immobilienverwaltung",
+    "production": "Produktion",
+    "maintenance": "Wartung",
+    "web-builder": "Web-Builder",
+    "file-manager": "Dateimanager",
+    "notifications": "Benachrichtigungen",
+    "calendar": "Kalender",
+    "ai": "Künstliche Intelligenz",
+    "license": "Lizenz",
+    "raporlar": "Berichte",
+    "locations": "Standorte",
+    "sohbet": "Chat",
+    "vardiya": "Schicht",
+    "urun": "Produkt",
+    "tedarikci": "Lieferant",
+    "randevu": "Termin",
+    "musteri": "Kunde",
+    "egitim": "Bildung",
+    "belgeler-ve-imza": "Dokumente und Unterschrift",
+    "module-management": "Modulverwaltung",
+    "dashboard": "Dashboard"
+  },
+  "descriptions": {
+    "hr": "Umfassendes Personalverwaltungssystem. Verwalten Sie Mitarbeiterinformationen, Abteilungsverwaltung, Urlaubs- und Abwesenheitsverfolgung, Gehaltsabrechnung, Leistungsbewertung, Schulungsmanagement und Rekrutierungsprozesse auf einer einzigen Plattform. Optimieren Sie Ihre Geschäftsprozesse mit automatischen Urlaubsgenehmigungs-Workflows und detaillierten Berichten.",
+    "accounting": "Professionelles Buchhaltungs- und Finanzverwaltungsmodul. Behalten Sie die volle Kontrolle über Ihre Finanzprozesse mit Abonnementverwaltung, automatischer Rechnungserstellung, Zahlungsverfolgung, Ausgabenmanagement, Steuerberechnung und mali Berichterstattung. Überwachen Sie die finanzielle Gesundheit Ihres Unternehmens mit Mehrwährungsunterstützung und detaillierten Analysetools.",
+    "real-estate": "Umfassende Immobilien- und Liegenschaftsverwaltung. Verwalten Sie Ihr Immobilienportfolio professionell mit Objekt-, Wohnungs- und Einheitenverwaltung, Mieterinformationen, Vertragsmanagement mit automatischer Verlängerung, Zahlungsverfolgung, Terminplanung, E-Mail-Kampagnen und Wartungsmanagement.",
+    "production": "Industrielles Produktions- und Produktmanagementsystem. Verwalten Sie Ihre Produktionsprozesse effizient mit Produktkatalog, Lagerverwaltung, Stücklisten-Erstellung (BOM), Produktionsaufträgen, Qualitätskontrolle und Kostenanalyse. Optimieren Sie Ihre Lagerbestände mit Echtzeit-Tracking und automatischen Warnsystemen.",
+    "maintenance": "Modul für umfassende Wartung und Geräteverwaltung. Verlängern Sie die Lebensdauer Ihrer Geräte und senken Sie die Wartungskosten durch geplante Wartungspläne, Notfallwartungsanfragen, Arbeitsauftragsmanagement, Kostenverfolgung, Teammanagement und detaillierte Analyseberichte.",
+    "web-builder": "Fortschrittliches Drag-and-Drop-Webseiten-Baukasten-Modul. Erstellen Sie ansprechende, responsive Webseiten ohne Programmierkenntnisse mit einem visuellen Editor, fertigen Vorlagen, speziellen Komponenten, Formular-Builder und Analyse-Integration.",
+    "file-manager": "System für fortgeschrittene Datei- und Dokumentenverwaltung. Organisieren und speichern Sie alle Ihre digitalen Assets sicher mit Datei-Upload, Ordnerstrukturen, Freigabemanagement, Versionskontrolle, Volltextsuche, Batch-Operationen und Multiformat-Unterstützung.",
+    "notifications": "Zentrale Plattform für das Benachrichtigungsmanagement. Versenden Sie E-Mails, SMS und Push-Benachrichtigungen. Kommunizieren Sie effektiv mit Ihren Nutzern durch Vorlagen, geplante Benachrichtigungen, Zustellstatus-Tracking, Nutzergruppen-spezifische Mitteilungen und Analyse-Statistiken.",
+    "calendar": "Umfassendes Kalender- und Veranstaltungsmanagementsystem. Verwalten Sie Ihre Zeit effizient mit Veranstaltungsplanung, Terminverwaltung, verschiedenen Kalenderansichten (monatlich, wöchentlich, täglich), wiederkehrenden Terminen, Erinnerungen und Ressourcenreservierung.",
+    "ai": "KI-gestütztes Modul für Content-Produktion und Automatisierung. Beschleunigen Sie Ihre kreativen Prozesse mit Textgenerierung, Bildbearbeitung, Sprachsynthese, Videoproduktion, Code-Optimierung und KI-Assistenten-Integration bei gleichzeitiger Kostensenkung.",
+    "license": "System für umfassendes Lizenz- und Abonnementmanagement. Erstellen Sie Lizenzpakete, weisen Sie Mandanten Lizenzen zu, verfolgen Sie Ablaufdaten, verwalten Sie Verlängerungen und senden Sie automatische Benachrichtigungen bei Ablauf.",
+    "raporlar": "Leistungsstarkes Berichts- und Analysemodul. Treffen Sie datengestützte Geschäftsentscheidungen mit anpassbaren Berichtsvorlagen, Datenvisualisierung, geplanten Berichten, automatischem Versand und Dashboard-Zusammenfassungen.",
+    "locations": "Modul für Standort- und Geodatenverwaltung. Verwalten und analysieren Sie alle Standortdaten zentral mit Adressverwaltung, hierarchischen Strukturen (Land, Stadt, Viertel), Kartenintegration, standortbasierter Suche und Analytik.",
+    "sohbet": "Echtzeit-Messaging- und Kommunikationsplattform. Stärken Sie die teaminterne Kommunikation durch Instant Messaging, Chatrooms, Gruppenkanäle, Medienfreigabe, verschlüsselte Nachrichten, Statusanzeigen und Archivierungsfunktionen.",
+    "vardiya": "Umfassendes Schicht- und Anwesenheitsmanagementsystem. Erstellen Sie Schichtpläne, verfolgen Sie Mitarbeiterabwesenheiten, verwalten Sie Arbeitszeiten und überwachen Sie die Schichtabdeckung durch automatische Planung.",
+    "urun": "Vollständiges Produktkatalog- und Lagerverwaltungssystem. Verwalten Sie Produktkataloge, verfolgen Sie Lagerbestände und Bewegungen, richten Sie Warnungen bei niedrigem Bestand ein und nutzen Sie umfassendes Inventar-Tracking.",
+    "tedarikci": "System für umfassendes Lieferantenmanagement. Verwalten Sie Lieferantenbeziehungen, verfolgen Sie Einkaufsaufträge, überwachen Sie Zahlungspläne und bewerten Sie die Lieferantenleistung zur Automatisierung von Beschaffungsprozessen.",
+    "randevu": "Fortschrittliches Termin- und Kalenderverwaltungssystem. Planen Sie Termine, versenden Sie automatische Erinnerungen, verfolgen Sie die Terminhistorie und integrieren Sie Benachrichtigungssysteme für eine reibungslose Koordination.",
+    "musteri": "Vollständiges CRM-System (Customer Relationship Management). Verwalten Sie Kundenkontakte, verfolgen Sie Verkaufschancen, überwachen Sie Interaktionen, verwalten Sie Leads und analysieren Sie Kundenbeziehungen.",
+    "egitim": "Umfassendes Schulungs- und Lernmanagementsystem. Erstellen und verwalten Sie Kurse, verfolgen Sie den Lernfortschritt, verwalten Sie Dozenten, erstellen Sie Zertifikate und planen Sie Schulungssitzungen.",
+    "belgeler-ve-imza": "System für fortgeschrittene Dokumentenverwaltung und digitale Signaturen. Verwalten Sie Dokumente, erstellen Sie digitale Signaturen, verfolgen Sie Versionen und führen Sie ein vollständiges Audit-Log für alle Transaktionen.",
+    "module-management": "Lebenszyklusmanagement für Systemmodule. Installieren, aktivieren, konfigurieren und verwalten Sie Plattformmodule mit Abhängigkeitsprüfung, Versionskontrolle und Zustandsüberwachung.",
+    "dashboard": "Haupt-Dashboard - Umfassende Business Intelligence und Analyseansichten mit KPI-Statistiken, Content-Performance, Finanzübersicht und Aktivitäts-Timeline."
+  },
+  "categories": {
+    "business": "Geschäft",
+    "utility": "Dienstprogramm",
+    "system": "System",
+    "core": "Kern",
+    "ai": "KI",
+    "analytics": "Analyse",
+    "communication": "Kommunikation"
+  },
+  "actions": {
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "update": "Aktualisieren",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "back": "Zurück"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
   }
 }
-
-
-
-

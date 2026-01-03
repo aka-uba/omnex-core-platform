@@ -22,7 +22,8 @@
       "title": "Modül Yapılandırma Dosyası",
       "description1": "Modülünüzün `.zip` dosyası kök dizininde bir `module.config.yaml` dosyası içermelidir. Bu yapılandırma dosyası modülünüz hakkında temel bilgileri sağlar.",
       "description2": "Sistem bu dosyayı otomatik olarak ayrıştırarak modül adı, sürüm ve açıklama alanlarını doldurur.",
-      "fileName": "Dosya adı"
+      "fileName": "Dosya adı",
+      "example": "name: Harika Modülüm\nslug: benim-modulum\nversion: 1.0.0\ndescription: Modülün ne yaptığına dair kısa bir açıklama.\nauthor: Adınız\nicon: Apps\ncategory: business\nminCoreVersion: 1.0.0\n\nmenu:\n  main:\n    label: Modülüm\n    icon: Apps\n    href: /modules/benim-modulum\n    order: 10\n    items:\n      - title: Panel\n        path: /modules/benim-modulum/dashboard\n        icon: Dashboard\n        order: 1\n\nsettings:\n  - key: ozellikAktif\n    label: Özelliği Etkinleştir\n    type: boolean\n    defaultValue: true\n    category: Genel\n\npermissions:\n  - key: benim-modulum.goruntule\n    name: Modülü Görüntüle\n    description: Kullanıcının modülü görüntülemesine izin verir\n    category: Erişim"
     },
     "errors": {
       "onlyZip": "Sadece .zip dosyaları kabul edilir",

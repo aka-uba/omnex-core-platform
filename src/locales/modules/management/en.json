@@ -1,14 +1,52 @@
 {
   "title": "Module Management",
-  "description": "Manage, upload and configure system modules",
+  "description": "Manage, install and configure system modules",
   "upload": {
     "title": "Upload New Module",
-    "description": "Select a .zip file to upload a new module"
+    "description": "Select a .zip file to upload a new module",
+    "dropzone": {
+      "dragDrop": "Drag and drop the module .zip file here",
+      "clickToSelect": "or click to select a file",
+      "acceptedFormat": "Accepted format: .zip. Maximum size: 50MB.",
+      "selected": "Selected"
+    },
+    "form": {
+      "moduleName": "Module Name",
+      "moduleNamePlaceholder": "Will be auto-filled after upload",
+      "version": "Version",
+      "versionPlaceholder": "e.g.: 1.0.0",
+      "description": "Description",
+      "descriptionPlaceholder": "Module description will appear here after upload."
+    },
+    "manifest": {
+      "title": "Module Configuration File",
+      "description1": "Your module's `.zip` file must contain a `module.config.yaml` file in the root directory. This configuration file provides essential information about your module.",
+      "description2": "The system automatically parses this file to fill in the module name, version, and description fields.",
+      "fileName": "File name",
+      "example": "name: My Awesome Module\nslug: my-module\nversion: 1.0.0\ndescription: A short description of what the module does.\nauthor: Your Name\nicon: Apps\ncategory: business\nminCoreVersion: 1.0.0\n\nmenu:\n  main:\n    label: My Module\n    icon: Apps\n    href: /modules/my-module\n    order: 10\n    items:\n      - title: Dashboard\n        path: /modules/my-module/dashboard\n        icon: Dashboard\n        order: 1\n\nsettings:\n  - key: featureActive\n    label: Enable Feature\n    type: boolean\n    defaultValue: true\n    category: General\n\npermissions:\n  - key: my-module.view\n    name: View Module\n    description: Allows the user to view the module\n    category: Access"
+    },
+    "errors": {
+      "onlyZip": "Only .zip files are accepted",
+      "fileSize": "File size must be less than 50MB",
+      "selectFile": "Please select a module file",
+      "readManifest": "Could not read module.config.yaml from archive",
+      "error": "Error"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "uploadInstall": "Upload and Install"
+    },
+    "notifications": {
+      "installed": "Module Installed",
+      "installedSuccess": "{{name}} has been successfully installed.",
+      "installationFailed": "Installation Failed",
+      "installationFailedMessage": "Module could not be installed"
+    }
   },
   "listing": {
     "title": "Modules",
     "description": "List of installed and active modules",
-    "searchPlaceholder": "Search modules by name...",
+    "searchPlaceholder": "Search by module name...",
     "statusAll": "Status: All",
     "categoryAll": "Category: All",
     "all": "All",
@@ -32,7 +70,8 @@
     },
     "tooltips": {
       "configure": "Configure",
-      "uninstall": "Uninstall"
+      "uninstall": "Uninstall",
+      "settings": "Module Settings"
     },
     "category": "Category:",
     "noDescription": "No description available for this module.",
@@ -40,24 +79,90 @@
   },
   "notifications": {
     "moduleActivated": "Module Activated",
-    "moduleActivatedSuccess": "{{name}} has been activated successfully.",
+    "moduleActivatedSuccess": "{{name}} has been successfully activated.",
     "moduleDeactivated": "Module Deactivated",
     "moduleDeactivatedSuccess": "{{name}} has been deactivated.",
     "activationFailed": "Activation Failed",
     "deactivationFailed": "Deactivation Failed",
-    "activationFailedMessage": "Failed to activate module",
-    "deactivationFailedMessage": "Failed to deactivate module",
+    "activationFailedMessage": "Module could not be activated",
+    "deactivationFailedMessage": "Module could not be deactivated",
     "uninstallModule": "Uninstall Module",
-    "uninstallConfirm": "Are you sure you want to uninstall \"{{name}}\"? This action cannot be undone.",
+    "uninstallConfirm": "Are you sure you want to uninstall the \"{{name}}\" module? This action cannot be undone.",
     "moduleUninstalled": "Module Uninstalled",
     "moduleUninstalledSuccess": "{{name}} has been uninstalled.",
     "uninstallFailed": "Uninstall Failed",
-    "uninstallFailedMessage": "Failed to uninstall module"
+    "uninstallFailedMessage": "Module could not be uninstalled"
+  },
+  "names": {
+    "hr": "Human Resources",
+    "accounting": "Accounting",
+    "real-estate": "Property Management",
+    "production": "Production",
+    "maintenance": "Maintenance",
+    "web-builder": "Web Builder",
+    "file-manager": "File Manager",
+    "notifications": "Notifications",
+    "calendar": "Calendar",
+    "ai": "Artificial Intelligence",
+    "license": "License",
+    "raporlar": "Reports",
+    "locations": "Locations",
+    "sohbet": "Chat",
+    "vardiya": "Shift",
+    "urun": "Product",
+    "tedarikci": "Supplier",
+    "randevu": "Appointment",
+    "musteri": "Customer",
+    "egitim": "Education",
+    "belgeler-ve-imza": "Documents and Signature",
+    "module-management": "Module Management",
+    "dashboard": "Dashboard"
+  },
+  "descriptions": {
+    "hr": "Comprehensive human resources management system. Manage employee information, department management, leave and absence tracking, payroll calculation, performance evaluation, training management, and recruitment processes on a single platform. Optimize your business processes with automatic leave approval flows, payroll integration, and detailed reporting features.",
+    "accounting": "Professional accounting and financial management module. Keep your financial processes under full control with subscription management, automatic invoice generation, payment tracking, expense management, tax calculation, financial reporting, and approval workflows. Monitor your business's financial health with multi-currency support, payment reminders, and detailed financial analysis tools.",
+    "real-estate": "Comprehensive real estate and property management platform. Professionally manage your real estate portfolio with property, apartment, and unit management, tenant information and communication tracking, contract management and automatic renewal, payment tracking and collection, appointment and viewing planning, email campaigns and automation, maintenance request management, and reporting features.",
+    "production": "Industrial production and product management system. Efficiently manage your production processes with product catalog and inventory management, BOM (Bill of Materials) creation and management, production orders and planning, stock movement tracking, quality control processes, production cost analysis, and performance reporting. Optimize your stock levels with real-time stock tracking and an automatic warning system.",
+    "maintenance": "Comprehensive maintenance and equipment management module. Extend the life of your equipment and reduce your maintenance costs with equipment inventory and information management, planned maintenance schedules and reminders, emergency maintenance requests and work order management, maintenance cost tracking and budget management, equipment history and performance analysis, maintenance team management and assignment, detailed maintenance reports, and analytical tools.",
+    "web-builder": "Advanced drag-and-drop website builder module. Create beautiful, responsive websites without writing code using a visual editor, ready-made templates, special components, form builder, media library, and comprehensive analytics integration.",
+    "file-manager": "Advanced file and document management system. Organize and safely store all your digital assets with secure file upload and storage, folder organization and hierarchical structure, file sharing and permission management, version control and history tracking, file search and filtering, bulk operations, multi-format support (PDF, Office, images, videos), file preview, and download management.",
+    "notifications": "Centralized notification management platform. Send emails, SMS, push notifications, and in-app notifications. Effectively communicate with your users with notification templates, scheduled notifications, notification history and delivery status tracking, custom notifications for user groups, multi-channel support, notification statistics and analytics, automatic notification rules, and integrations.",
+    "calendar": "Comprehensive calendar and event management system. Manage your time efficiently with event creation and planning, appointment management, calendar views (monthly, weekly, daily, agenda), recurring events, reminders and notifications, participant management and approval processes, resource reservation, calendar sharing and synchronization, event categories and tags, search and filtering features.",
+    "ai": "AI-powered content production and automation module. Speed up your creative processes and reduce your content production costs with text generation and editing, image creation and editing, voice synthesis and processing, video production and editing, code generation and optimization, multi-language support, content templates, AI assistant and chatbot integration, content analysis, and optimization suggestions.",
+    "license": "Comprehensive license and subscription management system. Create license packages, assign licenses to tenants, track license expiration dates, manage renewals, monitor usage, and send automatic expiration notifications.",
+    "raporlar": "Powerful reporting and analytics module. Make data-driven business decisions and continuously monitor your performance with customizable report templates, data visualization and charts, scheduled reports and automatic email sending, multi-format support (PDF, Excel, CSV), filtering and grouping options, dashboards and summary views, data export and sharing, report history, and version control.",
+    "locations": "Location and geographic data management module. Centrally manage and analyze all your location data with location information and address management, hierarchical location structures (country, city, region, neighborhood), geographic coordinate management and map integration, location-based search and filtering, location statistics and analytics, multi-language support, location groups and tags, location-based reporting, and visualization.",
+    "sohbet": "Real-time messaging and communication platform. Strengthen in-team communication and increase collaboration with instant messaging and chat rooms, group chats and channels, file and media sharing, message history and search, user status and online/offline indication, notifications and reminders, message encryption and security, private messages and direct messaging, emoji and reaction support, message archiving, and backup.",
+    "vardiya": "Comprehensive shift and attendance management system. Create shift schedules, track employee attendance, manage working hours, and monitor shift coverage with automatic planning and absence tracking.",
+    "urun": "Full-scale product catalog and inventory management system. Manage product catalogs, track stock levels, monitor inventory movements, set low stock alerts, and manage product categories with comprehensive inventory tracking.",
+    "tedarikci": "Comprehensive supplier and vendor management system. Manage supplier relationships, track purchase orders, monitor payment plans, evaluate supplier performance, and automate procurement processes.",
+    "randevu": "Advanced appointment and calendar management system. Schedule appointments, manage calendars, send automatic reminders, track appointment history, and integrate with notification systems for seamless appointment coordination.",
+    "musteri": "Full-scale Customer Relationship Management (CRM) system. Manage customer contacts, track sales opportunities, monitor customer interactions, manage leads, and analyze customer relationships with comprehensive CRM features.",
+    "egitim": "Comprehensive training and learning management system. Create and manage courses, track student progress, manage instructors, create certificates, plan training sessions, and monitor training performance.",
+    "belgeler-ve-imza": "Advanced document management and digital signature system. Manage documents, create digital signatures, track document versions, send documents for signature, and maintain a full audit trail for all document transactions.",
+    "module-management": "Full module lifecycle management system. Install, activate, configure, and manage platform modules with dependency validation, version control, setting management, and module health monitoring.",
+    "dashboard": "Main dashboard - Comprehensive business intelligence and analytical views with KPI statistics, content performance, financial summary, and activity timeline."
+  },
+  "categories": {
+    "business": "Business",
+    "utility": "Utility",
+    "system": "System",
+    "core": "Core",
+    "ai": "AI",
+    "analytics": "Analytics",
+    "communication": "Communication"
+  },
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
   }
 }
-
-
-
-
-
-
