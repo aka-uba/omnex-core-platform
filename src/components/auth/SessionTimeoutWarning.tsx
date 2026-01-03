@@ -284,58 +284,62 @@ export function SessionTimeoutWarning() {
             onClose={() => {}} // Prevent closing by clicking outside
             withCloseButton={false}
             centered
-            size="sm"
+            size="md"
             styles={{
                 content: {
                     borderRadius: 'var(--mantine-radius-lg)',
                 },
             }}
         >
-            <Stack gap="lg" py="md">
+            <Stack gap="xl" py="lg" px="md">
                 <Center>
-                    <IconClock size={64} color="var(--mantine-color-orange-6)" />
+                    <IconClock size={80} color="var(--mantine-color-orange-6)" />
                 </Center>
 
-                <Stack gap="xs" ta="center">
-                    <Text size="xl" fw={600}>
+                <Stack gap="sm" ta="center">
+                    <Text size="1.5rem" fw={700}>
                         {t('session.timeoutWarning.title')}
                     </Text>
-                    <Text size="sm" c="dimmed">
+                    <Text size="md" c="dimmed">
                         {t('session.timeoutWarning.message')}
                     </Text>
                 </Stack>
 
-                <Stack gap="xs">
-                    <Text ta="center" size="lg" fw={600} c="orange">
+                <Stack gap="sm">
+                    <Text ta="center" size="xl" fw={700} c="orange">
                         {countdown} {t('session.timeoutWarning.seconds')}
                     </Text>
                     <Progress
                         value={(countdown / WARNING_BEFORE_TIMEOUT) * 100}
                         color="orange"
-                        size="sm"
+                        size="md"
                         radius="xl"
                         animated
                     />
                 </Stack>
 
-                <Group grow>
-                    <Button
-                        variant="outline"
-                        color="red"
-                        leftSection={<IconLogout size={18} />}
-                        onClick={handleSessionExpired}
-                    >
-                        {t('session.timeoutWarning.logout')}
-                    </Button>
+                <Stack gap="sm" mt="md">
                     <Button
                         color="green"
-                        leftSection={<IconRefresh size={18} />}
+                        size="lg"
+                        fullWidth
+                        leftSection={<IconRefresh size={22} />}
                         onClick={handleExtendSession}
                         loading={isRefreshing}
                     >
                         {t('session.timeoutWarning.extend')}
                     </Button>
-                </Group>
+                    <Button
+                        variant="outline"
+                        color="red"
+                        size="lg"
+                        fullWidth
+                        leftSection={<IconLogout size={22} />}
+                        onClick={handleSessionExpired}
+                    >
+                        {t('session.timeoutWarning.logout')}
+                    </Button>
+                </Stack>
             </Stack>
         </Modal>
     );
