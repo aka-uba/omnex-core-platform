@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import {
   Badge,
   ActionIcon,
-  Group,
   Text,
   Alert,
   Tooltip,

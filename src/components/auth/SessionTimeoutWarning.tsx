@@ -15,6 +15,7 @@ const CHECK_INTERVAL = 1000; // Check every second
 // Storage keys
 const LAST_ACTIVITY_KEY = 'omnex-last-activity';
 const SESSION_MARKER_KEY = 'omnex-session-active';
+const SESSION_INITIALIZED_KEY = 'omnex-session-initialized';
 
 export function SessionTimeoutWarning() {
     const { logout, isAuthenticated } = useAuth();
@@ -24,6 +25,7 @@ export function SessionTimeoutWarning() {
     const [countdown, setCountdown] = useState(WARNING_BEFORE_TIMEOUT);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [sessionTimeout, setSessionTimeout] = useState(30); // Default 30 minutes
+    const [isInitialized, setIsInitialized] = useState(false);
     const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasLoggedOutRef = useRef(false);
     const lastActivityUpdateRef = useRef<number>(0);
@@ -57,32 +59,6 @@ export function SessionTimeoutWarning() {
         localStorage.setItem(LAST_ACTIVITY_KEY, String(now));
     }, []);
 
-    // Initialize session marker
-    const initSession = useCallback(() => {
-        if (typeof window === 'undefined') return;
-
-        // Set session marker in sessionStorage (clears on browser close)
-        sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
-
-        // Initialize last activity if not set
-        if (!localStorage.getItem(LAST_ACTIVITY_KEY)) {
-            localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now()));
-        }
-    }, []);
-
-    // Check if this is a fresh browser session (after restart)
-    const checkSessionValidity = useCallback(() => {
-        if (typeof window === 'undefined') return true;
-
-        // If sessionStorage marker is missing, browser was closed/restarted
-        const sessionMarker = sessionStorage.getItem(SESSION_MARKER_KEY);
-        if (!sessionMarker && isAuthenticated) {
-            // Browser was restarted - force logout
-            return false;
-        }
-        return true;
-    }, [isAuthenticated]);
-
     // Handle session expired
     const handleSessionExpired = useCallback(() => {
         if (hasLoggedOutRef.current) return;
@@ -96,6 +72,7 @@ export function SessionTimeoutWarning() {
 
         // Clear storage
         localStorage.removeItem(LAST_ACTIVITY_KEY);
+        localStorage.removeItem(SESSION_INITIALIZED_KEY);
         sessionStorage.removeItem(SESSION_MARKER_KEY);
 
         setShowWarning(false);
@@ -160,24 +137,37 @@ export function SessionTimeoutWarning() {
         fetchSettings();
     }, [isAuthenticated, isAuthPage]);
 
-    // Check for fresh browser session (PC restart scenario)
+    // Initialize session and check for browser restart
     useEffect(() => {
-        if (!isAuthenticated || isAuthPage) return;
+        if (typeof window === 'undefined' || !isAuthenticated || isAuthPage) return;
 
-        // Check if browser was restarted
-        if (!checkSessionValidity()) {
-            // Browser was restarted while user was logged in - force logout
+        const sessionMarker = sessionStorage.getItem(SESSION_MARKER_KEY);
+        const wasInitialized = localStorage.getItem(SESSION_INITIALIZED_KEY);
+
+        // Case 1: Session marker exists - same browser session, continue
+        if (sessionMarker) {
+            setIsInitialized(true);
+            return;
+        }
+
+        // Case 2: No session marker but was initialized before - browser was restarted
+        if (wasInitialized && !sessionMarker) {
+            // Browser was closed and reopened - force logout
             handleSessionExpired();
             return;
         }
 
-        // Initialize session marker
-        initSession();
-    }, [isAuthenticated, isAuthPage, checkSessionValidity, handleSessionExpired, initSession]);
+        // Case 3: Fresh login - set both markers
+        sessionStorage.setItem(SESSION_MARKER_KEY, 'true');
+        localStorage.setItem(SESSION_INITIALIZED_KEY, 'true');
+        localStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now()));
+        setIsInitialized(true);
+
+    }, [isAuthenticated, isAuthPage, handleSessionExpired]);
 
     // Check inactivity timeout - using ref for showWarning to avoid stale closure
     const checkInactivityTimeout = useCallback(() => {
-        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current) return;
+        if (!isAuthenticated || isAuthPage || hasLoggedOutRef.current || !isInitialized) return;
 
         const lastActivity = getLastActivity();
         const now = Date.now();
@@ -205,11 +195,11 @@ export function SessionTimeoutWarning() {
                 setCountdown(WARNING_BEFORE_TIMEOUT);
             }
         }
-    }, [isAuthenticated, isAuthPage, sessionTimeout, getLastActivity, handleSessionExpired]);
+    }, [isAuthenticated, isAuthPage, sessionTimeout, getLastActivity, handleSessionExpired, isInitialized]);
 
     // Set up activity tracking
     useEffect(() => {
-        if (!isAuthenticated || isAuthPage) return;
+        if (!isAuthenticated || isAuthPage || !isInitialized) return;
 
         // Track user activity
         const activityHandler = () => {
@@ -229,11 +219,11 @@ export function SessionTimeoutWarning() {
                 window.removeEventListener(event, activityHandler);
             });
         };
-    }, [isAuthenticated, isAuthPage, updateLastActivity, handleExtendSession]);
+    }, [isAuthenticated, isAuthPage, updateLastActivity, handleExtendSession, isInitialized]);
 
     // Set up inactivity check interval
     useEffect(() => {
-        if (!isAuthenticated || isAuthPage) {
+        if (!isAuthenticated || isAuthPage || !isInitialized) {
             if (checkIntervalRef.current) {
                 clearInterval(checkIntervalRef.current);
                 checkIntervalRef.current = null;
@@ -257,16 +247,17 @@ export function SessionTimeoutWarning() {
                 checkIntervalRef.current = null;
             }
         };
-    }, [isAuthenticated, isAuthPage, checkInactivityTimeout]);
+    }, [isAuthenticated, isAuthPage, checkInactivityTimeout, isInitialized]);
 
     // Handle visibility change
     useEffect(() => {
-        if (typeof window === 'undefined') return;
+        if (typeof window === 'undefined' || !isInitialized) return;
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'visible' && isAuthenticated) {
-                // When tab becomes visible, check if session is still valid
-                if (!checkSessionValidity()) {
+                // When tab becomes visible, check if session marker still exists
+                const sessionMarker = sessionStorage.getItem(SESSION_MARKER_KEY);
+                if (!sessionMarker) {
                     handleSessionExpired();
                     return;
                 }
@@ -279,7 +270,7 @@ export function SessionTimeoutWarning() {
         return () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, [isAuthenticated, checkInactivityTimeout, checkSessionValidity, handleSessionExpired]);
+    }, [isAuthenticated, checkInactivityTimeout, handleSessionExpired, isInitialized]);
 
     // Don't render on auth pages
     if (isAuthPage) return null;

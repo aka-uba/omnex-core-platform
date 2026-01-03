@@ -48,17 +48,6 @@ import {
 import { useTranslation } from '@/lib/i18n/client';
 import { useParams, useRouter } from 'next/navigation';
 
-// Module translation namespaces
-const moduleNamespaces: Record<string, string> = {
-  'real-estate': 'modules/real-estate',
-  'file-manager': 'modules/file-manager',
-  calendar: 'modules/calendar',
-  notifications: 'modules/notifications',
-  hr: 'modules/hr',
-  accounting: 'modules/accounting',
-  production: 'modules/production',
-  maintenance: 'modules/maintenance',
-};
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -281,7 +270,8 @@ export function Dashboard() {
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     if (isNaN(numValue)) return String(value);
 
-    const localeConfig = localeMap[currentLocale] || localeMap.tr;
+    const defaultConfig = { locale: 'tr-TR', currency: 'TRY' };
+    const localeConfig = localeMap[currentLocale] || defaultConfig;
     return new Intl.NumberFormat(localeConfig.locale, {
       style: 'currency',
       currency: localeConfig.currency,
@@ -446,7 +436,7 @@ export function Dashboard() {
                       {mounted && getIcon(module.icon, 20)}
                     </div>
                     <Text className={styles.moduleCardTitle}>
-                      {t(moduleNameKeys[module.module]) || module.module}
+                      {t(moduleNameKeys[module.module] ?? module.module)}
                     </Text>
                   </div>
 
@@ -819,7 +809,7 @@ export function Dashboard() {
                       <Group justify="space-between">
                         <div>
                           <Text size="sm" fw={600} className="text-gray-700 dark:text-gray-200">
-                            {t(moduleNameKeys[module.module]) || module.module}
+                            {t(moduleNameKeys[module.module] ?? module.module)}
                           </Text>
                           <Text size="xs" c="dimmed" mt={2}>
                             {mainStat && `${translateModuleLabel(module.module, mainStat.label)}: ${formatStatValue(mainStat)}`}

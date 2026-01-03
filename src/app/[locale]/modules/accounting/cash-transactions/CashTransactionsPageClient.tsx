@@ -99,8 +99,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const params = useParams();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
-  const { t: tGlobal } = useTranslation('global');
-
+  
   // Locale mapping for number formatting
   const localeMap: Record<string, string> = {
     tr: 'tr-TR',
