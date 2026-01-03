@@ -25,6 +25,10 @@ interface LayoutWrapperProps {
 const PUBLIC_PATHS = [
   '/auth/login',
   '/auth/register',
+  '/auth/activate',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/resend-activation',
   '/login',
   '/register',
   '/welcome',

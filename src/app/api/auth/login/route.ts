@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
             role: true,
             status: true,
             profilePicture: true,
+            emailVerified: true,
           },
         });
 
@@ -109,6 +110,7 @@ export async function POST(request: NextRequest) {
               role: true,
               status: true,
               profilePicture: true,
+              emailVerified: true,
             },
           });
 
@@ -180,6 +182,16 @@ export async function POST(request: NextRequest) {
 
     // Kullanıcı durumu kontrolü
     if (user.status !== 'active') {
+      // Email doğrulanmamışsa aktivasyon bağlantısı hatırlatması
+      if (user.status === 'pending' && user.emailVerified === false) {
+        return errorResponse(
+          'EMAIL_NOT_VERIFIED',
+          'E-posta adresiniz henüz doğrulanmamış. Lütfen e-postanıza gönderilen aktivasyon bağlantısını tıklayın.',
+          { needsActivation: true },
+          403
+        );
+      }
+
       return errorResponse(
         'USER_INACTIVE',
         user.status === 'pending'

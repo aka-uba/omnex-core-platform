@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import { createEmailService } from '@/lib/email';
 import { generateToken, getTokenExpiry, buildActivationUrl, getBaseUrl } from '@/lib/email/tokenUtils';
 import { logger } from '@/lib/utils/logger';
+import { ZodError } from 'zod';
 
 export async function POST(request: NextRequest) {
   try {
@@ -147,9 +148,29 @@ export async function POST(request: NextRequest) {
       ...(emailError && process.env.NODE_ENV === 'development' ? { emailError } : {}),
     });
   } catch (error) {
-    if (error instanceof Error && error.name === 'ZodError') {
+    if (error instanceof ZodError) {
+      // Zod validation hatasını detaylı göster
+      const issues = error.issues || [];
+      const firstError = issues[0];
+      const fieldName = firstError?.path?.join('.') || 'form';
+      const message = firstError?.message || 'Geçersiz veri';
+
+      logger.warn('Registration validation error', {
+        issues,
+        fieldName,
+        message,
+      }, 'auth-register');
+
       return NextResponse.json(
-        { success: false, message: 'Geçersiz form verisi' },
+        {
+          success: false,
+          message: `${message}`,
+          field: fieldName,
+          errors: issues.map(e => ({
+            field: e.path.join('.'),
+            message: e.message,
+          })),
+        },
         { status: 400 }
       );
     }

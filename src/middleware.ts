@@ -39,6 +39,13 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/auth/')) {
         return NextResponse.next();
     }
+
+    // Skip locale-prefixed auth pages (activate, forgot-password, reset-password, resend-activation)
+    const localeAuthMatch = pathname.match(/^\/([a-z]{2})\/auth\//);
+    if (localeAuthMatch) {
+        // Let these pages render without tenant/auth checks
+        return intlMiddleware(request);
+    }
     
     // Redirect /{locale}/setup to /setup (before locale processing)
     const setupRedirectMatch = pathname.match(/^\/([a-z]{2})\/setup(\/.*)?$/);
