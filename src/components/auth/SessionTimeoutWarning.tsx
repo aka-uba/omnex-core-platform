@@ -6,6 +6,7 @@ import { IconClock, IconLogout, IconRefresh } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
 
 // Activity tracking constants
 const ACTIVITY_EVENTS = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'click'];
@@ -122,11 +123,13 @@ export function SessionTimeoutWarning() {
 
         const fetchSettings = async () => {
             try {
-                const response = await fetch('/api/general-settings');
+                const response = await fetchWithAuth('/api/general-settings');
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.data?.sessionTimeout) {
-                        setSessionTimeout(data.data.sessionTimeout);
+                    // API returns { success: true, data: { sessionTimeout: number, ... } }
+                    const timeout = data.data?.sessionTimeout ?? data.sessionTimeout;
+                    if (timeout && typeof timeout === 'number') {
+                        setSessionTimeout(timeout);
                     }
                 }
             } catch (error) {
