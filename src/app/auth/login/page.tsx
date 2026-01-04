@@ -25,102 +25,27 @@ import { IconAlertCircle, IconUser, IconLock, IconSun, IconMoon, IconLanguage } 
 import Link from 'next/link';
 import classes from './LoginPage.module.css';
 import { BRANDING_PATHS } from '@/lib/branding/config';
+import { useAuthTranslation } from '@/lib/i18n/useAuthTranslation';
+import { localeNames, Locale } from '@/lib/i18n/config';
 
-// Translations
-const translations: Record<string, Record<string, string>> = {
-  tr: {
-    'login.title': 'Giriş Yap',
-    'login.subtitle': 'Hesabınıza giriş yapın',
-    'login.username': 'Kullanıcı Adı',
-    'login.usernamePlaceholder': 'Kullanıcı adınızı giriniz',
-    'login.password': 'Şifre',
-    'login.passwordPlaceholder': 'Şifrenizi giriniz',
-    'login.rememberMe': 'Beni Hatırla',
-    'login.forgotPassword': 'Şifremi Unuttum',
-    'login.submit': 'Giriş Yap',
-    'login.noAccount': 'Hesabınız yok mu?',
-    'login.register': 'Kayıt Ol',
-    'login.or': 'veya',
-    'login.errors.invalidCredentials': 'Kullanıcı adı veya şifre hatalı',
-    'login.errors.required': 'Lütfen tüm alanları doldurun',
-    'common.error': 'Hata',
-  },
-  en: {
-    'login.title': 'Sign In',
-    'login.subtitle': 'Sign in to your account',
-    'login.username': 'Username',
-    'login.usernamePlaceholder': 'Enter your username',
-    'login.password': 'Password',
-    'login.passwordPlaceholder': 'Enter your password',
-    'login.rememberMe': 'Remember Me',
-    'login.forgotPassword': 'Forgot Password',
-    'login.submit': 'Sign In',
-    'login.noAccount': "Don't have an account?",
-    'login.register': 'Register',
-    'login.or': 'or',
-    'login.errors.invalidCredentials': 'Invalid username or password',
-    'login.errors.required': 'Please fill in all fields',
-    'common.error': 'Error',
-  },
-  de: {
-    'login.title': 'Anmelden',
-    'login.subtitle': 'Melden Sie sich bei Ihrem Konto an',
-    'login.username': 'Benutzername',
-    'login.usernamePlaceholder': 'Geben Sie Ihren Benutzernamen ein',
-    'login.password': 'Passwort',
-    'login.passwordPlaceholder': 'Geben Sie Ihr Passwort ein',
-    'login.rememberMe': 'Angemeldet bleiben',
-    'login.forgotPassword': 'Passwort vergessen',
-    'login.submit': 'Anmelden',
-    'login.noAccount': 'Noch kein Konto?',
-    'login.register': 'Registrieren',
-    'login.or': 'oder',
-    'login.errors.invalidCredentials': 'Benutzername oder Passwort falsch',
-    'login.errors.required': 'Bitte füllen Sie alle Felder aus',
-    'common.error': 'Fehler',
-  },
-  ar: {
-    'login.title': 'تسجيل الدخول',
-    'login.subtitle': 'قم بتسجيل الدخول إلى حسابك',
-    'login.username': 'اسم المستخدم',
-    'login.usernamePlaceholder': 'أدخل اسم المستخدم',
-    'login.password': 'كلمة المرور',
-    'login.passwordPlaceholder': 'أدخل كلمة المرور',
-    'login.rememberMe': 'تذكرني',
-    'login.forgotPassword': 'نسيت كلمة المرور',
-    'login.submit': 'تسجيل الدخول',
-    'login.noAccount': 'ليس لديك حساب؟',
-    'login.register': 'سجل الآن',
-    'login.or': 'أو',
-    'login.errors.invalidCredentials': 'اسم المستخدم أو كلمة المرور غير صحيحة',
-    'login.errors.required': 'يرجى ملء جميع الحقول',
-    'common.error': 'خطأ',
-  },
-};
-
-const languageOptions = [
-  { value: 'tr', label: 'Türkçe' },
-  { value: 'en', label: 'English' },
-  { value: 'de', label: 'Deutsch' },
-  { value: 'ar', label: 'العربية' },
-];
+const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 export default function LoginPage() {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const [mounted, setMounted] = useState(false);
-  const [locale, setLocale] = useState('tr');
+  const { t, locale, setLocale, mounted } = useAuthTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // Sabit branding yollarını kullan - API çağrısı yapma
   const [logoExists, setLogoExists] = useState(true);
   const [companyName, setCompanyName] = useState('');
 
-  useEffect(() => {
-    setMounted(true);
-    // Get saved locale from localStorage
-    const savedLocale = localStorage.getItem('preferred-locale') || 'tr';
-    setLocale(savedLocale);
+  // Debug log
+  console.log('[LoginPage] Render - locale:', locale, 'mounted:', mounted);
+  console.log('[LoginPage] languageOptions:', languageOptions);
 
+  useEffect(() => {
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -138,14 +63,13 @@ export default function LoginPage() {
       .catch(() => {});
   }, []);
 
-  const t = (key: string): string => {
-    return translations[locale]?.[key] ?? translations['tr']?.[key] ?? key;
-  };
-
   const handleLocaleChange = (value: string | null) => {
+    console.log('[LoginPage] handleLocaleChange called with:', value);
+    console.log('[LoginPage] Current locale:', locale);
+    console.log('[LoginPage] languageOptions:', languageOptions);
     if (value) {
-      setLocale(value);
-      localStorage.setItem('preferred-locale', value);
+      console.log('[LoginPage] Setting locale to:', value);
+      setLocale(value as Locale);
     }
   };
 
@@ -188,6 +112,7 @@ export default function LoginPage() {
         body: JSON.stringify({
           username: values.username,
           password: values.password,
+          rememberMe: values.rememberMe,
         }),
       });
 
@@ -227,10 +152,17 @@ export default function LoginPage() {
           <Select
             data={languageOptions}
             value={locale}
-            onChange={handleLocaleChange}
+            onChange={(val) => {
+              console.log('[Select] onChange triggered with:', val);
+              handleLocaleChange(val);
+            }}
+            onDropdownOpen={() => console.log('[Select] Dropdown OPENED')}
+            onDropdownClose={() => console.log('[Select] Dropdown CLOSED')}
+            onClick={() => console.log('[Select] CLICKED')}
             size="xs"
             w={120}
             leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ zIndex: 10001 }}
           />
           <ActionIcon
             variant="default"
@@ -292,6 +224,7 @@ export default function LoginPage() {
                   label={t('login.username')}
                   placeholder={t('login.usernamePlaceholder')}
                   leftSection={mounted ? <IconUser size={16} /> : null}
+                  autoComplete="username"
                   required
                   {...form.getInputProps('username')}
                 />
@@ -300,6 +233,7 @@ export default function LoginPage() {
                   label={t('login.password')}
                   placeholder={t('login.passwordPlaceholder')}
                   leftSection={mounted ? <IconLock size={16} /> : null}
+                  autoComplete="current-password"
                   required
                   {...form.getInputProps('password')}
                 />
@@ -309,7 +243,7 @@ export default function LoginPage() {
                     label={t('login.rememberMe')}
                     {...form.getInputProps('rememberMe', { type: 'checkbox' })}
                   />
-                  <Text size="sm" c="dimmed" component={Link} href="/forgot-password">
+                  <Text size="sm" c="dimmed" component={Link} href={`/${locale}/auth/forgot-password`}>
                     {t('login.forgotPassword')}
                   </Text>
                 </Group>

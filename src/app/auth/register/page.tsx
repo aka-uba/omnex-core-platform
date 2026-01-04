@@ -25,135 +25,25 @@ import { IconAlertCircle, IconCheck, IconUser, IconLock, IconMail, IconSun, Icon
 import Link from 'next/link';
 import classes from './RegisterPage.module.css';
 import { BRANDING_PATHS } from '@/lib/branding/config';
+import { useAuthTranslation } from '@/lib/i18n/useAuthTranslation';
+import { localeNames, Locale } from '@/lib/i18n/config';
 
-// Translations
-const translations: Record<string, Record<string, string>> = {
-  tr: {
-    'register.title': 'Kayıt Ol',
-    'register.subtitle': 'Yeni hesap oluşturun',
-    'register.name': 'Ad Soyad',
-    'register.namePlaceholder': 'Adınızı ve soyadınızı giriniz',
-    'register.username': 'Kullanıcı Adı',
-    'register.usernamePlaceholder': 'Kullanıcı adınızı giriniz',
-    'register.usernameHint': 'Sadece harf, rakam ve alt çizgi kullanabilirsiniz',
-    'register.email': 'E-posta',
-    'register.emailPlaceholder': 'ornek@email.com',
-    'register.password': 'Şifre',
-    'register.passwordPlaceholder': 'En az 8 karakter',
-    'register.passwordHint': 'En az bir büyük harf, bir küçük harf ve bir rakam içermelidir',
-    'register.confirmPassword': 'Şifre Tekrar',
-    'register.confirmPasswordPlaceholder': 'Şifrenizi tekrar giriniz',
-    'register.submit': 'Kayıt Ol',
-    'register.hasAccount': 'Zaten hesabınız var mı?',
-    'register.login': 'Giriş Yap',
-    'register.or': 'veya',
-    'register.success.title': 'Kayıt Başarılı!',
-    'register.success.message': 'Hesabınız yönetici onayı beklemektedir. Onay sonrasında giriş yapabileceksiniz.',
-    'register.success.redirecting': 'Giriş sayfasına yönlendiriliyorsunuz...',
-    'register.errors.required': 'Lütfen tüm alanları doldurun',
-    'common.error': 'Hata',
-  },
-  en: {
-    'register.title': 'Register',
-    'register.subtitle': 'Create a new account',
-    'register.name': 'Full Name',
-    'register.namePlaceholder': 'Enter your full name',
-    'register.username': 'Username',
-    'register.usernamePlaceholder': 'Enter your username',
-    'register.usernameHint': 'Only letters, numbers and underscores allowed',
-    'register.email': 'Email',
-    'register.emailPlaceholder': 'example@email.com',
-    'register.password': 'Password',
-    'register.passwordPlaceholder': 'At least 8 characters',
-    'register.passwordHint': 'Must contain at least one uppercase, one lowercase and one number',
-    'register.confirmPassword': 'Confirm Password',
-    'register.confirmPasswordPlaceholder': 'Re-enter your password',
-    'register.submit': 'Register',
-    'register.hasAccount': 'Already have an account?',
-    'register.login': 'Sign In',
-    'register.or': 'or',
-    'register.success.title': 'Registration Successful!',
-    'register.success.message': 'Your account is awaiting admin approval. You can sign in after approval.',
-    'register.success.redirecting': 'Redirecting to login page...',
-    'register.errors.required': 'Please fill in all fields',
-    'common.error': 'Error',
-  },
-  de: {
-    'register.title': 'Registrieren',
-    'register.subtitle': 'Erstellen Sie ein neues Konto',
-    'register.name': 'Vollständiger Name',
-    'register.namePlaceholder': 'Geben Sie Ihren vollständigen Namen ein',
-    'register.username': 'Benutzername',
-    'register.usernamePlaceholder': 'Geben Sie Ihren Benutzernamen ein',
-    'register.usernameHint': 'Nur Buchstaben, Zahlen und Unterstriche erlaubt',
-    'register.email': 'E-Mail',
-    'register.emailPlaceholder': 'beispiel@email.com',
-    'register.password': 'Passwort',
-    'register.passwordPlaceholder': 'Mindestens 8 Zeichen',
-    'register.passwordHint': 'Muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten',
-    'register.confirmPassword': 'Passwort bestätigen',
-    'register.confirmPasswordPlaceholder': 'Passwort erneut eingeben',
-    'register.submit': 'Registrieren',
-    'register.hasAccount': 'Haben Sie bereits ein Konto?',
-    'register.login': 'Anmelden',
-    'register.or': 'oder',
-    'register.success.title': 'Registrierung erfolgreich!',
-    'register.success.message': 'Ihr Konto wartet auf die Admin-Genehmigung. Sie können sich nach der Genehmigung anmelden.',
-    'register.success.redirecting': 'Weiterleitung zur Anmeldeseite...',
-    'register.errors.required': 'Bitte füllen Sie alle Felder aus',
-    'common.error': 'Fehler',
-  },
-  ar: {
-    'register.title': 'إنشاء حساب',
-    'register.subtitle': 'أنشئ حسابًا جديدًا',
-    'register.name': 'الاسم الكامل',
-    'register.namePlaceholder': 'أدخل اسمك الكامل',
-    'register.username': 'اسم المستخدم',
-    'register.usernamePlaceholder': 'أدخل اسم المستخدم',
-    'register.usernameHint': 'يُسمح فقط بالحروف والأرقام والشرطة السفلية',
-    'register.email': 'البريد الإلكتروني',
-    'register.emailPlaceholder': 'example@email.com',
-    'register.password': 'كلمة المرور',
-    'register.passwordPlaceholder': '8 أحرف على الأقل',
-    'register.passwordHint': 'يجب أن تحتوي على حرف كبير وحرف صغير ورقم واحد على الأقل',
-    'register.confirmPassword': 'تأكيد كلمة المرور',
-    'register.confirmPasswordPlaceholder': 'أعد إدخال كلمة المرور',
-    'register.submit': 'إنشاء حساب',
-    'register.hasAccount': 'لديك حساب بالفعل؟',
-    'register.login': 'تسجيل الدخول',
-    'register.or': 'أو',
-    'register.success.title': 'تم التسجيل بنجاح!',
-    'register.success.message': 'حسابك في انتظار موافقة المسؤول. يمكنك تسجيل الدخول بعد الموافقة.',
-    'register.success.redirecting': 'جاري إعادة التوجيه إلى صفحة تسجيل الدخول...',
-    'register.errors.required': 'يرجى ملء جميع الحقول',
-    'common.error': 'خطأ',
-  },
-};
-
-const languageOptions = [
-  { value: 'tr', label: 'Türkçe' },
-  { value: 'en', label: 'English' },
-  { value: 'de', label: 'Deutsch' },
-  { value: 'ar', label: 'العربية' },
-];
+const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 export default function RegisterPage() {
   const router = useRouter();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const [mounted, setMounted] = useState(false);
-  const [locale, setLocale] = useState('tr');
+  const { t, locale, setLocale, mounted } = useAuthTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  // Sabit branding yollarını kullan - API çağrısı yapma
   const [logoExists, setLogoExists] = useState(true);
   const [companyName, setCompanyName] = useState('');
 
   useEffect(() => {
-    setMounted(true);
-    const savedLocale = localStorage.getItem('preferred-locale') || 'tr';
-    setLocale(savedLocale);
-
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -171,14 +61,9 @@ export default function RegisterPage() {
       .catch(() => {});
   }, []);
 
-  const t = (key: string): string => {
-    return translations[locale]?.[key] ?? translations['tr']?.[key] ?? key;
-  };
-
   const handleLocaleChange = (value: string | null) => {
     if (value) {
-      setLocale(value);
-      localStorage.setItem('preferred-locale', value);
+      setLocale(value as Locale);
     }
   };
 
@@ -195,13 +80,34 @@ export default function RegisterPage() {
       confirmPassword: '',
     },
     validate: {
-      name: (value) => (!value ? t('register.errors.required') : null),
-      username: (value) => (!value ? t('register.errors.required') : null),
-      email: (value) => (!value ? t('register.errors.required') : null),
-      password: (value) => (!value ? t('register.errors.required') : null),
+      name: (value) => {
+        if (!value) return t('register.errors.nameRequired');
+        if (value.length < 2) return t('register.errors.nameMinLength');
+        return null;
+      },
+      username: (value) => {
+        if (!value) return t('register.errors.usernameRequired');
+        if (value.length < 3) return t('register.errors.usernameMinLength');
+        if (value.length > 20) return t('register.errors.usernameMaxLength');
+        if (!/^[a-zA-Z0-9_]+$/.test(value)) return t('register.errors.usernameFormat');
+        return null;
+      },
+      email: (value) => {
+        if (!value) return t('register.errors.emailRequired');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('register.errors.emailFormat');
+        return null;
+      },
+      password: (value) => {
+        if (!value) return t('register.errors.passwordRequired');
+        if (value.length < 8) return t('register.errors.passwordMinLength');
+        if (!/[A-Z]/.test(value)) return t('register.errors.passwordUppercase');
+        if (!/[a-z]/.test(value)) return t('register.errors.passwordLowercase');
+        if (!/[0-9]/.test(value)) return t('register.errors.passwordNumber');
+        return null;
+      },
       confirmPassword: (value, values) => {
-        if (!value) return t('register.errors.required');
-        if (value !== values.password) return 'Passwords do not match';
+        if (!value) return t('register.errors.confirmPasswordRequired');
+        if (value !== values.password) return t('register.errors.passwordMismatch');
         return null;
       },
     },
@@ -257,6 +163,7 @@ export default function RegisterPage() {
               size="xs"
               w={120}
               leftSection={mounted ? <IconLanguage size={14} /> : null}
+              comboboxProps={{ withinPortal: true, zIndex: 10001 }}
             />
             <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
               {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
@@ -303,6 +210,7 @@ export default function RegisterPage() {
             size="xs"
             w={120}
             leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
           />
           <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
             {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
@@ -353,11 +261,12 @@ export default function RegisterPage() {
               </Alert>
             )}
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
               <Stack gap="md">
                 <TextInput
                   label={t('register.name')}
                   placeholder={t('register.namePlaceholder')}
+                  autoComplete="name"
                   required
                   {...form.getInputProps('name')}
                 />
@@ -367,6 +276,7 @@ export default function RegisterPage() {
                   placeholder={t('register.usernamePlaceholder')}
                   leftSection={mounted ? <IconUser size={16} /> : null}
                   description={t('register.usernameHint')}
+                  autoComplete="username"
                   required
                   {...form.getInputProps('username')}
                 />
@@ -376,6 +286,7 @@ export default function RegisterPage() {
                   placeholder={t('register.emailPlaceholder')}
                   leftSection={mounted ? <IconMail size={16} /> : null}
                   type="email"
+                  autoComplete="email"
                   required
                   {...form.getInputProps('email')}
                 />
@@ -385,6 +296,7 @@ export default function RegisterPage() {
                   placeholder={t('register.passwordPlaceholder')}
                   leftSection={mounted ? <IconLock size={16} /> : null}
                   description={t('register.passwordHint')}
+                  autoComplete="new-password"
                   required
                   {...form.getInputProps('password')}
                 />
@@ -393,6 +305,7 @@ export default function RegisterPage() {
                   label={t('register.confirmPassword')}
                   placeholder={t('register.confirmPasswordPlaceholder')}
                   leftSection={mounted ? <IconLock size={16} /> : null}
+                  autoComplete="new-password"
                   required
                   {...form.getInputProps('confirmPassword')}
                 />

@@ -1,0 +1,161 @@
+{
+  "login": {
+    "title": "Giriş Yap",
+    "subtitle": "Hesabınıza giriş yapın",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "Kullanıcı adınızı giriniz",
+    "password": "Şifre",
+    "passwordPlaceholder": "Şifrenizi giriniz",
+    "rememberMe": "Beni Hatırla",
+    "forgotPassword": "Şifremi Unuttum",
+    "submit": "Giriş Yap",
+    "noAccount": "Hesabınız yok mu?",
+    "register": "Kayıt Ol",
+    "or": "veya",
+    "errors": {
+      "invalidCredentials": "Kullanıcı adı veya şifre hatalı",
+      "required": "Lütfen tüm alanları doldurun"
+    }
+  },
+  "register": {
+    "title": "Kayıt Ol",
+    "subtitle": "Yeni hesap oluşturun",
+    "name": "Ad Soyad",
+    "namePlaceholder": "Adınızı ve soyadınızı giriniz",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "Kullanıcı adınızı giriniz",
+    "usernameHint": "Sadece harf, rakam ve alt çizgi kullanabilirsiniz (3-20 karakter)",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@email.com",
+    "password": "Şifre",
+    "passwordPlaceholder": "En az 8 karakter",
+    "passwordHint": "En az bir büyük harf, bir küçük harf ve bir rakam içermelidir",
+    "confirmPassword": "Şifre Tekrar",
+    "confirmPasswordPlaceholder": "Şifrenizi tekrar giriniz",
+    "submit": "Kayıt Ol",
+    "hasAccount": "Zaten hesabınız var mı?",
+    "login": "Giriş Yap",
+    "or": "veya",
+    "success": {
+      "title": "Kayıt Başarılı!",
+      "message": "Hesabınız yönetici onayı beklemektedir. Onay sonrasında giriş yapabileceksiniz.",
+      "redirecting": "Giriş sayfasına yönlendiriliyorsunuz..."
+    },
+    "errors": {
+      "required": "Lütfen tüm alanları doldurun",
+      "nameRequired": "Ad soyad alanı zorunludur",
+      "nameMinLength": "Ad soyad en az 2 karakter olmalıdır",
+      "usernameRequired": "Kullanıcı adı alanı zorunludur",
+      "usernameMinLength": "Kullanıcı adı en az 3 karakter olmalıdır",
+      "usernameMaxLength": "Kullanıcı adı en fazla 20 karakter olabilir",
+      "usernameFormat": "Kullanıcı adı sadece harf, rakam ve alt çizgi içerebilir",
+      "emailRequired": "E-posta adresi zorunludur",
+      "emailFormat": "Geçerli bir e-posta adresi giriniz",
+      "passwordRequired": "Şifre alanı zorunludur",
+      "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
+      "passwordUppercase": "Şifre en az bir büyük harf içermelidir",
+      "passwordLowercase": "Şifre en az bir küçük harf içermelidir",
+      "passwordNumber": "Şifre en az bir rakam içermelidir",
+      "confirmPasswordRequired": "Şifre tekrar alanı zorunludur",
+      "passwordMismatch": "Şifreler eşleşmiyor"
+    }
+  },
+  "activate": {
+    "loading": {
+      "title": "Hesap Aktifleştiriliyor...",
+      "message": "Lütfen bekleyin, hesabınız aktifleştiriliyor."
+    },
+    "success": {
+      "title": "Hesabınız Aktifleştirildi!",
+      "message": "Hesabınız başarıyla aktifleştirildi. Artık giriş yapabilirsiniz.",
+      "redirecting": "Giriş sayfasına yönlendiriliyorsunuz..."
+    },
+    "alreadyActive": {
+      "title": "Hesap Zaten Aktif",
+      "message": "Hesabınız zaten aktif. Giriş yapabilirsiniz."
+    },
+    "expired": {
+      "title": "Bağlantı Süresi Dolmuş",
+      "message": "Aktivasyon bağlantısının süresi dolmuş.",
+      "hint": "Yeni bir aktivasyon bağlantısı almak için aşağıdaki butona tıklayın."
+    },
+    "error": {
+      "title": "Aktivasyon Başarısız",
+      "message": "Aktivasyon bağlantısı geçersiz.",
+      "generic": "Aktivasyon sırasında bir hata oluştu."
+    },
+    "button": {
+      "login": "Giriş Yap",
+      "resend": "Yeni Aktivasyon Bağlantısı Al",
+      "back": "Giriş Sayfasına Dön"
+    },
+    "countdown": "saniye"
+  },
+  "forgotPassword": {
+    "title": "Şifremi Unuttum",
+    "subtitle": "E-posta adresinize şifre sıfırlama bağlantısı göndereceğiz",
+    "email": "E-posta Adresi",
+    "emailPlaceholder": "ornek@email.com",
+    "submit": "Bağlantı Gönder",
+    "backToLogin": "Giriş sayfasına dön",
+    "success": {
+      "title": "Bağlantı Gönderildi!",
+      "message": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi."
+    },
+    "errors": {
+      "emailRequired": "E-posta adresi zorunludur",
+      "emailFormat": "Geçerli bir e-posta adresi giriniz",
+      "userNotFound": "Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı"
+    }
+  },
+  "resetPassword": {
+    "title": "Şifre Sıfırla",
+    "subtitle": "Yeni şifrenizi belirleyin",
+    "password": "Yeni Şifre",
+    "passwordPlaceholder": "En az 8 karakter",
+    "confirmPassword": "Şifre Tekrar",
+    "confirmPasswordPlaceholder": "Şifrenizi tekrar giriniz",
+    "submit": "Şifreyi Sıfırla",
+    "success": {
+      "title": "Şifre Değiştirildi!",
+      "message": "Şifreniz başarıyla değiştirildi. Giriş yapabilirsiniz.",
+      "redirecting": "Giriş sayfasına yönlendiriliyorsunuz..."
+    },
+    "expired": {
+      "title": "Bağlantı Süresi Dolmuş",
+      "message": "Şifre sıfırlama bağlantısının süresi dolmuş.",
+      "hint": "Yeni bir şifre sıfırlama bağlantısı almak için aşağıdaki butona tıklayın."
+    },
+    "errors": {
+      "passwordRequired": "Şifre alanı zorunludur",
+      "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
+      "passwordUppercase": "Şifre en az bir büyük harf içermelidir",
+      "passwordLowercase": "Şifre en az bir küçük harf içermelidir",
+      "passwordNumber": "Şifre en az bir rakam içermelidir",
+      "confirmPasswordRequired": "Şifre tekrar alanı zorunludur",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "invalidToken": "Geçersiz veya süresi dolmuş bağlantı"
+    }
+  },
+  "resendActivation": {
+    "title": "Aktivasyon Bağlantısı Gönder",
+    "subtitle": "E-posta adresinize yeni bir aktivasyon bağlantısı göndereceğiz",
+    "email": "E-posta Adresi",
+    "emailPlaceholder": "ornek@email.com",
+    "submit": "Bağlantı Gönder",
+    "backToLogin": "Giriş sayfasına dön",
+    "success": {
+      "title": "Bağlantı Gönderildi!",
+      "message": "Aktivasyon bağlantısı e-posta adresinize gönderildi."
+    },
+    "errors": {
+      "emailRequired": "E-posta adresi zorunludur",
+      "emailFormat": "Geçerli bir e-posta adresi giriniz",
+      "userNotFound": "Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı",
+      "alreadyActive": "Bu hesap zaten aktif"
+    }
+  },
+  "common": {
+    "error": "Hata"
+  }
+}
