@@ -1513,6 +1513,176 @@ Bildirim şablonları sayfasında kategoriye göre filtreleme:
 
 ---
 
-**Son Güncelleme**: 2026-01-03
+## 22. DATATABLE KULLANIM DOKÜMANTASYONU
+
+### 22.1 DataTable Özellikleri
+
+**Merkezi Bileşen**: `src/components/tables/DataTable.tsx`
+
+| Özellik | Prop | Varsayılan | Açıklama |
+|---------|------|------------|----------|
+| Arama | `searchable` | `true` | Sütunlarda `searchable: true` olanlar aranır |
+| Sıralama | `sortable` | `true` | Sütun başlığına tıkla: Yok → Asc → Desc → Yok |
+| Filtre | `filters`, `onFilter` | - | FilterOption[] ile modal filtre |
+| Kolon Ayarları | `showColumnSettings` | `true` | Göster/gizle, sıralama, renk |
+| Export | `showExportIcons` | `false` | CSV, Excel, PDF, Word, HTML, Print |
+| Audit | `showAuditHistory` | `false` | Değişiklik geçmişi popup |
+| Seçim | `selectable` | `false` | Çoklu satır seçimi |
+| Sayfalama | `defaultPageSize` | `10` | Sayfa başına kayıt |
+
+### 22.2 DataTable Kullanan Sayfalar
+
+#### REAL-ESTATE MODÜLÜ
+
+| Sayfa | Dosya Yolu | URL | Arama | Sıralama | Filtre | Export | Audit |
+|-------|-----------|-----|-------|----------|--------|--------|-------|
+| **Daireler** | `src/modules/real-estate/components/ApartmentList.tsx` | `/[locale]/modules/real-estate/apartments` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Daire Detay (Bakım Tab) | `src/app/[locale]/modules/real-estate/apartments/[id]/ApartmentDetailPageClient.tsx` | `/[locale]/modules/real-estate/apartments/[id]` | - | ✓ | - | - | - |
+| Email Kampanya Detay | `src/app/[locale]/modules/real-estate/email/campaigns/[id]/EmailCampaignDetailPageClient.tsx` | `/[locale]/modules/real-estate/email/campaigns/[id]` | - | - | - | - | - |
+
+**Eksik DataTable Sayfaları:**
+- Properties listesi
+- Tenants listesi
+- Leases listesi
+- Payments listesi
+- Maintenance listesi
+- Staff listesi
+
+#### ACCOUNTING MODÜLÜ
+
+| Sayfa | Dosya Yolu | URL | Arama | Sıralama | Filtre | Export | Audit |
+|-------|-----------|-----|-------|----------|--------|--------|-------|
+| **Kasa Hareketleri** | `src/app/[locale]/modules/accounting/cash-transactions/CashTransactionsPageClient.tsx` | `/[locale]/modules/accounting/cash-transactions` | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Ödeme Yöntemleri | `src/app/[locale]/modules/accounting/settings/payment-methods/PaymentMethodsSettingsClient.tsx` | `/[locale]/modules/accounting/settings/payment-methods` | - | ✓ | - | - | - |
+
+#### MANAGEMENT SAYFALARI
+
+| Sayfa | Dosya Yolu | URL | Arama | Sıralama | Filtre | Export | ColSet | Audit |
+|-------|-----------|-----|-------|----------|--------|--------|--------|-------|
+| **Kullanıcılar** | `src/app/[locale]/management/users/UsersPageClient.tsx` | `/[locale]/management/users` | ✓ | ✓ | ✓ | ✓ | ❌ | ✓ |
+| Firmalar | `src/app/[locale]/management/companies/CompaniesPageClient.tsx` | `/[locale]/management/companies` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Roller | `src/app/[locale]/management/roles/RolesPageClient.tsx` | `/[locale]/management/roles` | ✓ | ✓ | - | ✓ | ✓ | - |
+| İzinler | `src/app/[locale]/management/permissions/PermissionsPageClient.tsx` | `/[locale]/management/permissions` | ✓ | ✓ | - | - | - | - |
+
+#### ADMIN SAYFALARI
+
+| Sayfa | Dosya Yolu | URL | Arama | Sıralama | Filtre | Export | ColSet | Audit |
+|-------|-----------|-----|-------|----------|--------|--------|--------|-------|
+| **Loglar** | `src/app/[locale]/admin/logs/LogsPageClient.tsx` | `/[locale]/admin/logs` | ✓ | ✓ | ⚠️ Manuel | ✓ | ✓ | - |
+| Tenants | `src/app/[locale]/admin/tenants/TenantsPageClient.tsx` | `/[locale]/admin/tenants` | ✓ | ✓ | ✓ | ✓ | ✓ | - |
+| Cache | `src/app/[locale]/admin/optimization/cache/CachePageClient.tsx` | `/[locale]/admin/optimization/cache` | ✓ | ✓ | - | - | - | - |
+
+#### SETTINGS SAYFALARI
+
+| Sayfa | Dosya Yolu | URL | Arama | Sıralama | Filtre | Export | ColSet | Audit |
+|-------|-----------|-----|-------|----------|--------|--------|--------|-------|
+| **Bildirim Şablonları** | `src/app/[locale]/settings/notification-templates/components/EmailTemplatesTab.tsx` | `/[locale]/settings/notification-templates` | ⚠️ Manuel | ✓ | ⚠️ Manuel | ❌ | ❌ | ✓ |
+| **Export Şablonları** | `src/app/[locale]/settings/export-templates/ExportTemplatesPageClient.tsx` | `/[locale]/settings/export-templates` | ⚠️ Manuel | ✓ | ⚠️ Manuel | ❌ | ❌ | - |
+| Lokasyonlar | `src/app/[locale]/settings/company/locations/LocationsPageClient.tsx` | `/[locale]/settings/company/locations` | ✓ | ✓ | - | ✓ | ✓ | ✓ |
+
+#### CALENDAR MODÜLÜ
+
+| Sayfa | Dosya Yolu | URL | Durum |
+|-------|-----------|-----|-------|
+| Randevular | `src/app/[locale]/modules/calendar/appointments/` | `/[locale]/modules/calendar/appointments` | DataTable Var |
+| Etkinlikler | `src/app/[locale]/modules/calendar/events/` | `/[locale]/modules/calendar/events` | DataTable Var |
+
+#### FILE MANAGER MODÜLÜ
+
+| Sayfa | Dosya Yolu | URL | Durum |
+|-------|-----------|-----|-------|
+| Dashboard | `src/app/[locale]/modules/file-manager/dashboard/` | `/[locale]/modules/file-manager/dashboard` | DataTable Var |
+
+#### WEB BUILDER MODÜLÜ
+
+| Sayfa | Dosya Yolu | URL | Durum |
+|-------|-----------|-----|-------|
+| Analytics | `src/app/[locale]/modules/web-builder/analytics/` | `/[locale]/modules/web-builder/analytics` | DataTable Var |
+
+### 22.3 DataTable KULLANMAYAN Modüller
+
+**❌ HR MODÜLÜ** - Hiç DataTable yok
+| Sayfa | Dosya Yolu | URL |
+|-------|-----------|-----|
+| Çalışanlar | `src/app/[locale]/modules/hr/employees/` | `/[locale]/modules/hr/employees` |
+| Departmanlar | `src/app/[locale]/modules/hr/departments/` | `/[locale]/modules/hr/departments` |
+| Pozisyonlar | `src/app/[locale]/modules/hr/positions/` | `/[locale]/modules/hr/positions` |
+| İzinler | `src/app/[locale]/modules/hr/leaves/` | `/[locale]/modules/hr/leaves` |
+| Vardiyalar | `src/app/[locale]/modules/hr/shifts/` | `/[locale]/modules/hr/shifts` |
+| Maaşlar | `src/app/[locale]/modules/hr/payroll/` | `/[locale]/modules/hr/payroll` |
+| Performans | `src/app/[locale]/modules/hr/performance/` | `/[locale]/modules/hr/performance` |
+| Eğitimler | `src/app/[locale]/modules/hr/training/` | `/[locale]/modules/hr/training` |
+
+**❌ MAINTENANCE MODÜLÜ** - Hiç DataTable yok
+| Sayfa | Dosya Yolu | URL |
+|-------|-----------|-----|
+| İş Emirleri | `src/app/[locale]/modules/maintenance/work-orders/` | `/[locale]/modules/maintenance/work-orders` |
+| Ekipmanlar | `src/app/[locale]/modules/maintenance/equipment/` | `/[locale]/modules/maintenance/equipment` |
+| Bakım Planları | `src/app/[locale]/modules/maintenance/schedules/` | `/[locale]/modules/maintenance/schedules` |
+| Parça Stok | `src/app/[locale]/modules/maintenance/inventory/` | `/[locale]/modules/maintenance/inventory` |
+| Raporlar | `src/app/[locale]/modules/maintenance/reports/` | `/[locale]/modules/maintenance/reports` |
+
+**❌ PRODUCTION MODÜLÜ** - Hiç DataTable yok
+| Sayfa | Dosya Yolu | URL |
+|-------|-----------|-----|
+| Siparişler | `src/app/[locale]/modules/production/orders/` | `/[locale]/modules/production/orders` |
+| Ürünler | `src/app/[locale]/modules/production/products/` | `/[locale]/modules/production/products` |
+| İş İstasyonları | `src/app/[locale]/modules/production/workstations/` | `/[locale]/modules/production/workstations` |
+
+### 22.4 Tespit Edilen Sorunlar
+
+#### Sorun 1: Manuel Filtre Kullanımı
+**Etkilenen Sayfalar:**
+- `EmailTemplatesTab.tsx` - Filtre `useMemo` ile yapılıyor
+- `ExportTemplatesPageClient.tsx` - Aynı durum
+- `LogsPageClient.tsx` - Custom filter panel
+
+**Sorun:** DataTable filter prop'u kullanılmıyor, bu yüzden:
+- Filter modal açılmıyor
+- Aktif filtre sayısı badge görünmüyor
+- Filtre state localStorage'a kaydedilmiyor
+
+#### Sorun 2: Column Settings Eksik
+**Etkilenen Sayfalar:**
+- `UsersPageClient.tsx` - `showColumnSettings` belirtilmemiş
+- `EmailTemplatesTab.tsx` - `showColumnSettings` yok
+- `ExportTemplatesPageClient.tsx` - `showColumnSettings` yok
+
+#### Sorun 3: Export Icons Eksik
+**Etkilenen Sayfalar:**
+- `EmailTemplatesTab.tsx` - `showExportIcons` yok
+- `ExportTemplatesPageClient.tsx` - `showExportIcons` yok
+
+#### Sorun 4: Modül Seviyesinde DataTable Eksikliği
+**Tam Eksik Modüller:**
+- HR: 8+ liste sayfası, 0 DataTable
+- Maintenance: 5+ liste sayfası, 0 DataTable
+- Production: 3+ liste sayfası, 0 DataTable
+
+### 22.5 DataTable Özellik Özet Tablosu
+
+| Modül | Liste Sayfa | DataTable | Arama | Sıralama | Filtre | Export | Audit |
+|-------|-------------|-----------|-------|----------|--------|--------|-------|
+| Real-Estate | 10+ | 1 | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Accounting | 5+ | 2 | ✓ | ✓ | ✓ | ✓ | ✓ |
+| HR | 8+ | ❌ 0 | - | - | - | - | - |
+| Maintenance | 5+ | ❌ 0 | - | - | - | - | - |
+| Production | 3+ | ❌ 0 | - | - | - | - | - |
+| Calendar | 2+ | 2 | ✓ | ✓ | ? | ? | ? |
+| File Manager | 2+ | 1 | ✓ | ✓ | ? | ? | ? |
+| Web Builder | 3+ | 1 | ✓ | ✓ | ? | ? | ? |
+| Management | 4 | 4 | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Admin | 5+ | 3 | ✓ | ✓ | ⚠️ | ✓ | - |
+| Settings | 8+ | 3 | ⚠️ | ✓ | ⚠️ | ⚠️ | ⚠️ |
+
+**Açıklamalar:**
+- ✓ = Tam çalışıyor
+- ⚠️ = Manuel/Eksik implementasyon
+- ❌ = Hiç yok
+- ? = Doğrulanmadı
+
+---
+
+**Son Güncelleme**: 2026-01-05
 **Platform Versiyonu**: 1.1.0
 **Next.js Versiyonu**: 16.1.1
