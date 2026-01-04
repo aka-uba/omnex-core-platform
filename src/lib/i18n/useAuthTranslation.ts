@@ -37,14 +37,9 @@ export function useAuthTranslation() {
   }, []);
 
   const setLocale = useCallback((newLocale: Locale) => {
-    console.log('[useAuthTranslation] setLocale called with:', newLocale);
-    console.log('[useAuthTranslation] Available locales:', locales);
-    console.log('[useAuthTranslation] Is valid locale:', locales.includes(newLocale));
     if (locales.includes(newLocale)) {
-      console.log('[useAuthTranslation] Setting locale state to:', newLocale);
       setLocaleState(newLocale);
       localStorage.setItem('preferred-locale', newLocale);
-      console.log('[useAuthTranslation] localStorage updated');
     }
   }, []);
 

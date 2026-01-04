@@ -198,7 +198,7 @@ export async function DELETE(
       });
 
       // Log audit
-      logDelete(tenantContext, auditContext, 'ContractTemplate', id, template.companyId, {
+      logDelete(tenantContext, auditContext, 'ContractTemplate', id, template.companyId ?? undefined, {
         name: template.name,
         type: template.type,
       });

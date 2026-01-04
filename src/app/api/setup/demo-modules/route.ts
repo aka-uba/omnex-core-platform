@@ -11,8 +11,9 @@ import { PrismaClient as TenantPrismaClient } from '@prisma/tenant-client';
 import {
   getAllSeeders,
   getSeedersInOrder,
+  loadDemoData,
 } from '../../../../../prisma/seed/modules';
-import type { SeederContext } from '../../../../../prisma/seed/modules';
+import type { SeederContext, SupportedLocale } from '../../../../../prisma/seed/modules';
 
 // Helper function to create seeder context for setup
 async function createSetupSeederContext(
@@ -63,6 +64,10 @@ async function createSetupSeederContext(
       await tenantPrisma.$disconnect();
     };
 
+    // Get default locale demo data
+    const defaultLocale: SupportedLocale = 'tr';
+    const demoData = loadDemoData(defaultLocale);
+
     return {
       ctx: {
         tenantPrisma,
@@ -71,6 +76,9 @@ async function createSetupSeederContext(
         companyId: company.id,
         adminUserId: adminUser.id,
         tenantSlug: tenant.slug,
+        locale: defaultLocale,
+        currency: demoData.currency,
+        demoData,
       },
       cleanup,
     };

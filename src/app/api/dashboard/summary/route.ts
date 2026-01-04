@@ -17,6 +17,7 @@ interface ModuleSummary {
     value: number | string;
     change?: number;
     changeLabel?: string;
+    isCurrency?: boolean;
   }[];
   quickActions?: {
     label: string;

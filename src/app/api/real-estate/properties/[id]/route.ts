@@ -198,7 +198,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       if (validatedData.longitude !== undefined) updateData.longitude = validatedData.longitude || null;
 
       // Management
-      if (validatedData.totalUnits !== undefined) updateData.totalUnits = validatedData.totalUnits || null;
+      if (validatedData.totalUnits !== undefined) updateData.totalUnits = validatedData.totalUnits ?? undefined;
       if (validatedData.managerId !== undefined) updateData.managerId = validatedData.managerId || null;
       if (validatedData.managerUserId !== undefined) updateData.managerUserId = validatedData.managerUserId || null;
       if (validatedData.monthlyFee !== undefined) updateData.monthlyFee = validatedData.monthlyFee || null;
@@ -214,7 +214,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       // Financial details
       if (validatedData.purchaseDate !== undefined) updateData.purchaseDate = validatedData.purchaseDate || null;
       if (validatedData.purchasePrice !== undefined) updateData.purchasePrice = validatedData.purchasePrice || null;
-      if (validatedData.isPaidOff !== undefined) updateData.isPaidOff = validatedData.isPaidOff ?? null;
+      if (validatedData.isPaidOff !== undefined) updateData.isPaidOff = validatedData.isPaidOff ?? undefined;
       if (validatedData.financingStartDate !== undefined) updateData.financingStartDate = validatedData.financingStartDate || null;
       if (validatedData.financingEndDate !== undefined) updateData.financingEndDate = validatedData.financingEndDate || null;
       if (validatedData.monthlyFinancingRate !== undefined) updateData.monthlyFinancingRate = validatedData.monthlyFinancingRate || null;

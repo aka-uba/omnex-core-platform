@@ -1,7 +1,7 @@
 'use client';
 
-import { Container, Tabs, Stack, Alert, Button, Group } from '@mantine/core';
-import { IconMail, IconExternalLink, IconSettings } from '@tabler/icons-react';
+import { Container, Tabs, Stack } from '@mantine/core';
+import { IconMail, IconSettings } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { EmailTemplateList } from '@/modules/real-estate/components/EmailTemplateList';
 import { RealEstateNotificationTemplates } from '@/modules/real-estate/components/RealEstateNotificationTemplates';
@@ -14,7 +14,6 @@ export function EmailTemplatesPageClient({ locale }: { locale: string }) {
   const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/real-estate');
-  const { t: tGlobal } = useTranslation('global');
   const [activeTab, setActiveTab] = useState<string | null>('notification-templates');
 
   return (

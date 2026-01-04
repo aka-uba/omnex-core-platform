@@ -41,10 +41,6 @@ export default function LoginPage() {
   const [logoExists, setLogoExists] = useState(true);
   const [companyName, setCompanyName] = useState('');
 
-  // Debug log
-  console.log('[LoginPage] Render - locale:', locale, 'mounted:', mounted);
-  console.log('[LoginPage] languageOptions:', languageOptions);
-
   useEffect(() => {
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
@@ -64,11 +60,7 @@ export default function LoginPage() {
   }, []);
 
   const handleLocaleChange = (value: string | null) => {
-    console.log('[LoginPage] handleLocaleChange called with:', value);
-    console.log('[LoginPage] Current locale:', locale);
-    console.log('[LoginPage] languageOptions:', languageOptions);
     if (value) {
-      console.log('[LoginPage] Setting locale to:', value);
       setLocale(value as Locale);
     }
   };
@@ -152,13 +144,7 @@ export default function LoginPage() {
           <Select
             data={languageOptions}
             value={locale}
-            onChange={(val) => {
-              console.log('[Select] onChange triggered with:', val);
-              handleLocaleChange(val);
-            }}
-            onDropdownOpen={() => console.log('[Select] Dropdown OPENED')}
-            onDropdownClose={() => console.log('[Select] Dropdown CLOSED')}
-            onClick={() => console.log('[Select] CLICKED')}
+            onChange={handleLocaleChange}
             size="xs"
             w={120}
             leftSection={mounted ? <IconLanguage size={14} /> : null}

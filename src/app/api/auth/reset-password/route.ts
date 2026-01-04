@@ -44,9 +44,9 @@ export async function POST(request: NextRequest) {
       validatedData = resetPasswordSchema.parse(body);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const firstError = error.errors[0];
+        const firstError = error.issues[0];
         return NextResponse.json(
-          { success: false, message: firstError.message },
+          { success: false, message: firstError?.message || 'Geçersiz veri' },
           { status: 400 }
         );
       }
@@ -100,7 +100,6 @@ export async function POST(request: NextRequest) {
     }, 'auth-reset-password');
 
     // Send password changed confirmation email
-    let confirmationSent = false;
     try {
       const firstCompany = await tenantPrisma.company.findFirst({
         select: { id: true },
@@ -122,7 +121,6 @@ export async function POST(request: NextRequest) {
             user.name
           );
 
-          confirmationSent = result.success;
           if (result.success) {
             logger.info('Password changed confirmation sent', {
               userId: user.id,

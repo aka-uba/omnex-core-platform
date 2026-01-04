@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
           // Financial details
           purchaseDate: validatedData.purchaseDate || null,
           purchasePrice: validatedData.purchasePrice || null,
-          isPaidOff: validatedData.isPaidOff ?? null,
+          isPaidOff: validatedData.isPaidOff ?? undefined,
           financingStartDate: validatedData.financingStartDate || null,
           financingEndDate: validatedData.financingEndDate || null,
           monthlyFinancingRate: validatedData.monthlyFinancingRate || null,

@@ -96,7 +96,6 @@ export async function POST(request: NextRequest) {
     });
 
     // Send password reset email
-    let emailSent = false;
     try {
       const firstCompany = await tenantPrisma.company.findFirst({
         select: { id: true },
@@ -123,7 +122,6 @@ export async function POST(request: NextRequest) {
             60
           );
 
-          emailSent = result.success;
           if (result.success) {
             logger.info('Password reset email sent', {
               userId: user.id,

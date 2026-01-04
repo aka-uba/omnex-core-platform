@@ -4,6 +4,7 @@ import { verifyAuth } from '@/lib/auth/jwt';
 import { getTenantFromRequest } from '@/lib/api/tenantContext';
 import type { ApiResponse } from '@/lib/api/errorHandler';
 import { errorResponse, successResponse } from '@/lib/api/errorHandler';
+import type { EmailTemplateStyle, EmailTemplateType } from '@/lib/email/EmailService';
 /**
  * POST /api/general-settings/test-email
  * Send a test email using SMTP settings
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
                     );
                 }
 
-                const { to, subject, message, useTemplate, templateStyle, templateType } = body;
+                const { to, subject, message, useTemplate, templateStyle } = body;
 
                 if (!to) {
                     return errorResponse('EMAIL_REQUIRED', 'EMAIL_REQUIRED_MESSAGE', 400);
@@ -213,32 +214,53 @@ export async function POST(request: NextRequest) {
                 let emailText: string;
 
                 if (useTemplate && templateStyle) {
-                    // Use template rendering
-                    const rendered = renderEmailTemplate({
-                        locale: 'tr', // TODO: Get from request or user preference
-                        templateType: templateType || 'user-activation',
-                        templateStyle: templateStyle,
-                        companyInfo: {
-                            name: company?.name || settings.smtpFromName || 'Company',
-                            logoUrl: company?.logo || undefined,
-                            address: company?.address || undefined,
-                            phone: company?.phone || undefined,
-                            email: company?.email || settings.smtpFromEmail || undefined,
-                            website: company?.website || undefined,
-                            taxId: company?.taxNumber || undefined,
-                        },
-                        userData: {
-                            name: 'Test User',
-                            email: to,
-                            activationUrl: 'https://example.com/activate?token=test-token',
-                            registrationDate: new Date().toLocaleDateString(),
-                            accountType: 'Standard',
-                        },
-                    });
+                    // Use template style - create styled email
+                    const styleColors: Record<string, { primary: string; accent: string }> = {
+                        corporate: { primary: '#1a1a2e', accent: '#228be6' },
+                        visionary: { primary: '#4c1d95', accent: '#8b5cf6' },
+                        elegant: { primary: '#1f2937', accent: '#10b981' },
+                        modern: { primary: '#0f172a', accent: '#f97316' },
+                    };
+                    const defaultColors = { primary: '#1a1a2e', accent: '#228be6' };
+                    const colors = styleColors[templateStyle] || defaultColors;
+                    const companyName = company?.name || settings.smtpFromName || 'Company';
 
-                    emailSubject = rendered.subject;
-                    emailHtml = rendered.html;
-                    emailText = rendered.text;
+                    emailSubject = subject || `${companyName} - Test Email`;
+                    const emailMessage = message || 'This is a test email sent from your OMNEX platform.\n\nIf you received this email, your SMTP configuration is working correctly.';
+
+                    emailHtml = `
+                        <!DOCTYPE html>
+                        <html>
+                        <head><meta charset="utf-8"></head>
+                        <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: Arial, sans-serif;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+                                <tr>
+                                    <td align="center">
+                                        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                                            <tr>
+                                                <td style="background-color: ${colors.primary}; padding: 30px; text-align: center;">
+                                                    <h1 style="color: #ffffff; margin: 0; font-size: 24px;">${companyName}</h1>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 40px;">
+                                                    <h2 style="color: ${colors.accent}; margin-top: 0;">${emailSubject}</h2>
+                                                    ${emailMessage.split('\n').map((line: string) => `<p style="margin: 0 0 10px 0;">${line || '&nbsp;'}</p>`).join('')}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #868e96;">
+                                                    <p>Sent at: ${new Date().toLocaleString()}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </body>
+                        </html>
+                    `;
+                    emailText = `${emailSubject}\n\n${emailMessage}`;
                 } else {
                     // Use simple email format
                     emailSubject = subject || 'OMNEX - Test Email';

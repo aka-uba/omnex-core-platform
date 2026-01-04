@@ -1,6 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import { corePrisma } from '@/lib/corePrisma';
 import { logger } from '@/lib/utils/logger';
+
+// Use 'any' for PrismaClient to support both core and tenant prisma clients
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyPrismaClient = any;
 
 // Email template types
 export type EmailTemplateType =
@@ -124,12 +126,12 @@ export interface TemplateVariables {
  * Central Email Service for sending emails using SMTP settings and notification templates
  */
 export class EmailService {
-  private tenantPrisma: PrismaClient;
+  private tenantPrisma: AnyPrismaClient;
   private tenantId: string;
   private companyId: string;
   private nodemailer: typeof import('nodemailer') | null = null;
 
-  constructor(tenantPrisma: PrismaClient, tenantId: string, companyId: string) {
+  constructor(tenantPrisma: AnyPrismaClient, tenantId: string, companyId: string) {
     this.tenantPrisma = tenantPrisma;
     this.tenantId = tenantId;
     this.companyId = companyId;
@@ -476,7 +478,7 @@ export class EmailService {
       modern: { primary: '#0f172a', accent: '#f97316' },
     };
 
-    const { primary, accent } = colors[style] || colors.corporate;
+    const { primary } = colors[style] || colors.corporate;
 
     // Convert plain text to HTML
     const htmlContent = content
@@ -659,7 +661,7 @@ export class EmailService {
  * Create EmailService instance
  */
 export function createEmailService(
-  tenantPrisma: PrismaClient,
+  tenantPrisma: AnyPrismaClient,
   tenantId: string,
   companyId: string
 ): EmailService {
