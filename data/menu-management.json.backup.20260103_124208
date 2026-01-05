@@ -1,0 +1,1078 @@
+{
+  "menus": [
+    {
+      "id": "module-dashboard",
+      "label": "Genel Bakış",
+      "href": "/dashboard",
+      "icon": "Dashboard",
+      "order": 1,
+      "visible": true,
+      "moduleSlug": "dashboard"
+    },
+    {
+      "id": "module-hr",
+      "label": "Human Resources",
+      "href": "/modules/hr/dashboard",
+      "icon": "Users",
+      "order": 5,
+      "visible": true,
+      "moduleSlug": "hr",
+      "children": [
+        {
+          "id": "module-hr-config-0",
+          "label": "Dashboard",
+          "href": "/modules/hr/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-hr-config-1",
+          "label": "Employees",
+          "href": "/modules/hr/employees",
+          "icon": "Users",
+          "order": 2
+        },
+        {
+          "id": "module-hr-config-2",
+          "label": "Leaves",
+          "href": "/modules/hr/leaves",
+          "icon": "Calendar",
+          "order": 3
+        },
+        {
+          "id": "module-hr-config-3",
+          "label": "Payrolls",
+          "href": "/modules/hr/payrolls",
+          "icon": "CurrencyDollar",
+          "order": 4
+        },
+        {
+          "id": "module-hr-config-4",
+          "label": "Reports",
+          "href": "/modules/hr/reports",
+          "icon": "ChartBar",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "module-real-estate",
+      "label": "Real Estate",
+      "href": "/modules/real-estate/dashboard",
+      "icon": "Building",
+      "order": 10,
+      "visible": true,
+      "moduleSlug": "real-estate",
+      "children": [
+        {
+          "id": "module-real-estate-config-0",
+          "label": "Dashboard",
+          "href": "/modules/real-estate/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-real-estate-config-1",
+          "label": "Properties",
+          "href": "/modules/real-estate/properties",
+          "icon": "Building",
+          "order": 2
+        },
+        {
+          "id": "module-real-estate-config-2",
+          "label": "Apartments",
+          "href": "/modules/real-estate/apartments",
+          "icon": "Home",
+          "order": 3
+        },
+        {
+          "id": "module-real-estate-config-3",
+          "label": "Tenants",
+          "href": "/modules/real-estate/tenants",
+          "icon": "Users",
+          "order": 4
+        },
+        {
+          "id": "module-real-estate-config-4",
+          "label": "Contracts",
+          "href": "/modules/real-estate/contracts",
+          "icon": "FileText",
+          "order": 5
+        },
+        {
+          "id": "module-real-estate-config-5",
+          "label": "Payments",
+          "href": "/modules/real-estate/payments",
+          "icon": "CurrencyDollar",
+          "order": 6
+        },
+        {
+          "id": "module-real-estate-config-6",
+          "label": "Appointments",
+          "href": "/modules/real-estate/appointments",
+          "icon": "Calendar",
+          "order": 7
+        },
+        {
+          "id": "module-real-estate-config-reconciliation",
+          "label": "reconciliation.menuTitle",
+          "labelKey": "reconciliation.menuTitle",
+          "href": "/modules/real-estate/reconciliation",
+          "icon": "Calculator",
+          "order": 8
+        },
+        {
+          "id": "module-real-estate-config-7",
+          "label": "Email Campaigns",
+          "href": "/modules/real-estate/email",
+          "icon": "Mail",
+          "order": 9
+        },
+        {
+          "id": "module-real-estate-config-8",
+          "label": "Reports",
+          "href": "/modules/real-estate/reports",
+          "icon": "Report",
+          "order": 10
+        },
+        {
+          "id": "module-real-estate-config-9",
+          "label": "Staff",
+          "href": "/modules/real-estate/staff",
+          "icon": "UserCheck",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "id": "module-locations",
+      "label": "Locations",
+      "href": "/locations",
+      "icon": "MapPin",
+      "order": 15,
+      "visible": true,
+      "moduleSlug": "locations",
+      "children": [
+        {
+          "id": "module-locations-config-0",
+          "label": "Dashboard",
+          "href": "/locations/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-locations-config-1",
+          "label": "All Locations",
+          "href": "/locations/list",
+          "icon": "MapPin",
+          "order": 2
+        },
+        {
+          "id": "module-locations-config-2",
+          "label": "Hierarchy",
+          "href": "/locations/hierarchy",
+          "icon": "Hierarchy",
+          "order": 3
+        },
+        {
+          "id": "module-locations-config-3",
+          "label": "Map View",
+          "href": "/locations/map",
+          "icon": "Map",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-ai",
+      "label": "AI Studio",
+      "href": "/modules/ai/dashboard",
+      "icon": "Brain",
+      "order": 20,
+      "visible": true,
+      "moduleSlug": "ai",
+      "children": [
+        {
+          "id": "module-ai-config-0",
+          "label": "Dashboard",
+          "href": "/modules/ai/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-ai-config-1",
+          "label": "Text Generator",
+          "href": "/modules/ai/text",
+          "icon": "FileText",
+          "order": 2
+        },
+        {
+          "id": "module-ai-config-2",
+          "label": "Image Generator",
+          "href": "/modules/ai/image",
+          "icon": "Photo",
+          "order": 3
+        },
+        {
+          "id": "module-ai-config-3",
+          "label": "Code Generator",
+          "href": "/modules/ai/code",
+          "icon": "Code",
+          "order": 4
+        },
+        {
+          "id": "module-ai-config-4",
+          "label": "Audio Generator",
+          "href": "/modules/ai/audio",
+          "icon": "Microphone",
+          "order": 5
+        },
+        {
+          "id": "module-ai-config-5",
+          "label": "Video Generator",
+          "href": "/modules/ai/video",
+          "icon": "Video",
+          "order": 6
+        },
+        {
+          "id": "module-ai-config-6",
+          "label": "History",
+          "href": "/modules/ai/history",
+          "icon": "History",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "id": "module-production",
+      "label": "Production",
+      "href": "/modules/production/dashboard",
+      "icon": "Factory",
+      "order": 20,
+      "visible": true,
+      "moduleSlug": "production",
+      "children": [
+        {
+          "id": "module-production-config-0",
+          "label": "Dashboard",
+          "href": "/modules/production/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-production-config-1",
+          "label": "Products",
+          "href": "/modules/production/products",
+          "icon": "Package",
+          "order": 2
+        },
+        {
+          "id": "module-production-config-2",
+          "label": "BOM",
+          "href": "/modules/production/bom",
+          "icon": "List",
+          "order": 3
+        },
+        {
+          "id": "module-production-config-3",
+          "label": "Production Orders",
+          "href": "/modules/production/orders",
+          "icon": "ClipboardList",
+          "order": 4
+        },
+        {
+          "id": "module-production-config-4",
+          "label": "Stock",
+          "href": "/modules/production/stock",
+          "icon": "Warehouse",
+          "order": 5
+        },
+        {
+          "id": "module-production-config-5",
+          "label": "Reports",
+          "href": "/modules/production/reports",
+          "icon": "ChartBar",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "id": "module-sohbet",
+      "label": "Sohbet",
+      "href": "/modules/chat/dashboard",
+      "icon": "MessageCircle",
+      "order": 25,
+      "visible": true,
+      "moduleSlug": "sohbet",
+      "children": [
+        {
+          "id": "module-sohbet-config-0",
+          "label": "Dashboard",
+          "href": "/modules/chat/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-sohbet-config-1",
+          "label": "Sohbet Odaları",
+          "href": "/modules/chat/rooms",
+          "icon": "Users",
+          "order": 2
+        },
+        {
+          "id": "module-sohbet-config-2",
+          "label": "Direkt Mesajlar",
+          "href": "/modules/chat/direct",
+          "icon": "Message",
+          "order": 3
+        },
+        {
+          "id": "module-sohbet-config-3",
+          "label": "Arşiv",
+          "href": "/modules/chat/archived",
+          "icon": "Archive",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-web-builder",
+      "label": "Web Builder",
+      "href": "/modules/web-builder/dashboard",
+      "icon": "Layout",
+      "order": 25,
+      "visible": true,
+      "moduleSlug": "web-builder",
+      "children": [
+        {
+          "id": "module-web-builder-config-0",
+          "label": "Dashboard",
+          "href": "/modules/web-builder/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-web-builder-config-1",
+          "label": "Websites",
+          "href": "/modules/web-builder/websites",
+          "icon": "Layout",
+          "order": 2
+        },
+        {
+          "id": "module-web-builder-config-2",
+          "label": "Pages",
+          "href": "/modules/web-builder/pages",
+          "icon": "FileText",
+          "order": 3
+        },
+        {
+          "id": "module-web-builder-config-3",
+          "label": "Templates",
+          "href": "/modules/web-builder/templates",
+          "icon": "Layout",
+          "order": 4
+        },
+        {
+          "id": "module-web-builder-config-4",
+          "label": "Themes",
+          "href": "/modules/web-builder/themes",
+          "icon": "Photo",
+          "order": 5
+        },
+        {
+          "id": "module-web-builder-config-5",
+          "label": "Components",
+          "href": "/modules/web-builder/components",
+          "icon": "Components",
+          "order": 6
+        },
+        {
+          "id": "module-web-builder-config-6",
+          "label": "Forms",
+          "href": "/modules/web-builder/forms",
+          "icon": "FileCheck",
+          "order": 7
+        },
+        {
+          "id": "module-web-builder-config-7",
+          "label": "Media Library",
+          "href": "/modules/web-builder/media",
+          "icon": "Photo",
+          "order": 8
+        },
+        {
+          "id": "module-web-builder-config-8",
+          "label": "Assets",
+          "href": "/modules/web-builder/assets",
+          "icon": "Folder",
+          "order": 9
+        },
+        {
+          "id": "module-web-builder-config-9",
+          "label": "Analytics",
+          "href": "/modules/web-builder/analytics",
+          "icon": "ChartBar",
+          "order": 10
+        },
+        {
+          "id": "module-web-builder-config-10",
+          "label": "Settings",
+          "href": "/modules/web-builder/settings",
+          "icon": "Settings",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "id": "module-raporlar",
+      "label": "Raporlar",
+      "href": "/modules/reports",
+      "icon": "ChartBar",
+      "order": 40,
+      "visible": true,
+      "moduleSlug": "raporlar",
+      "children": [
+        {
+          "id": "module-raporlar-config-0",
+          "label": "All Reports",
+          "href": "/modules/reports/all",
+          "icon": "ChartBar",
+          "order": 1
+        },
+        {
+          "id": "module-raporlar-config-1",
+          "label": "Create Report",
+          "href": "/modules/reports/create",
+          "icon": "Plus",
+          "order": 2
+        },
+        {
+          "id": "module-raporlar-config-2",
+          "label": "Templates",
+          "href": "/modules/reports/templates",
+          "icon": "FileText",
+          "order": 3
+        },
+        {
+          "id": "module-raporlar-config-3",
+          "label": "Scheduled Reports",
+          "href": "/modules/reports/scheduled",
+          "icon": "Clock",
+          "order": 4
+        },
+        {
+          "id": "module-raporlar-config-4",
+          "label": "Export History",
+          "href": "/modules/reports/exports",
+          "icon": "FileExport",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "module-calendar",
+      "label": "Calendar",
+      "href": "/modules/calendar/dashboard",
+      "icon": "Calendar",
+      "order": 40,
+      "visible": true,
+      "moduleSlug": "calendar",
+      "children": [
+        {
+          "id": "module-calendar-config-0",
+          "label": "Takvim",
+          "href": "/modules/calendar/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-calendar-config-1",
+          "label": "Events",
+          "href": "/modules/calendar/events",
+          "icon": "Calendar",
+          "order": 2
+        },
+        {
+          "id": "module-calendar-config-2",
+          "label": "Appointments",
+          "href": "/modules/calendar/appointments",
+          "icon": "Clock",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "module-maintenance",
+      "label": "Maintenance",
+      "href": "/modules/maintenance/dashboard",
+      "icon": "Tools",
+      "order": 40,
+      "visible": true,
+      "moduleSlug": "maintenance",
+      "children": [
+        {
+          "id": "module-maintenance-config-0",
+          "label": "Dashboard",
+          "href": "/modules/maintenance/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-maintenance-config-1",
+          "label": "Records",
+          "href": "/modules/maintenance/records",
+          "icon": "ClipboardList",
+          "order": 2
+        },
+        {
+          "id": "module-maintenance-config-2",
+          "label": "Calendar",
+          "href": "/modules/maintenance/calendar",
+          "icon": "Calendar",
+          "order": 3
+        },
+        {
+          "id": "module-maintenance-config-3",
+          "label": "Reports",
+          "href": "/modules/maintenance/reports",
+          "icon": "ChartBar",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-accounting",
+      "label": "Accounting",
+      "href": "/modules/accounting",
+      "icon": "CurrencyDollar",
+      "order": 50,
+      "visible": true,
+      "moduleSlug": "accounting",
+      "children": [
+        {
+          "id": "module-accounting-config-0",
+          "label": "Dashboard",
+          "href": "/modules/accounting/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-accounting-config-1",
+          "label": "Invoices",
+          "href": "/modules/accounting/invoices",
+          "icon": "FileText",
+          "order": 2
+        },
+        {
+          "id": "module-accounting-config-2",
+          "label": "Subscriptions",
+          "href": "/modules/accounting/subscriptions",
+          "icon": "Repeat",
+          "order": 3
+        },
+        {
+          "id": "module-accounting-config-3",
+          "label": "Payments",
+          "href": "/modules/accounting/payments",
+          "icon": "CreditCard",
+          "order": 4
+        },
+        {
+          "id": "module-accounting-config-4",
+          "label": "Expenses",
+          "href": "/modules/accounting/expenses",
+          "icon": "Receipt",
+          "order": 5
+        },
+        {
+          "id": "module-accounting-config-5",
+          "label": "Reports",
+          "href": "/modules/accounting/reports",
+          "icon": "ChartBar",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "id": "module-file-manager",
+      "label": "File Manager",
+      "href": "/modules/file-manager/dashboard",
+      "icon": "Folder",
+      "order": 50,
+      "visible": true,
+      "moduleSlug": "file-manager",
+      "children": [
+        {
+          "id": "module-file-manager-config-0",
+          "label": "Dashboard",
+          "href": "/modules/file-manager/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-file-manager-config-1",
+          "label": "Files",
+          "href": "/modules/file-manager/files",
+          "icon": "File",
+          "order": 2
+        },
+        {
+          "id": "module-file-manager-config-2",
+          "label": "Folders",
+          "href": "/modules/file-manager/folders",
+          "icon": "Folder",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "module-belgeler-ve-imza",
+      "label": "Belgeler ve İmza",
+      "href": "/modules/belgeler-ve-imza/dashboard",
+      "icon": "FileSignature",
+      "order": 50,
+      "visible": true,
+      "moduleSlug": "belgeler-ve-imza",
+      "children": [
+        {
+          "id": "module-belgeler-ve-imza-config-0",
+          "label": "Dashboard",
+          "href": "/modules/belgeler-ve-imza/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-belgeler-ve-imza-config-1",
+          "label": "Belgeler",
+          "href": "/modules/belgeler-ve-imza/documents",
+          "icon": "File",
+          "order": 2
+        },
+        {
+          "id": "module-belgeler-ve-imza-config-2",
+          "label": "İmzalar",
+          "href": "/modules/belgeler-ve-imza/signatures",
+          "icon": "Signature",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "module-egitim",
+      "label": "Eğitim",
+      "href": "/modules/egitim/dashboard",
+      "icon": "School",
+      "order": 55,
+      "visible": true,
+      "moduleSlug": "egitim",
+      "children": [
+        {
+          "id": "module-egitim-config-0",
+          "label": "Dashboard",
+          "href": "/modules/egitim/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-egitim-config-1",
+          "label": "Kurslar",
+          "href": "/modules/egitim/courses",
+          "icon": "Book",
+          "order": 2
+        },
+        {
+          "id": "module-egitim-config-2",
+          "label": "Öğrenciler",
+          "href": "/modules/egitim/students",
+          "icon": "Users",
+          "order": 3
+        },
+        {
+          "id": "module-egitim-config-3",
+          "label": "Eğitmenler",
+          "href": "/modules/egitim/instructors",
+          "icon": "UserCheck",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-musteri",
+      "label": "Müşteri",
+      "href": "/modules/musteri/dashboard",
+      "icon": "UserCircle",
+      "order": 60,
+      "visible": true,
+      "moduleSlug": "musteri",
+      "children": [
+        {
+          "id": "module-musteri-config-0",
+          "label": "Dashboard",
+          "href": "/modules/musteri/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-musteri-config-1",
+          "label": "Müşteriler",
+          "href": "/modules/musteri/customers",
+          "icon": "Users",
+          "order": 2
+        },
+        {
+          "id": "module-musteri-config-2",
+          "label": "Fırsatlar",
+          "href": "/modules/musteri/opportunities",
+          "icon": "Target",
+          "order": 3
+        },
+        {
+          "id": "module-musteri-config-3",
+          "label": "İletişim",
+          "href": "/modules/musteri/contacts",
+          "icon": "Phone",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-randevu",
+      "label": "Randevu",
+      "href": "/modules/randevu/dashboard",
+      "icon": "CalendarEvent",
+      "order": 65,
+      "visible": true,
+      "moduleSlug": "randevu",
+      "children": [
+        {
+          "id": "module-randevu-config-0",
+          "label": "Dashboard",
+          "href": "/modules/randevu/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-randevu-config-1",
+          "label": "Randevular",
+          "href": "/modules/randevu/appointments",
+          "icon": "Calendar",
+          "order": 2
+        },
+        {
+          "id": "module-randevu-config-2",
+          "label": "Takvim",
+          "href": "/modules/randevu/calendar",
+          "icon": "CalendarMonth",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "module-tedarikci",
+      "label": "Tedarikçi",
+      "href": "/modules/tedarikci/dashboard",
+      "icon": "Truck",
+      "order": 70,
+      "visible": true,
+      "moduleSlug": "tedarikci",
+      "children": [
+        {
+          "id": "module-tedarikci-config-0",
+          "label": "Dashboard",
+          "href": "/modules/tedarikci/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-tedarikci-config-1",
+          "label": "Tedarikçiler",
+          "href": "/modules/tedarikci/suppliers",
+          "icon": "BuildingStore",
+          "order": 2
+        },
+        {
+          "id": "module-tedarikci-config-2",
+          "label": "Siparişler",
+          "href": "/modules/tedarikci/orders",
+          "icon": "ShoppingCart",
+          "order": 3
+        },
+        {
+          "id": "module-tedarikci-config-3",
+          "label": "Ödemeler",
+          "href": "/modules/tedarikci/payments",
+          "icon": "CreditCard",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-urun",
+      "label": "Ürün",
+      "href": "/modules/urun/dashboard",
+      "icon": "Package",
+      "order": 75,
+      "visible": true,
+      "moduleSlug": "urun",
+      "children": [
+        {
+          "id": "module-urun-config-0",
+          "label": "Dashboard",
+          "href": "/modules/urun/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-urun-config-1",
+          "label": "Ürünler",
+          "href": "/modules/urun/products",
+          "icon": "Package",
+          "order": 2
+        },
+        {
+          "id": "module-urun-config-2",
+          "label": "Kategoriler",
+          "href": "/modules/urun/categories",
+          "icon": "Category",
+          "order": 3
+        },
+        {
+          "id": "module-urun-config-3",
+          "label": "Stok",
+          "href": "/modules/urun/inventory",
+          "icon": "BoxSeam",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-vardiya",
+      "label": "Vardiya",
+      "href": "/modules/vardiya/dashboard",
+      "icon": "Clock",
+      "order": 80,
+      "visible": true,
+      "moduleSlug": "vardiya",
+      "children": [
+        {
+          "id": "module-vardiya-config-0",
+          "label": "Dashboard",
+          "href": "/modules/vardiya/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-vardiya-config-1",
+          "label": "Vardiyalar",
+          "href": "/modules/vardiya/shifts",
+          "icon": "Clock",
+          "order": 2
+        },
+        {
+          "id": "module-vardiya-config-2",
+          "label": "Çalışma Planı",
+          "href": "/modules/vardiya/schedule",
+          "icon": "Calendar",
+          "order": 3
+        },
+        {
+          "id": "module-vardiya-config-3",
+          "label": "Mesai Takibi",
+          "href": "/modules/vardiya/attendance",
+          "icon": "UserCheck",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-web-sayfa",
+      "label": "Web Sayfa",
+      "href": "/modules/web-sayfa/dashboard",
+      "icon": "World",
+      "order": 85,
+      "visible": true,
+      "moduleSlug": "web-sayfa",
+      "children": [
+        {
+          "id": "module-web-sayfa-config-0",
+          "label": "Dashboard",
+          "href": "/modules/web-sayfa/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-web-sayfa-config-1",
+          "label": "Sayfalar",
+          "href": "/modules/web-sayfa/pages",
+          "icon": "File",
+          "order": 2
+        },
+        {
+          "id": "module-web-sayfa-config-2",
+          "label": "Menüler",
+          "href": "/modules/web-sayfa/menus",
+          "icon": "Menu",
+          "order": 3
+        },
+        {
+          "id": "module-web-sayfa-config-3",
+          "label": "Ayarlar",
+          "href": "/modules/web-sayfa/settings",
+          "icon": "Settings",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-notifications",
+      "label": "Notifications",
+      "href": "/modules/notifications/dashboard",
+      "icon": "Bell",
+      "order": 90,
+      "visible": true,
+      "moduleSlug": "notifications",
+      "children": [
+        {
+          "id": "module-notifications-config-0",
+          "label": "Dashboard",
+          "href": "/modules/notifications/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-notifications-config-1",
+          "label": "All Notifications",
+          "href": "/modules/notifications/list",
+          "icon": "Bell",
+          "order": 2
+        },
+        {
+          "id": "module-notifications-config-2",
+          "label": "Templates",
+          "href": "/modules/notifications/templates",
+          "icon": "FileText",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "module-license",
+      "label": "License",
+      "href": "/modules/license/packages",
+      "icon": "ShieldCheck",
+      "order": 95,
+      "visible": true,
+      "moduleSlug": "license",
+      "children": [
+        {
+          "id": "module-license-config-0",
+          "label": "Dashboard",
+          "href": "/modules/license/dashboard",
+          "icon": "Dashboard",
+          "order": 1
+        },
+        {
+          "id": "module-license-config-1",
+          "label": "License Packages",
+          "href": "/modules/license/packages",
+          "icon": "Package",
+          "order": 2
+        },
+        {
+          "id": "module-license-config-2",
+          "label": "Tenant Licenses",
+          "href": "/modules/license/tenants",
+          "icon": "Users",
+          "order": 3
+        },
+        {
+          "id": "module-license-config-3",
+          "label": "My License",
+          "href": "/modules/license/my-license",
+          "icon": "ShieldCheck",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "module-settings",
+      "label": "Settings",
+      "href": "/settings",
+      "icon": "Settings",
+      "order": 99,
+      "visible": true,
+      "moduleSlug": "settings",
+      "children": [
+        {
+          "id": "module-settings-config-0",
+          "label": "General",
+          "href": "/settings",
+          "icon": "Settings",
+          "order": 1
+        },
+        {
+          "id": "module-settings-config-1",
+          "label": "Add Company",
+          "href": "/settings/add-company",
+          "icon": "BuildingStore",
+          "order": 2
+        },
+        {
+          "id": "module-settings-config-2",
+          "label": "Menu Management",
+          "href": "/settings/menu-management",
+          "icon": "Menu",
+          "order": 3
+        },
+        {
+          "id": "module-settings-config-3",
+          "label": "Access Control",
+          "href": "/settings/access-control",
+          "icon": "Lock",
+          "order": 4
+        },
+        {
+          "id": "module-settings-config-4",
+          "label": "Export Templates",
+          "href": "/settings/export-templates",
+          "icon": "FileExport",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "module-module-management",
+      "label": "Modules",
+      "href": "/modules",
+      "icon": "Package",
+      "order": 100,
+      "visible": true,
+      "moduleSlug": "module-management",
+      "children": [
+        {
+          "id": "module-module-management-config-0",
+          "label": "All Modules",
+          "href": "/modules",
+          "icon": "Package",
+          "order": 1
+        },
+        {
+          "id": "module-module-management-config-1",
+          "label": "Install Module",
+          "href": "/modules/install",
+          "icon": "Upload",
+          "order": 2
+        },
+        {
+          "id": "module-module-management-config-2",
+          "label": "Module Settings",
+          "href": "/modules/settings",
+          "icon": "Settings",
+          "order": 3
+        }
+      ]
+    }
+  ],
+  "version": 32,
+  "updatedAt": "2025-12-18T09:04:15.915Z"
+}

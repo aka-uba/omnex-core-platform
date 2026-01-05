@@ -1,0 +1,730 @@
+> şimdi demo verilerden gelen para birimleri ne olursa olsun, genel ayarlardan para birimi 
+değişince yüklenen demo verilerin para birimleri değişmeliydi. birçok yerde düzgün çalışıyor         
+fakat http://localhost:3000/tr/modules/real-estate/payments tablosunda demo veriden gelen 
+verideki para birimi neyse o sabit kalıyor, ayarlardan para birimi değişmek bu ve bilemediğim        
+belkide başka yerlerde bunun gibi değişmeyen alanlar var. tablodaki <div class="m_4081bf90 
+mantine-Group-root" style="--group-gap: var(--mantine-spacing-xs); --group-align: center; 
+--group-justify: center; --group-wrap: nowrap;"><p class="mantine-focus-auto m_b6d8b162 
+mantine-Text-root" data-size="sm" style="--text-fz: var(--mantine-font-size-sm); --text-lh: 
+var(--mantine-line-height-sm); color: inherit; font-weight: 600;">Tutar</p><div style="display:      
+flex; align-items: center; flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" width="16"       
+height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-arrows-sort 
+text-text-secondary-light dark:text-text-secondary-dark"><path d="M3 9l4 -4l4 4m-4 
+-4v14"></path><path d="M21 15l-4 4l-4 -4m4 4v-14"></path></svg></div></div> tutar alanı verisini     
+incele dökümanda para birimi değişiklikleri olabilir incele ve sorun nerde bul düzelt 
+
+● Payments tablosunu inceleyelim. Önce liste sayfasını bulup currency kullanımına bakalım:
+
+● Search(pattern: "src/app/**/real-estate/payments/**/page.tsx")
+  ⎿  Found 0 files
+
+● Search(pattern: "src/modules/real-estate/components/*Payment*.tsx")
+  ⎿  Found 0 files
+
+● Search(pattern: "payments.*list|PaymentList|PaymentsPage", glob: "**/*.tsx")
+  ⎿  Found 8 files (ctrl+o to expand)
+
+● Read(src\app\[locale]\modules\real-estate\payments\PaymentsPageClient.tsx)
+  ⎿  Read 79 lines
+
+● Read(src\modules\real-estate\components\PaymentList.tsx)
+  ⎿  Read 625 lines
+
+● Sorunu buldum! renderAmount fonksiyonu (satır 224-229) row.currency kullanıyor - bu da veritabanından gelen değer. useCurrency hook'u kullanmıyor.
+
+  Şimdi useCurrency hook'unu kontrol edip diğer sayfaların nasıl kullandığını görelim:
+
+● Read(src\hooks\useCurrency.ts)
+  ⎿  Read 130 lines
+
+● Anladım! useCurrency hook'u GeneralSettings'ten para birimini alıyor ve formatCurrency(amount) sağlıyor.
+
+  Şimdi tüm modüllerde manuel currency formatlama yapan yerleri bulalım:
+
+● Search(pattern: "row\.currency|\.currency \|\| 'TRY'|toLocaleString.*currency", glob: "**/*.tsx",  
+        output_mode: "content")
+  ⎿  Found 36 lines (ctrl+o to expand)
+
+● Çok sayıda dosya var. Sistematik olarak düzeltelim. Önce kullanıcının belirttiği PaymentList.tsx'den başlayalım:
+
+● Update(src\modules\real-estate\components\PaymentList.tsx)
+  ⎿  Added 1 line
+      30  import { useContracts } from '@/hooks/useContracts';
+      31  import { usePaymentMethods, DEFAULT_PAYMENT_METHOD_CODES } from
+          '@/hooks/usePaymentMethods';
+      32  import { useCompany } from '@/context/CompanyContext';
+      33 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      34  import { useTranslation } from '@/lib/i18n/client';
+      35  import { showToast } from '@/modules/notifications/components/ToastNotification';
+      36  import type { PaymentType, PaymentStatus } from
+          '@/modules/real-estate/types/payment';
+
+● Update(src\modules\real-estate\components\PaymentList.tsx)
+  ⎿  Added 1 line
+      48    const { t } = useTranslation('modules/real-estate');
+      49    const { t: tGlobal } = useTranslation('global');
+      50    const { company } = useCompany();
+      51 +  const { formatCurrency } = useCurrency();                                                
+      52    const [page, setPage] = useState(1);
+      53    const [pageSize] = useState<number>(25);
+      54    const [apartmentId, setApartmentId] = useState<string | undefined>();
+
+● Update(src\modules\real-estate\components\PaymentList.tsx)
+  ⎿  Added 3 lines, removed 6 lines
+      223    // Render functions
+      224    const renderType = useCallback((value: PaymentType) => getTypeBadge(value),
+           [getTypeBadge]);
+      225
+      226 -  const renderAmount = useCallback((value: number, row: any) => {                         
+      227 -    return value.toLocaleString('tr-TR', {                                                
+      228 -      style: 'currency',                                                                  
+      229 -      currency: row.currency || 'TRY',                                                    
+      230 -    });                                                                                   
+      231 -  }, []);                                                                                 
+      226 +  const renderAmount = useCallback((value: number) => {                                   
+      227 +    return formatCurrency(value);                                                         
+      228 +  }, [formatCurrency]);                                                                   
+      229
+      230    const renderDueDate = useCallback((value: Date) =>
+           dayjs(value).format('DD.MM.YYYY'), []);
+      231
+
+● Read(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Read 374 lines
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 1 line
+       7  import { usePayment } from '@/hooks/usePayments';
+       8  import { useParams, useRouter } from 'next/navigation';
+       9  import { useTranslation } from '@/lib/i18n/client';
+      10 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      11  import dayjs from 'dayjs';
+      12  import type { PaymentType, PaymentStatus, PaymentMethod } from
+          '@/modules/real-estate/types/payment';
+      13
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 1 line
+      17    const currentLocale = (params?.locale as string) || locale;
+      18    const { t } = useTranslation('modules/real-estate');
+      19    const { t: tGlobal } = useTranslation('global');
+      20 +  const { formatCurrency, currency } = useCurrency();                                      
+      21    const { data: payment, isLoading, error } = usePayment(paymentId);
+      22
+      23    if (error || (!isLoading && !payment)) {
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      119                    <Stack gap="xs">
+      120                      <Group>
+      121                        <Text fw={700} size="xl">
+      122 -                        {Number(payment.totalAmount).toLocaleString('tr-TR', {            
+      123 -                          style: 'currency',                                              
+      124 -                          currency: payment.currency || 'TRY',                            
+      125 -                        })}                                                               
+      122 +                        {formatCurrency(Number(payment.totalAmount))}                     
+      123                        </Text>
+      124                        {getTypeBadge(payment.type)}
+      125                        {getStatusBadge(payment.status)}
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      149                      <Grid.Col span={{ base: 12, md: 6 }}>
+      150                        <Text size="sm"
+           c="dimmed">{t('payments.detail.amount')}</Text>
+      151                        <Text fw={500}>
+      152 -                        {Number(payment.amount).toLocaleString('tr-TR', {                 
+      153 -                          style: 'currency',                                              
+      154 -                          currency: payment.currency || 'TRY',                            
+      155 -                        })}                                                               
+      152 +                        {formatCurrency(Number(payment.amount))}                          
+      153                        </Text>
+      154                      </Grid.Col>
+      155                      {payment.extraCharges && Array.isArray(payment.extraCharges)
+           && payment.extraCharges.length > 0 && (
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      158                          <Stack gap="xs">
+      159                            {payment.extraCharges.map((charge: any, index: number)
+           => (
+      160                              <Text key={index} size="sm">
+      161 -                              {charge.name}: {Number(charge.amount)                       
+          -.toLocaleString('tr-TR', {                                                                
+      162 -                                style: 'currency',                                        
+      163 -                                currency: payment.currency || 'TRY',                      
+      164 -                              })}                                                         
+      161 +                              {charge.name}: {formatCurrency(Number(charge.amount)        
+          +)}                                                                                        
+      162                              </Text>
+      163                            ))}
+      164                          </Stack>
+
+● Update(src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx)
+  ⎿  Added 2 lines, removed 5 lines
+      167                      <Grid.Col span={{ base: 12, md: 6 }}>
+      168                        <Text size="sm"
+           c="dimmed">{t('payments.detail.totalAmount')}</Text>
+      169                        <Text fw={600} size="lg">
+      170 -                        {Number(payment.totalAmount).toLocaleString('tr-TR', {            
+      171 -                          style: 'currency',                                              
+      172 -                          currency: payment.currency || 'TRY',                            
+      173 -                        })}                                                               
+      170 +                        {formatCurrency(Number(payment.totalAmount))}                     
+      171                        </Text>
+      172                      </Grid.Col>
+      173                      <Grid.Col span={{ base: 12, md: 6 }}>
+      174                        <Text size="sm"
+           c="dimmed">{t('payments.detail.currency')}</Text>
+      175 -                      <Text fw={500}>{payment.currency || 'TRY'}</Text>                   
+      175 +                      <Text fw={500}>{currency}</Text>                                    
+      176                      </Grid.Col>
+      177                      <Grid.Col span={{ base: 12, md: 6 }}>
+      178                        <Text size="sm"
+           c="dimmed">{t('payments.detail.dueDate')}</Text>
+
+● Read(src\modules\real-estate\components\ContractDetail.tsx)
+  ⎿  Read 150 lines
+
+● Read(src\modules\real-estate\components\ContractTracking.tsx)
+  ⎿  Read 200 lines
+
+● Update(src\modules\real-estate\components\ContractDetail.tsx)
+  ⎿  Added 1 line
+      11  import { IconCalendar, IconCurrencyDollar, IconHome, IconUser } from
+          '@tabler/icons-react';
+      12  import { useContract } from '@/hooks/useContracts';
+      13  import { useTranslation } from '@/lib/i18n/client';
+      14 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      15  import dayjs from 'dayjs';
+      16  import type { ContractType, ContractStatus } from
+          '@/modules/real-estate/types/contract';
+      17  import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
+
+● Update(src\modules\real-estate\components\ContractTracking.tsx)
+  ⎿  Added 1 line
+      25  } from '@tabler/icons-react';
+      26  import { useContracts } from '@/hooks/useContracts';
+      27  import { useTranslation } from '@/lib/i18n/client';
+      28 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      29  import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
+      30  import dayjs from 'dayjs';
+      31
+
+● Update(src\modules\real-estate\components\ContractDetail.tsx)
+  ⎿  Added 1 line
+      23
+      24  export function ContractDetail({ locale, contractId }: ContractDetailProps) {
+      25    const { t } = useTranslation('modules/real-estate');
+      26 +  const { formatCurrency } = useCurrency();                                                
+      27    const { data: contract, isLoading, error } = useContract(contractId);
+      28
+      29    const getTypeBadge = (type: ContractType) => {
+
+● Update(src\modules\real-estate\components\ContractTracking.tsx)
+  ⎿  Added 1 line
+      36  export function ContractTracking({ locale }: ContractTrackingProps) {
+      37    const { t } = useTranslation('modules/real-estate');
+      38    const { t: tGlobal } = useTranslation('global');
+      39 +  const { formatCurrency } = useCurrency();                                                
+      40    const [activeTab, setActiveTab] = useState<string>('upcoming');
+      41    const [daysAhead] = useState<number>(30);
+      42
+
+ * ▐▛███▜▌ *   Claude Code v2.0.76
+* ▝▜█████▛▘ *  Opus 4.5 · Claude Max
+ *  ▘▘ ▝▝  *   C:\xampp\htdocs\omnex-core-platform
+
+ ⚠Large CLAUDE.md will impact performance (54.0k chars > 40.0k) • /memory to edit
+════════════════════════════ Conversation compacted · ctrl+o for history ════════════════════════════
+  ⎿  Read src\modules\real-estate\components\ContractTracking.tsx (430 lines)
+  ⎿  Read src\modules\real-estate\components\ContractDetail.tsx (258 lines)
+  ⎿  Read src\app\[locale]\modules\real-estate\payments\[id]\PaymentDetailPageClient.tsx (364 lines) 
+  ⎿  Referenced file src\modules\real-estate\components\PaymentList.tsx
+  ⎿  Read src\app\[locale]\permissions\PermissionModal.tsx (161 lines)
+  ⎿  Todo list read (6 items)
+
+● Önceki oturumda kaldığım yerden devam ediyorum. ContractDetail.tsx ve ContractTracking.tsx dosyalarında para birimi formatlamasını güncelliyorum.
+
+● Update(src\modules\real-estate\components\ContractDetail.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      122                    {t('form.rentAmount')}
+      123                  </Text>
+      124                  <Text fw={500}>
+      125 -                  {new Intl.NumberFormat('tr-TR', {                                       
+      126 -                    style: 'currency',                                                    
+      127 -                    currency: contract.currency || 'TRY',                                 
+      128 -                  }).format(Number(contract.rentAmount))}                                 
+      125 +                  {formatCurrency(Number(contract.rentAmount))}                           
+      126                  </Text>
+      127                </div>
+      128              </Group>
+
+● Update(src\modules\real-estate\components\ContractDetail.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      137                      {t('form.deposit')}
+      138                    </Text>
+      139                    <Text fw={500}>
+      140 -                    {new Intl.NumberFormat('tr-TR', {                                     
+      141 -                      style: 'currency',                                                  
+      142 -                      currency: contract.currency || 'TRY',                               
+      143 -                    }).format(Number(contract.deposit))}                                  
+      140 +                    {formatCurrency(Number(contract.deposit))}                            
+      141                    </Text>
+      142                  </div>
+      143                </Group>
+
+● Update(src\modules\real-estate\components\ContractTracking.tsx)
+  ⎿  Added 1 line, removed 5 lines
+      185        sortable: true,
+      186        searchable: false,
+      187        align: 'right',
+      188 -      render: (value, row) =>                                                             
+      189 -        Number(value).toLocaleString('tr-TR', {                                           
+      190 -          style: 'currency',                                                              
+      191 -          currency: row.currency || 'TRY',                                                
+      192 -        }),                                                                               
+      188 +      render: (value) => formatCurrency(Number(value)),                                   
+      189      },
+      190      {
+      191        key: 'autoRenewal',
+
+● Search(pattern: "currency: row\.currency|currency:.*'TRY'|toLocaleString.*currency", path:
+        "src\modules\accounting")
+  ⎿  Found 12 files (ctrl+o to expand)
+
+● Search(pattern: "currency: row\.currency|currency:.*'TRY'|toLocaleString.*currency", path:
+        "src\app\[locale]\modules\accounting")
+  ⎿  Found 4 files (ctrl+o to expand)
+
+● Read(src\modules\accounting\widgets\InvoiceWidget.tsx)
+  ⎿  Read 99 lines
+
+● Read(src\modules\accounting\components\InvoiceList.tsx)
+  ⎿  Read 269 lines
+
+● Read(src\modules\accounting\components\ExpenseList.tsx)
+  ⎿  Read 315 lines
+
+● Accounting dosyalarını güncelliyorum. İlk üç dosyayı (InvoiceWidget, InvoiceList, ExpenseList) paralel olarak düzeltelim:
+
+● Update(src\modules\accounting\widgets\InvoiceWidget.tsx)
+  ⎿  Added 1 line
+       7
+       8  import { Card, Table, Badge, Text } from '@mantine/core';
+       9  import { useTranslation } from '@/lib/i18n/client';
+      10 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      11  import { useInvoices } from '@/hooks/useInvoices';
+      12  import type { InvoiceWidgetConfig } from './widgets.types';
+      13  import type { Invoice } from '@/modules/accounting/types/subscription';
+
+● Update(src\modules\accounting\components\InvoiceList.tsx)
+  ⎿  Added 1 line
+      19  import { useInvoices, useDeleteInvoice } from '@/hooks/useInvoices';
+      20  import { useSubscriptions } from '@/hooks/useSubscriptions';
+      21  import { useTranslation } from '@/lib/i18n/client';
+      22 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      23  import { showToast } from '@/modules/notifications/components/ToastNotification';
+      24  import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+      25  import { DataTable, DataTableColumn, FilterOption } from
+          '@/components/tables/DataTable';
+
+● Update(src\modules\accounting\components\ExpenseList.tsx)
+  ⎿  Added 1 line
+      20  import { useSubscriptions } from '@/hooks/useSubscriptions';
+      21  import { useLocations } from '@/hooks/useLocations';
+      22  import { useTranslation } from '@/lib/i18n/client';
+      23 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      24  import { showToast } from '@/modules/notifications/components/ToastNotification';
+      25  import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+      26  import { DataTable, DataTableColumn, FilterOption } from
+          '@/components/tables/DataTable';
+
+● Update(src\modules\accounting\widgets\InvoiceWidget.tsx)
+  ⎿  Added 1 line
+      19  export function InvoiceWidget({ config }: InvoiceWidgetProps) {
+      20    const { t } = useTranslation('modules/accounting');
+      21    const { t: tGlobal } = useTranslation('global');
+      22 +  const { formatCurrency } = useCurrency();                                                
+      23    const { data: invoicesData, isLoading } = useInvoices({
+      24      page: 1,
+      25      pageSize: config.limit || 10,
+
+● Update(src\modules\accounting\components\InvoiceList.tsx)
+  ⎿  Added 1 line
+      34    const router = useRouter();
+      35    const { t } = useTranslation('modules/accounting');
+      36    const { t: tGlobal } = useTranslation('global');
+      37 +  const { formatCurrency } = useCurrency();                                                
+      38    const [page, _setPage] = useState(1);
+      39    const [_pageSize] = useState<number>(25);
+      40    const [statusFilter, setStatusFilter] = useState<InvoiceStatus | undefined>();
+
+● Update(src\modules\accounting\components\ExpenseList.tsx)
+  ⎿  Added 1 line
+      35    const router = useRouter();
+      36    const { t } = useTranslation('modules/accounting');
+      37    const { t: tGlobal } = useTranslation('global');
+      38 +  const { formatCurrency } = useCurrency();                                                
+      39    const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
+      40    const [typeFilter, setTypeFilter] = useState<ExpenseType | undefined>();
+      41    const [statusFilter, setStatusFilter] = useState<ExpenseStatus | undefined>();
+
+● Şimdi currency formatlama kodlarını güncelleyelim:
+
+● Update(src\modules\accounting\widgets\InvoiceWidget.tsx)
+  ⎿  Added 1 line, removed 1 line
+      68                    </Table.Td>
+      69                    <Table.Td>
+      70                      {invoice.totalAmount
+      71 -                      ? `${Number(invoice.totalAmount).toLocaleString('tr-TR')}            
+         -${invoice.currency || 'TRY'}`                                                              
+      71 +                      ? formatCurrency(Number(invoice.totalAmount))                        
+      72                        : '-'}
+      73                    </Table.Td>
+      74                    <Table.Td>
+
+● Update(src\modules\accounting\components\InvoiceList.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      119        key: 'totalAmount',
+      120        label: t('invoices.table.totalAmount'),
+      121        sortable: true,
+      122 -      render: (value, row) => Number(value).toLocaleString('tr-TR', {                     
+      123 -        style: 'currency',                                                                
+      124 -        currency: row.currency || 'TRY',                                                  
+      125 -      }),                                                                                 
+      122 +      render: (value) => formatCurrency(Number(value)),                                   
+      123      },
+      124      {
+      125        key: 'status',
+
+● Update(src\modules\accounting\components\ExpenseList.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      139        key: 'amount',
+      140        label: t('expenses.table.amount'),
+      141        sortable: true,
+      142 -      render: (value, row) => Number(value).toLocaleString('tr-TR', {                     
+      143 -        style: 'currency',                                                                
+      144 -        currency: row.currency || 'TRY',                                                  
+      145 -      }),                                                                                 
+      142 +      render: (value) => formatCurrency(Number(value)),                                   
+      143      },
+      144      {
+      145        key: 'expenseDate',
+
+● Read(src\modules\accounting\components\SubscriptionList.tsx)
+  ⎿  Read 289 lines
+
+● Read(src\modules\accounting\components\PaymentList.tsx)
+  ⎿  Read 267 lines
+
+● Read(src\app\[locale]\modules\accounting\cash-transactions\CashTransactionsPageClient.tsx)
+  ⎿  Read 710 lines
+
+● SubscriptionList ve PaymentList (accounting) dosyalarını düzeltelim:
+
+● Update(src\modules\accounting\components\SubscriptionList.tsx)
+  ⎿  Added 1 line
+      18  } from '@tabler/icons-react';
+      19  import { useSubscriptions, useDeleteSubscription } from '@/hooks/useSubscriptions';        
+      20  import { useTranslation } from '@/lib/i18n/client';
+      21 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      22  import { showToast } from '@/modules/notifications/components/ToastNotification';
+      23  import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+      24  import { DataTable, DataTableColumn, FilterOption } from
+          '@/components/tables/DataTable';
+
+● Update(src\modules\accounting\components\PaymentList.tsx)
+  ⎿  Added 1 line
+      20  import { useInvoices } from '@/hooks/useInvoices';
+      21  import { useSubscriptions } from '@/hooks/useSubscriptions';
+      22  import { useTranslation } from '@/lib/i18n/client';
+      23 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      24  import { DataTable, DataTableColumn, FilterOption } from
+          '@/components/tables/DataTable';
+      25  import type { PaymentMethod, PaymentStatus } from
+          '@/modules/accounting/types/subscription';
+      26  import dayjs from 'dayjs';
+
+● Update(src\modules\accounting\components\SubscriptionList.tsx)
+  ⎿  Added 1 line
+      33    const router = useRouter();
+      34    const { t } = useTranslation('modules/accounting');
+      35    const { t: tGlobal } = useTranslation('global');
+      36 +  const { formatCurrency } = useCurrency();                                                
+      37    const [typeFilter, setTypeFilter] = useState<SubscriptionType | undefined>();
+      38    const [statusFilter, setStatusFilter] = useState<SubscriptionStatus |
+          undefined>();
+      39    const [isActiveFilter, setIsActiveFilter] = useState<boolean |
+          undefined>(undefined);
+
+● Update(src\modules\accounting\components\PaymentList.tsx)
+  ⎿  Added 1 line
+      34  export function PaymentList({ locale, paymentType }: PaymentListProps) {
+      35    const { t } = useTranslation('modules/accounting');
+      36    const { t: tGlobal } = useTranslation('global');
+      37 +  const { formatCurrency } = useCurrency();                                                
+      38    const [invoiceId, setInvoiceId] = useState<string | undefined>();
+      39    const [subscriptionId, setSubscriptionId] = useState<string | undefined>();
+      40    const [statusFilter, setStatusFilter] = useState<PaymentStatus | undefined>();
+
+● Update(src\modules\accounting\components\SubscriptionList.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      126        key: 'basePrice',
+      127        label: t('subscriptions.table.basePrice'),
+      128        sortable: true,
+      129 -      render: (value, row) => Number(value).toLocaleString('tr-TR', {                     
+      130 -        style: 'currency',                                                                
+      131 -        currency: row.currency || 'TRY',                                                  
+      132 -      }),                                                                                 
+      129 +      render: (value) => formatCurrency(Number(value)),                                   
+      130      },
+      131      {
+      132        key: 'billingCycle',
+
+● Update(src\modules\accounting\components\PaymentList.tsx)
+  ⎿  Added 2 lines, removed 5 lines
+      75        key: 'amount',
+      76        label: t('payments.table.amount'),
+      77        sortable: true,
+      78 -      render: (value, row) => (                                                            
+      78 +      render: (value) => (                                                                 
+      79          <Text fw={500}>
+      80 -          {Number(value).toLocaleString('tr-TR', {                                         
+      81 -            style: 'currency',                                                             
+      82 -            currency: row.currency || 'TRY',                                               
+      83 -          })}                                                                              
+      80 +          {formatCurrency(Number(value))}                                                  
+      81          </Text>
+      82        ),
+      83      },
+
+● Şimdi CashTransactionsPageClient.tsx dosyasını düzeltelim:
+
+● Update(src\app\[locale]\modules\accounting\cash-transactions\CashTransactionsPageClient.tsx)       
+  ⎿  Added 1 line
+      41  import { AlertModal } from '@/components/modals/AlertModal';
+      42  import { useParams } from 'next/navigation';
+      43  import { useTranslation } from '@/lib/i18n/client';
+      44 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      45  import {
+      46    useCashTransactions,
+      47    useCreateCashTransaction,
+
+● Update(src\app\[locale]\modules\accounting\cash-transactions\CashTransactionsPageClient.tsx)       
+  ⎿  Added 1 line, removed 14 lines
+      100    const params = useParams();
+      101    const currentLocale = (params?.locale as string) || locale;
+      102    const { t } = useTranslation('modules/accounting');
+      103 -                                                                                          
+      104 -  // Locale mapping for number formatting                                                 
+      105 -  const localeMap: Record<string, string> = {                                             
+      106 -    tr: 'tr-TR',                                                                          
+      107 -    en: 'en-US',                                                                          
+      108 -    de: 'de-DE',                                                                          
+      109 -    ar: 'ar-SA',                                                                          
+      110 -  };                                                                                      
+      111 -  const numberLocale = localeMap[currentLocale] || 'tr-TR';                               
+      103 +  const { formatCurrency } = useCurrency();                                               
+      104
+      105 -  // Helper to format currency based on current locale                                    
+      106 -  const formatCurrency = (value: number, currency = '₺') => {                             
+      107 -    return `${value.toLocaleString(numberLocale)} ${currency}`;                           
+      108 -  };                                                                                      
+      109 -                                                                                          
+      105    // Helper to get source label from translations
+      106    const getSourceLabel = (source: string) =>
+           t(`cashTransactions.sources.${source}`);
+      107
+
+● Şimdi tablo kolonundaki para birimi formatlamasını da güncelleyelim:
+
+● Read(src\app\[locale]\modules\accounting\cash-transactions\CashTransactionsPageClient.tsx)
+  ⎿  Read 40 lines
+
+● Update(src\app\[locale]\modules\accounting\cash-transactions\CashTransactionsPageClient.tsx)       
+  ⎿  Added 1 line, removed 2 lines
+      351        sortable: true,
+      352        render: (value, row) => (
+      353          <Text fw={600} c={row.type === 'income' ? 'green' : 'red'}>
+      354 -          {row.type === 'income' ? '+' : '-'}                                             
+      355 -          {Number(value).toLocaleString(numberLocale)} {row.currency}                     
+      354 +          {row.type === 'income' ? '+' : '-'}{formatCurrency(Number(value))}              
+      355          </Text>
+      356        ),
+      357      },
+
+● Search(pattern: "toLocaleString.*currency|currency:.*'TRY'", path:
+        "src\app\[locale]\modules\accounting", output_mode: "content")
+  ⎿  Found 6 lines (ctrl+o to expand)
+
+● Read(src\app\[locale]\modules\accounting\expenses\[id]\ExpenseDetailPageClient.tsx)
+  ⎿  Read 130 lines
+
+● Read(src\app\[locale]\modules\accounting\subscriptions\[id]\SubscriptionDetailPageClient.tsx)      
+  ⎿  Read 130 lines
+
+● Read(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Read 130 lines
+
+● Üç detay sayfasını da paralel olarak düzeltelim:
+
+● Update(src\app\[locale]\modules\accounting\expenses\[id]\ExpenseDetailPageClient.tsx)
+  ⎿  Added 1 line
+       6  import { useExpense } from '@/hooks/useExpenses';
+       7  import { useParams, useRouter } from 'next/navigation';
+       8  import { useTranslation } from '@/lib/i18n/client';
+       9 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      10  import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
+      11  import dayjs from 'dayjs';
+      12
+
+● Update(src\app\[locale]\modules\accounting\subscriptions\[id]\SubscriptionDetailPageClient.tsx)    
+  ⎿  Added 1 line
+       6  import { useSubscription } from '@/hooks/useSubscriptions';
+       7  import { useParams, useRouter } from 'next/navigation';
+       8  import { useTranslation } from '@/lib/i18n/client';
+       9 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      10  import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
+      11  import dayjs from 'dayjs';
+      12
+
+● Update(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Added 1 line
+       7  import { useInvoice } from '@/hooks/useInvoices';
+       8  import { useParams, useRouter } from 'next/navigation';
+       9  import { useTranslation } from '@/lib/i18n/client';
+      10 +import { useCurrency } from '@/hooks/useCurrency';                                         
+      11  import dayjs from 'dayjs';
+      12
+      13  export function InvoiceDetailPageClient({ locale, invoiceId }: { locale: string;
+          invoiceId: string }) {
+
+● Update(src\app\[locale]\modules\accounting\expenses\[id]\ExpenseDetailPageClient.tsx)
+  ⎿  Added 1 line
+      15    const router = useRouter();
+      16    const currentLocale = (params?.locale as string) || locale;
+      17    const { t } = useTranslation('modules/accounting');
+      18 +  const { formatCurrency } = useCurrency();                                                
+      19    const { data: expense, isLoading } = useExpense(expenseId);
+      20
+      21    if (isLoading) {
+
+● Update(src\app\[locale]\modules\accounting\subscriptions\[id]\SubscriptionDetailPageClient.tsx)    
+  ⎿  Added 1 line
+      15    const router = useRouter();
+      16    const currentLocale = (params?.locale as string) || locale;
+      17    const { t } = useTranslation('modules/accounting');
+      18 +  const { formatCurrency } = useCurrency();                                                
+      19    const { data: subscription, isLoading } = useSubscription(subscriptionId);
+      20
+      21    if (isLoading) {
+
+● Update(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Added 1 line
+      15    const router = useRouter();
+      16    const currentLocale = (params?.locale as string) || locale;
+      17    const { t } = useTranslation('modules/accounting');
+      18 +  const { formatCurrency } = useCurrency();                                                
+      19    const { data: invoice, isLoading } = useInvoice(invoiceId);
+      20
+      21    if (isLoading) {
+
+● Şimdi para birimi formatlamalarını güncelleyelim:
+
+● Update(src\app\[locale]\modules\accounting\expenses\[id]\ExpenseDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      103              <Grid.Col span={{ base: 12, md: 6 }}>
+      104                <Text size="sm" c="dimmed">{t('expenses.form.amount')}</Text>
+      105                <Text fw={500} size="lg">
+      106 -                {Number(expense.amount).toLocaleString('tr-TR', {                         
+      107 -                  style: 'currency',                                                      
+      108 -                  currency: expense.currency || 'TRY',                                    
+      109 -                })}                                                                       
+      106 +                {formatCurrency(Number(expense.amount))}                                  
+      107                </Text>
+      108              </Grid.Col>
+      109              <Grid.Col span={{ base: 12, md: 6 }}>
+
+● Update(src\app\[locale]\modules\accounting\subscriptions\[id]\SubscriptionDetailPageClient.tsx)    
+  ⎿  Added 1 line, removed 4 lines
+       96              <Grid.Col span={{ base: 12, md: 6 }}>
+       97                <Text size="sm"
+           c="dimmed">{t('subscriptions.form.basePrice')}</Text>
+       98                <Text fw={500}>
+       99 -                {Number(subscription.basePrice).toLocaleString('tr-TR', {                 
+      100 -                  style: 'currency',                                                      
+      101 -                  currency: subscription.currency || 'TRY',                               
+      102 -                })}                                                                       
+       99 +                {formatCurrency(Number(subscription.basePrice))}                          
+      100                </Text>
+      101              </Grid.Col>
+      102              <Grid.Col span={{ base: 12, md: 6 }}>
+
+● Update(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      92              <Grid.Col span={{ base: 12, md: 6 }}>
+      93                <Text size="sm" c="dimmed">{t('invoices.form.subtotal')}</Text>
+      94                <Text fw={500}>
+      95 -                {Number(invoice.subtotal).toLocaleString('tr-TR', {                        
+      96 -                  style: 'currency',                                                       
+      97 -                  currency: invoice.currency || 'TRY',                                     
+      98 -                })}                                                                        
+      95 +                {formatCurrency(Number(invoice.subtotal))}                                 
+      96                </Text>
+      97              </Grid.Col>
+      98              {invoice.taxAmount && (
+
+● Update(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+       99                <Grid.Col span={{ base: 12, md: 6 }}>
+      100                  <Text size="sm" c="dimmed">{t('invoices.form.taxAmount')}</Text>
+      101                  <Text fw={500}>
+      102 -                  {Number(invoice.taxAmount).toLocaleString('tr-TR', {                    
+      103 -                    style: 'currency',                                                    
+      104 -                    currency: invoice.currency || 'TRY',                                  
+      105 -                  })}                                                                     
+      102 +                  {formatCurrency(Number(invoice.taxAmount))}                             
+      103                  </Text>
+      104                </Grid.Col>
+      105              )}
+
+● Update(src\app\[locale]\modules\accounting\invoices\[id]\InvoiceDetailPageClient.tsx)
+  ⎿  Added 1 line, removed 4 lines
+      106              <Grid.Col span={{ base: 12, md: 6 }}>
+      107                <Text size="sm" c="dimmed">{t('invoices.form.totalAmount')}</Text>
+      108                <Text fw={500} size="lg">
+      109 -                {Number(invoice.totalAmount).toLocaleString('tr-TR', {                    
+      110 -                  style: 'currency',                                                      
+      111 -                  currency: invoice.currency || 'TRY',                                    
+      112 -                })}                                                                       
+      109 +                {formatCurrency(Number(invoice.totalAmount))}                             
+      110                </Text>
+      111              </Grid.Col>
+      112              {invoice.description && (
+
+● Search(pattern: "toLocaleString.*currency|currency:.*'TRY'|row\.currency", path: "src\modules\hr") 
+  ⎿  Found 3 files (ctrl+o to expand)
+
+● Search(pattern: "toLocaleString.*currency|currency:.*'TRY'|row\.currency", path:
+        "src\modules\production")
+  ⎿  Found 3 files (ctrl+o to expand)
+
+● Search(pattern: "toLocaleString.*currency|currency:.*'TRY'|row\.currency", path:
+        "src\modules\license")
+  ⎿  Found 5 files (ctrl+o to expand)
+
+● Search(pattern: "toLocaleString.*currency|currency:.*'TRY'|row\.currency", path: "src\modules",    
+        output_mode: "content")
+  ⎿  Found 44 lines (ctrl+o to expand)
+
+● Read(src\modules\hr\components\EmployeeDetail.tsx)
+  ⎿  Read 30 lines
+
+● Read(src\modules\license\components\LicenseDetail.tsx)
+  ⎿  Read 80 lines
+
+● Read(src\modules\hr\components\EmployeeDetail.tsx)
+
+✶ Diğer modüller düzenleniyor… (esc to interrupt · 11m 15s · ↓ 14.4k tokens · thinking)

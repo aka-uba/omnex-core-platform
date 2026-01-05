@@ -133,7 +133,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
               </span>
             </div>
             <div className={styles.amountRow}>
-              <span className={styles.amountText}>{formatCurrency(payment.amount, payment.currency)}</span>
+              <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
               <div className={styles.cardActions}>
                 {!isOverdue && !isProjected && (
                   <Tooltip label={t('payments.markAsPaid')} withArrow>

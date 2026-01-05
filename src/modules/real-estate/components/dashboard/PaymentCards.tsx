@@ -119,7 +119,7 @@ export function PaymentCards({ locale }: PaymentCardsProps) {
           {/* Right side - amount, days badge and actions */}
           <div className={styles.rightContent}>
             <div className={styles.amountInfo}>
-              <span className={styles.amountText}>{formatCurrency(payment.amount, payment.currency)}</span>
+              <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
               <span className={`${styles.daysBadge} ${getDaysBadgeClass(days, isOverdue)}`}>
                 {isOverdue
                   ? `${days} ${t('payments.quickBoard.daysLate').toUpperCase()}`
