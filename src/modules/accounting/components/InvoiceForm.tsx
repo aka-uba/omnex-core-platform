@@ -21,6 +21,8 @@ import { useRouter } from 'next/navigation';
 import { useCreateInvoice, useUpdateInvoice, useInvoice } from '@/hooks/useInvoices';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { invoiceCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import type { InvoiceStatus } from '@/modules/accounting/types/subscription';
 import dayjs from 'dayjs';
@@ -43,6 +45,7 @@ export function InvoiceForm({ locale, invoiceId }: InvoiceFormProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createInvoice = useCreateInvoice();
   const updateInvoice = useUpdateInvoice();
   const { data: invoiceData, isLoading: isLoadingInvoice } = useInvoice(invoiceId || '');
@@ -119,6 +122,13 @@ export function InvoiceForm({ locale, invoiceId }: InvoiceFormProps) {
       }
     }
   }, [isEdit, invoiceData, isLoadingInvoice, form.values.invoiceNumber]);
+
+  // Set default currency from GeneralSettings for new invoices
+  useEffect(() => {
+    if (!isEdit && defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [isEdit, defaultCurrency]);
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
@@ -271,11 +281,7 @@ export function InvoiceForm({ locale, invoiceId }: InvoiceFormProps) {
               <Select
                 label={t('invoices.form.currency')}
                 placeholder={t('invoices.form.currencyPlaceholder')}
-                data={[
-                  { value: 'TRY', label: 'TRY' },
-                  { value: 'USD', label: 'USD' },
-                  { value: 'EUR', label: 'EUR' },
-                ]}
+                data={CURRENCY_SELECT_OPTIONS}
                 {...form.getInputProps('currency')}
               />
             </Grid.Col>

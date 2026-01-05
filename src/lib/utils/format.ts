@@ -2,23 +2,35 @@
  * Utility functions for formatting values
  */
 
+import { getCurrencyLocale, DEFAULT_CURRENCY } from '@/lib/constants/currency';
+
 /**
  * Format a number as currency
  * @param amount - The amount to format
- * @param currency - The currency code (default: TRY)
- * @param locale - The locale for formatting (default: tr-TR)
+ * @param currency - The currency code (default: from constants)
+ * @param locale - The locale for formatting (auto-detected from currency if not provided)
+ *
+ * @note Prefer using `useCurrency().formatCurrency()` in React components
+ * as it automatically reads the currency from GeneralSettings.
+ * This utility is for non-React contexts (API routes, utilities, etc.)
  */
 export function formatCurrency(
     amount: number,
-    currency: string = 'TRY',
-    locale: string = 'tr-TR'
+    currency: string = DEFAULT_CURRENCY,
+    locale?: string
 ): string {
-    return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    }).format(amount);
+    const currencyLocale = locale || getCurrencyLocale(currency);
+    try {
+        return new Intl.NumberFormat(currencyLocale, {
+            style: 'currency',
+            currency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(amount);
+    } catch {
+        // Fallback for invalid currency codes
+        return `${amount.toFixed(2)} ${currency}`;
+    }
 }
 
 /**

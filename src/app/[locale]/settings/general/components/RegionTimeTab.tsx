@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack, Group, Select, Button, Paper, Title } from '@mantine/core';
 import { useTranslation } from '@/lib/i18n/client';
 import { IconDeviceFloppy } from '@tabler/icons-react';
 import { ClientIcon } from '@/components/common/ClientIcon';
+import { CURRENCY_SELECT_OPTIONS, DEFAULT_CURRENCY } from '@/lib/constants/currency';
 
 interface RegionTimeTabProps {
     settings: any;
@@ -15,13 +16,27 @@ interface RegionTimeTabProps {
 export function RegionTimeTab({ settings, onSave, saving }: RegionTimeTabProps) {
     const { t } = useTranslation('global');
     const [formData, setFormData] = React.useState({
-        timezone: settings.timezone || 'Europe/Istanbul',
-        dateFormat: settings.dateFormat || 'DD/MM/YYYY',
-        timeFormat: settings.timeFormat || '24',
-        weekStart: settings.weekStart || 'monday',
-        currency: settings.currency || 'TRY',
-        defaultLanguage: settings.defaultLanguage || 'tr',
+        timezone: 'Europe/Istanbul',
+        dateFormat: 'DD/MM/YYYY',
+        timeFormat: '24',
+        weekStart: 'monday',
+        currency: DEFAULT_CURRENCY,
+        defaultLanguage: 'tr',
     });
+
+    // Sync form data when settings are loaded from API
+    useEffect(() => {
+        if (settings && Object.keys(settings).length > 0) {
+            setFormData({
+                timezone: settings.timezone || 'Europe/Istanbul',
+                dateFormat: settings.dateFormat || 'DD/MM/YYYY',
+                timeFormat: settings.timeFormat || '24',
+                weekStart: settings.weekStart || 'monday',
+                currency: settings.currency || DEFAULT_CURRENCY,
+                defaultLanguage: settings.defaultLanguage || 'tr',
+            });
+        }
+    }, [settings]);
 
     const timezones = [
         { value: 'Europe/Istanbul', label: 'Europe/Istanbul (UTC+3)' },
@@ -49,14 +64,8 @@ export function RegionTimeTab({ settings, onSave, saving }: RegionTimeTabProps) 
         { value: 'sunday', label: t('settings.general.regionTime.weekStartSunday') },
     ];
 
-    const currencies = [
-        { value: 'TRY', label: t('settings.general.regionTime.currencyTRY') },
-        { value: 'USD', label: t('settings.general.regionTime.currencyUSD') },
-        { value: 'EUR', label: t('settings.general.regionTime.currencyEUR') },
-        { value: 'GBP', label: t('settings.general.regionTime.currencyGBP') },
-        { value: 'JPY', label: t('settings.general.regionTime.currencyJPY') },
-        { value: 'CNY', label: t('settings.general.regionTime.currencyCNY') },
-    ];
+    // Use centralized currency options
+    const currencies = CURRENCY_SELECT_OPTIONS;
 
     const languages = [
         { value: 'tr', label: t('settings.general.regionTime.languageTr') },
@@ -107,7 +116,7 @@ export function RegionTimeTab({ settings, onSave, saving }: RegionTimeTabProps) 
                                 label={t('settings.general.regionTime.currency')}
                                 data={currencies}
                                 value={formData.currency}
-                                onChange={(value) => setFormData({ ...formData, currency: value || 'TRY' })}
+                                onChange={(value) => setFormData({ ...formData, currency: value || DEFAULT_CURRENCY })}
                             />
                             <Select
                                 label={t('settings.general.regionTime.defaultLanguage')}

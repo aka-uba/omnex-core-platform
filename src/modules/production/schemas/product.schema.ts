@@ -17,7 +17,7 @@ export const productSchema = z.object({
   unit: productUnitSchema,
   costPrice: z.number().min(0).optional().nullable(),
   sellingPrice: z.number().min(0).optional().nullable(),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   isProducible: z.boolean().default(false),
   productionTime: z.number().int().min(0).optional().nullable(),
   description: z.string().optional().nullable(),

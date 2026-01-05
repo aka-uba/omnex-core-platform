@@ -24,6 +24,8 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateSubscription, useUpdateSubscription, useSubscription } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { subscriptionCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import type { SubscriptionType, SubscriptionStatus, BillingCycle, CommissionType } from '@/modules/accounting/types/subscription';
 
@@ -36,6 +38,7 @@ export function SubscriptionForm({ locale, subscriptionId }: SubscriptionFormPro
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createSubscription = useCreateSubscription();
   const updateSubscription = useUpdateSubscription();
   const { data: subscriptionData, isLoading: isLoadingSubscription } = useSubscription(subscriptionId || '');
@@ -100,6 +103,13 @@ export function SubscriptionForm({ locale, subscriptionId }: SubscriptionFormPro
       }
     }
   }, [isEdit, subscriptionData, isLoadingSubscription, form.values.name]);
+
+  // Set default currency from GeneralSettings for new subscriptions
+  useEffect(() => {
+    if (!isEdit && defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [isEdit, defaultCurrency]);
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
@@ -243,11 +253,7 @@ export function SubscriptionForm({ locale, subscriptionId }: SubscriptionFormPro
               <Select
                 label={t('subscriptions.form.currency')}
                 placeholder={t('subscriptions.form.currencyPlaceholder')}
-                data={[
-                  { value: 'TRY', label: 'TRY' },
-                  { value: 'USD', label: 'USD' },
-                  { value: 'EUR', label: 'EUR' },
-                ]}
+                data={CURRENCY_SELECT_OPTIONS}
                 {...form.getInputProps('currency')}
               />
             </Grid.Col>

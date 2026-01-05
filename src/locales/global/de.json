@@ -1975,6 +1975,14 @@
       "import": "Importiert",
       "login": "Angemeldet",
       "logout": "Abgemeldet"
+    },
+    "changes": {
+      "added": "hinzugefügt",
+      "removed": "entfernt",
+      "cleared": "gelöscht",
+      "set": "gesetzt",
+      "more": "weitere Änderungen",
+      "showLess": "Weniger anzeigen"
     }
   },
 

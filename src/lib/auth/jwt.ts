@@ -139,7 +139,7 @@ export async function verifyAuth(request: NextRequest): Promise<{
 
     // If not in header, try to get from cookie
     if (!token) {
-        token = request.cookies.get('auth-token')?.value || null;
+        token = request.cookies.get('accessToken')?.value || null;
     }
 
     if (!token) {

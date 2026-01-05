@@ -1939,6 +1939,14 @@
       "import": "İçe Aktarıldı",
       "login": "Giriş Yapıldı",
       "logout": "Çıkış Yapıldı"
+    },
+    "changes": {
+      "added": "eklendi",
+      "removed": "kaldırıldı",
+      "cleared": "temizlendi",
+      "set": "ayarlandı",
+      "more": "değişiklik daha",
+      "showLess": "Daha az göster"
     }
   },
   "success": "Başarılı",

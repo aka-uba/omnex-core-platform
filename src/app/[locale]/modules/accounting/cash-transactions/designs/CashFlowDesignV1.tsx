@@ -21,6 +21,7 @@ import {
   IconCalendar,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { useCurrency } from '@/hooks/useCurrency';
 import styles from './CashFlowDesignV1.module.css';
 
 interface Transaction {
@@ -62,6 +63,8 @@ export function CashFlowDesignV1({
   selectedTemplateId,
   onTemplateChange,
 }: CashFlowDesignV1Props) {
+  const { formatCurrency, currency: defaultCurrency } = useCurrency();
+
   // Separate income and expense transactions
   const incomeTransactions = useMemo(
     () => transactions.filter((tx) => tx.type === 'income'),
@@ -90,8 +93,9 @@ export function CashFlowDesignV1({
     (tx) => tx.status === 'pending' || tx.status === 'outstanding'
   ).length;
 
-  const formatCurrency = (amount: number, currency: string = 'EUR') => {
-    return `${amount.toLocaleString('de-DE', { minimumFractionDigits: 2 })} ${currency === 'EUR' ? '€' : currency}`;
+  // Format currency with override for transaction currency
+  const formatTxCurrency = (amount: number, txCurrency?: string) => {
+    return formatCurrency(amount, txCurrency || defaultCurrency);
   };
 
   const getStatusBadge = (status?: string) => {
@@ -132,13 +136,13 @@ export function CashFlowDesignV1({
       <div className={styles.netBalanceCard}>
         <Paper withBorder className={styles.netBalanceInner} shadow="xs" radius="lg">
           <Text className={styles.netBalanceLabel} c="dimmed">
-            Net Bakiye (EUR)
+            Net Bakiye ({defaultCurrency})
           </Text>
           <Group gap="xs" align="center">
             <span
               className={`${styles.netBalanceValue} ${(summary?.balance ?? 0) < 0 ? styles.negative : styles.positive}`}
             >
-              {formatCurrency(summary?.balance ?? 0)}
+              {formatTxCurrency(summary?.balance ?? 0)}
             </span>
             {(summary?.balance ?? 0) < 0 && (
               <span className={`${styles.trendBadge} ${styles.down}`}>
@@ -190,7 +194,7 @@ export function CashFlowDesignV1({
                   Toplam Alınan
                 </Text>
                 <Text className={styles.summaryValue}>
-                  {formatCurrency(summary?.totalIncome ?? 0)}
+                  {formatTxCurrency(summary?.totalIncome ?? 0)}
                 </Text>
               </div>
               <div className={`${styles.summaryBox} ${styles.neutral}`}>
@@ -246,7 +250,7 @@ export function CashFlowDesignV1({
                       <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
                       <div className={styles.positionSecondary}>{tx.paymentMethod || '-'}</div>
                     </td>
-                    <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                    <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                     <td className={styles.actions}>
                       <ActionIcon variant="subtle" size="sm" className={styles.actionBtn}>
                         <IconDotsVertical size={16} />
@@ -282,7 +286,7 @@ export function CashFlowDesignV1({
                   Toplam Ödenen
                 </Text>
                 <Text className={styles.summaryValue}>
-                  {formatCurrency(summary?.totalExpense ?? 0)}
+                  {formatTxCurrency(summary?.totalExpense ?? 0)}
                 </Text>
               </div>
               <div className={`${styles.summaryBox} ${styles.neutral}`}>
@@ -338,7 +342,7 @@ export function CashFlowDesignV1({
                       <div className={styles.positionPrimary}>{tx.description || tx.category}</div>
                       <div className={styles.positionSecondary}>{tx.paymentMethod || '-'}</div>
                     </td>
-                    <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                    <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                     <td className={styles.actions}>
                       <ActionIcon variant="subtle" size="sm" className={styles.actionBtn}>
                         <IconDotsVertical size={16} />

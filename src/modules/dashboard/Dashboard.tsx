@@ -46,6 +46,7 @@ import {
   IconCalendarEvent,
 } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useParams, useRouter } from 'next/navigation';
 
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
@@ -257,27 +258,14 @@ export function Dashboard() {
     return key;
   };
 
-  // Locale mapping for number/currency formatting
-  const localeMap: Record<string, { locale: string; currency: string }> = {
-    tr: { locale: 'tr-TR', currency: 'TRY' },
-    en: { locale: 'en-US', currency: 'USD' },
-    de: { locale: 'de-DE', currency: 'EUR' },
-    ar: { locale: 'ar-SA', currency: 'SAR' },
-  };
+  // Use centralized currency formatting from GeneralSettings
+  const { formatCurrency: formatCurrencyHook } = useCurrency();
 
-  // Helper to format currency based on current locale
+  // Helper to format currency (wrapper for string/number input)
   const formatCurrency = (value: number | string): string => {
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     if (isNaN(numValue)) return String(value);
-
-    const defaultConfig = { locale: 'tr-TR', currency: 'TRY' };
-    const localeConfig = localeMap[currentLocale] || defaultConfig;
-    return new Intl.NumberFormat(localeConfig.locale, {
-      style: 'currency',
-      currency: localeConfig.currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numValue);
+    return formatCurrencyHook(numValue);
   };
 
   // Helper to format stat value (handles currency flag)

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
+import { CURRENCY_LOCALES, DEFAULT_CURRENCY } from '@/lib/constants/currency';
 
 interface CompanyData {
   id: string;
@@ -34,17 +35,6 @@ interface CompanyContextType {
   currency: string;
   formatCurrency: (amount: number, locale?: string) => string;
 }
-
-const DEFAULT_CURRENCY = 'TRY';
-
-const CURRENCY_LOCALES: Record<string, string> = {
-  TRY: 'tr-TR',
-  USD: 'en-US',
-  EUR: 'de-DE',
-  GBP: 'en-GB',
-  JPY: 'ja-JP',
-  CNY: 'zh-CN',
-};
 
 const CompanyContext = createContext<CompanyContextType | undefined>(undefined);
 

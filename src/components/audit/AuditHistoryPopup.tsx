@@ -21,6 +21,8 @@ import {
   IconPencil,
   IconTrash,
   IconChevronRight,
+  IconChevronDown,
+  IconChevronUp,
   IconPhoto,
   IconFile,
 } from '@tabler/icons-react';
@@ -48,6 +50,7 @@ interface AuditHistoryPopupProps {
   entityName: string;
   limit?: number;
   onViewAll?: () => void;
+  translationNamespace?: string; // Module namespace for field label translations (e.g., 'modules/real-estate')
 }
 
 const ACTION_ICONS: Record<string, React.ReactNode> = {
@@ -62,19 +65,15 @@ const ACTION_COLORS: Record<string, string> = {
   delete: 'red',
 };
 
-// Çeviride bulunamayan alanlar için fallback (eski formatlar vb.)
-const FIELD_FALLBACKS: Record<string, string> = {
-  bathroomCount: 'Banyo Sayısı',
-  rentPrice: 'Kira Bedeli',
-};
-
 export function AuditHistoryPopup({
   entityId,
   entityName,
   limit = 5,
   onViewAll,
+  translationNamespace,
 }: AuditHistoryPopupProps) {
   const { t } = useTranslation('global');
+  const { t: tModule } = useTranslation(translationNamespace || 'global');
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<AuditLog[]>([]);
@@ -124,30 +123,167 @@ export function AuditHistoryPopup({
     });
   };
 
+  // ISO tarih string'i tespit et ve formatla
+  const isISODateString = (value: string): boolean => {
+    // ISO 8601 formatı: 2026-01-16T00:00:00.000Z veya 2026-01-16
+    const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?)?$/;
+    return isoDateRegex.test(value);
+  };
+
+  const formatValueForDisplay = (value: any): string => {
+    if (value === null || value === undefined) return '-';
+
+    // String ise tarih kontrolü yap
+    if (typeof value === 'string') {
+      if (isISODateString(value)) {
+        const date = new Date(value);
+        // Sadece tarih ise saat gösterme
+        if (value.length === 10) {
+          return date.toLocaleDateString('tr-TR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          });
+        }
+        // Tam ISO ise tarih ve saat
+        return date.toLocaleDateString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      }
+      // Normal string - kısalt
+      return value.length > 20 ? value.substring(0, 20) + '...' : value;
+    }
+
+    // Sayı
+    if (typeof value === 'number') {
+      return value.toLocaleString('tr-TR');
+    }
+
+    return String(value);
+  };
+
   // Otomatik güncellenen ve gösterilmemesi gereken alanlar
   const IGNORED_FIELDS = [
     'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
     'property', 'contracts', 'payments', 'appointments', 'maintenance',
-    '_count', 'user', 'company', 'tenant', 'propertyId'
+    '_count', 'user', 'company', 'tenant',
+    // Relation IDs
+    'propertyId', 'apartmentId', 'contractId', 'tenantRecordId', 'locationId',
   ];
 
-  // Alan adını çeviriden al, bulamazsa fallback veya alan adını kullan
+  // Alan adını çeviriden al - önce modül namespace'inden, sonra global'den
   const getFieldLabel = (field: string): string => {
-    // Önce çeviriden dene
-    const translatedLabel = t(`form.fields.${field}`, { defaultValue: '' });
-    if (translatedLabel && translatedLabel !== `form.fields.${field}`) {
-      return translatedLabel;
+    // 1. Modül namespace'inden form.${field} dene
+    if (translationNamespace) {
+      const moduleFormLabel = tModule(`form.${field}`, { defaultValue: '' });
+      if (moduleFormLabel && moduleFormLabel !== `form.${field}`) {
+        return moduleFormLabel;
+      }
+      // 2. Modül namespace'inden table.${field} dene
+      const moduleTableLabel = tModule(`table.${field}`, { defaultValue: '' });
+      if (moduleTableLabel && moduleTableLabel !== `table.${field}`) {
+        return moduleTableLabel;
+      }
     }
-    // Fallback'ten dene
-    if (FIELD_FALLBACKS[field]) {
-      return FIELD_FALLBACKS[field];
+    // 3. Global namespace'den form.${field} dene
+    const globalFormLabel = t(`form.${field}`, { defaultValue: '' });
+    if (globalFormLabel && globalFormLabel !== `form.${field}`) {
+      return globalFormLabel;
     }
-    // Son çare: alan adını döndür
-    return field;
+    // 4. Global namespace'den form.fields.${field} dene (legacy)
+    const globalFieldsLabel = t(`form.fields.${field}`, { defaultValue: '' });
+    if (globalFieldsLabel && globalFieldsLabel !== `form.fields.${field}`) {
+      return globalFieldsLabel;
+    }
+    // 5. camelCase'i readable format'a çevir (unitNumber -> Unit Number)
+    return field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).trim();
   };
 
-  // Değişiklik özetini kullanıcı dostu formatta oluştur
-  const getChangeDescription = (log: AuditLog): React.ReactNode => {
+  // Tek bir değişiklik satırını render et
+  const renderChangeItem = (
+    field: string,
+    oldVal: any,
+    newVal: any,
+    label: string
+  ): React.ReactNode => {
+    // Array değişiklikleri (resimler, belgeler)
+    if (Array.isArray(oldVal) && Array.isArray(newVal)) {
+      const added = newVal.length - oldVal.length;
+      if (added > 0) {
+        return (
+          <Group key={field} gap={4} wrap="nowrap">
+            {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
+            <Text size="xs" c="dimmed">{added} {label.toLowerCase()} {t('audit.changes.added')}</Text>
+          </Group>
+        );
+      } else if (added < 0) {
+        return (
+          <Group key={field} gap={4} wrap="nowrap">
+            {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
+            <Text size="xs" c="dimmed">{Math.abs(added)} {label.toLowerCase()} {t('audit.changes.removed')}</Text>
+          </Group>
+        );
+      }
+      return null;
+    }
+
+    // Boolean değişiklikleri
+    if (typeof newVal === 'boolean') {
+      return (
+        <Text key={field} size="xs" c="dimmed">
+          {label}: {newVal ? t('common.status.active') : t('common.status.inactive')}
+        </Text>
+      );
+    }
+
+    // Sayı değişiklikleri
+    if (typeof newVal === 'number') {
+      const formattedOld = oldVal != null ? Number(oldVal).toLocaleString('tr-TR') : '-';
+      const formattedNew = newVal.toLocaleString('tr-TR');
+      return (
+        <Text key={field} size="xs" c="dimmed">
+          {label}: {formattedOld} → {formattedNew}
+        </Text>
+      );
+    }
+
+    // String değişiklikleri (tarihler dahil)
+    if (typeof newVal === 'string') {
+      const formattedOld = formatValueForDisplay(oldVal);
+      const formattedNew = formatValueForDisplay(newVal);
+      return (
+        <Text key={field} size="xs" c="dimmed">
+          {label}: {formattedOld} → {formattedNew}
+        </Text>
+      );
+    }
+
+    // Diğer (null, undefined, object)
+    if (newVal === null && oldVal !== null) {
+      return (
+        <Text key={field} size="xs" c="dimmed">
+          {label} {t('audit.changes.cleared')}
+        </Text>
+      );
+    } else if (newVal !== null && oldVal === null) {
+      return (
+        <Text key={field} size="xs" c="dimmed">
+          {label} {t('audit.changes.set')}
+        </Text>
+      );
+    }
+
+    return null;
+  };
+
+  // Genişletilebilir değişiklik listesi component'i
+  const ExpandableChanges = ({ log }: { log: AuditLog }) => {
+    const [expanded, setExpanded] = useState(false);
+
     if (!log.metadata) return null;
 
     const { oldValue, newValue, changedFields } = log.metadata;
@@ -161,97 +297,43 @@ export function AuditHistoryPopup({
 
     if (meaningfulFields.length === 0) return null;
 
-    // Değişiklik açıklamalarını oluştur
-    const descriptions: React.ReactNode[] = [];
+    // Gösterilecek alanları belirle
+    const visibleFields = expanded ? meaningfulFields : meaningfulFields.slice(0, 2);
+    const hiddenCount = meaningfulFields.length - 2;
 
-    for (const field of meaningfulFields.slice(0, 2)) {
-      const oldVal = oldValue[field];
-      const newVal = newValue[field];
-      const label = getFieldLabel(field);
+    return (
+      <Stack gap={2}>
+        {visibleFields.map(field => {
+          const oldVal = oldValue[field];
+          const newVal = newValue[field];
+          const label = getFieldLabel(field);
+          return renderChangeItem(field, oldVal, newVal, label);
+        })}
 
-      // Array değişiklikleri (resimler, belgeler)
-      if (Array.isArray(oldVal) && Array.isArray(newVal)) {
-        const added = newVal.length - oldVal.length;
-        if (added > 0) {
-          descriptions.push(
-            <Group key={field} gap={4} wrap="nowrap">
-              {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
-              <Text size="xs" c="dimmed">{added} {label.toLowerCase()} eklendi</Text>
-            </Group>
-          );
-        } else if (added < 0) {
-          descriptions.push(
-            <Group key={field} gap={4} wrap="nowrap">
-              {field === 'images' ? <IconPhoto size={10} /> : <IconFile size={10} />}
-              <Text size="xs" c="dimmed">{Math.abs(added)} {label.toLowerCase()} silindi</Text>
-            </Group>
-          );
-        }
-        continue;
-      }
-
-      // Boolean değişiklikleri
-      if (typeof newVal === 'boolean') {
-        descriptions.push(
-          <Text key={field} size="xs" c="dimmed">
-            {label}: {newVal ? 'Aktif' : 'Pasif'}
-          </Text>
-        );
-        continue;
-      }
-
-      // Sayı değişiklikleri
-      if (typeof newVal === 'number') {
-        const formattedOld = oldVal != null ? Number(oldVal).toLocaleString('tr-TR') : '-';
-        const formattedNew = newVal.toLocaleString('tr-TR');
-        descriptions.push(
-          <Text key={field} size="xs" c="dimmed">
-            {label}: {formattedOld} → {formattedNew}
-          </Text>
-        );
-        continue;
-      }
-
-      // String değişiklikleri
-      if (typeof newVal === 'string') {
-        const shortOld = oldVal ? (String(oldVal).length > 15 ? String(oldVal).substring(0, 15) + '...' : String(oldVal)) : '-';
-        const shortNew = newVal.length > 15 ? newVal.substring(0, 15) + '...' : newVal;
-        descriptions.push(
-          <Text key={field} size="xs" c="dimmed">
-            {label}: {shortOld} → {shortNew}
-          </Text>
-        );
-        continue;
-      }
-
-      // Diğer (null, undefined, object)
-      if (newVal === null && oldVal !== null) {
-        descriptions.push(
-          <Text key={field} size="xs" c="dimmed">
-            {label} temizlendi
-          </Text>
-        );
-      } else if (newVal !== null && oldVal === null) {
-        descriptions.push(
-          <Text key={field} size="xs" c="dimmed">
-            {label} eklendi
-          </Text>
-        );
-      }
-    }
-
-    // Daha fazla değişiklik varsa
-    if (meaningfulFields.length > 2) {
-      descriptions.push(
-        <Text key="more" size="xs" c="dimmed" fs="italic">
-          +{meaningfulFields.length - 2} değişiklik daha
-        </Text>
-      );
-    }
-
-    return descriptions.length > 0 ? (
-      <Stack gap={2}>{descriptions}</Stack>
-    ) : null;
+        {/* Daha fazla değişiklik varsa genişletme butonu */}
+        {hiddenCount > 0 && (
+          <Group
+            gap={4}
+            style={{ cursor: 'pointer' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(!expanded);
+            }}
+          >
+            {expanded ? (
+              <IconChevronUp size={12} color="var(--mantine-color-blue-6)" />
+            ) : (
+              <IconChevronDown size={12} color="var(--mantine-color-blue-6)" />
+            )}
+            <Text size="xs" c="blue" fs="italic">
+              {expanded
+                ? t('audit.changes.showLess')
+                : `+${hiddenCount} ${t('audit.changes.more')}`}
+            </Text>
+          </Group>
+        )}
+      </Stack>
+    );
   };
 
   return (
@@ -343,7 +425,7 @@ export function AuditHistoryPopup({
                       </Text>
 
                       {/* Değişiklik detayları */}
-                      {log.action === 'update' && getChangeDescription(log)}
+                      {log.action === 'update' && <ExpandableChanges log={log} />}
                     </Stack>
                   </Box>
                 ))}

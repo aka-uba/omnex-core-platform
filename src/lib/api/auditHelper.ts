@@ -27,9 +27,23 @@ export async function getAuditContext(request: NextRequest): Promise<AuditContex
     const authResult = await verifyAuth(request);
     if (authResult.valid && authResult.payload) {
       userId = authResult.payload.userId;
+    } else if (process.env.NODE_ENV === 'development') {
+      // Debug: Log why auth failed
+      const authHeader = request.headers.get('authorization');
+      const cookieValue = request.cookies.get('accessToken')?.value;
+      console.log('[AuditContext] Auth failed:', {
+        hasAuthHeader: !!authHeader,
+        authHeaderPreview: authHeader ? authHeader.substring(0, 20) + '...' : null,
+        hasCookie: !!cookieValue,
+        valid: authResult.valid,
+        allCookies: Array.from(request.cookies.getAll()).map(c => c.name),
+      });
     }
-  } catch {
+  } catch (error) {
     // Auth failed, continue without userId
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[AuditContext] Auth error:', error);
+    }
   }
 
   // Get IP address
@@ -75,7 +89,9 @@ export function logAudit(
 const IGNORED_FIELDS = [
   'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
   'property', 'contracts', 'payments', 'appointments', 'maintenance',
-  '_count', 'user', 'company', 'tenant'
+  '_count', 'user', 'company', 'tenant',
+  // Relation IDs - bunlar ilişki objelerinin ID'leri, genellikle değişmez
+  'propertyId', 'apartmentId', 'contractId', 'tenantRecordId', 'locationId',
 ];
 
 /**
@@ -193,8 +209,23 @@ export function logUpdate(
 ): void {
   const { changedFields, oldValues, newValues } = getChangedFields(oldValue, newValue);
 
+  // Debug: Log what was detected
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[AuditHelper] logUpdate:', {
+      entity,
+      entityId,
+      changedFields,
+      userId: auditContext.userId,
+      oldCurrency: oldValue.currency,
+      newCurrency: newValue.currency,
+    });
+  }
+
   // Değişiklik yoksa log tutma
   if (changedFields.length === 0) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[AuditHelper] No changes detected, skipping audit log');
+    }
     return;
   }
 

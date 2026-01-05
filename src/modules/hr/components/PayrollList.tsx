@@ -16,6 +16,7 @@ import {
 import { usePayrolls, useDeletePayroll } from '@/hooks/usePayrolls';
 import { useEmployees } from '@/hooks/useEmployees';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
@@ -31,6 +32,7 @@ export function PayrollList({ locale }: PayrollListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/hr');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [employeeFilter, setEmployeeFilter] = useState<string | undefined>();
@@ -89,12 +91,6 @@ export function PayrollList({ locale }: PayrollListProps) {
     );
   }, [t]);
 
-  const formatCurrency = useCallback((value: number) => {
-    return Number(value).toLocaleString('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-    });
-  }, []);
 
   const payrolls = useMemo(() => data?.payrolls || [], [data]);
 

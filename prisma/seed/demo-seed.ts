@@ -1,18 +1,27 @@
 /**
  * Demo Seed Script
- * 
+ *
  * Tüm modüller için kapsamlı demo verileri oluşturur
- * Usage: TENANT_DATABASE_URL="..." tsx prisma/seed/demo-seed.ts --tenant-slug=omnexcore
- * 
+ * Usage: TENANT_DATABASE_URL="..." tsx prisma/seed/demo-seed.ts --tenant-slug=omnexcore --locale=tr
+ *
+ * Supported locales: tr (TRY), en (USD), de (EUR), ar (SAR)
+ *
  * Bu script opsiyoneldir ve sadece demo/test amaçlı kullanılmalıdır.
  */
 
 import { PrismaClient as TenantPrismaClient, Prisma } from '@prisma/tenant-client';
 import { PrismaClient as CorePrismaClient } from '@prisma/core-client';
+import { loadDemoData, SupportedLocale, DEFAULT_LOCALE } from './modules/base-seeder';
 
 const tenantPrisma = new TenantPrismaClient();
 const corePrisma = new CorePrismaClient();
 const tenantSlug = process.argv.find(arg => arg.startsWith('--tenant-slug='))?.split('=')[1] || 'omnexcore';
+
+// Locale support - defaults to 'tr' for backwards compatibility
+const localeArg = process.argv.find(arg => arg.startsWith('--locale='))?.split('=')[1] as SupportedLocale | undefined;
+const locale: SupportedLocale = localeArg || DEFAULT_LOCALE;
+const demoData = loadDemoData(locale);
+const currency = demoData.currency;
 
 // Helper functions
 function randomDate(start: Date, end: Date): Date {
@@ -44,6 +53,7 @@ function logError(module: string, error: any) {
 
 async function main() {
   console.log(`\n🎭 Starting DEMO seed for tenant: ${tenantSlug}`);
+  console.log(`📍 Locale: ${locale} | Currency: ${currency}`);
   console.log('=' .repeat(60));
 
   try {
@@ -447,7 +457,7 @@ async function main() {
                 endDate: randomDate(new Date(2025, 0, 1), new Date(2026, 0, 1)),
                 rentAmount: apt.rentPrice || new Prisma.Decimal(10000),
                 deposit: new Prisma.Decimal(Number(apt.rentPrice || 10000) * 2),
-                currency: 'TRY',
+                currency,
                 paymentType: randomChoice(['bank_transfer', 'auto_debit']),
                 paymentDay: randomChoice([1, 5, 10, 15]),
                 autoRenewal: Math.random() > 0.5,
@@ -485,7 +495,7 @@ async function main() {
                 tenantRecordId: contract.tenantRecordId, // Kiracı kişi ID (RETenant)
                 type: 'rent',
                 amount: contract.rentAmount,
-                currency: 'TRY',
+                currency,
                 dueDate,
                 paidDate: month > 0 ? dueDate : null,
                 status: month > 0 ? 'paid' : randomChoice(['pending', 'paid']),
@@ -598,7 +608,7 @@ async function main() {
             startDate: new Date(2024, 0, 1),
             renewalDate: new Date(2025, 0, 1),
             basePrice: new Prisma.Decimal(15000),
-            currency: 'TRY',
+            currency,
             billingCycle: 'monthly',
             description: 'Enterprise yazılım paketi',
             isActive: true
@@ -617,7 +627,7 @@ async function main() {
             startDate: new Date(2024, 0, 1),
             renewalDate: new Date(2025, 0, 1),
             basePrice: new Prisma.Decimal(5000),
-            currency: 'TRY',
+            currency,
             billingCycle: 'monthly',
             description: 'Cloud sunucu hizmeti',
             isActive: true
@@ -636,7 +646,7 @@ async function main() {
             startDate: new Date(2023, 6, 1),
             renewalDate: new Date(2024, 6, 1),
             basePrice: new Prisma.Decimal(35000),
-            currency: 'TRY',
+            currency,
             billingCycle: 'monthly',
             description: 'Merkez ofis kirası',
             isActive: true
@@ -682,7 +692,7 @@ async function main() {
             taxRate: new Prisma.Decimal(20),
             taxAmount,
             totalAmount,
-            currency: 'TRY',
+            currency,
             status: i < 3 ? randomChoice(['draft', 'sent']) : randomChoice(['paid', 'paid', 'overdue']),
             paidDate: i >= 3 && Math.random() > 0.3 ? dueDate : null,
             description: subscriptions.length > 0 ? `Fatura - ${subscriptions[i % subscriptions.length].name}` : 'Demo fatura',
@@ -713,7 +723,7 @@ async function main() {
               subscriptionId: inv.subscriptionId,
               invoiceId: inv.id,
               amount: inv.totalAmount,
-              currency: 'TRY',
+              currency,
               paymentDate: inv.paidDate || new Date(),
               paymentMethod: randomChoice(['bank_transfer', 'card', 'cash']),
               paymentReference: `PAY-${Date.now()}-${idx}`,
@@ -745,7 +755,7 @@ async function main() {
               category: randomChoice(expenseCategories),
               type: randomChoice(expenseTypes),
               amount: randomDecimal(500, 15000),
-              currency: 'TRY',
+              currency,
               expenseDate: randomDate(new Date(2024, 0, 1), new Date()),
               assignedUserId: adminUser.id,
               status: randomChoice(['pending', 'approved', 'approved']),
@@ -824,7 +834,7 @@ async function main() {
                 managerId: idx > 0 ? employeeUsers[0].id : null,
                 salary: randomDecimal(25000, 80000),
                 salaryGroup: randomChoice(['A', 'B', 'C']),
-                currency: 'TRY',
+                currency,
                 workType: randomChoice(['full_time', 'full_time', 'part_time', 'contract']),
                 isActive: true
               }
@@ -968,7 +978,7 @@ async function main() {
               unit: randomChoice(['adet', 'kg', 'metre', 'lt']),
               costPrice: randomDecimal(100, 5000),
               sellingPrice: randomDecimal(150, 7500),
-              currency: 'TRY',
+              currency,
               isProducible: p.type !== 'hammadde',
               productionTime: p.type !== 'hammadde' ? randomChoice([30, 60, 120, 240]) : null,
               description: `${p.name} - Demo ürün`,

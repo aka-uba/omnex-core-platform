@@ -28,6 +28,7 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { useCurrency } from '@/hooks/useCurrency';
 import styles from './CashFlowDesignV3.module.css';
 
 interface Transaction {
@@ -69,6 +70,8 @@ export function CashFlowDesignV3({
   selectedTemplateId,
   onTemplateChange,
 }: CashFlowDesignV3Props) {
+  const { formatCurrency, currency: defaultCurrency } = useCurrency();
+
   // Separate income and expense transactions
   const incomeTransactions = useMemo(
     () => transactions.filter((tx) => tx.type === 'income'),
@@ -97,8 +100,9 @@ export function CashFlowDesignV3({
     (tx) => tx.status === 'pending' || tx.status === 'outstanding'
   ).length;
 
-  const formatCurrency = (amount: number, currency: string = 'EUR') => {
-    return `${amount.toLocaleString('de-DE', { minimumFractionDigits: 2 })} ${currency === 'EUR' ? '€' : currency}`;
+  // Format currency with override for transaction currency
+  const formatTxCurrency = (amount: number, txCurrency?: string) => {
+    return formatCurrency(amount, txCurrency || defaultCurrency);
   };
 
   const getStatusBadge = (status?: string) => {
@@ -189,11 +193,11 @@ export function CashFlowDesignV3({
         {/* Balance */}
         <div className={styles.balanceSection}>
           <Paper withBorder className={styles.balanceCard} shadow="xs" radius="lg">
-            <Text className={styles.balanceLabel}>Toplam EUR</Text>
+            <Text className={styles.balanceLabel}>Toplam {defaultCurrency}</Text>
             <span
               className={`${styles.balanceValue} ${(summary?.balance ?? 0) < 0 ? styles.negative : styles.positive}`}
             >
-              {formatCurrency(summary?.balance ?? 0)}
+              {formatTxCurrency(summary?.balance ?? 0)}
             </span>
           </Paper>
         </div>
@@ -243,7 +247,7 @@ export function CashFlowDesignV3({
             </h2>
             <div className={`${styles.summaryCard} ${styles.income}`}>
               <span className={`${styles.summaryAmount} ${styles.income}`}>
-                {formatCurrency(summary?.totalIncome ?? 0)}
+                {formatTxCurrency(summary?.totalIncome ?? 0)}
               </span>
               <div className={`${styles.openBookingsPill} ${styles.income}`}>
                 Açık Kayıtlar: {pendingIncomeCount}
@@ -279,7 +283,7 @@ export function CashFlowDesignV3({
                     <th>Tip</th>
                     <th>Pozisyon</th>
                     <th>Numara</th>
-                    <th style={{ textAlign: 'right' }}>Tutar EUR</th>
+                    <th style={{ textAlign: 'right' }}>Tutar {defaultCurrency}</th>
                     <th style={{ width: 48 }}></th>
                   </tr>
                 </thead>
@@ -304,7 +308,7 @@ export function CashFlowDesignV3({
                       <td>
                         <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
                       </td>
-                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                       <td className={styles.actions}>
                         <ActionIcon variant="subtle" size="sm" color="gray">
                           <IconDotsVertical size={14} />
@@ -327,7 +331,7 @@ export function CashFlowDesignV3({
             </h2>
             <div className={`${styles.summaryCard} ${styles.expense}`}>
               <span className={`${styles.summaryAmount} ${styles.expense}`}>
-                {formatCurrency(summary?.totalExpense ?? 0)}
+                {formatTxCurrency(summary?.totalExpense ?? 0)}
               </span>
               <div className={`${styles.openBookingsPill} ${styles.expense}`}>
                 Açık Kayıtlar: {pendingExpenseCount}
@@ -363,7 +367,7 @@ export function CashFlowDesignV3({
                     <th>Tip</th>
                     <th>Pozisyon</th>
                     <th>Numara</th>
-                    <th style={{ textAlign: 'right' }}>Tutar EUR</th>
+                    <th style={{ textAlign: 'right' }}>Tutar {defaultCurrency}</th>
                     <th style={{ width: 48 }}></th>
                   </tr>
                 </thead>
@@ -387,7 +391,7 @@ export function CashFlowDesignV3({
                       <td>
                         <span className={styles.numberPill}>{tx.paymentMethod || 'Daimi Emir'}</span>
                       </td>
-                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                       <td className={styles.actions}>
                         <ActionIcon variant="subtle" size="sm" color="gray">
                           <IconDotsVertical size={14} />

@@ -3,6 +3,8 @@
  * Replaces {{variableName}} placeholders in template strings with actual values
  */
 
+import { getCurrencyLocale, DEFAULT_CURRENCY } from '@/lib/constants/currency';
+
 export interface VariableContext {
   apartment?: {
     id?: string;
@@ -35,6 +37,8 @@ export interface VariableContext {
     specialTerms?: string;
     nextSteps?: string;
   };
+  currency?: string; // Currency code for formatting (defaults to TRY)
+  locale?: string; // Locale for date/number formatting
   [key: string]: any; // Allow custom variables
 }
 
@@ -46,6 +50,20 @@ export interface VariableContext {
  */
 export function replaceTemplateVariables(content: string, context: VariableContext): string {
   let result = content;
+
+  // Get currency and locale from context or use defaults
+  const currency = context.currency || DEFAULT_CURRENCY;
+  const locale = context.locale || getCurrencyLocale(currency);
+
+  // Helper function for currency formatting
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+  };
+
+  // Helper function for date formatting
+  const formatDate = (date: Date) => {
+    return new Date(date).toLocaleDateString(locale);
+  };
 
   // Build variable map from context
   const variables: Record<string, any> = {};
@@ -59,7 +77,7 @@ export function replaceTemplateVariables(content: string, context: VariableConte
     variables.apartmentArea = context.apartment.area ? `${context.apartment.area} m²` : '';
     variables.apartmentRoomCount = context.apartment.roomCount?.toString() || '';
     variables.apartmentRentPrice = context.apartment.rentPrice
-      ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(context.apartment.rentPrice)
+      ? formatCurrency(context.apartment.rentPrice)
       : '';
     variables.propertyName = context.apartment.property?.name || '';
   }
@@ -68,13 +86,13 @@ export function replaceTemplateVariables(content: string, context: VariableConte
   if (context.contract) {
     variables.contractNumber = context.contract.contractNumber || context.contract.id || '';
     variables.contractStartDate = context.contract.startDate
-      ? new Date(context.contract.startDate).toLocaleDateString('tr-TR')
+      ? formatDate(context.contract.startDate)
       : '';
     variables.contractEndDate = context.contract.endDate
-      ? new Date(context.contract.endDate).toLocaleDateString('tr-TR')
+      ? formatDate(context.contract.endDate)
       : '';
     variables.rentAmount = context.contract.rentAmount
-      ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(context.contract.rentAmount)
+      ? formatCurrency(context.contract.rentAmount)
       : '';
   }
 
@@ -88,16 +106,16 @@ export function replaceTemplateVariables(content: string, context: VariableConte
   // Report variables
   if (context.report) {
     variables.reportRentAmount = context.report.rentAmount
-      ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(context.report.rentAmount)
+      ? formatCurrency(context.report.rentAmount)
       : '';
     variables.reportDeposit = context.report.deposit
-      ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(context.report.deposit)
+      ? formatCurrency(context.report.deposit)
       : '';
     variables.reportDeliveryDate = context.report.deliveryDate
-      ? new Date(context.report.deliveryDate).toLocaleDateString('tr-TR')
+      ? formatDate(context.report.deliveryDate)
       : '';
     variables.reportContractDate = context.report.contractDate
-      ? new Date(context.report.contractDate).toLocaleDateString('tr-TR')
+      ? formatDate(context.report.contractDate)
       : '';
     variables.specialTerms = context.report.specialTerms || '';
     variables.nextSteps = context.report.nextSteps || '';

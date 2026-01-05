@@ -22,6 +22,8 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreateLicensePackage, useUpdateLicensePackage, useLicensePackage } from '@/hooks/useLicensePackages';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { licensePackageCreateSchema } from '@/modules/license/schemas/license.schema';
 import type { BillingCycle, LicensePackageUpdateInput } from '@/modules/license/types/license';
 
@@ -34,6 +36,7 @@ export function LicensePackageForm({ locale, packageId }: LicensePackageFormProp
   const router = useRouter();
   const { t } = useTranslation('modules/license');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createPackage = useCreateLicensePackage();
   const updatePackage = useUpdateLicensePackage();
   const { data: packageData, isLoading: isLoadingPackage } = useLicensePackage(packageId || null);
@@ -70,6 +73,13 @@ export function LicensePackageForm({ locale, packageId }: LicensePackageFormProp
       billingCycle: (value) => (!value ? t('packages.form.billingCycle') + ' ' + tGlobal('common.required') : null),
     },
   });
+
+  // Set default currency from GeneralSettings for new packages
+  useEffect(() => {
+    if (!isEdit && defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [isEdit, defaultCurrency]);
 
   // Load package data for edit
   useEffect(() => {
@@ -180,7 +190,7 @@ export function LicensePackageForm({ locale, packageId }: LicensePackageFormProp
               <Select
                 label={t('packages.form.currency')}
                 placeholder={t('packages.form.currencyPlaceholder')}
-                data={['TRY', 'USD', 'EUR', 'GBP']}
+                data={CURRENCY_SELECT_OPTIONS}
                 required
                 {...form.getInputProps('currency')}
               />

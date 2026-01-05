@@ -3,6 +3,7 @@
 import { Paper, Group, Text, Badge, Stack, Grid } from '@mantine/core';
 import { useMaintenanceRecord } from '@/hooks/useMaintenanceRecords';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 import type { MaintenanceType, MaintenanceStatus } from '@/modules/maintenance/types/maintenance';
@@ -15,6 +16,7 @@ interface MaintenanceRecordDetailProps {
 export function MaintenanceRecordDetail({ locale: _locale, recordId }: MaintenanceRecordDetailProps) {
   const { t } = useTranslation('modules/maintenance');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const { data: record, isLoading } = useMaintenanceRecord(recordId);
 
   if (isLoading) {
@@ -114,10 +116,7 @@ export function MaintenanceRecordDetail({ locale: _locale, recordId }: Maintenan
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('form.estimatedCost')}</Text>
                 <Text fw={500}>
-                  {Number(record.estimatedCost).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(record.estimatedCost))}
                 </Text>
               </Grid.Col>
             )}
@@ -125,10 +124,7 @@ export function MaintenanceRecordDetail({ locale: _locale, recordId }: Maintenan
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('form.actualCost')}</Text>
                 <Text fw={500}>
-                  {Number(record.actualCost).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(record.actualCost))}
                 </Text>
               </Grid.Col>
             )}

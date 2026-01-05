@@ -20,6 +20,7 @@ import {
 } from '@tabler/icons-react';
 import { useAccountingAnalytics } from '@/hooks/useAccountingAnalytics';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/de';
@@ -34,6 +35,7 @@ interface AccountingDashboardProps {
 export function AccountingDashboard({ locale }: AccountingDashboardProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [dateFrom, setDateFrom] = useState<Date | null>(dayjs().subtract(12, 'months').toDate());
   const [dateTo, setDateTo] = useState<Date | null>(dayjs().toDate());
 
@@ -66,15 +68,6 @@ export function AccountingDashboard({ locale }: AccountingDashboardProps) {
 
   const { summary, revenueByMonth, expensesByCategory } = data;
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   // Prepare chart data
   const chartData = revenueByMonth.map((item) => ({

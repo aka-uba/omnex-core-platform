@@ -27,6 +27,8 @@ import { useCreatePayment, useUpdatePayment, usePayment } from '@/hooks/usePayme
 import { useApartments } from '@/hooks/useApartments';
 import { useContracts } from '@/hooks/useContracts';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import type { PaymentType, PaymentStatus, PaymentMethod, ExtraCharge } from '@/modules/real-estate/types/payment';
 
 interface PaymentFormProps {
@@ -38,6 +40,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createPayment = useCreatePayment();
   const updatePayment = useUpdatePayment();
   const { data: paymentData, isLoading: isLoadingPayment } = usePayment(paymentId || '');
@@ -47,6 +50,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
   const isEdit = !!paymentId;
 
   const [extraCharges, setExtraCharges] = useState<ExtraCharge[]>([]);
+  const [currencyInitialized, setCurrencyInitialized] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -92,8 +96,17 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
       if (paymentData.extraCharges && Array.isArray(paymentData.extraCharges)) {
         setExtraCharges(paymentData.extraCharges);
       }
+      setCurrencyInitialized(true);
     }
   }, [paymentData, isEdit]);
+
+  // Set default currency from GeneralSettings for new payments
+  useEffect(() => {
+    if (!isEdit && !currencyInitialized && defaultCurrency) {
+      form.setFieldValue('currency', defaultCurrency);
+      setCurrencyInitialized(true);
+    }
+  }, [isEdit, currencyInitialized, defaultCurrency]);
 
   const addExtraCharge = () => {
     setExtraCharges([...extraCharges, { name: '', amount: 0 }]);
@@ -321,11 +334,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Select
                 label={t('form.currency')}
-                data={[
-                  { value: 'TRY', label: 'TRY' },
-                  { value: 'USD', label: 'USD' },
-                  { value: 'EUR', label: 'EUR' },
-                ]}
+                data={CURRENCY_SELECT_OPTIONS}
                 {...form.getInputProps('currency')}
               />
             </Grid.Col>

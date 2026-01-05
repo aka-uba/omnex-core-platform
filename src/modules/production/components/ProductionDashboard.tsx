@@ -20,6 +20,7 @@ import {
 } from '@tabler/icons-react';
 import { useProductionAnalytics } from '@/hooks/useProductionAnalytics';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { ChartTooltip } from '@/components/charts';
@@ -31,6 +32,7 @@ interface ProductionDashboardProps {
 export function ProductionDashboard({ locale }: ProductionDashboardProps) {
   const { t } = useTranslation('modules/production');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [dateFrom, setDateFrom] = useState<Date | null>(dayjs().subtract(12, 'months').toDate());
   const [dateTo, setDateTo] = useState<Date | null>(dayjs().toDate());
 
@@ -56,16 +58,6 @@ export function ProductionDashboard({ locale }: ProductionDashboardProps) {
   }
 
   const { summary, ordersByStatus, ordersByMonth, lowStockProducts } = data;
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   // Prepare chart data
   const chartData = ordersByMonth.map((item) => ({

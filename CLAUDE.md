@@ -485,6 +485,7 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 ### 5.6.1 Audit History (Değişiklik Geçmişi)
 **Dosyalar**:
 - `src/components/audit/AuditHistoryPopup.tsx` - Popup bileşeni
+- `src/lib/api/auditHelper.ts` - Audit helper fonksiyonları
 - `prisma/extensions/audit.prisma` - AuditLog modeli
 - `src/lib/services/auditLogService.ts` - Audit servis katmanı
 - `src/app/api/audit-logs/route.ts` - REST API endpoint
@@ -494,6 +495,9 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 - Son 5 işlem popup'ta görüntülenir
 - Kim, ne zaman, hangi işlemi yaptı bilgisi
 - Değişen alanlar ve eski/yeni değerler
+- **Genişletilebilir değişiklik listesi** - "+3 değişiklik daha" tıklanabilir
+- **Modül bazlı çeviri** - Alan etiketleri modülün kendi çevirilerinden gelir
+- **Tarih formatı** - ISO tarihleri otomatik formatlanır
 
 **DataTable Entegrasyonu:**
 ```tsx
@@ -501,8 +505,28 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
   showAuditHistory={true}       // Audit ikonu göster
   auditEntityName="Apartment"   // Entity adı (model adı ile aynı olmalı)
   auditIdKey="id"               // Satır ID key
+  exportNamespace="modules/real-estate"  // Çeviri namespace (audit etiketleri için)
   onAuditViewAll={(entityId) => {}} // Opsiyonel: Tüm geçmişi gör callback
 />
+```
+
+**Çeviri Namespace Kullanımı:**
+AuditHistoryPopup alan etiketlerini şu sırayla arar:
+1. `modules/{module}` → `form.{field}` (örn: `form.unitNumber`)
+2. `modules/{module}` → `table.{field}` (örn: `table.status`)
+3. `global` → `form.{field}`
+4. `global` → `form.fields.{field}` (legacy)
+5. camelCase → readable format (örn: `unitNumber` → `Unit Number`)
+
+**IGNORED_FIELDS (Audit'te Gösterilmeyenler):**
+```typescript
+const IGNORED_FIELDS = [
+  'updatedAt', 'createdAt', 'id', 'tenantId', 'companyId',
+  'property', 'contracts', 'payments', 'appointments', 'maintenance',
+  '_count', 'user', 'company', 'tenant',
+  // Relation IDs
+  'propertyId', 'apartmentId', 'contractId', 'tenantRecordId', 'locationId',
+];
 ```
 
 **API Kullanımı:**
@@ -510,11 +534,11 @@ Tüm bildirim başlıkları global çevirilerden gelir (`src/locales/global/`):
 GET /api/audit-logs?entity=Apartment&entityId=xxx&pageSize=5
 ```
 
-**AuditLog Kaydetme - Yöntem 1: Helper Fonksiyonları (Önerilen):**
+**AuditLog Kaydetme - Helper Fonksiyonları:**
 ```typescript
 import { getAuditContext, logCreate, logUpdate, logDelete } from '@/lib/api/auditHelper';
 
-// Handler başında audit context al
+// Handler başında audit context al (cookie'den userId okur)
 const auditContext = await getAuditContext(request);
 
 // CREATE işlemi
@@ -532,40 +556,26 @@ logDelete(tenantContext, auditContext, 'Apartment', id, companyId, {
 });
 ```
 
-**AuditLog Kaydetme - Yöntem 2: Merkezi CRUD Wrapper:**
-```typescript
-// src/app/api/real-estate/apartments/route.ts
-import { createAuditedCrud } from '@/lib/api/withAuditedCrud';
-
-const crud = createAuditedCrud({
-  entity: 'Apartment',
-  module: 'real-estate',
-});
-
-export const POST = crud.create(async (prisma, data, context) => {
-  return await prisma.apartment.create({
-    data: { ...data, tenantId: context.tenantId, companyId: context.companyId },
-  });
-});
-
-// src/app/api/real-estate/apartments/[id]/route.ts
-export const PATCH = crud.update(async (prisma, id, data, existing, context) => {
-  return await prisma.apartment.update({ where: { id }, data });
-});
-
-export const DELETE = crud.delete(async (prisma, id, existing, context) => {
-  await prisma.apartment.delete({ where: { id } });
-});
-```
+**ÖNEMLİ - Cookie Adı:**
+- Auth token cookie adı: `accessToken` (HttpOnly)
+- `jwt.ts` ve `auditHelper.ts` bu cookie'yi okur
+- Login sırasında `response.cookies.set('accessToken', ...)` ile ayarlanır
 
 **i18n Keys (global namespace):**
 - `audit.title` → "Değişiklik Geçmişi"
 - `audit.recentChanges` → "Son Değişiklikler"
 - `audit.viewAll` → "Tüm Geçmişi Gör"
 - `audit.noHistory` → "Henüz değişiklik yok"
+- `audit.system` → "Sistem"
 - `audit.actions.create` → "Oluşturuldu"
 - `audit.actions.update` → "Güncellendi"
 - `audit.actions.delete` → "Silindi"
+- `audit.changes.added` → "eklendi"
+- `audit.changes.removed` → "kaldırıldı"
+- `audit.changes.cleared` → "temizlendi"
+- `audit.changes.set` → "ayarlandı"
+- `audit.changes.more` → "değişiklik daha"
+- `audit.changes.showLess` → "Daha az göster"
 
 ### 5.7 Layout Sistemi
 **Dosya**: `src/components/layouts/`
@@ -897,6 +907,40 @@ const { items, loading } = useItems();
 - **YANLIŞ**: Export butonlarını manuel eklemek
 - **DOĞRU**: DataTable'da `showExportIcons={true}` kullanmak
 
+### 9.5 Currency Hataları
+- **YANLIŞ**: Hardcoded para birimi kullanmak
+  ```typescript
+  // YAPMA!
+  amount.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' });
+  currency: 'TRY',
+  <Select data={['TRY', 'USD', 'EUR']} />
+  ```
+- **DOĞRU**: `useCurrency` hook ve merkezi sabitleri kullanmak
+  ```typescript
+  const { formatCurrency, currency } = useCurrency();
+  formatCurrency(amount);
+  <Select data={CURRENCY_SELECT_OPTIONS} />
+  ```
+
+### 9.6 Settings Form State Hataları
+- **YANLIŞ**: `useState` initial value'da props kullanmak (props async yükleniyorsa)
+  ```typescript
+  // settings henüz yüklenmemiş olabilir!
+  const [formData, setFormData] = useState({
+    currency: settings.currency || 'TRY',
+  });
+  ```
+- **DOĞRU**: `useEffect` ile props değişince state'i güncellemek
+  ```typescript
+  const [formData, setFormData] = useState({ currency: DEFAULT_CURRENCY });
+
+  useEffect(() => {
+    if (settings && Object.keys(settings).length > 0) {
+      setFormData({ currency: settings.currency || DEFAULT_CURRENCY });
+    }
+  }, [settings]);
+  ```
+
 ---
 
 ## 10. KONTROL LİSTESİ
@@ -914,6 +958,9 @@ Yeni sayfa/özellik eklerken:
 - [ ] API'de withTenant kullanıldı mı?
 - [ ] tenantId ve companyId eklendi mi?
 - [ ] Mobile responsive test edildi mi?
+- [ ] **Para birimi için `useCurrency` hook kullanıldı mı?**
+- [ ] **Currency Select için `CURRENCY_SELECT_OPTIONS` kullanıldı mı?**
+- [ ] **Form state async props ile senkronize ediliyor mu? (useEffect)**
 
 ---
 
@@ -1683,6 +1730,257 @@ Bildirim şablonları sayfasında kategoriye göre filtreleme:
 
 ---
 
+## 23. PARA BİRİMİ SİSTEMİ (Currency System)
+
+### 23.1 Merkezi Currency Sabitleri
+**Dosya**: `src/lib/constants/currency.ts`
+
+```typescript
+import { SUPPORTED_CURRENCIES, DEFAULT_CURRENCY, CURRENCY_SELECT_OPTIONS, getCurrencyLocale } from '@/lib/constants/currency';
+
+// Desteklenen para birimleri
+export const SUPPORTED_CURRENCIES: CurrencyOption[] = [
+  { value: 'TRY', label: 'TRY - Türk Lirası', symbol: '₺', locale: 'tr-TR' },
+  { value: 'USD', label: 'USD - US Dollar', symbol: '$', locale: 'en-US' },
+  { value: 'EUR', label: 'EUR - Euro', symbol: '€', locale: 'de-DE' },
+  { value: 'GBP', label: 'GBP - British Pound', symbol: '£', locale: 'en-GB' },
+  { value: 'SAR', label: 'SAR - Saudi Riyal', symbol: '﷼', locale: 'ar-SA' },
+  { value: 'AED', label: 'AED - UAE Dirham', symbol: 'د.إ', locale: 'ar-AE' },
+  { value: 'CHF', label: 'CHF - Swiss Franc', symbol: 'CHF', locale: 'de-CH' },
+  { value: 'JPY', label: 'JPY - Japanese Yen', symbol: '¥', locale: 'ja-JP' },
+  { value: 'CNY', label: 'CNY - Chinese Yuan', symbol: '¥', locale: 'zh-CN' },
+  { value: 'RUB', label: 'RUB - Russian Ruble', symbol: '₽', locale: 'ru-RU' },
+];
+
+// Varsayılan para birimi
+export const DEFAULT_CURRENCY = 'TRY';
+
+// Select component için options
+export const CURRENCY_SELECT_OPTIONS = SUPPORTED_CURRENCIES.map(c => ({
+  value: c.value,
+  label: c.label,
+}));
+
+// Para birimi kodundan locale al
+export function getCurrencyLocale(code: string): string;
+```
+
+### 23.2 useCurrency Hook
+**Dosya**: `src/hooks/useCurrency.ts`
+
+Para birimi formatlaması için merkezi React hook. GeneralSettings'ten currency değerini okur.
+
+```typescript
+import { useCurrency } from '@/hooks/useCurrency';
+
+function MyComponent() {
+  const {
+    currency,           // Aktif para birimi kodu (örn: 'USD')
+    locale,             // Locale string (örn: 'en-US')
+    formatCurrency,     // Para formatla fonksiyonu
+    formatAmount,       // Sadece sayı formatla (symbol yok)
+    currencyOptions,    // Select için options
+    currencySymbol,     // Para birimi sembolü
+    loading,            // Yükleniyor mu
+  } = useCurrency();
+
+  // Kullanım
+  const price = formatCurrency(1500.50);        // "₺1.500,50" veya "$1,500.50"
+  const priceUSD = formatCurrency(100, 'USD');  // Override ile: "$100.00"
+}
+```
+
+### 23.3 Kullanım Kuralları
+
+**✅ DOĞRU - useCurrency hook kullan:**
+```typescript
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS, DEFAULT_CURRENCY } from '@/lib/constants/currency';
+
+function PriceDisplay({ amount }: { amount: number }) {
+  const { formatCurrency } = useCurrency();
+  return <Text>{formatCurrency(amount)}</Text>;
+}
+
+function CurrencySelect({ value, onChange }) {
+  return (
+    <Select
+      data={CURRENCY_SELECT_OPTIONS}
+      value={value}
+      onChange={onChange}
+    />
+  );
+}
+```
+
+**❌ YANLIŞ - Hardcoded currency:**
+```typescript
+// YAPMA!
+const formatted = amount.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' });
+
+// YAPMA!
+<Select data={['TRY', 'USD', 'EUR']} />
+
+// YAPMA!
+const currency = 'TRY';
+```
+
+### 23.4 Form'larda Varsayılan Currency
+
+Yeni kayıt oluştururken varsayılan currency'yi GeneralSettings'ten al:
+
+```typescript
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
+
+function ProductForm({ product }: { product?: Product }) {
+  const { currency: defaultCurrency } = useCurrency();
+  const [formData, setFormData] = useState({
+    currency: product?.currency || '', // Başlangıçta boş
+  });
+
+  // Yeni kayıt ise varsayılan currency'yi ayarla
+  useEffect(() => {
+    if (!product && defaultCurrency && !formData.currency) {
+      setFormData(prev => ({ ...prev, currency: defaultCurrency }));
+    }
+  }, [product, defaultCurrency]);
+
+  return (
+    <Select
+      label="Para Birimi"
+      data={CURRENCY_SELECT_OPTIONS}
+      value={formData.currency}
+      onChange={(value) => setFormData({ ...formData, currency: value || defaultCurrency })}
+    />
+  );
+}
+```
+
+### 23.5 Settings Sayfasında Currency Senkronizasyonu
+
+Settings sayfasında form state'i API'den gelen settings ile senkronize edilmeli:
+
+```typescript
+// ❌ YANLIŞ - useState sadece bir kez initialize olur
+const [formData, setFormData] = useState({
+  currency: settings.currency || 'TRY', // settings boş olabilir!
+});
+
+// ✅ DOĞRU - useEffect ile senkronize et
+const [formData, setFormData] = useState({
+  currency: DEFAULT_CURRENCY,
+});
+
+useEffect(() => {
+  if (settings && Object.keys(settings).length > 0) {
+    setFormData({
+      currency: settings.currency || DEFAULT_CURRENCY,
+      // ... diğer alanlar
+    });
+  }
+}, [settings]);
+```
+
+### 23.6 Server-Side Currency Kullanımı
+
+Hook kullanılamayan server-side kodlarda (template-variables.ts gibi):
+
+```typescript
+import { getCurrencyLocale, DEFAULT_CURRENCY } from '@/lib/constants/currency';
+
+interface VariableContext {
+  currency?: string;
+  locale?: string;
+}
+
+function processTemplate(content: string, context: VariableContext) {
+  const currency = context.currency || DEFAULT_CURRENCY;
+  const locale = context.locale || getCurrencyLocale(currency);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+  };
+
+  // ...
+}
+```
+
+### 23.7 Seed Dosyalarında Currency
+
+Tüm seeder'lar `ctx.currency` kullanmalı:
+
+```typescript
+// prisma/seed/modules/accounting.seed.ts
+async seed(ctx: SeederContext): Promise<SeederResult> {
+  const { tenantPrisma, tenantId, companyId, currency } = ctx; // ✅ currency destructure
+
+  await tenantPrisma.subscription.create({
+    data: {
+      // ...
+      currency, // ✅ ctx.currency kullan
+      // currency: 'TRY', // ❌ YAPMA!
+    },
+  });
+}
+```
+
+**Demo Seed CLI:**
+```bash
+# Locale ile currency otomatik belirlenir
+TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=de
+# → currency: EUR
+
+TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=en
+# → currency: USD
+```
+
+### 23.8 Düzeltilen Dosyalar (2026-01-05)
+
+| Modül | Dosya | Değişiklik |
+|-------|-------|------------|
+| **Core** | `src/lib/constants/currency.ts` | YENİ - Merkezi currency sabitleri |
+| **Core** | `src/hooks/useCurrency.ts` | YENİ - Currency hook |
+| **Settings** | `RegionTimeTab.tsx` | useEffect ile settings sync, CURRENCY_SELECT_OPTIONS |
+| **HR** | `PayrollList.tsx`, `PayrollDetail.tsx` | useCurrency hook |
+| **Production** | `ProductionDashboard.tsx`, `ProductForm.tsx` | useCurrency hook |
+| **License** | `LicensePackageForm.tsx` | useCurrency hook, CURRENCY_SELECT_OPTIONS |
+| **Maintenance** | `MaintenanceDashboard.tsx`, `MaintenanceRecordDetail.tsx`, `MaintenanceRecordList.tsx` | useCurrency hook |
+| **Accounting** | `CashFlowDesignV1.tsx`, `CashFlowDesignV2.tsx`, `CashFlowDesignV3.tsx` | useCurrency hook |
+| **Utils** | `template-variables.ts` | getCurrencyLocale, DEFAULT_CURRENCY |
+| **Seed** | `accounting.seed.ts`, `hr.seed.ts`, `production.seed.ts` | ctx.currency kullanımı |
+| **Seed** | `demo-seed.ts` | --locale parametresi, loadDemoData |
+
+---
+
+## 24. DOSYA KONUMLARI HIZLI REFERANS (Güncel)
+
+| Amaç | Dosya |
+|------|-------|
+| **Currency Sabitleri** | `src/lib/constants/currency.ts` |
+| **Currency Hook** | `src/hooks/useCurrency.ts` |
+| Merkezi Tablo | `src/components/tables/DataTable.tsx` |
+| Merkezi Modal | `src/components/modals/AlertModal.tsx` |
+| Toast Bildirim | `src/hooks/useNotification.tsx` |
+| Sayfa Header | `src/components/headers/CentralPageHeader.tsx` |
+| Skeleton'lar | `src/components/skeletons/` |
+| API withTenant | `src/lib/api/withTenant.ts` |
+| API Response | `src/lib/api/response.ts` |
+| i18n Client | `src/lib/i18n/client.ts` |
+| Global Çeviriler | `src/locales/global/` |
+| Modül Çevirileri | `src/locales/modules/` |
+| Tema Context | `src/context/ThemeContext.tsx` |
+| Company Context | `src/context/CompanyContext.tsx` |
+| Demo Veri Locales | `prisma/seed/locales/` |
+| Seeder Base | `prisma/seed/modules/base-seeder.ts` |
+| Seeder CLI | `prisma/seed/modules/run-all.ts` |
+| Modül Seeder'lar | `prisma/seed/modules/*.seed.ts` |
+| Demo Seed (Standalone) | `prisma/seed/demo-seed.ts` |
+| Email Servisi | `src/lib/email/EmailService.ts` |
+| Token Yardımcıları | `src/lib/email/tokenUtils.ts` |
+
+---
+
 **Son Güncelleme**: 2026-01-05
-**Platform Versiyonu**: 1.1.0
+**Platform Versiyonu**: 1.1.1
 **Next.js Versiyonu**: 16.1.1

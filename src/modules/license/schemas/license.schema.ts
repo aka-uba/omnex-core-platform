@@ -12,7 +12,7 @@ export const licensePackageSchema = z.object({
   description: z.string().optional().nullable(),
   modules: z.array(z.string()).min(1, 'At least one module is required'),
   basePrice: z.number().min(0, 'Base price must be greater than or equal to 0'),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   billingCycle: billingCycleSchema,
   maxUsers: z.number().int().min(1).optional().nullable(),
   maxStorage: z.number().int().min(1).optional().nullable(),
@@ -53,7 +53,7 @@ export const tenantLicenseUpdateSchema = tenantLicenseSchema.partial();
 export const licensePaymentSchema = z.object({
   licenseId: z.string().uuid('License ID must be a valid UUID'),
   amount: z.number().min(0, 'Amount must be greater than or equal to 0'),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   paymentMethod: paymentMethodSchema,
   paymentDate: z.string().datetime('Payment date must be a valid date'),
   receiptUrl: z.string().url().optional().nullable(),

@@ -7,6 +7,7 @@ import { usePaymentAnalytics, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useTranslation } from '@/lib/i18n/client';
 import { useRouter } from 'next/navigation';
 import { notifications } from '@mantine/notifications';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import styles from './PaymentQuickBoard.module.css';
 
@@ -33,27 +34,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
   const router = useRouter();
   const { data, isLoading, refetch } = usePaymentAnalytics();
   const markAsPaid = useMarkPaymentAsPaid();
-
-  const formatCurrency = useCallback((amount: number, currency?: string) => {
-    const localeMap: Record<string, string> = {
-      tr: 'tr-TR',
-      en: 'en-US',
-      de: 'de-DE',
-      ar: 'ar-SA',
-    };
-    const currencyMap: Record<string, string> = {
-      tr: 'TRY',
-      en: 'USD',
-      de: 'EUR',
-      ar: 'SAR',
-    };
-    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
-      style: 'currency',
-      currency: currency || currencyMap[locale] || 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  }, [locale]);
+  const { formatCurrency } = useCurrency();
 
   const handleMarkAsPaid = useCallback(async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();

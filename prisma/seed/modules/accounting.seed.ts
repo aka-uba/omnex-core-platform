@@ -12,7 +12,7 @@ export class AccountingSeeder implements ModuleSeeder {
   dependencies = ['locations'];
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma, tenantId, companyId, tenantSlug, adminUserId } = ctx;
+    const { tenantPrisma, tenantId, companyId, tenantSlug, adminUserId, currency } = ctx;
     let itemsCreated = 0;
     const details: Record<string, number> = {};
 
@@ -46,7 +46,7 @@ export class AccountingSeeder implements ModuleSeeder {
             startDate: new Date(2024, 0, 1),
             renewalDate: new Date(2025, 0, 1),
             basePrice: new Prisma.Decimal(s.basePrice),
-            currency: 'TRY',
+            currency,
             billingCycle: 'monthly',
             description: s.description,
             isActive: true,
@@ -88,7 +88,7 @@ export class AccountingSeeder implements ModuleSeeder {
             taxRate: new Prisma.Decimal(20),
             taxAmount,
             totalAmount,
-            currency: 'TRY',
+            currency,
             status: i < 3 ? randomChoice(['draft', 'sent']) : randomChoice(['paid', 'paid', 'overdue']),
             paidDate: i >= 3 && Math.random() > 0.3 ? dueDate : null,
             description: subscriptions.length > 0 ? `Fatura - ${subscriptions[i % subscriptions.length].name}` : 'Demo fatura',
@@ -114,7 +114,7 @@ export class AccountingSeeder implements ModuleSeeder {
             subscriptionId: inv.subscriptionId,
             invoiceId: inv.id,
             amount: inv.totalAmount,
-            currency: 'TRY',
+            currency,
             paymentDate: inv.paidDate || new Date(),
             paymentMethod: randomChoice(['bank_transfer', 'card', 'cash']),
             paymentReference: `PAY-DEMO-${Date.now()}-${idx}`,
@@ -141,7 +141,7 @@ export class AccountingSeeder implements ModuleSeeder {
             category: randomChoice(expenseCategories),
             type: randomChoice(expenseTypes),
             amount: randomDecimal(500, 15000),
-            currency: 'TRY',
+            currency,
             expenseDate: randomDate(new Date(2024, 0, 1), new Date()),
             assignedUserId: adminUserId,
             status: randomChoice(['pending', 'approved', 'approved']),

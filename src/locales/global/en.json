@@ -1938,6 +1938,14 @@
       "import": "Imported",
       "login": "Logged In",
       "logout": "Logged Out"
+    },
+    "changes": {
+      "added": "added",
+      "removed": "removed",
+      "cleared": "cleared",
+      "set": "set",
+      "more": "more changes",
+      "showLess": "Show less"
     }
   },
   "success": "Success",

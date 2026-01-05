@@ -23,6 +23,7 @@ import { useAccountingAnalytics } from '@/hooks/useAccountingAnalytics';
 // import { useExpenses } from '@/hooks/useExpenses'; // removed - unused
 import { useExport } from '@/lib/export/ExportProvider';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/de';
@@ -35,6 +36,7 @@ interface AccountingReportsProps {
 export function AccountingReports({ locale }: AccountingReportsProps) {
   const { t } = useTranslation('modules/accounting');
   // const { t: tGlobal } = useTranslation('global'); // removed - unused
+  const { formatCurrency } = useCurrency();
   const { exportToExcel, exportToPDF, isExporting } = useExport();
   
   const [reportType, setReportType] = useState<string>('financial');
@@ -68,9 +70,9 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
           t('reports.value'),
         ],
         rows: [
-          [t('reports.totalRevenue'), Number(analyticsData.summary.totalRevenue).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })],
-          [t('reports.totalExpenses'), Number(analyticsData.summary.totalExpenses).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })],
-          [t('reports.netProfit'), Number(analyticsData.summary.netProfit).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })],
+          [t('reports.totalRevenue'), formatCurrency(Number(analyticsData.summary.totalRevenue))],
+          [t('reports.totalExpenses'), formatCurrency(Number(analyticsData.summary.totalExpenses))],
+          [t('reports.netProfit'), formatCurrency(Number(analyticsData.summary.netProfit))],
           [t('dashboard.activeSubscriptions'), analyticsData.summary.activeSubscriptions.toString()],
           [t('dashboard.pendingInvoices'), (analyticsData.summary.totalInvoices - analyticsData.summary.paidInvoices).toString()],
           [t('reports.completedPayments'), analyticsData.summary.paidInvoices.toString()],
@@ -211,10 +213,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
                     {t('reports.totalRevenue')}
                   </Text>
                   <Text size="xl" fw={700} c="green">
-                    {Number(analyticsData?.summary.totalRevenue || 0).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })}
+                    {formatCurrency(Number(analyticsData?.summary.totalRevenue || 0))}
                   </Text>
                 </Card>
               </Grid.Col>
@@ -224,10 +223,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
                     {t('reports.totalExpenses')}
                   </Text>
                   <Text size="xl" fw={700} c="red">
-                    {Number(analyticsData?.summary.totalExpenses || 0).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })}
+                    {formatCurrency(Number(analyticsData?.summary.totalExpenses || 0))}
                   </Text>
                 </Card>
               </Grid.Col>
@@ -237,10 +233,7 @@ export function AccountingReports({ locale }: AccountingReportsProps) {
                     {t('reports.netProfit')}
                   </Text>
                   <Text size="xl" fw={700} c={Number(analyticsData?.summary.netProfit || 0) >= 0 ? 'green' : 'red'}>
-                    {Number(analyticsData?.summary.netProfit || 0).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })}
+                    {formatCurrency(Number(analyticsData?.summary.netProfit || 0))}
                   </Text>
                 </Card>
               </Grid.Col>

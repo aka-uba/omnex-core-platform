@@ -22,6 +22,7 @@ import {
 } from '@tabler/icons-react';
 import { useMaintenanceAnalytics } from '@/hooks/useMaintenanceRecords';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import 'dayjs/locale/de';
@@ -38,6 +39,7 @@ export function MaintenanceDashboard({ locale }: MaintenanceDashboardProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/maintenance');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [dateFrom, setDateFrom] = useState<Date | null>(dayjs().subtract(12, 'months').toDate());
   const [dateTo, setDateTo] = useState<Date | null>(dayjs().toDate());
 
@@ -69,16 +71,6 @@ export function MaintenanceDashboard({ locale }: MaintenanceDashboardProps) {
   }
 
   const { summary, byType, monthlyTrend, upcomingMaintenance, overdueMaintenance } = data;
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   // Prepare chart data
   const chartData = monthlyTrend.map((item) => ({

@@ -15,7 +15,7 @@ export const contractSchema = z.object({
   renewalDate: z.coerce.date().optional().nullable(),
   rentAmount: z.number().min(0, 'Rent amount must be positive'),
   deposit: z.number().min(0).optional().nullable(),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   paymentType: paymentTypeSchema.optional().nullable(),
   paymentDay: z.number().min(1).max(31).optional().nullable(),
   autoRenewal: z.boolean().default(false),

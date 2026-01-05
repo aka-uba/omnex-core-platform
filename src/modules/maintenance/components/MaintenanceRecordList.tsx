@@ -17,6 +17,7 @@ import {
 import { useMaintenanceRecords, useDeleteMaintenanceRecord } from '@/hooks/useMaintenanceRecords';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
@@ -32,6 +33,7 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/maintenance');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<MaintenanceType | undefined>();
@@ -106,13 +108,10 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
     );
   }, [t]);
 
-  const formatCurrency = useCallback((value: number | null) => {
+  const formatCurrencyValue = useCallback((value: number | null) => {
     if (!value) return '-';
-    return Number(value).toLocaleString('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-    });
-  }, []);
+    return formatCurrency(Number(value));
+  }, [formatCurrency]);
 
   const records = useMemo(() => data?.records || [], [data]);
 
@@ -224,7 +223,7 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
       label: t('table.estimatedCost'),
       sortable: true,
       align: 'right',
-      render: (value: number) => formatCurrency(value),
+      render: (value: number) => formatCurrencyValue(value),
     },
     {
       key: 'isActive',
@@ -281,7 +280,7 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
         </Group>
       ),
     },
-  ], [t, tGlobal, getTypeBadge, getStatusBadge, formatCurrency, router, locale, handleDeleteClick]);
+  ], [t, tGlobal, getTypeBadge, getStatusBadge, formatCurrencyValue, router, locale, handleDeleteClick]);
 
   if (isLoading) {
     return <DataTableSkeleton columns={9} rows={10} />;

@@ -11,7 +11,7 @@ export class ProductionSeeder implements ModuleSeeder {
   dependencies = ['locations'];
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma, tenantId, companyId, adminUserId } = ctx;
+    const { tenantPrisma, tenantId, companyId, adminUserId, currency } = ctx;
     let itemsCreated = 0;
     const details: Record<string, number> = {};
 
@@ -63,7 +63,7 @@ export class ProductionSeeder implements ModuleSeeder {
             unit: randomChoice(['adet', 'kg', 'metre', 'lt']),
             costPrice: randomDecimal(100, 5000),
             sellingPrice: randomDecimal(150, 7500),
-            currency: 'TRY',
+            currency,
             isProducible: p.type !== 'hammadde',
             productionTime: p.type !== 'hammadde' ? randomChoice([30, 60, 120, 240]) : null,
             description: `${p.name} - Demo ürün`,

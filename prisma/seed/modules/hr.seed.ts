@@ -11,7 +11,7 @@ export class HRSeeder implements ModuleSeeder {
   description = 'İnsan kaynakları demo verileri';
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma, tenantId, companyId, tenantSlug, adminUserId } = ctx;
+    const { tenantPrisma, tenantId, companyId, tenantSlug, adminUserId, currency } = ctx;
     let itemsCreated = 0;
     const details: Record<string, number> = {};
 
@@ -80,7 +80,7 @@ export class HRSeeder implements ModuleSeeder {
             managerId: null, // İlk olarak null olarak oluştur
             salary: randomDecimal(25000, 80000),
             salaryGroup: randomChoice(['A', 'B', 'C']),
-            currency: 'TRY',
+            currency,
             workType: randomChoice(['full_time', 'full_time', 'part_time', 'contract']),
             isActive: true,
           },

@@ -22,6 +22,7 @@ import {
   IconCreditCard,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { useCurrency } from '@/hooks/useCurrency';
 import styles from './CashFlowDesignV2.module.css';
 
 interface Transaction {
@@ -103,6 +104,8 @@ export function CashFlowDesignV2({
   selectedTemplateId,
   onTemplateChange,
 }: CashFlowDesignV2Props) {
+  const { formatCurrency, currency: defaultCurrency } = useCurrency();
+
   // Separate income and expense transactions
   const incomeTransactions = useMemo(
     () => transactions.filter((tx) => tx.type === 'income'),
@@ -136,8 +139,9 @@ export function CashFlowDesignV2({
   const incomePercentage = total > 0 ? Math.round(((summary?.totalIncome ?? 0) / total) * 100) : 0;
   const expensePercentage = total > 0 ? Math.round(((summary?.totalExpense ?? 0) / total) * 100) : 0;
 
-  const formatCurrency = (amount: number, currency: string = 'EUR') => {
-    return `${amount.toLocaleString('de-DE', { minimumFractionDigits: 2 })} ${currency === 'EUR' ? '€' : currency}`;
+  // Format currency with override for transaction currency
+  const formatTxCurrency = (amount: number, txCurrency?: string) => {
+    return formatCurrency(amount, txCurrency || defaultCurrency);
   };
 
   const getStatusBadge = (status?: string) => {
@@ -183,7 +187,7 @@ export function CashFlowDesignV2({
           <span
             className={`${styles.netCashFlowValue} ${(summary?.balance ?? 0) < 0 ? styles.negative : styles.positive}`}
           >
-            {formatCurrency(summary?.balance ?? 0)}
+            {formatTxCurrency(summary?.balance ?? 0)}
           </span>
           {(summary?.balance ?? 0) < 0 && (
             <span className={styles.trendPill}>
@@ -215,7 +219,7 @@ export function CashFlowDesignV2({
                     <Text className={styles.summaryTitle}>Toplam Gelir</Text>
                   </div>
                   <Text className={styles.summaryAmount}>
-                    {formatCurrency(summary?.totalIncome ?? 0)}
+                    {formatTxCurrency(summary?.totalIncome ?? 0)}
                   </Text>
                   <div className={styles.openBadge}>
                     <span className={`${styles.openBadgeCount} ${styles.income}`}>
@@ -290,7 +294,7 @@ export function CashFlowDesignV2({
                         )}
                       </td>
                       <td className={styles.type}>{tx.paymentMethod || 'Standart'}</td>
-                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                       <td className={styles.actions}>
                         <ActionIcon variant="subtle" size="sm" color="gray">
                           <IconDotsVertical size={16} />
@@ -323,7 +327,7 @@ export function CashFlowDesignV2({
                     <Text className={styles.summaryTitle}>Toplam Gider</Text>
                   </div>
                   <Text className={styles.summaryAmount}>
-                    {formatCurrency(summary?.totalExpense ?? 0)}
+                    {formatTxCurrency(summary?.totalExpense ?? 0)}
                   </Text>
                   <div className={styles.openBadge}>
                     <span className={`${styles.openBadgeCount} ${styles.expense}`}>
@@ -395,7 +399,7 @@ export function CashFlowDesignV2({
                         </div>
                       </td>
                       <td className={styles.type}>{tx.paymentMethod || 'Standart'}</td>
-                      <td className={styles.amount}>{formatCurrency(tx.amount, tx.currency)}</td>
+                      <td className={styles.amount}>{formatTxCurrency(tx.amount, tx.currency)}</td>
                       <td className={styles.actions}>
                         <ActionIcon variant="subtle" size="sm" color="gray">
                           <IconDotsVertical size={16} />

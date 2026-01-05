@@ -969,6 +969,7 @@ export function DataTable({
                               entityId={row[auditIdKey]}
                               entityName={auditEntityName}
                               onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
+                              translationNamespace={exportNamespace}
                             />
                           )}
                           {actionsColumn?.render
@@ -1154,6 +1155,7 @@ export function DataTable({
                                   entityId={row[auditIdKey]}
                                   entityName={auditEntityName}
                                   onViewAll={onAuditViewAll ? () => onAuditViewAll(row[auditIdKey]) : undefined}
+                                  translationNamespace={exportNamespace}
                                 />
                               )}
                               {column.render ? column.render((row as Record<string, any>)[column.key], row) : String((row as Record<string, any>)[column.key] ?? '-')}

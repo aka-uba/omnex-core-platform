@@ -14,7 +14,7 @@ export const employeeSchema = z.object({
   managerId: z.string().uuid().optional().nullable(),
   salary: z.number().min(0, 'Salary must be greater than or equal to 0').optional().nullable(),
   salaryGroup: z.string().optional().nullable(),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   workType: workTypeSchema,
   metadata: z.record(z.string(), z.unknown()).optional().nullable(),
   isActive: z.boolean().default(true),

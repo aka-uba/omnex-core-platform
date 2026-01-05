@@ -22,6 +22,8 @@ import { useCreateEmployee, useUpdateEmployee, useEmployee } from '@/hooks/useEm
 import { useUsers } from '@/hooks/useUsers';
 import { useEmployees } from '@/hooks/useEmployees';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { employeeCreateSchema } from '@/modules/hr/schemas/hr.schema';
 import type { WorkType } from '@/modules/hr/types/hr';
 import dayjs from 'dayjs';
@@ -38,6 +40,7 @@ export function EmployeeForm({ locale, employeeId }: EmployeeFormProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/hr');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createEmployee = useCreateEmployee();
   const updateEmployee = useUpdateEmployee();
   const { data: employeeData, isLoading: isLoadingEmployee } = useEmployee(employeeId || '');
@@ -97,6 +100,13 @@ export function EmployeeForm({ locale, employeeId }: EmployeeFormProps) {
       }
     }
   }, [isEdit, employeeData, isLoadingEmployee, form.values.userId]);
+
+  // Set default currency from GeneralSettings for new employees
+  useEffect(() => {
+    if (!isEdit && defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [isEdit, defaultCurrency]);
 
   // Get users for selection
   const userOptions: Array<{ value: string; label: string }> = 
@@ -279,11 +289,7 @@ export function EmployeeForm({ locale, employeeId }: EmployeeFormProps) {
               <Select
                 label={t('employees.form.currency')}
                 placeholder={t('employees.form.currencyPlaceholder')}
-                data={[
-                  { value: 'TRY', label: 'TRY' },
-                  { value: 'USD', label: 'USD' },
-                  { value: 'EUR', label: 'EUR' },
-                ]}
+                data={CURRENCY_SELECT_OPTIONS}
                 {...form.getInputProps('currency')}
               />
             </Grid.Col>

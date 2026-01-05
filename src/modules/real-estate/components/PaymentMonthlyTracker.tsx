@@ -35,6 +35,7 @@ import {
 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { useExport } from '@/lib/export/ExportProvider';
 import dayjs from 'dayjs';
@@ -611,50 +612,11 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
     },
   });
 
-  // Format currency with locale support
-  const formatCurrency = useCallback((amount: number) => {
-    const localeMap: Record<string, string> = {
-      tr: 'tr-TR',
-      en: 'en-US',
-      de: 'de-DE',
-      ar: 'ar-SA',
-    };
-    const currencyMap: Record<string, string> = {
-      tr: 'TRY',
-      en: 'USD',
-      de: 'EUR',
-      ar: 'SAR',
-    };
-    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
-      style: 'currency',
-      currency: currencyMap[locale] || 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  }, [locale]);
+  // Use centralized currency formatting from GeneralSettings
+  const { formatCurrency, formatCurrencyCompact } = useCurrency();
 
-  // Format compact currency for cells (still shows full number with currency symbol)
-  const formatShortCurrency = useCallback((amount: number) => {
-    const localeMap: Record<string, string> = {
-      tr: 'tr-TR',
-      en: 'en-US',
-      de: 'de-DE',
-      ar: 'ar-SA',
-    };
-    const currencyMap: Record<string, string> = {
-      tr: 'TRY',
-      en: 'USD',
-      de: 'EUR',
-      ar: 'SAR',
-    };
-    return new Intl.NumberFormat(localeMap[locale] || 'en-US', {
-      style: 'currency',
-      currency: currencyMap[locale] || 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-      notation: 'standard',
-    }).format(amount);
-  }, [locale]);
+  // Alias for backward compatibility (same as formatCurrency in this context)
+  const formatShortCurrency = formatCurrency;
 
   // Navigate years
   const navigatePrevious = useCallback(() => {

@@ -22,6 +22,8 @@ import { useCreateAccountingPayment } from '@/hooks/useAccountingPayments';
 import { useInvoices } from '@/hooks/useInvoices';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { accountingPaymentCreateSchema } from '@/modules/accounting/schemas/subscription.schema';
 import type { PaymentMethod, PaymentStatus } from '@/modules/accounting/types/subscription';
 
@@ -35,6 +37,7 @@ interface PaymentFormProps {
 export function PaymentForm({ locale, onSuccess, initialInvoiceId, initialSubscriptionId }: PaymentFormProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createPayment = useCreateAccountingPayment();
   const { data: invoicesData } = useInvoices({ page: 1, pageSize: 1000 });
   const { data: subscriptionsData } = useSubscriptions({ page: 1, pageSize: 1000 });
@@ -62,6 +65,13 @@ export function PaymentForm({ locale, onSuccess, initialInvoiceId, initialSubscr
       paymentMethod: (value) => (!value ? t('payments.form.paymentMethod') + ' ' + tGlobal('common.required') : null),
     },
   });
+
+  // Set default currency from GeneralSettings
+  useEffect(() => {
+    if (defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [defaultCurrency]);
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
@@ -165,11 +175,7 @@ export function PaymentForm({ locale, onSuccess, initialInvoiceId, initialSubscr
             <Select
               label={t('payments.form.currency')}
               placeholder={t('payments.form.currencyPlaceholder')}
-              data={[
-                { value: 'TRY', label: 'TRY' },
-                { value: 'USD', label: 'USD' },
-                { value: 'EUR', label: 'EUR' },
-              ]}
+              data={CURRENCY_SELECT_OPTIONS}
               {...form.getInputProps('currency')}
             />
           </Grid.Col>

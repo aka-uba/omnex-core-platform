@@ -20,6 +20,8 @@ import { useRouter } from 'next/navigation';
 import { useCreateProduct, useUpdateProduct, useProduct } from '@/hooks/useProducts';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
+import { CURRENCY_SELECT_OPTIONS } from '@/lib/constants/currency';
 import { productCreateSchema } from '@/modules/production/schemas/product.schema';
 import type { ProductType, ProductUnit } from '@/modules/production/types/product';
 
@@ -32,6 +34,7 @@ export function ProductForm({ locale, productId }: ProductFormProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/production');
   const { t: tGlobal } = useTranslation('global');
+  const { currency: defaultCurrency } = useCurrency();
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const { data: productData, isLoading: isLoadingProduct } = useProduct(productId || '');
@@ -69,6 +72,13 @@ export function ProductForm({ locale, productId }: ProductFormProps) {
       stockQuantity: (value) => (value < 0 ? t('form.stockQuantity') + ' ' + t('form.mustBeNonNegative') : null),
     },
   });
+
+  // Set default currency from GeneralSettings for new products
+  useEffect(() => {
+    if (!isEdit && defaultCurrency && form.values.currency === 'TRY') {
+      form.setFieldValue('currency', defaultCurrency);
+    }
+  }, [isEdit, defaultCurrency]);
 
   // Load product data for edit
   useEffect(() => {
@@ -306,11 +316,7 @@ export function ProductForm({ locale, productId }: ProductFormProps) {
               <Select
                 label={t('form.currency')}
                 placeholder={t('form.currencyPlaceholder')}
-                data={[
-                  { value: 'TRY', label: 'TRY' },
-                  { value: 'USD', label: 'USD' },
-                  { value: 'EUR', label: 'EUR' },
-                ]}
+                data={CURRENCY_SELECT_OPTIONS}
                 {...form.getInputProps('currency')}
               />
             </Grid.Col>

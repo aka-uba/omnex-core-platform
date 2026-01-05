@@ -3,6 +3,7 @@
 import { Paper, Group, Text, Badge, Stack, Grid } from '@mantine/core';
 import { usePayroll } from '@/hooks/usePayrolls';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 import type { PayrollStatus } from '@/modules/hr/types/hr';
@@ -15,6 +16,7 @@ interface PayrollDetailProps {
 export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps) {
   const { t } = useTranslation('modules/hr');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const { data: payroll, isLoading } = usePayroll(payrollId);
 
   if (isLoading) {
@@ -72,29 +74,20 @@ export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('payrolls.form.grossSalary')}</Text>
               <Text fw={500}>
-                {Number(payroll.grossSalary).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: 'TRY',
-                })}
+                {formatCurrency(Number(payroll.grossSalary))}
               </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('payrolls.form.deductions')}</Text>
               <Text fw={500}>
-                {Number(payroll.deductions).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: 'TRY',
-                })}
+                {formatCurrency(Number(payroll.deductions))}
               </Text>
             </Grid.Col>
             {payroll.taxDeduction && (
               <Grid.Col span={{ base: 12, md: 4 }}>
                 <Text size="sm" c="dimmed">{t('payrolls.form.taxDeduction')}</Text>
                 <Text fw={500}>
-                  {Number(payroll.taxDeduction).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(payroll.taxDeduction))}
                 </Text>
               </Grid.Col>
             )}
@@ -102,10 +95,7 @@ export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps
               <Grid.Col span={{ base: 12, md: 4 }}>
                 <Text size="sm" c="dimmed">{t('payrolls.form.sgkDeduction')}</Text>
                 <Text fw={500}>
-                  {Number(payroll.sgkDeduction).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(payroll.sgkDeduction))}
                 </Text>
               </Grid.Col>
             )}
@@ -113,10 +103,7 @@ export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps
               <Grid.Col span={{ base: 12, md: 4 }}>
                 <Text size="sm" c="dimmed">{t('payrolls.form.otherDeductions')}</Text>
                 <Text fw={500}>
-                  {Number(payroll.otherDeductions).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(payroll.otherDeductions))}
                 </Text>
               </Grid.Col>
             )}
@@ -124,10 +111,7 @@ export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('payrolls.form.bonuses')}</Text>
                 <Text fw={500}>
-                  {Number(payroll.bonuses).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(payroll.bonuses))}
                 </Text>
               </Grid.Col>
             )}
@@ -135,20 +119,14 @@ export function PayrollDetail({ locale: _locale, payrollId }: PayrollDetailProps
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('payrolls.form.overtime')}</Text>
                 <Text fw={500}>
-                  {Number(payroll.overtime).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
+                  {formatCurrency(Number(payroll.overtime))}
                 </Text>
               </Grid.Col>
             )}
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('payrolls.form.netSalary')}</Text>
               <Text fw={500} size="lg" c="green">
-                {Number(payroll.netSalary).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: 'TRY',
-                })}
+                {formatCurrency(Number(payroll.netSalary))}
               </Text>
             </Grid.Col>
             {payroll.notes && (

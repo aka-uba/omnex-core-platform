@@ -16,7 +16,7 @@ export const paymentSchema = z.object({
   tenantRecordId: z.string().optional().nullable(),
   type: paymentTypeSchema,
   amount: z.number().min(0, 'Amount must be positive'),
-  currency: z.string().default('TRY'),
+  currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   dueDate: z.coerce.date(),
   paidDate: z.coerce.date().optional().nullable(),
   status: paymentStatusSchema.default('pending'),

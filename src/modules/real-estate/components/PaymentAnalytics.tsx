@@ -21,6 +21,7 @@ import {
 } from '@tabler/icons-react';
 import { usePaymentAnalytics } from '@/hooks/usePayments';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { Loader } from '@mantine/core';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
@@ -36,6 +37,7 @@ interface PaymentAnalyticsProps {
 export function PaymentAnalytics({ locale }: PaymentAnalyticsProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [dateFrom, setDateFrom] = useState<Date | null>(dayjs().subtract(12, 'months').toDate());
   const [dateTo, setDateTo] = useState<Date | null>(dayjs().toDate());
 
@@ -61,16 +63,6 @@ export function PaymentAnalytics({ locale }: PaymentAnalyticsProps) {
   }
 
   const { summary, byStatus, byType, monthlyTrend, upcomingPayments, overduePayments } = data;
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   // Prepare chart data
   const chartData = monthlyTrend.map((item) => ({
