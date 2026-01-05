@@ -2001,6 +2001,10 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 | **License** | `LicensePackageForm.tsx` | useCurrency hook, CURRENCY_SELECT_OPTIONS |
 | **Maintenance** | `MaintenanceDashboard.tsx`, `MaintenanceRecordDetail.tsx`, `MaintenanceRecordList.tsx` | useCurrency hook |
 | **Accounting** | `CashFlowDesignV1.tsx`, `CashFlowDesignV2.tsx`, `CashFlowDesignV3.tsx` | useCurrency hook |
+| **Real-Estate** | `PaymentList.tsx` | formatCurrency(value, row.currency) |
+| **Real-Estate** | `PaymentCards.tsx`, `PaymentQuickBoard.tsx` | currency prop eklendi |
+| **Real-Estate** | `TenantDetail.tsx`, `ContractDetail.tsx`, `ContractTracking.tsx` | useCurrency hook |
+| **Real-Estate API** | `payments/analytics/route.ts` | currency alanı eklendi |
 | **Utils** | `template-variables.ts` | getCurrencyLocale, DEFAULT_CURRENCY |
 | **Seed** | `accounting.seed.ts`, `hr.seed.ts`, `production.seed.ts` | ctx.currency kullanımı |
 | **Seed** | `demo-seed.ts` | --locale parametresi, loadDemoData |
