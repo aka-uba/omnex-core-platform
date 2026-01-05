@@ -22,6 +22,7 @@ interface QuickPaymentItem {
   propertyAddress: string;
   tenantName: string;
   amount: number;
+  currency?: string;
   dueDate: string;
   daysUntilDue?: number;
   daysOverdue?: number;
@@ -132,7 +133,7 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
               </span>
             </div>
             <div className={styles.amountRow}>
-              <span className={styles.amountText}>{formatCurrency(payment.amount)}</span>
+              <span className={styles.amountText}>{formatCurrency(payment.amount, payment.currency)}</span>
               <div className={styles.cardActions}>
                 {!isOverdue && !isProjected && (
                   <Tooltip label={t('payments.markAsPaid')} withArrow>

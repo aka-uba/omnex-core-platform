@@ -45,6 +45,7 @@ export async function GET(request: NextRequest) {
       propertyAddress: string;
       tenantName: string;
       amount: number;
+      currency?: string;
       dueDate: string;
       daysUntilDue: number;
       isProjected?: boolean; // Sözleşmeden hesaplanmış ödeme
@@ -57,6 +58,7 @@ export async function GET(request: NextRequest) {
       propertyAddress: string;
       tenantName: string;
       amount: number;
+      currency?: string;
       dueDate: string;
       daysOverdue: number;
       isProjected?: boolean; // Sözleşmeden hesaplanmış ödeme
@@ -279,6 +281,7 @@ export async function GET(request: NextRequest) {
             propertyAddress,
             tenantName,
             amount: Number(p.totalAmount || p.amount),
+            currency: p.currency || undefined,
             dueDate: p.dueDate.toISOString(),
             daysUntilDue: dayjs(p.dueDate).diff(today, 'day'),
             isProjected: false,
@@ -329,6 +332,7 @@ export async function GET(request: NextRequest) {
         propertyAddress: string;
         tenantName: string;
         amount: number;
+        currency?: string;
         dueDate: string;
         daysUntilDue: number;
         isProjected: boolean;
@@ -342,6 +346,7 @@ export async function GET(request: NextRequest) {
         propertyAddress: string;
         tenantName: string;
         amount: number;
+        currency?: string;
         dueDate: string;
         daysOverdue: number;
         isProjected: boolean;
@@ -407,6 +412,7 @@ export async function GET(request: NextRequest) {
                 propertyAddress,
                 tenantName,
                 amount: rentAmount,
+                currency: contract.currency || undefined,
                 dueDate: paymentDate.toISOString(),
                 daysOverdue: today.diff(paymentDate, 'day'),
                 isProjected: true,
@@ -420,6 +426,7 @@ export async function GET(request: NextRequest) {
                 propertyAddress,
                 tenantName,
                 amount: rentAmount,
+                currency: contract.currency || undefined,
                 dueDate: paymentDate.toISOString(),
                 daysUntilDue: paymentDate.diff(today, 'day'),
                 isProjected: true,
@@ -463,6 +470,7 @@ export async function GET(request: NextRequest) {
             propertyAddress,
             tenantName,
             amount: Number(p.totalAmount || p.amount),
+            currency: p.currency || undefined,
             dueDate: p.dueDate.toISOString(),
             daysOverdue: today.diff(dayjs(p.dueDate), 'day'),
             isProjected: false,
