@@ -206,13 +206,13 @@
       }
     },
     "currentyear": {
-      "yili": "Year 2026",
       "1": {
         "yili": "Year 2025"
       },
       "2": {
         "yili": "Year 2024"
-      }
+      },
+      "yili": "Year 2026"
     },
     "bu": {
       "dosyayi": {
@@ -250,7 +250,6 @@
       "next": "Next"
     }
   },
-
   "navigation": {
     "dashboard": "Dashboard",
     "settings": "Settings",
@@ -263,11 +262,9 @@
     "back": "Back",
     "menu": "Menu"
   },
-
   "empty": {
     "message": "No data found"
   },
-
   "table": {
     "actions": "Actions",
     "noData": "No data found",
@@ -344,7 +341,6 @@
       "deselectAll": "Deselect All"
     }
   },
-
   "modal": {
     "confirm": {
       "title": "Confirmation",
@@ -365,7 +361,6 @@
       "cancel": "Cancel"
     }
   },
-
   "notifications": {
     "success": {
       "title": "Success",
@@ -409,7 +404,6 @@
       "fixErrors": "Please correct the form errors"
     }
   },
-
   "export": {
     "title": "Export",
     "report": "Report",
@@ -427,7 +421,6 @@
     "downloadReady": "Download ready",
     "comingSoon": "Export in {{format}} format will be added soon"
   },
-
   "form": {
     "required": "Required field",
     "optional": "Optional",
@@ -528,7 +521,6 @@
       "overallScore": "Overall Score"
     }
   },
-
   "session": {
     "timeoutWarning": {
       "title": "Session Timeout",
@@ -538,7 +530,6 @@
       "logout": "Logout"
     }
   },
-
   "layout": {
     "menu": "Menu",
     "search": "Search",
@@ -618,7 +609,6 @@
       }
     }
   },
-
   "settings": {
     "title": "Settings",
     "menuManagement": {
@@ -1109,7 +1099,6 @@
       "title": "Integrations"
     }
   },
-
   "management": {
     "title": "Management",
     "users": {
@@ -1288,7 +1277,6 @@
       "title": "Locations"
     }
   },
-
   "accessControl": {
     "title": "Access Control Panel",
     "description": "Manage access, visibility and layout settings for your organization.",
@@ -1359,7 +1347,6 @@
       }
     }
   },
-
   "coreSystems": {
     "title": "Central Systems",
     "description": "Welcome to the central system management panel",
@@ -1377,7 +1364,6 @@
       "description": "Central notification management"
     }
   },
-
   "tenants": {
     "title": "Tenant Management",
     "description": "View and manage all tenants",
@@ -1396,7 +1382,6 @@
       "createdAt": "Created"
     }
   },
-
   "databases": {
     "title": "Database Management",
     "description": "View and manage all databases",
@@ -1419,7 +1404,6 @@
       "status": "Status"
     }
   },
-
   "optimization": {
     "title": "Optimization",
     "description": "System optimization and performance management",
@@ -1474,7 +1458,6 @@
       "lastResult": "Last Operation Result"
     }
   },
-
   "setup": {
     "title": "Database Setup Wizard",
     "configuration": {
@@ -1614,7 +1597,6 @@
       "resetFailed": "Reset failed"
     }
   },
-
   "systemStatus": {
     "title": "System Information",
     "description": "View server and system status information",
@@ -1656,14 +1638,12 @@
       "loadError": "An error occurred while loading system information"
     }
   },
-
   "footer": {
     "copyright": "© 2024. All rights reserved.",
     "privacy": "Privacy",
     "terms": "Terms",
     "support": "Support"
   },
-
   "menu": {
     "dashboard": "Dashboard",
     "moduleManagement": "Module Management",
@@ -1671,7 +1651,6 @@
     "accessControl": "Access Control",
     "companyManagement": "Company Management"
   },
-
   "profile": {
     "title": "Profile",
     "myProfile": "My Profile",
@@ -1680,7 +1659,6 @@
     "preferences": "Preferences",
     "notifications": "Notifications"
   },
-
   "roles": {
     "items": {
       "superAdmin": {
@@ -1697,7 +1675,6 @@
       }
     }
   },
-
   "permissions": {
     "categories": {
       "userManagement": "User Management",
@@ -1750,12 +1727,7 @@
       }
     }
   },
-
-  "calendar": {
-    "title": "Calendar",
-    "description": "Calendar management and events"
-  },
-
+  "calendar": "Calendar",
   "fileManager": {
     "title": "File Manager",
     "upload": "Upload File",
@@ -1779,7 +1751,6 @@
     "deleteSuccess": "File successfully deleted",
     "deleteError": "Error occurred while deleting file"
   },
-
   "companies": {
     "title": "Companies",
     "description": "Company and organization management",
@@ -1904,7 +1875,6 @@
       "status": "Status"
     }
   },
-
   "buttons": {
     "save": "Save",
     "cancel": "Cancel",
@@ -1929,7 +1899,6 @@
     "add": "Add",
     "remove": "Remove"
   },
-
   "actions": {
     "save": "Save",
     "cancel": "Cancel",
@@ -1944,21 +1913,15 @@
     "download": "Download",
     "downloadAll": "Download All"
   },
-
   "exportComingSoon": "Export in {{format}} format will be added soon",
-
   "loading": "Loading...",
-
   "save": "Save",
-  "calendar": "Calendar",
   "list": "List",
-
   "status": {
     "title": "Status",
     "active": "Active",
     "inactive": "Inactive"
   },
-
   "audit": {
     "title": "Change History",
     "recentChanges": "Recent Changes",
@@ -1977,7 +1940,27 @@
       "logout": "Logged Out"
     }
   },
-
   "success": "Success",
-  "error": "Error"
+  "error": "Error",
+  "auth": {
+    "demo": {
+      "title": "Login Pages",
+      "description": "Select one of the options below to view login pages",
+      "superAdmin": {
+        "title": "Super Admin Login",
+        "description": "Special login page for platform administrators",
+        "button": "Super Admin Login"
+      },
+      "admin": {
+        "title": "Admin Login",
+        "description": "Login page for tenant administrators",
+        "button": "Admin Login"
+      },
+      "standard": {
+        "title": "Standard Login",
+        "description": "Login page for regular users",
+        "button": "Standard Login"
+      }
+    }
+  }
 }

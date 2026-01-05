@@ -74,7 +74,6 @@ export function StaffDetailPageClient({ locale, staffId }: StaffDetailPageClient
       modifiedAt: new Date(),
     };
 
-    console.log('Opening document preview:', { doc, fileItem, extension, mimeType: mimeTypeMap[extension] });
 
     setPreviewFile(fileItem);
     setPreviewModalOpened(true);

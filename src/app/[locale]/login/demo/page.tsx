@@ -4,20 +4,26 @@ import { Container, Stack, Paper, Title, Text, Button, Group } from '@mantine/co
 import { IconLogin, IconUserShield } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
 
 export default function LoginDemoPage() {
   const params = useParams();
   const locale = (params?.locale as string) || 'tr';
+  const { t } = useTranslation('global');
+
+  const superAdminHref = '/' + locale + '/login/super-admin';
+  const adminHref = '/' + locale + '/login/admin';
+  const standardHref = '/' + locale + '/login';
 
   return (
     <Container size="md" py="xl">
       <Stack gap="xl">
         <Paper p="xl" radius="md" withBorder>
           <Title order={2} ta="center" mb="md">
-            Login Sayfaları
+            {t('auth.demo.title')}
           </Title>
           <Text c="dimmed" ta="center" mb="xl">
-            Aşağıdaki seçeneklerden birini seçerek login sayfalarını görüntüleyebilirsiniz
+            {t('auth.demo.description')}
           </Text>
 
           <Stack gap="md">
@@ -25,19 +31,19 @@ export default function LoginDemoPage() {
               <Group justify="space-between" align="center">
                 <div>
                   <Title order={4} mb="xs">
-                    Süper Admin Login
+                    {t('auth.demo.superAdmin.title')}
                   </Title>
                   <Text size="sm" c="dimmed">
-                    Firma seçimi, dönem seçimi ve login formu içeren süper admin giriş sayfası
+                    {t('auth.demo.superAdmin.description')}
                   </Text>
                 </div>
                 <Button
                   component={Link}
-                  href={`/${locale}/login/super-admin`}
+                  href={superAdminHref}
                   leftSection={<IconUserShield size={18} />}
                   variant="filled"
                 >
-                  Süper Admin Girişi
+                  {t('auth.demo.superAdmin.button')}
                 </Button>
               </Group>
             </Paper>
@@ -46,19 +52,19 @@ export default function LoginDemoPage() {
               <Group justify="space-between" align="center">
                 <div>
                   <Title order={4} mb="xs">
-                    Normal Admin Login
+                    {t('auth.demo.admin.title')}
                   </Title>
                   <Text size="sm" c="dimmed">
-                    Dönem seçimi (opsiyonel) ve login formu içeren normal admin giriş sayfası
+                    {t('auth.demo.admin.description')}
                   </Text>
                 </div>
                 <Button
                   component={Link}
-                  href={`/${locale}/login/admin`}
+                  href={adminHref}
                   leftSection={<IconLogin size={18} />}
                   variant="filled"
                 >
-                  Admin Girişi
+                  {t('auth.demo.admin.button')}
                 </Button>
               </Group>
             </Paper>
@@ -67,19 +73,19 @@ export default function LoginDemoPage() {
               <Group justify="space-between" align="center">
                 <div>
                   <Title order={4} mb="xs">
-                    Standart Login
+                    {t('auth.demo.standard.title')}
                   </Title>
                   <Text size="sm" c="dimmed">
-                    Mevcut standart login sayfası
+                    {t('auth.demo.standard.description')}
                   </Text>
                 </div>
                 <Button
                   component={Link}
-                  href={`/${locale}/login`}
+                  href={standardHref}
                   leftSection={<IconLogin size={18} />}
                   variant="default"
                 >
-                  Standart Giriş
+                  {t('auth.demo.standard.button')}
                 </Button>
               </Group>
             </Paper>
@@ -89,6 +95,3 @@ export default function LoginDemoPage() {
     </Container>
   );
 }
-
-
-

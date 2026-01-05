@@ -6,7 +6,7 @@ import { requireTenant } from '@/lib/api/tenantContext';
 import { getCompanyIdFromRequest } from '@/lib/api/companyContext';
 import dayjs from 'dayjs';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300; // 5 min cache
 
 interface ModuleSummary {
   module: string;

@@ -5,7 +5,12 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 
 // Admin token for security - should be set in environment variables
-const ADMIN_TOKEN = process.env.SERVER_ADMIN_TOKEN || 'omnex-admin-2025';
+const ADMIN_TOKEN = process.env.SERVER_ADMIN_TOKEN;
+
+// Security: Require token to be configured
+if (!ADMIN_TOKEN && process.env.NODE_ENV === 'production') {
+  console.error('[SERVER-CONTROL] CRITICAL: SERVER_ADMIN_TOKEN not configured!');
+}
 
 // Allowed commands whitelist
 const ALLOWED_COMMANDS: Record<string, string> = {

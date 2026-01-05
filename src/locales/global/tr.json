@@ -81,7 +81,6 @@
     "update": "Güncelle",
     "back": "Geri",
     "required": "Gerekli",
-    "search": "Ara",
     "notFound": "Bulunamadı",
     "yes": "Evet",
     "no": "Hayır",
@@ -208,13 +207,13 @@
       }
     },
     "currentyear": {
-      "yili": "2026 Yılı",
       "1": {
         "yili": "2025 Yılı"
       },
       "2": {
         "yili": "2024 Yılı"
-      }
+      },
+      "yili": "2026 Yılı"
     },
     "bu": {
       "dosyayi": {
@@ -252,7 +251,6 @@
       "next": "Sonraki"
     }
   },
-
   "navigation": {
     "dashboard": "Panel",
     "settings": "Ayarlar",
@@ -265,11 +263,9 @@
     "back": "Geri",
     "menu": "Menü"
   },
-
   "empty": {
     "message": "Veri bulunamadı"
   },
-
   "table": {
     "actions": "İşlemler",
     "noData": "Veri bulunamadı",
@@ -346,7 +342,6 @@
       "deselectAll": "Seçimi Kaldır"
     }
   },
-
   "modal": {
     "confirm": {
       "title": "Onay",
@@ -367,7 +362,6 @@
       "cancel": "İptal"
     }
   },
-
   "notifications": {
     "success": {
       "title": "Başarılı",
@@ -411,7 +405,6 @@
       "fixErrors": "Lütfen form hatalarını düzeltin"
     }
   },
-
   "export": {
     "title": "Dışa Aktar",
     "report": "Rapor",
@@ -429,7 +422,6 @@
     "downloadReady": "İndirme hazır",
     "comingSoon": "{{format}} formatında dışa aktarma yakında eklenecek"
   },
-
   "form": {
     "required": "Zorunlu alan",
     "optional": "Opsiyonel",
@@ -530,7 +522,6 @@
       "overallScore": "Genel Puan"
     }
   },
-
   "session": {
     "timeoutWarning": {
       "title": "Oturum Zaman Aşımı",
@@ -540,7 +531,6 @@
       "logout": "Çıkış Yap"
     }
   },
-
   "layout": {
     "menu": "Menü",
     "search": "Ara",
@@ -620,7 +610,6 @@
       }
     }
   },
-
   "settings": {
     "title": "Ayarlar",
     "menuManagement": {
@@ -1111,7 +1100,6 @@
       "title": "Entegrasyonlar"
     }
   },
-
   "management": {
     "title": "Yönetim",
     "users": {
@@ -1290,7 +1278,6 @@
       "title": "Lokasyonlar"
     }
   },
-
   "accessControl": {
     "title": "Erişim Kontrol Paneli",
     "description": "Organizasyonunuz için erişim, görünürlük ve düzen ayarlarını yönetin.",
@@ -1361,7 +1348,6 @@
       }
     }
   },
-
   "coreSystems": {
     "title": "Merkezi Sistemler",
     "description": "Merkezi sistem yönetim paneline hoş geldiniz",
@@ -1379,7 +1365,6 @@
       "description": "Merkezi bildirim yönetimi"
     }
   },
-
   "tenants": {
     "title": "Tenant Yönetimi",
     "description": "Tüm tenant'ları görüntüle ve yönet",
@@ -1398,7 +1383,6 @@
       "createdAt": "Oluşturulma"
     }
   },
-
   "databases": {
     "title": "Veritabanı Yönetimi",
     "description": "Tüm veritabanlarını görüntüle ve yönet",
@@ -1421,7 +1405,6 @@
       "status": "Durum"
     }
   },
-
   "optimization": {
     "title": "Optimizasyon",
     "description": "Sistem optimizasyonu ve performans yönetimi",
@@ -1476,7 +1459,6 @@
       "lastResult": "Son İşlem Sonucu"
     }
   },
-
   "setup": {
     "title": "Veritabanı Kurulum Sihirbazı",
     "configuration": {
@@ -1616,7 +1598,6 @@
       "resetFailed": "Sıfırlama başarısız oldu"
     }
   },
-
   "systemStatus": {
     "title": "Sistem Bilgileri",
     "description": "Sunucu ve sistem durumu bilgilerini görüntüle",
@@ -1658,14 +1639,12 @@
       "loadError": "Sistem bilgileri yüklenirken bir hata oluştu"
     }
   },
-
   "footer": {
     "copyright": "© 2024. Tüm hakları saklıdır.",
     "privacy": "Gizlilik",
     "terms": "Şartlar",
     "support": "Destek"
   },
-
   "menu": {
     "dashboard": "Panel",
     "moduleManagement": "Modül Yönetimi",
@@ -1673,7 +1652,6 @@
     "accessControl": "Erişim Kontrolü",
     "companyManagement": "Firma Yönetimi"
   },
-
   "profile": {
     "title": "Profil",
     "myProfile": "Profilim",
@@ -1682,7 +1660,6 @@
     "preferences": "Tercihler",
     "notifications": "Bildirimler"
   },
-
   "roles": {
     "items": {
       "superAdmin": {
@@ -1699,7 +1676,6 @@
       }
     }
   },
-
   "permissions": {
     "categories": {
       "userManagement": "Kullanıcı Yönetimi",
@@ -1752,12 +1728,7 @@
       }
     }
   },
-
-  "calendar": {
-    "title": "Takvim",
-    "description": "Takvim yönetimi ve etkinlikler"
-  },
-
+  "calendar": "Takvim",
   "fileManager": {
     "title": "Dosya Yöneticisi",
     "upload": "Dosya Yükle",
@@ -1781,7 +1752,6 @@
     "deleteSuccess": "Dosya başarıyla silindi",
     "deleteError": "Dosya silinirken hata oluştu"
   },
-
   "companies": {
     "title": "Şirketler",
     "description": "Firma ve şirket yönetimi",
@@ -1906,7 +1876,6 @@
       "status": "Durum"
     }
   },
-
   "buttons": {
     "save": "Kaydet",
     "cancel": "İptal",
@@ -1931,7 +1900,6 @@
     "add": "Ekle",
     "remove": "Kaldır"
   },
-
   "actions": {
     "save": "Kaydet",
     "cancel": "İptal",
@@ -1946,21 +1914,15 @@
     "download": "İndir",
     "downloadAll": "Tümünü İndir"
   },
-
   "exportComingSoon": "{{format}} formatında dışa aktarma yakında eklenecek",
-
   "loading": "Yükleniyor...",
-
   "save": "Kaydet",
-  "calendar": "Takvim",
   "list": "Liste",
-
   "status": {
     "title": "Durum",
     "active": "Aktif",
     "inactive": "Pasif"
   },
-
   "audit": {
     "title": "Değişiklik Geçmişi",
     "recentChanges": "Son Değişiklikler",
@@ -1979,7 +1941,27 @@
       "logout": "Çıkış Yapıldı"
     }
   },
-
   "success": "Başarılı",
-  "error": "Hata"
+  "error": "Hata",
+  "auth": {
+    "demo": {
+      "title": "Login Sayfaları",
+      "description": "Aşağıdaki seçeneklerden birini seçerek login sayfalarını görüntüleyebilirsiniz",
+      "superAdmin": {
+        "title": "Süper Admin Login",
+        "description": "Platform yöneticileri için özel giriş sayfası",
+        "button": "Süper Admin Girişi"
+      },
+      "admin": {
+        "title": "Normal Admin Login",
+        "description": "Tenant yöneticileri için giriş sayfası",
+        "button": "Admin Girişi"
+      },
+      "standard": {
+        "title": "Standart Login",
+        "description": "Normal kullanıcılar için giriş sayfası",
+        "button": "Standart Giriş"
+      }
+    }
+  }
 }

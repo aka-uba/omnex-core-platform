@@ -82,7 +82,6 @@ export function FilePreviewModal({ opened, onClose, file, onDownload }: FilePrev
 
     // Debug log for PDF detection
     if (process.env.NODE_ENV === 'development') {
-        console.log('FilePreviewModal debug:', { fileName, fileExtension, mimeType, isPdf, path: file.path });
     }
 
     const formatFileSize = (bytes?: number) => {

@@ -170,7 +170,30 @@ export async function GET(
       const totalMaintenance = maintenanceRecords.length;
       const maintenanceCompletionRate = totalMaintenance > 0 ? (completedMaintenance / totalMaintenance) * 100 : 0;
 
-      // Calculate monthly trend (last 12 months)
+      // Calculate monthly trend (last 12 months) - OPTIMIZED: 2 queries instead of 24
+      const twelveMonthsAgo = dayjs().subtract(11, 'month').startOf('month').toDate();
+      const now = dayjs().endOf('month').toDate();
+
+      // Fetch all data in 2 queries instead of 24 (N+1 fix)
+      const [allPayments, allMaintenanceRecords] = await Promise.all([
+        tenantPrisma.payment.findMany({
+          where: {
+            contract: { apartmentId: { in: apartmentIds } },
+            dueDate: { gte: twelveMonthsAgo, lte: now },
+          },
+          select: { id: true, amount: true, status: true, dueDate: true },
+        }),
+        tenantPrisma.realEstateMaintenanceRecord.findMany({
+          where: {
+            apartmentId: { in: apartmentIds },
+            assignedStaffId: id,
+            createdAt: { gte: twelveMonthsAgo, lte: now },
+          },
+          select: { id: true, status: true, createdAt: true },
+        }),
+      ]);
+
+      // Group by month in memory
       const monthlyTrend: Array<{
         month: string;
         collectionRate: number;
@@ -186,17 +209,11 @@ export async function GET(
         const monthEnd = dayjs().subtract(i, 'month').endOf('month');
         const monthKey = monthStart.format('YYYY-MM');
 
-        // Get payments for this month
-        const monthPayments = await tenantPrisma.payment.findMany({
-          where: {
-            contract: {
-              apartmentId: { in: apartmentIds },
-            },
-            dueDate: {
-              gte: monthStart.toDate(),
-              lte: monthEnd.toDate(),
-            },
-          },
+        // Filter in memory instead of querying DB
+        const monthPayments = allPayments.filter((p) => {
+          if (!p.dueDate) return false;
+          const d = dayjs(p.dueDate);
+          return d.valueOf() >= monthStart.valueOf() && d.valueOf() <= monthEnd.valueOf();
         });
 
         let monthDue = 0;
@@ -211,16 +228,10 @@ export async function GET(
 
         const monthCollectionRate = monthDue > 0 ? (monthPaid / monthDue) * 100 : 0;
 
-        // Get maintenance for this month
-        const monthMaintenance = await tenantPrisma.realEstateMaintenanceRecord.findMany({
-          where: {
-            apartmentId: { in: apartmentIds },
-            assignedStaffId: id,
-            createdAt: {
-              gte: monthStart.toDate(),
-              lte: monthEnd.toDate(),
-            },
-          },
+        const monthMaintenance = allMaintenanceRecords.filter((m) => {
+          if (!m.createdAt) return false;
+          const d = dayjs(m.createdAt);
+          return d.valueOf() >= monthStart.valueOf() && d.valueOf() <= monthEnd.valueOf();
         });
 
         const monthCompletedMaintenance = monthMaintenance.filter((m) => m.status === 'completed').length;
