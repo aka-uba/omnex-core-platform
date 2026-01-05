@@ -51,7 +51,9 @@ export function useAuth() {
   };
 
   useEffect(() => {
-    // İlk render'da zaten yüklendi, sadece loading'i false yap
+    // SSR'da window undefined olduğu için user null olarak geliyor
+    // Client mount sonrası localStorage'dan yeniden yükle
+    loadUser();
     setLoading(false);
 
     // localStorage değişikliklerini dinle (diğer tab'lardan veya güncellemelerden)

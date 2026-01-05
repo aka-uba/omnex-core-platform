@@ -13,6 +13,7 @@ import {
 import { IconCalendar, IconCurrencyDollar } from '@tabler/icons-react';
 import { useRealEstateMaintenanceRecord } from '@/hooks/useRealEstateMaintenanceRecords';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import type { MaintenanceType, MaintenanceStatus } from '@/modules/real-estate/types/maintenance-record';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
@@ -24,6 +25,7 @@ interface MaintenanceRecordDetailProps {
 
 export function MaintenanceRecordDetail({ locale, recordId }: MaintenanceRecordDetailProps) {
   const { t } = useTranslation('modules/real-estate');
+  const { formatCurrency } = useCurrency();
   const { data: record, isLoading, error } = useRealEstateMaintenanceRecord(recordId);
 
   const getTypeBadge = (type: MaintenanceType) => {
@@ -202,10 +204,7 @@ export function MaintenanceRecordDetail({ locale, recordId }: MaintenanceRecordD
                     {t('form.estimatedCost') || t('table.estimatedCost')}
                   </Text>
                   <Text fw={500}>
-                    {new Intl.NumberFormat('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    }).format(Number(record.estimatedCost))}
+                    {formatCurrency(Number(record.estimatedCost))}
                   </Text>
                 </div>
               </Group>
@@ -221,10 +220,7 @@ export function MaintenanceRecordDetail({ locale, recordId }: MaintenanceRecordD
                     {t('form.actualCost')}
                   </Text>
                   <Text fw={500}>
-                    {new Intl.NumberFormat('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    }).format(Number(record.actualCost))}
+                    {formatCurrency(Number(record.actualCost))}
                   </Text>
                 </div>
               </Group>

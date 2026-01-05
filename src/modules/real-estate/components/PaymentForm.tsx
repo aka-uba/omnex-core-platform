@@ -20,7 +20,7 @@ import {
   Anchor,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 import { IconArrowLeft, IconX, IconPlus, IconBuilding, IconHome, IconUser, IconMapPin } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useCreatePayment, useUpdatePayment, usePayment } from '@/hooks/usePayments';
@@ -40,6 +40,7 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { showSuccess, showError } = useNotification();
   const { currency: defaultCurrency } = useCurrency();
   const createPayment = useCreatePayment();
   const updatePayment = useUpdatePayment();
@@ -145,26 +146,14 @@ export function PaymentForm({ locale, paymentId }: PaymentFormProps) {
 
       if (isEdit && paymentId) {
         await updatePayment.mutateAsync({ id: paymentId, input: paymentData as any });
-        notifications.show({
-          title: t('messages.success'),
-          message: t('messages.updateSuccess'),
-          color: 'green',
-        });
+        showSuccess(t('messages.updateSuccess'));
       } else {
         await createPayment.mutateAsync(paymentData);
-        notifications.show({
-          title: t('messages.success'),
-          message: t('messages.createSuccess'),
-          color: 'green',
-        });
+        showSuccess(t('messages.createSuccess'));
       }
       router.push(`/${locale}/modules/real-estate/payments`);
     } catch (error) {
-      notifications.show({
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('messages.createError'),
-        color: 'red',
-      });
+      showError(error instanceof Error ? error.message : t('messages.createError'));
     }
   };
 

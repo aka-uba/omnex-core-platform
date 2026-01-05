@@ -7,6 +7,7 @@
 
 import { Card, Table, Badge, Text } from '@mantine/core';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useInvoices } from '@/hooks/useInvoices';
 import type { InvoiceWidgetConfig } from './widgets.types';
 import type { Invoice } from '@/modules/accounting/types/subscription';
@@ -18,6 +19,7 @@ interface InvoiceWidgetProps {
 export function InvoiceWidget({ config }: InvoiceWidgetProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const { data: invoicesData, isLoading } = useInvoices({
     page: 1,
     pageSize: config.limit || 10,
@@ -66,7 +68,7 @@ export function InvoiceWidget({ config }: InvoiceWidgetProps) {
                   </Table.Td>
                   <Table.Td>
                     {invoice.totalAmount
-                      ? `${Number(invoice.totalAmount).toLocaleString('tr-TR')} ${invoice.currency || 'TRY'}`
+                      ? formatCurrency(Number(invoice.totalAmount))
                       : '-'}
                   </Table.Td>
                   <Table.Td>

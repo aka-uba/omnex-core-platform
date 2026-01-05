@@ -14,7 +14,7 @@ import {
 import { useRole, useCreateRole, useUpdateRole } from '@/hooks/useRoles';
 import { useTranslation } from '@/lib/i18n/client';
 import { roleSchema } from '@/lib/schemas/role';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 
 interface RoleModalProps {
   opened: boolean;
@@ -25,6 +25,7 @@ interface RoleModalProps {
 export function RoleModal({ opened, onClose, roleId }: RoleModalProps) {
   const { t } = useTranslation('modules/roles');
   const { t: tGlobal } = useTranslation('global');
+  const { showSuccess, showError, showWarning } = useNotification();
   const { data: role } = useRole(roleId || '');
   const createRole = useCreateRole();
   const updateRole = useUpdateRole();
@@ -53,37 +54,21 @@ export function RoleModal({ opened, onClose, roleId }: RoleModalProps) {
   const handleSubmit = async () => {
     // Temel validasyon
     if (!form.values.name || !form.values.description) {
-      notifications.show({
-        title: tGlobal('notifications.validation.title'),
-        message: tGlobal('notifications.validation.requiredFields'),
-        color: 'red',
-      });
+      showWarning(tGlobal('notifications.validation.requiredFields'));
       return;
     }
 
     try {
       if (roleId) {
         await updateRole.mutateAsync({ roleId, data: form.values });
-        notifications.show({
-          title: t('edit.title'),
-          message: tGlobal('notifications.success.roleUpdated'),
-          color: 'green',
-        });
+        showSuccess(tGlobal('notifications.success.roleUpdated'));
       } else {
         await createRole.mutateAsync(form.values);
-        notifications.show({
-          title: t('create.title'),
-          message: tGlobal('notifications.success.roleCreated'),
-          color: 'green',
-        });
+        showSuccess(tGlobal('notifications.success.roleCreated'));
       }
       onClose();
     } catch (error) {
-      notifications.show({
-        title: tGlobal('notifications.error.title'),
-        message: error instanceof Error ? error.message : tGlobal('notifications.error.roleSaveFailed'),
-        color: 'red',
-      });
+      showError(error instanceof Error ? error.message : tGlobal('notifications.error.roleSaveFailed'));
     }
   };
 

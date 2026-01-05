@@ -22,6 +22,7 @@ import {
   useDeleteRealEstateMaintenanceRecord,
 } from '@/hooks/useRealEstateMaintenanceRecords';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import { FilterOption } from '@/components/tables/FilterModal';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
@@ -37,6 +38,7 @@ interface MaintenanceRecordListProps {
 export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [search] = useState('');
@@ -158,12 +160,9 @@ export function MaintenanceRecordList({ locale }: MaintenanceRecordListProps) {
 
   const renderEstimatedCost = useCallback((value: number | null) =>
     value
-      ? new Intl.NumberFormat('tr-TR', {
-          style: 'currency',
-          currency: 'TRY',
-        }).format(Number(value))
+      ? formatCurrency(Number(value))
       : '-',
-  []);
+  [formatCurrency]);
 
   const renderActions = useCallback((value: any, row: any) => (
     <Group gap="xs" justify="flex-end">

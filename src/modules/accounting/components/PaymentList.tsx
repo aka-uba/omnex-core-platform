@@ -20,6 +20,7 @@ import { useAccountingPayments } from '@/hooks/useAccountingPayments';
 import { useInvoices } from '@/hooks/useInvoices';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import type { PaymentMethod, PaymentStatus } from '@/modules/accounting/types/subscription';
 import dayjs from 'dayjs';
@@ -33,6 +34,7 @@ interface PaymentListProps {
 export function PaymentList({ locale, paymentType }: PaymentListProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [invoiceId, setInvoiceId] = useState<string | undefined>();
   const [subscriptionId, setSubscriptionId] = useState<string | undefined>();
   const [statusFilter, setStatusFilter] = useState<PaymentStatus | undefined>();
@@ -73,12 +75,9 @@ export function PaymentList({ locale, paymentType }: PaymentListProps) {
       key: 'amount',
       label: t('payments.table.amount'),
       sortable: true,
-      render: (value, row) => (
+      render: (value) => (
         <Text fw={500}>
-          {Number(value).toLocaleString('tr-TR', {
-            style: 'currency',
-            currency: row.currency || 'TRY',
-          })}
+          {formatCurrency(Number(value))}
         </Text>
       ),
     },

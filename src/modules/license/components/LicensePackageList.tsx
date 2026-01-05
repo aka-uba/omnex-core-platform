@@ -25,6 +25,7 @@ import {
 } from '@tabler/icons-react';
 import { useLicensePackages, useDeleteLicensePackage } from '@/hooks/useLicensePackages';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import type { BillingCycle } from '@/modules/license/types/license';
@@ -38,6 +39,7 @@ export function LicensePackageList({ locale }: LicensePackageListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/license');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(10);
   const [search, setSearch] = useState<string>('');
@@ -184,7 +186,7 @@ export function LicensePackageList({ locale }: LicensePackageListProps) {
                   </Table.Td>
                   <Table.Td>
                     <Text fw={500}>
-                      {pkg.basePrice.toLocaleString()} {pkg.currency}
+                      {formatCurrency(pkg.basePrice)}
                     </Text>
                   </Table.Td>
                   <Table.Td>

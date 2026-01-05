@@ -14,7 +14,7 @@ import {
 import { usePermission, useCreatePermission, useUpdatePermission } from '@/hooks/usePermissions';
 import { useTranslation } from '@/lib/i18n/client';
 import { permissionSchema, PermissionFormData } from '@/lib/schemas/permission';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 
 interface PermissionModalProps {
   opened: boolean;
@@ -25,6 +25,7 @@ interface PermissionModalProps {
 export function PermissionModal({ opened, onClose, permissionId }: PermissionModalProps) {
   const { t } = useTranslation('modules/permissions');
   const { t: tGlobal } = useTranslation('global');
+  const { showSuccess, showError, showWarning } = useNotification();
   const { data: permission } = usePermission(permissionId || '');
   const createPermission = useCreatePermission();
   const updatePermission = useUpdatePermission();
@@ -57,47 +58,27 @@ export function PermissionModal({ opened, onClose, permissionId }: PermissionMod
   const handleSubmit = async () => {
     // Temel validasyon
     if (!form.values.permissionKey || !form.values.name || !form.values.description) {
-      notifications.show({
-        title: tGlobal('notifications.validation.title'),
-        message: tGlobal('notifications.validation.requiredFields'),
-        color: 'red',
-      });
+      showWarning(tGlobal('notifications.validation.requiredFields'));
       return;
     }
 
     // Permission key format kontrolü (module.action)
     if (!form.values.permissionKey.includes('.')) {
-      notifications.show({
-        title: tGlobal('notifications.validation.title'),
-        message: t('validation.keyFormat'),
-        color: 'red',
-      });
+      showWarning(t('validation.keyFormat'));
       return;
     }
 
     try {
       if (permissionId) {
         await updatePermission.mutateAsync({ permissionId, data: form.values });
-        notifications.show({
-          title: t('edit.title'),
-          message: tGlobal('notifications.success.permissionUpdated'),
-          color: 'green',
-        });
+        showSuccess(tGlobal('notifications.success.permissionUpdated'));
       } else {
         await createPermission.mutateAsync(form.values);
-        notifications.show({
-          title: t('create.title'),
-          message: tGlobal('notifications.success.permissionCreated'),
-          color: 'green',
-        });
+        showSuccess(tGlobal('notifications.success.permissionCreated'));
       }
       onClose();
     } catch (error) {
-      notifications.show({
-        title: tGlobal('notifications.error.title'),
-        message: error instanceof Error ? error.message : tGlobal('notifications.error.permissionSaveFailed'),
-        color: 'red',
-      });
+      showError(error instanceof Error ? error.message : tGlobal('notifications.error.permissionSaveFailed'));
     }
   };
 

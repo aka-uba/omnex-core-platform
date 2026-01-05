@@ -6,6 +6,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useSubscription } from '@/hooks/useSubscriptions';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 
@@ -14,6 +15,7 @@ export function SubscriptionDetailPageClient({ locale, subscriptionId }: { local
   const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
+  const { formatCurrency } = useCurrency();
   const { data: subscription, isLoading } = useSubscription(subscriptionId);
 
   if (isLoading) {
@@ -94,10 +96,7 @@ export function SubscriptionDetailPageClient({ locale, subscriptionId }: { local
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('subscriptions.form.basePrice')}</Text>
               <Text fw={500}>
-                {Number(subscription.basePrice).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: subscription.currency || 'TRY',
-                })}
+                {formatCurrency(Number(subscription.basePrice))}
               </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>

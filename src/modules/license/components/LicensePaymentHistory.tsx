@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { useLicensePayments } from '@/hooks/useLicensePayments';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 
 interface LicensePaymentHistoryProps {
@@ -23,6 +24,7 @@ interface LicensePaymentHistoryProps {
 export function LicensePaymentHistory({ locale, licenseId }: LicensePaymentHistoryProps) {
   const { t } = useTranslation('modules/license');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(10);
 
@@ -76,7 +78,7 @@ export function LicensePaymentHistory({ locale, licenseId }: LicensePaymentHisto
               <Table.Tr key={payment.id}>
                 <Table.Td>
                   <Text fw={500}>
-                    {payment.amount.toLocaleString()} {payment.currency}
+                    {formatCurrency(payment.amount)}
                   </Text>
                 </Table.Td>
                 <Table.Td>

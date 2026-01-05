@@ -6,6 +6,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useProduct } from '@/hooks/useProducts';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 import { BOMViewer } from '@/modules/production/components/BOMViewer';
@@ -15,6 +16,7 @@ export function ProductDetailPageClient({ locale, productId }: { locale: string;
   const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/production');
+  const { formatCurrency } = useCurrency();
   const { data: product, isLoading } = useProduct(productId);
 
   if (isLoading) {
@@ -111,10 +113,7 @@ export function ProductDetailPageClient({ locale, productId }: { locale: string;
                   <Grid.Col span={{ base: 12, md: 6 }}>
                     <Text size="sm" c="dimmed">{t('form.costPrice')}</Text>
                     <Text fw={500}>
-                      {Number(product.costPrice).toLocaleString('tr-TR', {
-                        style: 'currency',
-                        currency: product.currency || 'TRY',
-                      })}
+                      {formatCurrency(Number(product.costPrice))}
                     </Text>
                   </Grid.Col>
                 )}
@@ -122,10 +121,7 @@ export function ProductDetailPageClient({ locale, productId }: { locale: string;
                   <Grid.Col span={{ base: 12, md: 6 }}>
                     <Text size="sm" c="dimmed">{t('form.sellingPrice')}</Text>
                     <Text fw={500}>
-                      {Number(product.sellingPrice).toLocaleString('tr-TR', {
-                        style: 'currency',
-                        currency: product.currency || 'TRY',
-                      })}
+                      {formatCurrency(Number(product.sellingPrice))}
                     </Text>
                   </Grid.Col>
                 )}

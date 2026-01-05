@@ -37,7 +37,7 @@ interface PaymentFormProps {
 export function PaymentForm({ locale, onSuccess, initialInvoiceId, initialSubscriptionId }: PaymentFormProps) {
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
-  const { currency: defaultCurrency } = useCurrency();
+  const { currency: defaultCurrency, formatCurrency } = useCurrency();
   const createPayment = useCreateAccountingPayment();
   const { data: invoicesData } = useInvoices({ page: 1, pageSize: 1000 });
   const { data: subscriptionsData } = useSubscriptions({ page: 1, pageSize: 1000 });
@@ -111,9 +111,9 @@ export function PaymentForm({ locale, onSuccess, initialInvoiceId, initialSubscr
   const invoiceOptions = useMemo(() => {
     return invoicesData?.invoices.map(i => ({
       value: i.id,
-      label: `${i.invoiceNumber} - ${Number(i.totalAmount).toLocaleString('tr-TR', { style: 'currency', currency: i.currency || 'TRY' })}`,
+      label: `${i.invoiceNumber} - ${formatCurrency(Number(i.totalAmount))}`,
     })) || [];
-  }, [invoicesData?.invoices]);
+  }, [invoicesData?.invoices, formatCurrency]);
 
   const subscriptionOptions = useMemo(() => {
     return subscriptionsData?.subscriptions.map(s => ({

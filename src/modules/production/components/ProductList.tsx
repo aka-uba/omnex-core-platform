@@ -16,6 +16,7 @@ import {
 } from '@tabler/icons-react';
 import { useProducts, useDeleteProduct } from '@/hooks/useProducts';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
@@ -30,6 +31,7 @@ export function ProductList({ locale }: ProductListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/production');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
@@ -93,13 +95,10 @@ export function ProductList({ locale }: ProductListProps) {
     );
   }, [t]);
 
-  const formatCurrency = useCallback((value: number | null, currency?: string) => {
+  const formatCurrencyValue = useCallback((value: number | null) => {
     if (!value) return '-';
-    return Number(value).toLocaleString('tr-TR', {
-      style: 'currency',
-      currency: currency || 'TRY',
-    });
-  }, []);
+    return formatCurrency(Number(value));
+  }, [formatCurrency]);
 
   const products = useMemo(() => data?.products || [], [data]);
 
@@ -193,14 +192,14 @@ export function ProductList({ locale }: ProductListProps) {
       label: t('table.costPrice'),
       sortable: true,
       align: 'right',
-      render: (value: number, row: Record<string, any>) => formatCurrency(value, row.currency),
+      render: (value: number) => formatCurrencyValue(value),
     },
     {
       key: 'sellingPrice',
       label: t('table.sellingPrice'),
       sortable: true,
       align: 'right',
-      render: (value: number, row: Record<string, any>) => formatCurrency(value, row.currency),
+      render: (value: number) => formatCurrencyValue(value),
     },
     {
       key: 'isActive',
@@ -253,7 +252,7 @@ export function ProductList({ locale }: ProductListProps) {
         </Group>
       ),
     },
-  ], [t, tGlobal, getTypeBadge, getActiveBadge, formatCurrency, router, locale, handleDeleteClick]);
+  ], [t, tGlobal, getTypeBadge, getActiveBadge, formatCurrencyValue, router, locale, handleDeleteClick]);
 
   if (isLoading) {
     return <DataTableSkeleton columns={10} rows={10} />;

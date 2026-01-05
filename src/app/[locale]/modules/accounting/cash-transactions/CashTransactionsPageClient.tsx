@@ -41,6 +41,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { AlertModal } from '@/components/modals/AlertModal';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import {
   useCashTransactions,
   useCreateCashTransaction,
@@ -99,20 +100,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
   const params = useParams();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
-  
-  // Locale mapping for number formatting
-  const localeMap: Record<string, string> = {
-    tr: 'tr-TR',
-    en: 'en-US',
-    de: 'de-DE',
-    ar: 'ar-SA',
-  };
-  const numberLocale = localeMap[currentLocale] || 'tr-TR';
-
-  // Helper to format currency based on current locale
-  const formatCurrency = (value: number, currency = '₺') => {
-    return `${value.toLocaleString(numberLocale)} ${currency}`;
-  };
+  const { formatCurrency } = useCurrency();
 
   // Helper to get source label from translations
   const getSourceLabel = (source: string) => t(`cashTransactions.sources.${source}`);
@@ -363,8 +351,7 @@ export function CashTransactionsPageClient({ locale }: { locale: string }) {
       sortable: true,
       render: (value, row) => (
         <Text fw={600} c={row.type === 'income' ? 'green' : 'red'}>
-          {row.type === 'income' ? '+' : '-'}
-          {Number(value).toLocaleString(numberLocale)} {row.currency}
+          {row.type === 'income' ? '+' : '-'}{formatCurrency(Number(value))}
         </Text>
       ),
     },

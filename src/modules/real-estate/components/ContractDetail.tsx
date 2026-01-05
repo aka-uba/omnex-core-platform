@@ -11,6 +11,7 @@ import {
 import { IconCalendar, IconCurrencyDollar, IconHome, IconUser } from '@tabler/icons-react';
 import { useContract } from '@/hooks/useContracts';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import type { ContractType, ContractStatus } from '@/modules/real-estate/types/contract';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
@@ -22,6 +23,7 @@ interface ContractDetailProps {
 
 export function ContractDetail({ locale, contractId }: ContractDetailProps) {
   const { t } = useTranslation('modules/real-estate');
+  const { formatCurrency } = useCurrency();
   const { data: contract, isLoading, error } = useContract(contractId);
 
   const getTypeBadge = (type: ContractType) => {
@@ -120,10 +122,7 @@ export function ContractDetail({ locale, contractId }: ContractDetailProps) {
                   {t('form.rentAmount')}
                 </Text>
                 <Text fw={500}>
-                  {new Intl.NumberFormat('tr-TR', {
-                    style: 'currency',
-                    currency: contract.currency || 'TRY',
-                  }).format(Number(contract.rentAmount))}
+                  {formatCurrency(Number(contract.rentAmount))}
                 </Text>
               </div>
             </Group>
@@ -138,10 +137,7 @@ export function ContractDetail({ locale, contractId }: ContractDetailProps) {
                     {t('form.deposit')}
                   </Text>
                   <Text fw={500}>
-                    {new Intl.NumberFormat('tr-TR', {
-                      style: 'currency',
-                      currency: contract.currency || 'TRY',
-                    }).format(Number(contract.deposit))}
+                    {formatCurrency(Number(contract.deposit))}
                   </Text>
                 </div>
               </Group>

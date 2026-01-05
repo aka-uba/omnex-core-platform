@@ -6,7 +6,7 @@ import { IconCheck, IconEye, IconAlertTriangle, IconClock, IconArrowRight } from
 import { usePaymentAnalytics, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useTranslation } from '@/lib/i18n/client';
 import { useRouter } from 'next/navigation';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import styles from './PaymentQuickBoard.module.css';
@@ -32,6 +32,7 @@ interface QuickPaymentItem {
 export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
   const { t } = useTranslation('modules/real-estate');
   const router = useRouter();
+  const { showSuccess, showError } = useNotification();
   const { data, isLoading, refetch } = usePaymentAnalytics();
   const markAsPaid = useMarkPaymentAsPaid();
   const { formatCurrency } = useCurrency();
@@ -40,20 +41,12 @@ export function PaymentQuickBoard({ locale }: PaymentQuickBoardProps) {
     e.stopPropagation();
     try {
       await markAsPaid.mutateAsync({ id, paidDate: new Date() });
-      notifications.show({
-        title: t('messages.success'),
-        message: t('payments.markedAsPaid'),
-        color: 'green',
-      });
+      showSuccess(t('payments.markedAsPaid'));
       refetch();
     } catch (error) {
-      notifications.show({
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('payments.markAsPaidError'),
-        color: 'red',
-      });
+      showError(error instanceof Error ? error.message : t('payments.markAsPaidError'));
     }
-  }, [markAsPaid, t, refetch]);
+  }, [markAsPaid, t, refetch, showSuccess, showError]);
 
   const handleViewPayment = useCallback((payment: QuickPaymentItem) => {
     if (payment.isProjected && payment.contractId) {

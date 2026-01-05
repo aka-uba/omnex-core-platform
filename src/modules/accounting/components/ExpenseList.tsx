@@ -20,6 +20,7 @@ import { useExpenses, useDeleteExpense } from '@/hooks/useExpenses';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useLocations } from '@/hooks/useLocations';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
@@ -34,6 +35,7 @@ export function ExpenseList({ locale }: ExpenseListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
   const [typeFilter, setTypeFilter] = useState<ExpenseType | undefined>();
   const [statusFilter, setStatusFilter] = useState<ExpenseStatus | undefined>();
@@ -137,10 +139,7 @@ export function ExpenseList({ locale }: ExpenseListProps) {
       key: 'amount',
       label: t('expenses.table.amount'),
       sortable: true,
-      render: (value, row) => Number(value).toLocaleString('tr-TR', {
-        style: 'currency',
-        currency: row.currency || 'TRY',
-      }),
+      render: (value) => formatCurrency(Number(value)),
     },
     {
       key: 'expenseDate',

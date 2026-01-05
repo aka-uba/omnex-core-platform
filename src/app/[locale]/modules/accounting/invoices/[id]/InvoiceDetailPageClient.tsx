@@ -7,6 +7,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useInvoice } from '@/hooks/useInvoices';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 
 export function InvoiceDetailPageClient({ locale, invoiceId }: { locale: string; invoiceId: string }) {
@@ -14,6 +15,7 @@ export function InvoiceDetailPageClient({ locale, invoiceId }: { locale: string;
   const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
+  const { formatCurrency } = useCurrency();
   const { data: invoice, isLoading } = useInvoice(invoiceId);
 
   if (isLoading) {
@@ -90,30 +92,21 @@ export function InvoiceDetailPageClient({ locale, invoiceId }: { locale: string;
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('invoices.form.subtotal')}</Text>
               <Text fw={500}>
-                {Number(invoice.subtotal).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: invoice.currency || 'TRY',
-                })}
+                {formatCurrency(Number(invoice.subtotal))}
               </Text>
             </Grid.Col>
             {invoice.taxAmount && (
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('invoices.form.taxAmount')}</Text>
                 <Text fw={500}>
-                  {Number(invoice.taxAmount).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: invoice.currency || 'TRY',
-                  })}
+                  {formatCurrency(Number(invoice.taxAmount))}
                 </Text>
               </Grid.Col>
             )}
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('invoices.form.totalAmount')}</Text>
               <Text fw={500} size="lg">
-                {Number(invoice.totalAmount).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: invoice.currency || 'TRY',
-                })}
+                {formatCurrency(Number(invoice.totalAmount))}
               </Text>
             </Grid.Col>
             {invoice.description && (

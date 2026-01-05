@@ -25,6 +25,7 @@ import {
 } from '@tabler/icons-react';
 import { useContracts } from '@/hooks/useContracts';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import dayjs from 'dayjs';
 
@@ -35,6 +36,7 @@ interface ContractTrackingProps {
 export function ContractTracking({ locale }: ContractTrackingProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [activeTab, setActiveTab] = useState<string>('upcoming');
   const [daysAhead] = useState<number>(30);
 
@@ -183,11 +185,7 @@ export function ContractTracking({ locale }: ContractTrackingProps) {
       sortable: true,
       searchable: false,
       align: 'right',
-      render: (value, row) =>
-        Number(value).toLocaleString('tr-TR', {
-          style: 'currency',
-          currency: row.currency || 'TRY',
-        }),
+      render: (value) => formatCurrency(Number(value)),
     },
     {
       key: 'autoRenewal',

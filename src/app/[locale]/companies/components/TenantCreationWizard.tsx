@@ -10,7 +10,7 @@ import { CompanyInfoStep } from './wizard/CompanyInfoStep';
 import { ReviewStep } from './wizard/ReviewStep';
 import { CreationProgressStep } from './wizard/CreationProgressStep';
 import { CredentialsSummaryStep } from './wizard/CredentialsSummaryStep';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 import { useRouter } from 'next/navigation';
 
 interface TenantCreationWizardProps {
@@ -19,6 +19,7 @@ interface TenantCreationWizardProps {
 
 export function TenantCreationWizard({ locale }: TenantCreationWizardProps) {
     const router = useRouter();
+    const { showSuccess, showError } = useNotification();
     const [active, setActive] = useState(0);
     const [isCreating, setIsCreating] = useState(false);
     const [creationResult, setCreationResult] = useState<any>(null);
@@ -106,17 +107,9 @@ export function TenantCreationWizard({ locale }: TenantCreationWizardProps) {
             setCreationResult(result.data);
             setActive(4); // Completed step
 
-            notifications.show({
-                title: 'Success',
-                message: 'Tenant created successfully!',
-                color: 'green',
-            });
+            showSuccess('Tenant created successfully!');
         } catch (error: any) {
-            notifications.show({
-                title: 'Error',
-                message: error.message || 'Failed to create tenant',
-                color: 'red',
-            });
+            showError(error.message || 'Failed to create tenant');
             setActive(2); // Back to Review step on error
         } finally {
             setIsCreating(false);

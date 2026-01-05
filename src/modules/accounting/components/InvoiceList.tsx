@@ -19,6 +19,7 @@ import {
 import { useInvoices, useDeleteInvoice } from '@/hooks/useInvoices';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
@@ -33,6 +34,7 @@ export function InvoiceList({ locale }: InvoiceListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [page, _setPage] = useState(1);
   const [_pageSize] = useState<number>(25);
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | undefined>();
@@ -117,10 +119,7 @@ export function InvoiceList({ locale }: InvoiceListProps) {
       key: 'totalAmount',
       label: t('invoices.table.totalAmount'),
       sortable: true,
-      render: (value, row) => Number(value).toLocaleString('tr-TR', {
-        style: 'currency',
-        currency: row.currency || 'TRY',
-      }),
+      render: (value) => formatCurrency(Number(value)),
     },
     {
       key: 'status',

@@ -875,6 +875,60 @@ export function useItems() {
 const { items, loading } = useItems();
 ```
 
+### 8.2 useAuth Hook ve SSR/Hydration
+**Dosya**: `src/hooks/useAuth.ts`
+
+**Önemli:** localStorage'dan state okuma SSR'da çalışmaz (`window` undefined).
+
+```typescript
+// ❌ YANLIŞ: Sadece initial state'e güvenmek
+const [user, setUser] = useState<User | null>(() => loadUserFromStorage());
+
+useEffect(() => {
+  setLoading(false); // SSR'da user null kalır!
+}, []);
+
+// ✅ DOĞRU: Client mount sonrası yeniden yükle
+useEffect(() => {
+  loadUser();        // localStorage'dan yeniden oku
+  setLoading(false);
+}, []);
+```
+
+**SSR/Hydration Akışı:**
+1. SSR: `window` undefined → `user = null`
+2. Client hydration: React SSR state'ini korur (`null`)
+3. useEffect çalışır → `loadUser()` localStorage'dan okur → `user` güncellenir
+
+**useAuth Kullanımı:**
+```typescript
+const { user, loading, isAuthenticated, logout, refreshUser } = useAuth();
+
+// Loading kontrolü
+if (loading) return <Skeleton />;
+
+// Auth kontrolü
+if (!user) {
+  router.push('/auth/login');
+  return null;
+}
+```
+
+### 8.3 LayoutWrapper Auth Kontrolü
+**Dosya**: `src/components/layouts/LayoutWrapper.tsx`
+
+Auth kontrolü `LayoutWrapper` içinde yapılır:
+- Public sayfalar: `/auth/*`, `/login`, `/register`, `/setup`, `/public/*`
+- Diğer sayfalar: `useAuth` ile kontrol edilir, login yoksa redirect
+
+```typescript
+// Public path kontrolü
+const PUBLIC_PATHS = [
+  '/auth/login', '/auth/register', '/auth/activate',
+  '/login', '/register', '/welcome', '/setup', '/public/',
+];
+```
+
 ---
 
 ## 9. YAPILAN HATALAR - TEKRARLAMA
@@ -1957,6 +2011,8 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 
 | Amaç | Dosya |
 |------|-------|
+| **Auth Hook** | `src/hooks/useAuth.ts` |
+| **Layout Wrapper** | `src/components/layouts/LayoutWrapper.tsx` |
 | **Currency Sabitleri** | `src/lib/constants/currency.ts` |
 | **Currency Hook** | `src/hooks/useCurrency.ts` |
 | Merkezi Tablo | `src/components/tables/DataTable.tsx` |
@@ -1982,5 +2038,5 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 ---
 
 **Son Güncelleme**: 2026-01-05
-**Platform Versiyonu**: 1.1.1
+**Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1

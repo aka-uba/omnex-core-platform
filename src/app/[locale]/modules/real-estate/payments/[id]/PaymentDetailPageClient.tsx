@@ -7,6 +7,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { usePayment } from '@/hooks/usePayments';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 import type { PaymentType, PaymentStatus, PaymentMethod } from '@/modules/real-estate/types/payment';
 
@@ -16,6 +17,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency, currency } = useCurrency();
   const { data: payment, isLoading, error } = usePayment(paymentId);
 
   if (error || (!isLoading && !payment)) {
@@ -117,10 +119,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                   <Stack gap="xs">
                     <Group>
                       <Text fw={700} size="xl">
-                        {Number(payment.totalAmount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: payment.currency || 'TRY',
-                        })}
+                        {formatCurrency(Number(payment.totalAmount))}
                       </Text>
                       {getTypeBadge(payment.type)}
                       {getStatusBadge(payment.status)}
@@ -150,10 +149,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                     <Grid.Col span={{ base: 12, md: 6 }}>
                       <Text size="sm" c="dimmed">{t('payments.detail.amount')}</Text>
                       <Text fw={500}>
-                        {Number(payment.amount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: payment.currency || 'TRY',
-                        })}
+                        {formatCurrency(Number(payment.amount))}
                       </Text>
                     </Grid.Col>
                     {payment.extraCharges && Array.isArray(payment.extraCharges) && payment.extraCharges.length > 0 && (
@@ -162,10 +158,7 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                         <Stack gap="xs">
                           {payment.extraCharges.map((charge: any, index: number) => (
                             <Text key={index} size="sm">
-                              {charge.name}: {Number(charge.amount).toLocaleString('tr-TR', {
-                                style: 'currency',
-                                currency: payment.currency || 'TRY',
-                              })}
+                              {charge.name}: {formatCurrency(Number(charge.amount))}
                             </Text>
                           ))}
                         </Stack>
@@ -174,15 +167,12 @@ export function PaymentDetailPageClient({ locale, paymentId }: { locale: string;
                     <Grid.Col span={{ base: 12, md: 6 }}>
                       <Text size="sm" c="dimmed">{t('payments.detail.totalAmount')}</Text>
                       <Text fw={600} size="lg">
-                        {Number(payment.totalAmount).toLocaleString('tr-TR', {
-                          style: 'currency',
-                          currency: payment.currency || 'TRY',
-                        })}
+                        {formatCurrency(Number(payment.totalAmount))}
                       </Text>
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 6 }}>
                       <Text size="sm" c="dimmed">{t('payments.detail.currency')}</Text>
-                      <Text fw={500}>{payment.currency || 'TRY'}</Text>
+                      <Text fw={500}>{currency}</Text>
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 6 }}>
                       <Text size="sm" c="dimmed">{t('payments.detail.dueDate')}</Text>

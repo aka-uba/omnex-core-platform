@@ -3,6 +3,7 @@
 import { Paper, Group, Text, Badge, Stack, Grid } from '@mantine/core';
 import { useEmployee } from '@/hooks/useEmployees';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 import type { WorkType } from '@/modules/hr/types/hr';
@@ -15,6 +16,7 @@ interface EmployeeDetailProps {
 export function EmployeeDetail({ locale: _locale, employeeId }: EmployeeDetailProps) {
   const { t } = useTranslation('modules/hr');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const { data: employee, isLoading } = useEmployee(employeeId);
 
   if (isLoading) {
@@ -96,10 +98,7 @@ export function EmployeeDetail({ locale: _locale, employeeId }: EmployeeDetailPr
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <Text size="sm" c="dimmed">{t('employees.form.salary')}</Text>
                 <Text fw={500}>
-                  {Number(employee.salary).toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: employee.currency || 'TRY',
-                  })}
+                  {formatCurrency(Number(employee.salary))}
                 </Text>
               </Grid.Col>
             )}

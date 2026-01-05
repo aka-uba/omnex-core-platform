@@ -37,6 +37,7 @@ import {
 } from '@tabler/icons-react';
 import { useTenant } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { TenantAnalytics } from './TenantAnalytics';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import { EntityImagesTab } from '@/components/detail-tabs/EntityImagesTab';
@@ -53,6 +54,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const { data: tenant, isLoading, error } = useTenant(tenantId);
 
   const [downloadingImages, setDownloadingImages] = useState(false);
@@ -508,10 +510,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                         <Stack gap="xs">
                           <Text size="sm" fw={500} c="dimmed">{t('form.rentAmount')}</Text>
                           <Text fw={500} c="blue">
-                            {Number(activeContract.rentAmount).toLocaleString('tr-TR', {
-                              style: 'currency',
-                              currency: 'TRY',
-                            })}
+                            {formatCurrency(Number(activeContract.rentAmount))}
                           </Text>
                         </Stack>
                       </SimpleGrid>
@@ -714,10 +713,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                 align: 'right' as const,
                 render: (value: number) => (
                   <Text size="sm">
-                    {Number(value).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })}
+                    {formatCurrency(Number(value))}
                   </Text>
                 ),
               },
@@ -787,10 +783,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                 align: 'right' as const,
                 render: (value: number) => (
                   <Text size="sm" fw={500}>
-                    {Number(value).toLocaleString('tr-TR', {
-                      style: 'currency',
-                      currency: 'TRY',
-                    })}
+                    {formatCurrency(Number(value))}
                   </Text>
                 ),
               },

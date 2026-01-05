@@ -18,6 +18,7 @@ import {
 } from '@tabler/icons-react';
 import { useSubscriptions, useDeleteSubscription } from '@/hooks/useSubscriptions';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
@@ -32,6 +33,7 @@ export function SubscriptionList({ locale }: SubscriptionListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/accounting');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [typeFilter, setTypeFilter] = useState<SubscriptionType | undefined>();
   const [statusFilter, setStatusFilter] = useState<SubscriptionStatus | undefined>();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>(undefined);
@@ -124,10 +126,7 @@ export function SubscriptionList({ locale }: SubscriptionListProps) {
       key: 'basePrice',
       label: t('subscriptions.table.basePrice'),
       sortable: true,
-      render: (value, row) => Number(value).toLocaleString('tr-TR', {
-        style: 'currency',
-        currency: row.currency || 'TRY',
-      }),
+      render: (value) => formatCurrency(Number(value)),
     },
     {
       key: 'billingCycle',

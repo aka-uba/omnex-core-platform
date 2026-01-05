@@ -14,6 +14,7 @@ import {
 import { IconShieldCheck, IconCalendar, IconCurrencyDollar } from '@tabler/icons-react';
 import { useCurrentLicense } from '@/hooks/useTenantLicenses';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import dayjs from 'dayjs';
 
 interface LicenseDetailProps {
@@ -22,7 +23,7 @@ interface LicenseDetailProps {
 
 export function LicenseDetail({ locale }: LicenseDetailProps) {
   const { t } = useTranslation('modules/license');
-  // const { t: tGlobal } = useTranslation('global'); // removed - unused
+  const { formatCurrency } = useCurrency();
   const { data: license, isLoading, error } = useCurrentLicense();
 
   if (isLoading) {
@@ -141,7 +142,7 @@ export function LicenseDetail({ locale }: LicenseDetailProps) {
                 <Group gap="xs">
                   <IconCurrencyDollar size={18} />
                   <Text fw={500}>
-                    {license.package?.basePrice.toLocaleString()} {license.package?.currency}
+                    {formatCurrency(license.package?.basePrice || 0)}
                   </Text>
                 </Group>
               </Stack>
@@ -188,7 +189,7 @@ export function LicenseDetail({ locale }: LicenseDetailProps) {
                   <Table.Tr key={payment.id}>
                     <Table.Td>
                       <Text fw={500}>
-                        {payment.amount.toLocaleString()} {payment.currency}
+                        {formatCurrency(payment.amount)}
                       </Text>
                     </Table.Td>
                     <Table.Td>

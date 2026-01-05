@@ -24,7 +24,7 @@ import {
 } from '@tabler/icons-react';
 import { useTenantAnalytics, useRecalculateTenantAnalytics } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
-import { notifications } from '@mantine/notifications';
+import { useNotification } from '@/hooks/useNotification';
 
 interface TenantAnalyticsProps {
   tenantId: string;
@@ -33,24 +33,16 @@ interface TenantAnalyticsProps {
 
 export function TenantAnalytics({ tenantId, locale }: TenantAnalyticsProps) {
   const { t } = useTranslation('modules/real-estate');
-  // const { t: tGlobal } = useTranslation('global'); // removed - unused
+  const { showSuccess, showError } = useNotification();
   const { data: analytics, isLoading, error } = useTenantAnalytics(tenantId);
   const recalculateAnalytics = useRecalculateTenantAnalytics();
 
   const handleRecalculate = async () => {
     try {
       await recalculateAnalytics.mutateAsync(tenantId);
-      notifications.show({
-        title: t('messages.success'),
-        message: t('analytics.recalculated'),
-        color: 'green',
-      });
+      showSuccess(t('analytics.recalculated'));
     } catch (error) {
-      notifications.show({
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : (t('analytics.recalculateError')),
-        color: 'red',
-      });
+      showError(error instanceof Error ? error.message : t('analytics.recalculateError'));
     }
   };
 

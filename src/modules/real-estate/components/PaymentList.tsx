@@ -30,6 +30,7 @@ import { useApartments } from '@/hooks/useApartments';
 import { useContracts } from '@/hooks/useContracts';
 import { usePaymentMethods, DEFAULT_PAYMENT_METHOD_CODES } from '@/hooks/usePaymentMethods';
 import { useCompany } from '@/context/CompanyContext';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import type { PaymentType, PaymentStatus } from '@/modules/real-estate/types/payment';
@@ -47,6 +48,7 @@ export function PaymentList({ locale }: PaymentListProps) {
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
   const { company } = useCompany();
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [apartmentId, setApartmentId] = useState<string | undefined>();
@@ -221,12 +223,9 @@ export function PaymentList({ locale }: PaymentListProps) {
   // Render functions
   const renderType = useCallback((value: PaymentType) => getTypeBadge(value), [getTypeBadge]);
   
-  const renderAmount = useCallback((value: number, row: any) => {
-    return value.toLocaleString('tr-TR', {
-      style: 'currency',
-      currency: row.currency || 'TRY',
-    });
-  }, []);
+  const renderAmount = useCallback((value: number) => {
+    return formatCurrency(value);
+  }, [formatCurrency]);
 
   const renderDueDate = useCallback((value: Date) => dayjs(value).format('DD.MM.YYYY'), []);
   

@@ -6,6 +6,7 @@ import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useExpense } from '@/hooks/useExpenses';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
+import { useCurrency } from '@/hooks/useCurrency';
 import { DetailPageSkeleton } from '@/components/skeletons/DetailPageSkeleton';
 import dayjs from 'dayjs';
 
@@ -14,6 +15,7 @@ export function ExpenseDetailPageClient({ locale, expenseId }: { locale: string;
   const router = useRouter();
   const currentLocale = (params?.locale as string) || locale;
   const { t } = useTranslation('modules/accounting');
+  const { formatCurrency } = useCurrency();
   const { data: expense, isLoading } = useExpense(expenseId);
 
   if (isLoading) {
@@ -101,10 +103,7 @@ export function ExpenseDetailPageClient({ locale, expenseId }: { locale: string;
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Text size="sm" c="dimmed">{t('expenses.form.amount')}</Text>
               <Text fw={500} size="lg">
-                {Number(expense.amount).toLocaleString('tr-TR', {
-                  style: 'currency',
-                  currency: expense.currency || 'TRY',
-                })}
+                {formatCurrency(Number(expense.amount))}
               </Text>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
