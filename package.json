@@ -29,7 +29,7 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:notifications": "tsx prisma/seed/notification-seed.ts",
-    "postinstall": "npx prisma generate",
+    "postinstall": "npx prisma generate --schema=prisma/core.schema.prisma && npx prisma generate --schema=prisma/tenant.schema.prisma",
     "tenant:create": "tsx scripts/create-tenant.ts",
     "tenant:new-year": "tsx scripts/new-year.ts",
     "tenant:export": "bash scripts/export-tenant.sh",
