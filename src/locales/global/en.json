@@ -1975,5 +1975,65 @@
         "button": "Standard Login"
       }
     }
+  },
+  "pwa": {
+    "install": {
+      "tooltip": {
+        "ios": "Add to Home Screen",
+        "android": "Install App",
+        "desktop": "Add to Desktop",
+        "default": "Install App"
+      },
+      "modal": {
+        "ios": {
+          "title": "Add to Home Screen",
+          "subtitle": "iPhone / iPad",
+          "description": "Follow these steps to add this app to your device:",
+          "steps": {
+            "step1": "Tap the **Share** button at the bottom of Safari",
+            "step2": "Find and tap **\"Add to Home Screen\"** in the menu",
+            "step3": "Tap **\"Add\"** in the top right to confirm"
+          }
+        },
+        "android": {
+          "title": "Add to Home Screen",
+          "subtitle": "Android",
+          "description": "Follow these steps to add this app to your device:",
+          "steps": {
+            "step1": "Tap the browser **menu** button",
+            "step2": "Tap **\"Add to Home screen\"** or **\"Install app\"**",
+            "step3": "Tap **\"Add\"** or **\"Install\"** to confirm"
+          }
+        },
+        "samsung": {
+          "title": "Add to Home Screen",
+          "subtitle": "Samsung Internet",
+          "steps": {
+            "step1": "Tap the **menu** button at the bottom right",
+            "step2": "Tap **\"Add page to\"** or **\"Add to Home screen\"**",
+            "step3": "Tap **\"Add\"** to confirm"
+          }
+        },
+        "firefox": {
+          "title": "Add to Home Screen",
+          "subtitle": "Firefox",
+          "steps": {
+            "step1": "Tap the **three dots** menu at the top right",
+            "step2": "Tap **\"Install\"** or **\"Add to Home screen\"**",
+            "step3": "Tap **\"Add\"** to confirm"
+          },
+          "desktopNote": "Firefox has limited PWA support. We recommend using Chrome or Edge."
+        },
+        "desktop": {
+          "title": "Add to Desktop",
+          "steps": {
+            "step1": "Click the **menu** button to the right of the address bar (⋮ or ⋯)",
+            "step2": "Click **\"Install app\"** or **\"Create shortcut\"**",
+            "step3": "Click **\"Install\"** to confirm"
+          }
+        },
+        "understood": "Got it"
+      }
+    }
   }
 }

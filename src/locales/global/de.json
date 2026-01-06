@@ -1992,5 +1992,65 @@
   },
 
   "success": "Erfolg",
-  "error": "Fehler"
+  "error": "Fehler",
+  "pwa": {
+    "install": {
+      "tooltip": {
+        "ios": "Zum Startbildschirm hinzufügen",
+        "android": "App installieren",
+        "desktop": "Zum Desktop hinzufügen",
+        "default": "App installieren"
+      },
+      "modal": {
+        "ios": {
+          "title": "Zum Startbildschirm hinzufügen",
+          "subtitle": "iPhone / iPad",
+          "description": "Folgen Sie diesen Schritten, um diese App zu Ihrem Gerät hinzuzufügen:",
+          "steps": {
+            "step1": "Tippen Sie auf die **Teilen**-Taste am unteren Rand von Safari",
+            "step2": "Suchen und tippen Sie auf **\"Zum Home-Bildschirm\"** im Menü",
+            "step3": "Tippen Sie auf **\"Hinzufügen\"** oben rechts zur Bestätigung"
+          }
+        },
+        "android": {
+          "title": "Zum Startbildschirm hinzufügen",
+          "subtitle": "Android",
+          "description": "Folgen Sie diesen Schritten, um diese App zu Ihrem Gerät hinzuzufügen:",
+          "steps": {
+            "step1": "Tippen Sie auf die Browser-**Menü**-Taste",
+            "step2": "Tippen Sie auf **\"Zum Startbildschirm hinzufügen\"** oder **\"App installieren\"**",
+            "step3": "Tippen Sie auf **\"Hinzufügen\"** oder **\"Installieren\"** zur Bestätigung"
+          }
+        },
+        "samsung": {
+          "title": "Zum Startbildschirm hinzufügen",
+          "subtitle": "Samsung Internet",
+          "steps": {
+            "step1": "Tippen Sie auf die **Menü**-Taste unten rechts",
+            "step2": "Tippen Sie auf **\"Seite hinzufügen zu\"** oder **\"Zum Startbildschirm hinzufügen\"**",
+            "step3": "Tippen Sie auf **\"Hinzufügen\"** zur Bestätigung"
+          }
+        },
+        "firefox": {
+          "title": "Zum Startbildschirm hinzufügen",
+          "subtitle": "Firefox",
+          "steps": {
+            "step1": "Tippen Sie auf das **Drei-Punkte**-Menü oben rechts",
+            "step2": "Tippen Sie auf **\"Installieren\"** oder **\"Zum Startbildschirm hinzufügen\"**",
+            "step3": "Tippen Sie auf **\"Hinzufügen\"** zur Bestätigung"
+          },
+          "desktopNote": "Firefox hat eingeschränkte PWA-Unterstützung. Wir empfehlen Chrome oder Edge."
+        },
+        "desktop": {
+          "title": "Zum Desktop hinzufügen",
+          "steps": {
+            "step1": "Klicken Sie auf die **Menü**-Taste rechts neben der Adressleiste (⋮ oder ⋯)",
+            "step2": "Klicken Sie auf **\"App installieren\"** oder **\"Verknüpfung erstellen\"**",
+            "step3": "Klicken Sie auf **\"Installieren\"** zur Bestätigung"
+          }
+        },
+        "understood": "Verstanden"
+      }
+    }
+  }
 }

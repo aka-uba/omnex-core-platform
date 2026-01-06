@@ -25,6 +25,7 @@ export default function SetupLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
+        <link rel="manifest" href="/manifest.json" />
         {/* Preload Material Symbols font for faster icon rendering */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

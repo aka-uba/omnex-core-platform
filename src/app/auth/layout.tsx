@@ -25,6 +25,7 @@ export default function AuthLayout({
     <html lang="tr" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

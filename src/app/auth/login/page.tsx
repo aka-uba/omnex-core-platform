@@ -27,6 +27,7 @@ import classes from './LoginPage.module.css';
 import { BRANDING_PATHS } from '@/lib/branding/config';
 import { useAuthTranslation } from '@/lib/i18n/useAuthTranslation';
 import { localeNames, Locale } from '@/lib/i18n/config';
+import { PWAInstallButton } from '@/components/pwa/PWAInstallButton';
 
 const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
   value,
@@ -138,9 +139,34 @@ export default function LoginPage() {
 
   return (
     <div className={classes.wrapper}>
-      {/* Top Right Controls */}
+      {/* Mobile Header - visible only on mobile */}
+      <Box className={classes.mobileHeader}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={locale} />
+          <Select
+            data={languageOptions}
+            value={locale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ zIndex: 10001 }}
+          />
+          <ActionIcon
+            variant="default"
+            size="md"
+            onClick={toggleColorScheme}
+            aria-label="Toggle color scheme"
+          >
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      {/* Desktop Top Right Controls - hidden on mobile */}
       <Box className={classes.topControls}>
         <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={locale} />
           <Select
             data={languageOptions}
             value={locale}

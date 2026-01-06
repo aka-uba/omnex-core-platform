@@ -40,6 +40,7 @@ export default async function RootLayout({
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
+        <link rel="manifest" href="/manifest.json" />
         {/* Preload Material Symbols font for faster icon rendering */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

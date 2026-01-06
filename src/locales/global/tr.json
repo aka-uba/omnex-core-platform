@@ -1976,5 +1976,65 @@
         "button": "Standart Giriş"
       }
     }
+  },
+  "pwa": {
+    "install": {
+      "tooltip": {
+        "ios": "Ana Ekrana Ekle",
+        "android": "Uygulamayı Yükle",
+        "desktop": "Masaüstüne Ekle",
+        "default": "Uygulamayı Yükle"
+      },
+      "modal": {
+        "ios": {
+          "title": "Ana Ekrana Ekle",
+          "subtitle": "iPhone / iPad",
+          "description": "Bu uygulamayı cihazınıza eklemek için aşağıdaki adımları izleyin:",
+          "steps": {
+            "step1": "Safari'nin alt kısmındaki **Paylaş** butonuna dokunun",
+            "step2": "Açılan menüden **\"Ana Ekrana Ekle\"** seçeneğini bulun ve dokunun",
+            "step3": "Sağ üstteki **\"Ekle\"** butonuna dokunarak onaylayın"
+          }
+        },
+        "android": {
+          "title": "Ana Ekrana Ekle",
+          "subtitle": "Android",
+          "description": "Bu uygulamayı cihazınıza eklemek için aşağıdaki adımları izleyin:",
+          "steps": {
+            "step1": "Tarayıcı **menü** butonuna dokunun",
+            "step2": "**\"Ana ekrana ekle\"** veya **\"Uygulamayı yükle\"** seçeneğine dokunun",
+            "step3": "**\"Ekle\"** veya **\"Yükle\"** butonuna dokunarak onaylayın"
+          }
+        },
+        "samsung": {
+          "title": "Ana Ekrana Ekle",
+          "subtitle": "Samsung Internet",
+          "steps": {
+            "step1": "Sağ alttaki **menü** butonuna dokunun",
+            "step2": "**\"Sayfayı ekle\"** veya **\"Ana ekrana ekle\"** seçeneğine dokunun",
+            "step3": "**\"Ekle\"** butonuna dokunarak onaylayın"
+          }
+        },
+        "firefox": {
+          "title": "Ana Ekrana Ekle",
+          "subtitle": "Firefox",
+          "steps": {
+            "step1": "Sağ üstteki **üç nokta** menüsüne dokunun",
+            "step2": "**\"Ana ekrana yükle\"** seçeneğine dokunun",
+            "step3": "**\"Ekle\"** butonuna dokunarak onaylayın"
+          },
+          "desktopNote": "Firefox PWA desteği sınırlıdır. Chrome veya Edge kullanmanızı öneririz."
+        },
+        "desktop": {
+          "title": "Masaüstüne Ekle",
+          "steps": {
+            "step1": "Adres çubuğunun sağındaki **menü** butonuna tıklayın (⋮ veya ⋯)",
+            "step2": "**\"Uygulamayı yükle\"** veya **\"Kısayol oluştur\"** seçeneğine tıklayın",
+            "step3": "**\"Yükle\"** butonuna tıklayarak onaylayın"
+          }
+        },
+        "understood": "Anladım"
+      }
+    }
   }
 }
