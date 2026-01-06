@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { ActionIcon, Tooltip, Modal, Stack, Text, List, ThemeIcon, Group, Button, Badge } from '@mantine/core';
+import { useState, useMemo, useCallback } from 'react';
+import { ActionIcon, Tooltip, Popover, Stack, Text, List, ThemeIcon, Group, Button, Badge } from '@mantine/core';
 import {
   IconDownload,
   IconDeviceMobile,
@@ -52,15 +52,15 @@ interface PWAInstallButtonProps {
   locale?: string;
 }
 
-// Platform-specific installation instructions
-function getInstallInstructions(platform: Platform, browser: Browser, hasNativePrompt: boolean, t: (key: string) => string) {
+// Platform-specific installation instructions (only for browsers without native prompt)
+function getInstallInstructions(platform: Platform, browser: Browser, t: (key: string) => string) {
   // iOS Safari
   if (platform === 'ios') {
     return {
       title: t('pwa.install.modal.ios.title'),
       subtitle: t('pwa.install.modal.ios.subtitle'),
       description: t('pwa.install.modal.ios.description'),
-      icon: <IconDeviceMobile size={24} />,
+      icon: <IconDeviceMobile size={20} />,
       steps: [
         {
           icon: <IconShare size={14} />,
@@ -78,120 +78,118 @@ function getInstallInstructions(platform: Platform, browser: Browser, hasNativeP
     };
   }
 
-  // Android without native prompt (Samsung Browser, Firefox, etc.)
-  if (platform === 'android' && !hasNativePrompt) {
-    if (browser === 'samsung') {
-      return {
-        title: t('pwa.install.modal.samsung.title'),
-        subtitle: t('pwa.install.modal.samsung.subtitle'),
-        description: t('pwa.install.modal.android.description'),
-        icon: <IconDeviceMobile size={24} />,
-        steps: [
-          {
-            icon: <IconMenu2 size={14} />,
-            text: t('pwa.install.modal.samsung.steps.step1'),
-          },
-          {
-            icon: <IconPlus size={14} />,
-            text: t('pwa.install.modal.samsung.steps.step2'),
-          },
-          {
-            icon: <IconCheck size={14} />,
-            text: t('pwa.install.modal.samsung.steps.step3'),
-          },
-        ],
-      };
-    }
-
-    if (browser === 'firefox') {
-      return {
-        title: t('pwa.install.modal.firefox.title'),
-        subtitle: t('pwa.install.modal.firefox.subtitle'),
-        description: t('pwa.install.modal.android.description'),
-        icon: <IconBrandFirefox size={24} />,
-        steps: [
-          {
-            icon: <IconDotsVertical size={14} />,
-            text: t('pwa.install.modal.firefox.steps.step1'),
-          },
-          {
-            icon: <IconPlus size={14} />,
-            text: t('pwa.install.modal.firefox.steps.step2'),
-          },
-          {
-            icon: <IconCheck size={14} />,
-            text: t('pwa.install.modal.firefox.steps.step3'),
-          },
-        ],
-      };
-    }
-
-    // Default Android instructions
+  // Chrome on Android
+  if (platform === 'android' && browser === 'chrome') {
     return {
-      title: t('pwa.install.modal.android.title'),
-      subtitle: t('pwa.install.modal.android.subtitle'),
+      title: t('pwa.install.modal.chrome.title'),
+      subtitle: t('pwa.install.modal.chrome.subtitle'),
       description: t('pwa.install.modal.android.description'),
-      icon: <IconDeviceMobile size={24} />,
+      icon: <IconBrandChrome size={20} />,
       steps: [
         {
           icon: <IconDotsVertical size={14} />,
-          text: t('pwa.install.modal.android.steps.step1'),
+          text: t('pwa.install.modal.chrome.steps.step1'),
         },
         {
           icon: <IconPlus size={14} />,
-          text: t('pwa.install.modal.android.steps.step2'),
+          text: t('pwa.install.modal.chrome.steps.step2'),
         },
         {
           icon: <IconCheck size={14} />,
-          text: t('pwa.install.modal.android.steps.step3'),
+          text: t('pwa.install.modal.chrome.steps.step3'),
         },
       ],
     };
   }
 
-  // Windows/Mac/Linux without native prompt (Firefox, etc.)
-  if (!hasNativePrompt) {
-    const platformName = platform === 'windows' ? 'Windows' :
-      platform === 'mac' ? 'macOS' :
-        platform === 'linux' ? 'Linux' : 'Desktop';
-
-    if (browser === 'firefox') {
-      return {
-        title: t('pwa.install.modal.firefox.title'),
-        subtitle: `Firefox - ${platformName}`,
-        description: t('pwa.install.modal.android.description'),
-        icon: <IconBrandFirefox size={24} />,
-        steps: [
-          {
-            icon: <IconMenu2 size={14} />,
-            text: t('pwa.install.modal.firefox.steps.step1'),
-          },
-          {
-            icon: <IconPlus size={14} />,
-            text: t('pwa.install.modal.firefox.steps.step2'),
-          },
-          {
-            icon: <IconCheck size={14} />,
-            text: t('pwa.install.modal.firefox.desktopNote'),
-          },
-        ],
-      };
-    }
-
-    // Edge/Chrome fallback
-    const browserIcon = browser === 'edge' ? <IconBrandEdge size={24} /> :
-      browser === 'chrome' ? <IconBrandChrome size={24} /> :
-        <IconDeviceDesktop size={24} />;
-
+  // Edge on Android
+  if (platform === 'android' && browser === 'edge') {
     return {
-      title: t('pwa.install.modal.desktop.title'),
-      subtitle: platformName,
+      title: t('pwa.install.modal.edge.title'),
+      subtitle: t('pwa.install.modal.edge.subtitle'),
       description: t('pwa.install.modal.android.description'),
-      icon: browserIcon,
+      icon: <IconBrandEdge size={20} />,
       steps: [
         {
           icon: <IconDotsVertical size={14} />,
-          text: t('pwa.install.modal.desktop.steps.step1'),
+          text: t('pwa.install.modal.edge.steps.step1'),
+        },
+        {
+          icon: <IconPlus size={14} />,
+          text: t('pwa.install.modal.edge.steps.step2'),
+        },
+        {
+          icon: <IconCheck size={14} />,
+          text: t('pwa.install.modal.edge.steps.step3'),
+        },
+      ],
+    };
+  }
+
+  // Samsung Browser on Android
+  if (platform === 'android' && browser === 'samsung') {
+    return {
+      title: t('pwa.install.modal.samsung.title'),
+      subtitle: t('pwa.install.modal.samsung.subtitle'),
+      description: t('pwa.install.modal.android.description'),
+      icon: <IconDeviceMobile size={20} />,
+      steps: [
+        {
+          icon: <IconMenu2 size={14} />,
+          text: t('pwa.install.modal.samsung.steps.step1'),
+        },
+        {
+          icon: <IconPlus size={14} />,
+          text: t('pwa.install.modal.samsung.steps.step2'),
+        },
+        {
+          icon: <IconCheck size={14} />,
+          text: t('pwa.install.modal.samsung.steps.step3'),
+        },
+      ],
+    };
+  }
+
+  // Firefox (any platform)
+  if (browser === 'firefox') {
+    const platformName = platform === 'windows' ? 'Windows' :
+      platform === 'mac' ? 'macOS' :
+        platform === 'linux' ? 'Linux' :
+          platform === 'android' ? 'Android' : 'Desktop';
+
+    return {
+      title: t('pwa.install.modal.firefox.title'),
+      subtitle: `Firefox - ${platformName}`,
+      description: t('pwa.install.modal.android.description'),
+      icon: <IconBrandFirefox size={20} />,
+      steps: [
+        {
+          icon: <IconDotsVertical size={14} />,
+          text: t('pwa.install.modal.firefox.steps.step1'),
+        },
+        {
+          icon: <IconPlus size={14} />,
+          text: t('pwa.install.modal.firefox.steps.step2'),
+        },
+        {
+          icon: <IconCheck size={14} />,
+          text: platform === 'android' ? t('pwa.install.modal.firefox.steps.step3') : t('pwa.install.modal.firefox.desktopNote'),
+        },
+      ],
+    };
+  }
+
+  // Safari on Mac (not iOS)
+  if (browser === 'safari' && platform === 'mac') {
+    return {
+      title: t('pwa.install.modal.desktop.title'),
+      subtitle: 'Safari - macOS',
+      description: t('pwa.install.modal.android.description'),
+      icon: <IconDeviceDesktop size={20} />,
+      steps: [
+        {
+          icon: <IconShare size={14} />,
+          text: t('pwa.install.modal.ios.steps.step1'),
         },
         {
           icon: <IconPlus size={14} />,
@@ -205,7 +203,36 @@ function getInstallInstructions(platform: Platform, browser: Browser, hasNativeP
     };
   }
 
-  return null;
+  // Default fallback for other browsers
+  const platformName = platform === 'windows' ? 'Windows' :
+    platform === 'mac' ? 'macOS' :
+      platform === 'linux' ? 'Linux' :
+        platform === 'android' ? 'Android' : 'Desktop';
+
+  const browserIcon = browser === 'edge' ? <IconBrandEdge size={20} /> :
+    browser === 'chrome' ? <IconBrandChrome size={20} /> :
+      <IconDeviceDesktop size={20} />;
+
+  return {
+    title: t('pwa.install.modal.desktop.title'),
+    subtitle: platformName,
+    description: t('pwa.install.modal.android.description'),
+    icon: browserIcon,
+    steps: [
+      {
+        icon: <IconDotsVertical size={14} />,
+        text: t('pwa.install.modal.desktop.steps.step1'),
+      },
+      {
+        icon: <IconPlus size={14} />,
+        text: t('pwa.install.modal.desktop.steps.step2'),
+      },
+      {
+        icon: <IconCheck size={14} />,
+        text: t('pwa.install.modal.desktop.steps.step3'),
+      },
+    ],
+  };
 }
 
 // Render text with **bold** markdown
@@ -225,6 +252,7 @@ export function PWAInstallButton({ size = 'md', variant = 'default', locale = de
     isInstalled,
     isStandalone,
     hasNativePrompt,
+    isReady,
     platform,
     browser,
     isIOS,
@@ -232,13 +260,30 @@ export function PWAInstallButton({ size = 'md', variant = 'default', locale = de
     isDesktop,
     promptInstall,
   } = usePWAInstall();
-  const [showModal, setShowModal] = useState(false);
+  const [popoverOpened, setPopoverOpened] = useState(false);
 
   // Memoize translation function
   const t = useMemo(() => (key: string) => getTranslation(locale, key), [locale]);
 
+  // Handle click - try native prompt first, fallback to popover
+  const handleClick = useCallback(async () => {
+    // If we have the actual native prompt event, use it
+    if (hasNativePrompt) {
+      const success = await promptInstall();
+      if (success) return;
+    }
+
+    // If native prompt failed or not available, show instructions
+    setPopoverOpened(true);
+  }, [hasNativePrompt, promptInstall]);
+
   // Don't show if already installed or running in standalone mode
   if (isInstalled || isStandalone) {
+    return null;
+  }
+
+  // Don't show until hook is ready
+  if (!isReady) {
     return null;
   }
 
@@ -246,16 +291,6 @@ export function PWAInstallButton({ size = 'md', variant = 'default', locale = de
   if (!isInstallable) {
     return null;
   }
-
-  const handleClick = async () => {
-    if (hasNativePrompt) {
-      // Trigger native install prompt (Chrome/Edge on Android, Windows, Mac, Linux)
-      await promptInstall();
-    } else {
-      // Show manual installation instructions
-      setShowModal(true);
-    }
-  };
 
   // Determine tooltip label based on platform
   const tooltipLabel = isIOS
@@ -266,84 +301,89 @@ export function PWAInstallButton({ size = 'md', variant = 'default', locale = de
         ? t('pwa.install.tooltip.desktop')
         : t('pwa.install.tooltip.default');
 
-  const instructions = getInstallInstructions(platform, browser, hasNativePrompt, t);
+  // Get install instructions for popover (shown when native prompt not available)
+  const instructions = getInstallInstructions(platform, browser, t);
 
   return (
-    <>
-      <Tooltip label={tooltipLabel} position="bottom" withArrow>
-        <ActionIcon
-          variant={variant}
-          size={size}
-          onClick={handleClick}
-          aria-label={tooltipLabel}
-        >
-          <IconDownload size={18} />
-        </ActionIcon>
-      </Tooltip>
+    <Popover
+      opened={popoverOpened}
+      onClose={() => setPopoverOpened(false)}
+      position="bottom-end"
+      withArrow
+      shadow="md"
+      width={300}
+      zIndex={10002}
+    >
+      <Popover.Target>
+        <Tooltip label={tooltipLabel} position="bottom" withArrow disabled={popoverOpened}>
+          <ActionIcon
+            variant={variant}
+            size={size}
+            onClick={handleClick}
+            aria-label={tooltipLabel}
+          >
+            <IconDownload size={18} />
+          </ActionIcon>
+        </Tooltip>
+      </Popover.Target>
 
-      {/* Manual Installation Instructions Modal */}
-      {instructions && (
-        <Modal
-          opened={showModal}
-          onClose={() => setShowModal(false)}
-          title={
+      <Popover.Dropdown>
+        {instructions && (
+          <Stack gap="sm">
             <Group gap="xs">
               {instructions.icon}
               <div>
-                <Text fw={600}>{instructions.title}</Text>
+                <Text fw={600} size="sm">{instructions.title}</Text>
                 <Badge size="xs" variant="light" color="gray">{instructions.subtitle}</Badge>
               </div>
             </Group>
-          }
-          centered
-          size="sm"
-        >
-          <Stack gap="md">
-            <Text size="sm" c="dimmed">
+
+            <Text size="xs" c="dimmed">
               {instructions.description}
             </Text>
 
-            <List spacing="md" size="sm">
+            <List spacing="xs" size="xs">
               {instructions.steps.map((step, index) => (
                 <List.Item
                   key={index}
                   icon={
                     <ThemeIcon
                       color={index === instructions.steps.length - 1 ? 'green' : 'blue'}
-                      size={24}
+                      size={20}
                       radius="xl"
                     >
                       {step.icon}
                     </ThemeIcon>
                   }
                 >
-                  <Text size="sm">
+                  <Text size="xs">
                     {renderMarkdownText(step.text)}
                   </Text>
                 </List.Item>
               ))}
             </List>
 
-            <Button variant="light" fullWidth onClick={() => setShowModal(false)}>
+            <Button variant="light" size="xs" fullWidth onClick={() => setPopoverOpened(false)}>
               {t('pwa.install.modal.understood')}
             </Button>
           </Stack>
-        </Modal>
-      )}
-    </>
+        )}
+      </Popover.Dropdown>
+    </Popover>
   );
 }
 
 // Export instructions component for standalone use
 export function PWAInstallInstructions({ locale = defaultLocale }: { locale?: string }) {
-  const { isInstallable, isInstalled, isStandalone, hasNativePrompt, platform, browser } = usePWAInstall();
+  const { isInstallable, isInstalled, isStandalone, canShowNativePrompt, platform, browser, isReady } = usePWAInstall();
   const t = useMemo(() => (key: string) => getTranslation(locale, key), [locale]);
 
-  if (isInstalled || isStandalone || !isInstallable || hasNativePrompt) {
+  // Don't show for browsers with native prompt support
+  if (!isReady || isInstalled || isStandalone || !isInstallable || canShowNativePrompt) {
     return null;
   }
 
-  const instructions = getInstallInstructions(platform, browser, hasNativePrompt, t);
+  const instructions = getInstallInstructions(platform, browser, t);
   if (!instructions) return null;
 
   return (

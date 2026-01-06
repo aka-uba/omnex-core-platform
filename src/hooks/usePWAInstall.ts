@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -20,6 +20,8 @@ interface PWAInstallState {
   isInstalled: boolean;
   isStandalone: boolean;
   hasNativePrompt: boolean;
+  canShowNativePrompt: boolean; // Browser supports native prompt (even if event not fired yet)
+  isReady: boolean;
 
   // Platform detection
   platform: Platform;
@@ -30,7 +32,7 @@ interface PWAInstallState {
   isMobile: boolean;
 
   // Actions
-  promptInstall: () => Promise<void>;
+  promptInstall: () => Promise<boolean>;
 }
 
 declare global {
@@ -58,30 +60,54 @@ function detectBrowser(userAgent: string): Browser {
   if (/samsungbrowser/.test(ua)) return 'samsung';
   if (/edg/.test(ua)) return 'edge';
   if (/opr|opera/.test(ua)) return 'opera';
-  if (/chrome/.test(ua)) return 'chrome';
-  if (/safari/.test(ua)) return 'safari';
   if (/firefox/.test(ua)) return 'firefox';
+  if (/chrome/.test(ua) && !/edg/.test(ua)) return 'chrome';
+  if (/safari/.test(ua) && !/chrome/.test(ua)) return 'safari';
 
   return 'unknown';
 }
 
+// Check if browser theoretically supports beforeinstallprompt
+function browserSupportsNativePrompt(platform: Platform, browser: Browser): boolean {
+  // Chrome and Edge support beforeinstallprompt on Android, Windows, Mac, Linux
+  // But NOT on iOS (iOS Chrome is just Safari with a skin)
+  if (platform === 'ios') return false;
+
+  if (browser === 'chrome' || browser === 'edge') {
+    return platform === 'android' || platform === 'windows' || platform === 'mac' || platform === 'linux';
+  }
+
+  // Opera also supports it on some platforms
+  if (browser === 'opera') {
+    return platform === 'android' || platform === 'windows' || platform === 'mac' || platform === 'linux';
+  }
+
+  return false;
+}
+
+// Store the deferred prompt globally so it persists across re-renders
+let globalDeferredPrompt: BeforeInstallPromptEvent | null = null;
+let globalPromptReceived = false;
+
 export function usePWAInstall(): PWAInstallState {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(globalDeferredPrompt);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [platform, setPlatform] = useState<Platform>('unknown');
   const [browser, setBrowser] = useState<Browser>('unknown');
-  const [mounted, setMounted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [promptReceived, setPromptReceived] = useState(globalPromptReceived);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    setMounted(true);
-
-    // Detect platform and browser
+    // Detect platform and browser immediately
     const userAgent = window.navigator.userAgent;
-    setPlatform(detectPlatform(userAgent));
-    setBrowser(detectBrowser(userAgent));
+    const detectedPlatform = detectPlatform(userAgent);
+    const detectedBrowser = detectBrowser(userAgent);
+
+    setPlatform(detectedPlatform);
+    setBrowser(detectedBrowser);
 
     // Check if already installed (standalone mode)
     const checkStandalone = () => {
@@ -94,17 +120,27 @@ export function usePWAInstall(): PWAInstallState {
 
     checkStandalone();
 
+    // If we already have a global prompt, use it
+    if (globalDeferredPrompt) {
+      setDeferredPrompt(globalDeferredPrompt);
+      setPromptReceived(true);
+    }
+
     // Listen for beforeinstallprompt event (Chrome, Edge, etc.)
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Save the event so it can be triggered later
+      // Save the event globally and in state
+      globalDeferredPrompt = e;
+      globalPromptReceived = true;
       setDeferredPrompt(e);
+      setPromptReceived(true);
     };
 
     // Listen for app installed event
     const handleAppInstalled = () => {
       setIsInstalled(true);
+      globalDeferredPrompt = null;
       setDeferredPrompt(null);
     };
 
@@ -116,46 +152,69 @@ export function usePWAInstall(): PWAInstallState {
     const handleDisplayModeChange = () => checkStandalone();
     mediaQuery.addEventListener('change', handleDisplayModeChange);
 
+    // Mark as ready after a short delay to allow event to fire
+    // For browsers that support native prompt, we wait a bit longer
+    const supportsNative = browserSupportsNativePrompt(detectedPlatform, detectedBrowser);
+    const readyTimeout = setTimeout(() => {
+      setIsReady(true);
+    }, supportsNative ? 100 : 50); // Short delay just for initial render
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
       mediaQuery.removeEventListener('change', handleDisplayModeChange);
+      clearTimeout(readyTimeout);
     };
   }, []);
 
-  const promptInstall = useCallback(async () => {
-    if (!deferredPrompt) {
-      // For browsers without native prompt support (iOS Safari, Firefox)
-      // The UI component should show manual instructions
-      return;
+  const promptInstall = useCallback(async (): Promise<boolean> => {
+    const prompt = deferredPrompt || globalDeferredPrompt;
+
+    if (!prompt) {
+      return false;
     }
 
-    // Show the install prompt
-    await deferredPrompt.prompt();
+    try {
+      // Show the install prompt
+      await prompt.prompt();
 
-    // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
+      // Wait for the user to respond to the prompt
+      const { outcome } = await prompt.userChoice;
 
-    if (outcome === 'accepted') {
-      setIsInstalled(true);
+      if (outcome === 'accepted') {
+        setIsInstalled(true);
+        globalDeferredPrompt = null;
+        setDeferredPrompt(null);
+        return true;
+      }
+    } catch (error) {
+      console.error('PWA install prompt error:', error);
     }
 
-    // Clear the saved prompt
+    // Clear the prompt after use (can only be used once)
+    globalDeferredPrompt = null;
     setDeferredPrompt(null);
+    return false;
   }, [deferredPrompt]);
 
   const isIOS = platform === 'ios';
   const isAndroid = platform === 'android';
   const isMobile = isIOS || isAndroid;
   const isDesktop = !isMobile && platform !== 'unknown';
-  const hasNativePrompt = !!deferredPrompt;
+
+  // Do we have the actual prompt event?
+  const hasNativePrompt = !!(deferredPrompt || globalDeferredPrompt);
+
+  // Does the browser support native prompt (even if event not received yet)?
+  const canShowNativePrompt = browserSupportsNativePrompt(platform, browser);
 
   // Installable if:
-  // 1. Component is mounted (client-side)
+  // 1. Hook is ready
   // 2. Not already in standalone mode
-  // 3. Has native prompt OR any detected platform (will show manual instructions)
-  const isInstallable = mounted && !isStandalone && (
+  // 3. Has native prompt OR is on a platform where we can show instructions
+  const isInstallable = isReady && !isStandalone && (
     hasNativePrompt ||
+    canShowNativePrompt || // Show button even if event not received (will try to prompt)
     isIOS ||
     isAndroid ||
     isDesktop ||
@@ -167,6 +226,8 @@ export function usePWAInstall(): PWAInstallState {
     isInstalled,
     isStandalone,
     hasNativePrompt,
+    canShowNativePrompt,
+    isReady,
     platform,
     browser,
     isIOS,

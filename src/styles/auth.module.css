@@ -1,18 +1,27 @@
 /* Centralized Auth Page Styles */
 /* Used by: Login, Register, Admin Login, Super Admin Login pages */
 
+/* Auth pages: Override global html/body scroll behavior */
+/* Using data-auth-page attribute for reliable targeting */
+:global(html[data-auth-page="true"]),
+:global(body[data-auth-page="true"]) {
+  overflow: hidden !important;
+  scrollbar-gutter: unset !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  min-height: 100vh;
+  inset: 0; /* top, right, bottom, left = 0 */
   width: 100%;
+  height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-image: linear-gradient(
     270deg,
     hsl(141deg 52% 41%) 0%,
@@ -28,15 +37,16 @@
     hsl(148deg 35% 55%) 91%,
     hsl(149deg 35% 56%) 100%
   );
-  padding: 1rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-.wrapper::-webkit-scrollbar {
-  display: none;
+.wrapper *,
+.wrapper *::before,
+.wrapper *::after {
+  box-sizing: border-box;
 }
 
 :global([data-mantine-color-scheme="dark"]) .wrapper {
@@ -44,23 +54,78 @@
   background: var(--bg-secondary);
 }
 
+/* Header - Desktop (fixed at top) */
 .topControls {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 100;
+  background: transparent;
 }
 
+/* Header - Mobile (hidden on desktop) */
 .mobileHeader {
   display: none;
 }
 
+/* Scrollable Content Area */
 .container {
+  flex: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 4.5rem 2rem 1rem 2rem !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  /* Thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+:global([data-mantine-color-scheme="dark"]) .container {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+:global([data-mantine-color-scheme="dark"]) .container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Card Container */
+.cardWrapper {
   width: 100%;
   max-width: 420px;
+  margin: auto 0;
 }
 
 .paper {
+  width: 100%;
+  max-width: 420px;
+  margin: auto 0; /* Center vertically */
   background: rgba(255, 255, 255, 0.92);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
@@ -100,52 +165,118 @@
   color: white;
 }
 
+/* Footer - Desktop (NOT fixed, scrolls with content) */
 .footer {
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
   text-align: center;
+  padding: 1rem 2rem;
+  margin-top: auto; /* Push to bottom when content is short */
+  background: transparent;
+  width: 100%;
 }
 
+/* Footer text style - Desktop */
+.footerText {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== Mobile Styles ==================== */
 @media (max-width: 768px) {
-  .wrapper {
-    padding: 1rem;
-    justify-content: flex-start;
-  }
-
   .topControls {
-    display: none;
+    display: none !important;
   }
 
+  /* Mobile Header - Fixed with glassmorphism */
   .mobileHeader {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: transparent;
-    border-bottom: none;
-    flex-shrink: 0;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    padding: 0.75rem 1rem !important;
+    z-index: 100 !important;
+    /* Glassmorphism background like card */
+    background: rgba(255, 255, 255, 0.85) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  :global([data-mantine-color-scheme="dark"]) .mobileHeader {
+    background: rgba(30, 41, 59, 0.85) !important;
+    border-bottom-color: rgba(51, 65, 85, 0.5) !important;
   }
 
   .container {
-    padding: 0 0.5rem;
-    margin-top: 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 4rem 1rem 4rem 1rem !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .cardWrapper {
+    margin: auto; /* Center vertically with auto margin */
   }
 
   .paper {
     padding: 1.5rem !important;
+    margin: 1rem 0; /* Add some margin for spacing */
   }
 
+  /* Mobile Footer - Fixed with glassmorphism */
   .footer {
-    position: relative;
-    margin-top: auto;
-    padding: 1rem;
-    flex-shrink: 0;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0.75rem 1rem !important;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 100 !important;
+    /* Glassmorphism background like card */
+    background: rgba(255, 255, 255, 0.85) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  :global([data-mantine-color-scheme="dark"]) .footer {
+    background: rgba(30, 41, 59, 0.85) !important;
+    border-top-color: rgba(51, 65, 85, 0.5) !important;
+  }
+
+  /* Mobile footer text - dark color for glassmorphism bg */
+  .footer .footerText,
+  .footer [class*="Text"] {
+    color: var(--mantine-color-dark-7) !important;
+    text-shadow: none !important;
+  }
+
+  :global([data-mantine-color-scheme="dark"]) .footer .footerText,
+  :global([data-mantine-color-scheme="dark"]) .footer [class*="Text"] {
+    color: var(--mantine-color-gray-4) !important;
+  }
+}
+
+/* Very small screens (short height) */
+@media (max-height: 700px) {
+  .container {
+    justify-content: flex-start !important;
+    padding-top: 4.5rem !important;
+  }
+
+  .cardWrapper {
+    margin: 0.5rem 0;
+  }
+
+  .logoSection {
+    margin-bottom: 0.25rem;
+  }
+
+  .paper {
+    padding: 1rem !important;
   }
 }

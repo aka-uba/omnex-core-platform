@@ -46,7 +46,10 @@
       "Bash(\"src/app/[locale]/login/super-admin/SuperAdminLoginPageClient.tsx\" )",
       "Bash(src/app/api/manifest/route.ts )",
       "Bash(public/offline.html)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(register:*)",
+      "Bash(auth \")",
+      "Bash(ipconfig:*)"
     ],
     "deny": [],
     "ask": []

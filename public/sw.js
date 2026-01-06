@@ -1,5 +1,5 @@
 // Service Worker for Omnex Core Platform PWA
-const CACHE_NAME = 'omnex-pwa-v1';
+const CACHE_NAME = 'omnex-pwa-v2'; // Bumped version to clear old cache
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache on install

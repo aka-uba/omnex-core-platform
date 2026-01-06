@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from '@mantine/form';
 import {
-  Container,
   Paper,
   Title,
   Text,
@@ -43,6 +42,10 @@ export default function LoginPage() {
   const [companyName, setCompanyName] = useState('');
 
   useEffect(() => {
+    // Set auth page attribute to override global styles
+    document.documentElement.setAttribute('data-auth-page', 'true');
+    document.body.setAttribute('data-auth-page', 'true');
+
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -58,6 +61,12 @@ export default function LoginPage() {
         }
       })
       .catch(() => {});
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.removeAttribute('data-auth-page');
+      document.body.removeAttribute('data-auth-page');
+    };
   }, []);
 
   const handleLocaleChange = (value: string | null) => {
@@ -191,7 +200,7 @@ export default function LoginPage() {
         </Group>
       </Box>
 
-      <Container size="xs" className={classes.container}>
+      <div className={classes.container}>
         <Paper
           className={classes.paper}
           p="xl"
@@ -322,14 +331,14 @@ export default function LoginPage() {
             </Text>
           </Stack>
         </Paper>
-      </Container>
 
-      {/* Footer */}
-      <Box className={classes.footer}>
-        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
-        </Text>
-      </Box>
+        {/* Footer - Inside container to scroll with content on PC */}
+        <Box className={classes.footer}>
+          <Text size="xs" className={classes.footerText}>
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+          </Text>
+        </Box>
+      </div>
     </div>
   );
 }

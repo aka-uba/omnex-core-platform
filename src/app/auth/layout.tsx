@@ -12,8 +12,9 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Omnex-Core - Login",
-  description: "Agency Operating System - Authentication",
+  title: "Login",
+  description: "Enterprise Management Platform - Authentication",
+  applicationName: "Enterprise Platform",
 };
 
 export default function AuthLayout({
@@ -27,9 +28,8 @@ export default function AuthLayout({
         <ColorSchemeScript />
         <link rel="manifest" href="/api/manifest" />
         <meta name="theme-color" content="#228be6" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Omnex" />
         <link rel="apple-touch-icon" href="/branding/pwa-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

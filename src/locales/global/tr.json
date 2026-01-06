@@ -2006,6 +2006,24 @@
             "step3": "**\"Ekle\"** veya **\"Yükle\"** butonuna dokunarak onaylayın"
           }
         },
+        "chrome": {
+          "title": "Uygulamayı Yükle",
+          "subtitle": "Chrome - Android",
+          "steps": {
+            "step1": "Sağ üstteki **üç nokta** menüsüne dokunun (⋮)",
+            "step2": "**\"Uygulamayı yükle\"** veya **\"Ana ekrana ekle\"** seçeneğine dokunun",
+            "step3": "**\"Yükle\"** butonuna dokunarak onaylayın"
+          }
+        },
+        "edge": {
+          "title": "Uygulamayı Yükle",
+          "subtitle": "Edge - Android",
+          "steps": {
+            "step1": "Alttaki **üç nokta** menüsüne dokunun (⋯)",
+            "step2": "**\"Ana ekrana ekle\"** veya **\"Uygulamayı yükle\"** seçeneğine dokunun",
+            "step3": "**\"Ekle\"** butonuna dokunarak onaylayın"
+          }
+        },
         "samsung": {
           "title": "Ana Ekrana Ekle",
           "subtitle": "Samsung Internet",

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
-  Container,
   Paper,
   Title,
   Text,
@@ -73,6 +72,10 @@ export function LoginPageClient({ locale }: { locale: string }) {
 
   useEffect(() => {
     setMounted(true);
+    // Set auth page attribute to override global styles
+    document.documentElement.setAttribute('data-auth-page', 'true');
+    document.body.setAttribute('data-auth-page', 'true');
+
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -103,6 +106,12 @@ export function LoginPageClient({ locale }: { locale: string }) {
     } catch (e) {
       // Silently ignore
     }
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.removeAttribute('data-auth-page');
+      document.body.removeAttribute('data-auth-page');
+    };
   }, []);
 
   const handleLocaleChange = (value: string | null) => {
@@ -214,7 +223,7 @@ export function LoginPageClient({ locale }: { locale: string }) {
         </Group>
       </Box>
 
-      <Container size="xs" className={classes.container}>
+      <div className={classes.container}>
         <Paper
           className={classes.paper}
           p="xl"
@@ -340,13 +349,14 @@ export function LoginPageClient({ locale }: { locale: string }) {
             </Text>
           </Stack>
         </Paper>
-      </Container>
 
-      <Box className={classes.footer}>
-        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
-        </Text>
-      </Box>
+        {/* Footer - Inside container to scroll with content on PC */}
+        <Box className={classes.footer}>
+          <Text size="xs" className={classes.footerText}>
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+          </Text>
+        </Box>
+      </div>
     </div>
   );
 }

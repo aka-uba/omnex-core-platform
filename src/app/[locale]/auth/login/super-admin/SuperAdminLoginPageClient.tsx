@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
-  Container,
   Paper,
   Title,
   Text,
@@ -98,6 +97,10 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
 
   useEffect(() => {
     setMounted(true);
+    // Set auth page attribute to override global styles
+    document.documentElement.setAttribute('data-auth-page', 'true');
+    document.body.setAttribute('data-auth-page', 'true');
+
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -141,6 +144,12 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
     } catch (e) {
       // Silently ignore
     }
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.removeAttribute('data-auth-page');
+      document.body.removeAttribute('data-auth-page');
+    };
   }, []);
 
   // Fetch periods when tenant is selected
@@ -302,7 +311,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
         </Group>
       </Box>
 
-      <Container size="xs" className={classes.container}>
+      <div className={classes.container}>
         <Paper
           className={classes.paper}
           p="xl"
@@ -360,39 +369,43 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
 
             <form onSubmit={form.onSubmit(handleSubmit)}>
               <Stack gap="md">
-                <Select
-                  label={t('login.tenantLabel') || 'Firma Seçin'}
-                  placeholder={t('login.tenantPlaceholder') || 'Firma seçin...'}
-                  leftSection={mounted ? <IconBuilding size={16} /> : null}
-                  data={tenants.map(t => ({ value: t.id, label: t.name }))}
-                  required
-                  disabled={loadingTenants}
-                  searchable
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                  {...form.getInputProps('tenantId')}
-                />
+                <Group grow preventGrowOverflow={false} wrap="wrap" gap="md">
+                  <Select
+                    label={t('login.tenantLabel') || 'Firma Seçin'}
+                    placeholder={t('login.tenantPlaceholder') || 'Firma seçin...'}
+                    leftSection={mounted ? <IconBuilding size={16} /> : null}
+                    data={tenants.map(t => ({ value: t.id, label: t.name }))}
+                    required
+                    disabled={loadingTenants}
+                    searchable
+                    styles={{
+                      root: { flex: 1, minWidth: '180px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                    {...form.getInputProps('tenantId')}
+                  />
 
-                <Select
-                  label={t('login.periodLabel') || 'Dönem Seçin (Opsiyonel)'}
-                  placeholder={t('login.periodPlaceholder') || 'Dönem seçin...'}
-                  leftSection={mounted ? <IconCalendar size={16} /> : null}
-                  data={periods.map(p => ({ value: p.id, label: p.name }))}
-                  value={form.values.periodId}
-                  onChange={(value) => form.setFieldValue('periodId', value || '')}
-                  disabled={loadingPeriods || !form.values.tenantId}
-                  clearable
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                />
+                  <Select
+                    label={t('login.periodLabel') || 'Dönem Seçin (Opsiyonel)'}
+                    placeholder={t('login.periodPlaceholder') || 'Dönem seçin...'}
+                    leftSection={mounted ? <IconCalendar size={16} /> : null}
+                    data={periods.map(p => ({ value: p.id, label: p.name }))}
+                    value={form.values.periodId}
+                    onChange={(value) => form.setFieldValue('periodId', value || '')}
+                    disabled={loadingPeriods || !form.values.tenantId}
+                    clearable
+                    styles={{
+                      root: { flex: 1, minWidth: '180px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                  />
+                </Group>
 
                 <TextInput
                   label={t('login.username')}
@@ -462,13 +475,14 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
             </Text>
           </Stack>
         </Paper>
-      </Container>
 
-      <Box className={classes.footer}>
-        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
-        </Text>
-      </Box>
+        {/* Footer - Inside container to scroll with content on PC */}
+        <Box className={classes.footer}>
+          <Text size="xs" className={classes.footerText}>
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+          </Text>
+        </Box>
+      </div>
     </div>
   );
 }

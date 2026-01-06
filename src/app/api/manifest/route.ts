@@ -2,27 +2,38 @@ import { NextRequest, NextResponse } from 'next/server';
 import { corePrisma } from '@/lib/corePrisma';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0; // Disable caching
 
 export async function GET(request: NextRequest) {
   try {
-    // Get tenant from cookie, subdomain, or fallback to first active tenant
+    // Get tenant from multiple sources
     const hostname = request.headers.get('host')?.split(':')[0] || '';
-    const tenantSlug = request.cookies.get('tenant-slug')?.value;
+    const tenantSlugFromCookie = request.cookies.get('tenant-slug')?.value;
+    const referer = request.headers.get('referer') || '';
+
+    // Try to extract tenant from URL path (e.g., /tr/auth/login -> look for tenant in path)
+    let tenantSlugFromPath: string | null = null;
+    if (referer) {
+      const urlMatch = referer.match(/\/tenant\/([^\/]+)/);
+      if (urlMatch) {
+        tenantSlugFromPath = urlMatch[1];
+      }
+    }
 
     let companyName = 'Omnex Core Platform';
     let shortName = 'Omnex';
-    let description = 'Enterprise Management Platform';
-    let themeColor = '#228be6';
+    const description = 'Enterprise Management Platform';
+    const themeColor = '#228be6';
 
     let tenant = null;
 
-    // Try to get tenant from cookie first
-    if (tenantSlug) {
+    // Priority 1: Cookie
+    if (tenantSlugFromCookie) {
       tenant = await corePrisma.tenant.findFirst({
         where: {
           OR: [
-            { slug: tenantSlug },
-            { subdomain: tenantSlug },
+            { slug: tenantSlugFromCookie },
+            { subdomain: tenantSlugFromCookie },
           ],
           status: 'active'
         },
@@ -34,7 +45,25 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // If no tenant from cookie, try subdomain
+    // Priority 2: URL path
+    if (!tenant && tenantSlugFromPath) {
+      tenant = await corePrisma.tenant.findFirst({
+        where: {
+          OR: [
+            { slug: tenantSlugFromPath },
+            { subdomain: tenantSlugFromPath },
+          ],
+          status: 'active'
+        },
+        select: {
+          id: true,
+          name: true,
+          dbName: true,
+        }
+      });
+    }
+
+    // Priority 3: Subdomain (production)
     if (!tenant && hostname && !hostname.includes('localhost')) {
       const subdomain = hostname.split('.')[0];
       if (subdomain && subdomain !== 'www') {
@@ -55,7 +84,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Fallback: get first active tenant (for development)
+    // Priority 4: First active tenant (development fallback)
     if (!tenant) {
       tenant = await corePrisma.tenant.findFirst({
         where: { status: 'active' },
@@ -182,7 +211,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(manifest, {
       headers: {
         'Content-Type': 'application/manifest+json',
-        'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
+        // No cache to ensure fresh data on first load
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
       },
     });
   } catch (error) {
@@ -206,6 +238,7 @@ export async function GET(request: NextRequest) {
     }, {
       headers: {
         'Content-Type': 'application/manifest+json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
       },
     });
   }

@@ -2005,6 +2005,24 @@
             "step3": "Tap **\"Add\"** or **\"Install\"** to confirm"
           }
         },
+        "chrome": {
+          "title": "Install App",
+          "subtitle": "Chrome - Android",
+          "steps": {
+            "step1": "Tap the **three dots** menu at the top right (⋮)",
+            "step2": "Tap **\"Install app\"** or **\"Add to Home screen\"**",
+            "step3": "Tap **\"Install\"** to confirm"
+          }
+        },
+        "edge": {
+          "title": "Install App",
+          "subtitle": "Edge - Android",
+          "steps": {
+            "step1": "Tap the **three dots** menu at the bottom (⋯)",
+            "step2": "Tap **\"Add to Home screen\"** or **\"Install app\"**",
+            "step3": "Tap **\"Add\"** to confirm"
+          }
+        },
         "samsung": {
           "title": "Add to Home Screen",
           "subtitle": "Samsung Internet",

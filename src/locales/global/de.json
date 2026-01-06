@@ -2022,6 +2022,24 @@
             "step3": "Tippen Sie auf **\"Hinzufügen\"** oder **\"Installieren\"** zur Bestätigung"
           }
         },
+        "chrome": {
+          "title": "App installieren",
+          "subtitle": "Chrome - Android",
+          "steps": {
+            "step1": "Tippen Sie auf das **Drei-Punkte**-Menü oben rechts (⋮)",
+            "step2": "Tippen Sie auf **\"App installieren\"** oder **\"Zum Startbildschirm hinzufügen\"**",
+            "step3": "Tippen Sie auf **\"Installieren\"** zur Bestätigung"
+          }
+        },
+        "edge": {
+          "title": "App installieren",
+          "subtitle": "Edge - Android",
+          "steps": {
+            "step1": "Tippen Sie auf das **Drei-Punkte**-Menü unten (⋯)",
+            "step2": "Tippen Sie auf **\"Zum Startbildschirm hinzufügen\"** oder **\"App installieren\"**",
+            "step3": "Tippen Sie auf **\"Hinzufügen\"** zur Bestätigung"
+          }
+        },
         "samsung": {
           "title": "Zum Startbildschirm hinzufügen",
           "subtitle": "Samsung Internet",

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
-  Container,
   Paper,
   Title,
   Text,
@@ -45,6 +44,10 @@ export default function RegisterPage() {
   const [companyName, setCompanyName] = useState('');
 
   useEffect(() => {
+    // Set auth page attribute to override global styles
+    document.documentElement.setAttribute('data-auth-page', 'true');
+    document.body.setAttribute('data-auth-page', 'true');
+
     // Logo dosyasının varlığını kontrol et
     const img = new window.Image();
     img.onload = () => setLogoExists(true);
@@ -60,6 +63,12 @@ export default function RegisterPage() {
         }
       })
       .catch(() => {});
+
+    // Cleanup on unmount
+    return () => {
+      document.documentElement.removeAttribute('data-auth-page');
+      document.body.removeAttribute('data-auth-page');
+    };
   }, []);
 
   const handleLocaleChange = (value: string | null) => {
@@ -193,7 +202,7 @@ export default function RegisterPage() {
           </Group>
         </Box>
 
-        <Container size="xs" className={classes.container}>
+        <div className={classes.container}>
           <Paper
           className={classes.paper}
           p="xl"
@@ -222,13 +231,14 @@ export default function RegisterPage() {
               </Text>
             </Stack>
           </Paper>
-        </Container>
 
-        <Box className={classes.footer}>
-          <Text size="xs" c="dimmed">
-            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
-          </Text>
-        </Box>
+          {/* Footer - Inside container to scroll with content on PC */}
+          <Box className={classes.footer}>
+            <Text size="xs" className={classes.footerText}>
+              Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+            </Text>
+          </Box>
+        </div>
       </div>
     );
   }
@@ -273,7 +283,7 @@ export default function RegisterPage() {
         </Group>
       </Box>
 
-      <Container size="xs" className={classes.container}>
+      <div className={classes.container}>
         <Paper
           className={classes.paper}
           p="xl"
@@ -330,35 +340,42 @@ export default function RegisterPage() {
 
             <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
               <Stack gap="md">
-                <TextInput
-                  label={t('register.name')}
-                  placeholder={t('register.namePlaceholder')}
-                  autoComplete="name"
-                  required
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                  {...form.getInputProps('name')}
-                />
+                <Group grow preventGrowOverflow={false} wrap="wrap" gap="md">
+                  <TextInput
+                    label={t('register.name')}
+                    placeholder={t('register.namePlaceholder')}
+                    autoComplete="name"
+                    required
+                    styles={{
+                      root: { flex: 1, minWidth: '160px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                    {...form.getInputProps('name')}
+                  />
 
-                <TextInput
-                  label={t('register.username')}
-                  placeholder={t('register.usernamePlaceholder')}
-                  leftSection={mounted ? <IconUser size={16} /> : null}
-                  description={t('register.usernameHint')}
-                  autoComplete="username"
-                  required
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                  {...form.getInputProps('username')}
-                />
+                  <TextInput
+                    label={t('register.username')}
+                    placeholder={t('register.usernamePlaceholder')}
+                    leftSection={mounted ? <IconUser size={16} /> : null}
+                    autoComplete="username"
+                    required
+                    styles={{
+                      root: { flex: 1, minWidth: '160px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                    {...form.getInputProps('username')}
+                  />
+                </Group>
+
+                <Text size="xs" c="dimmed" mt={-8}>
+                  {t('register.usernameHint')}
+                </Text>
 
                 <TextInput
                   label={t('register.email')}
@@ -376,36 +393,43 @@ export default function RegisterPage() {
                   {...form.getInputProps('email')}
                 />
 
-                <PasswordInput
-                  label={t('register.password')}
-                  placeholder={t('register.passwordPlaceholder')}
-                  leftSection={mounted ? <IconLock size={16} /> : null}
-                  description={t('register.passwordHint')}
-                  autoComplete="new-password"
-                  required
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                  {...form.getInputProps('password')}
-                />
+                <Group grow preventGrowOverflow={false} wrap="wrap" gap="md">
+                  <PasswordInput
+                    label={t('register.password')}
+                    placeholder={t('register.passwordPlaceholder')}
+                    leftSection={mounted ? <IconLock size={16} /> : null}
+                    autoComplete="new-password"
+                    required
+                    styles={{
+                      root: { flex: 1, minWidth: '160px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                    {...form.getInputProps('password')}
+                  />
 
-                <PasswordInput
-                  label={t('register.confirmPassword')}
-                  placeholder={t('register.confirmPasswordPlaceholder')}
-                  leftSection={mounted ? <IconLock size={16} /> : null}
-                  autoComplete="new-password"
-                  required
-                  styles={{
-                    input: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
-                      borderColor: 'rgba(255, 255, 255, 0.4)',
-                    }
-                  }}
-                  {...form.getInputProps('confirmPassword')}
-                />
+                  <PasswordInput
+                    label={t('register.confirmPassword')}
+                    placeholder={t('register.confirmPasswordPlaceholder')}
+                    leftSection={mounted ? <IconLock size={16} /> : null}
+                    autoComplete="new-password"
+                    required
+                    styles={{
+                      root: { flex: 1, minWidth: '160px' },
+                      input: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                        borderColor: 'rgba(255, 255, 255, 0.4)',
+                      }
+                    }}
+                    {...form.getInputProps('confirmPassword')}
+                  />
+                </Group>
+
+                <Text size="xs" c="dimmed" mt={-8}>
+                  {t('register.passwordHint')}
+                </Text>
 
                 <Button
                   type="submit"
@@ -435,13 +459,14 @@ export default function RegisterPage() {
             </Text>
           </Stack>
         </Paper>
-      </Container>
 
-      <Box className={classes.footer}>
-        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
-          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
-        </Text>
-      </Box>
+        {/* Footer - Inside container to scroll with content on PC */}
+        <Box className={classes.footer}>
+          <Text size="xs" className={classes.footerText}>
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+          </Text>
+        </Box>
+      </div>
     </div>
   );
 }

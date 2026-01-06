@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:network": "next dev --turbopack --hostname 0.0.0.0",
     "dev:webpack": "next dev --webpack",
     "analyze:buttons": "node scripts/analyze-buttons.js",
     "typecheck": "tsc --noEmit",
