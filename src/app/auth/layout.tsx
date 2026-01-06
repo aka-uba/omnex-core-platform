@@ -25,7 +25,12 @@ export default function AuthLayout({
     <html lang="tr" suppressHydrationWarning>
       <head>
         <ColorSchemeScript />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/api/manifest" />
+        <meta name="theme-color" content="#228be6" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Omnex" />
+        <link rel="apple-touch-icon" href="/branding/pwa-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

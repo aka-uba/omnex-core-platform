@@ -11,6 +11,7 @@ import { CompanyProvider } from '@/context/CompanyContext';
 import { ExportProvider } from '@/lib/export/ExportProvider';
 import { DatesProviderWrapper } from '@/components/providers/DatesProvider';
 import { DynamicHeadMeta } from '@/components/DynamicHeadMeta';
+import { ServiceWorkerRegistration } from '@/components/pwa/ServiceWorkerRegistration';
 import { useCompany } from '@/context/CompanyContext';
 import { useEffect, useState } from 'react';
 
@@ -146,6 +147,7 @@ export function Providers({ children, dir }: { children: React.ReactNode; dir?: 
     return (
         <QueryClientProvider client={queryClient}>
             <TenantCookieSetter />
+            <ServiceWorkerRegistration />
             <CustomThemeProvider>
                 <DirectionSync {...(dir ? { dir } : {})}>
                     <DirectionWrapper>
