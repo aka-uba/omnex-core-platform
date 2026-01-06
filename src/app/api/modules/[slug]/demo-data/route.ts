@@ -15,7 +15,6 @@ import {
   unseedAllModules,
   loadDemoData,
   getAvailableLocales,
-  LOCALE_CURRENCIES,
   DEFAULT_LOCALE,
 } from '../../../../../../prisma/seed/modules';
 import type { SeederContext, SupportedLocale } from '../../../../../../prisma/seed/modules';
@@ -60,7 +59,6 @@ async function createSeederContext(
     adminUserId: adminUser.id,
     tenantSlug: tenant.slug,
     locale,
-    currency: demoData.currency,
     demoData,
   };
 }
@@ -85,6 +83,7 @@ export async function GET(
     const locale = getLocaleFromRequest(request);
 
     // Special endpoint to get available locales
+    // Note: Currency is no longer locale-specific. System uses GeneralSettings.currency
     if (slug === 'locales') {
       const locales = getAvailableLocales();
       return NextResponse.json({
@@ -92,7 +91,6 @@ export async function GET(
         data: {
           locales: locales.map((loc) => ({
             code: loc,
-            currency: LOCALE_CURRENCIES[loc],
             name: loc === 'tr' ? 'Türkçe' : loc === 'en' ? 'English' : loc === 'de' ? 'Deutsch' : 'العربية',
           })),
           defaultLocale: DEFAULT_LOCALE,
@@ -182,7 +180,6 @@ export async function POST(
           totalCreated,
           results,
           locale,
-          currency: ctx.currency,
           errors: errors.length > 0 ? errors : undefined,
         },
       });
@@ -220,7 +217,6 @@ export async function POST(
         itemsCreated: result.itemsCreated,
         details: result.details,
         locale,
-        currency: ctx.currency,
         error: result.error,
       },
     });

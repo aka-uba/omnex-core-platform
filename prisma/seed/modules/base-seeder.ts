@@ -17,7 +17,6 @@ export type SupportedLocale = 'tr' | 'en' | 'de' | 'ar';
 
 export interface LocaleConfig {
   locale: SupportedLocale;
-  currency: string;
   country: string;
   dateFormat: string;
 }
@@ -25,7 +24,6 @@ export interface LocaleConfig {
 // Demo data structure for each locale
 export interface DemoData {
   locale: string;
-  currency: string;
   country: string;
   dateFormat: string;
   locations: {
@@ -133,8 +131,11 @@ export interface SeederContext {
   tenantSlug: string;
   // Locale support
   locale: SupportedLocale;
-  currency: string;
   demoData: DemoData;
+  // NOT: Currency artık demo verilerde yok!
+  // Uygulama her zaman GeneralSettings.currency değerini kullanır.
+  // DB'ye yazılacak kayıtlar için currency alanını null bırakın veya
+  // GeneralSettings'ten okuyun.
 }
 
 export interface SeederResult {
@@ -194,14 +195,6 @@ export function isDemoData(id: string): boolean {
 // Default locale configuration
 export const DEFAULT_LOCALE: SupportedLocale = 'tr';
 
-// Locale to currency mapping
-export const LOCALE_CURRENCIES: Record<SupportedLocale, string> = {
-  tr: 'TRY',
-  en: 'USD',
-  de: 'EUR',
-  ar: 'SAR',
-};
-
 // Static demo data map (no fs operations needed)
 const DEMO_DATA_MAP: Record<SupportedLocale, DemoData> = {
   tr: demoDataTr as DemoData,
@@ -222,14 +215,13 @@ export function loadDemoData(locale: SupportedLocale = DEFAULT_LOCALE): DemoData
 
 // Create seeder context with locale support
 export function createSeederContext(
-  baseContext: Omit<SeederContext, 'locale' | 'currency' | 'demoData'>,
+  baseContext: Omit<SeederContext, 'locale' | 'demoData'>,
   locale: SupportedLocale = DEFAULT_LOCALE
 ): SeederContext {
   const demoData = loadDemoData(locale);
   return {
     ...baseContext,
     locale,
-    currency: demoData.currency,
     demoData,
   };
 }

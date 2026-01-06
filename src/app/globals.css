@@ -522,6 +522,39 @@ button.mantine-Button-root:hover,
   background-color: #3c4043 !important;
 }
 
+/* ============================================
+   Toast Notification - Auto Height for Long Messages
+   ============================================ */
+.mantine-Notification-root {
+  max-height: none !important;
+  height: auto !important;
+}
+
+.mantine-Notification-body {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.mantine-Notification-title {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.mantine-Notification-description {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  text-overflow: unset !important;
+}
+
 /* Module Management Styles */
 .module-card {
   transition: all 0.2s ease;

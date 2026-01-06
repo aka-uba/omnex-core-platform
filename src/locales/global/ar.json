@@ -1530,7 +1530,9 @@
       "error": "خطأ",
       "running": "جاري التشغيل...",
       "pending": "قيد الانتظار",
-      "ready": "جاهز"
+      "ready": "جاهز",
+      "runningText": "قيد التشغيل",
+      "solution": "الحل:"
     },
     "actions": {
       "runCurrent": "تشغيل الخطوة الحالية",
@@ -1540,7 +1542,9 @@
       "nextStep": "الخطوة التالية",
       "resetStep": "إعادة تعيين الخطوة",
       "autoAdvance": "تقدم تلقائي",
-      "clearLogs": "مسح السجلات"
+      "clearLogs": "مسح السجلات",
+      "success": "نجاح",
+      "error": "خطأ"
     },
     "logs": {
       "title": "السجلات",
@@ -1593,7 +1597,8 @@
       "message": "اكتملت جميع المراحل بنجاح! إعداد قاعدة البيانات جاهز.",
       "stepsTitle": "الخطوات المكتملة والتفاصيل",
       "downloadMarkdown": "تحميل بصيغة Markdown",
-      "downloadText": "تحميل بصيغة نصية"
+      "downloadText": "تحميل بصيغة نصية",
+      "reportDescription": "يحتوي التقرير على حالة الخطوات وتفاصيل الأخطاء إن وجدت."
     },
     "messages": {
       "databaseConnectionSuccess": "نجح اتصالا قاعدتي البيانات",

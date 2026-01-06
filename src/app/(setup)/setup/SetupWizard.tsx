@@ -118,6 +118,7 @@ export function SetupWizard() {
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [loadingModules, setLoadingModules] = useState(false);
   const [processingDemo, setProcessingDemo] = useState(false);
+  const [selectedDemoLocale, setSelectedDemoLocale] = useState<string>('tr');
 
   // Production Deploy state
   const [activeTab, setActiveTab] = useState<string | null>('database');
@@ -702,7 +703,8 @@ export function SetupWizard() {
     }
 
     setProcessingDemo(true);
-    addLog(`Demo ${demoModalMode === 'seed' ? 'veri yükleme' : 'veri silme'} başlatıldı: ${selectedModules.join(', ')}`);
+    const localeLabel = selectedDemoLocale === 'tr' ? 'Türkçe' : selectedDemoLocale === 'en' ? 'İngilizce' : selectedDemoLocale === 'de' ? 'Almanca' : 'Arapça';
+    addLog(`Demo ${demoModalMode === 'seed' ? 'veri yükleme' : 'veri silme'} başlatıldı: ${selectedModules.join(', ')}${demoModalMode === 'seed' ? ` (Dil: ${localeLabel})` : ''}`);
 
     try {
       const response = await fetch('/api/setup/demo-modules', {
@@ -713,6 +715,7 @@ export function SetupWizard() {
           tenantDatabaseUrl: config.tenantDatabaseUrl,
           tenantSlug: config.tenantSlug,
           modules: selectedModules,
+          locale: demoModalMode === 'seed' ? selectedDemoLocale : undefined,
         }),
       });
 
@@ -744,15 +747,18 @@ export function SetupWizard() {
 
         setDemoModalOpened(false);
       } else {
-        throw new Error(result.error || 'İşlem başarısız');
+        // Check for detailed errors in data.errors array
+        const errorDetails = result.data?.errors?.join('; ') || result.error || 'İşlem başarısız';
+        throw new Error(errorDetails);
       }
     } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Beklenmeyen bir hata oluştu';
       showToast({
         type: 'error',
         title: t('setup.actions.error'),
-        message: error instanceof Error ? error.message : 'Beklenmeyen bir hata oluştu',
+        message: errorMessage,
       });
-      addLog(`Demo işlem hatası: ${error instanceof Error ? error.message : 'Bilinmeyen hata'}`);
+      addLog(`Demo işlem hatası: ${errorMessage}`);
     } finally {
       setProcessingDemo(false);
     }
@@ -1956,14 +1962,30 @@ export function SetupWizard() {
           )}
 
           {demoModalMode === 'seed' && (
-            <Alert
-              icon={<IconDatabase size={16} className="tabler-icon tabler-icon-database" />}
-              color="blue"
-              variant="light"
-            >
-              Demo veriler [DEMO] etiketi ile işaretlenir ve gerçek verilerinizi etkilemez.
-              Bağımlılık gerektiren modüller otomatik olarak gerekli verileri de yükler.
-            </Alert>
+            <>
+              <Alert
+                icon={<IconDatabase size={16} className="tabler-icon tabler-icon-database" />}
+                color="blue"
+                variant="light"
+              >
+                Demo veriler [DEMO] etiketi ile işaretlenir ve gerçek verilerinizi etkilemez.
+                Bağımlılık gerektiren modüller otomatik olarak gerekli verileri de yükler.
+              </Alert>
+
+              <Select
+                label="Demo Veri Dili"
+                description="Demo veriler seçtiğiniz dilde yüklenecektir. Para birimi Ayarlar sayfasından ayrıca belirlenir."
+                value={selectedDemoLocale}
+                onChange={(value) => setSelectedDemoLocale(value || 'tr')}
+                data={[
+                  { value: 'tr', label: '🇹🇷 Türkçe' },
+                  { value: 'en', label: '🇺🇸 English' },
+                  { value: 'de', label: '🇩🇪 Deutsch' },
+                  { value: 'ar', label: '🇸🇦 العربية' },
+                ]}
+                disabled={processingDemo}
+              />
+            </>
           )}
 
           <Divider label="Modülleri Seçin" labelPosition="center" />

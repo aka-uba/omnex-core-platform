@@ -1513,7 +1513,9 @@
       "error": "Error",
       "running": "Running...",
       "pending": "Pending",
-      "ready": "Ready"
+      "ready": "Ready",
+      "runningText": "Running",
+      "solution": "Solution:"
     },
     "actions": {
       "runCurrent": "Run Current Step",
@@ -1523,7 +1525,9 @@
       "nextStep": "Go to Next Step",
       "resetStep": "Reset Step",
       "autoAdvance": "Auto advance",
-      "clearLogs": "Clear Logs"
+      "clearLogs": "Clear Logs",
+      "success": "Success",
+      "error": "Error"
     },
     "logs": {
       "title": "Logs",
@@ -1576,7 +1580,8 @@
       "message": "All stages completed successfully! Database setup is ready.",
       "stepsTitle": "Completed Steps and Details",
       "downloadMarkdown": "Download as Markdown",
-      "downloadText": "Download as Text"
+      "downloadText": "Download as Text",
+      "reportDescription": "The report contains step statuses and error details if any."
     },
     "messages": {
       "databaseConnectionSuccess": "Both database connections successful",

@@ -768,15 +768,15 @@ menu:
 
 ### 7.3 Demo Veri Lokalizasyon Sistemi
 
-Demo veriler için çoklu dil ve para birimi desteği:
+Demo veriler için çoklu dil desteği. **ÖNEMLİ:** Demo verilerde `currency` alanı **belirtilmez** - Prisma varsayılan değeri (`TRY`) kullanır. **Uygulama çalışırken para birimi görüntülemesi `GeneralSettings.currency` (Ayarlar > Bölge ve Saat) değerine göre `useCurrency` hook ile formatlanır.**
 
 **Desteklenen Diller:**
-| Locale | Para Birimi | Ülke | Açıklama |
-|--------|-------------|------|----------|
-| `tr` | TRY | TR | Türkçe (varsayılan) |
-| `en` | USD | US | İngilizce |
-| `de` | EUR | DE | Almanca |
-| `ar` | SAR | SA | Arapça |
+| Locale | Ülke | Açıklama |
+|--------|------|----------|
+| `tr` | TR | Türkçe (varsayılan) |
+| `en` | US | İngilizce |
+| `de` | DE | Almanca |
+| `ar` | SA | Arapça |
 
 **Dosya Yapısı:**
 ```
@@ -788,26 +788,36 @@ prisma/seed/
 │   └── demo-data.ar.json    # Arapça demo veriler
 └── modules/
     ├── base-seeder.ts       # Locale type ve helper fonksiyonlar
-    ├── run-all.ts           # CLI runner (--locale parametresi)
+    ├── index.ts             # Export barrel
+    ├── seeder-registry.ts   # Seeder kayıt ve yönetimi
     └── *.seed.ts            # Modül seeder'ları
 ```
 
 **CLI Kullanımı:**
 ```bash
-# Almanca demo veriler ile seed (EUR para birimi)
-TENANT_DATABASE_URL="..." npx tsx prisma/seed/modules/run-all.ts --tenant-slug=demo --locale=de
+# Almanca demo veriler ile seed
+TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=de
 
 # Mevcut locale'leri listele
-npx tsx prisma/seed/modules/run-all.ts --list-locales
+npx tsx prisma/seed/demo-seed.ts --list-locales
 
 # Belirli modülü seed et
-npx tsx prisma/seed/modules/run-all.ts --tenant-slug=demo --locale=en --module=real-estate
+npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=en --module=real-estate
 ```
+
+**Setup Wizard Demo Veri Yükleme:**
+Setup wizard'da demo veri yüklerken:
+1. Kullanıcı dil seçer (tr, en, de, ar)
+2. API mevcut demo veriyi kontrol eder (`checkStatus`)
+3. Varsa önce temizler (`unseed`)
+4. Sonra yeni locale ile yükler (`seed`)
+
+Bu sayede farklı dilde demo veri yüklemek mümkün - önceki veri otomatik temizlenir.
 
 **Seeder'da Localized Veri Kullanımı:**
 ```typescript
 async seed(ctx: SeederContext): Promise<SeederResult> {
-  const { demoData, currency, locale } = ctx;
+  const { demoData, locale } = ctx;
 
   // Lokalize edilmiş mülk verileri
   const properties = demoData.realEstate.properties;
@@ -815,19 +825,49 @@ async seed(ctx: SeederContext): Promise<SeederResult> {
   // Lokalize edilmiş kiracı isimleri
   const tenants = demoData.realEstate.tenants;
 
-  // Para birimi (TRY, EUR, USD, SAR)
-  const paymentCurrency = currency;
-
   // Ülke kodu
   const country = demoData.country; // TR, DE, US, SA
+
+  // Currency alanı BELİRTİLMEZ - Prisma varsayılan değeri kullanır
+  await tenantPrisma.contract.create({
+    data: {
+      // currency alanı yok - varsayılan "TRY" kullanılacak
+      // Görüntüleme GeneralSettings.currency'ye göre formatlanır
+      rentAmount: new Prisma.Decimal(15000),
+      // ...
+    }
+  });
 }
+```
+
+**Seeder İdempotent Olmalı:**
+Tekrar çalıştırıldığında hata vermemeli:
+```typescript
+// ✅ DOĞRU: upsert kullan (ID ile)
+const id = generateDemoId(tenantSlug, 'email-campaign', String(idx + 1));
+await tenantPrisma.emailCampaign.upsert({
+  where: { id },
+  update: {},
+  create: { id, ... },
+});
+
+// ✅ DOĞRU: unique constraint ile upsert
+await tenantPrisma.contract.upsert({
+  where: { tenantId_contractNumber: { tenantId, contractNumber } },
+  update: {},
+  create: { ... },
+});
+
+// ❌ YANLIŞ: create ile ID - tekrar çalışınca hata verir
+await tenantPrisma.something.create({
+  data: { id: generateDemoId(...), ... }, // Unique constraint hatası!
+});
 ```
 
 **Demo Veri JSON Yapısı:**
 ```json
 {
   "locale": "de",
-  "currency": "EUR",
   "country": "DE",
   "dateFormat": "DD.MM.YYYY",
   "locations": { "hq": {...}, "factory": {...}, "warehouse": {...} },
@@ -843,10 +883,12 @@ async seed(ctx: SeederContext): Promise<SeederResult> {
 
 **KURALLAR:**
 - ✅ Demo verilerde hardcoded Türkçe metin yerine `demoData` kullan
-- ✅ Para birimi için `ctx.currency` kullan (`'TRY'` yerine)
 - ✅ Ülke kodu için `demoData.country` kullan
+- ✅ **Currency alanını belirtme** - Prisma varsayılan değer kullanır
+- ✅ ID ile `create` yerine `upsert` kullan (idempotent olması için)
 - ✅ Yeni locale eklerken tüm seeder'ları güncelle
-- ❌ Seeder'da doğrudan dil/para birimi hardcode etme
+- ❌ Seeder'da `currency: null` yazma (TypeScript hatası verir)
+- ❌ `ctx.currency` artık mevcut değil - **kullanma!**
 
 ---
 
@@ -1822,27 +1864,33 @@ export function getCurrencyLocale(code: string): string;
 ### 23.2 useCurrency Hook
 **Dosya**: `src/hooks/useCurrency.ts`
 
-Para birimi formatlaması için merkezi React hook. GeneralSettings'ten currency değerini okur.
+Para birimi formatlaması için merkezi React hook. **`GeneralSettings.currency` değerini okur** (Ayarlar > Bölge ve Saat sayfasından ayarlanır). Demo verilerin hangi para birimi ile seed edildiğinden bağımsız olarak, bu ayar tüm formatlama işlemlerini belirler.
 
 ```typescript
 import { useCurrency } from '@/hooks/useCurrency';
 
 function MyComponent() {
   const {
-    currency,           // Aktif para birimi kodu (örn: 'USD')
+    currency,           // Aktif para birimi kodu (GeneralSettings'ten, örn: 'USD')
     locale,             // Locale string (örn: 'en-US')
     formatCurrency,     // Para formatla fonksiyonu
     formatAmount,       // Sadece sayı formatla (symbol yok)
     currencyOptions,    // Select için options
-    currencySymbol,     // Para birimi sembolü
     loading,            // Yükleniyor mu
   } = useCurrency();
 
-  // Kullanım
+  // Kullanım - Ayarlar'daki para birimine göre formatlar
   const price = formatCurrency(1500.50);        // "₺1.500,50" veya "$1,500.50"
   const priceUSD = formatCurrency(100, 'USD');  // Override ile: "$100.00"
 }
 ```
+
+**Akış:**
+1. Kullanıcı **Ayarlar > Bölge ve Saat** sayfasından para birimini değiştirir
+2. `GeneralSettings.currency` DB'de güncellenir
+3. `CompanyContext` bu değeri `/api/general-settings`'ten çeker
+4. `useCurrency` hook bu değeri kullanarak formatlama yapar
+5. Tüm sayfalarda para birimi otomatik olarak güncellenir
 
 ### 23.3 Kullanım Kuralları
 
@@ -1962,18 +2010,21 @@ function processTemplate(content: string, context: VariableContext) {
 
 ### 23.7 Seed Dosyalarında Currency
 
-Tüm seeder'lar `ctx.currency` kullanmalı:
+⚠️ **ÖNEMLİ:** Demo verilerde `currency` alanı **belirtilmez**! Prisma şemasındaki `@default("TRY")` varsayılan değeri kullanılır. **Uygulama çalışırken para birimi formatlaması `GeneralSettings.currency` ayarına göre `useCurrency` hook ile yapılır.**
+
+Seeder'larda currency alanını **belirtmeyin** - Prisma varsayılan değeri kullanır:
 
 ```typescript
 // prisma/seed/modules/accounting.seed.ts
 async seed(ctx: SeederContext): Promise<SeederResult> {
-  const { tenantPrisma, tenantId, companyId, currency } = ctx; // ✅ currency destructure
+  const { tenantPrisma, tenantId, companyId } = ctx; // ❌ ctx.currency artık yok!
 
   await tenantPrisma.subscription.create({
     data: {
       // ...
-      currency, // ✅ ctx.currency kullan
-      // currency: 'TRY', // ❌ YAPMA!
+      // currency alanı YOK - varsayılan "TRY" kullanılacak
+      // currency: null, // ❌ YAPMA! TypeScript hatası verir
+      // currency: 'TRY', // ❌ YAPMA! Hardcode etme
     },
   });
 }
@@ -1981,20 +2032,22 @@ async seed(ctx: SeederContext): Promise<SeederResult> {
 
 **Demo Seed CLI:**
 ```bash
-# Locale ile currency otomatik belirlenir
+# Locale sadece dili belirler - currency Prisma varsayılanını kullanır
 TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=de
-# → currency: EUR
+# → Almanca demo veriler, currency="TRY" (varsayılan)
 
 TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --locale=en
-# → currency: USD
+# → İngilizce demo veriler, currency="TRY" (varsayılan)
 ```
 
-### 23.8 Düzeltilen Dosyalar (2026-01-05)
+**Not:** Kullanıcı Ayarlar > Bölge ve Saat sayfasından para birimini değiştirdiğinde, `useCurrency` hook bu değeri okur ve tüm görüntüleme yeni para birimine göre formatlanır. DB'deki currency alanı değişmez, sadece görüntüleme formatı değişir.
+
+### 23.8 Düzeltilen Dosyalar (2026-01-06)
 
 | Modül | Dosya | Değişiklik |
 |-------|-------|------------|
-| **Core** | `src/lib/constants/currency.ts` | YENİ - Merkezi currency sabitleri |
-| **Core** | `src/hooks/useCurrency.ts` | YENİ - Currency hook |
+| **Core** | `src/lib/constants/currency.ts` | Merkezi currency sabitleri |
+| **Core** | `src/hooks/useCurrency.ts` | Currency hook (GeneralSettings.currency okur) |
 | **Settings** | `RegionTimeTab.tsx` | useEffect ile settings sync, CURRENCY_SELECT_OPTIONS |
 | **HR** | `PayrollList.tsx`, `PayrollDetail.tsx` | useCurrency hook |
 | **Production** | `ProductionDashboard.tsx`, `ProductForm.tsx` | useCurrency hook |
@@ -2006,8 +2059,10 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 | **Real-Estate** | `TenantDetail.tsx`, `ContractDetail.tsx`, `ContractTracking.tsx` | useCurrency hook |
 | **Real-Estate API** | `payments/analytics/route.ts` | currency alanı eklendi |
 | **Utils** | `template-variables.ts` | getCurrencyLocale, DEFAULT_CURRENCY |
-| **Seed** | `accounting.seed.ts`, `hr.seed.ts`, `production.seed.ts` | ctx.currency kullanımı |
-| **Seed** | `demo-seed.ts` | --locale parametresi, loadDemoData |
+| **Seed** | `accounting.seed.ts`, `hr.seed.ts`, `production.seed.ts`, `real-estate.seed.ts` | currency alanı kaldırıldı (varsayılan kullanılıyor) |
+| **Seed** | `real-estate.seed.ts` | create→upsert (idempotent), Prisma relation fixes |
+| **Setup API** | `demo-modules/route.ts` | checkStatus+unseed before seed (idempotent) |
+| **Demo Data API** | `[slug]/demo-data/route.ts` | LOCALE_CURRENCIES kaldırıldı, currency references temizlendi |
 
 ---
 
@@ -2041,6 +2096,6 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 
 ---
 
-**Son Güncelleme**: 2026-01-05
+**Son Güncelleme**: 2026-01-06
 **Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1

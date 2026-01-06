@@ -1530,7 +1530,9 @@
       "error": "Fehler",
       "running": "Wird ausgeführt...",
       "pending": "Ausstehend",
-      "ready": "Bereit"
+      "ready": "Bereit",
+      "runningText": "Wird ausgeführt",
+      "solution": "Lösung:"
     },
     "actions": {
       "runCurrent": "Aktuellen Schritt ausführen",
@@ -1540,7 +1542,9 @@
       "nextStep": "Zum nächsten Schritt",
       "resetStep": "Schritt zurücksetzen",
       "autoAdvance": "Automatischer Fortlauf",
-      "clearLogs": "Logs löschen"
+      "clearLogs": "Logs löschen",
+      "success": "Erfolgreich",
+      "error": "Fehler"
     },
     "logs": {
       "title": "Logs",
@@ -1593,7 +1597,8 @@
       "message": "Alle Phasen erfolgreich abgeschlossen! Datenbank-Setup ist bereit.",
       "stepsTitle": "Abgeschlossene Schritte und Details",
       "downloadMarkdown": "Als Markdown herunterladen",
-      "downloadText": "Als Text herunterladen"
+      "downloadText": "Als Text herunterladen",
+      "reportDescription": "Der Bericht enthält den Status der Schritte und ggf. Fehlerdetails."
     },
     "messages": {
       "databaseConnectionSuccess": "Beide Datenbankverbindungen erfolgreich",

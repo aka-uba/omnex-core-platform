@@ -24,7 +24,7 @@ import { getCurrencyLocale, DEFAULT_CURRENCY, SUPPORTED_CURRENCIES, CURRENCY_SEL
  * ```
  */
 export function useCurrency() {
-  const { currency: companyCurrency, formatCurrency: companyFormatCurrency, settings, loading } = useCompany();
+  const { currency: companyCurrency, settings, loading } = useCompany();
 
   // Güvenli currency değeri (context yüklenmemişse DEFAULT_CURRENCY kullan)
   const currency = companyCurrency || DEFAULT_CURRENCY;

@@ -18,7 +18,7 @@ export class RealEstateSeeder implements ModuleSeeder {
   description = 'Gayrimenkul yönetimi demo verileri - Tamamen birbirine bağlı';
 
   async seed(ctx: SeederContext): Promise<SeederResult> {
-    const { tenantPrisma, tenantId, companyId, tenantSlug, demoData, currency } = ctx;
+    const { tenantPrisma, tenantId, companyId, tenantSlug, demoData } = ctx;
     let itemsCreated = 0;
     const details: Record<string, number> = {};
 
@@ -253,26 +253,30 @@ export class RealEstateSeeder implements ModuleSeeder {
         const startDate = new Date(2024, Math.floor(idx / 2), 1);
         const endDate = new Date(2025, Math.floor(idx / 2), 1);
 
-        const contract = await tenantPrisma.contract.upsert({
+        // Check if contract already exists
+        const contractNumber = `CONT-${String(idx + 1).padStart(4, '0')}`;
+        const existingContract = await tenantPrisma.contract.findUnique({
           where: {
             tenantId_contractNumber: {
               tenantId,
-              contractNumber: `CONT-${String(idx + 1).padStart(4, '0')}`,
+              contractNumber,
             },
           },
-          update: {},
-          create: {
+        });
+
+        const contract = existingContract || await tenantPrisma.contract.create({
+          data: {
             tenantId,
             companyId,
-            apartmentId: apartment.id,
-            tenantRecordId: tenant.id,
-            contractNumber: `CONT-${String(idx + 1).padStart(4, '0')}`,
+            apartment: { connect: { id: apartment.id } },
+            tenantRecord: { connect: { id: tenant.id } },
+            contractNumber,
             type: 'rental',
             startDate,
             endDate,
             rentAmount: apartment.rentPrice || new Prisma.Decimal(15000),
             deposit: apartment.deposit || new Prisma.Decimal(30000),
-            currency: currency,
+            // currency alanı varsayılan "TRY" kullanacak - GeneralSettings'ten formatlanacak
             paymentType: randomChoice(['bank_transfer', 'auto_debit']),
             paymentDay: properties[apartment.propertyIndex]?.paymentDay || 5,
             autoRenewal: true,
@@ -358,12 +362,12 @@ export class RealEstateSeeder implements ModuleSeeder {
             data: {
               tenantId,
               companyId,
-              apartmentId: contract.apartmentId,
-              contractId: contract.id,
-              tenantRecordId: tenant.id,
+              apartment: { connect: { id: contract.apartmentId } },
+              contract: { connect: { id: contract.id } },
+              tenantRecord: { connect: { id: tenant.id } },
               type: 'rent',
               amount: new Prisma.Decimal(baseRent),
-              currency: currency,
+              // currency alanı varsayılan "TRY" kullanacak - GeneralSettings'ten formatlanacak
               dueDate: paymentDate,
               paidDate,
               status,
@@ -524,8 +528,8 @@ export class RealEstateSeeder implements ModuleSeeder {
           data: {
             tenantId,
             companyId,
-            apartmentId: apt.id,
-            tenantRecordId: tenant.id,
+            apartment: { connect: { id: apt.id } },
+            tenantRecord: { connect: { id: tenant.id } },
             type: randomChoice(appointmentTypes),
             title: `${apt.unitNumber} No'lu Daire - ${randomChoice(['Gösterim', 'Teslim', 'Bakım', 'Kontrol'])}`,
             description: `${tenant.firstName || tenant.companyName} ile randevu`,
@@ -670,9 +674,12 @@ export class RealEstateSeeder implements ModuleSeeder {
 
         for (let idx = 0; idx < emailCampaignsData.length; idx++) {
           const ec = emailCampaignsData[idx]!;
-          await tenantPrisma.emailCampaign.create({
-            data: {
-              id: generateDemoId(tenantSlug, 'email-campaign', String(idx + 1)),
+          const campaignId = generateDemoId(tenantSlug, 'email-campaign', String(idx + 1));
+          await tenantPrisma.emailCampaign.upsert({
+            where: { id: campaignId },
+            update: {},
+            create: {
+              id: campaignId,
               tenantId,
               companyId,
               templateId: firstEmailTemplate.id,
@@ -747,14 +754,17 @@ export class RealEstateSeeder implements ModuleSeeder {
         const contract = contracts[idx];
         const tenant = tenants[idx];
 
-        await tenantPrisma.agreementReport.create({
-          data: {
-            id: generateDemoId(tenantSlug, 'agreement-report', String(idx + 1)),
+        const reportId = generateDemoId(tenantSlug, 'agreement-report', String(idx + 1));
+        await tenantPrisma.agreementReport.upsert({
+          where: { id: reportId },
+          update: {},
+          create: {
+            id: reportId,
             tenantId,
             companyId,
             type: agreementTypes[idx % agreementTypes.length]!,
-            apartmentId: apt.id,
-            contractId: contract.id,
+            apartment: { connect: { id: apt.id } },
+            contract: { connect: { id: contract.id } },
             agreementStatus: agreementStatuses[idx % agreementStatuses.length]!,
             rentAmount: apt.rentPrice || randomDecimal(8000, 25000),
             deposit: apt.deposit || randomDecimal(16000, 50000),
@@ -807,7 +817,7 @@ export class RealEstateSeeder implements ModuleSeeder {
             data: {
               tenantId,
               companyId,
-              apartmentId: apt.id,
+              apartment: { connect: { id: apt.id } },
               type: randomChoice(maintenanceTypes),
               title: `${apt.unitNumber} - ${item}`,
               description: `${apt.unitNumber} no'lu daire için ${scenario.category.toLowerCase()} bakımı: ${item}. ${
@@ -844,9 +854,12 @@ export class RealEstateSeeder implements ModuleSeeder {
 
       for (let idx = 0; idx < bulkOperationsData.length; idx++) {
         const bo = bulkOperationsData[idx]!;
-        await tenantPrisma.bulkOperation.create({
-          data: {
-            id: generateDemoId(tenantSlug, 'bulk-operation', String(idx + 1)),
+        const bulkOpId = generateDemoId(tenantSlug, 'bulk-operation', String(idx + 1));
+        await tenantPrisma.bulkOperation.upsert({
+          where: { id: bulkOpId },
+          update: {},
+          create: {
+            id: bulkOpId,
             tenantId,
             companyId,
             createdBy: ctx.adminUserId,

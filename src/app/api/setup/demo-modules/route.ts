@@ -19,7 +19,8 @@ import type { SeederContext, SupportedLocale } from '../../../../../prisma/seed/
 async function createSetupSeederContext(
   coreDatabaseUrl: string,
   tenantDatabaseUrl: string,
-  tenantSlug: string
+  tenantSlug: string,
+  locale: SupportedLocale = 'tr'
 ): Promise<{ ctx: SeederContext; cleanup: () => Promise<void> } | null> {
   const corePrisma = new CorePrismaClient({
     datasources: { db: { url: coreDatabaseUrl } },
@@ -64,9 +65,8 @@ async function createSetupSeederContext(
       await tenantPrisma.$disconnect();
     };
 
-    // Get default locale demo data
-    const defaultLocale: SupportedLocale = 'tr';
-    const demoData = loadDemoData(defaultLocale);
+    // Load localized demo data
+    const demoData = loadDemoData(locale);
 
     return {
       ctx: {
@@ -76,9 +76,10 @@ async function createSetupSeederContext(
         companyId: company.id,
         adminUserId: adminUser.id,
         tenantSlug: tenant.slug,
-        locale: defaultLocale,
-        currency: demoData.currency,
+        locale,
         demoData,
+        // NOT: Currency artık demo verilerde yok!
+        // Uygulama her zaman GeneralSettings.currency değerini kullanır.
       },
       cleanup,
     };
@@ -180,7 +181,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { coreDatabaseUrl, tenantDatabaseUrl, tenantSlug, modules } = body;
+    const { coreDatabaseUrl, tenantDatabaseUrl, tenantSlug, modules, locale } = body;
 
     if (!coreDatabaseUrl || !tenantDatabaseUrl || !tenantSlug) {
       return NextResponse.json(
@@ -189,10 +190,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate locale - default to 'tr' if not provided or invalid
+    const validLocales: SupportedLocale[] = ['tr', 'en', 'de', 'ar'];
+    const selectedLocale: SupportedLocale = validLocales.includes(locale) ? locale : 'tr';
+
     const setup = await createSetupSeederContext(
       coreDatabaseUrl,
       tenantDatabaseUrl,
-      tenantSlug
+      tenantSlug,
+      selectedLocale
     );
 
     if (!setup) {
@@ -238,17 +244,34 @@ export async function POST(request: NextRequest) {
         if (!allModulesToSeed.has(seeder.moduleSlug)) continue;
 
         try {
+          // Önce mevcut demo veriyi kontrol et
+          const status = await seeder.checkStatus(ctx);
+          if (status.hasData) {
+            // Mevcut demo veri varsa önce temizle
+            console.log(`[Demo Seed] ${seeder.moduleSlug} has existing data (${status.count}), cleaning up first...`);
+            await seeder.unseed(ctx);
+          }
+
+          console.log(`[Demo Seed] Starting ${seeder.moduleSlug} with locale: ${selectedLocale}`);
           const result = await seeder.seed(ctx);
+          console.log(`[Demo Seed] ${seeder.moduleSlug} completed: success=${result.success}, items=${result.itemsCreated}`);
+          if (result.error) {
+            console.error(`[Demo Seed] ${seeder.moduleSlug} error: ${result.error}`);
+          }
           results[seeder.moduleSlug] = {
             success: result.success,
             itemsCreated: result.itemsCreated,
             error: result.error,
           };
         } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          const errorStack = error instanceof Error ? error.stack : '';
+          console.error(`[Demo Seed] ${seeder.moduleSlug} threw exception:`, errorMessage);
+          console.error(`[Demo Seed] Stack trace:`, errorStack);
           results[seeder.moduleSlug] = {
             success: false,
             itemsCreated: 0,
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: errorMessage,
           };
         }
       }

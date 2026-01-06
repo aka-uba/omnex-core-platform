@@ -1514,7 +1514,9 @@
       "error": "Hata",
       "running": "Çalışıyor...",
       "pending": "Beklemede",
-      "ready": "Hazır"
+      "ready": "Hazır",
+      "runningText": "Çalışıyor",
+      "solution": "Çözüm:"
     },
     "actions": {
       "runCurrent": "Mevcut Adımı Çalıştır",
@@ -1524,7 +1526,9 @@
       "nextStep": "Sonraki Adıma Geç",
       "resetStep": "Adımı Sıfırla",
       "autoAdvance": "Otomatik ilerle",
-      "clearLogs": "Logları Temizle"
+      "clearLogs": "Logları Temizle",
+      "success": "Başarılı",
+      "error": "Hata"
     },
     "logs": {
       "title": "Loglar",
@@ -1577,7 +1581,8 @@
       "message": "Tüm aşamalar başarıyla tamamlandı! Veritabanı kurulumu hazır.",
       "stepsTitle": "Tamamlanan Adımlar ve Detaylar",
       "downloadMarkdown": "Markdown Olarak İndir",
-      "downloadText": "Text Olarak İndir"
+      "downloadText": "Text Olarak İndir",
+      "reportDescription": "Rapor adımların durumunu ve varsa hata detaylarını içerir."
     },
     "messages": {
       "databaseConnectionSuccess": "Her iki veritabanı bağlantısı başarılı",

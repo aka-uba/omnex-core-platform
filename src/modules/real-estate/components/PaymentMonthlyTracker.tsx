@@ -613,7 +613,7 @@ export function PaymentMonthlyTracker({ locale }: PaymentMonthlyTrackerProps) {
   });
 
   // Use centralized currency formatting from GeneralSettings
-  const { formatCurrency, formatCurrencyCompact } = useCurrency();
+  const { formatCurrency } = useCurrency();
 
   // Alias for backward compatibility (same as formatCurrency in this context)
   const formatShortCurrency = formatCurrency;
