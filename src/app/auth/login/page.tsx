@@ -192,17 +192,7 @@ export default function LoginPage() {
       </Box>
 
       <Container size="xs" className={classes.container}>
-        <Paper
-            className={classes.paper}
-            p="xl"
-            radius="md"
-            styles={{
-              root: {
-                backgroundColor: 'transparent',
-                border: 'none',
-              }
-            }}
-          >
+        <Paper className={classes.paper} p="xl" radius="md" withBorder>
           <Stack gap="lg">
             {/* Logo - Sabit dosya yolundan */}
             <Box className={classes.logoSection}>
