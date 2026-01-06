@@ -1037,6 +1037,35 @@ const PUBLIC_PATHS = [
   }, [settings]);
   ```
 
+### 9.7 Login Session Marker Hatası
+- **PROBLEM**: İlk login denemesinde kullanıcı hemen logout olup tekrar login sayfasına yönlendiriliyor
+- **NEDEN**: `SessionTimeoutWarning` bileşeni önceki oturumdan kalan `omnex-session-initialized` (localStorage) işaretçisini görüp, `omnex-session-active` (sessionStorage) olmadığında "tarayıcı yeniden başlatıldı" sanarak logout yapıyor
+- **YANLIŞ**: Login başarılı olduğunda eski session işaretçilerini temizlememek
+  ```typescript
+  if (data.success && data.data) {
+    localStorage.setItem('user', JSON.stringify(data.data.user));
+    // Session markers temizlenmedi - SessionTimeoutWarning logout yapacak!
+  }
+  ```
+- **DOĞRU**: Login başarılı olduğunda eski session işaretçilerini temizlemek
+  ```typescript
+  if (data.success && data.data) {
+    // Clear old session markers to prevent SessionTimeoutWarning from logging out
+    localStorage.removeItem('omnex-session-initialized');
+    sessionStorage.removeItem('omnex-session-active');
+
+    localStorage.setItem('user', JSON.stringify(data.data.user));
+  }
+  ```
+- **ETKİLENEN DOSYALAR**: Tüm login sayfaları (7 adet)
+  - `src/app/auth/login/page.tsx`
+  - `src/app/[locale]/auth/login/LoginPageClient.tsx`
+  - `src/app/[locale]/auth/login/admin/AdminLoginPageClient.tsx`
+  - `src/app/[locale]/auth/login/super-admin/SuperAdminLoginPageClient.tsx`
+  - `src/app/[locale]/login/LoginPageClient.tsx`
+  - `src/app/[locale]/login/admin/AdminLoginPageClient.tsx`
+  - `src/app/[locale]/login/super-admin/SuperAdminLoginPageClient.tsx`
+
 ---
 
 ## 10. KONTROL LİSTESİ

@@ -15,17 +15,52 @@ export async function GET(request: NextRequest) {
 
     if (tenantSlug) {
       try {
-        // Get tenant
+        // Get tenant with database info
         const tenant = await corePrisma.tenant.findFirst({
-          where: { slug: tenantSlug },
-          select: { id: true }
+          where: {
+            OR: [
+              { slug: tenantSlug },
+              { subdomain: tenantSlug },
+            ],
+            status: 'active'
+          },
+          select: {
+            id: true,
+            name: true,
+            dbName: true,
+          }
         });
 
-        if (tenant) {
-          // Try to get company name from the tenant's database
-          // For now, use tenant slug as company name fallback
-          shortName = tenantSlug.charAt(0).toUpperCase() + tenantSlug.slice(1);
-          companyName = `${shortName} Platform`;
+        if (tenant && tenant.dbName) {
+          // Get actual company name from tenant database
+          const { getTenantDbUrl } = await import('@/lib/services/tenantService');
+          const { getTenantPrisma } = await import('@/lib/dbSwitcher');
+
+          const dbUrl = getTenantDbUrl({ dbName: tenant.dbName });
+          const tenantPrisma = getTenantPrisma(dbUrl);
+
+          try {
+            // Get the main company (first or default)
+            const company = await tenantPrisma.company.findFirst({
+              orderBy: { createdAt: 'asc' },
+              select: { name: true }
+            });
+
+            if (company?.name) {
+              companyName = company.name;
+              // Create short name from company name (first word or first 12 chars)
+              const words = company.name.split(' ');
+              shortName = words[0].length <= 12 ? words[0] : company.name.substring(0, 12);
+            } else {
+              // Fallback to tenant name
+              shortName = tenant.name || tenantSlug.charAt(0).toUpperCase() + tenantSlug.slice(1);
+              companyName = shortName;
+            }
+          } catch {
+            // If tenant DB query fails, use tenant name
+            shortName = tenant.name || tenantSlug.charAt(0).toUpperCase() + tenantSlug.slice(1);
+            companyName = shortName;
+          }
         }
       } catch {
         // If tenant lookup fails, use defaults

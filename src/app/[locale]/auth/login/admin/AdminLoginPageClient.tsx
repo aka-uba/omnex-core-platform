@@ -175,6 +175,10 @@ export function AdminLoginPageClient({ locale }: { locale: string }) {
       if (data.success && data.data) {
         // Başarılı giriş - session'a kaydet
         if (typeof window !== 'undefined') {
+          // Clear old session markers to prevent SessionTimeoutWarning from logging out
+          localStorage.removeItem('omnex-session-initialized');
+          sessionStorage.removeItem('omnex-session-active');
+
           localStorage.setItem('user', JSON.stringify(data.data.user));
           if (values.periodId) {
             const selectedPeriod = periods.find(p => p.id === values.periodId);

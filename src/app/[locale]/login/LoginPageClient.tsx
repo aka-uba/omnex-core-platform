@@ -91,6 +91,10 @@ export function LoginPageClient({ locale }: { locale: string }) {
       if (data.success && data.data) {
         // Başarılı giriş - session'a kaydet (ileride session yönetimi eklenebilir)
         if (typeof window !== 'undefined') {
+          // Clear old session markers to prevent SessionTimeoutWarning from logging out
+          localStorage.removeItem('omnex-session-initialized');
+          sessionStorage.removeItem('omnex-session-active');
+
           localStorage.setItem('user', JSON.stringify(data.data.user));
 
           // Beni Hatırla - credentials'ı kaydet veya sil

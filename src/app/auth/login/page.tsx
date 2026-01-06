@@ -113,6 +113,10 @@ export default function LoginPage() {
 
       if (data.success && data.data) {
         if (typeof window !== 'undefined') {
+          // Clear old session markers to prevent SessionTimeoutWarning from logging out
+          localStorage.removeItem('omnex-session-initialized');
+          sessionStorage.removeItem('omnex-session-active');
+
           localStorage.setItem('user', JSON.stringify(data.data.user));
           window.dispatchEvent(new Event('user-updated'));
 
