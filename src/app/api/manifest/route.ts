@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    // Try to get company info from cookies or default
+    // Get tenant from cookie, subdomain, or fallback to first active tenant
+    const hostname = request.headers.get('host')?.split(':')[0] || '';
     const tenantSlug = request.cookies.get('tenant-slug')?.value;
 
     let companyName = 'Omnex Core Platform';
@@ -13,14 +14,35 @@ export async function GET(request: NextRequest) {
     let description = 'Enterprise Management Platform';
     let themeColor = '#228be6';
 
+    let tenant = null;
+
+    // Try to get tenant from cookie first
     if (tenantSlug) {
-      try {
-        // Get tenant with database info
-        const tenant = await corePrisma.tenant.findFirst({
+      tenant = await corePrisma.tenant.findFirst({
+        where: {
+          OR: [
+            { slug: tenantSlug },
+            { subdomain: tenantSlug },
+          ],
+          status: 'active'
+        },
+        select: {
+          id: true,
+          name: true,
+          dbName: true,
+        }
+      });
+    }
+
+    // If no tenant from cookie, try subdomain
+    if (!tenant && hostname && !hostname.includes('localhost')) {
+      const subdomain = hostname.split('.')[0];
+      if (subdomain && subdomain !== 'www') {
+        tenant = await corePrisma.tenant.findFirst({
           where: {
             OR: [
-              { slug: tenantSlug },
-              { subdomain: tenantSlug },
+              { subdomain },
+              { customDomain: hostname },
             ],
             status: 'active'
           },
@@ -30,40 +52,52 @@ export async function GET(request: NextRequest) {
             dbName: true,
           }
         });
+      }
+    }
 
-        if (tenant && tenant.dbName) {
-          // Get actual company name from tenant database
-          const { getTenantDbUrl } = await import('@/lib/services/tenantService');
-          const { getTenantPrisma } = await import('@/lib/dbSwitcher');
+    // Fallback: get first active tenant (for development)
+    if (!tenant) {
+      tenant = await corePrisma.tenant.findFirst({
+        where: { status: 'active' },
+        orderBy: { createdAt: 'asc' },
+        select: {
+          id: true,
+          name: true,
+          dbName: true,
+        }
+      });
+    }
 
-          const dbUrl = getTenantDbUrl({ dbName: tenant.dbName });
-          const tenantPrisma = getTenantPrisma(dbUrl);
+    // Fetch company name from tenant database
+    if (tenant && tenant.dbName) {
+      try {
+        const { getTenantDbUrl } = await import('@/lib/services/tenantService');
+        const { getTenantPrisma } = await import('@/lib/dbSwitcher');
 
-          try {
-            // Get the main company (first or default)
-            const company = await tenantPrisma.company.findFirst({
-              orderBy: { createdAt: 'asc' },
-              select: { name: true }
-            });
+        const dbUrl = getTenantDbUrl({ dbName: tenant.dbName });
+        const tenantPrisma = getTenantPrisma(dbUrl);
 
-            if (company?.name) {
-              companyName = company.name;
-              // Create short name from company name (first word or first 12 chars)
-              const words = company.name.split(' ');
-              shortName = words[0].length <= 12 ? words[0] : company.name.substring(0, 12);
-            } else {
-              // Fallback to tenant name
-              shortName = tenant.name || tenantSlug.charAt(0).toUpperCase() + tenantSlug.slice(1);
-              companyName = shortName;
-            }
-          } catch {
-            // If tenant DB query fails, use tenant name
-            shortName = tenant.name || tenantSlug.charAt(0).toUpperCase() + tenantSlug.slice(1);
-            companyName = shortName;
-          }
+        // Get the main company (first created)
+        const company = await tenantPrisma.company.findFirst({
+          orderBy: { createdAt: 'asc' },
+          select: { name: true }
+        });
+
+        if (company?.name) {
+          companyName = company.name;
+          // short_name: Use first word if <= 12 chars, otherwise first 12 chars
+          const words = company.name.split(' ');
+          shortName = words[0].length <= 12 ? words[0] : company.name.substring(0, 12);
+        } else if (tenant.name) {
+          companyName = tenant.name;
+          shortName = tenant.name.split(' ')[0] || tenant.name.substring(0, 12);
         }
       } catch {
-        // If tenant lookup fails, use defaults
+        // If tenant DB fails, use tenant name
+        if (tenant.name) {
+          companyName = tenant.name;
+          shortName = tenant.name.split(' ')[0] || tenant.name.substring(0, 12);
+        }
       }
     }
 
@@ -148,7 +182,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(manifest, {
       headers: {
         'Content-Type': 'application/manifest+json',
-        'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+        'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
       },
     });
   } catch (error) {
