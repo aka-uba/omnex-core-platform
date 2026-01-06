@@ -49,7 +49,8 @@ export default function ForgotPasswordPage() {
   const handleLocaleChange = (value: string | null) => {
     if (value && locales.includes(value)) {
       localStorage.setItem('preferred-locale', value);
-      router.push(`/${value}/auth/forgot-password`);
+      // Full page reload required for i18n provider to load new locale
+      window.location.href = `/${value}/auth/forgot-password`;
     }
   };
 

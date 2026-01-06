@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
   Container,
@@ -15,19 +16,38 @@ import {
   Alert,
   Group,
   Divider,
+  ActionIcon,
+  Select,
+  Box,
+  Image,
+  useMantineColorScheme,
 } from '@mantine/core';
-import { IconAlertCircle, IconUser, IconLock } from '@tabler/icons-react';
+import { IconAlertCircle, IconUser, IconLock, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import Link from 'next/link';
-import classes from './LoginPage.module.css';
+import classes from '@/styles/auth.module.css';
+import { BRANDING_PATHS } from '@/lib/branding/config';
+import { localeNames } from '@/lib/i18n/config';
+import { PWAInstallButton } from '@/components/pwa/PWAInstallButton';
+
+const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 const REMEMBER_ME_KEY = 'omnex-remember-credentials';
 
 export function LoginPageClient({ locale }: { locale: string }) {
+  const router = useRouter();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('modules/auth');
   const { t: tGlobal } = useTranslation('global');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [logoExists, setLogoExists] = useState(true);
+  const [companyName, setCompanyName] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState(locale);
 
   const form = useForm({
     initialValues: {
@@ -51,24 +71,51 @@ export function LoginPageClient({ locale }: { locale: string }) {
     },
   });
 
-  // Sayfa yüklendiğinde kaydedilmiş credentials'ı yükle
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem(REMEMBER_ME_KEY);
-        if (saved) {
-          const { username, password } = JSON.parse(saved);
-          form.setValues({
-            username: username || '',
-            password: password || '',
-            rememberMe: true,
-          });
+    setMounted(true);
+    // Logo dosyasının varlığını kontrol et
+    const img = new window.Image();
+    img.onload = () => setLogoExists(true);
+    img.onerror = () => setLogoExists(false);
+    img.src = BRANDING_PATHS.logo;
+
+    // Firma adını API'den al
+    fetch('/api/public/company-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.name) {
+          setCompanyName(data.data.name);
         }
-      } catch (e) {
-        // localStorage erişim hatası - sessizce devam et
+      })
+      .catch(() => {});
+
+    // Load saved credentials
+    try {
+      const saved = localStorage.getItem(REMEMBER_ME_KEY);
+      if (saved) {
+        const { username, password } = JSON.parse(saved);
+        form.setValues({
+          username: username || '',
+          password: password || '',
+          rememberMe: true,
+        });
       }
+    } catch (e) {
+      // Silently ignore
     }
   }, []);
+
+  const handleLocaleChange = (value: string | null) => {
+    if (value) {
+      setCurrentLocale(value);
+      // Full page reload required for i18n provider to load new locale
+      window.location.href = `/${value}/auth/login`;
+    }
+  };
+
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  };
 
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
@@ -90,15 +137,12 @@ export function LoginPageClient({ locale }: { locale: string }) {
       const data = await response.json();
 
       if (data.success && data.data) {
-        // Başarılı giriş - session'a kaydet (ileride session yönetimi eklenebilir)
         if (typeof window !== 'undefined') {
-          // Clear old session markers to prevent SessionTimeoutWarning from logging out
           localStorage.removeItem('omnex-session-initialized');
           sessionStorage.removeItem('omnex-session-active');
 
           localStorage.setItem('user', JSON.stringify(data.data.user));
 
-          // Beni Hatırla - credentials'ı kaydet veya sil
           if (values.rememberMe) {
             localStorage.setItem(REMEMBER_ME_KEY, JSON.stringify({
               username: values.username,
@@ -108,10 +152,8 @@ export function LoginPageClient({ locale }: { locale: string }) {
             localStorage.removeItem(REMEMBER_ME_KEY);
           }
 
-          // User-updated event'i tetikle (useAuth hook'unun güncellenmesi için)
           window.dispatchEvent(new Event('user-updated'));
 
-          // Token'ları da sakla
           if (data.data.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);
           }
@@ -119,11 +161,7 @@ export function LoginPageClient({ locale }: { locale: string }) {
             localStorage.setItem('refreshToken', data.data.refreshToken);
           }
         }
-        // Dashboard'a yönlendir - locale kontrolü ile
-        // Önce ana sayfaya yönlendir, oradan dashboard'a gidebilir
-        const targetPath = `/${locale}`;
-        // Full page reload ile yönlendir
-        window.location.href = targetPath;
+        window.location.href = `/${locale}/dashboard`;
       } else {
         setError(data.error?.message || data.message || t('login.errors.invalidCredentials'));
       }
@@ -134,9 +172,49 @@ export function LoginPageClient({ locale }: { locale: string }) {
     }
   };
 
+  const isDark = mounted && colorScheme === 'dark';
+
   return (
     <div className={classes.wrapper}>
-      <Container size="xs" {...(classes.container ? { className: classes.container } : {})}>
+      {/* Mobile Header */}
+      <Box className={classes.mobileHeader}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      {/* Desktop Top Right Controls */}
+      <Box className={classes.topControls}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      <Container size="xs" className={classes.container}>
         <Paper
           className={classes.paper}
           p="xl"
@@ -149,8 +227,29 @@ export function LoginPageClient({ locale }: { locale: string }) {
               border: '1px solid rgba(255, 255, 255, 0.5)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
             }
-          }}>
+          }}
+        >
           <Stack gap="lg">
+            {/* Logo */}
+            <Box className={classes.logoSection}>
+              {logoExists ? (
+                <Image
+                  src={BRANDING_PATHS.logo}
+                  alt="Logo"
+                  h={60}
+                  w="auto"
+                  fit="contain"
+                  style={{ margin: '0 auto' }}
+                />
+              ) : (
+                <Box className={classes.defaultLogo}>
+                  <Text size="xl" fw={700} c="blue">
+                    ?
+                  </Text>
+                </Box>
+              )}
+            </Box>
+
             <div className={classes.header}>
               <Title order={2} ta="center" fw={700}>
                 {t('login.title')}
@@ -162,7 +261,7 @@ export function LoginPageClient({ locale }: { locale: string }) {
 
             {error && (
               <Alert
-                icon={<IconAlertCircle size={16} />}
+                icon={mounted ? <IconAlertCircle size={16} /> : null}
                 title={tGlobal('common.error')}
                 color="red"
                 variant="light"
@@ -171,16 +270,14 @@ export function LoginPageClient({ locale }: { locale: string }) {
               </Alert>
             )}
 
-            <form onSubmit={form.onSubmit(handleSubmit)} id="login-form" name="login-form" autoComplete="on">
+            <form onSubmit={form.onSubmit(handleSubmit)}>
               <Stack gap="md">
                 <TextInput
                   label={t('login.username')}
                   placeholder={t('login.usernamePlaceholder')}
-                  leftSection={<IconUser size={16} className="tabler-icon tabler-icon-user" />}
-                  required
-                  name="username"
-                  id="username"
+                  leftSection={mounted ? <IconUser size={16} /> : null}
                   autoComplete="username"
+                  required
                   styles={{
                     input: {
                       backgroundColor: 'rgba(255, 255, 255, 0.6)',
@@ -193,11 +290,9 @@ export function LoginPageClient({ locale }: { locale: string }) {
                 <PasswordInput
                   label={t('login.password')}
                   placeholder={t('login.passwordPlaceholder')}
-                  leftSection={<IconLock size={16} className="tabler-icon tabler-icon-lock" />}
-                  required
-                  name="password"
-                  id="password"
+                  leftSection={mounted ? <IconLock size={16} /> : null}
                   autoComplete="current-password"
+                  required
                   styles={{
                     input: {
                       backgroundColor: 'rgba(255, 255, 255, 0.6)',
@@ -212,7 +307,7 @@ export function LoginPageClient({ locale }: { locale: string }) {
                     label={t('login.rememberMe')}
                     {...form.getInputProps('rememberMe', { type: 'checkbox' })}
                   />
-                  <Text size="sm" c="dimmed" component={Link} href={`/${locale}/forgot-password`}>
+                  <Text size="sm" c="dimmed" component={Link} href={`/${locale}/auth/forgot-password`}>
                     {t('login.forgotPassword')}
                   </Text>
                 </Group>
@@ -246,7 +341,12 @@ export function LoginPageClient({ locale }: { locale: string }) {
           </Stack>
         </Paper>
       </Container>
+
+      <Box className={classes.footer}>
+        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+        </Text>
+      </Box>
     </div>
   );
 }
-

@@ -2,6 +2,8 @@
   "login": {
     "title": "تسجيل الدخول",
     "subtitle": "تسجيل الدخول إلى حسابك",
+    "superAdminSubtitle": "تسجيل دخول المسؤول الأعلى",
+    "adminSubtitle": "تسجيل دخول المسؤول",
     "username": "اسم المستخدم",
     "usernamePlaceholder": "أدخل اسم المستخدم الخاص بك",
     "password": "كلمة المرور",
@@ -12,11 +14,21 @@
     "noAccount": "ليس لديك حساب؟",
     "register": "إنشاء حساب",
     "or": "أو",
+    "tenantLabel": "الشركة",
+    "tenantPlaceholder": "اختر الشركة...",
+    "periodLabel": "الفترة (اختياري)",
+    "periodPlaceholder": "اختر الفترة...",
+    "selectPeriod": "اختر الفترة",
+    "hidePeriodSelection": "إخفاء اختيار الفترة",
+    "superAdminLink": "لتسجيل دخول المسؤول الأعلى",
+    "normalUserLink": "لتسجيل دخول المستخدم العادي",
+    "clickHere": "اضغط هنا",
     "errors": {
       "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
       "accountPending": "حسابك بانتظار الموافقة. يرجى انتظار موافقة المسؤول.",
       "accountInactive": "حسابك غير نشط. يرجى التواصل مع المسؤول.",
-      "required": "يرجى ملء جميع الحقول"
+      "required": "يرجى ملء جميع الحقول",
+      "tenantRequired": "اختيار الشركة مطلوب"
     }
   },
   "register": {

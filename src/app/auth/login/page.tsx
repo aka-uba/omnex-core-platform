@@ -23,7 +23,7 @@ import {
 } from '@mantine/core';
 import { IconAlertCircle, IconUser, IconLock, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
 import Link from 'next/link';
-import classes from './LoginPage.module.css';
+import classes from '@/styles/auth.module.css';
 import { BRANDING_PATHS } from '@/lib/branding/config';
 import { useAuthTranslation } from '@/lib/i18n/useAuthTranslation';
 import { localeNames, Locale } from '@/lib/i18n/config';

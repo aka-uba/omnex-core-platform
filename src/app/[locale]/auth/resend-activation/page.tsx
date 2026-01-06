@@ -55,7 +55,8 @@ export default function ResendActivationPage() {
   const handleLocaleChange = (value: string | null) => {
     if (value && locales.includes(value)) {
       localStorage.setItem('preferred-locale', value);
-      router.push(`/${value}/auth/resend-activation${email ? `?email=${encodeURIComponent(email)}` : ''}`);
+      // Full page reload required for i18n provider to load new locale
+      window.location.href = `/${value}/auth/resend-activation${email ? `?email=${encodeURIComponent(email)}` : ''}`;
     }
   };
 

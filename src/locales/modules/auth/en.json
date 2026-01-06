@@ -2,6 +2,8 @@
   "login": {
     "title": "Sign In",
     "subtitle": "Sign in to your account",
+    "superAdminSubtitle": "Super Admin Login",
+    "adminSubtitle": "Admin Login",
     "username": "Username",
     "usernamePlaceholder": "Enter your username",
     "password": "Password",
@@ -12,11 +14,21 @@
     "noAccount": "Don't have an account?",
     "register": "Sign Up",
     "or": "or",
+    "tenantLabel": "Company",
+    "tenantPlaceholder": "Select company...",
+    "periodLabel": "Period (Optional)",
+    "periodPlaceholder": "Select period...",
+    "selectPeriod": "Select Period",
+    "hidePeriodSelection": "Hide Period Selection",
+    "superAdminLink": "For super admin login",
+    "normalUserLink": "For normal user login",
+    "clickHere": "click here",
     "errors": {
       "invalidCredentials": "Invalid username or password",
       "accountPending": "Your account is pending approval. Please wait for administrator approval.",
       "accountInactive": "Your account is not active. Please contact administrator.",
-      "required": "Please fill in all fields"
+      "required": "Please fill in all fields",
+      "tenantRequired": "Company selection is required"
     }
   },
   "register": {

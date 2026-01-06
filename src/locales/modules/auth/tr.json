@@ -2,6 +2,8 @@
   "login": {
     "title": "Giriş Yap",
     "subtitle": "Hesabınıza giriş yapın",
+    "superAdminSubtitle": "Süper Admin Girişi",
+    "adminSubtitle": "Admin Girişi",
     "username": "Kullanıcı Adı",
     "usernamePlaceholder": "Kullanıcı adınızı giriniz",
     "password": "Şifre",
@@ -12,11 +14,21 @@
     "noAccount": "Hesabınız yok mu?",
     "register": "Kayıt Ol",
     "or": "veya",
+    "tenantLabel": "Firma",
+    "tenantPlaceholder": "Firma seçin...",
+    "periodLabel": "Dönem (Opsiyonel)",
+    "periodPlaceholder": "Dönem seçin...",
+    "selectPeriod": "Dönem Seç",
+    "hidePeriodSelection": "Dönem Seçimini Gizle",
+    "superAdminLink": "Süper admin girişi için",
+    "normalUserLink": "Normal kullanıcı girişi için",
+    "clickHere": "buraya tıklayın",
     "errors": {
       "invalidCredentials": "Kullanıcı adı veya şifre hatalı",
       "accountPending": "Hesabınız henüz onaylanmamış. Lütfen yönetici onayını bekleyin.",
       "accountInactive": "Hesabınız aktif değil. Lütfen yönetici ile iletişime geçin.",
-      "required": "Lütfen tüm alanları doldurun"
+      "required": "Lütfen tüm alanları doldurun",
+      "tenantRequired": "Firma seçimi gereklidir"
     }
   },
   "register": {

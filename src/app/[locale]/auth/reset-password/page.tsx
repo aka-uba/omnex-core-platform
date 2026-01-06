@@ -56,8 +56,9 @@ export default function ResetPasswordPage() {
   const handleLocaleChange = (value: string | null) => {
     if (value && locales.includes(value)) {
       localStorage.setItem('preferred-locale', value);
+      // Full page reload required for i18n provider to load new locale
       const newUrl = `/${value}/auth/reset-password${token ? `?token=${token}` : ''}`;
-      router.push(newUrl);
+      window.location.href = newUrl;
     }
   };
 

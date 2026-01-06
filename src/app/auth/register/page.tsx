@@ -23,7 +23,7 @@ import {
 } from '@mantine/core';
 import { IconAlertCircle, IconCheck, IconUser, IconLock, IconMail, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
 import Link from 'next/link';
-import classes from './RegisterPage.module.css';
+import classes from '@/styles/auth.module.css';
 import { BRANDING_PATHS } from '@/lib/branding/config';
 import { useAuthTranslation } from '@/lib/i18n/useAuthTranslation';
 import { localeNames, Locale } from '@/lib/i18n/config';
@@ -335,6 +335,12 @@ export default function RegisterPage() {
                   placeholder={t('register.namePlaceholder')}
                   autoComplete="name"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('name')}
                 />
 
@@ -345,6 +351,12 @@ export default function RegisterPage() {
                   description={t('register.usernameHint')}
                   autoComplete="username"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('username')}
                 />
 
@@ -355,6 +367,12 @@ export default function RegisterPage() {
                   type="email"
                   autoComplete="email"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('email')}
                 />
 
@@ -365,6 +383,12 @@ export default function RegisterPage() {
                   description={t('register.passwordHint')}
                   autoComplete="new-password"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('password')}
                 />
 
@@ -374,6 +398,12 @@ export default function RegisterPage() {
                   leftSection={mounted ? <IconLock size={16} /> : null}
                   autoComplete="new-password"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('confirmPassword')}
                 />
 

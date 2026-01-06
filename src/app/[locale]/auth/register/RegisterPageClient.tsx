@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Container,
   Paper,
@@ -15,19 +14,68 @@ import {
   Stack,
   Alert,
   Divider,
+  ActionIcon,
+  Select,
+  Box,
+  Image,
+  useMantineColorScheme,
+  Group,
 } from '@mantine/core';
-import { IconAlertCircle, IconCheck, IconUser, IconLock, IconMail } from '@tabler/icons-react';
+import { IconAlertCircle, IconCheck, IconUser, IconLock, IconMail, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
-import { registerSchema } from '@/lib/schemas/auth';
 import Link from 'next/link';
-import classes from './RegisterPage.module.css';
+import classes from '@/styles/auth.module.css';
+import { BRANDING_PATHS } from '@/lib/branding/config';
+import { localeNames } from '@/lib/i18n/config';
+import { PWAInstallButton } from '@/components/pwa/PWAInstallButton';
+
+const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 export function RegisterPageClient({ locale }: { locale: string }) {
   const router = useRouter();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('modules/auth');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [logoExists, setLogoExists] = useState(true);
+  const [companyName, setCompanyName] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState(locale);
+
+  useEffect(() => {
+    setMounted(true);
+    // Logo dosyasının varlığını kontrol et
+    const img = new window.Image();
+    img.onload = () => setLogoExists(true);
+    img.onerror = () => setLogoExists(false);
+    img.src = BRANDING_PATHS.logo;
+
+    // Firma adını API'den al
+    fetch('/api/public/company-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.name) {
+          setCompanyName(data.data.name);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLocaleChange = (value: string | null) => {
+    if (value) {
+      setCurrentLocale(value);
+      // Full page reload required for i18n provider to load new locale
+      window.location.href = `/${value}/auth/register`;
+    }
+  };
+
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  };
 
   const form = useForm({
     initialValues: {
@@ -37,7 +85,38 @@ export function RegisterPageClient({ locale }: { locale: string }) {
       password: '',
       confirmPassword: '',
     },
-    validate: zodResolver(registerSchema) as any,
+    validate: {
+      name: (value) => {
+        if (!value) return t('register.errors.nameRequired');
+        if (value.length < 2) return t('register.errors.nameMinLength');
+        return null;
+      },
+      username: (value) => {
+        if (!value) return t('register.errors.usernameRequired');
+        if (value.length < 3) return t('register.errors.usernameMinLength');
+        if (value.length > 20) return t('register.errors.usernameMaxLength');
+        if (!/^[a-zA-Z0-9_]+$/.test(value)) return t('register.errors.usernameFormat');
+        return null;
+      },
+      email: (value) => {
+        if (!value) return t('register.errors.emailRequired');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('register.errors.emailFormat');
+        return null;
+      },
+      password: (value) => {
+        if (!value) return t('register.errors.passwordRequired');
+        if (value.length < 8) return t('register.errors.passwordMinLength');
+        if (!/[A-Z]/.test(value)) return t('register.errors.passwordUppercase');
+        if (!/[a-z]/.test(value)) return t('register.errors.passwordLowercase');
+        if (!/[0-9]/.test(value)) return t('register.errors.passwordNumber');
+        return null;
+      },
+      confirmPassword: (value, values) => {
+        if (!value) return t('register.errors.confirmPasswordRequired');
+        if (value !== values.password) return t('register.errors.passwordMismatch');
+        return null;
+      },
+    },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
@@ -63,9 +142,8 @@ export function RegisterPageClient({ locale }: { locale: string }) {
 
       if (data.success) {
         setSuccess(true);
-        // 3 saniye sonra login sayfasına yönlendir
         setTimeout(() => {
-          router.push(`/${locale}/login`);
+          router.push(`/${locale}/auth/login`);
         }, 3000);
       } else {
         setError(data.message || t('register.errors.required'));
@@ -77,14 +155,67 @@ export function RegisterPageClient({ locale }: { locale: string }) {
     }
   };
 
+  const isDark = mounted && colorScheme === 'dark';
+
   if (success) {
     return (
       <div className={classes.wrapper}>
-        <Container size="xs" {...(classes.container ? { className: classes.container } : {})}>
-          <Paper {...(classes.paper ? { className: classes.paper } : {})} p="xl" radius="md" withBorder>
+        {/* Mobile Header */}
+        <Box className={classes.mobileHeader}>
+          <Group gap="xs">
+            <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+            <Select
+              data={languageOptions}
+              value={currentLocale}
+              onChange={handleLocaleChange}
+              size="xs"
+              w={120}
+              leftSection={mounted ? <IconLanguage size={14} /> : null}
+              comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+            />
+            <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+              {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+            </ActionIcon>
+          </Group>
+        </Box>
+
+        {/* Desktop Top Right Controls */}
+        <Box className={classes.topControls}>
+          <Group gap="xs">
+            <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+            <Select
+              data={languageOptions}
+              value={currentLocale}
+              onChange={handleLocaleChange}
+              size="xs"
+              w={120}
+              leftSection={mounted ? <IconLanguage size={14} /> : null}
+              comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+            />
+            <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+              {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+            </ActionIcon>
+          </Group>
+        </Box>
+
+        <Container size="xs" className={classes.container}>
+          <Paper
+            className={classes.paper}
+            p="xl"
+            radius="lg"
+            styles={{
+              root: {
+                background: 'rgba(255, 255, 255, 0.85)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+              }
+            }}
+          >
             <Stack gap="lg" align="center">
               <div className={classes.successIcon}>
-                <IconCheck size={64} stroke={2} />
+                {mounted && <IconCheck size={64} stroke={2} />}
               </div>
               <Title order={2} ta="center" fw={700}>
                 {t('register.success.title')}
@@ -98,15 +229,92 @@ export function RegisterPageClient({ locale }: { locale: string }) {
             </Stack>
           </Paper>
         </Container>
+
+        <Box className={classes.footer}>
+          <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+            Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+          </Text>
+        </Box>
       </div>
     );
   }
 
   return (
     <div className={classes.wrapper}>
-      <Container size="xs" {...(classes.container ? { className: classes.container } : {})}>
-        <Paper {...(classes.paper ? { className: classes.paper } : {})} p="xl" radius="md" withBorder>
+      {/* Mobile Header */}
+      <Box className={classes.mobileHeader}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      {/* Desktop Top Right Controls */}
+      <Box className={classes.topControls}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      <Container size="xs" className={classes.container}>
+        <Paper
+          className={classes.paper}
+          p="xl"
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            }
+          }}
+        >
           <Stack gap="lg">
+            {/* Logo */}
+            <Box className={classes.logoSection}>
+              {logoExists ? (
+                <Image
+                  src={BRANDING_PATHS.logo}
+                  alt="Logo"
+                  h={60}
+                  w="auto"
+                  fit="contain"
+                  style={{ margin: '0 auto' }}
+                />
+              ) : (
+                <Box className={classes.defaultLogo}>
+                  <Text size="xl" fw={700} c="blue">
+                    ?
+                  </Text>
+                </Box>
+              )}
+            </Box>
+
             <div className={classes.header}>
               <Title order={2} ta="center" fw={700}>
                 {t('register.title')}
@@ -118,8 +326,8 @@ export function RegisterPageClient({ locale }: { locale: string }) {
 
             {error && (
               <Alert
-                icon={<IconAlertCircle size={16} />}
-                title="Hata"
+                icon={mounted ? <IconAlertCircle size={16} /> : null}
+                title={t('common.error')}
                 color="red"
                 variant="light"
               >
@@ -127,47 +335,82 @@ export function RegisterPageClient({ locale }: { locale: string }) {
               </Alert>
             )}
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
               <Stack gap="md">
                 <TextInput
                   label={t('register.name')}
                   placeholder={t('register.namePlaceholder')}
+                  autoComplete="name"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('name')}
                 />
 
                 <TextInput
                   label={t('register.username')}
                   placeholder={t('register.usernamePlaceholder')}
-                  leftSection={<IconUser size={16} />}
+                  leftSection={mounted ? <IconUser size={16} /> : null}
                   description={t('register.usernameHint')}
+                  autoComplete="username"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('username')}
                 />
 
                 <TextInput
                   label={t('register.email')}
                   placeholder={t('register.emailPlaceholder')}
-                  leftSection={<IconMail size={16} />}
+                  leftSection={mounted ? <IconMail size={16} /> : null}
                   type="email"
+                  autoComplete="email"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('email')}
                 />
 
                 <PasswordInput
                   label={t('register.password')}
                   placeholder={t('register.passwordPlaceholder')}
-                  leftSection={<IconLock size={16} />}
+                  leftSection={mounted ? <IconLock size={16} /> : null}
                   description={t('register.passwordHint')}
+                  autoComplete="new-password"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('password')}
                 />
 
                 <PasswordInput
                   label={t('register.confirmPassword')}
                   placeholder={t('register.confirmPasswordPlaceholder')}
-                  leftSection={<IconLock size={16} />}
+                  leftSection={mounted ? <IconLock size={16} /> : null}
+                  autoComplete="new-password"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('confirmPassword')}
                 />
 
@@ -183,7 +426,7 @@ export function RegisterPageClient({ locale }: { locale: string }) {
               </Stack>
             </form>
 
-            <Divider label="veya" labelPosition="center" />
+            <Divider label={t('register.or')} labelPosition="center" />
 
             <Text size="sm" ta="center" c="dimmed">
               {t('register.hasAccount')}{' '}
@@ -200,7 +443,12 @@ export function RegisterPageClient({ locale }: { locale: string }) {
           </Stack>
         </Paper>
       </Container>
+
+      <Box className={classes.footer}>
+        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+        </Text>
+      </Box>
     </div>
   );
 }
-

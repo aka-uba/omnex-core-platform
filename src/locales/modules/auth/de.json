@@ -2,6 +2,8 @@
   "login": {
     "title": "Anmelden",
     "subtitle": "Melden Sie sich bei Ihrem Konto an",
+    "superAdminSubtitle": "Super-Admin-Anmeldung",
+    "adminSubtitle": "Admin-Anmeldung",
     "username": "Benutzername",
     "usernamePlaceholder": "Geben Sie Ihren Benutzernamen ein",
     "password": "Passwort",
@@ -12,11 +14,21 @@
     "noAccount": "Haben Sie noch kein Konto?",
     "register": "Registrieren",
     "or": "oder",
+    "tenantLabel": "Unternehmen",
+    "tenantPlaceholder": "Unternehmen auswählen...",
+    "periodLabel": "Zeitraum (Optional)",
+    "periodPlaceholder": "Zeitraum auswählen...",
+    "selectPeriod": "Zeitraum auswählen",
+    "hidePeriodSelection": "Zeitraumauswahl ausblenden",
+    "superAdminLink": "Für Super-Admin-Anmeldung",
+    "normalUserLink": "Für normale Benutzeranmeldung",
+    "clickHere": "hier klicken",
     "errors": {
       "invalidCredentials": "Benutzername oder Passwort ist falsch",
       "accountPending": "Ihr Konto wartet auf die Genehmigung. Bitte warten Sie auf die Bestätigung durch den Administrator.",
       "accountInactive": "Ihr Konto ist inaktiv. Bitte kontaktieren Sie den Administrator.",
-      "required": "Bitte füllen Sie alle Felder aus"
+      "required": "Bitte füllen Sie alle Felder aus",
+      "tenantRequired": "Unternehmensauswahl ist erforderlich"
     }
   },
   "register": {

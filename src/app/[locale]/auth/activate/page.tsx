@@ -121,9 +121,9 @@ export default function ActivatePage() {
   const handleLocaleChange = (value: string | null) => {
     if (value && locales.includes(value)) {
       localStorage.setItem('preferred-locale', value);
-      // Redirect to same page with new locale
+      // Full page reload required for i18n provider to load new locale
       const newUrl = `/${value}/auth/activate${token ? `?token=${token}` : ''}`;
-      router.push(newUrl);
+      window.location.href = newUrl;
     }
   };
 

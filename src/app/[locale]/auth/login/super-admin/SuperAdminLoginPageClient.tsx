@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
   Container,
@@ -14,13 +15,25 @@ import {
   Stack,
   Alert,
   Group,
+  Divider,
+  ActionIcon,
   Select,
+  Box,
+  Image,
+  useMantineColorScheme,
 } from '@mantine/core';
-import { IconAlertCircle, IconUser, IconLock, IconBuilding, IconCalendar, IconApps, IconDashboard, IconDatabase, IconShield, IconUsers, IconReport } from '@tabler/icons-react';
+import { IconAlertCircle, IconUser, IconLock, IconSun, IconMoon, IconLanguage, IconBuilding, IconCalendar } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import Link from 'next/link';
-import classes from './SuperAdminLoginPage.module.css';
-import NextImage from 'next/image';
+import classes from '@/styles/auth.module.css';
+import { BRANDING_PATHS } from '@/lib/branding/config';
+import { localeNames } from '@/lib/i18n/config';
+import { PWAInstallButton } from '@/components/pwa/PWAInstallButton';
+
+const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 const REMEMBER_ME_KEY = 'omnex-remember-credentials-superadmin';
 
@@ -38,14 +51,20 @@ interface Period {
 }
 
 export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
+  const router = useRouter();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('modules/auth');
+  const { t: tGlobal } = useTranslation('global');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [logoExists, setLogoExists] = useState(true);
+  const [companyName, setCompanyName] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState(locale);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [periods, setPeriods] = useState<Period[]>([]);
   const [loadingTenants, setLoadingTenants] = useState(true);
   const [loadingPeriods, setLoadingPeriods] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   const form = useForm({
     initialValues: {
@@ -58,42 +77,70 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
     validate: {
       username: (value) => {
         if (!value || value.trim().length === 0) {
-          return t('common.kullanici.adi.gereklidir');
+          return t('login.errors.required');
         }
         return null;
       },
       password: (value) => {
         if (!value || value.trim().length === 0) {
-          return t('common.sifre.gereklidir');
+          return t('login.errors.required');
         }
         return null;
       },
       tenantId: (value) => {
         if (!value || value.trim().length === 0) {
-          return t('common.firma.secimi.gereklidir');
+          return t('login.errors.tenantRequired') || 'Firma seçimi gereklidir';
         }
         return null;
       },
     },
   });
 
-  // Fetch tenants
   useEffect(() => {
-    const fetchTenants = async () => {
-      try {
-        const response = await fetch('/api/tenants?pageSize=100&status=active');
-        const data = await response.json();
+    setMounted(true);
+    // Logo dosyasının varlığını kontrol et
+    const img = new window.Image();
+    img.onload = () => setLogoExists(true);
+    img.onerror = () => setLogoExists(false);
+    img.src = BRANDING_PATHS.logo;
+
+    // Firma adını API'den al
+    fetch('/api/public/company-info')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.name) {
+          setCompanyName(data.data.name);
+        }
+      })
+      .catch(() => {});
+
+    // Fetch tenants
+    fetch('/api/tenants?pageSize=100&status=active')
+      .then(res => res.json())
+      .then(data => {
         if (data.success && data.data?.tenants) {
           setTenants(data.data.tenants);
         }
-      } catch (err) {
-        console.error('Failed to fetch tenants:', err);
-      } finally {
-        setLoadingTenants(false);
-      }
-    };
+      })
+      .catch(() => {})
+      .finally(() => setLoadingTenants(false));
 
-    fetchTenants();
+    // Load saved credentials
+    try {
+      const saved = localStorage.getItem(REMEMBER_ME_KEY);
+      if (saved) {
+        const { username, password, tenantId } = JSON.parse(saved);
+        form.setValues({
+          username: username || '',
+          password: password || '',
+          tenantId: tenantId || '',
+          rememberMe: true,
+          periodId: '',
+        });
+      }
+    } catch (e) {
+      // Silently ignore
+    }
   }, []);
 
   // Fetch periods when tenant is selected
@@ -104,28 +151,25 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
         try {
           const selectedTenant = tenants.find(t => t.id === form.values.tenantId);
           if (selectedTenant) {
-            // Try to fetch periods from API
             const response = await fetch(`/api/tenants/${selectedTenant.slug}/periods`);
             const data = await response.json();
             if (data.success && data.data?.periods) {
               setPeriods(data.data.periods);
             } else {
-              // If no periods API, create default periods for last 3 years
               const currentYear = new Date().getFullYear();
               setPeriods([
-                { id: `${currentYear}`, name: t('common.currentyear.yili'), startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` },
-                { id: `${currentYear - 1}`, name: t('common.currentyear.1.yili'), startDate: `${currentYear - 1}-01-01`, endDate: `${currentYear - 1}-12-31` },
-                { id: `${currentYear - 2}`, name: t('common.currentyear.2.yili'), startDate: `${currentYear - 2}-01-01`, endDate: `${currentYear - 2}-12-31` },
+                { id: `${currentYear}`, name: `${currentYear} Yılı`, startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` },
+                { id: `${currentYear - 1}`, name: `${currentYear - 1} Yılı`, startDate: `${currentYear - 1}-01-01`, endDate: `${currentYear - 1}-12-31` },
+                { id: `${currentYear - 2}`, name: `${currentYear - 2} Yılı`, startDate: `${currentYear - 2}-01-01`, endDate: `${currentYear - 2}-12-31` },
               ]);
             }
           }
         } catch (err) {
-          // If periods API doesn't exist, use default
           const currentYear = new Date().getFullYear();
           setPeriods([
-            { id: `${currentYear}`, name: t('common.currentyear.yili'), startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` },
-            { id: `${currentYear - 1}`, name: t('common.currentyear.1.yili'), startDate: `${currentYear - 1}-01-01`, endDate: `${currentYear - 1}-12-31` },
-            { id: `${currentYear - 2}`, name: t('common.currentyear.2.yili'), startDate: `${currentYear - 2}-01-01`, endDate: `${currentYear - 2}-12-31` },
+            { id: `${currentYear}`, name: `${currentYear} Yılı`, startDate: `${currentYear}-01-01`, endDate: `${currentYear}-12-31` },
+            { id: `${currentYear - 1}`, name: `${currentYear - 1} Yılı`, startDate: `${currentYear - 1}-01-01`, endDate: `${currentYear - 1}-12-31` },
+            { id: `${currentYear - 2}`, name: `${currentYear - 2} Yılı`, startDate: `${currentYear - 2}-01-01`, endDate: `${currentYear - 2}-12-31` },
           ]);
         } finally {
           setLoadingPeriods(false);
@@ -139,43 +183,17 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
     }
   }, [form.values.tenantId, tenants]);
 
-  // Fetch logo
-  useEffect(() => {
-    const fetchLogo = async () => {
-      try {
-        const response = await fetch('/api/settings/logo');
-        const data = await response.json();
-        if (data.success && data.data?.logoUrl) {
-          setLogoUrl(data.data.logoUrl);
-        }
-      } catch (err) {
-        // Logo yoksa varsayılan logo kullanılacak
-      }
-    };
-
-    fetchLogo();
-  }, []);
-
-  // Sayfa yüklendiğinde kaydedilmiş credentials'ı yükle
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem(REMEMBER_ME_KEY);
-        if (saved) {
-          const { username, password, tenantId } = JSON.parse(saved);
-          form.setValues({
-            ...form.values,
-            username: username || '',
-            password: password || '',
-            tenantId: tenantId || '',
-            rememberMe: true,
-          });
-        }
-      } catch (e) {
-        // localStorage erişim hatası - sessizce devam et
-      }
+  const handleLocaleChange = (value: string | null) => {
+    if (value) {
+      setCurrentLocale(value);
+      // Full page reload required for i18n provider to load new locale
+      window.location.href = `/${value}/auth/login/super-admin`;
     }
-  }, []);
+  };
+
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  };
 
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
@@ -201,9 +219,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
       const data = await response.json();
 
       if (data.success && data.data) {
-        // Başarılı giriş - session'a kaydet
         if (typeof window !== 'undefined') {
-          // Clear old session markers to prevent SessionTimeoutWarning from logging out
           localStorage.removeItem('omnex-session-initialized');
           sessionStorage.removeItem('omnex-session-active');
 
@@ -214,7 +230,6 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
             localStorage.setItem('selectedPeriod', JSON.stringify(selectedPeriod));
           }
 
-          // Beni Hatırla - credentials'ı kaydet veya sil
           if (values.rememberMe) {
             localStorage.setItem(REMEMBER_ME_KEY, JSON.stringify({
               username: values.username,
@@ -234,9 +249,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
             localStorage.setItem('refreshToken', data.data.refreshToken);
           }
         }
-        
-        const targetPath = `/${locale}`;
-        window.location.href = targetPath;
+        window.location.href = `/${locale}/dashboard`;
       } else {
         setError(data.error?.message || data.message || t('login.errors.invalidCredentials'));
       }
@@ -247,209 +260,215 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
     }
   };
 
+  const isDark = mounted && colorScheme === 'dark';
+
   return (
     <div className={classes.wrapper}>
-      <div className={classes.leftSection}>
-        <div className={classes.leftContent}>
-          <div className={classes.headerSection}>
-            <NextImage
-              src="/branding/pwa-icon.png"
-              alt="Logo"
-              width={40}
-              height={40}
-              className={classes.logoImage}
-            />
-            <h1 className={classes.platformTitle}></h1>
-          </div>
-          
-          <div className={classes.modulesSection}>
-            <div className={classes.modulesLeft}>
-              <div className={classes.moduleItem}>
-                <IconApps size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Modüler Yapı</h3>
-                  <p className={classes.moduleDescription}>Esnek ve genişletilebilir modül sistemi</p>
-                </div>
-              </div>
-              
-              <div className={classes.moduleItem}>
-                <IconDashboard size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Merkezi Dashboard</h3>
-                  <p className={classes.moduleDescription}>Tüm verilerinizi tek yerden yönetin</p>
-                </div>
-              </div>
-              
-              <div className={classes.moduleItem}>
-                <IconUsers size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Kullanıcı Yönetimi</h3>
-                  <p className={classes.moduleDescription}>Gelişmiş yetkilendirme sistemi</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className={classes.modulesRight}>
-              <div className={classes.moduleItem}>
-                <IconDatabase size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Veri Yönetimi</h3>
-                  <p className={classes.moduleDescription}>Güvenli ve ölçeklenebilir altyapı</p>
-                </div>
-              </div>
-              
-              <div className={classes.moduleItem}>
-                <IconShield size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Güvenlik</h3>
-                  <p className={classes.moduleDescription}>Enterprise seviye güvenlik özellikleri</p>
-                </div>
-              </div>
-              
-              <div className={classes.moduleItem}>
-                <IconReport size={24} className={classes.moduleIcon} />
-                <div className={classes.moduleInfo}>
-                  <h3 className={classes.moduleTitle}>Raporlama</h3>
-                  <p className={classes.moduleDescription}>Detaylı analiz ve raporlama araçları</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div className={classes.rightSection}>
-        <Container size="xs" {...(classes.container ? { className: classes.container } : {})}>
-          <Paper
-                className={classes.paper}
-                p="xl"
-                radius="lg"
-                styles={{
-                  root: {
-                    background: 'rgba(255, 255, 255, 0.85)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255, 255, 255, 0.5)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-                  }
-                }}>
-            <Stack gap="lg">
-              <div className={classes.header}>
-                {logoUrl ? (
-                  <NextImage
-                    src={logoUrl}
-                    alt="Logo"
-                    width={120}
-                    height={40}
-                    className={classes.logo}
-                  />
-                ) : (
-                  <Title order={2} ta="center" fw={700}>
-                    {t('login.title')}
-                  </Title>
-                )}
-                <Text c="dimmed" size="sm" ta="center" mt="xs">
-                  Süper Admin Girişi
-                </Text>
-              </div>
+      {/* Mobile Header */}
+      <Box className={classes.mobileHeader}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
 
-              {error && (
-                <Alert
-                  icon={<IconAlertCircle size={16} />}
-                  title="Hata"
-                  color="red"
-                  variant="light"
-                >
-                  {error}
-                </Alert>
+      {/* Desktop Top Right Controls */}
+      <Box className={classes.topControls}>
+        <Group gap="xs">
+          <PWAInstallButton size="md" variant="default" locale={currentLocale} />
+          <Select
+            data={languageOptions}
+            value={currentLocale}
+            onChange={handleLocaleChange}
+            size="xs"
+            w={120}
+            leftSection={mounted ? <IconLanguage size={14} /> : null}
+            comboboxProps={{ withinPortal: true, zIndex: 10001 }}
+          />
+          <ActionIcon variant="default" size="md" onClick={toggleColorScheme}>
+            {mounted && (isDark ? <IconSun size={18} /> : <IconMoon size={18} />)}
+          </ActionIcon>
+        </Group>
+      </Box>
+
+      <Container size="xs" className={classes.container}>
+        <Paper
+          className={classes.paper}
+          p="xl"
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            }
+          }}
+        >
+          <Stack gap="lg">
+            {/* Logo */}
+            <Box className={classes.logoSection}>
+              {logoExists ? (
+                <Image
+                  src={BRANDING_PATHS.logo}
+                  alt="Logo"
+                  h={60}
+                  w="auto"
+                  fit="contain"
+                  style={{ margin: '0 auto' }}
+                />
+              ) : (
+                <Box className={classes.defaultLogo}>
+                  <Text size="xl" fw={700} c="blue">
+                    ?
+                  </Text>
+                </Box>
               )}
+            </Box>
 
-              <form onSubmit={form.onSubmit(handleSubmit)} id="super-admin-login-form" name="super-admin-login-form" autoComplete="on">
-                <Stack gap="md">
-                  <Select
-                    label={t('labels.firma.secin')}
-                    placeholder={t('labels.firma.secin')}
-                    leftSection={<IconBuilding size={16} />}
-                    data={tenants.map(t => ({ value: t.id, label: t.name }))}
-                    value={form.values.tenantId}
-                    onChange={(value) => form.setFieldValue('tenantId', value || '')}
-                    required
-                    disabled={loadingTenants}
-                    searchable
-                  />
-
-                  <Select
-                    label={t('labels.donem.secin.opsiyonel')}
-                    placeholder={t('labels.donem.secin')}
-                    leftSection={<IconCalendar size={16} />}
-                    data={periods.map(p => ({ value: p.id, label: p.name }))}
-                    value={form.values.periodId}
-                    onChange={(value) => form.setFieldValue('periodId', value || '')}
-                    disabled={loadingPeriods || !form.values.tenantId}
-                    clearable
-                  />
-
-                  <TextInput
-                    label={t('login.username')}
-                    placeholder={t('login.usernamePlaceholder')}
-                    leftSection={<IconUser size={16} />}
-                    required
-                    name="username"
-                    id="super-admin-username"
-                    autoComplete="username"
-                    {...form.getInputProps('username')}
-                  />
-
-                  <PasswordInput
-                    label={t('login.password')}
-                    placeholder={t('login.passwordPlaceholder')}
-                    leftSection={<IconLock size={16} />}
-                    required
-                    name="password"
-                    id="super-admin-password"
-                    autoComplete="current-password"
-                    {...form.getInputProps('password')}
-                  />
-
-                  <Group justify="space-between">
-                    <Checkbox
-                      label={t('login.rememberMe')}
-                      {...form.getInputProps('rememberMe', { type: 'checkbox' })}
-                    />
-                    <Text size="sm" c="dimmed" component={Link} href={`/${locale}/forgot-password`}>
-                      {t('login.forgotPassword')}
-                    </Text>
-                  </Group>
-
-                  <Button
-                    type="submit"
-                    fullWidth
-                    size="md"
-                    loading={loading}
-                    mt="md"
-                  >
-                    {t('login.submit')}
-                  </Button>
-                </Stack>
-              </form>
-
-              <Text size="sm" ta="center" c="dimmed">
-                Normal kullanıcı girişi için{' '}
-                <Text
-                  component={Link}
-                  href={`/${locale}/auth/login`}
-                  c="blue"
-                  fw={500}
-                  td="underline"
-                >
-                  buraya tıklayın
-                </Text>
+            <div className={classes.header}>
+              <Title order={2} ta="center" fw={700}>
+                {t('login.title')}
+              </Title>
+              <Text c="dimmed" size="sm" ta="center" mt="xs">
+                {t('login.superAdminSubtitle') || 'Süper Admin Girişi'}
               </Text>
-            </Stack>
-          </Paper>
-        </Container>
-      </div>
+            </div>
+
+            {error && (
+              <Alert
+                icon={mounted ? <IconAlertCircle size={16} /> : null}
+                title={tGlobal('common.error')}
+                color="red"
+                variant="light"
+              >
+                {error}
+              </Alert>
+            )}
+
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <Stack gap="md">
+                <Select
+                  label={t('login.tenantLabel') || 'Firma Seçin'}
+                  placeholder={t('login.tenantPlaceholder') || 'Firma seçin...'}
+                  leftSection={mounted ? <IconBuilding size={16} /> : null}
+                  data={tenants.map(t => ({ value: t.id, label: t.name }))}
+                  required
+                  disabled={loadingTenants}
+                  searchable
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
+                  {...form.getInputProps('tenantId')}
+                />
+
+                <Select
+                  label={t('login.periodLabel') || 'Dönem Seçin (Opsiyonel)'}
+                  placeholder={t('login.periodPlaceholder') || 'Dönem seçin...'}
+                  leftSection={mounted ? <IconCalendar size={16} /> : null}
+                  data={periods.map(p => ({ value: p.id, label: p.name }))}
+                  value={form.values.periodId}
+                  onChange={(value) => form.setFieldValue('periodId', value || '')}
+                  disabled={loadingPeriods || !form.values.tenantId}
+                  clearable
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
+                />
+
+                <TextInput
+                  label={t('login.username')}
+                  placeholder={t('login.usernamePlaceholder')}
+                  leftSection={mounted ? <IconUser size={16} /> : null}
+                  autoComplete="username"
+                  required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
+                  {...form.getInputProps('username')}
+                />
+
+                <PasswordInput
+                  label={t('login.password')}
+                  placeholder={t('login.passwordPlaceholder')}
+                  leftSection={mounted ? <IconLock size={16} /> : null}
+                  autoComplete="current-password"
+                  required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
+                  {...form.getInputProps('password')}
+                />
+
+                <Group justify="space-between">
+                  <Checkbox
+                    label={t('login.rememberMe')}
+                    {...form.getInputProps('rememberMe', { type: 'checkbox' })}
+                  />
+                  <Text size="sm" c="dimmed" component={Link} href={`/${locale}/auth/forgot-password`}>
+                    {t('login.forgotPassword')}
+                  </Text>
+                </Group>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  size="md"
+                  loading={loading}
+                  mt="md"
+                >
+                  {t('login.submit')}
+                </Button>
+              </Stack>
+            </form>
+
+            <Divider label={t('login.or')} labelPosition="center" />
+
+            <Text size="sm" ta="center" c="dimmed">
+              {t('login.normalUserLink') || 'Normal kullanıcı girişi için'}{' '}
+              <Text
+                component={Link}
+                href={`/${locale}/auth/login`}
+                c="blue"
+                fw={500}
+                td="underline"
+              >
+                {t('login.clickHere') || 'buraya tıklayın'}
+              </Text>
+            </Text>
+          </Stack>
+        </Paper>
+      </Container>
+
+      <Box className={classes.footer}>
+        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+          Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
+        </Text>
+      </Box>
     </div>
   );
 }
-
