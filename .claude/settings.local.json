@@ -49,7 +49,9 @@
       "Bash(netstat:*)",
       "Bash(register:*)",
       "Bash(auth \")",
-      "Bash(ipconfig:*)"
+      "Bash(ipconfig:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Companies hierarchy view for SuperAdmin and i18n improvements\n\n- Add hierarchical company view for SuperAdmin showing Core and Tenant companies\n- Update /api/companies to return tenant info with isCoreTenant flag\n- Add forgot-password standalone page with consistent auth styling\n- Fix scrollbar-gutter issue on dashboard pages \\(stable -> auto\\)\n- Add companies.currentTenant, coreCompany, tenantCompany translations\n- Add companies.stats.tenants translation to all locales\n- Complete notification-templates translations for en, de, ar locales\n- Update CLAUDE.md with Companies Management documentation\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": [],
     "ask": []

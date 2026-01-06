@@ -1901,8 +1901,12 @@
       "totalStats": "Gesamt Ressourcen",
       "assets": "Assets",
       "contents": "Inhalte",
-      "websites": "Webseiten"
+      "websites": "Webseiten",
+      "tenants": "Mandanten"
     },
+    "currentTenant": "Aktiver Mandant: {name}",
+    "coreCompany": "Hauptfirma",
+    "tenantCompany": "Mandantenfirma",
     "info": {
       "createdAt": "Erstellt am",
       "updatedAt": "Aktualisiert am",

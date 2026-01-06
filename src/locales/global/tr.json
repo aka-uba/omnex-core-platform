@@ -1873,8 +1873,12 @@
       "totalStats": "Toplam Kaynak",
       "assets": "Varlıklar",
       "contents": "İçerikler",
-      "websites": "Web Siteleri"
+      "websites": "Web Siteleri",
+      "tenants": "Tenant Sayısı"
     },
+    "currentTenant": "Aktif Tenant: {name}",
+    "coreCompany": "Ana Firma",
+    "tenantCompany": "Tenant Firma",
     "info": {
       "createdAt": "Oluşturulma Tarihi",
       "updatedAt": "Güncellenme Tarihi",

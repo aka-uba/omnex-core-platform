@@ -1,7 +1,7 @@
 'use client';
 
-import { Container, Stack, Text, Alert, Badge, Group, Button, TextInput, Card, SimpleGrid, ActionIcon, Tooltip } from '@mantine/core';
-import { IconBuilding, IconSearch, IconRefresh, IconPlus, IconEdit, IconTrash, IconEye, IconUsers, IconWorld, IconBriefcase } from '@tabler/icons-react';
+import { Container, Stack, Text, Alert, Badge, Group, Button, TextInput, Card, SimpleGrid, ActionIcon, Tooltip, Box } from '@mantine/core';
+import { IconBuilding, IconSearch, IconRefresh, IconPlus, IconEdit, IconTrash, IconEye, IconUsers, IconWorld, IconBriefcase, IconDatabase, IconChevronRight } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
@@ -25,11 +25,30 @@ interface Company {
   assetsCount: number;
   contentsCount: number;
   websitesCount: number;
+  // Hierarchical fields
+  tenantId?: string | null;
+  tenantName?: string | null;
+  tenantSlug?: string | null;
+  isCoreTenant?: boolean;
+  isTenantEntry?: boolean;
+}
+
+interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  subdomain: string | null;
+  customDomain: string | null;
+  status: string;
+  dbName: string;
+  createdAt: string;
 }
 
 interface CompaniesResponse {
   companies: Company[];
   total: number;
+  currentTenant?: Tenant | null;
+  tenants?: Tenant[];
 }
 
 export default function CompaniesPage() {
@@ -63,10 +82,11 @@ export default function CompaniesPage() {
     if (!data?.companies) return [];
     if (!search) return data.companies;
     const searchLower = search.toLowerCase();
-    return data.companies.filter((item) => 
+    return data.companies.filter((item) =>
       item.name.toLowerCase().includes(searchLower) ||
       item.industry?.toLowerCase().includes(searchLower) ||
-      item.website?.toLowerCase().includes(searchLower)
+      item.website?.toLowerCase().includes(searchLower) ||
+      item.tenantName?.toLowerCase().includes(searchLower)
     );
   }, [data?.companies, search]);
 
@@ -88,30 +108,81 @@ export default function CompaniesPage() {
       label: t('companies.table.name'),
       sortable: true,
       searchable: true,
-      render: (value) => (
-        <Group gap="xs">
-          <IconBuilding size={18} color="var(--mantine-color-blue-6)" />
-          <Text fw={500} size="sm">
-            {value}
-          </Text>
-        </Group>
-      ),
+      render: (value, row) => {
+        const company = row as Company;
+        const isTenant = company.isTenantEntry;
+        const isCore = company.isCoreTenant;
+
+        return (
+          <Group gap="xs">
+            {isTenant ? (
+              <>
+                <Box ml="md">
+                  <IconChevronRight size={14} color="var(--mantine-color-gray-5)" />
+                </Box>
+                <IconDatabase size={18} color="var(--mantine-color-orange-6)" />
+              </>
+            ) : isCore ? (
+              <IconBuilding size={18} color="var(--mantine-color-blue-6)" />
+            ) : (
+              <>
+                <Box ml="md">
+                  <IconChevronRight size={14} color="var(--mantine-color-gray-5)" />
+                </Box>
+                <IconBuilding size={18} color="var(--mantine-color-green-6)" />
+              </>
+            )}
+            <Text fw={isTenant ? 600 : 500} size="sm" c={isTenant ? 'orange' : undefined}>
+              {value}
+            </Text>
+            {isCore && (
+              <Badge size="xs" variant="light" color="blue">
+                Core
+              </Badge>
+            )}
+            {isTenant && (
+              <Badge size="xs" variant="light" color="orange">
+                Tenant
+              </Badge>
+            )}
+          </Group>
+        );
+      },
     },
     {
       key: 'industry',
       label: t('companies.table.industry'),
       sortable: true,
       searchable: true,
-      render: (value) => (
-        <Text size="sm">{value || '-'}</Text>
-      ),
+      render: (value, row) => {
+        const company = row as Company;
+        if (company.isTenantEntry) {
+          return (
+            <Text size="sm" c="dimmed">
+              {company.tenantSlug}
+            </Text>
+          );
+        }
+        return <Text size="sm">{value || '-'}</Text>;
+      },
     },
     {
       key: 'website',
       label: t('companies.table.website'),
       sortable: true,
       searchable: true,
-      render: (value) => {
+      render: (value, row) => {
+        const company = row as Company;
+        if (company.isTenantEntry && company.website) {
+          return (
+            <Group gap="xs">
+              <IconWorld size={14} />
+              <Text size="sm" c="blue">
+                {company.website}
+              </Text>
+            </Group>
+          );
+        }
         if (!value) return <Text size="sm" c="dimmed">-</Text>;
         return (
           <Group gap="xs">
@@ -140,18 +211,31 @@ export default function CompaniesPage() {
       key: 'usersCount',
       label: t('companies.table.users'),
       sortable: true,
-      render: (value) => (
-        <Group gap={4}>
-          <IconUsers size={14} />
-          <Text size="sm">{value}</Text>
-        </Group>
-      ),
+      render: (value, row) => {
+        const company = row as Company;
+        if (company.isTenantEntry) {
+          return <Text size="sm" c="dimmed">-</Text>;
+        }
+        return (
+          <Group gap={4}>
+            <IconUsers size={14} />
+            <Text size="sm">{value}</Text>
+          </Group>
+        );
+      },
     },
     {
       key: 'stats',
       label: t('companies.table.stats'),
       render: (value, row) => {
         const company = row as Company;
+        if (company.isTenantEntry) {
+          return (
+            <Text size="xs" c="dimmed">
+              {company.description}
+            </Text>
+          );
+        }
         return (
           <Group gap="xs">
             {company.assetsCount > 0 && (
@@ -187,6 +271,24 @@ export default function CompaniesPage() {
       sortable: false,
       render: (value, row) => {
         const company = row as Company;
+
+        // Tenant entries have different actions
+        if (company.isTenantEntry) {
+          return (
+            <Group gap="xs" justify="flex-end">
+              <Tooltip label={t('tenants.viewDetails') || 'Tenant Detayı'} withArrow>
+                <ActionIcon
+                  variant="subtle"
+                  color="orange"
+                  onClick={() => router.push(`/${currentLocale}/admin/tenants`)}
+                >
+                  <IconEye size={18} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+          );
+        }
+
         return (
           <Group gap="xs" justify="flex-end">
             <Tooltip label={t('buttons.view')} withArrow>
@@ -237,17 +339,20 @@ export default function CompaniesPage() {
   ];
 
   const stats = useMemo(() => {
-    if (!data) return { total: 0, active: 0, users: 0, totalStats: 0 };
-    
-    const active = data.companies.filter(c => c.status === 'Active' || c.status === 'active').length;
-    const users = data.companies.reduce((sum, c) => sum + c.usersCount, 0);
-    const totalStats = data.companies.reduce((sum, c) => sum + c.assetsCount + c.contentsCount + c.websitesCount, 0);
-    
+    if (!data) return { total: 0, active: 0, users: 0, tenants: 0 };
+
+    // Filter out tenant entries for company stats
+    const realCompanies = data.companies.filter(c => !c.isTenantEntry);
+    const tenantEntries = data.companies.filter(c => c.isTenantEntry);
+
+    const active = realCompanies.filter(c => c.status === 'Active' || c.status === 'active').length;
+    const users = realCompanies.reduce((sum, c) => sum + c.usersCount, 0);
+
     return {
-      total: data.companies.length,
+      total: realCompanies.length,
       active,
       users,
-      totalStats,
+      tenants: tenantEntries.length,
     };
   }, [data]);
 
@@ -260,7 +365,7 @@ export default function CompaniesPage() {
         icon={<IconBuilding size={32} />}
         breadcrumbs={[
           { label: 'navigation.dashboard', href: `/${currentLocale}/dashboard`, namespace: 'global' },
-          { label: 'navigation.superadmin', href: `/${currentLocale}/superadmin`, namespace: 'global' },
+          { label: 'navigation.management', href: `/${currentLocale}/management`, namespace: 'global' },
           { label: 'companies.title', namespace: 'global' },
         ]}
         actions={[
@@ -305,13 +410,38 @@ export default function CompaniesPage() {
         <Card withBorder padding="lg" radius="md">
           <Stack gap="xs">
             <Group gap="xs">
-              <IconWorld size={20} color="var(--mantine-color-orange-6)" />
-              <Text size="sm" c="dimmed">{t('companies.stats.totalStats')}</Text>
+              <IconDatabase size={20} color="var(--mantine-color-orange-6)" />
+              <Text size="sm" c="dimmed">{t('companies.stats.tenants') || 'Tenant Sayısı'}</Text>
             </Group>
-            <Text size="xl" fw={700}>{stats.totalStats}</Text>
+            <Text size="xl" fw={700}>{stats.tenants}</Text>
           </Stack>
         </Card>
       </SimpleGrid>
+
+      {/* Current Tenant Info */}
+      {data?.currentTenant && (
+        <Alert
+          variant="light"
+          color="blue"
+          title={t('companies.currentTenant') || 'Aktif Tenant'}
+          icon={<IconDatabase size={18} />}
+          mt="lg"
+        >
+          <Group gap="md">
+            <Text size="sm">
+              <strong>{data.currentTenant.name}</strong> ({data.currentTenant.slug})
+            </Text>
+            {data.currentTenant.subdomain && (
+              <Badge variant="light" size="sm">
+                {data.currentTenant.subdomain}.onwindos.com
+              </Badge>
+            )}
+            <Badge variant="light" size="sm" color="gray">
+              DB: {data.currentTenant.dbName}
+            </Badge>
+          </Group>
+        </Alert>
+      )}
 
       <Stack gap="md" mt="xl">
         <Group>
@@ -369,6 +499,7 @@ export default function CompaniesPage() {
             showAuditHistory={true}
             auditEntityName="Company"
             auditIdKey="id"
+            tableId="companies-management"
           />
         )}
       </Stack>

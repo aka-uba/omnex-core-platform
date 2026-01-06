@@ -103,8 +103,9 @@ html {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
-  /* Modal açıldığında scrollbar kaybolmasını önle - layout shift fix */
-  scrollbar-gutter: stable;
+  /* Scroll gerektirmeyen sayfalarda boş scrollbar alanı gösterme */
+  /* Modal'larda layout shift Mantine'in lockScroll özelliği ile yönetiliyor */
+  scrollbar-gutter: auto;
 }
 
 body {

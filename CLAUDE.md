@@ -2384,6 +2384,88 @@ GET http://localhost:3000/api/manifest
 
 ---
 
-**Son Güncelleme**: 2026-01-06
+## 27. FİRMALAR SAYFASI (Companies Management)
+
+### 27.1 Hiyerarşik Yapı
+SuperAdmin için `/management/companies` sayfası hiyerarşik bir görünüm sunar:
+
+```
+📊 Firmalar
+├── 🏢 Core Company (Mavi ikon) - SuperAdmin'in bağlı olduğu tenant'ın firması
+│   └── isCoreTenant: true
+│
+└── 🗄️ Tenant'lar (Turuncu ikon) - Diğer tenant'lar
+    ├── Tenant 1 (isTenantEntry: true)
+    ├── Tenant 2 (isTenantEntry: true)
+    └── ...
+```
+
+### 27.2 API Response Yapısı
+**Endpoint:** `GET /api/companies`
+
+**SuperAdmin için ek alanlar:**
+```typescript
+interface CompanyResponse {
+  // Standart alanlar
+  id: string;
+  name: string;
+  industry: string | null;
+  // ...
+
+  // Hiyerarşi alanları
+  tenantId: string | null;
+  tenantName: string | null;
+  tenantSlug: string | null;
+  isCoreTenant: boolean;      // true = SuperAdmin'in tenant'ının company'si
+  isTenantEntry?: boolean;    // true = Diğer tenant girişi (sanal)
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "companies": [...],
+    "total": 5,
+    "currentTenant": {
+      "id": "...",
+      "name": "Demo Tenant",
+      "slug": "demo",
+      "subdomain": "demo",
+      "dbName": "tenant_demo_2025"
+    },
+    "tenants": [...]  // SuperAdmin için tüm tenant listesi
+  }
+}
+```
+
+### 27.3 Görsel Göstergeler
+| Durum | İkon | Renk | Badge |
+|-------|------|------|-------|
+| Core Company | IconBuilding | Mavi | "Core" |
+| Tenant Girişi | IconDatabase | Turuncu | "Tenant" |
+
+### 27.4 İstatistik Kartları
+- **Toplam Firma**: Gerçek company sayısı (tenant girişleri hariç)
+- **Aktif Firma**: Aktif durumlu company sayısı
+- **Kullanıcı Sayısı**: Tüm company'lerdeki toplam kullanıcı
+- **Tenant Sayısı**: Diğer tenant sayısı (SuperAdmin için)
+
+### 27.5 i18n Keys (global namespace)
+```json
+{
+  "companies": {
+    "currentTenant": "Aktif Tenant",
+    "stats": {
+      "tenants": "Tenant Sayısı"
+    }
+  }
+}
+```
+
+---
+
+**Son Güncelleme**: 2026-01-07
 **Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1

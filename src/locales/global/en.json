@@ -1872,8 +1872,12 @@
       "totalStats": "Total Resources",
       "assets": "Assets",
       "contents": "Contents",
-      "websites": "Websites"
+      "websites": "Websites",
+      "tenants": "Tenants"
     },
+    "currentTenant": "Active Tenant: {name}",
+    "coreCompany": "Core Company",
+    "tenantCompany": "Tenant Company",
     "info": {
       "createdAt": "Created At",
       "updatedAt": "Updated At",

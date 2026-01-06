@@ -1901,8 +1901,12 @@
       "totalStats": "إجمالي الموارد",
       "assets": "الأصول",
       "contents": "المحتويات",
-      "websites": "المواقع الإلكترونية"
+      "websites": "المواقع الإلكترونية",
+      "tenants": "المستأجرين"
     },
+    "currentTenant": "المستأجر النشط: {name}",
+    "coreCompany": "الشركة الرئيسية",
+    "tenantCompany": "شركة المستأجر",
     "info": {
       "createdAt": "تاريخ الإنشاء",
       "updatedAt": "تاريخ التحديث",
