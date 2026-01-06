@@ -442,7 +442,7 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
                     label={t('login.rememberMe')}
                     {...form.getInputProps('rememberMe', { type: 'checkbox' })}
                   />
-                  <Text size="sm" c="dimmed" component={Link} href={`/${locale}/auth/forgot-password`}>
+                  <Text size="sm" c="dimmed" component={Link} href="/auth/forgot-password">
                     {t('login.forgotPassword')}
                   </Text>
                 </Group>

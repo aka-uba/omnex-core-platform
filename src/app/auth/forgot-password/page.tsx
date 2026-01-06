@@ -201,7 +201,7 @@ export default function ForgotPasswordPage() {
           >
             <Stack gap="lg" align="center">
               <ThemeIcon size={80} radius={40} color="green">
-                <IconCheck size={48} />
+                {mounted && <IconCheck size={48} />}
               </ThemeIcon>
               <Title order={2} ta="center" fw={700}>
                 {t('forgotPassword.success.title')}
@@ -211,7 +211,7 @@ export default function ForgotPasswordPage() {
               </Text>
               <Button
                 size="lg"
-                leftSection={<IconArrowLeft size={20} />}
+                leftSection={mounted ? <IconArrowLeft size={20} /> : null}
                 onClick={handleGoToLogin}
                 fullWidth
                 variant="light"
@@ -321,7 +321,7 @@ export default function ForgotPasswordPage() {
 
             <div className={classes.header}>
               <ThemeIcon size={60} radius={30} color="blue" style={{ margin: '0 auto 1rem' }}>
-                <IconMail size={32} />
+                {mounted && <IconMail size={32} />}
               </ThemeIcon>
               <Title order={2} ta="center" fw={700}>
                 {t('forgotPassword.title')}
@@ -389,7 +389,7 @@ export default function ForgotPasswordPage() {
             <Group justify="center" mt="md">
               <Anchor size="sm" onClick={handleGoToLogin} style={{ cursor: 'pointer' }}>
                 <Group gap={4}>
-                  <IconArrowLeft size={14} />
+                  {mounted && <IconArrowLeft size={14} />}
                   {t('forgotPassword.backToLogin')}
                 </Group>
               </Anchor>
