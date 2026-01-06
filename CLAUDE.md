@@ -2125,6 +2125,265 @@ TENANT_DATABASE_URL="..." npx tsx prisma/seed/demo-seed.ts --tenant-slug=demo --
 
 ---
 
+## 25. PWA (Progressive Web App) SİSTEMİ
+
+### 25.1 Genel Bakış
+Platform, tüm cihazlarda native app deneyimi sunan tam PWA desteğine sahiptir.
+
+**Desteklenen Platformlar:**
+| Platform | Yükleme Yöntemi | Deneyim |
+|----------|-----------------|---------|
+| **Android Chrome/Edge** | Native install prompt | Tam ekran app |
+| **Android Samsung/Firefox** | Manuel (menü → Ana ekrana ekle) | Tam ekran app |
+| **iOS Safari** | Manuel (Paylaş → Ana Ekrana Ekle) | Tam ekran app |
+| **Windows Chrome/Edge** | Native install prompt | Masaüstü app |
+| **macOS Chrome/Edge** | Native install prompt | Masaüstü app |
+| **Linux Chrome/Edge** | Native install prompt | Masaüstü app |
+
+### 25.2 Dosya Yapısı
+
+```
+src/
+├── app/
+│   └── api/
+│       └── manifest/
+│           └── route.ts          # Dinamik manifest API
+├── components/
+│   └── pwa/
+│       ├── PWAInstallButton.tsx  # Yükleme butonu bileşeni
+│       └── ServiceWorkerRegistration.tsx  # SW kayıt bileşeni
+├── hooks/
+│   └── usePWAInstall.ts          # Platform algılama ve yükleme hook'u
+└── locales/
+    └── global/
+        └── {locale}.json         # PWA çevirileri (pwa.* keys)
+
+public/
+├── branding/
+│   └── pwa-icon.png              # PWA ikonu (512x512)
+├── sw.js                         # Service Worker
+├── offline.html                  # Çevrimdışı sayfası
+└── manifest.json                 # Statik manifest (fallback)
+```
+
+### 25.3 Dinamik Manifest API
+**Dosya:** `src/app/api/manifest/route.ts`
+
+Manifest, firma bilgilerine göre dinamik olarak oluşturulur:
+
+**Öncelik Sırası (Tenant Bulma):**
+1. Cookie'den `tenant-slug` → Tenant DB'den Company.name
+2. Hostname'den subdomain → Tenant DB'den Company.name
+3. İlk aktif tenant (development fallback) → Company.name
+
+**Manifest Alanları:**
+```typescript
+{
+  name: companyName,           // "Onway Property" (Settings > My Company)
+  short_name: shortName,       // "Onway" (ilk kelime, max 12 karakter)
+  description: "Enterprise Management Platform",
+  start_url: "/",
+  display: "standalone",
+  background_color: "#ffffff",
+  theme_color: "#228be6",
+  icons: [/* 48px - 512px arası */],
+  shortcuts: [{ name: "Dashboard", url: "/tr/dashboard" }]
+}
+```
+
+**Cache:** 5 dakika (`max-age=300`)
+
+### 25.4 Service Worker
+**Dosya:** `public/sw.js`
+
+**Özellikler:**
+- Offline cache stratejisi (Cache First)
+- Push notification altyapısı
+- Background sync desteği
+- Çevrimdışı sayfa gösterimi (`/offline.html`)
+
+**Cache Stratejisi:**
+```javascript
+// Önce cache'den, yoksa network'ten
+const CACHE_NAME = 'omnex-cache-v1';
+const OFFLINE_URL = '/offline.html';
+
+// Statik dosyalar cache'lenir
+// API istekleri network-first
+```
+
+### 25.5 PWA Install Button
+**Dosya:** `src/components/pwa/PWAInstallButton.tsx`
+
+Login ve register sayfalarında görünen yükleme butonu.
+
+**Kullanım:**
+```tsx
+import { PWAInstallButton } from '@/components/pwa/PWAInstallButton';
+
+<PWAInstallButton
+  size="md"           // xs | sm | md | lg | xl
+  variant="default"   // default | filled | light | outline
+  locale={locale}     // Dil kodu
+/>
+```
+
+**Davranış:**
+- Native prompt destekleniyorsa → Doğrudan yükleme prompt'u
+- Desteklenmiyorsa → Platform'a özel talimatlar modalı
+- Zaten yüklüyse veya standalone modda → Gizlenir
+
+### 25.6 usePWAInstall Hook
+**Dosya:** `src/hooks/usePWAInstall.ts`
+
+```typescript
+const {
+  isInstallable,     // Yüklenebilir mi?
+  isInstalled,       // Zaten yüklü mü?
+  isStandalone,      // Standalone modda mı çalışıyor?
+  hasNativePrompt,   // Native install prompt var mı?
+  platform,          // 'ios' | 'android' | 'windows' | 'mac' | 'linux'
+  browser,           // 'chrome' | 'edge' | 'firefox' | 'safari' | 'samsung'
+  isIOS,             // iOS cihaz mı?
+  isAndroid,         // Android cihaz mı?
+  isDesktop,         // Masaüstü mü?
+  isMobile,          // Mobil mi?
+  promptInstall,     // Yükleme fonksiyonu
+} = usePWAInstall();
+```
+
+### 25.7 Layout Entegrasyonu
+**Dosya:** `src/app/[locale]/layout.tsx`
+
+```html
+<head>
+  <link rel="manifest" href="/api/manifest" />
+  <meta name="theme-color" content="#228be6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="apple-touch-icon" href="/branding/pwa-icon.png" />
+</head>
+```
+
+### 25.8 Service Worker Kayıt
+**Dosya:** `src/components/pwa/ServiceWorkerRegistration.tsx`
+
+`Providers` içinde otomatik olarak kaydedilir:
+```tsx
+// src/app/providers.tsx
+<ServiceWorkerRegistration />
+```
+
+### 25.9 i18n Çevirileri
+**Namespace:** `global` → `pwa.*`
+
+```json
+{
+  "pwa": {
+    "install": {
+      "tooltip": {
+        "ios": "Ana Ekrana Ekle",
+        "android": "Uygulamayı Yükle",
+        "desktop": "Masaüstüne Ekle",
+        "default": "Uygulamayı Yükle"
+      },
+      "modal": {
+        "ios": {
+          "title": "Ana Ekrana Ekle",
+          "subtitle": "iPhone / iPad",
+          "steps": {
+            "step1": "Safari'de **Paylaş** butonuna dokunun",
+            "step2": "**\"Ana Ekrana Ekle\"** seçeneğini bulun",
+            "step3": "Onaylamak için **\"Ekle\"** ye dokunun"
+          }
+        },
+        "android": { /* ... */ },
+        "samsung": { /* ... */ },
+        "firefox": { /* ... */ },
+        "desktop": { /* ... */ },
+        "understood": "Anladım"
+      }
+    }
+  }
+}
+```
+
+### 25.10 PWA İkon Gereksinimleri
+**Dosya:** `public/branding/pwa-icon.png`
+
+| Boyut | Kullanım |
+|-------|----------|
+| 512x512 | Ana ikon, maskable |
+| 384x384 | Büyük splash |
+| 256x256 | Orta splash |
+| 192x192 | Android home |
+| 144x144 | Android shortcut |
+| 96x96 | Shortcut icon |
+| 72x72 | Küçük ikon |
+| 48x48 | Minimum ikon |
+
+**Önerilen Format:** PNG, şeffaf arka plan, kare
+
+### 25.11 Offline Sayfası
+**Dosya:** `public/offline.html`
+
+Çevrimdışı durumda gösterilen sayfa:
+- Bağlantı kesildiğinde otomatik gösterilir
+- "Tekrar Dene" butonu ile yeniden deneme
+- Bağlantı geri geldiğinde otomatik yenileme
+
+### 25.12 PWA Güncelleme
+
+**Firma Adı Değişikliğinde:**
+PWA bir kez yüklendikten sonra manifest tarayıcı tarafından cache'lenir.
+Firma adı değişikliğini görmek için:
+
+1. Mevcut PWA'yı cihazdan kaldır
+2. Tarayıcı cache'ini temizle
+3. Uygulamayı yeniden yükle
+
+**Service Worker Güncelleme:**
+```javascript
+// sw.js içinde CACHE_NAME versiyonunu değiştir
+const CACHE_NAME = 'omnex-cache-v2'; // v1 → v2
+```
+
+### 25.13 Test Etme
+
+**Manifest Kontrolü:**
+```
+GET http://localhost:3000/api/manifest
+```
+
+**Chrome DevTools:**
+1. F12 → Application tab
+2. Manifest bölümü → name, short_name kontrol
+3. Service Workers bölümü → Kayıt durumu
+4. Storage → Cache Storage → Önbellek içeriği
+
+**Lighthouse PWA Audit:**
+1. F12 → Lighthouse tab
+2. "Progressive Web App" seç
+3. "Analyze page load"
+
+---
+
+## 26. DOSYA KONUMLARI HIZLI REFERANS (PWA)
+
+| Amaç | Dosya |
+|------|-------|
+| Dinamik Manifest API | `src/app/api/manifest/route.ts` |
+| PWA Install Button | `src/components/pwa/PWAInstallButton.tsx` |
+| Service Worker Kayıt | `src/components/pwa/ServiceWorkerRegistration.tsx` |
+| usePWAInstall Hook | `src/hooks/usePWAInstall.ts` |
+| Service Worker | `public/sw.js` |
+| Offline Sayfası | `public/offline.html` |
+| PWA İkonu | `public/branding/pwa-icon.png` |
+| Statik Manifest | `public/manifest.json` |
+| PWA Çevirileri | `src/locales/global/{locale}.json` → `pwa.*` |
+
+---
+
 **Son Güncelleme**: 2026-01-06
 **Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1
