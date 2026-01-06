@@ -192,7 +192,19 @@ export default function LoginPage() {
       </Box>
 
       <Container size="xs" className={classes.container}>
-        <Paper className={classes.paper} p="xl" radius="md" withBorder>
+        <Paper
+          className={classes.paper}
+          p="xl"
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            }
+          }}>
           <Stack gap="lg">
             {/* Logo - Sabit dosya yolundan */}
             <Box className={classes.logoSection}>
@@ -242,6 +254,15 @@ export default function LoginPage() {
                   leftSection={mounted ? <IconUser size={16} /> : null}
                   autoComplete="username"
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                      '&:focus': {
+                        borderColor: 'var(--mantine-color-blue-5)',
+                      }
+                    }
+                  }}
                   {...form.getInputProps('username')}
                 />
 
@@ -250,6 +271,15 @@ export default function LoginPage() {
                   placeholder={t('login.passwordPlaceholder')}
                   leftSection={mounted ? <IconLock size={16} /> : null}
                   autoComplete="current-password"
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                      '&:focus': {
+                        borderColor: 'var(--mantine-color-blue-5)',
+                      }
+                    }
+                  }}
                   required
                   {...form.getInputProps('password')}
                 />
@@ -296,7 +326,7 @@ export default function LoginPage() {
 
       {/* Footer */}
       <Box className={classes.footer}>
-        <Text size="xs" c="dimmed">
+        <Text size="xs" c="white" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
           Copyright {companyName ? `${companyName} ` : ''}{new Date().getFullYear()}. All rights reserved.
         </Text>
       </Box>

@@ -22,7 +22,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" suppressHydrationWarning>
+    <html lang="tr" suppressHydrationWarning style={{ scrollbarGutter: 'auto' }}>
       <head>
         <ColorSchemeScript />
         <link rel="manifest" href="/api/manifest" />
@@ -34,7 +34,7 @@ export default function AuthLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} ${spaceGrotesk.variable}`}>
+      <body className={`${inter.className} ${spaceGrotesk.variable}`} style={{ overflow: 'hidden' }}>
         <Providers dir="ltr">
           {children}
         </Providers>

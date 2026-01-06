@@ -136,7 +136,19 @@ export function LoginPageClient({ locale }: { locale: string }) {
   return (
     <div className={classes.wrapper}>
       <Container size="xs" className={classes.container}>
-        <Paper className={classes.paper} p="xl" radius="md" withBorder>
+        <Paper
+          className={classes.paper}
+          p="xl"
+          radius="lg"
+          styles={{
+            root: {
+              background: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            }
+          }}>
           <Stack gap="lg">
             <div className={classes.header}>
               <Title order={2} ta="center" fw={700}>
@@ -165,6 +177,12 @@ export function LoginPageClient({ locale }: { locale: string }) {
                   placeholder={t('login.usernamePlaceholder')}
                   leftSection={<IconUser size={16} className="tabler-icon tabler-icon-user" />}
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('username')}
                 />
 
@@ -173,6 +191,12 @@ export function LoginPageClient({ locale }: { locale: string }) {
                   placeholder={t('login.passwordPlaceholder')}
                   leftSection={<IconLock size={16} className="tabler-icon tabler-icon-lock" />}
                   required
+                  styles={{
+                    input: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    }
+                  }}
                   {...form.getInputProps('password')}
                 />
 

@@ -5,21 +5,45 @@
   right: 0;
   bottom: 0;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
+  background-image: linear-gradient(
+    270deg,
+    hsl(141deg 52% 41%) 0%,
+    hsl(141deg 48% 42%) 9%,
+    hsl(141deg 45% 44%) 18%,
+    hsl(142deg 42% 45%) 27%,
+    hsl(142deg 40% 47%) 36%,
+    hsl(143deg 38% 48%) 45%,
+    hsl(144deg 36% 49%) 55%,
+    hsl(145deg 35% 51%) 64%,
+    hsl(146deg 35% 52%) 73%,
+    hsl(147deg 35% 53%) 82%,
+    hsl(148deg 35% 55%) 91%,
+    hsl(149deg 35% 56%) 100%
+  );
   padding: 1rem;
-  /* z-index removed to allow Mantine portal dropdowns to work */
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) .wrapper {
+  background-image: none;
+  background: var(--bg-secondary);
 }
 
 .topControls {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: 1.5rem;
   z-index: 10000;
 }
 
@@ -30,13 +54,22 @@
 .container {
   width: 100%;
   max-width: 420px;
-  margin: auto;
 }
 
 .paper {
-  background: var(--bg-card);
-  border-color: var(--border-color);
-  box-shadow: var(--shadow-lg);
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:global([data-mantine-color-scheme="dark"]) .paper {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(51, 65, 85, 0.5);
 }
 
 .header {
@@ -82,7 +115,7 @@
 
 @media (max-width: 768px) {
   .wrapper {
-    padding: 0;
+    padding: 1rem;
     justify-content: flex-start;
   }
 
@@ -96,13 +129,13 @@
     align-items: center;
     width: 100%;
     padding: 0.75rem 1rem;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
+    background: transparent;
+    border-bottom: none;
     flex-shrink: 0;
   }
 
   .container {
-    padding: 1rem;
+    padding: 0 0.5rem;
     margin-top: 0;
     overflow-y: auto;
     flex: 1;
