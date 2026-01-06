@@ -22,10 +22,21 @@
   align-items: stretch;
   justify-content: center;
   padding: 0;
-  background-image: url('/images/login-illustration.png');
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: linear-gradient(
+    270deg,
+    hsl(141deg 52% 41%) 0%,
+    hsl(141deg 48% 42%) 9%,
+    hsl(141deg 45% 44%) 18%,
+    hsl(142deg 42% 45%) 27%,
+    hsl(142deg 40% 47%) 36%,
+    hsl(143deg 38% 48%) 45%,
+    hsl(144deg 36% 49%) 55%,
+    hsl(145deg 35% 51%) 64%,
+    hsl(146deg 35% 52%) 73%,
+    hsl(147deg 35% 53%) 82%,
+    hsl(148deg 35% 55%) 91%,
+    hsl(149deg 35% 56%) 100%
+  );
   z-index: 1;
 }
 
@@ -59,7 +70,7 @@
 .platformTitle {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -124,7 +135,7 @@
 }
 
 .moduleIcon {
-  color: #3b82f6;
+  color: #2d8a5e;
   flex-shrink: 0;
   width: 24px;
   height: 24px;
@@ -202,7 +213,6 @@
   .wrapper {
     flex-direction: column;
     position: relative;
-    background: #ffffff;
   }
 
   .leftSection {
@@ -215,12 +225,8 @@
     height: 100vh;
     padding: 0;
     z-index: 1;
-    opacity: 0.3;
+    opacity: 0.4;
     pointer-events: none;
-    background-image: url('/images/login-illustration.png');
-    background-size: 180%;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 
   .leftContent {
@@ -238,28 +244,10 @@
     background: transparent;
   }
 
-  .wrapper::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/images/login-illustration.png');
-    background-size: 180%;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.3;
-    z-index: 0;
-    pointer-events: none;
-  }
-
   .illustrationContainer {
     display: none;
   }
-  
+
   .illustration {
     display: none;
   }
@@ -269,12 +257,6 @@
   .wrapper {
     flex-direction: column;
     position: relative;
-    background: #ffffff;
-  }
-
-  .wrapper::before {
-    background-size: 180%;
-    opacity: 0.3;
   }
 
   .leftSection {
@@ -287,12 +269,8 @@
     height: 100vh;
     padding: 0;
     z-index: 1;
-    opacity: 0.3;
+    opacity: 0.4;
     pointer-events: none;
-    background-image: url('/images/login-illustration.png');
-    background-size: 180%;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 
   .rightSection {
@@ -320,17 +298,13 @@
   .illustrationContainer {
     display: none;
   }
-  
+
   .illustration {
     display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .wrapper::before {
-    background-size: 180%;
-  }
-
   .leftSection {
     position: fixed;
     top: 0;
@@ -341,12 +315,8 @@
     height: 100vh;
     padding: 0;
     z-index: 1;
-    opacity: 0.1;
+    opacity: 0.2;
     pointer-events: none;
-    background-image: url('/images/login-illustration.png');
-    background-size: 180%;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 
   .rightSection {
@@ -364,7 +334,7 @@
   .illustrationContainer {
     display: none;
   }
-  
+
   .illustration {
     display: none;
   }
