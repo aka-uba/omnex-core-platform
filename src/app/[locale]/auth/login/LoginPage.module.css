@@ -26,6 +26,18 @@
   );
   padding: 1rem;
   z-index: 9999;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) .wrapper {
+  background-image: none;
+  background: var(--bg-secondary);
 }
 
 .container {

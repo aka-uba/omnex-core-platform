@@ -26,13 +26,25 @@
     hsl(149deg 35% 56%) 100%
   );
   padding: 1rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   /* z-index removed to allow Mantine portal dropdowns to work */
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) .wrapper {
+  background-image: none;
+  background: var(--bg-secondary);
 }
 
 .topControls {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: 1.5rem;
   z-index: 10000;
 }
 

@@ -12,6 +12,25 @@
   background: #ffffff;
   z-index: 9999;
   overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) .wrapper {
+  background: var(--bg-secondary);
+}
+
+:global([data-mantine-color-scheme="dark"]) .leftSection {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) .rightSection {
+  flex: 1;
+  max-width: 100%;
 }
 
 .leftSection {
@@ -177,9 +196,17 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  padding-right: 2.5rem;
   background: transparent;
   position: relative;
   z-index: 2;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rightSection::-webkit-scrollbar {
+  display: none;
 }
 
 .container {
