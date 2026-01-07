@@ -16,7 +16,7 @@ import {
   Checkbox,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
-import { IconArrowLeft, IconUser, IconBuilding, IconMapPin, IconPhone, IconId, IconHome } from '@tabler/icons-react';
+import { IconArrowLeft } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useRouter } from 'next/navigation';
 import { useCreateTenant, useUpdateTenant, useTenant } from '@/hooks/useTenants';
