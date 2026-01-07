@@ -38,10 +38,10 @@ export const tenantSchema = z.object({
   moveOutDate: z.coerce.date().optional().nullable(),
 
   // Scores
-  paymentScore: z.number().min(0).max(100).optional().nullable(),
-  contactScore: z.number().min(0).max(100).optional().nullable(),
-  maintenanceScore: z.number().min(0).max(100).optional().nullable(),
-  overallScore: z.number().min(0).max(100).optional().nullable(),
+  paymentScore: z.coerce.number().min(0).max(100).optional().nullable(),
+  contactScore: z.coerce.number().min(0).max(100).optional().nullable(),
+  maintenanceScore: z.coerce.number().min(0).max(100).optional().nullable(),
+  overallScore: z.coerce.number().min(0).max(100).optional().nullable(),
 
   // Notes and analysis
   notes: z.string().optional().nullable(),

@@ -23,7 +23,7 @@ export const appointmentSchema = z.object({
   description: z.string().optional().nullable(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  duration: z.number().int().min(1).optional().nullable(),
+  duration: z.coerce.number().int().min(1).optional().nullable(),
   staffIds: z.array(z.string()).default([]),
   externalParticipants: z.array(externalParticipantSchema).optional().nullable(),
   status: appointmentStatusSchema.default('scheduled'),
@@ -34,7 +34,7 @@ export const appointmentSchema = z.object({
   notes: z.string().optional().nullable(),
   calendarEventId: z.string().optional().nullable(),
   result: appointmentResultSchema.optional().nullable(),
-  rating: z.number().int().min(1).max(5).optional().nullable(),
+  rating: z.coerce.number().int().min(1).max(5).optional().nullable(),
   interestLevel: interestLevelSchema.optional().nullable(),
 }).refine((data) => {
   return data.endDate >= data.startDate;

@@ -6,7 +6,7 @@ export const paymentMethodSchema = z.enum(['cash', 'bank_transfer', 'card', 'che
 
 export const extraChargeSchema = z.object({
   name: z.string().min(1),
-  amount: z.number().min(0),
+  amount: z.coerce.number().min(0),
   type: z.string().optional(),
 });
 
@@ -15,7 +15,7 @@ export const paymentSchema = z.object({
   contractId: z.string().optional().nullable(),
   tenantRecordId: z.string().optional().nullable(),
   type: paymentTypeSchema,
-  amount: z.number().min(0, 'Amount must be positive'),
+  amount: z.coerce.number().min(0, 'Amount must be positive'),
   currency: z.preprocess((val) => val ?? 'TRY', z.string()),
   dueDate: z.coerce.date(),
   paidDate: z.coerce.date().optional().nullable(),
