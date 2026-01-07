@@ -648,10 +648,25 @@ async function main() {
       console.log('🧹 Cleaning existing data...');
 
       // Delete in correct order to respect foreign key constraints
+      // First: Delete all records that reference apartments
+      await tenantPrisma.realEstateMaintenanceRecord.deleteMany({ where: { tenantId, companyId } });
+      await tenantPrisma.agreementReport.deleteMany({ where: { tenantId, companyId } });
+      await tenantPrisma.appointment.deleteMany({ where: { tenantId, companyId } });
       await tenantPrisma.payment.deleteMany({ where: { tenantId, companyId } });
       await tenantPrisma.contract.deleteMany({ where: { tenantId, companyId } });
+
+      // Second: Delete tenants
       await tenantPrisma.tenant.deleteMany({ where: { tenantId, companyId } });
+
+      // Third: Delete apartments
       await tenantPrisma.apartment.deleteMany({ where: { tenantId, companyId } });
+
+      // Fourth: Delete property related records
+      await tenantPrisma.propertyStaff.deleteMany({ where: { tenantId, companyId } });
+      await tenantPrisma.propertyExpense.deleteMany({ where: { tenantId, companyId } });
+      await tenantPrisma.sideCostReconciliation.deleteMany({ where: { tenantId, companyId } });
+
+      // Finally: Delete properties
       await tenantPrisma.property.deleteMany({ where: { tenantId, companyId } });
 
       console.log('✓ Existing data cleaned\n');
