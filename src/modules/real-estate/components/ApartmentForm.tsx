@@ -489,6 +489,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 placeholder={t('form.additionalCostsPlaceholder')}
                 min={0}
                 decimalScale={2}
+                description={t('sideCosts.additionalCostsHint')}
                 {...form.getInputProps('additionalCosts')}
               />
             </Grid.Col>
@@ -508,6 +509,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 placeholder={t('form.depositPlaceholder')}
                 min={0}
                 decimalScale={2}
+                description={t('sideCosts.depositHint')}
                 {...form.getInputProps('deposit')}
               />
             </Grid.Col>
@@ -526,6 +528,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 label={t('form.verbrauchsausweis')}
                 data={energyCertificateStatusOptions}
                 clearable
+                description={t('energy.verbrauchsausweisHint')}
                 {...form.getInputProps('energyCertificateType')}
               />
             </Grid.Col>
@@ -535,7 +538,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 data={energyCertificateStatusOptions}
                 clearable
                 disabled
-                description="Sekundär"
+                description={t('energy.bedarfsausweisHint')}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 3 }}>
@@ -544,6 +547,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 placeholder={t('form.energyConsumptionPlaceholder')}
                 min={0}
                 decimalScale={2}
+                description={t('energy.consumptionHint')}
                 {...form.getInputProps('energyConsumption')}
               />
             </Grid.Col>
@@ -553,6 +557,7 @@ export function ApartmentForm({ locale, apartmentId }: ApartmentFormProps) {
                 placeholder={t('form.energyCertificateYearPlaceholder')}
                 min={1900}
                 max={new Date().getFullYear()}
+                description={t('energy.yearHint')}
                 {...form.getInputProps('energyCertificateYear')}
               />
             </Grid.Col>

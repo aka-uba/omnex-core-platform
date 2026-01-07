@@ -1790,7 +1790,17 @@
     "noData": "لم يتم العثور على بيانات التكاليف الجانبية لهذا السجل",
     "noDataHint": "أضف شقة لرؤية معلومات الإيجار والتكاليف الجانبية",
     "noDataApartmentHint": "أضف معلومات الإيجار والتكاليف الجانبية في وضع التعديل",
-    "noDataTenantHint": "معلومات التكاليف الجانبية مرتبطة بشقة عقد المستأجر النشط"
+    "noDataTenantHint": "معلومات التكاليف الجانبية مرتبطة بشقة عقد المستأجر النشط",
+    "coldRentHint": "الإيجار بدون التكاليف الجانبية",
+    "additionalCostsHint": "المياه، القمامة، المصعد",
+    "heatingCostsHint": "إذا تمت فوترتها منفصلة",
+    "depositHint": "عادة 2-3 أشهر إيجار"
+  },
+  "energy": {
+    "verbrauchsausweisHint": "مبني على الاستهلاك",
+    "bedarfsausweisHint": "شهادة ثانوية",
+    "consumptionHint": "kWh/(m²*a)",
+    "yearHint": "سنة الإصدار"
   },
   "propertyExpenses": {
     "title": "مصروفات المبنى",

@@ -1845,8 +1845,16 @@
     "noDataHint": "Kira ve yan gider bilgilerini görmek için daire ekleyin",
     "noDataApartmentHint": "Düzenleme modunda kira ve yan gider bilgilerini ekleyin",
     "noDataTenantHint": "Yan gider bilgileri kiracının aktif sözleşme dairesine bağlıdır",
-    "coldRentHint": "Isıtma, su veya çöp gibi yan giderler hariç aylık kira.",
-    "heatingCostsHint": "Isıtma giderleri yan giderlere dahil değilse VE ayrıca faturalandırılması gerekiyorsa"
+    "coldRentHint": "Yan giderler hariç net kira",
+    "additionalCostsHint": "Su, çöp, asansör vb.",
+    "heatingCostsHint": "Ayrı faturalanıyorsa",
+    "depositHint": "Genellikle 2-3 aylık kira"
+  },
+  "energy": {
+    "verbrauchsausweisHint": "Tüketim bazlı",
+    "bedarfsausweisHint": "İkincil sertifika",
+    "consumptionHint": "kWh/(m²*a)",
+    "yearHint": "Düzenlenme yılı"
   },
   "propertyExpenses": {
     "title": "Bina Giderleri",

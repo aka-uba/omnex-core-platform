@@ -1847,8 +1847,16 @@
     "noDataHint": "Fügen Sie eine Wohnung hinzu, um Miet- und Nebenkosteninformationen anzuzeigen",
     "noDataApartmentHint": "Fügen Sie Miet- und Nebenkosteninformationen im Bearbeitungsmodus hinzu",
     "noDataTenantHint": "Nebenkosteninformationen hängen von der aktiven Vertragswohnung des Mieters ab",
-    "coldRentHint": "Die monatliche Miete ohne Nebenkosten wie Heizung, Wasser oder Müllabfuhr.",
-    "heatingCostsHint": "Falls die Heizkosten nicht direkt in den Nebenkosten enthalten sind UND gesondert abgerechnet werden müssen"
+    "coldRentHint": "Nettomiete ohne Nebenkosten",
+    "additionalCostsHint": "Wasser, Müll, Aufzug usw.",
+    "heatingCostsHint": "Falls separat abgerechnet",
+    "depositHint": "Meist 2-3 Monatsmieten"
+  },
+  "energy": {
+    "verbrauchsausweisHint": "Verbrauchsbasiert",
+    "bedarfsausweisHint": "Sekundärzertifikat",
+    "consumptionHint": "kWh/(m²*a)",
+    "yearHint": "Ausstellungsjahr"
   },
   "propertyExpenses": {
     "title": "Gebäudekosten",

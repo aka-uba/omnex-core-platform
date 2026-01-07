@@ -1847,8 +1847,16 @@
     "noDataHint": "Add an apartment to see rent and side cost information",
     "noDataApartmentHint": "Add rent and side cost information in edit mode",
     "noDataTenantHint": "Side cost information is linked to the tenant's active contract apartment",
-    "coldRentHint": "Monthly rent excluding side costs such as heating, water, or garbage collection.",
-    "heatingCostsHint": "If heating costs are not included in the side costs AND must be billed separately"
+    "coldRentHint": "Net rent excl. side costs",
+    "additionalCostsHint": "Water, garbage, elevator etc.",
+    "heatingCostsHint": "If billed separately",
+    "depositHint": "Usually 2-3 months rent"
+  },
+  "energy": {
+    "verbrauchsausweisHint": "Consumption-based",
+    "bedarfsausweisHint": "Secondary certificate",
+    "consumptionHint": "kWh/(m²*a)",
+    "yearHint": "Issue year"
   },
   "propertyExpenses": {
     "title": "Building Expenses",
