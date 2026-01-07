@@ -677,8 +677,15 @@ async function main() {
     const createdProperties = [];
 
     for (const propData of PROPERTIES) {
-      const property = await tenantPrisma.property.create({
-        data: {
+      const property = await tenantPrisma.property.upsert({
+        where: {
+          tenantId_address: {
+            tenantId: tenantId,
+            address: propData.address,
+          },
+        },
+        update: {},
+        create: {
           tenantId: tenantId,
           companyId: companyId,
           name: propData.name,
@@ -718,8 +725,15 @@ async function main() {
     for (const aptData of APARTMENTS) {
       const property = createdProperties[aptData.propertyIndex];
 
-      const apartment = await tenantPrisma.apartment.create({
-        data: {
+      const apartment = await tenantPrisma.apartment.upsert({
+        where: {
+          propertyId_unitNumber: {
+            propertyId: property.id,
+            unitNumber: aptData.unitNumber,
+          },
+        },
+        update: {},
+        create: {
           tenantId: tenantId,
           companyId: companyId,
           propertyId: property.id,
@@ -771,11 +785,20 @@ async function main() {
       const city = postalCity.slice(1).join(' ') || 'Mönchengladbach';
       const street = addressLines[1] || '';
 
-      // Generate unique tenant number
-      const tenantNumber = `T-${Date.now().toString().slice(-6)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
+      // Generate unique tenant number from name
+      const tenantNumber = `T-${tenantData.lastName.toUpperCase().substring(0, 3)}-${tenantData.firstName.substring(0, 2).toUpperCase()}`;
 
-      const tenantRecord = await tenantPrisma.tenant.create({
-        data: {
+      // Use email if available, otherwise firstName+lastName+postalCode
+      const uniqueKey = tenantData.email || `${tenantData.firstName}_${tenantData.lastName}_${postalCode}`;
+
+      const tenantRecord = await tenantPrisma.tenant.upsert({
+        where: {
+          tenantId_email: tenantData.email
+            ? { tenantId: tenantId, email: tenantData.email }
+            : { tenantId: tenantId, email: `${uniqueKey.toLowerCase().replace(/\s+/g, '_')}@legacy.local` },
+        },
+        update: {},
+        create: {
           tenantId: tenantId,
           companyId: companyId,
           tenantNumber: tenantNumber,
@@ -786,7 +809,7 @@ async function main() {
           companyName: tenantData.companyName,
           phone: tenantData.phone,
           mobile: tenantData.mobile,
-          email: tenantData.email,
+          email: tenantData.email || `${uniqueKey.toLowerCase().replace(/\s+/g, '_')}@legacy.local`,
           street: street,
           postalCode: postalCode,
           city: city,
