@@ -10,9 +10,14 @@ env:
   APP_NAME: omnex
   DOMAIN: property.onway-gmbh.de
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
       - name: Checkout code
@@ -25,27 +30,41 @@ jobs:
           username: deploy
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2222
-          command_timeout: 15m
+          command_timeout: 20m
           script: |
-            cd /opt/omnex/deploy
-            echo "Starting deployment at $(date)"
+            LOCK_FILE=/tmp/omnex_deploy.lock
+            (
+              flock -n 9 || { echo "Another deployment is in progress. Exiting."; exit 1; }
 
-            # Pull latest code
-            cd /opt/omnex && git pull origin main
+              cd /opt/omnex/deploy
+              echo "Starting deployment at $(date)"
 
-            # Cleanup old build cache before building (keep last 5GB)
-            echo "Cleaning up old build cache..."
-            docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+              # Pull latest code
+              cd /opt/omnex && git pull origin main
 
-            # Build with resource limits (--memory 2g --cpu-quota 100000)
-            cd /opt/omnex/deploy
-            DOCKER_BUILDKIT=1 docker compose build --no-cache --build-arg BUILDKIT_INLINE_CACHE=0 app
+              # Cleanup old build cache before building (keep last 5GB)
+              echo "Cleaning up old build cache..."
+              docker builder prune -f --keep-storage 5GB 2>/dev/null || true
 
-            # Restart app container
-            docker compose up -d --force-recreate app
+              # Stop app before building
+              docker compose stop app
 
-            # Cleanup old images and build cache
-            docker image prune -f
-            docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+              # Build with resource limits (--memory 2g --cpu-quota 100000)
+              cd /opt/omnex/deploy
+              DOCKER_BUILDKIT=1 docker compose build --pull --build-arg BUILDKIT_INLINE_CACHE=0 app
 
-            echo "Deployment completed at $(date)"
+              # Restart app container
+              docker compose up -d --force-recreate app
+
+              echo "Waiting for health check..."
+              for i in $(seq 1 30); do
+                curl -sf http://localhost:3000/api/health && break
+                sleep 3
+              done
+
+              # Cleanup old images and build cache
+              docker image prune -f
+              docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+
+              echo "Deployment completed at $(date)"
+            ) 9>"$LOCK_FILE"
