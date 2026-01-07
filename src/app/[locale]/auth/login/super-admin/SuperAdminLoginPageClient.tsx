@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -50,7 +49,6 @@ interface Period {
 }
 
 export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
-  const router = useRouter();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('modules/auth');
   const { t: tGlobal } = useTranslation('global');

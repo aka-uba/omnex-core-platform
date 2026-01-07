@@ -31,6 +31,7 @@ interface Company {
   tenantSlug?: string | null;
   isCoreTenant?: boolean;
   isTenantEntry?: boolean;
+  description?: string;
 }
 
 interface Tenant {

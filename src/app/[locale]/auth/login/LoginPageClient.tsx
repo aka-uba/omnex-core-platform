@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -37,7 +36,6 @@ const languageOptions = Object.entries(localeNames).map(([value, label]) => ({
 const REMEMBER_ME_KEY = 'omnex-remember-credentials';
 
 export function LoginPageClient({ locale }: { locale: string }) {
-  const router = useRouter();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('modules/auth');
   const { t: tGlobal } = useTranslation('global');

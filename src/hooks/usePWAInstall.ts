@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -96,7 +96,7 @@ export function usePWAInstall(): PWAInstallState {
   const [platform, setPlatform] = useState<Platform>('unknown');
   const [browser, setBrowser] = useState<Browser>('unknown');
   const [isReady, setIsReady] = useState(false);
-  const [promptReceived, setPromptReceived] = useState(globalPromptReceived);
+  const [_promptReceived, setPromptReceived] = useState(globalPromptReceived);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

@@ -194,7 +194,6 @@ export async function scanModulePages(locale: Locale, userRole?: string): Promis
       if (!stat.isDirectory()) continue;
 
       // Check module status from database first (source of truth)
-      let isModuleActive = true;
       try {
         const dbModule = await corePrisma.module.findUnique({
           where: { slug: moduleSlug },
@@ -341,8 +340,6 @@ export async function scanModulePages(locale: Locale, userRole?: string): Promis
         );
 
         if (settingsPageIndex !== -1) {
-          const settingsPage = pages[settingsPageIndex];
-          
           // Check if user has admin or superadmin role
           const isAdmin = userRole && (
             userRole.toLowerCase() === 'admin' || 

@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     let tenantSlugFromPath: string | null = null;
     if (referer) {
       const urlMatch = referer.match(/\/tenant\/([^\/]+)/);
-      if (urlMatch) {
+      if (urlMatch && urlMatch[1]) {
         tenantSlugFromPath = urlMatch[1];
       }
     }
@@ -116,8 +116,8 @@ export async function GET(request: NextRequest) {
           companyName = company.name;
           // short_name: Use first word if <= 12 chars, otherwise first 12 chars
           const words = company.name.split(' ');
-          shortName = words[0].length <= 12 ? words[0] : company.name.substring(0, 12);
-        } else if (tenant.name) {
+          shortName = (words[0] && words[0].length <= 12) ? words[0] : company.name.substring(0, 12);
+        } else if (tenant?.name) {
           companyName = tenant.name;
           shortName = tenant.name.split(' ')[0] || tenant.name.substring(0, 12);
         }
