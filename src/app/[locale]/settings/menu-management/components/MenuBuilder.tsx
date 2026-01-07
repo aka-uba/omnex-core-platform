@@ -144,28 +144,80 @@ export function MenuBuilder({ menuId, items, onUpdateItems, onEditItem }: MenuBu
         // Insert all moved items at destination
         newItems.splice(adjustedDestination, 0, ...movedItems);
 
+        // Recalculate parentIds based on depth after drag-drop
+        // This ensures parentId matches the new depth structure
+        for (let i = 0; i < newItems.length; i++) {
+            const item = newItems[i];
+            if (!item) continue;
+            
+            const itemDepth = item.depth || 0;
+            
+            if (itemDepth === 0) {
+                // Root level item - no parent
+                item.parentId = null;
+            } else {
+                // Find the parent by looking backwards for the first item with depth = itemDepth - 1
+                let parentId: string | null = null;
+                for (let j = i - 1; j >= 0; j--) {
+                    const prevItem = newItems[j];
+                    if (!prevItem) continue;
+                    
+                    const prevDepth = prevItem.depth || 0;
+                    
+                    if (prevDepth === itemDepth - 1) {
+                        parentId = prevItem.id || null;
+                        break;
+                    } else if (prevDepth < itemDepth - 1) {
+                        // We've gone too far up, no parent found
+                        break;
+                    }
+                }
+                item.parentId = parentId;
+            }
+        }
+
         setFlatItems(newItems);
     };
 
     const handleSaveOrder = async () => {
         setIsSaving(true);
         try {
-            // Reconstruct tree or send flat list with parentIds updated
-            // For simplicity, we'll send a flat list with updated order and parentIds
-            // We need to calculate parentIds based on depth
+            // Recalculate parentIds based on depth before saving
+            // This ensures parentId matches the current depth structure after drag-drop
+            const itemsWithUpdatedParentIds = flatItems.map((item, index) => {
+                if (!item) return item;
+                
+                const itemDepth = item.depth || 0;
+                
+                if (itemDepth === 0) {
+                    // Root level item - no parent
+                    return { ...item, parentId: null };
+                } else {
+                    // Find the parent by looking backwards for the first item with depth = itemDepth - 1
+                    let parentId: string | null = null;
+                    for (let j = index - 1; j >= 0; j--) {
+                        const prevItem = flatItems[j];
+                        if (!prevItem) continue;
+                        
+                        const prevDepth = prevItem.depth || 0;
+                        
+                        if (prevDepth === itemDepth - 1) {
+                            parentId = prevItem.id || null;
+                            break;
+                        } else if (prevDepth < itemDepth - 1) {
+                            // We've gone too far up, no parent found
+                            break;
+                        }
+                    }
+                    return { ...item, parentId };
+                }
+            });
 
-
-            // This is a simplified logic - in a real app we'd need robust tree reconstruction
-            // For now, let's just save the order of the current structure
-            // If we want to support changing hierarchy, we need "Indent/Outdent" buttons
-
-            // Let's implement Indent/Outdent logic first
-
-            // Re-calculate orders
-            const updates = flatItems.map((item, index) => ({
+            // Re-calculate orders with updated parentIds
+            const updates = itemsWithUpdatedParentIds.map((item, index) => ({
                 id: item.id,
                 order: index,
-                parentId: item.parentId // This needs to be updated if we change hierarchy
+                parentId: item.parentId
             }));
 
             const response = await fetchWithAuth(`/api/menus/${menuId}/items/reorder`, {

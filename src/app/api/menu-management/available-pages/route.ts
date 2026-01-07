@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
+import { corePrisma } from '@/lib/corePrisma';
+import { verifyAuth } from '@/lib/auth/jwt';
 type Locale = 'tr' | 'en' | 'de' | 'ar';
 
 // Helper to load module translation
@@ -176,7 +178,7 @@ const SUPERADMIN_PAGES_TEMPLATE = [
   { id: 'superadmin-file-manager', key: 'modules.file-manager.title', href: '/modules/file-manager', icon: 'Folder', category: 'core' as const },
 ];
 
-export async function scanModulePages(locale: Locale): Promise<PageCategory[]> {
+export async function scanModulePages(locale: Locale, userRole?: string): Promise<PageCategory[]> {
   const categories: PageCategory[] = [];
   const modulesPath = path.join(process.cwd(), 'src/modules');
   const appModulesPath = path.join(process.cwd(), 'src/app/[locale]/modules');
@@ -191,7 +193,57 @@ export async function scanModulePages(locale: Locale): Promise<PageCategory[]> {
 
       if (!stat.isDirectory()) continue;
 
-      // Try to read module config
+      // Check module status from database first (source of truth)
+      let isModuleActive = true;
+      try {
+        const dbModule = await corePrisma.module.findUnique({
+          where: { slug: moduleSlug },
+          select: { status: true },
+        });
+        
+        // Only include active modules - skip inactive, planned, error, or installed-only modules
+        if (dbModule && dbModule.status !== 'active') {
+          continue; // Skip this module
+        }
+        
+        // If module doesn't exist in DB, check config file as fallback
+        if (!dbModule) {
+          // Try to read module config
+          try {
+            const configPath = path.join(modulePath, 'module.config.yaml');
+            const configContent = await fs.readFile(configPath, 'utf8');
+            const statusMatch = configContent.match(/status:\s*['"]?([^'"\n]+)['"]?/);
+            
+            if (statusMatch) {
+              const moduleStatus = statusMatch[1]?.toLowerCase().trim() || '';
+              if (moduleStatus === 'planned' || moduleStatus === 'inactive') {
+                continue; // Skip this module
+              }
+            }
+          } catch {
+            // If config read fails, assume active (for backward compatibility)
+          }
+        }
+      } catch (dbError) {
+        // If DB check fails, fall back to config file check
+        console.warn(`Failed to check module status from DB for ${moduleSlug}:`, dbError);
+        try {
+          const configPath = path.join(modulePath, 'module.config.yaml');
+          const configContent = await fs.readFile(configPath, 'utf8');
+          const statusMatch = configContent.match(/status:\s*['"]?([^'"\n]+)['"]?/);
+          
+          if (statusMatch) {
+            const moduleStatus = statusMatch[1]?.toLowerCase().trim() || '';
+            if (moduleStatus === 'planned' || moduleStatus === 'inactive') {
+              continue; // Skip this module
+            }
+          }
+        } catch {
+          // If config read also fails, assume active (for backward compatibility)
+        }
+      }
+
+      // Try to read module config for label and icon
       let moduleLabelFallback = moduleSlug;
       let moduleIcon = 'Box';
 
@@ -200,18 +252,9 @@ export async function scanModulePages(locale: Locale): Promise<PageCategory[]> {
         const configContent = await fs.readFile(configPath, 'utf8');
         const nameMatch = configContent.match(/name:\s*['"]?([^'"\n]+)['"]?/);
         const iconMatch = configContent.match(/icon:\s*['"]?([^'"\n]+)['"]?/);
-        const statusMatch = configContent.match(/status:\s*['"]?([^'"\n]+)['"]?/);
         
         if (nameMatch && nameMatch[1]) moduleLabelFallback = nameMatch[1];
         if (iconMatch && iconMatch[1]) moduleIcon = iconMatch[1];
-        
-        // Skip modules with status "planned" or "inactive" - only include active modules
-        if (statusMatch) {
-          const moduleStatus = statusMatch[1]?.toLowerCase().trim() || '';
-          if (moduleStatus === 'planned' || moduleStatus === 'inactive') {
-            continue; // Skip this module
-          }
-        }
       } catch {
         // Try reading module.json as fallback
         try {
@@ -291,24 +334,40 @@ export async function scanModulePages(locale: Locale): Promise<PageCategory[]> {
 
         // Ensure Settings page is always at the end of each module group
         // Find Settings page and move it to the end with highest order
+        // BUT: Only show Settings page if user has admin or superadmin role
         const settingsPageIndex = pages.findIndex(page => 
           page.href === `/modules/${moduleSlug}/settings` || 
           page.href?.endsWith('/settings')
         );
 
         if (settingsPageIndex !== -1) {
-          // Get the highest order from all pages
-          const maxOrder = pages.reduce((max, page) => {
-            // Check if page has order property (it might not have one)
-            const pageOrder = (page as any).order;
-            return Math.max(max, typeof pageOrder === 'number' ? pageOrder : 0);
-          }, 0);
+          const settingsPage = pages[settingsPageIndex];
+          
+          // Check if user has admin or superadmin role
+          const isAdmin = userRole && (
+            userRole.toLowerCase() === 'admin' || 
+            userRole.toLowerCase() === 'superadmin' ||
+            userRole === 'Admin' ||
+            userRole === 'SuperAdmin'
+          );
+          
+          if (!isAdmin) {
+            // Remove Settings page if user is not admin/superadmin
+            pages.splice(settingsPageIndex, 1);
+          } else {
+            // Get the highest order from all pages
+            const maxOrder = pages.reduce((max, page) => {
+              // Check if page has order property (it might not have one)
+              const pageOrder = (page as any).order;
+              return Math.max(max, typeof pageOrder === 'number' ? pageOrder : 0);
+            }, 0);
 
-          // Move Settings page to the end and set highest order
-          const settingsPage = pages.splice(settingsPageIndex, 1)[0];
-          if (settingsPage) {
-            (settingsPage as any).order = maxOrder + 1; // Always at the end
-            pages.push(settingsPage);
+            // Move Settings page to the end and set highest order
+            const removedPage = pages.splice(settingsPageIndex, 1)[0];
+            if (removedPage) {
+              (removedPage as any).order = maxOrder + 1; // Always at the end
+              pages.push(removedPage);
+            }
           }
         }
       } catch (error) {
@@ -715,8 +774,17 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const locale = (searchParams.get('locale')) as Locale;
     
-    // TODO: Get user role from session/auth
-    const userRole = 'superadmin'; // Placeholder - should come from auth
+    // Get user role from auth
+    let userRole: string | undefined = undefined;
+    try {
+      const authResult = await verifyAuth(request);
+      if (authResult.valid && authResult.payload) {
+        userRole = authResult.payload.role;
+      }
+    } catch (authError) {
+      // If auth fails, continue without role (will show all pages except Settings)
+      console.warn('Failed to get user role from auth:', authError);
+    }
 
     // Translate and filter core pages (check if they exist)
     const corePagesPromises = CORE_PAGES_TEMPLATE.map(async (page) => {
@@ -756,8 +824,8 @@ export async function GET(request: NextRequest) {
       }))
     );
 
-    // Scan all module pages
-    const moduleCategories = await scanModulePages(locale);
+    // Scan all module pages (pass userRole for Settings page filtering)
+    const moduleCategories = await scanModulePages(locale, userRole);
 
     // Translate category labels
     const coreCategoryLabel = await getGlobalTranslation(locale, 'navigation.corePages', 'Core Sayfalar');

@@ -2466,6 +2466,258 @@ interface CompanyResponse {
 
 ---
 
+## 28. MENÜ YÖNETİMİ SİSTEMİ
+
+### 28.1 Menü Yönetimi Sayfası
+**Dosya**: `src/app/[locale]/settings/menu-management/`
+
+Menü öğelerini ekleme, düzenleme ve sıralama için merkezi yönetim sayfası.
+
+**Özellikler:**
+- Modül sayfalarını menüye ekleme
+- Menü öğelerini sürükle-bırak ile sıralama
+- Alt menü hiyerarşisi yönetimi
+- Menü görünürlük kontrolü
+
+### 28.2 Menü Oluşturma ve Filtreleme
+
+#### Pasif Modüllerin Filtrelenmesi
+**Dosya**: `src/app/api/menu-management/available-pages/route.ts`
+
+Modül menüleri eklenirken sadece **aktif modüller** gösterilir:
+
+```typescript
+// Modül durumu DB'den kontrol edilir
+const module = await corePrisma.module.findFirst({
+  where: { slug: moduleSlug, status: 'active' }
+});
+
+// Pasif modüller atlanır
+if (!module || module.status !== 'active') {
+  continue;
+}
+```
+
+**Kontrol Sırası:**
+1. Core DB'den modül durumu kontrol edilir (`Module.status === 'active'`)
+2. DB'de bulunamazsa veya kontrol başarısız olursa `module.config.yaml` kontrol edilir (fallback)
+
+#### Settings Sayfası Görünürlük Kontrolü
+**Dosya**: `src/app/api/menu-management/available-pages/route.ts`
+
+Modül Settings sayfaları (`/modules/{slug}/settings`) **sadece Admin ve SuperAdmin** kullanıcılarına gösterilir:
+
+```typescript
+// Settings sayfası kontrolü
+const isModuleSettingsPage = page.href?.endsWith('/settings');
+
+if (isModuleSettingsPage) {
+  const isAdmin = userRole && (
+    userRole.toLowerCase() === 'admin' || 
+    userRole.toLowerCase() === 'superadmin' ||
+    userRole === 'Admin' ||
+    userRole === 'SuperAdmin'
+  );
+  
+  if (!isAdmin) {
+    // Settings sayfasını listeden kaldır
+    pages.splice(settingsPageIndex, 1);
+  }
+}
+```
+
+**Kontrol Noktaları:**
+1. **Menü Yönetimi Sayfası** (`available-pages` API) - Settings sayfası ClientUser'a gösterilmez
+2. **Menü Resolver** (`menu-resolver` API) - Menüde Settings sayfası filtrelenir
+3. **useMenuItems Hook** - Otomatik eklenen Settings sayfası için rol kontrolü
+4. **Settings Sayfası** (`ModuleSettingsPage`) - Doğrudan URL erişimi engellenir
+
+### 28.3 Alt Menü Sıralama (Drag & Drop)
+
+**Dosya**: `src/app/[locale]/settings/menu-management/components/MenuBuilder.tsx`
+
+Alt menüler sürükle-bırak ile sıralanırken `parentId` değerleri otomatik olarak yeniden hesaplanır:
+
+```typescript
+// Drag sonrası parentId'leri depth'e göre yeniden hesapla
+const recalculateParentIds = (items: MenuItem[]) => {
+  return items.map((item, index) => {
+    // Geriye doğru bakarak parent'ı bul
+    for (let j = index - 1; j >= 0; j--) {
+      if (items[j].depth === item.depth - 1) {
+        return { ...item, parentId: items[j].id };
+      }
+    }
+    return { ...item, parentId: null };
+  });
+};
+```
+
+**Önemli:** Alt menüler ana grubun arasına (2., 3., 4. sıra) sürüklendiğinde `parentId` değerleri doğru şekilde güncellenir.
+
+### 28.4 useMenuItems Hook - Otomatik Settings Ekleme
+
+**Dosya**: `src/components/layouts/hooks/useMenuItems.ts`
+
+Aktif modüller için otomatik menü oluşturulurken Settings sayfası **sadece Admin/SuperAdmin** için eklenir:
+
+```typescript
+// Settings sayfası ekleme kontrolü
+const userRole = user?.role || '';
+const isAdmin = userRole && (
+  userRole.toLowerCase() === 'admin' || 
+  userRole.toLowerCase() === 'superadmin' ||
+  userRole === 'Admin' ||
+  userRole === 'SuperAdmin'
+);
+
+if (isAdmin) {
+  // Settings sayfasını ekle
+  children.push(settingsItem);
+} else {
+  // Settings varsa kaldır
+  const settingsIndex = children.findIndex(child => child.href === settingsHref);
+  if (settingsIndex !== -1) {
+    children.splice(settingsIndex, 1);
+  }
+}
+```
+
+**Dependency Array:** `user?.role` eklendi - rol değiştiğinde menü yeniden oluşturulur.
+
+### 28.5 Menu Resolver - Settings Filtresi
+
+**Dosya**: `src/app/api/menu-resolver/[location]/route.ts`
+
+Menü öğeleri çözümlenirken Settings sayfaları filtrelenir:
+
+```typescript
+const filterItemsByPermissions = (items: any[]): any[] => {
+  return items.filter(item => {
+    // Module Settings sayfası kontrolü
+    if (item.href && /^\/modules\/[^\/]+\/settings$/.test(item.href)) {
+      const isAdmin = roleName && (
+        roleName.toLowerCase() === 'admin' || 
+        roleName.toLowerCase() === 'superadmin'
+      );
+      
+      if (!isAdmin) {
+        return false; // ClientUser için gizle
+      }
+    }
+    return true;
+  });
+};
+```
+
+### 28.6 Settings Sayfası Erişim Kontrolü
+
+**Dosya**: `src/modules/module-management/components/ModuleSettingsPage.tsx`
+
+Settings sayfasının kendisinde rol kontrolü yapılır:
+
+```typescript
+const { user, loading: authLoading } = useAuth();
+const userRole = user?.role || '';
+const isAdmin = userRole && (
+  userRole.toLowerCase() === 'admin' || 
+  userRole.toLowerCase() === 'superadmin'
+);
+
+// Redirect non-admin users
+useEffect(() => {
+  if (!authLoading && user && !isAdmin) {
+    router.push(`/${currentLocale}/dashboard`);
+  }
+}, [authLoading, user, isAdmin]);
+```
+
+**Sonuç:** ClientUser doğrudan URL ile erişmeye çalışırsa dashboard'a yönlendirilir.
+
+### 28.7 Access Control API Erişimi
+
+**Dosya**: `src/components/layouts/hooks/useMenuItems.ts`
+
+Access control config'leri **sadece Admin/SuperAdmin** için fetch edilir:
+
+```typescript
+// Access control config fetch kontrolü
+const userRole = user?.role || '';
+const isAdmin = userRole && (
+  userRole.toLowerCase() === 'admin' || 
+  userRole.toLowerCase() === 'superadmin'
+);
+
+if (!isAdmin) {
+  return; // ClientUser için fetch yapma (403 hatası önlenir)
+}
+```
+
+**Neden:** `/api/access-control` endpoint'i sadece Admin/SuperAdmin'e açık. ClientUser için gereksiz istek ve 403 hatası önlenir.
+
+### 28.8 Menü Yönetimi API Endpoints
+
+| Endpoint | Method | Açıklama | Rol Gereksinimi |
+|----------|--------|----------|-----------------|
+| `/api/menu-management/available-pages` | GET | Eklenecek sayfaları listele | Herkes (Settings filtrelenir) |
+| `/api/menu-management/initialize` | GET | Menü yapısını başlat | Admin/SuperAdmin |
+| `/api/menu-management/sync` | POST | Modül menülerini senkronize et | Admin/SuperAdmin |
+| `/api/menu-resolver/[location]` | GET | Menü öğelerini çözümle | Herkes (Settings filtrelenir) |
+| `/api/access-control` | GET | Erişim kontrol config'leri | Admin/SuperAdmin |
+
+### 28.9 Menü Yönetimi Dosya Yapısı
+
+```
+src/app/[locale]/settings/menu-management/
+├── page.tsx                          # Ana sayfa
+├── components/
+│   ├── MenuBuilder.tsx              # Drag-drop menü oluşturucu
+│   ├── MenuItemEditor.tsx           # Menü öğesi düzenleyici
+│   ├── MenuList.tsx                 # Menü listesi
+│   ├── PageSelector.tsx             # Sayfa seçici
+│   └── LocationAssignment.tsx       # Lokasyon atama
+
+src/app/api/menu-management/
+├── available-pages/route.ts         # Eklenecek sayfalar API
+├── initialize/route.ts              # Menü başlatma API
+├── sync/route.ts                    # Senkronizasyon API
+└── [menuId]/items/reorder/route.ts # Sıralama API
+
+src/app/api/menu-resolver/
+└── [location]/route.ts              # Menü çözümleme API
+```
+
+### 28.10 Menü Yönetimi Kuralları
+
+**✅ DOĞRU:**
+- Pasif modüller menü yönetiminde gösterilmez
+- Settings sayfası sadece Admin/SuperAdmin'e gösterilir
+- Alt menü sıralaması `parentId` ile korunur
+- Access control config'leri sadece Admin için fetch edilir
+
+**❌ YANLIŞ:**
+- Pasif modüllerin menülerini eklemek
+- ClientUser'a Settings sayfasını göstermek
+- `parentId` değerlerini manuel ayarlamak
+- ClientUser için access control API'sine istek yapmak
+
+### 28.11 Menü Yönetimi i18n Keys
+
+**Namespace**: `global` → `menuManagement.*`
+
+```json
+{
+  "menuManagement": {
+    "title": "Menü Yönetimi",
+    "addMenuItems": "Menü Öğeleri Ekle",
+    "saveOrder": "Sıralamayı Kaydet",
+    "settings": "Ayarlar"
+  }
+}
+```
+
+---
+
 **Son Güncelleme**: 2026-01-07
 **Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1

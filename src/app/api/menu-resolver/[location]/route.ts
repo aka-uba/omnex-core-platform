@@ -301,6 +301,28 @@ export async function GET(
                             if (item.requiredRole && item.requiredRole !== roleName) {
                                 return false;
                             }
+                            
+                            // Special check: Module Settings pages should only be visible to Admin and SuperAdmin
+                            // Check if this is a module Settings page (/modules/{slug}/settings)
+                            if (item.href && typeof item.href === 'string') {
+                                const isModuleSettingsPage = /^\/modules\/[^\/]+\/settings$/.test(item.href) || 
+                                                           item.href.endsWith('/settings');
+                                
+                                if (isModuleSettingsPage) {
+                                    // Only Admin and SuperAdmin can see module Settings pages
+                                    const isAdmin = roleName && (
+                                        roleName.toLowerCase() === 'admin' || 
+                                        roleName.toLowerCase() === 'superadmin' ||
+                                        roleName === 'Admin' ||
+                                        roleName === 'SuperAdmin'
+                                    );
+                                    
+                                    if (!isAdmin) {
+                                        return false; // Hide Settings page for non-admin users
+                                    }
+                                }
+                            }
+                            
                             // TODO: Check permission requirement
                             // if (item.requiredPermission && !userHasPermission(item.requiredPermission)) {
                             //   return false;

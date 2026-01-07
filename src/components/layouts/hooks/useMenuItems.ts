@@ -49,8 +49,23 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
   const [menuVisibilityConfig, setMenuVisibilityConfig] = useState<{ items: { id: string; visible: boolean; order: number }[] }>({ items: [] });
 
   // Fetch access control configs
+  // Only fetch for Admin and SuperAdmin users (ClientUser doesn't have access to this endpoint)
   useEffect(() => {
     const fetchAccessConfigs = async () => {
+      // Check if user has admin or superadmin role
+      const userRole = user?.role || '';
+      const isAdmin = userRole && (
+        userRole.toLowerCase() === 'admin' || 
+        userRole.toLowerCase() === 'superadmin' ||
+        userRole === 'Admin' ||
+        userRole === 'SuperAdmin'
+      );
+
+      // Only fetch access control configs for Admin/SuperAdmin
+      if (!isAdmin) {
+        return; // Skip fetching for non-admin users
+      }
+
       try {
         const { fetchWithAuth } = await import('@/lib/api/fetchWithAuth');
 
@@ -392,37 +407,57 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
       const children = buildMenuFromPages(modulePagesData);
 
       // Automatically add Settings item at the end of each module group
+      // BUT: Only show Settings for Admin and SuperAdmin users
       // This is an inline setting - not managed through menu management page
       if (children.length > 0) {
-        const settingsHref = `/${locale}/modules/${module.slug}/settings`;
-        const settingsIndex = children.findIndex(child => child.href === settingsHref);
+        // Check if user has admin or superadmin role
+        const userRole = user?.role || '';
+        const isAdmin = userRole && (
+          userRole.toLowerCase() === 'admin' || 
+          userRole.toLowerCase() === 'superadmin' ||
+          userRole === 'Admin' ||
+          userRole === 'SuperAdmin'
+        );
 
-        // Get highest order from existing children to place Settings at the end
-        const maxOrder = children.reduce((max, child) => {
-          return Math.max(max, child.order || 0);
-        }, 0);
+        // Only add Settings if user is admin/superadmin
+        if (isAdmin) {
+          const settingsHref = `/${locale}/modules/${module.slug}/settings`;
+          const settingsIndex = children.findIndex(child => child.href === settingsHref);
 
-        if (settingsIndex !== -1) {
-          // Settings already exists - move it to the end with highest order
-          const settingsItem = children.splice(settingsIndex, 1)[0];
-          if (settingsItem) {
-            settingsItem.order = maxOrder + 1; // Always at the end
+          // Get highest order from existing children to place Settings at the end
+          const maxOrder = children.reduce((max, child) => {
+            return Math.max(max, child.order || 0);
+          }, 0);
+
+          if (settingsIndex !== -1) {
+            // Settings already exists - move it to the end with highest order
+            const settingsItem = children.splice(settingsIndex, 1)[0];
+            if (settingsItem) {
+              settingsItem.order = maxOrder + 1; // Always at the end
+              children.push(settingsItem);
+            }
+          } else {
+            // Settings doesn't exist - add it at the end
+            // Get Settings label from module translation or use global "Settings"
+            const settingsLabel = getModuleTranslation(module.slug, 'item.settings', stableT.current('settings'));
+
+            // Add Settings item at the end
+            const settingsItem: MenuItem = {
+              label: settingsLabel,
+              href: settingsHref,
+              icon: TablerIcons.IconSettings,
+              order: maxOrder + 1, // Always at the end
+            };
+
             children.push(settingsItem);
           }
         } else {
-          // Settings doesn't exist - add it at the end
-          // Get Settings label from module translation or use global "Settings"
-          const settingsLabel = getModuleTranslation(module.slug, 'item.settings', stableT.current('settings'));
-
-          // Add Settings item at the end
-          const settingsItem: MenuItem = {
-            label: settingsLabel,
-            href: settingsHref,
-            icon: TablerIcons.IconSettings,
-            order: maxOrder + 1, // Always at the end
-          };
-
-          children.push(settingsItem);
+          // User is not admin - remove Settings if it exists
+          const settingsHref = `/${locale}/modules/${module.slug}/settings`;
+          const settingsIndex = children.findIndex(child => child.href === settingsHref);
+          if (settingsIndex !== -1) {
+            children.splice(settingsIndex, 1);
+          }
         }
       }
 
@@ -442,7 +477,7 @@ export function useMenuItems(location: string = 'sidebar'): MenuItem[] {
     });
 
     return menuItems;
-  }, [activeModules, locale, modulePages, pagesLoading, getIconComponent, getModuleTranslation]); // Recalculate when activeModules, locale, or modulePages changes
+  }, [activeModules, locale, modulePages, pagesLoading, getIconComponent, getModuleTranslation, user?.role]); // Recalculate when activeModules, locale, modulePages, or user role changes
 
   // Tenant Admin kontrolü - role case-insensitive olarak kontrol et
   // SuperAdmin da Tenant Admin yetkilerine sahip

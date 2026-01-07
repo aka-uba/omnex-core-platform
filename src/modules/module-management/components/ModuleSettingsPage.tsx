@@ -24,6 +24,7 @@ import {
   FileButton,
   Image,
   Loader,
+  Alert,
 } from '@mantine/core';
 import {
   IconInfoCircle,
@@ -41,6 +42,7 @@ import {
   IconUpload,
   IconRefresh,
   IconDatabase,
+  IconAlertCircle,
 } from '@tabler/icons-react';
 import { DemoDataTab } from './DemoDataTab';
 import { ClientIcon } from '@/components/common/ClientIcon';
@@ -51,6 +53,8 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from '@/lib/i18n/client';
 import { useNotification } from '@/hooks/useNotification';
 import { fetchWithAuth } from '@/lib/api/fetchWithAuth';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter, useParams } from 'next/navigation';
 import type { ModuleRecord } from '@/lib/modules/types';
 
 interface ModuleSettingsPageProps {
@@ -89,10 +93,52 @@ interface ModuleSetting {
 export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   const { t, locale } = useTranslation('modules/module-management');
   const { t: tManagement } = useTranslation('modules/management');
+  const { t: tGlobal } = useTranslation('global');
   const { showSuccess, showError } = useNotification();
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const params = useParams();
+  const currentLocale = (params?.locale as string) || locale;
   
   // Map locale to date locale format
   const dateLocale = locale === 'tr' ? 'tr-TR' : locale === 'de' ? 'de-DE' : locale === 'ar' ? 'ar-SA' : 'en-US';
+  
+  // Check if user has admin or superadmin role
+  const userRole = user?.role || '';
+  const isAdmin = userRole && (
+    userRole.toLowerCase() === 'admin' || 
+    userRole.toLowerCase() === 'superadmin' ||
+    userRole === 'Admin' ||
+    userRole === 'SuperAdmin'
+  );
+  
+  // Redirect non-admin users
+  useEffect(() => {
+    if (!authLoading && user && !isAdmin) {
+      // User is not admin/superadmin, redirect to dashboard
+      router.push(`/${currentLocale}/dashboard`);
+    }
+  }, [authLoading, user, isAdmin, router, currentLocale]);
+  
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <Container size="xl" pt="xl">
+        <Text>Yükleniyor...</Text>
+      </Container>
+    );
+  }
+  
+  // Show access denied if user is not admin
+  if (user && !isAdmin) {
+    return (
+      <Container size="xl" pt="xl">
+        <Alert icon={<IconAlertCircle size={18} />} title={tGlobal('accessControl.accessDenied') || 'Erişim Reddedildi'} color="red">
+          <Text>{tGlobal('accessControl.noPermission') || 'Bu sayfaya erişim yetkiniz yok. Sadece Admin ve SuperAdmin kullanıcıları modül ayarlarına erişebilir.'}</Text>
+        </Alert>
+      </Container>
+    );
+  }
   
   const [activeTab, setActiveTab] = useState<string | null>('summary');
   const [changeLogOpen, setChangeLogOpen] = useState<string[]>([]);
