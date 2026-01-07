@@ -42,9 +42,9 @@ jobs:
               # Pull latest code
               cd /opt/omnex && git pull origin main
 
-              # Cleanup old build cache before building (keep last 5GB)
+            # Cleanup old build cache before building
               echo "Cleaning up old build cache..."
-              docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+            docker builder prune -f 2>/dev/null || true
 
               # Stop app before building
               docker compose stop app
@@ -64,7 +64,7 @@ jobs:
 
               # Cleanup old images and build cache
               docker image prune -f
-              docker builder prune -f --keep-storage 5GB 2>/dev/null || true
+              docker builder prune -f 2>/dev/null || true
 
               echo "Deployment completed at $(date)"
             ) 9>"$LOCK_FILE"
