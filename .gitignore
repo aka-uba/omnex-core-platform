@@ -87,8 +87,12 @@ node_modules/.prisma/**/*.tmp
 # Windows reserved filenames
 nul
 
-# Deploy folder (server-specific configs)
-/deploy/
+# Deploy folder - only ignore sensitive files
+/deploy/.env
+/deploy/.env.*
+/deploy/backups/
+/deploy/certbot/
+/deploy/deploy/
 
 # Temp folder (local backups)
 /temp/

@@ -1,0 +1,111 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17-alpine
+    container_name: omnex-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: omnex_core
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    ports:
+      - "127.0.0.1:5432:5432"
+    networks:
+      - omnex-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER} -d omnex_core"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  # Next.js Application
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args:
+        - NODE_OPTIONS=--max-old-space-size=1024
+    container_name: omnex-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@postgres:5432/omnex_core?schema=public&connection_limit=10
+      - CORE_DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@postgres:5432/omnex_core?schema=public&connection_limit=10
+      - TENANT_DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@postgres:5432/tenant_onway_2025?schema=public&connection_limit=10
+      - TENANT_DB_TEMPLATE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@postgres:5432/__DB_NAME__?schema=public&connection_limit=10
+      - PG_ADMIN_URL=postgresql://postgres:${PG_PASSWORD}@postgres:5432/postgres
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=7d
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_REFRESH_EXPIRES_IN=30d
+      - SESSION_SECRET=${SESSION_SECRET}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - ALLOW_SETUP_PAGE=${ALLOW_SETUP_PAGE}
+      - SERVER_ADMIN_TOKEN=${SERVER_ADMIN_TOKEN}
+      - TENANT_SLUG=onway
+    volumes:
+      - app_storage:/app/storage
+      - app_public:/app/public/uploads
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - omnex-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1G
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: omnex-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    networks:
+      - omnex-network
+    depends_on:
+      - app
+
+  # Certbot for SSL
+  certbot:
+    image: certbot/certbot
+    container_name: omnex-certbot
+    restart: unless-stopped
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - omnex-network
+
+networks:
+  omnex-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  app_storage:
+  app_public:
