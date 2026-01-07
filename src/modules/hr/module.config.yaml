@@ -35,6 +35,11 @@ menu:
         path: "/modules/hr/reports"
         icon: "ChartBar"
         order: 5
+      - title: "Personnel Card Demo"
+        path: "/modules/hr/personnel-card-demo"
+        icon: "IdBadge"
+        order: 99
+        badge: "Demo"
 settings:
   - key: "enableNotifications"
     label: "Enable Notifications"
