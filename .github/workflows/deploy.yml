@@ -51,7 +51,7 @@ jobs:
 
               # Build with resource limits (--memory 2g --cpu-quota 100000)
               cd /opt/omnex/deploy
-              DOCKER_BUILDKIT=1 docker compose build --pull --build-arg BUILDKIT_INLINE_CACHE=0 app
+              DOCKER_BUILDKIT=1 docker compose build --no-cache --pull --build-arg BUILDKIT_INLINE_CACHE=0 app
 
               # Restart app container
               docker compose up -d --force-recreate app
