@@ -91,6 +91,7 @@ interface ModuleSetting {
 }
 
 export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
+  // ALL HOOKS MUST BE CALLED FIRST - React Rules of Hooks
   const { t, locale } = useTranslation('modules/module-management');
   const { t: tManagement } = useTranslation('modules/management');
   const { t: tGlobal } = useTranslation('global');
@@ -100,6 +101,23 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
   const params = useParams();
   const currentLocale = (params?.locale as string) || locale;
   
+  // ALL useState hooks must be called before any conditional returns
+  const [activeTab, setActiveTab] = useState<string | null>('summary');
+  const [changeLogOpen, setChangeLogOpen] = useState<string[]>([]);
+  const [versionHistory, setVersionHistory] = useState<VersionInfo[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [originalMenuItems, setOriginalMenuItems] = useState<MenuItem[]>([]);
+  const [settings, setSettings] = useState<ModuleSetting[]>([]);
+  const [expandedMenuItems, setExpandedMenuItems] = useState<string[]>([]);
+  const [moduleIcon, setModuleIcon] = useState<string>(module.icon || 'Apps');
+  const [uploadingIcon, setUploadingIcon] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [savingMenu, setSavingMenu] = useState(false);
+  const [_savingIcon, setSavingIcon] = useState(false);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
+  const [iconPickerItemId, setIconPickerItemId] = useState<string | null>(null);
+  const [headerIconPickerOpen, setHeaderIconPickerOpen] = useState(false);
+
   // Map locale to date locale format
   const dateLocale = locale === 'tr' ? 'tr-TR' : locale === 'de' ? 'de-DE' : locale === 'ar' ? 'ar-SA' : 'en-US';
   
@@ -119,89 +137,13 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
       router.push(`/${currentLocale}/dashboard`);
     }
   }, [authLoading, user, isAdmin, router, currentLocale]);
-  
-  // Show loading while checking auth
-  if (authLoading) {
-    return (
-      <Container size="xl" pt="xl">
-        <Text>Yükleniyor...</Text>
-      </Container>
-    );
-  }
-  
-  // Show access denied if user is not admin
-  if (user && !isAdmin) {
-    return (
-      <Container size="xl" pt="xl">
-        <Alert icon={<IconAlertCircle size={18} />} title={tGlobal('accessControl.accessDenied') || 'Erişim Reddedildi'} color="red">
-          <Text>{tGlobal('accessControl.noPermission') || 'Bu sayfaya erişim yetkiniz yok. Sadece Admin ve SuperAdmin kullanıcıları modül ayarlarına erişebilir.'}</Text>
-        </Alert>
-      </Container>
-    );
-  }
-  
-  const [activeTab, setActiveTab] = useState<string | null>('summary');
-  const [changeLogOpen, setChangeLogOpen] = useState<string[]>([]);
-  const [versionHistory, setVersionHistory] = useState<VersionInfo[]>([]);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [originalMenuItems, setOriginalMenuItems] = useState<MenuItem[]>([]);
-  const [settings, setSettings] = useState<ModuleSetting[]>([]);
-  const [expandedMenuItems, setExpandedMenuItems] = useState<string[]>([]);
-  const [moduleIcon, setModuleIcon] = useState<string>(module.icon || 'Apps');
-  const [uploadingIcon, setUploadingIcon] = useState(false);
-  const [savingSettings, setSavingSettings] = useState(false);
-  const [savingMenu, setSavingMenu] = useState(false);
-  const [_savingIcon, setSavingIcon] = useState(false);
-  const [iconPickerOpen, setIconPickerOpen] = useState(false);
-  const [iconPickerItemId, setIconPickerItemId] = useState<string | null>(null);
-  const [headerIconPickerOpen, setHeaderIconPickerOpen] = useState(false);
 
   // Sync moduleIcon state when module.icon prop changes (e.g., after page refresh)
   useEffect(() => {
     if (module.icon && module.icon !== moduleIcon) {
       setModuleIcon(module.icon);
     }
-  }, [module.icon]);
-
-  // Function to update module icon via API
-  const handleModuleIconChange = async (iconName: string) => {
-    setSavingIcon(true);
-    try {
-      const response = await fetch(`/api/modules/${module.slug}/icon`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ icon: iconName }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setModuleIcon(iconName);
-        showSuccess(
-          t('moduleSettings.iconUpdated') || 'İkon güncellendi',
-          t('moduleSettings.iconUpdatedSuccess') || 'Modül ikonu başarıyla güncellendi'
-        );
-        // Trigger menu refresh event for sidebar update
-        window.dispatchEvent(new CustomEvent('menu-updated'));
-        // Trigger modules refresh event for ModuleContext update
-        window.dispatchEvent(new CustomEvent('modules-updated'));
-      } else {
-        showError(
-          t('moduleSettings.iconUpdateFailed') || 'İkon güncellenemedi',
-          result.error || 'Bir hata oluştu'
-        );
-      }
-    } catch (error) {
-      console.error('Error updating module icon:', error);
-      showError(
-        t('moduleSettings.iconUpdateFailed') || 'İkon güncellenemedi',
-        error instanceof Error ? error.message : 'Bir hata oluştu'
-      );
-    } finally {
-      setSavingIcon(false);
-      setHeaderIconPickerOpen(false);
-    }
-  };
+  }, [module.icon, moduleIcon]);
 
   // Load version history
   useEffect(() => {
@@ -227,7 +169,7 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
     };
 
     loadVersionHistory();
-  }, [module.slug, module.version]);
+  }, [module.slug, module.version, t]);
 
   // Load menu items with hierarchical structure
   const loadMenuItems = async () => {
@@ -341,7 +283,68 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
     };
 
     loadSettings();
-  }, [module.slug]);
+  }, [module.slug, t]);
+
+  // CONDITIONAL RETURNS AFTER ALL HOOKS
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <Container size="xl" pt="xl">
+        <Text>Yükleniyor...</Text>
+      </Container>
+    );
+  }
+  
+  // Show access denied if user is not admin
+  if (user && !isAdmin) {
+    return (
+      <Container size="xl" pt="xl">
+        <Alert icon={<IconAlertCircle size={18} />} title={tGlobal('accessControl.accessDenied') || 'Erişim Reddedildi'} color="red">
+          <Text>{tGlobal('accessControl.noPermission') || 'Bu sayfaya erişim yetkiniz yok. Sadece Admin ve SuperAdmin kullanıcıları modül ayarlarına erişebilir.'}</Text>
+        </Alert>
+      </Container>
+    );
+  }
+
+  // Function to update module icon via API
+  const handleModuleIconChange = async (iconName: string) => {
+    setSavingIcon(true);
+    try {
+      const response = await fetch(`/api/modules/${module.slug}/icon`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ icon: iconName }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setModuleIcon(iconName);
+        showSuccess(
+          t('moduleSettings.iconUpdated') || 'İkon güncellendi',
+          t('moduleSettings.iconUpdatedSuccess') || 'Modül ikonu başarıyla güncellendi'
+        );
+        // Trigger menu refresh event for sidebar update
+        window.dispatchEvent(new CustomEvent('menu-updated'));
+        // Trigger modules refresh event for ModuleContext update
+        window.dispatchEvent(new CustomEvent('modules-updated'));
+      } else {
+        showError(
+          t('moduleSettings.iconUpdateFailed') || 'İkon güncellenemedi',
+          result.error || 'Bir hata oluştu'
+        );
+      }
+    } catch (error) {
+      console.error('Error updating module icon:', error);
+      showError(
+        t('moduleSettings.iconUpdateFailed') || 'İkon güncellenemedi',
+        error instanceof Error ? error.message : 'Bir hata oluştu'
+      );
+    } finally {
+      setSavingIcon(false);
+      setHeaderIconPickerOpen(false);
+    }
+  };
 
   const handleIconUpload = async (file: File | null) => {
     if (!file) return;
