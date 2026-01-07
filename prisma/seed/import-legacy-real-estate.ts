@@ -677,15 +677,16 @@ async function main() {
     const createdProperties = [];
 
     for (const propData of PROPERTIES) {
-      const property = await tenantPrisma.property.upsert({
+      // Check if property already exists
+      const existing = await tenantPrisma.property.findFirst({
         where: {
-          tenantId_address: {
-            tenantId: tenantId,
-            address: propData.address,
-          },
+          tenantId: tenantId,
+          address: propData.address,
         },
-        update: {},
-        create: {
+      });
+
+      const property = existing || await tenantPrisma.property.create({
+        data: {
           tenantId: tenantId,
           companyId: companyId,
           name: propData.name,
@@ -725,15 +726,16 @@ async function main() {
     for (const aptData of APARTMENTS) {
       const property = createdProperties[aptData.propertyIndex];
 
-      const apartment = await tenantPrisma.apartment.upsert({
+      // Check if apartment already exists
+      const existingApt = await tenantPrisma.apartment.findFirst({
         where: {
-          propertyId_unitNumber: {
-            propertyId: property.id,
-            unitNumber: aptData.unitNumber,
-          },
+          propertyId: property.id,
+          unitNumber: aptData.unitNumber,
         },
-        update: {},
-        create: {
+      });
+
+      const apartment = existingApt || await tenantPrisma.apartment.create({
+        data: {
           tenantId: tenantId,
           companyId: companyId,
           propertyId: property.id,
@@ -790,15 +792,26 @@ async function main() {
 
       // Use email if available, otherwise firstName+lastName+postalCode
       const uniqueKey = tenantData.email || `${tenantData.firstName}_${tenantData.lastName}_${postalCode}`;
+      const tenantEmail = tenantData.email || `${uniqueKey.toLowerCase().replace(/\s+/g, '_')}@legacy.local`;
 
-      const tenantRecord = await tenantPrisma.tenant.upsert({
+      // Check if tenant already exists
+      const existingTenant = await tenantPrisma.tenant.findFirst({
         where: {
-          tenantId_email: tenantData.email
-            ? { tenantId: tenantId, email: tenantData.email }
-            : { tenantId: tenantId, email: `${uniqueKey.toLowerCase().replace(/\s+/g, '_')}@legacy.local` },
+          OR: [
+            { email: tenantEmail },
+            {
+              AND: [
+                { firstName: tenantData.firstName },
+                { lastName: tenantData.lastName },
+                { postalCode: postalCode }
+              ]
+            }
+          ]
         },
-        update: {},
-        create: {
+      });
+
+      const tenantRecord = existingTenant || await tenantPrisma.tenant.create({
+        data: {
           tenantId: tenantId,
           companyId: companyId,
           tenantNumber: tenantNumber,
@@ -809,7 +822,7 @@ async function main() {
           companyName: tenantData.companyName,
           phone: tenantData.phone,
           mobile: tenantData.mobile,
-          email: tenantData.email || `${uniqueKey.toLowerCase().replace(/\s+/g, '_')}@legacy.local`,
+          email: tenantEmail,
           street: street,
           postalCode: postalCode,
           city: city,
