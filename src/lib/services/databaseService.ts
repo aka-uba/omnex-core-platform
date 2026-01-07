@@ -4,7 +4,6 @@
  */
 
 import { corePrisma } from '@/lib/corePrisma';
-import { Prisma } from '@prisma/client';
 import { createSystemAuditLog } from './systemAuditLogService';
 
 /**
@@ -45,15 +44,15 @@ export async function getDatabaseInfo(tenantId: string): Promise<DatabaseInfo> {
         throw new Error('Invalid database name format');
     }
 
-    // Get DB Size - Using raw query (dbName already validated)
-    const sizeResult = await corePrisma.$queryRaw<{ size: string }[]>`
-        SELECT pg_size_pretty(pg_database_size(${Prisma.raw(`'${dbName}'`)})) as size
-    `;
+    // Get DB Size - Using unsafe query (dbName already validated against SQL injection)
+    const sizeResult = await corePrisma.$queryRawUnsafe<{ size: string }[]>(
+        `SELECT pg_size_pretty(pg_database_size('${dbName}')) as size`
+    );
 
-    // Get Active Connections - Using raw query (dbName already validated)
-    const connResult = await corePrisma.$queryRaw<{ count: number }[]>`
-        SELECT count(*)::int as count FROM pg_stat_activity WHERE datname = ${Prisma.raw(`'${dbName}'`)}
-    `;
+    // Get Active Connections - Using unsafe query (dbName already validated against SQL injection)
+    const connResult = await corePrisma.$queryRawUnsafe<{ count: number }[]>(
+        `SELECT count(*)::int as count FROM pg_stat_activity WHERE datname = '${dbName}'`
+    );
 
     // Get Version
     const versionResult = await corePrisma.$queryRaw`SELECT version()`;
