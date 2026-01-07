@@ -11,7 +11,9 @@ import {
   Stack,
   Grid,
   NumberInput,
-  Switch,
+  Divider,
+  Title,
+  Checkbox,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
@@ -69,6 +71,7 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
       purchaseDate: null as Date | null,
       purchasePrice: null as number | null,
       isPaidOff: false,
+      isActive: true,
       financingStartDate: null as Date | null,
       financingEndDate: null as Date | null,
       monthlyFinancingRate: null as number | null,
@@ -118,6 +121,7 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
         purchaseDate: (propertyData as any).purchaseDate ? new Date((propertyData as any).purchaseDate) : null,
         purchasePrice: (propertyData as any).purchasePrice ? Number((propertyData as any).purchasePrice) : null,
         isPaidOff: (propertyData as any).isPaidOff || false,
+        isActive: (propertyData as any).isActive !== undefined ? (propertyData as any).isActive : true,
         financingStartDate: (propertyData as any).financingStartDate ? new Date((propertyData as any).financingStartDate) : null,
         financingEndDate: (propertyData as any).financingEndDate ? new Date((propertyData as any).financingEndDate) : null,
         monthlyFinancingRate: (propertyData as any).monthlyFinancingRate ? Number((propertyData as any).monthlyFinancingRate) : null,
@@ -161,6 +165,7 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
         purchaseDate: values.purchaseDate || undefined,
         purchasePrice: values.purchasePrice ?? undefined,
         isPaidOff: values.isPaidOff ?? undefined,
+        isActive: values.isActive ?? true,
         financingStartDate: values.financingStartDate || undefined,
         financingEndDate: values.financingEndDate || undefined,
         monthlyFinancingRate: values.monthlyFinancingRate ?? undefined,
@@ -212,18 +217,12 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
     <Paper shadow="xs" p="md">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
+          {/* Stammdaten (Master Data) Section */}
+          <Title order={5}>{t('properties.sections.masterData')}</Title>
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.name')}
-                placeholder={t('form.namePlaceholder')}
-                required
-                {...form.getInputProps('name')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
               <Select
-                label={t('form.type')}
+                label={t('properties.fields.type')}
                 placeholder={t('form.typePlaceholder')}
                 required
                 data={[
@@ -235,50 +234,65 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.code')}
-                placeholder={t('form.codePlaceholder')}
-                {...form.getInputProps('code')}
+              <NumberInput
+                label={t('form.totalUnits')}
+                placeholder={t('form.totalUnitsPlaceholder')}
+                min={0}
+                {...form.getInputProps('totalUnits')}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.country')}
-                placeholder={t('form.countryPlaceholder')}
-                {...form.getInputProps('country')}
-              />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <TextInput
-                label={t('form.address')}
-                placeholder={t('form.addressPlaceholder')}
-                required
-                {...form.getInputProps('address')}
+              <NumberInput
+                label={t('properties.fields.landArea')}
+                placeholder={t('form.landAreaPlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('landArea')}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.city')}
-                placeholder={t('form.cityPlaceholder')}
-                required
-                {...form.getInputProps('city')}
+              <NumberInput
+                label={t('properties.fields.livingArea')}
+                placeholder={t('form.livingAreaPlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('livingArea')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.district')}
-                placeholder={t('form.districtPlaceholder')}
-                {...form.getInputProps('district')}
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label={t('properties.fields.constructionYear')}
+                placeholder={t('form.constructionYearPlaceholder')}
+                min={1800}
+                max={2100}
+                {...form.getInputProps('constructionYear')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={t('form.neighborhood')}
-                placeholder={t('form.neighborhoodPlaceholder')}
-                {...form.getInputProps('neighborhood')}
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <DateInput
+                label={t('properties.fields.lastRenovationDate')}
+                placeholder={t('form.lastRenovationDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                {...form.getInputProps('lastRenovationDate')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label={t('properties.fields.floorCount')}
+                placeholder={t('form.floorCountPlaceholder')}
+                min={1}
+                {...form.getInputProps('floorCount')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Anschrift (Address) Section */}
+          <Title order={5}>{t('properties.sections.address')}</Title>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 8 }}>
               <TextInput
                 label={t('form.street')}
                 placeholder={t('form.streetPlaceholder')}
@@ -301,12 +315,180 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4 }}>
               <TextInput
+                label={t('form.city')}
+                placeholder={t('form.cityPlaceholder')}
+                required
+                {...form.getInputProps('city')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <TextInput
+                label={t('form.country')}
+                placeholder={t('form.countryPlaceholder')}
+                {...form.getInputProps('country')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Erwerbsinformationen (Purchase Info) Section */}
+          <Title order={5}>{t('properties.sections.purchaseInfo')}</Title>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <DateInput
+                label={t('properties.fields.purchaseDate')}
+                placeholder={t('form.purchaseDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                {...form.getInputProps('purchaseDate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <NumberInput
+                label={t('properties.fields.purchasePrice')}
+                placeholder={t('form.purchasePricePlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('purchasePrice')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Finanzierung (Financing) Section */}
+          <Title order={5}>{t('properties.sections.financing')}</Title>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <DateInput
+                label={t('properties.fields.financingStartDate')}
+                placeholder={t('form.financingStartDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                {...form.getInputProps('financingStartDate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <DateInput
+                label={t('properties.fields.financingEndDate')}
+                placeholder={t('form.financingEndDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                {...form.getInputProps('financingEndDate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label={t('properties.fields.monthlyFinancingRate')}
+                placeholder={t('form.monthlyFinancingRatePlaceholder')}
+                min={0}
+                decimalScale={2}
+                {...form.getInputProps('monthlyFinancingRate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label={t('properties.fields.numberOfInstallments')}
+                placeholder={t('form.numberOfInstallmentsPlaceholder')}
+                min={1}
+                {...form.getInputProps('numberOfInstallments')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label={t('properties.fields.financingPaymentDay')}
+                placeholder={t('form.financingPaymentDayPlaceholder')}
+                min={1}
+                max={31}
+                {...form.getInputProps('financingPaymentDay')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Status Checkboxes */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Checkbox
+                label={t('status.active')}
+                {...form.getInputProps('isActive', { type: 'checkbox' })}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Checkbox
+                label={t('properties.fields.isPaidOff')}
+                {...form.getInputProps('isPaidOff', { type: 'checkbox' })}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Weitere Informationen (Additional Info) Section */}
+          <Title order={5}>{t('apartments.sections.additionalInfo')}</Title>
+          <Grid>
+            <Grid.Col span={12}>
+              <Textarea
+                label={t('form.description')}
+                placeholder={t('form.descriptionPlaceholder')}
+                rows={4}
+                {...form.getInputProps('description')}
+              />
+            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Extra fields (new features not in old project) */}
+          <Title order={5}>{t('form.name')}</Title>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.name')}
+                placeholder={t('form.namePlaceholder')}
+                required
+                {...form.getInputProps('name')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.code')}
+                placeholder={t('form.codePlaceholder')}
+                {...form.getInputProps('code')}
+              />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <TextInput
+                label={t('form.address')}
+                placeholder={t('form.addressPlaceholder')}
+                required
+                {...form.getInputProps('address')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.district')}
+                placeholder={t('form.districtPlaceholder')}
+                {...form.getInputProps('district')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.neighborhood')}
+                placeholder={t('form.neighborhoodPlaceholder')}
+                {...form.getInputProps('neighborhood')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
                 label={t('form.propertyNumber')}
                 placeholder={t('form.propertyNumberPlaceholder')}
                 {...form.getInputProps('propertyNumber')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
+            <Grid.Col span={{ base: 12, md: 3 }}>
               <NumberInput
                 label={t('form.latitude')}
                 placeholder={t('form.latitudePlaceholder')}
@@ -314,20 +496,12 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
                 {...form.getInputProps('latitude')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
+            <Grid.Col span={{ base: 12, md: 3 }}>
               <NumberInput
                 label={t('form.longitude')}
                 placeholder={t('form.longitudePlaceholder')}
                 decimalScale={8}
                 {...form.getInputProps('longitude')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.totalUnits')}
-                placeholder={t('form.totalUnitsPlaceholder')}
-                min={0}
-                {...form.getInputProps('totalUnits')}
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
@@ -348,126 +522,12 @@ export function PropertyForm({ locale, propertyId }: PropertyFormProps) {
                 {...form.getInputProps('paymentDay')}
               />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.constructionYear')}
-                placeholder={t('form.constructionYearPlaceholder')}
-                min={1800}
-                max={2100}
-                {...form.getInputProps('constructionYear')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <DateInput
-                label={t('form.lastRenovationDate')}
-                placeholder={t('form.lastRenovationDatePlaceholder')}
-                valueFormat="DD.MM.YYYY"
-                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                {...form.getInputProps('lastRenovationDate')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.floorCount')}
-                placeholder={t('form.floorCountPlaceholder')}
-                min={1}
-                {...form.getInputProps('floorCount')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.landArea')}
-                placeholder={t('form.landAreaPlaceholder')}
-                min={0}
-                decimalScale={2}
-                {...form.getInputProps('landArea')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.livingArea')}
-                placeholder={t('form.livingAreaPlaceholder')}
-                min={0}
-                decimalScale={2}
-                {...form.getInputProps('livingArea')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <DateInput
-                label={t('form.purchaseDate')}
-                placeholder={t('form.purchaseDatePlaceholder')}
-                valueFormat="DD.MM.YYYY"
-                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                {...form.getInputProps('purchaseDate')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.purchasePrice')}
-                placeholder={t('form.purchasePricePlaceholder')}
-                min={0}
-                decimalScale={2}
-                {...form.getInputProps('purchasePrice')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <Switch
-                label={t('form.isPaidOff')}
-                {...form.getInputProps('isPaidOff', { type: 'checkbox' })}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <DateInput
-                label={t('form.financingStartDate')}
-                placeholder={t('form.financingStartDatePlaceholder')}
-                valueFormat="DD.MM.YYYY"
-                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                {...form.getInputProps('financingStartDate')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <DateInput
-                label={t('form.financingEndDate')}
-                placeholder={t('form.financingEndDatePlaceholder')}
-                valueFormat="DD.MM.YYYY"
-                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                {...form.getInputProps('financingEndDate')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.monthlyFinancingRate')}
-                placeholder={t('form.monthlyFinancingRatePlaceholder')}
-                min={0}
-                decimalScale={2}
-                {...form.getInputProps('monthlyFinancingRate')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.numberOfInstallments')}
-                placeholder={t('form.numberOfInstallmentsPlaceholder')}
-                min={1}
-                {...form.getInputProps('numberOfInstallments')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <NumberInput
-                label={t('form.financingPaymentDay')}
-                placeholder={t('form.financingPaymentDayPlaceholder')}
-                min={1}
-                max={31}
-                {...form.getInputProps('financingPaymentDay')}
-              />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <Textarea
-                label={t('form.description')}
-                placeholder={t('form.descriptionPlaceholder')}
-                rows={4}
-                {...form.getInputProps('description')}
-              />
-            </Grid.Col>
+          </Grid>
+
+          <Divider my="md" />
+
+          {/* Media Gallery */}
+          <Grid>
             <Grid.Col span={12}>
               <MediaGallery
                 tenantId="temp-tenant-id"

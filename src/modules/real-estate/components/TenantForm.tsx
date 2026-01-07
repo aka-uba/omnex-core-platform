@@ -13,6 +13,7 @@ import {
   Select,
   Divider,
   Title,
+  Checkbox,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { IconArrowLeft, IconUser, IconBuilding, IconMapPin, IconPhone, IconId, IconHome } from '@tabler/icons-react';
@@ -44,6 +45,9 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
 
   const form = useForm({
     initialValues: {
+      // Status
+      isActive: true,
+
       // System fields
       userId: '',
       contactId: '',
@@ -101,6 +105,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     if (isEdit && tenantData && !isLoadingTenant) {
       if (form.values.tenantNumber === '') {
         form.setValues({
+          isActive: (tenantData as any).isActive !== undefined ? (tenantData as any).isActive : true,
           userId: tenantData.userId ?? '',
           contactId: tenantData.contactId ?? '',
           apartmentId: tenantData.apartmentId ?? '',
@@ -135,6 +140,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       const formData = {
+        isActive: values.isActive ?? true,
         userId: values.userId || undefined,
         contactId: values.contactId || undefined,
         apartmentId: values.apartmentId || undefined,
@@ -226,289 +232,254 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     <Paper shadow="xs" p="md">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="lg">
-          {/* Basic Info Section */}
-          <div>
-            <Group gap="xs" mb="md">
-              <IconId size={20} />
-              <Title order={5}>{t('tenantForm.basicInfo') || 'Basic Information'}</Title>
-            </Group>
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={t('form.tenantNumber')}
-                  placeholder={t('form.tenantNumberPlaceholder')}
-                  required
-                  {...form.getInputProps('tenantNumber')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Select
-                  label={t('tenantForm.tenantType') || 'Tenant Type'}
-                  placeholder={t('tenantForm.selectType') || 'Select type'}
-                  data={tenantTypeOptions}
-                  {...form.getInputProps('tenantType')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* Aktiv Checkbox - matching old project position */}
+          <Checkbox
+            label={t('status.active')}
+            {...form.getInputProps('isActive', { type: 'checkbox' })}
+          />
 
-          <Divider />
+          {/* Mietertyp (Tenant Type) */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Select
+                label={t('tenants.fields.tenantType')}
+                placeholder={t('tenantForm.selectType')}
+                data={tenantTypeOptions}
+                {...form.getInputProps('tenantType')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          {/* Apartment Assignment Section */}
-          <div>
-            <Group gap="xs" mb="md">
-              <IconHome size={20} />
-              <Title order={5}>{t('tenantForm.apartmentAssignment') || 'Apartment Assignment'}</Title>
-            </Group>
-            <Grid>
-              <Grid.Col span={12}>
-                <Select
-                  label={t('form.apartment') || 'Apartment'}
-                  placeholder={t('form.selectApartment') || 'Select apartment'}
-                  data={apartmentOptions}
-                  searchable
-                  clearable
-                  nothingFoundMessage={t('form.noApartmentsFound') || 'No apartments found'}
-                  {...form.getInputProps('apartmentId')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* Unternehmensname (Optional) - Company Name always visible */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={`${t('tenants.fields.companyName')} (${tGlobal('common.optional')})`}
+                placeholder={t('form.companyNamePlaceholder')}
+                {...form.getInputProps('companyName')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          <Divider />
+          {/* Anrede, Vorname, Nachname */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <Select
+                label={t('tenants.fields.salutation')}
+                placeholder={t('tenantForm.selectSalutation')}
+                data={salutationOptions}
+                clearable
+                {...form.getInputProps('salutation')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4.5 }}>
+              <TextInput
+                label={t('tenants.fields.firstName')}
+                placeholder={t('form.firstNamePlaceholder')}
+                required={form.values.tenantType === 'person'}
+                {...form.getInputProps('firstName')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4.5 }}>
+              <TextInput
+                label={t('tenants.fields.lastName')}
+                placeholder={t('form.lastNamePlaceholder')}
+                required={form.values.tenantType === 'person'}
+                {...form.getInputProps('lastName')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          {/* Personal/Company Info Section */}
-          <div>
-            <Group gap="xs" mb="md">
-              {form.values.tenantType === 'company' ? <IconBuilding size={20} /> : <IconUser size={20} />}
-              <Title order={5}>
-                {form.values.tenantType === 'company'
-                  ? (t('tenantForm.companyInfo') || 'Company Information')
-                  : (t('tenantForm.personalInfo') || 'Personal Information')
-                }
-              </Title>
-            </Group>
-            <Grid>
-              {form.values.tenantType === 'company' ? (
-                <Grid.Col span={12}>
-                  <TextInput
-                    label={t('form.companyName') || 'Company Name'}
-                    placeholder={t('form.companyNamePlaceholder') || 'Enter company name'}
-                    required
-                    {...form.getInputProps('companyName')}
-                  />
-                </Grid.Col>
-              ) : (
-                <>
-                  <Grid.Col span={{ base: 12, md: 4 }}>
-                    <Select
-                      label={t('tenantForm.salutation') || 'Salutation'}
-                      placeholder={t('tenantForm.selectSalutation') || 'Select'}
-                      data={salutationOptions}
-                      clearable
-                      {...form.getInputProps('salutation')}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: 4 }}>
-                    <TextInput
-                      label={t('form.firstName') || 'First Name'}
-                      placeholder={t('form.firstNamePlaceholder') || 'Enter first name'}
-                      required
-                      {...form.getInputProps('firstName')}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: 4 }}>
-                    <TextInput
-                      label={t('form.lastName') || 'Last Name'}
-                      placeholder={t('form.lastNamePlaceholder') || 'Enter last name'}
-                      required
-                      {...form.getInputProps('lastName')}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <DateInput
-                      label={t('tenantForm.birthDate') || 'Birth Date'}
-                      placeholder={t('tenantForm.birthDatePlaceholder') || 'Select birth date'}
-                      locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                      clearable
-                      {...form.getInputProps('birthDate')}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
-                      label={t('tenantForm.birthPlace') || 'Birth Place'}
-                      placeholder={t('tenantForm.birthPlacePlaceholder') || 'Enter birth place'}
-                      {...form.getInputProps('birthPlace')}
-                    />
-                  </Grid.Col>
-                </>
-              )}
-            </Grid>
-          </div>
+          {/* Straße, Hausnummer, Postleitzahl, Stadt */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.street')}
+                placeholder={t('form.streetPlaceholder')}
+                {...form.getInputProps('street')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.houseNumber')}
+                placeholder={t('form.houseNumberPlaceholder')}
+                {...form.getInputProps('houseNumber')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.postalCode')}
+                placeholder={t('form.postalCodePlaceholder')}
+                {...form.getInputProps('postalCode')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.city')}
+                placeholder={t('form.cityPlaceholder')}
+                {...form.getInputProps('city')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          <Divider />
+          {/* Staatsangehörigkeit, Festnetz, Mobile, E-Mail */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.nationality')}
+                placeholder={t('tenantForm.nationalityPlaceholder')}
+                {...form.getInputProps('nationality')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.phone')}
+                placeholder={t('form.phonePlaceholder')}
+                {...form.getInputProps('phone')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.mobile')}
+                placeholder={t('form.mobilePlaceholder')}
+                {...form.getInputProps('mobile')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 3 }}>
+              <TextInput
+                label={t('tenants.fields.email')}
+                placeholder={t('form.emailPlaceholder')}
+                type="email"
+                {...form.getInputProps('email')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          {/* Address Section */}
-          <div>
-            <Group gap="xs" mb="md">
-              <IconMapPin size={20} />
-              <Title order={5}>{t('tenantForm.address') || 'Address'}</Title>
-            </Group>
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 8 }}>
-                <TextInput
-                  label={t('form.street') || 'Street'}
-                  placeholder={t('form.streetPlaceholder') || 'Enter street name'}
-                  {...form.getInputProps('street')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 4 }}>
-                <TextInput
-                  label={t('form.houseNumber') || 'House Number'}
-                  placeholder={t('form.houseNumberPlaceholder') || 'No.'}
-                  {...form.getInputProps('houseNumber')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 4 }}>
-                <TextInput
-                  label={t('form.postalCode') || 'Postal Code'}
-                  placeholder={t('form.postalCodePlaceholder') || 'Enter postal code'}
-                  {...form.getInputProps('postalCode')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 8 }}>
-                <TextInput
-                  label={t('form.city') || 'City'}
-                  placeholder={t('form.cityPlaceholder') || 'Enter city'}
-                  {...form.getInputProps('city')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* Geburtsort, Geburtsdatum, Steuernummer */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <TextInput
+                label={t('tenants.fields.birthPlace')}
+                placeholder={t('tenantForm.birthPlacePlaceholder')}
+                {...form.getInputProps('birthPlace')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <DateInput
+                label={t('tenants.fields.birthDate')}
+                placeholder="tt.mm.jjjj"
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                clearable
+                {...form.getInputProps('birthDate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <TextInput
+                label={t('tenants.fields.taxNumber')}
+                placeholder={t('tenantForm.taxNumberPlaceholder')}
+                {...form.getInputProps('taxNumber')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          <Divider />
+          <Divider my="md" />
 
-          {/* Contact Section */}
-          <div>
-            <Group gap="xs" mb="md">
-              <IconPhone size={20} />
-              <Title order={5}>{t('tenantForm.contactInfo') || 'Contact Information'}</Title>
-            </Group>
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 4 }}>
-                <TextInput
-                  label={t('form.phone') || 'Phone'}
-                  placeholder={t('form.phonePlaceholder') || 'Enter phone number'}
-                  {...form.getInputProps('phone')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 4 }}>
-                <TextInput
-                  label={t('form.mobile') || 'Mobile'}
-                  placeholder={t('form.mobilePlaceholder') || 'Enter mobile number'}
-                  {...form.getInputProps('mobile')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 4 }}>
-                <TextInput
-                  label={t('form.email') || 'Email'}
-                  placeholder={t('form.emailPlaceholder') || 'Enter email'}
-                  type="email"
-                  {...form.getInputProps('email')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* Extra Fields Section - New features not in old project */}
+          <Title order={5}>{t('tenantForm.additionalInfo')}</Title>
 
-          <Divider />
+          {/* Apartment Assignment */}
+          <Grid>
+            <Grid.Col span={12}>
+              <Select
+                label={t('form.apartment')}
+                placeholder={t('form.selectApartment')}
+                data={apartmentOptions}
+                searchable
+                clearable
+                nothingFoundMessage={t('form.noApartmentsFound')}
+                {...form.getInputProps('apartmentId')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          {/* Additional Info Section */}
-          <div>
-            <Title order={5} mb="md">{t('tenantForm.additionalInfo') || 'Additional Information'}</Title>
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={t('tenantForm.nationality') || 'Nationality'}
-                  placeholder={t('tenantForm.nationalityPlaceholder') || 'Enter nationality'}
-                  {...form.getInputProps('nationality')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={t('tenantForm.taxNumber') || 'Tax Number'}
-                  placeholder={t('tenantForm.taxNumberPlaceholder') || 'Enter tax number'}
-                  {...form.getInputProps('taxNumber')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <DateInput
-                  label={t('form.moveInDate')}
-                  placeholder={t('form.moveInDatePlaceholder')}
-                  locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                  clearable
-                  {...form.getInputProps('moveInDate')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <DateInput
-                  label={t('form.moveOutDate')}
-                  placeholder={t('form.moveOutDatePlaceholder')}
-                  locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
-                  clearable
-                  {...form.getInputProps('moveOutDate')}
-                />
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Textarea
-                  label={t('form.notes')}
-                  placeholder={t('form.notesPlaceholder')}
-                  rows={4}
-                  {...form.getInputProps('notes')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* Tenant Number, Move Dates */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <TextInput
+                label={t('form.tenantNumber')}
+                placeholder={t('form.tenantNumberPlaceholder')}
+                required
+                {...form.getInputProps('tenantNumber')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <DateInput
+                label={t('form.moveInDate')}
+                placeholder={t('form.moveInDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                clearable
+                {...form.getInputProps('moveInDate')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <DateInput
+                label={t('form.moveOutDate')}
+                placeholder={t('form.moveOutDatePlaceholder')}
+                valueFormat="DD.MM.YYYY"
+                locale={locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : locale === 'ar' ? 'ar' : 'en'}
+                clearable
+                {...form.getInputProps('moveOutDate')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          <Divider />
+          {/* Notes */}
+          <Grid>
+            <Grid.Col span={12}>
+              <Textarea
+                label={t('form.notes')}
+                placeholder={t('form.notesPlaceholder')}
+                rows={4}
+                {...form.getInputProps('notes')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          {/* System Fields (hidden but accessible for admin) */}
-          <div>
-            <Title order={5} mb="md">{t('tenantForm.systemFields') || 'System Fields'}</Title>
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={t('form.userId')}
-                  placeholder={t('form.userIdPlaceholder')}
-                  {...form.getInputProps('userId')}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={t('form.contactId')}
-                  placeholder={t('form.contactIdPlaceholder')}
-                  {...form.getInputProps('contactId')}
-                />
-              </Grid.Col>
-            </Grid>
-          </div>
+          {/* System Fields */}
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.userId')}
+                placeholder={t('form.userIdPlaceholder')}
+                {...form.getInputProps('userId')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={t('form.contactId')}
+                placeholder={t('form.contactIdPlaceholder')}
+                {...form.getInputProps('contactId')}
+              />
+            </Grid.Col>
+          </Grid>
 
-          <Divider />
+          <Divider my="md" />
 
           {/* Media Section */}
-          <div>
-            <MediaGallery
-              tenantId="temp-tenant-id"
-              {...(tenantId ? { entityId: tenantId } : {})}
-              entityType="tenant"
-              images={form.values.images}
-              documents={form.values.documents}
-              {...(form.values.coverImage ? { coverImage: form.values.coverImage } : {})}
-              onImagesChange={(images) => form.setFieldValue('images', images)}
-              onDocumentsChange={(documents) => form.setFieldValue('documents', documents)}
-              onCoverImageChange={(coverImage) => form.setFieldValue('coverImage', coverImage ?? undefined)}
-              userId={user?.id || 'system'}
-            />
-          </div>
+          <MediaGallery
+            tenantId="temp-tenant-id"
+            {...(tenantId ? { entityId: tenantId } : {})}
+            entityType="tenant"
+            images={form.values.images}
+            documents={form.values.documents}
+            {...(form.values.coverImage ? { coverImage: form.values.coverImage } : {})}
+            onImagesChange={(images) => form.setFieldValue('images', images)}
+            onDocumentsChange={(documents) => form.setFieldValue('documents', documents)}
+            onCoverImageChange={(coverImage) => form.setFieldValue('coverImage', coverImage ?? undefined)}
+            userId={user?.id || 'system'}
+          />
 
           <Group justify="space-between" mt="md">
             <Button

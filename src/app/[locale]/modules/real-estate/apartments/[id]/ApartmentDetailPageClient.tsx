@@ -369,7 +369,16 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       <Text>{apartment.unitNumber}</Text>
                     </Stack>
 
-                    {apartment.floor && (
+                    {apartment.apartmentType && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.apartmentType')}
+                        </Text>
+                        <Text>{apartment.apartmentType}</Text>
+                      </Stack>
+                    )}
+
+                    {apartment.floor !== undefined && apartment.floor !== null && (
                       <Stack gap="xs">
                         <Text size="sm" fw={500} c="dimmed">
                           {t('apartments.floor')}
@@ -394,6 +403,15 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       <Text>{Number(apartment.area).toLocaleString('tr-TR')} m²</Text>
                     </Stack>
 
+                    {apartment.basementSize !== undefined && apartment.basementSize !== null && apartment.basementSize > 0 && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.basementSize')}
+                        </Text>
+                        <Text>{Number(apartment.basementSize).toLocaleString('tr-TR')} m²</Text>
+                      </Stack>
+                    )}
+
                     <Stack gap="xs">
                       <Text size="sm" fw={500} c="dimmed">
                         {t('apartments.roomCount')}
@@ -401,12 +419,39 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       <Text>{apartment.roomCount} {t('apartments.rooms')}</Text>
                     </Stack>
 
+                    {apartment.bedroomCount !== undefined && apartment.bedroomCount !== null && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.bedroomCount')}
+                        </Text>
+                        <Text>{apartment.bedroomCount}</Text>
+                      </Stack>
+                    )}
+
                     {apartment.bathroomCount && (
                       <Stack gap="xs">
                         <Text size="sm" fw={500} c="dimmed">
                           {t('form.bathroomCount')}
                         </Text>
                         <Text>{apartment.bathroomCount}</Text>
+                      </Stack>
+                    )}
+
+                    {apartment.lastRenovationDate && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.lastRenovationDate')}
+                        </Text>
+                        <Text>{dayjs(apartment.lastRenovationDate).format('DD.MM.YYYY')}</Text>
+                      </Stack>
+                    )}
+
+                    {apartment.internetSpeed && (
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500} c="dimmed">
+                          {t('form.internetSpeed')}
+                        </Text>
+                        <Text>{apartment.internetSpeed}</Text>
                       </Stack>
                     )}
                   </SimpleGrid>
@@ -432,6 +477,55 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       </Badge>
                     )}
                   </Group>
+
+                  {/* Heating Systems */}
+                  {apartment.heatingSystems && apartment.heatingSystems.length > 0 && apartment.heatingSystems.some((h: any) => h.system) && (
+                    <>
+                      <Divider label={t('apartments.sections.heatingSystems')} labelPosition="center" />
+                      <Group gap="xs" wrap="wrap">
+                        {apartment.heatingSystems
+                          .filter((h: any) => h.system)
+                          .map((h: any, index: number) => (
+                            <Badge key={index} variant="light" color="orange">
+                              {h.system}
+                            </Badge>
+                          ))}
+                      </Group>
+                    </>
+                  )}
+
+                  {/* Energy Efficiency */}
+                  {(apartment.energyCertificateType || apartment.energyConsumption || apartment.energyCertificateYear) && (
+                    <>
+                      <Divider label={t('apartments.sections.energyEfficiency')} labelPosition="center" />
+                      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+                        {apartment.energyCertificateType && (
+                          <Stack gap="xs">
+                            <Text size="sm" fw={500} c="dimmed">
+                              {t('form.energyCertificateType')}
+                            </Text>
+                            <Text>{apartment.energyCertificateType}</Text>
+                          </Stack>
+                        )}
+                        {apartment.energyConsumption !== undefined && apartment.energyConsumption !== null && (
+                          <Stack gap="xs">
+                            <Text size="sm" fw={500} c="dimmed">
+                              {t('form.energyConsumption')}
+                            </Text>
+                            <Text>{Number(apartment.energyConsumption).toLocaleString('tr-TR')} kWh/(m²*a)</Text>
+                          </Stack>
+                        )}
+                        {apartment.energyCertificateYear !== undefined && apartment.energyCertificateYear !== null && (
+                          <Stack gap="xs">
+                            <Text size="sm" fw={500} c="dimmed">
+                              {t('form.energyCertificateYear')}
+                            </Text>
+                            <Text>{apartment.energyCertificateYear}</Text>
+                          </Stack>
+                        )}
+                      </SimpleGrid>
+                    </>
+                  )}
 
                   <Divider />
 

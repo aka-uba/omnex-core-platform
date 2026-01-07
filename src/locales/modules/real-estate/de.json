@@ -189,10 +189,14 @@
     },
     "sections": {
       "basicInfo": "Grundinformationen",
+      "masterData": "Stammdaten",
       "roomsAndAreas": "Zimmer und Flächen",
       "heatingAndInternet": "Heizung und Internet",
+      "heatingSystems": "Heizungssysteme",
       "monthlyCosts": "Monatliche Kosten",
-      "usageRights": "Nutzungsrechte"
+      "energyEfficiency": "Energieeffizienzklasse / Verbrauch",
+      "usageRights": "Nutzungsrechte",
+      "additionalInfo": "Weitere Informationen"
     },
     "heatingSystem": {
       "primary": "Primärsystem",
@@ -201,6 +205,41 @@
       "system2": "Heizsystem 2",
       "system3": "Heizsystem 3",
       "system4": "Heizsystem 4"
+    },
+    "heatingOptions": {
+      "gasheizung": "Gasheizung",
+      "fernwaerme": "Fernwärme",
+      "elektroheizung": "Elektroheizung",
+      "zentralheizung": "Zentralheizung",
+      "fussbodenheizung": "Fußbodenheizung",
+      "kamin": "Kamin / Ofen",
+      "klimaanlage": "Klimaanlage",
+      "waermepumpe": "Wärmepumpe",
+      "solaranlage": "Solaranlage / Photovoltaik",
+      "nichtVorhanden": "Nicht vorhanden"
+    },
+    "apartmentTypes": {
+      "etagenwohnung": "Etagenwohnung",
+      "erdgeschoss": "Erdgeschoss",
+      "dachgeschoss": "Dachgeschoss",
+      "maisonette": "Maisonette",
+      "penthouse": "Penthouse",
+      "souterrain": "Souterrain",
+      "hochparterre": "Hochparterre"
+    },
+    "internetOptions": {
+      "keinInternet": "Kein Internetzugang",
+      "16mbit": "16 Mbit/s",
+      "50mbit": "50 Mbit/s",
+      "100mbit": "100 Mbit/s",
+      "250mbit": "250 Mbit/s",
+      "500mbit": "500 Mbit/s",
+      "1gbit": "1 Gbit/s"
+    },
+    "energyCertificateOptions": {
+      "liegtNichtVor": "Liegt nicht vor",
+      "vorhanden": "Vorhanden",
+      "beantragt": "Beantragt"
     },
     "usageRight": {
       "name": "Rechtsname",
@@ -1593,12 +1632,29 @@
     "basementSizePlaceholder": "Kellergröße eingeben",
     "internetSpeed": "Internetgeschwindigkeit",
     "internetSpeedPlaceholder": "Internetgeschwindigkeit auswählen",
+    "lastRenovationDate": "Datum letzter Renovierung",
+    "lastRenovationDatePlaceholder": "Datum auswählen",
+    "heatingSystem1": "Heizungssystem 1 (Primäres System)",
+    "heatingSystem2": "Heizungssystem 2",
+    "heatingSystem3": "Heizungssystem 3",
+    "heatingSystem4": "Heizungssystem 4",
     "coldRent": "Kaltmiete",
     "coldRentPlaceholder": "Kaltmiete eingeben",
     "heatingCosts": "Heizkosten",
     "heatingCostsPlaceholder": "Heizkosten eingeben",
     "additionalCosts": "Nebenkosten",
     "additionalCostsPlaceholder": "Nebenkosten eingeben",
+    "depositOneTime": "Kaution (Einmalig)",
+    "depositPlaceholder": "Kaution eingeben",
+    "energyCertificateType": "Energieausweis",
+    "energyCertificateTypePlaceholder": "Energieausweistyp auswählen",
+    "verbrauchsausweis": "Verbrauchsausweis",
+    "bedarfsausweis": "Bedarfsausweis",
+    "liegtNichtVor": "Liegt nicht vor",
+    "energyConsumption": "Endenergieverbrauch kWh/(m²*a)",
+    "energyConsumptionPlaceholder": "Endenergieverbrauch eingeben",
+    "energyCertificateYear": "Baujahr laut Energieausweis",
+    "energyCertificateYearPlaceholder": "Baujahr eingeben",
     "contractDocuments": "Vertragsdokumente",
     "apartmentDocuments": "Wohnungsdokumente",
     "estimatedCost": "Geschätzte Kosten",
@@ -1790,7 +1846,9 @@
     "noData": "Keine Nebenkostendaten für diesen Eintrag gefunden",
     "noDataHint": "Fügen Sie eine Wohnung hinzu, um Miet- und Nebenkosteninformationen anzuzeigen",
     "noDataApartmentHint": "Fügen Sie Miet- und Nebenkosteninformationen im Bearbeitungsmodus hinzu",
-    "noDataTenantHint": "Nebenkosteninformationen hängen von der aktiven Vertragswohnung des Mieters ab"
+    "noDataTenantHint": "Nebenkosteninformationen hängen von der aktiven Vertragswohnung des Mieters ab",
+    "coldRentHint": "Die monatliche Miete ohne Nebenkosten wie Heizung, Wasser oder Müllabfuhr.",
+    "heatingCostsHint": "Falls die Heizkosten nicht direkt in den Nebenkosten enthalten sind UND gesondert abgerechnet werden müssen"
   },
   "propertyExpenses": {
     "title": "Gebäudekosten",

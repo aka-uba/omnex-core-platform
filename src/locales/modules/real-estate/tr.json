@@ -189,10 +189,14 @@
     },
     "sections": {
       "basicInfo": "Temel Bilgiler",
+      "masterData": "Ana Veriler",
       "roomsAndAreas": "Odalar ve Alanlar",
       "heatingAndInternet": "Isıtma ve İnternet",
+      "heatingSystems": "Isıtma Sistemleri",
       "monthlyCosts": "Aylık Maliyetler",
-      "usageRights": "Kullanım Hakları"
+      "energyEfficiency": "Enerji Verimliliği Sınıfı / Tüketim",
+      "usageRights": "Kullanım Hakları",
+      "additionalInfo": "Ek Bilgiler"
     },
     "heatingSystem": {
       "primary": "Birincil Sistem",
@@ -201,6 +205,41 @@
       "system2": "Isıtma Sistemi 2",
       "system3": "Isıtma Sistemi 3",
       "system4": "Isıtma Sistemi 4"
+    },
+    "heatingOptions": {
+      "gasheizung": "Doğalgaz Isıtma",
+      "fernwaerme": "Merkezi Isıtma",
+      "elektroheizung": "Elektrikli Isıtma",
+      "zentralheizung": "Merkezi Isıtma",
+      "fussbodenheizung": "Yerden Isıtma",
+      "kamin": "Şömine / Soba",
+      "klimaanlage": "Klima",
+      "waermepumpe": "Isı Pompası",
+      "solaranlage": "Güneş Enerjisi / Fotovoltaik",
+      "nichtVorhanden": "Mevcut Değil"
+    },
+    "apartmentTypes": {
+      "etagenwohnung": "Kat Dairesi",
+      "erdgeschoss": "Zemin Kat",
+      "dachgeschoss": "Çatı Katı",
+      "maisonette": "Dubleks",
+      "penthouse": "Penthouse",
+      "souterrain": "Bodrum Kat",
+      "hochparterre": "Yüksek Zemin Kat"
+    },
+    "internetOptions": {
+      "keinInternet": "İnternet Yok",
+      "16mbit": "16 Mbit/s",
+      "50mbit": "50 Mbit/s",
+      "100mbit": "100 Mbit/s",
+      "250mbit": "250 Mbit/s",
+      "500mbit": "500 Mbit/s",
+      "1gbit": "1 Gbit/s"
+    },
+    "energyCertificateOptions": {
+      "liegtNichtVor": "Mevcut Değil",
+      "vorhanden": "Mevcut",
+      "beantragt": "Başvuruldu"
     },
     "usageRight": {
       "name": "Hak Adı",
@@ -1593,12 +1632,27 @@
     "basementSizePlaceholder": "Kiler boyutunu girin",
     "internetSpeed": "İnternet Hızı",
     "internetSpeedPlaceholder": "İnternet hızını seçin",
+    "heatingSystem1": "Isıtma Sistemi 1 (Birincil Sistem)",
+    "heatingSystem2": "Isıtma Sistemi 2",
+    "heatingSystem3": "Isıtma Sistemi 3",
+    "heatingSystem4": "Isıtma Sistemi 4",
     "coldRent": "Net Kira",
     "coldRentPlaceholder": "Net kira tutarını girin",
     "heatingCosts": "Isıtma Giderleri",
     "heatingCostsPlaceholder": "Isıtma giderlerini girin",
     "additionalCosts": "Ek Giderler",
     "additionalCostsPlaceholder": "Ek giderleri girin",
+    "depositOneTime": "Depozito (Tek Seferlik)",
+    "depositPlaceholder": "Depozito tutarını girin",
+    "energyCertificateType": "Enerji Sertifikası",
+    "energyCertificateTypePlaceholder": "Enerji sertifikası türünü seçin",
+    "verbrauchsausweis": "Tüketim Sertifikası",
+    "bedarfsausweis": "İhtiyaç Sertifikası",
+    "liegtNichtVor": "Mevcut Değil",
+    "energyConsumption": "Nihai Enerji Tüketimi kWh/(m²*a)",
+    "energyConsumptionPlaceholder": "Enerji tüketimini girin",
+    "energyCertificateYear": "Enerji Sertifikasına Göre Yapım Yılı",
+    "energyCertificateYearPlaceholder": "Yapım yılını girin",
     "contractDocuments": "Sözleşme Belgeleri",
     "apartmentDocuments": "Daire Belgeleri",
     "estimatedCost": "Tahmini Maliyet",
@@ -1790,7 +1844,9 @@
     "noData": "Bu kayıt için yan gider verisi bulunamadı",
     "noDataHint": "Kira ve yan gider bilgilerini görmek için daire ekleyin",
     "noDataApartmentHint": "Düzenleme modunda kira ve yan gider bilgilerini ekleyin",
-    "noDataTenantHint": "Yan gider bilgileri kiracının aktif sözleşme dairesine bağlıdır"
+    "noDataTenantHint": "Yan gider bilgileri kiracının aktif sözleşme dairesine bağlıdır",
+    "coldRentHint": "Isıtma, su veya çöp gibi yan giderler hariç aylık kira.",
+    "heatingCostsHint": "Isıtma giderleri yan giderlere dahil değilse VE ayrıca faturalandırılması gerekiyorsa"
   },
   "propertyExpenses": {
     "title": "Bina Giderleri",

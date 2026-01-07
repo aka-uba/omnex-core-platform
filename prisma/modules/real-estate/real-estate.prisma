@@ -162,6 +162,11 @@ model Apartment {
   heatingCosts    Decimal? @db.Decimal(10, 2) // Heizkosten (Isıtma Giderleri)
   deposit         Decimal? @db.Decimal(10, 2) // Kaution (Depozito)
 
+  // Energy Efficiency (Energieeffizienzklasse / Verbrauch)
+  energyCertificateType String? // 'Verbrauchsausweis' or 'Bedarfsausweis'
+  energyConsumption     Decimal? @db.Decimal(10, 2) // Endenergieverbrauch kWh/(m²*a)
+  energyCertificateYear Int? // Baujahr laut Energieausweis
+
   // Usage Rights (Nutzungsrechte für die Mieteinheit)
   usageRights Json? // Array of usage rights objects
 

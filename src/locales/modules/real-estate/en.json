@@ -189,10 +189,14 @@
     },
     "sections": {
       "basicInfo": "Basic Information",
+      "masterData": "Master Data",
       "roomsAndAreas": "Rooms and Areas",
       "heatingAndInternet": "Heating and Internet",
+      "heatingSystems": "Heating Systems",
       "monthlyCosts": "Monthly Costs",
-      "usageRights": "Usage Rights"
+      "energyEfficiency": "Energy Efficiency Class / Consumption",
+      "usageRights": "Usage Rights",
+      "additionalInfo": "Additional Information"
     },
     "heatingSystem": {
       "primary": "Primary System",
@@ -201,6 +205,41 @@
       "system2": "Heating System 2",
       "system3": "Heating System 3",
       "system4": "Heating System 4"
+    },
+    "heatingOptions": {
+      "gasheizung": "Gas Heating",
+      "fernwaerme": "District Heating",
+      "elektroheizung": "Electric Heating",
+      "zentralheizung": "Central Heating",
+      "fussbodenheizung": "Underfloor Heating",
+      "kamin": "Fireplace / Stove",
+      "klimaanlage": "Air Conditioning",
+      "waermepumpe": "Heat Pump",
+      "solaranlage": "Solar / Photovoltaic",
+      "nichtVorhanden": "Not Available"
+    },
+    "apartmentTypes": {
+      "etagenwohnung": "Floor Apartment",
+      "erdgeschoss": "Ground Floor",
+      "dachgeschoss": "Attic Apartment",
+      "maisonette": "Maisonette",
+      "penthouse": "Penthouse",
+      "souterrain": "Basement Apartment",
+      "hochparterre": "Raised Ground Floor"
+    },
+    "internetOptions": {
+      "keinInternet": "No Internet Access",
+      "16mbit": "16 Mbit/s",
+      "50mbit": "50 Mbit/s",
+      "100mbit": "100 Mbit/s",
+      "250mbit": "250 Mbit/s",
+      "500mbit": "500 Mbit/s",
+      "1gbit": "1 Gbit/s"
+    },
+    "energyCertificateOptions": {
+      "liegtNichtVor": "Not Available",
+      "vorhanden": "Available",
+      "beantragt": "Requested"
     },
     "usageRight": {
       "name": "Right Name",
@@ -1593,12 +1632,29 @@
     "basementSizePlaceholder": "Enter basement size",
     "internetSpeed": "Internet Speed",
     "internetSpeedPlaceholder": "Select internet speed",
+    "lastRenovationDate": "Last Renovation Date",
+    "lastRenovationDatePlaceholder": "Select date",
+    "heatingSystem1": "Heating System 1 (Primary System)",
+    "heatingSystem2": "Heating System 2",
+    "heatingSystem3": "Heating System 3",
+    "heatingSystem4": "Heating System 4",
     "coldRent": "Net Rent",
     "coldRentPlaceholder": "Enter net rent amount",
     "heatingCosts": "Heating Costs",
     "heatingCostsPlaceholder": "Enter heating costs",
     "additionalCosts": "Additional Costs",
     "additionalCostsPlaceholder": "Enter additional costs",
+    "depositOneTime": "Deposit (One-time)",
+    "depositPlaceholder": "Enter deposit amount",
+    "energyCertificateType": "Energy Certificate",
+    "energyCertificateTypePlaceholder": "Select energy certificate type",
+    "verbrauchsausweis": "Consumption Certificate",
+    "bedarfsausweis": "Demand Certificate",
+    "liegtNichtVor": "Not Available",
+    "energyConsumption": "Final Energy Consumption kWh/(m²*a)",
+    "energyConsumptionPlaceholder": "Enter energy consumption",
+    "energyCertificateYear": "Construction Year per Energy Certificate",
+    "energyCertificateYearPlaceholder": "Enter construction year",
     "contractDocuments": "Contract Documents",
     "apartmentDocuments": "Apartment Documents",
     "estimatedCost": "Estimated Cost",
@@ -1790,7 +1846,9 @@
     "noData": "No side cost data found for this record",
     "noDataHint": "Add an apartment to see rent and side cost information",
     "noDataApartmentHint": "Add rent and side cost information in edit mode",
-    "noDataTenantHint": "Side cost information is linked to the tenant's active contract apartment"
+    "noDataTenantHint": "Side cost information is linked to the tenant's active contract apartment",
+    "coldRentHint": "Monthly rent excluding side costs such as heating, water, or garbage collection.",
+    "heatingCostsHint": "If heating costs are not included in the side costs AND must be billed separately"
   },
   "propertyExpenses": {
     "title": "Building Expenses",

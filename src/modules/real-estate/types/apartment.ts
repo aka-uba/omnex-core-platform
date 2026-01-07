@@ -22,19 +22,29 @@ export interface KeyInfo {
   notes?: string;
 }
 
+export interface HeatingSystemInfo {
+  system: string;
+}
+
 export interface Apartment {
   id: string;
   tenantId: string;
   companyId: string;
   propertyId: string;
   unitNumber: string;
+  apartmentType?: string | null;
   floor?: number | null;
   block?: string | null;
   area: number;
   roomCount: number;
+  bedroomCount?: number | null;
   livingRoom: boolean;
   bathroomCount: number;
   balcony: boolean;
+  basementSize?: number | null;
+  lastRenovationDate?: Date | null;
+  internetSpeed?: string | null;
+  heatingSystems?: HeatingSystemInfo[] | null;
   ownerId?: string | null;
   ownerType?: OwnerType | null;
   ownershipType?: OwnershipType | null;
@@ -46,6 +56,9 @@ export interface Apartment {
   additionalCosts?: number | null;
   heatingCosts?: number | null;
   deposit?: number | null;
+  energyCertificateType?: string | null;
+  energyConsumption?: number | null;
+  energyCertificateYear?: number | null;
   inventory?: InventoryItem[] | null;
   keys?: KeyInfo[] | null;
   description?: string | null;
@@ -67,13 +80,19 @@ export interface Apartment {
 export interface ApartmentCreateInput {
   propertyId: string;
   unitNumber: string;
+  apartmentType?: string;
   floor?: number;
   block?: string;
   area: number;
   roomCount: number;
+  bedroomCount?: number;
   livingRoom?: boolean;
   bathroomCount?: number;
   balcony?: boolean;
+  basementSize?: number;
+  lastRenovationDate?: Date;
+  internetSpeed?: string;
+  heatingSystems?: HeatingSystemInfo[];
   ownerId?: string;
   ownerType?: OwnerType;
   ownershipType?: OwnershipType;
@@ -81,6 +100,13 @@ export interface ApartmentCreateInput {
   deliveryDate?: Date;
   rentPrice?: number;
   salePrice?: number;
+  coldRent?: number;
+  additionalCosts?: number;
+  heatingCosts?: number;
+  deposit?: number;
+  energyCertificateType?: string;
+  energyConsumption?: number;
+  energyCertificateYear?: number;
   inventory?: InventoryItem[];
   keys?: KeyInfo[];
   description?: string;
