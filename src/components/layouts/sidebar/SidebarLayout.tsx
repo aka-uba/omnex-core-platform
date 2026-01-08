@@ -176,18 +176,24 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 {mounted && <IconChevronLeft size={20} className={styles.expandSidebarIcon} />}
               </button>
             )}
-            {/* Geniş logo göster - Dashboard'a link */}
+            {/* Geniş logo göster - Dark mode'da logo-dark.png, light mode'da logo-light.png - Dashboard'a link */}
             {mounted && (
               <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none', marginLeft: '8px' }}>
                 <Image
-                  src={BRANDING_PATHS.logo}
+                  src={colorScheme === 'dark' ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
                   alt={companyName || 'Logo'}
                   fit="contain"
                   h={36}
                   maw={180}
                   style={{ cursor: 'pointer' }}
                   onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                    e.currentTarget.style.display = 'none';
+                    // Fallback to default logo if variant not found
+                    const target = e.currentTarget;
+                    if (target.src.includes('logo-')) {
+                      target.src = BRANDING_PATHS.logo;
+                    } else {
+                      target.style.display = 'none';
+                    }
                   }}
                 />
               </Link>
