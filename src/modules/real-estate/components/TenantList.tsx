@@ -31,7 +31,6 @@ export function TenantList({ locale }: TenantListProps) {
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [search] = useState('');
-  const [tenantStatusFilter, setTenantStatusFilter] = useState<string | undefined>();
 
   const { data, isLoading, error } = useTenants({
     page,
@@ -305,13 +304,8 @@ export function TenantList({ locale }: TenantListProps) {
     },
   ], [t]);
 
-  const handleFilter = useCallback((filters: Record<string, any>) => {
-    if (filters.tenantStatus) {
-      setTenantStatusFilter(filters.tenantStatus);
-    } else {
-      setTenantStatusFilter(undefined);
-    }
-
+  const handleFilter = useCallback((_filters: Record<string, any>) => {
+    // Filter değişikliklerinde sayfa 1'e dön
     setPage(1);
   }, []);
 

@@ -35,8 +35,30 @@
       "campaigns": "Campaigns",
       "reports": "Reports",
       "settings": "Settings",
-      "reconciliation": "Reconciliation"
+      "reconciliation": "Reconciliation",
+      "design-preview": "Design Preview",
+      "designPreview": "Design Preview"
     }
+  },
+  "designPreview": {
+    "title": "Design Comparison",
+    "description": "3 different design proposals for apartment detail page",
+    "v1": {
+      "title": "V1 - Split Panel Design",
+      "description": "Image and highlights on the left, detailed sections on the right"
+    },
+    "v2": {
+      "title": "V2 - Interactive Overview Design",
+      "description": "Tab-organized, detailed and interactive view"
+    },
+    "v3": {
+      "title": "V3 - Timeline Design",
+      "description": "Timeline style, step-by-step information flow"
+    },
+    "noApartment": "No apartment found. Please add an apartment first.",
+    "selectApartment": "Select Apartment",
+    "selectApartmentPlaceholder": "Select an apartment to view...",
+    "selectApartmentPrompt": "Select an apartment to view the designs."
   },
   "dashboard": {
     "title": "Real Estate Management Overview",

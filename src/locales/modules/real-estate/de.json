@@ -35,8 +35,30 @@
       "campaigns": "Kampagnen",
       "reports": "Berichte",
       "settings": "Einstellungen",
-      "reconciliation": "Abrechnung"
+      "reconciliation": "Abrechnung",
+      "design-preview": "Designvorschau",
+      "designPreview": "Designvorschau"
     }
+  },
+  "designPreview": {
+    "title": "Designvergleich",
+    "description": "3 verschiedene Designvorschläge für die Wohnungsdetailseite",
+    "v1": {
+      "title": "V1 - Split Panel Design",
+      "description": "Bild und Highlights auf der linken Seite, detaillierte Abschnitte auf der rechten Seite"
+    },
+    "v2": {
+      "title": "V2 - Interaktives Übersichtsdesign",
+      "description": "Tab-organisierte, detaillierte und interaktive Ansicht"
+    },
+    "v3": {
+      "title": "V3 - Timeline Design",
+      "description": "Zeitleistenstil, schrittweiser Informationsfluss"
+    },
+    "noApartment": "Keine Wohnung gefunden. Bitte fügen Sie zuerst eine Wohnung hinzu.",
+    "selectApartment": "Wohnung auswählen",
+    "selectApartmentPlaceholder": "Wählen Sie eine Wohnung aus...",
+    "selectApartmentPrompt": "Wählen Sie eine Wohnung aus, um die Designs anzuzeigen."
   },
   "dashboard": {
     "title": "Immobilienverwaltung Übersicht",

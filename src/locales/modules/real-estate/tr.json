@@ -35,8 +35,30 @@
       "campaigns": "Kampanyalar",
       "reports": "Raporlar",
       "settings": "Ayarlar",
-      "reconciliation": "Uzlaştırma"
+      "reconciliation": "Uzlaştırma",
+      "design-preview": "Tasarım Karşılaştırma",
+      "designPreview": "Tasarım Karşılaştırma"
     }
+  },
+  "designPreview": {
+    "title": "Tasarım Karşılaştırma",
+    "description": "Daire detay sayfası için 3 farklı tasarım önerisi",
+    "v1": {
+      "title": "V1 - Split Panel Tasarım",
+      "description": "Sol tarafta resim ve öne çıkan bilgiler, sağ tarafta detaylı bölümler"
+    },
+    "v2": {
+      "title": "V2 - Interactive Overview Tasarım",
+      "description": "Tab yapısı ile organize edilmiş, detaylı ve interaktif görünüm"
+    },
+    "v3": {
+      "title": "V3 - Timeline Tasarım",
+      "description": "Zaman çizelgesi tarzında, adım adım bilgi akışı"
+    },
+    "noApartment": "Daire bulunamadı. Lütfen önce bir daire ekleyin.",
+    "selectApartment": "Daire Seçin",
+    "selectApartmentPlaceholder": "Görüntülenecek daireyi seçin...",
+    "selectApartmentPrompt": "Tasarımları görüntülemek için bir daire seçin."
   },
   "dashboard": {
     "title": "Emlak Yönetimi Genel Bakış",

@@ -88,6 +88,10 @@ menu:
         path: /modules/real-estate/reports
         icon: Report
         order: 16
+      - title: Design Preview
+        path: /modules/real-estate/design-preview
+        icon: Template
+        order: 17
 settings:
   - key: enableNotifications
     label: Enable Notifications

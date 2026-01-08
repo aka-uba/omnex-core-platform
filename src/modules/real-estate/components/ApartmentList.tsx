@@ -55,14 +55,6 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   // Fetch properties for filter
   const { data: propertiesData } = useProperties({ page: 1, pageSize: 1000 });
 
-  const getActiveBadge = useCallback((isActive: boolean) => {
-    return isActive ? (
-      <Badge color="green">{t('status.active')}</Badge>
-    ) : (
-      <Badge color="gray">{t('status.inactive')}</Badge>
-    );
-  }, [t]);
-
   const getStatusBadge = useCallback((status: ApartmentStatus) => {
     const statusColors: Record<ApartmentStatus, string> = {
       empty: 'yellow',
@@ -219,8 +211,6 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   ), []);
 
   const renderArea = useCallback((value: number) => value ? `${value} m²` : '-', []);
-
-  const renderActive = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
 
   const renderProperty = useCallback((value: string) => (
     <Text size="xs" style={{ whiteSpace: 'pre-line' }}>{value}</Text>
