@@ -16,11 +16,15 @@ export const BRANDING_PATHS = {
 
   // Sabit dosya isimleri
   logo: '/branding/logo.png',
+  logoLight: '/branding/logo-light.png',  // Açık arka plan için (dark mode header, auth sayfaları dark)
+  logoDark: '/branding/logo-dark.png',    // Koyu arka plan için (light mode header, auth sayfaları light)
   favicon: '/branding/favicon.ico',
   pwaIcon: '/branding/pwa-icon.png',
 
   // Dosya sistemi yolları (public klasöründen göreceli)
   logoFile: 'branding/logo.png',
+  logoLightFile: 'branding/logo-light.png',
+  logoDarkFile: 'branding/logo-dark.png',
   faviconFile: 'branding/favicon.ico',
   pwaIconFile: 'branding/pwa-icon.png',
 } as const;

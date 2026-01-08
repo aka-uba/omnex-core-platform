@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "Search",
+    "settings": "Settings",
     "actions": {
       "save": "Save",
       "cancel": "Cancel",
@@ -1810,6 +1811,16 @@
     "uploadPwaIcon": "Upload PWA Icon",
     "removePwaIcon": "Remove PWA Icon",
     "pwaIconHint": "Icon that will appear when added to home screen on mobile (512x512px)",
+    "logoLight": "Logo (Light Background)",
+    "uploadLogoLight": "Upload Logo (Light)",
+    "removeLogoLight": "Remove Logo (Light)",
+    "logoLightHint": "Logo for dark backgrounds (PNG or SVG)",
+    "logoLightUploaded": "Logo (Light) uploaded successfully",
+    "logoDark": "Logo (Dark Background)",
+    "uploadLogoDark": "Upload Logo (Dark)",
+    "removeLogoDark": "Remove Logo (Dark)",
+    "logoDarkHint": "Logo for light backgrounds (PNG or SVG)",
+    "logoDarkUploaded": "Logo (Dark) uploaded successfully",
     "table": {
       "name": "Company Name",
       "industry": "Industry",

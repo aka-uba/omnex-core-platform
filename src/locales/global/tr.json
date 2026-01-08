@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "Ara",
+    "settings": "Ayarlar",
     "actions": {
       "save": "Kaydet",
       "cancel": "İptal",
@@ -1811,6 +1812,16 @@
     "uploadPwaIcon": "PWA İkonu Yükle",
     "removePwaIcon": "PWA İkonunu Kaldır",
     "pwaIconHint": "Mobil cihazlarda ana ekrana eklendiğinde görünecek ikon (512x512px)",
+    "logoLight": "Logo (Açık Zemin)",
+    "uploadLogoLight": "Logo (Açık) Yükle",
+    "removeLogoLight": "Logo (Açık) Kaldır",
+    "logoLightHint": "Koyu arka planlarda kullanılacak logo (PNG veya SVG)",
+    "logoLightUploaded": "Logo (Açık) başarıyla yüklendi",
+    "logoDark": "Logo (Koyu Zemin)",
+    "uploadLogoDark": "Logo (Koyu) Yükle",
+    "removeLogoDark": "Logo (Koyu) Kaldır",
+    "logoDarkHint": "Açık arka planlarda kullanılacak logo (PNG veya SVG)",
+    "logoDarkUploaded": "Logo (Koyu) başarıyla yüklendi",
     "table": {
       "name": "Firma Adı",
       "industry": "Sektör",

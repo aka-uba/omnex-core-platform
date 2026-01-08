@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "بحث",
+    "settings": "الإعدادات",
     "actions": {
       "save": "حفظ",
       "cancel": "إلغاء",
@@ -1839,6 +1840,16 @@
     "uploadPwaIcon": "رفع أيقونة PWA",
     "removePwaIcon": "إزالة أيقونة PWA",
     "pwaIconHint": "أيقونة للشاشة الرئيسية للجوال (512x512px)",
+    "logoLight": "الشعار (خلفية فاتحة)",
+    "uploadLogoLight": "رفع الشعار (فاتح)",
+    "removeLogoLight": "إزالة الشعار (فاتح)",
+    "logoLightHint": "شعار للخلفيات الداكنة (PNG أو SVG)",
+    "logoLightUploaded": "تم رفع الشعار (فاتح) بنجاح",
+    "logoDark": "الشعار (خلفية داكنة)",
+    "uploadLogoDark": "رفع الشعار (داكن)",
+    "removeLogoDark": "إزالة الشعار (داكن)",
+    "logoDarkHint": "شعار للخلفيات الفاتحة (PNG أو SVG)",
+    "logoDarkUploaded": "تم رفع الشعار (داكن) بنجاح",
     "table": {
       "name": "اسم الشركة",
       "industry": "القطاع",

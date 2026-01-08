@@ -1,5 +1,7 @@
 {
   "moduleSettings": {
+    "title": "Einstellungen",
+    "description": "Moduleinstellungen, Menükonfiguration und Demodaten verwalten.",
     "tabs": {
       "summary": "Zusammenfassung",
       "settings": "Einstellungen",

@@ -48,6 +48,7 @@ import { DemoDataTab } from './DemoDataTab';
 import { ClientIcon } from '@/components/common/ClientIcon';
 import { ModuleIcon } from '@/lib/modules/icon-loader';
 import { IconPicker } from '@/components/common/IconPicker';
+import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from '@/lib/i18n/client';
@@ -734,10 +735,29 @@ export function ModuleSettingsPage({ module }: ModuleSettingsPageProps) {
     }
   };
 
+  // Get translated module name
+  const translatedModuleName = tManagement(`names.${module.slug}`) !== `names.${module.slug}`
+    ? tManagement(`names.${module.slug}`)
+    : module.name;
+
   return (
-    <Container size="xl" py="xl">
+    <Container size="xl" pt="xl">
+      {/* CentralPageHeader with back button */}
+      <CentralPageHeader
+        title={`${translatedModuleName} ${t('moduleSettings.title') || tGlobal('common.settings')}`}
+        description={t('moduleSettings.description')}
+        namespace="modules/module-management"
+        icon={<ModuleIcon icon={moduleIcon || module.icon || 'Settings'} size={32} />}
+        breadcrumbs={[
+          { label: 'navigation.dashboard', href: `/${currentLocale}/dashboard`, namespace: 'global' },
+          { label: translatedModuleName, href: `/${currentLocale}/modules/${module.slug}`, namespace: 'modules/module-management' },
+          { label: tGlobal('common.settings') },
+        ]}
+        showBackButton={true}
+      />
+
       {/* Header */}
-      <Paper shadow="xs" p="lg" mb="xl" withBorder>
+      <Paper shadow="xs" p="lg" mb="xl" mt="md" withBorder>
         <Group wrap="nowrap" align="flex-start">
           <Box pos="relative">
             {uploadingIcon ? (

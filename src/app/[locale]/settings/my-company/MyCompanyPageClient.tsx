@@ -144,7 +144,9 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
   // Branding hook - sabit dosya yollarını kullanır
   const { refetch: refetchBranding } = useBranding();
 
-  const handleBrandingUpload = async (file: File, type: 'logo' | 'favicon' | 'pwaIcon') => {
+  type BrandingType = 'logo' | 'logoLight' | 'logoDark' | 'favicon' | 'pwaIcon';
+
+  const handleBrandingUpload = async (file: File, type: BrandingType) => {
     setLoading(true);
     try {
       const uploadData = new FormData();
@@ -161,6 +163,8 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
 
       if (result.success) {
         const messageKey = type === 'logo' ? 'companies.logoUploaded' :
+                          type === 'logoLight' ? 'companies.logoLightUploaded' :
+                          type === 'logoDark' ? 'companies.logoDarkUploaded' :
                           type === 'favicon' ? 'companies.faviconUploaded' :
                           'companies.pwaIconUploaded';
         showToast({
@@ -186,7 +190,7 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
     }
   };
 
-  const handleBrandingDelete = async (type: 'logo' | 'favicon' | 'pwaIcon') => {
+  const handleBrandingDelete = async (type: BrandingType) => {
     setLoading(true);
     try {
       const response = await fetchWithAuth(`/api/branding/upload?type=${type}`, {
@@ -217,6 +221,8 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
   };
 
   const handleLogoUpload = (file: File) => handleBrandingUpload(file, 'logo');
+  const handleLogoLightUpload = (file: File) => handleBrandingUpload(file, 'logoLight');
+  const handleLogoDarkUpload = (file: File) => handleBrandingUpload(file, 'logoDark');
   const handleFaviconUpload = (file: File) => handleBrandingUpload(file, 'favicon');
   const handlePwaIconUpload = (file: File) => handleBrandingUpload(file, 'pwaIcon');
 
@@ -278,9 +284,9 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
 
           <Tabs.Panel value="basic" pt="xl">
             <Stack gap="md">
-              {/* Logo, Favicon, PWA Icon - Yan Yana Card'lar */}
+              {/* Logo, Logo Light, Logo Dark, Favicon, PWA Icon - 5 Card Yan Yana */}
               {/* Sabit dosya yollarını kullanarak göster - /branding/logo.png vb. */}
-              <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+              <SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 5 }} spacing="md">
                 {/* Logo Upload Card */}
                 <Paper p="md" withBorder>
                   <Stack gap="md" align="center">
@@ -291,12 +297,12 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
                         borderRadius: 'var(--mantine-radius-md)',
-                        padding: '12px',
+                        padding: '8px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: 100,
+                        height: 80,
                         width: '100%',
                       }}
                     >
@@ -304,8 +310,8 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                         src={`${BRANDING_PATHS.logo}?t=${Date.now()}`}
                         alt={formData.name || 'Logo'}
                         fit="contain"
-                        maw={120}
-                        mah={80}
+                        maw={100}
+                        mah={60}
                         fallbackSrc=""
                         onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                           e.currentTarget.style.display = 'none';
@@ -313,32 +319,155 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                           if (parent && !parent.querySelector('.fallback-icon')) {
                             const icon = document.createElement('div');
                             icon.className = 'fallback-icon';
-                            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--mantine-color-gray-5)" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>';
+                            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mantine-color-gray-5)" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>';
                             parent.appendChild(icon);
                           }
                         }}
                       />
                     </Box>
                     <Stack gap="xs" align="center" w="100%">
-                      <Group gap="xs" justify="center">
-                        <FileButton onChange={(file) => file && handleLogoUpload(file)} accept="image/*">
-                          {(props) => (
-                            <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
-                              {t('companies.uploadLogo')}
-                            </Button>
-                          )}
-                        </FileButton>
-                        <Button
-                          variant="subtle"
-                          color="red"
-                          size="xs"
-                          onClick={() => handleBrandingDelete('logo')}
-                        >
-                          {t('companies.removeLogo')}
-                        </Button>
-                      </Group>
+                      <FileButton onChange={(file) => file && handleLogoUpload(file)} accept="image/*">
+                        {(props) => (
+                          <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs" fullWidth>
+                            {t('common.actions.upload')}
+                          </Button>
+                        )}
+                      </FileButton>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        size="xs"
+                        fullWidth
+                        onClick={() => handleBrandingDelete('logo')}
+                      >
+                        {t('common.actions.delete')}
+                      </Button>
                       <Text size="xs" c="dimmed" ta="center">
                         {t('companies.logoHint')}
+                      </Text>
+                    </Stack>
+                  </Stack>
+                </Paper>
+
+                {/* Logo Light Upload Card */}
+                <Paper p="md" withBorder>
+                  <Stack gap="md" align="center">
+                    <Text size="sm" fw={500}>
+                      {t('companies.logoLight')}
+                    </Text>
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-dark-7)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 80,
+                        width: '100%',
+                      }}
+                    >
+                      <Image
+                        src={`${BRANDING_PATHS.logoLight}?t=${Date.now()}`}
+                        alt="Logo Light"
+                        fit="contain"
+                        maw={100}
+                        mah={60}
+                        fallbackSrc=""
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                          e.currentTarget.style.display = 'none';
+                          const parent = e.currentTarget.parentElement;
+                          if (parent && !parent.querySelector('.fallback-icon')) {
+                            const icon = document.createElement('div');
+                            icon.className = 'fallback-icon';
+                            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mantine-color-gray-5)" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>';
+                            parent.appendChild(icon);
+                          }
+                        }}
+                      />
+                    </Box>
+                    <Stack gap="xs" align="center" w="100%">
+                      <FileButton onChange={(file) => file && handleLogoLightUpload(file)} accept="image/*">
+                        {(props) => (
+                          <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs" fullWidth>
+                            {t('common.actions.upload')}
+                          </Button>
+                        )}
+                      </FileButton>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        size="xs"
+                        fullWidth
+                        onClick={() => handleBrandingDelete('logoLight')}
+                      >
+                        {t('common.actions.delete')}
+                      </Button>
+                      <Text size="xs" c="dimmed" ta="center">
+                        {t('companies.logoLightHint')}
+                      </Text>
+                    </Stack>
+                  </Stack>
+                </Paper>
+
+                {/* Logo Dark Upload Card */}
+                <Paper p="md" withBorder>
+                  <Stack gap="md" align="center">
+                    <Text size="sm" fw={500}>
+                      {t('companies.logoDark')}
+                    </Text>
+                    <Box
+                      style={{
+                        border: '1px solid var(--mantine-color-gray-3)',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        padding: '8px',
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 80,
+                        width: '100%',
+                      }}
+                    >
+                      <Image
+                        src={`${BRANDING_PATHS.logoDark}?t=${Date.now()}`}
+                        alt="Logo Dark"
+                        fit="contain"
+                        maw={100}
+                        mah={60}
+                        fallbackSrc=""
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                          e.currentTarget.style.display = 'none';
+                          const parent = e.currentTarget.parentElement;
+                          if (parent && !parent.querySelector('.fallback-icon')) {
+                            const icon = document.createElement('div');
+                            icon.className = 'fallback-icon';
+                            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mantine-color-gray-5)" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>';
+                            parent.appendChild(icon);
+                          }
+                        }}
+                      />
+                    </Box>
+                    <Stack gap="xs" align="center" w="100%">
+                      <FileButton onChange={(file) => file && handleLogoDarkUpload(file)} accept="image/*">
+                        {(props) => (
+                          <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs" fullWidth>
+                            {t('common.actions.upload')}
+                          </Button>
+                        )}
+                      </FileButton>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        size="xs"
+                        fullWidth
+                        onClick={() => handleBrandingDelete('logoDark')}
+                      >
+                        {t('common.actions.delete')}
+                      </Button>
+                      <Text size="xs" c="dimmed" ta="center">
+                        {t('companies.logoDarkHint')}
                       </Text>
                     </Stack>
                   </Stack>
@@ -354,12 +483,12 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
                         borderRadius: 'var(--mantine-radius-md)',
-                        padding: '12px',
+                        padding: '8px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: 100,
+                        height: 80,
                         width: '100%',
                       }}
                     >
@@ -383,23 +512,22 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                       />
                     </Box>
                     <Stack gap="xs" align="center" w="100%">
-                      <Group gap="xs" justify="center">
-                        <FileButton onChange={(file) => file && handleFaviconUpload(file)} accept="image/*,.ico">
-                          {(props) => (
-                            <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
-                              {t('companies.uploadFavicon')}
-                            </Button>
-                          )}
-                        </FileButton>
-                        <Button
-                          variant="subtle"
-                          color="red"
-                          size="xs"
-                          onClick={() => handleBrandingDelete('favicon')}
-                        >
-                          {t('companies.removeFavicon')}
-                        </Button>
-                      </Group>
+                      <FileButton onChange={(file) => file && handleFaviconUpload(file)} accept="image/*,.ico">
+                        {(props) => (
+                          <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs" fullWidth>
+                            {t('common.actions.upload')}
+                          </Button>
+                        )}
+                      </FileButton>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        size="xs"
+                        fullWidth
+                        onClick={() => handleBrandingDelete('favicon')}
+                      >
+                        {t('common.actions.delete')}
+                      </Button>
                       <Text size="xs" c="dimmed" ta="center">
                         {t('companies.faviconHint')}
                       </Text>
@@ -417,12 +545,12 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                       style={{
                         border: '1px solid var(--mantine-color-gray-3)',
                         borderRadius: 'var(--mantine-radius-md)',
-                        padding: '12px',
+                        padding: '8px',
                         backgroundColor: 'var(--mantine-color-gray-0)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: 100,
+                        height: 80,
                         width: '100%',
                       }}
                     >
@@ -430,8 +558,8 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                         src={`${BRANDING_PATHS.pwaIcon}?t=${Date.now()}`}
                         alt="PWA Icon"
                         fit="contain"
-                        maw={72}
-                        mah={72}
+                        maw={60}
+                        mah={60}
                         fallbackSrc=""
                         onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                           e.currentTarget.style.display = 'none';
@@ -446,23 +574,22 @@ export function MyCompanyPageClient({ locale }: { locale: string }) {
                       />
                     </Box>
                     <Stack gap="xs" align="center" w="100%">
-                      <Group gap="xs" justify="center">
-                        <FileButton onChange={(file) => file && handlePwaIconUpload(file)} accept="image/png,image/svg+xml">
-                          {(props) => (
-                            <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs">
-                              {t('companies.uploadPwaIcon')}
-                            </Button>
-                          )}
-                        </FileButton>
-                        <Button
-                          variant="subtle"
-                          color="red"
-                          size="xs"
-                          onClick={() => handleBrandingDelete('pwaIcon')}
-                        >
-                          {t('companies.removePwaIcon')}
-                        </Button>
-                      </Group>
+                      <FileButton onChange={(file) => file && handlePwaIconUpload(file)} accept="image/png,image/svg+xml">
+                        {(props) => (
+                          <Button {...props} leftSection={<IconUpload size={14} />} variant="light" size="xs" fullWidth>
+                            {t('common.actions.upload')}
+                          </Button>
+                        )}
+                      </FileButton>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        size="xs"
+                        fullWidth
+                        onClick={() => handleBrandingDelete('pwaIcon')}
+                      >
+                        {t('common.actions.delete')}
+                      </Button>
                       <Text size="xs" c="dimmed" ta="center">
                         {t('companies.pwaIconHint')}
                       </Text>

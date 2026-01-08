@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { Paper, Button, Group, Text, Stack, Loader, TextInput, ActionIcon, Tooltip, Menu, Divider, CopyButton, Box } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { Paper, Button, Group, Text, Stack, Loader, TextInput, ActionIcon, Tooltip, Menu, CopyButton, Box } from '@mantine/core';
 import { IconDownload, IconRefresh, IconCopy, IconCheck, IconShare, IconBrandWhatsapp, IconMail, IconBrandTelegram, IconBrandTwitter, IconLink, IconExternalLink } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n/client';
 import { showToast } from '@/modules/notifications/components/ToastNotification';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import {
   Container,
   Paper,
@@ -36,7 +36,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 
 // Static translations for public page (no auth required)
-const translations: Record<string, Record<string, string>> = {
+const translations: Record<string, TranslationKeys> = {
   tr: {
     loading: 'Yükleniyor...',
     notFound: 'Daire Bulunamadı',
@@ -239,6 +239,57 @@ const translations: Record<string, Record<string, string>> = {
   },
 };
 
+interface TranslationKeys {
+  loading: string;
+  notFound: string;
+  notFoundMessage: string;
+  mainData: string;
+  basicInfo: string;
+  unitNumber: string;
+  apartmentType: string;
+  bedrooms: string;
+  bathrooms: string;
+  lastRenovation: string;
+  internetSpeed: string;
+  equipmentFeatures: string;
+  apartmentFeatures: string;
+  noFeatures: string;
+  basementArea: string;
+  heatingEnergy: string;
+  technicalDetails: string;
+  heatingSystems: string;
+  primarySystem: string;
+  backupSystem: string;
+  energyCertificate: string;
+  certificateType: string;
+  energyConsumption: string;
+  constructionYear: string;
+  monthlyCosts: string;
+  financial: string;
+  coldRent: string;
+  additionalCosts: string;
+  heating: string;
+  total: string;
+  depositInfo: string;
+  depositNote: string;
+  location: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  area: string;
+  roomCount: string;
+  floor: string;
+  heatingType: string;
+  centralHeating: string;
+  active: string;
+  rented: string;
+  empty: string;
+  balcony: string;
+  livingRoom: string;
+  basement: string;
+  footer: string;
+}
+
 interface PublicApartmentViewClientProps {
   apartmentId: string;
   locale: string;
@@ -301,19 +352,20 @@ function TimelineItem({ icon, iconColor, iconBg, title, subtitle, children, isLa
 
 // Format currency without hook (for public page)
 function formatCurrency(amount: number, locale: string = 'tr'): string {
-  const localeMap: Record<string, { locale: string; currency: string }> = {
+  const localeMap = {
     tr: { locale: 'tr-TR', currency: 'TRY' },
     en: { locale: 'en-US', currency: 'USD' },
     de: { locale: 'de-DE', currency: 'EUR' },
     ar: { locale: 'ar-SA', currency: 'SAR' },
-  };
-  const { locale: localeStr, currency } = localeMap[locale] || localeMap.tr;
-  return new Intl.NumberFormat(localeStr, { style: 'currency', currency }).format(amount);
+  } as const;
+  const defaultConfig = { locale: 'tr-TR', currency: 'TRY' } as const;
+  const localeConfig = (locale in localeMap) ? localeMap[locale as keyof typeof localeMap] : defaultConfig;
+  return new Intl.NumberFormat(localeConfig.locale, { style: 'currency', currency: localeConfig.currency }).format(amount);
 }
 
 export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: PublicApartmentViewClientProps) {
-  // Get translations for current locale
-  const t = translations[locale] || translations.tr;
+  // Get translations for current locale - ensure it's never undefined (tr always exists)
+  const t: TranslationKeys = translations[locale] ?? (translations.tr as TranslationKeys);
 
   // Fetch apartment data from public API
   const { data, isLoading, error } = useQuery({

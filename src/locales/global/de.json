@@ -1,6 +1,7 @@
 {
   "common": {
     "search": "Suchen",
+    "settings": "Einstellungen",
     "actions": {
       "save": "Speichern",
       "cancel": "Abbrechen",
@@ -1839,6 +1840,16 @@
     "uploadPwaIcon": "PWA Icon hochladen",
     "removePwaIcon": "PWA Icon entfernen",
     "pwaIconHint": "Icon für den mobilen Home-Bildschirm (512x512px)",
+    "logoLight": "Logo (Heller Hintergrund)",
+    "uploadLogoLight": "Logo (Hell) hochladen",
+    "removeLogoLight": "Logo (Hell) entfernen",
+    "logoLightHint": "Logo für dunkle Hintergründe (PNG oder SVG)",
+    "logoLightUploaded": "Logo (Hell) erfolgreich hochgeladen",
+    "logoDark": "Logo (Dunkler Hintergrund)",
+    "uploadLogoDark": "Logo (Dunkel) hochladen",
+    "removeLogoDark": "Logo (Dunkel) entfernen",
+    "logoDarkHint": "Logo für helle Hintergründe (PNG oder SVG)",
+    "logoDarkUploaded": "Logo (Dunkel) erfolgreich hochgeladen",
     "table": {
       "name": "Unternehmensname",
       "industry": "Branche",

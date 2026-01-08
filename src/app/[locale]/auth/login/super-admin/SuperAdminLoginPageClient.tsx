@@ -325,16 +325,23 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
           }}
         >
           <Stack gap="lg">
-            {/* Logo */}
+            {/* Logo - Dark mode'da logo-dark.png, light mode'da logo-light.png */}
             <Box className={classes.logoSection}>
               {logoExists ? (
                 <Image
-                  src={BRANDING_PATHS.logo}
+                  src={isDark ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
                   alt="Logo"
                   h={60}
                   w="auto"
                   fit="contain"
                   style={{ margin: '0 auto' }}
+                  onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                    // Fallback to default logo if variant not found
+                    const target = e.currentTarget;
+                    if (target.src.includes('logo-')) {
+                      target.src = BRANDING_PATHS.logo;
+                    }
+                  }}
                 />
               ) : (
                 <Box className={classes.defaultLogo}>

@@ -267,19 +267,25 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
       }}
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>
-        {/* Logo - Sabit dosya yolundan geniş logo - Dashboard'a link */}
+        {/* Logo - Dark mode'da logo-dark.png, light mode'da logo-light.png - Dashboard'a link */}
         <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {mounted && (
             <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none' }}>
               <Image
-                src={BRANDING_PATHS.logo}
+                src={isDarkMode ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
                 alt={company?.name || 'Logo'}
                 fit="contain"
                 h={36}
                 maw={180}
                 style={{ flexShrink: 0, cursor: 'pointer' }}
                 onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                  e.currentTarget.style.display = 'none';
+                  // Fallback to default logo if variant not found
+                  const target = e.currentTarget;
+                  if (!target.src.includes('logo.png') || target.src.includes('logo-')) {
+                    target.src = BRANDING_PATHS.logo;
+                  } else {
+                    target.style.display = 'none';
+                  }
                 }}
               />
             </Link>

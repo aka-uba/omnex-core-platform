@@ -1,5 +1,7 @@
 {
   "moduleSettings": {
+    "title": "Settings",
+    "description": "Manage module settings, menu configuration, and demo data.",
     "tabs": {
       "summary": "Summary",
       "settings": "Settings",

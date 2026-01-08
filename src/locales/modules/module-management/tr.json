@@ -1,5 +1,7 @@
 {
   "moduleSettings": {
+    "title": "Ayarları",
+    "description": "Modül ayarlarını, menü yapılandırmasını ve demo verilerini yönetin.",
     "tabs": {
       "summary": "Özet",
       "settings": "Ayarlar",

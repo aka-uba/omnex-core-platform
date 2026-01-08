@@ -5,7 +5,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import { BRANDING_PATHS } from '@/lib/branding/config';
 
-type BrandingType = 'logo' | 'favicon' | 'pwaIcon';
+type BrandingType = 'logo' | 'logoLight' | 'logoDark' | 'favicon' | 'pwaIcon';
 
 /**
  * POST /api/branding/upload
@@ -37,6 +37,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Validate file type based on branding type
     const allowedTypes: Record<BrandingType, string[]> = {
       logo: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
+      logoLight: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
+      logoDark: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
       favicon: ['image/x-icon', 'image/vnd.microsoft.icon', 'image/png', 'image/svg+xml', 'image/gif'],
       pwaIcon: ['image/png', 'image/svg+xml'],
     };
@@ -52,10 +54,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ success: false, error: `Only ${allowedFormats} files are allowed` }, { status: 400 });
     }
 
-    // Validate file size (max 5MB for logo, 1MB for favicon/pwaIcon)
-    const maxSize = brandingType === 'logo' ? 5 * 1024 * 1024 : 1 * 1024 * 1024;
+    // Validate file size (max 5MB for logos, 1MB for favicon/pwaIcon)
+    const isLogoType = brandingType === 'logo' || brandingType === 'logoLight' || brandingType === 'logoDark';
+    const maxSize = isLogoType ? 5 * 1024 * 1024 : 1 * 1024 * 1024;
     if (file.size > maxSize) {
-      return NextResponse.json({ success: false, error: `File size must be less than ${brandingType === 'logo' ? '5MB' : '1MB'}` }, { status: 400 });
+      return NextResponse.json({ success: false, error: `File size must be less than ${isLogoType ? '5MB' : '1MB'}` }, { status: 400 });
     }
 
     // Create branding directory if not exists
@@ -67,6 +70,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Determine fixed filename based on type
     const fixedFilenames: Record<BrandingType, string> = {
       logo: 'logo.png',
+      logoLight: 'logo-light.png',
+      logoDark: 'logo-dark.png',
       favicon: 'favicon.ico',
       pwaIcon: 'pwa-icon.png',
     };
@@ -114,6 +119,8 @@ export async function GET(): Promise<NextResponse> {
 
     const exists = {
       logo: existsSync(join(brandingDir, 'logo.png')),
+      logoLight: existsSync(join(brandingDir, 'logo-light.png')),
+      logoDark: existsSync(join(brandingDir, 'logo-dark.png')),
       favicon: existsSync(join(brandingDir, 'favicon.ico')),
       pwaIcon: existsSync(join(brandingDir, 'pwa-icon.png')),
     };
@@ -124,6 +131,8 @@ export async function GET(): Promise<NextResponse> {
       success: true,
       data: {
         logo: false,
+        logoLight: false,
+        logoDark: false,
         favicon: false,
         pwaIcon: false,
       },
@@ -152,12 +161,14 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     const { searchParams } = new URL(request.url);
     const brandingType = searchParams.get('type') as BrandingType;
 
-    if (!brandingType || !['logo', 'favicon', 'pwaIcon'].includes(brandingType)) {
-      return NextResponse.json({ success: false, error: 'Type must be logo, favicon, or pwaIcon' }, { status: 400 });
+    if (!brandingType || !['logo', 'logoLight', 'logoDark', 'favicon', 'pwaIcon'].includes(brandingType)) {
+      return NextResponse.json({ success: false, error: 'Type must be logo, logoLight, logoDark, favicon, or pwaIcon' }, { status: 400 });
     }
 
     const fixedFilenames: Record<BrandingType, string> = {
       logo: 'logo.png',
+      logoLight: 'logo-light.png',
+      logoDark: 'logo-dark.png',
       favicon: 'favicon.ico',
       pwaIcon: 'pwa-icon.png',
     };
