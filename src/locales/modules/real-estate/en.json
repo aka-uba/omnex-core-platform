@@ -1583,6 +1583,8 @@
     "selectContract": "Select contract",
     "selectPaymentMethod": "Select payment method",
     "enterReceiptNumber": "Enter receipt number",
+    "sender": "Sender",
+    "enterSender": "Enter payment sender",
     "extraCharges": "Extra Charges",
     "addExtraCharge": "Add Extra Charge",
     "chargeName": "Charge name",

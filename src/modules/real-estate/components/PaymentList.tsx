@@ -14,6 +14,7 @@ import {
   Select,
   Button,
   Divider,
+  TextInput,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import {
@@ -24,6 +25,7 @@ import {
   IconCash,
   IconPencil,
   IconCalendar,
+  IconUser,
 } from '@tabler/icons-react';
 import { usePayments, useDeletePayment, useMarkPaymentAsPaid } from '@/hooks/usePayments';
 import { useApartments } from '@/hooks/useApartments';
@@ -63,6 +65,7 @@ export function PaymentList({ locale }: PaymentListProps) {
   const [completingPaymentId, setCompletingPaymentId] = useState<string | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
   const [selectedPaidDate, setSelectedPaidDate] = useState<Date | null>(null);
+  const [selectedSender, setSelectedSender] = useState<string>('');
   const [isEditMode, setIsEditMode] = useState(false); // true = düzenleme modu, false = yeni ödeme modu
 
   const { data, isLoading, error } = usePayments({
@@ -115,6 +118,7 @@ export function PaymentList({ locale }: PaymentListProps) {
     setCompletingPaymentId(id);
     setSelectedPaymentMethod(null);
     setSelectedPaidDate(new Date());
+    setSelectedSender('');
     setIsEditMode(false);
     setCompletionModalOpened(true);
   }, []);
@@ -124,6 +128,7 @@ export function PaymentList({ locale }: PaymentListProps) {
     setCompletingPaymentId(payment.id);
     setSelectedPaymentMethod(payment.paymentMethod || null);
     setSelectedPaidDate(payment.paidDate ? new Date(payment.paidDate) : new Date());
+    setSelectedSender(payment.sender || '');
     setIsEditMode(true);
     setCompletionModalOpened(true);
   }, []);
@@ -136,7 +141,8 @@ export function PaymentList({ locale }: PaymentListProps) {
       await markAsPaid.mutateAsync({
         id: completingPaymentId,
         paidDate: selectedPaidDate,
-        paymentMethod: selectedPaymentMethod
+        paymentMethod: selectedPaymentMethod,
+        sender: selectedSender || undefined
       });
       showToast({
         type: 'success',
@@ -147,6 +153,7 @@ export function PaymentList({ locale }: PaymentListProps) {
       setCompletingPaymentId(null);
       setSelectedPaymentMethod(null);
       setSelectedPaidDate(null);
+      setSelectedSender('');
       setIsEditMode(false);
     } catch (error) {
       showToast({
@@ -155,7 +162,7 @@ export function PaymentList({ locale }: PaymentListProps) {
         message: error instanceof Error ? error.message : t('payments.markAsPaidError'),
       });
     }
-  }, [completingPaymentId, selectedPaymentMethod, selectedPaidDate, isEditMode, markAsPaid, t]);
+  }, [completingPaymentId, selectedPaymentMethod, selectedPaidDate, selectedSender, isEditMode, markAsPaid, t]);
 
   const getTypeBadge = useCallback((type: PaymentType) => {
     const typeColors: Record<PaymentType, string> = {
@@ -529,6 +536,7 @@ export function PaymentList({ locale }: PaymentListProps) {
           setCompletingPaymentId(null);
           setSelectedPaymentMethod(null);
           setSelectedPaidDate(null);
+          setSelectedSender('');
           setIsEditMode(false);
         }}
         title={isEditMode ? t('payments.quickEdit.title') : t('payments.completePayment.title')}
@@ -571,6 +579,15 @@ export function PaymentList({ locale }: PaymentListProps) {
             leftSection={<IconCash size={16} />}
             required
           />
+
+          <TextInput
+            label={t('form.sender')}
+            placeholder={t('form.enterSender')}
+            value={selectedSender}
+            onChange={(e) => setSelectedSender(e.target.value)}
+            leftSection={<IconUser size={16} />}
+          />
+
           <Group justify="flex-end" mt="md">
             <Button
               variant="light"
@@ -579,6 +596,7 @@ export function PaymentList({ locale }: PaymentListProps) {
                 setCompletingPaymentId(null);
                 setSelectedPaymentMethod(null);
                 setSelectedPaidDate(null);
+                setSelectedSender('');
                 setIsEditMode(false);
               }}
             >

@@ -391,6 +391,7 @@ model Payment {
   // Ödeme detayları
   paymentMethod String? // 'cash', 'bank_transfer', 'card', 'check'
   receiptNumber String? // Makbuz numarası
+  sender        String? // Gönderen/Ödeyen (Absender) - Elle girilir
   notes         String?
 
   // Otomasyon

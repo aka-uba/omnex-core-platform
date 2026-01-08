@@ -1583,6 +1583,8 @@
     "selectContract": "Sözleşme seçin",
     "selectPaymentMethod": "Ödeme yöntemi seçin",
     "enterReceiptNumber": "Makbuz numarasını girin",
+    "sender": "Gönderen",
+    "enterSender": "Ödemeyi göndereni girin",
     "extraCharges": "Ek Ücretler",
     "addExtraCharge": "Ek Ücret Ekle",
     "chargeName": "Ücret adı",

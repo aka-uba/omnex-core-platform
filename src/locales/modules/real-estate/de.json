@@ -1583,6 +1583,8 @@
     "selectContract": "Vertrag auswählen",
     "selectPaymentMethod": "Zahlungsmethode auswählen",
     "enterReceiptNumber": "Quittungsnummer eingeben",
+    "sender": "Absender",
+    "enterSender": "Zahlungsabsender eingeben",
     "extraCharges": "Zusatzkosten",
     "addExtraCharge": "Zusatzkosten hinzufügen",
     "chargeName": "Kostenbezeichnung",

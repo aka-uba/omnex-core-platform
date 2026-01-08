@@ -123,7 +123,7 @@ export function useMarkPaymentAsPaid() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, paidDate, paymentMethod, receiptNumber }: { id: string; paidDate?: Date; paymentMethod?: string; receiptNumber?: string }) => {
+    mutationFn: async ({ id, paidDate, paymentMethod, receiptNumber, sender }: { id: string; paidDate?: Date; paymentMethod?: string; receiptNumber?: string; sender?: string }) => {
       const response = await fetch(`${API_BASE}/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -132,6 +132,7 @@ export function useMarkPaymentAsPaid() {
           paidDate: paidDate || new Date(),
           paymentMethod,
           receiptNumber,
+          sender,
         }),
       });
 

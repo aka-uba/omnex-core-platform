@@ -1544,6 +1544,8 @@
     "selectContract": "اختر العقد",
     "selectPaymentMethod": "اختر طريقة الدفع",
     "enterReceiptNumber": "أدخل رقم الإيصال",
+    "sender": "المرسل",
+    "enterSender": "أدخل مرسل الدفعة",
     "extraCharges": "رسوم إضافية",
     "addExtraCharge": "إضافة رسوم إضافية",
     "chargeName": "اسم الرسوم",
