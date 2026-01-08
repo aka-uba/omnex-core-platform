@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import {
   Container,
   Paper,
@@ -34,6 +34,210 @@ import {
   IconAlertCircle,
 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
+
+// Static translations for public page (no auth required)
+const translations: Record<string, Record<string, string>> = {
+  tr: {
+    loading: 'Yükleniyor...',
+    notFound: 'Daire Bulunamadı',
+    notFoundMessage: 'Bu daire mevcut değil veya artık yayında değil.',
+    mainData: 'Ana Veriler',
+    basicInfo: 'Temel Bilgiler',
+    unitNumber: 'Daire Numarası',
+    apartmentType: 'Daire Tipi',
+    bedrooms: 'Yatak Odası',
+    bathrooms: 'Banyo',
+    lastRenovation: 'Son Yenileme',
+    internetSpeed: 'İnternet Hızı',
+    equipmentFeatures: 'Donanım & Özellikler',
+    apartmentFeatures: 'Daire Özellikleri',
+    noFeatures: 'Özellik bilgisi bulunmamaktadır.',
+    basementArea: 'Bodrum Alanı',
+    heatingEnergy: 'Isıtma & Enerji Verimliliği',
+    technicalDetails: 'Teknik Detaylar',
+    heatingSystems: 'Isıtma Sistemleri',
+    primarySystem: 'Birincil Sistem',
+    backupSystem: 'Yedek Sistem',
+    energyCertificate: 'Enerji Kimlik Belgesi',
+    certificateType: 'Belge Tipi',
+    energyConsumption: 'Enerji Tüketimi',
+    constructionYear: 'Yapım Yılı',
+    monthlyCosts: 'Aylık Maliyetler',
+    financial: 'Finansal',
+    coldRent: 'Net Kira',
+    additionalCosts: 'Yan Giderler',
+    heating: 'Isıtma',
+    total: 'Toplam',
+    depositInfo: 'Depozito Bilgisi',
+    depositNote: 'Depozito: 3 aylık kira bedeli ({amount}). Isıtma giderleri yan giderlere dahildir.',
+    location: 'Konum',
+    address: 'Adres',
+    city: 'Şehir',
+    postalCode: 'Posta Kodu',
+    area: 'Alan',
+    roomCount: 'Oda Sayısı',
+    floor: 'Kat',
+    heatingType: 'Isıtma',
+    centralHeating: 'Merkezi',
+    active: 'Aktif',
+    rented: 'Kiralık',
+    empty: 'Boş',
+    balcony: 'Balkon',
+    livingRoom: 'Salon',
+    basement: 'Bodrum',
+    footer: 'Bu sayfayı görüntülemek için QR kodu taradınız. Daha fazla bilgi için lütfen emlak danışmanınıza başvurun.',
+  },
+  en: {
+    loading: 'Loading...',
+    notFound: 'Apartment Not Found',
+    notFoundMessage: 'This apartment does not exist or is no longer published.',
+    mainData: 'Main Data',
+    basicInfo: 'Basic Information',
+    unitNumber: 'Unit Number',
+    apartmentType: 'Apartment Type',
+    bedrooms: 'Bedrooms',
+    bathrooms: 'Bathrooms',
+    lastRenovation: 'Last Renovation',
+    internetSpeed: 'Internet Speed',
+    equipmentFeatures: 'Equipment & Features',
+    apartmentFeatures: 'Apartment Features',
+    noFeatures: 'No feature information available.',
+    basementArea: 'Basement Area',
+    heatingEnergy: 'Heating & Energy Efficiency',
+    technicalDetails: 'Technical Details',
+    heatingSystems: 'Heating Systems',
+    primarySystem: 'Primary System',
+    backupSystem: 'Backup System',
+    energyCertificate: 'Energy Certificate',
+    certificateType: 'Certificate Type',
+    energyConsumption: 'Energy Consumption',
+    constructionYear: 'Construction Year',
+    monthlyCosts: 'Monthly Costs',
+    financial: 'Financial',
+    coldRent: 'Net Rent',
+    additionalCosts: 'Additional Costs',
+    heating: 'Heating',
+    total: 'Total',
+    depositInfo: 'Deposit Information',
+    depositNote: 'Deposit: 3 months rent ({amount}). Heating costs are included in additional costs.',
+    location: 'Location',
+    address: 'Address',
+    city: 'City',
+    postalCode: 'Postal Code',
+    area: 'Area',
+    roomCount: 'Room Count',
+    floor: 'Floor',
+    heatingType: 'Heating',
+    centralHeating: 'Central',
+    active: 'Active',
+    rented: 'Rented',
+    empty: 'Empty',
+    balcony: 'Balcony',
+    livingRoom: 'Living Room',
+    basement: 'Basement',
+    footer: 'You viewed this page by scanning a QR code. Please contact your real estate agent for more information.',
+  },
+  de: {
+    loading: 'Laden...',
+    notFound: 'Wohnung nicht gefunden',
+    notFoundMessage: 'Diese Wohnung existiert nicht oder ist nicht mehr verfügbar.',
+    mainData: 'Stammdaten',
+    basicInfo: 'Grundinformationen',
+    unitNumber: 'Wohnungsnummer',
+    apartmentType: 'Wohnungstyp',
+    bedrooms: 'Schlafzimmer',
+    bathrooms: 'Badezimmer',
+    lastRenovation: 'Letzte Renovierung',
+    internetSpeed: 'Internetgeschwindigkeit',
+    equipmentFeatures: 'Ausstattung & Merkmale',
+    apartmentFeatures: 'Wohnungsmerkmale',
+    noFeatures: 'Keine Merkmalsinformationen verfügbar.',
+    basementArea: 'Kellerfläche',
+    heatingEnergy: 'Heizung & Energieeffizienz',
+    technicalDetails: 'Technische Details',
+    heatingSystems: 'Heizsysteme',
+    primarySystem: 'Primärsystem',
+    backupSystem: 'Reservesystem',
+    energyCertificate: 'Energieausweis',
+    certificateType: 'Ausweistyp',
+    energyConsumption: 'Energieverbrauch',
+    constructionYear: 'Baujahr',
+    monthlyCosts: 'Monatliche Kosten',
+    financial: 'Finanziell',
+    coldRent: 'Kaltmiete',
+    additionalCosts: 'Nebenkosten',
+    heating: 'Heizung',
+    total: 'Gesamt',
+    depositInfo: 'Kaution-Information',
+    depositNote: 'Kaution: 3 Monatsmieten ({amount}). Heizkosten sind in den Nebenkosten enthalten.',
+    location: 'Standort',
+    address: 'Adresse',
+    city: 'Stadt',
+    postalCode: 'Postleitzahl',
+    area: 'Fläche',
+    roomCount: 'Zimmeranzahl',
+    floor: 'Etage',
+    heatingType: 'Heizung',
+    centralHeating: 'Zentral',
+    active: 'Aktiv',
+    rented: 'Vermietet',
+    empty: 'Leer',
+    balcony: 'Balkon',
+    livingRoom: 'Wohnzimmer',
+    basement: 'Keller',
+    footer: 'Sie haben diese Seite durch Scannen eines QR-Codes angezeigt. Für weitere Informationen wenden Sie sich bitte an Ihren Immobilienmakler.',
+  },
+  ar: {
+    loading: 'جاري التحميل...',
+    notFound: 'الشقة غير موجودة',
+    notFoundMessage: 'هذه الشقة غير موجودة أو لم تعد منشورة.',
+    mainData: 'البيانات الرئيسية',
+    basicInfo: 'المعلومات الأساسية',
+    unitNumber: 'رقم الوحدة',
+    apartmentType: 'نوع الشقة',
+    bedrooms: 'غرف النوم',
+    bathrooms: 'الحمامات',
+    lastRenovation: 'آخر تجديد',
+    internetSpeed: 'سرعة الإنترنت',
+    equipmentFeatures: 'المعدات والميزات',
+    apartmentFeatures: 'ميزات الشقة',
+    noFeatures: 'لا تتوفر معلومات عن الميزات.',
+    basementArea: 'مساحة القبو',
+    heatingEnergy: 'التدفئة وكفاءة الطاقة',
+    technicalDetails: 'التفاصيل الفنية',
+    heatingSystems: 'أنظمة التدفئة',
+    primarySystem: 'النظام الرئيسي',
+    backupSystem: 'النظام الاحتياطي',
+    energyCertificate: 'شهادة الطاقة',
+    certificateType: 'نوع الشهادة',
+    energyConsumption: 'استهلاك الطاقة',
+    constructionYear: 'سنة البناء',
+    monthlyCosts: 'التكاليف الشهرية',
+    financial: 'المالية',
+    coldRent: 'الإيجار الأساسي',
+    additionalCosts: 'التكاليف الإضافية',
+    heating: 'التدفئة',
+    total: 'المجموع',
+    depositInfo: 'معلومات التأمين',
+    depositNote: 'التأمين: إيجار 3 أشهر ({amount}). تكاليف التدفئة مشمولة في التكاليف الإضافية.',
+    location: 'الموقع',
+    address: 'العنوان',
+    city: 'المدينة',
+    postalCode: 'الرمز البريدي',
+    area: 'المساحة',
+    roomCount: 'عدد الغرف',
+    floor: 'الطابق',
+    heatingType: 'التدفئة',
+    centralHeating: 'مركزية',
+    active: 'نشط',
+    rented: 'مؤجر',
+    empty: 'فارغ',
+    balcony: 'شرفة',
+    livingRoom: 'غرفة المعيشة',
+    basement: 'قبو',
+    footer: 'لقد شاهدت هذه الصفحة عن طريق مسح رمز QR. يرجى الاتصال بوكيلك العقاري للحصول على مزيد من المعلومات.',
+  },
+};
 
 interface PublicApartmentViewClientProps {
   apartmentId: string;
@@ -108,6 +312,9 @@ function formatCurrency(amount: number, locale: string = 'tr'): string {
 }
 
 export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: PublicApartmentViewClientProps) {
+  // Get translations for current locale
+  const t = translations[locale] || translations.tr;
+
   // Fetch apartment data from public API
   const { data, isLoading, error } = useQuery({
     queryKey: ['public-apartment', apartmentId, tenantSlug],
@@ -142,7 +349,7 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
         <Center h={400}>
           <Stack align="center" gap="md">
             <Loader size="lg" />
-            <Text c="dimmed">Yükleniyor...</Text>
+            <Text c="dimmed">{t.loading}</Text>
           </Stack>
         </Center>
       </Container>
@@ -154,11 +361,11 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
       <Container size="xl" py="xl">
         <Alert
           icon={<IconAlertCircle size={24} />}
-          title="Daire Bulunamadı"
+          title={t.notFound}
           color="red"
           variant="filled"
         >
-          {error instanceof Error ? error.message : 'Bu daire mevcut değil veya artık yayında değil.'}
+          {error instanceof Error ? error.message : t.notFoundMessage}
         </Alert>
       </Container>
     );
@@ -172,13 +379,13 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
 
   // Parse heating systems from JSON
   const heatingSystems = apartment.heatingSystems as Array<{ type: string; isPrimary?: boolean }> | null;
-  const primaryHeating = heatingSystems?.find(h => h.isPrimary)?.type || heatingSystems?.[0]?.type || 'Merkezi Isıtma';
+  const primaryHeating = heatingSystems?.find(h => h.isPrimary)?.type || heatingSystems?.[0]?.type || t.centralHeating;
 
   // Feature badges based on actual schema fields
   const activeFeatures = [
-    { label: 'Balkon', icon: IconBalloon, color: 'pink', available: apartment.balcony },
-    { label: 'Salon', icon: IconHome, color: 'blue', available: apartment.livingRoom },
-    { label: 'Bodrum', icon: IconBuildingWarehouse, color: 'gray', available: apartment.basementSize && Number(apartment.basementSize) > 0 },
+    { label: t.balcony, icon: IconBalloon, color: 'pink', available: apartment.balcony },
+    { label: t.livingRoom, icon: IconHome, color: 'blue', available: apartment.livingRoom },
+    { label: t.basement, icon: IconBuildingWarehouse, color: 'gray', available: apartment.basementSize && Number(apartment.basementSize) > 0 },
   ].filter(f => f.available);
 
   return (
@@ -261,12 +468,12 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                     }}
                   >
                     <Group gap="xs" mb="xs">
-                      <Badge color="green" variant="filled" size="sm" tt="uppercase">Aktif</Badge>
+                      <Badge color="green" variant="filled" size="sm" tt="uppercase">{t.active}</Badge>
                       {apartment.status === 'rented' && (
-                        <Badge color="blue" variant="filled" size="sm" tt="uppercase">Kiralık</Badge>
+                        <Badge color="blue" variant="filled" size="sm" tt="uppercase">{t.rented}</Badge>
                       )}
                       {apartment.status === 'empty' && (
-                        <Badge color="yellow" variant="filled" size="sm" tt="uppercase">Boş</Badge>
+                        <Badge color="yellow" variant="filled" size="sm" tt="uppercase">{t.empty}</Badge>
                       )}
                     </Group>
                     <Title order={2} c="white">{apartment.apartmentType || apartment.unitNumber}</Title>
@@ -277,20 +484,20 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                 {/* İstatistik Grid */}
                 <SimpleGrid cols={2} spacing={0}>
                   <Box p="md" ta="center" style={{ borderRight: '1px solid var(--mantine-color-gray-3)', borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Alan</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>{t.area}</Text>
                     <Text size="xl" fw={700} mt={4}>{apartment.area || '-'} m²</Text>
                   </Box>
                   <Box p="md" ta="center" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Oda Sayısı</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>{t.roomCount}</Text>
                     <Text size="xl" fw={700} mt={4}>{apartment.roomCount || '-'}</Text>
                   </Box>
                   <Box p="md" ta="center" style={{ borderRight: '1px solid var(--mantine-color-gray-3)' }}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Kat</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>{t.floor}</Text>
                     <Text size="xl" fw={700} mt={4}>{apartment.floor || '-'}</Text>
                   </Box>
                   <Box p="md" ta="center">
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Isıtma</Text>
-                    <Text size="xl" fw={700} mt={4}>{apartment.heatingType || 'Merkezi'}</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600}>{t.heatingType}</Text>
+                    <Text size="xl" fw={700} mt={4}>{apartment.heatingType || t.centralHeating}</Text>
                   </Box>
                 </SimpleGrid>
               </Paper>
@@ -299,20 +506,20 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
               <Paper p="lg" radius="lg" withBorder>
                 <Group gap="xs" mb="md">
                   <IconMapPin size={20} />
-                  <Title order={4}>Konum</Title>
+                  <Title order={4}>{t.location}</Title>
                 </Group>
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" c="dimmed">Adres</Text>
+                    <Text size="sm" c="dimmed">{t.address}</Text>
                     <Text size="sm" fw={500}>{apartment.property?.address || '-'}</Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm" c="dimmed">Şehir</Text>
+                    <Text size="sm" c="dimmed">{t.city}</Text>
                     <Text size="sm" fw={500}>{apartment.property?.city || '-'}</Text>
                   </Group>
                   {apartment.property?.postalCode && (
                     <Group justify="space-between">
-                      <Text size="sm" c="dimmed">Posta Kodu</Text>
+                      <Text size="sm" c="dimmed">{t.postalCode}</Text>
                       <Text size="sm" fw={500}>{apartment.property.postalCode}</Text>
                     </Group>
                   )}
@@ -323,10 +530,10 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
               <Paper p="lg" radius="lg" withBorder bg="blue.0">
                 <Group gap="xs" mb="sm">
                   <IconInfoCircle size={18} color="var(--mantine-color-blue-6)" />
-                  <Text size="sm" fw={500} c="blue.8">Depozito Bilgisi</Text>
+                  <Text size="sm" fw={500} c="blue.8">{t.depositInfo}</Text>
                 </Group>
                 <Text size="sm" c="blue.7">
-                  Depozito: 3 aylık kira bedeli ({formatCurrency(deposit, locale)}). Isıtma giderleri yan giderlere dahildir.
+                  {t.depositNote.replace('{amount}', formatCurrency(deposit, locale))}
                 </Text>
               </Paper>
             </Stack>
@@ -340,32 +547,32 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                 icon={<IconInfoCircle size={20} />}
                 iconColor="blue"
                 iconBg="var(--mantine-color-blue-0)"
-                title="Ana Veriler"
-                subtitle="Temel Bilgiler"
+                title={t.mainData}
+                subtitle={t.basicInfo}
               >
                 <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>Daire Numarası</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.unitNumber}</Text>
                     <Text size="md">{apartment.unitNumber}</Text>
                   </Box>
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>Daire Tipi</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.apartmentType}</Text>
                     <Text size="md">{apartment.apartmentType || '-'}</Text>
                   </Box>
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>Yatak Odası</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.bedrooms}</Text>
                     <Text size="md">{apartment.bedroomCount || '-'}</Text>
                   </Box>
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>Banyo</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.bathrooms}</Text>
                     <Text size="md">{apartment.bathroomCount || '-'}</Text>
                   </Box>
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>Son Yenileme</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.lastRenovation}</Text>
                     <Text size="md">{apartment.lastRenovationDate ? new Date(apartment.lastRenovationDate).getFullYear() : '-'}</Text>
                   </Box>
                   <Box>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>İnternet Hızı</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb={4}>{t.internetSpeed}</Text>
                     <Text size="md">{apartment.internetSpeed || '-'}</Text>
                   </Box>
                 </SimpleGrid>
@@ -376,8 +583,8 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                 icon={<IconCheck size={20} />}
                 iconColor="green"
                 iconBg="var(--mantine-color-green-0)"
-                title="Donanım & Özellikler"
-                subtitle="Daire Özellikleri"
+                title={t.equipmentFeatures}
+                subtitle={t.apartmentFeatures}
               >
                 {activeFeatures.length > 0 ? (
                   <Group gap="xs" mb="md">
@@ -395,12 +602,12 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                     ))}
                   </Group>
                 ) : (
-                  <Text size="sm" c="dimmed">Özellik bilgisi bulunmamaktadır.</Text>
+                  <Text size="sm" c="dimmed">{t.noFeatures}</Text>
                 )}
                 {apartment.basementSize && Number(apartment.basementSize) > 0 && (
                   <>
                     <Divider my="md" />
-                    <Text size="sm">Bodrum Alanı: <strong>{Number(apartment.basementSize)} m²</strong></Text>
+                    <Text size="sm">{t.basementArea}: <strong>{Number(apartment.basementSize)} m²</strong></Text>
                   </>
                 )}
               </TimelineItem>
@@ -410,20 +617,20 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                 icon={<IconFlame size={20} />}
                 iconColor="orange"
                 iconBg="var(--mantine-color-orange-0)"
-                title="Isıtma & Enerji Verimliliği"
-                subtitle="Teknik Detaylar"
+                title={t.heatingEnergy}
+                subtitle={t.technicalDetails}
               >
                 <Stack gap="md">
                   <Paper p="md" bg="gray.0" radius="md">
-                    <Text size="sm" fw={600} mb="sm">Isıtma Sistemleri</Text>
+                    <Text size="sm" fw={600} mb="sm">{t.heatingSystems}</Text>
                     <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
                       <Box>
-                        <Text size="xs" c="dimmed" mb={4}>Birincil Sistem</Text>
+                        <Text size="xs" c="dimmed" mb={4}>{t.primarySystem}</Text>
                         <Text size="sm" fw={500}>{primaryHeating}</Text>
                       </Box>
                       {heatingSystems && heatingSystems.length > 1 && (
                         <Box>
-                          <Text size="xs" c="dimmed" mb={4}>Yedek Sistem</Text>
+                          <Text size="xs" c="dimmed" mb={4}>{t.backupSystem}</Text>
                           <Text size="sm" fw={500}>{heatingSystems[1]?.type || '-'}</Text>
                         </Box>
                       )}
@@ -431,18 +638,18 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                   </Paper>
 
                   <Box>
-                    <Text size="sm" fw={600} mb="sm">Enerji Kimlik Belgesi</Text>
+                    <Text size="sm" fw={600} mb="sm">{t.energyCertificate}</Text>
                     <SimpleGrid cols={{ base: 1, md: 3 }} spacing="sm">
                       <Paper p="sm" radius="sm" withBorder>
-                        <Text size="xs" c="dimmed" mb={4}>Belge Tipi</Text>
+                        <Text size="xs" c="dimmed" mb={4}>{t.certificateType}</Text>
                         <Text size="sm" fw={500}>{apartment.energyCertificateType || '-'}</Text>
                       </Paper>
                       <Paper p="sm" radius="sm" withBorder>
-                        <Text size="xs" c="dimmed" mb={4}>Enerji Tüketimi</Text>
+                        <Text size="xs" c="dimmed" mb={4}>{t.energyConsumption}</Text>
                         <Text size="sm" fw={500}>{apartment.energyConsumption ? `${Number(apartment.energyConsumption)} kWh/(m²*a)` : '-'}</Text>
                       </Paper>
                       <Paper p="sm" radius="sm" withBorder>
-                        <Text size="xs" c="dimmed" mb={4}>Yapım Yılı</Text>
+                        <Text size="xs" c="dimmed" mb={4}>{t.constructionYear}</Text>
                         <Text size="sm" fw={500}>{apartment.property?.constructionYear || apartment.energyCertificateYear || '-'}</Text>
                       </Paper>
                     </SimpleGrid>
@@ -455,32 +662,32 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
                 icon={<IconCurrencyEuro size={20} />}
                 iconColor="grape"
                 iconBg="var(--mantine-color-grape-0)"
-                title="Aylık Maliyetler"
-                subtitle="Finansal"
+                title={t.monthlyCosts}
+                subtitle={t.financial}
                 isLast
               >
                 <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="sm" mb="md">
                   <Paper p="md" bg="gray.0" radius="md">
-                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>Net Kira</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>{t.coldRent}</Text>
                     <Text size="lg" fw={700}>{formatCurrency(coldRent, locale)}</Text>
                   </Paper>
                   <Paper p="md" bg="gray.0" radius="md">
-                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>Yan Giderler</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>{t.additionalCosts}</Text>
                     <Text size="lg" fw={700}>{formatCurrency(additionalCosts, locale)}</Text>
                   </Paper>
                   <Paper p="md" bg="gray.0" radius="md">
-                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>Isıtma</Text>
+                    <Text size="xs" c="dimmed" tt="uppercase" mb={4}>{t.heating}</Text>
                     <Text size="lg" fw={700}>{formatCurrency(heatingCosts, locale)}</Text>
                   </Paper>
                   <Paper p="md" bg="blue.0" radius="md" style={{ border: '1px solid var(--mantine-color-blue-2)' }}>
-                    <Text size="xs" c="blue" tt="uppercase" fw={600} mb={4}>Toplam</Text>
+                    <Text size="xs" c="blue" tt="uppercase" fw={600} mb={4}>{t.total}</Text>
                     <Text size="lg" fw={700} c="blue">{formatCurrency(totalRent, locale)}</Text>
                   </Paper>
                 </SimpleGrid>
                 <Group gap="xs">
                   <IconInfoCircle size={16} color="gray" />
                   <Text size="sm" c="dimmed">
-                    Depozito: 3 aylık kira bedeli ({formatCurrency(deposit, locale)}). Isıtma giderleri yan giderlere dahildir.
+                    {t.depositNote.replace('{amount}', formatCurrency(deposit, locale))}
                   </Text>
                 </Group>
               </TimelineItem>
@@ -493,7 +700,7 @@ export function PublicApartmentViewClient({ apartmentId, locale, tenantSlug }: P
       <Paper shadow="xs" p="md" mt="lg" radius="md" withBorder>
         <Group justify="center">
           <Text size="sm" c="dimmed">
-            Bu sayfayı görüntülemek için QR kodu taradınız. Daha fazla bilgi için lütfen emlak danışmanınıza başvurun.
+            {t.footer}
           </Text>
         </Group>
       </Paper>

@@ -17,7 +17,7 @@ interface RouteParams {
  * Returns QR code as SVG string or PNG data URL
  */
 export async function GET(request: NextRequest, { params }: RouteParams) {
-  return withTenant<ApiResponse<{ qrCode: string; qrCodeUrl: string }>>(
+  return withTenant<ApiResponse<{ qrCode: string; qrCodeUrl: string; publicUrl: string }>>(
     request,
     async (tenantPrisma) => {
       const { id } = await params;
@@ -104,6 +104,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         return successResponse({
           qrCode,
           qrCodeUrl,
+          publicUrl: qrData,
         });
       } catch (error: any) {
         return errorResponse('QR Code generation failed', error.message || 'Failed to generate QR code', 500);
