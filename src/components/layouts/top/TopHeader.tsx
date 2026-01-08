@@ -267,12 +267,12 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
       }}
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>
-        {/* Logo - Dark mode'da logo-light.png (koyu arka plan için açık logo), light mode'da logo.png - Dashboard'a link */}
+        {/* Logo - Dark mode'da logo-dark.png, light mode'da logo-light.png - Dashboard'a link */}
         <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {mounted && (
             <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none' }}>
               <Image
-                src={isDarkMode ? BRANDING_PATHS.logoLight : BRANDING_PATHS.logo}
+                src={isDarkMode ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
                 alt={company?.name || 'Logo'}
                 fit="contain"
                 h={36}
