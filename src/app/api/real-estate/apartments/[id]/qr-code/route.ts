@@ -56,10 +56,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }
 
       // Generate QR code data
-      // QR code will contain a URL to the apartment detail page
+      // QR code will contain a URL to the PUBLIC preview page (no auth required)
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const locale = searchParams.get('locale');
-      const qrData = `${baseUrl}/${locale}/modules/real-estate/apartments/${apartment.id}`;
+      const locale = searchParams.get('locale') || 'tr';
+      // Use public URL with tenant slug for public access
+      const qrData = `${baseUrl}/public/apartments/${apartment.id}?tenant=${tenantContext.slug}&locale=${locale}`;
 
       try {
         let qrCode: string;

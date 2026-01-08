@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Drawer,
   Paper,
@@ -206,6 +206,7 @@ export function UsageRightsPanel({
       position="right"
       size="lg"
       padding="md"
+      zIndex={1000}
     >
       <Stack gap="md" h="calc(100vh - 120px)">
         {/* Search */}
@@ -278,8 +279,8 @@ export function UsageRightsPanel({
                   {activeTab === 'all' ? (
                     // Show grouped by category
                     Object.entries(groupedRights).map(([category, rights]) => (
-                      <>
-                        <Table.Tr key={`cat-${category}`} style={{ backgroundColor: 'var(--mantine-color-gray-1)' }}>
+                      <React.Fragment key={`cat-group-${category}`}>
+                        <Table.Tr style={{ backgroundColor: 'var(--mantine-color-gray-1)' }}>
                           <Table.Td colSpan={2}>
                             <Group gap="xs">
                               <Badge color={getCategoryColor(category)} variant="filled">
@@ -300,7 +301,7 @@ export function UsageRightsPanel({
                             </Tooltip>
                           </Table.Td>
                         </Table.Tr>
-                        {rights.map((ur, index) => (
+                        {rights.map((ur) => (
                           <Table.Tr key={ur.id}>
                             <Table.Td style={{ textAlign: 'center' }}>
                               <Text size="sm" c="dimmed">{ur.sortOrder}</Text>
@@ -316,7 +317,7 @@ export function UsageRightsPanel({
                             </Table.Td>
                           </Table.Tr>
                         ))}
-                      </>
+                      </React.Fragment>
                     ))
                   ) : (
                     // Show flat list for specific category

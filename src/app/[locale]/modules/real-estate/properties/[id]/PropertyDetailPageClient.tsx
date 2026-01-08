@@ -216,42 +216,60 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
         <Tabs.Panel value="details" pt="md">
           <Paper shadow="xs" p="md">
             <Stack gap="md">
-              <Group align="stretch" gap="xl" wrap="wrap" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
+              <Grid gutter="xl" align="stretch">
                 {/* Cover Image */}
-                <Box style={{
-                  position: 'relative',
-                  width: isMobile ? '100%' : 300,
-                  minWidth: isMobile ? undefined : 300,
-                  minHeight: 300,
-                  flexShrink: 0,
-                }}>
-                  <Image
-                    src={
-                      property.coverImage
-                        ? `/api/core-files/${property.coverImage}/download?inline=true`
-                        : property.images && property.images.length > 0
-                        ? `/api/core-files/${property.images[0]}/download?inline=true`
-                        : undefined
-                    }
-                    alt={property.name}
-                    radius="md"
-                    fit="cover"
-                    style={{
-                      border: '4px solid var(--mantine-color-gray-3)',
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      width: '100%',
-                      height: isMobile ? 300 : '100%',
-                      objectFit: 'cover',
-                      position: isMobile ? 'relative' : 'absolute',
-                      top: 0,
-                      left: 0,
-                    }}
-                    fallbackSrc="https://placehold.co/300x200?text=Property"
-                  />
-                </Box>
+                <Grid.Col span={{ base: 12, md: 5 }} style={{ display: 'flex' }}>
+                  <Box style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                    minHeight: 300,
+                  }}>
+                    <Image
+                      src={
+                        property.coverImage
+                          ? `/api/core-files/${property.coverImage}/download?inline=true`
+                          : property.images && property.images.length > 0
+                          ? `/api/core-files/${property.images[0]}/download?inline=true`
+                          : undefined
+                      }
+                      alt={property.name}
+                      radius="md"
+                      fit="cover"
+                      style={{
+                        border: '4px solid var(--mantine-color-gray-3)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                      }}
+                      fallbackSrc="https://placehold.co/400x300?text=Property"
+                    />
+                    {/* Image count badge */}
+                    {property.images && property.images.length > 0 && (
+                      <Badge
+                        variant="filled"
+                        color="dark"
+                        size="sm"
+                        style={{
+                          position: 'absolute',
+                          bottom: 12,
+                          right: 12,
+                          opacity: 0.9,
+                        }}
+                        leftSection={<IconPhoto size={12} />}
+                      >
+                        {property.images.length}
+                      </Badge>
+                    )}
+                  </Box>
+                </Grid.Col>
 
                 {/* Property Info */}
-                <div style={{ flex: 1 }}>
+                <Grid.Col span={{ base: 12, md: 7 }}>
                   <Group justify="space-between" align="flex-start" mb="md">
                     <div>
                       <Text size="xl" fw={600}>{property.name}</Text>
@@ -551,8 +569,8 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                   </Stack>
                 </Grid.Col>
               </Grid>
-                </div>
-              </Group>
+                </Grid.Col>
+              </Grid>
             </Stack>
           </Paper>
         </Tabs.Panel>

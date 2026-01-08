@@ -2039,7 +2039,8 @@
     "generating": "QR kodu oluşturuluyor...",
     "generateError": "QR kodu oluşturulamadı",
     "download": "İndir",
-    "downloadSuccess": "QR kodu başarıyla indirildi"
+    "downloadSuccess": "QR kodu başarıyla indirildi",
+    "scanHint": "Bu QR kodu mobil cihazınızla tarayarak daire tanıtım sayfasını görüntüleyebilirsiniz."
   },
   "navigation": {
     "dashboard": "Panel"

@@ -2041,7 +2041,8 @@
     "generating": "Generating QR code...",
     "generateError": "QR code could not be generated",
     "download": "Download",
-    "downloadSuccess": "QR code successfully downloaded"
+    "downloadSuccess": "QR code successfully downloaded",
+    "scanHint": "Scan this QR code with your mobile device to view the apartment presentation page."
   },
   "navigation": {
     "dashboard": "Dashboard"

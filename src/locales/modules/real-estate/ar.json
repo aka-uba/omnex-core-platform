@@ -1980,7 +1980,8 @@
     "generating": "جاري إنشاء رمز QR...",
     "generateError": "فشل إنشاء رمز QR",
     "download": "تحميل",
-    "downloadSuccess": "تم تحميل رمز QR بنجاح"
+    "downloadSuccess": "تم تحميل رمز QR بنجاح",
+    "scanHint": "امسح رمز QR هذا بجهازك المحمول لعرض صفحة عرض الشقة."
   },
   "navigation": {
     "dashboard": "لوحة التحكم"

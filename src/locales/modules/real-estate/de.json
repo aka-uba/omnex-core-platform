@@ -1176,8 +1176,8 @@
   },
   "types": {
     "apartment": "Wohnung",
-    "complex": "Komplex",
-    "building": "Gebäude",
+    "complex": "Wohnanlage",
+    "building": "Mehrfamilienhaus",
     "rental": "Miete",
     "sale": "Verkauf",
     "lease": "Pacht",
@@ -2036,7 +2036,8 @@
     "generating": "QR-Code wird generiert...",
     "generateError": "QR-Code konnte nicht generiert werden",
     "download": "Herunterladen",
-    "downloadSuccess": "QR-Code wurde erfolgreich heruntergeladen"
+    "downloadSuccess": "QR-Code wurde erfolgreich heruntergeladen",
+    "scanHint": "Scannen Sie diesen QR-Code mit Ihrem Mobilgerät, um die Wohnungspräsentationsseite anzuzeigen."
   },
   "navigation": {
     "dashboard": "Dashboard"

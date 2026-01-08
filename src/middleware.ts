@@ -40,6 +40,11 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
+    // Skip public pages (QR code previews, etc.)
+    if (pathname.startsWith('/public/')) {
+        return NextResponse.next();
+    }
+
     // Skip locale-prefixed auth pages (activate, forgot-password, reset-password, resend-activation)
     const localeAuthMatch = pathname.match(/^\/([a-z]{2})\/auth\//);
     if (localeAuthMatch) {
@@ -66,6 +71,11 @@ export async function middleware(request: NextRequest) {
 
         // Skip auth endpoints (login/register)
         if (pathname.startsWith('/api/auth')) {
+            return NextResponse.next();
+        }
+
+        // Skip public API endpoints (QR code previews, etc.)
+        if (pathname.startsWith('/api/public')) {
             return NextResponse.next();
         }
 

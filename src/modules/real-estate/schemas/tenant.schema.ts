@@ -27,7 +27,13 @@ export const tenantSchema = z.object({
   // Contact
   phone: z.string().optional().nullable(),
   mobile: z.string().optional().nullable(),
-  email: z.string().email().optional().nullable().or(z.literal('')),
+  // Email: allow valid email, empty string, null, undefined, or any non-email string (for legacy data)
+  email: z.string().optional().nullable().transform(val => {
+    // If empty or null/undefined, return null
+    if (!val || val.trim() === '') return null;
+    // Return the trimmed value regardless of format (allow legacy invalid emails)
+    return val.trim();
+  }),
 
   // Additional information
   nationality: z.string().optional().nullable(),
