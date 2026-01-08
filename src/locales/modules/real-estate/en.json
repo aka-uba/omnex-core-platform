@@ -1217,6 +1217,8 @@
     "addSelected": "Add Selected",
     "addTenantsFromApartments": "Add Tenants from Apartments",
     "next": "Next",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
     "refresh": "Refresh",
     "retry": "Retry",
     "previous": "Previous",
@@ -1296,6 +1298,7 @@
     "noStaff": "No staff found",
     "noApartments": "No apartment found",
     "noTenants": "No tenant found",
+    "tenantStatus": "Tenant Status",
     "moveOutDate": "Move-out Date",
     "emptyApartments": "Empty Apartments",
     "averageVacancyDays": "Average Vacancy Days",
@@ -1691,7 +1694,13 @@
     "contract": "Contract",
     "role": "Role",
     "apartment": "Apartment",
-    "agreementStatus": "Agreement Status"
+    "agreementStatus": "Agreement Status",
+    "tenantStatus": "Tenant Status"
+  },
+  "tenantStatus": {
+    "active": "Active Tenant",
+    "movingOut": "Moving Out",
+    "movedOut": "Former Tenant"
   },
   "messages": {
     "noContracts": "No contract found",
@@ -1701,6 +1710,9 @@
     "createSuccess": "Successfully created",
     "updateSuccess": "Successfully updated",
     "createError": "An error occurred while creating",
+    "activated": "Successfully activated",
+    "deactivated": "Successfully deactivated",
+    "updateError": "An error occurred while updating",
     "fileDeleted": "File successfully deleted",
     "fileDeleteError": "An error occurred while deleting file",
     "fileUploadError": "An error occurred while uploading file",

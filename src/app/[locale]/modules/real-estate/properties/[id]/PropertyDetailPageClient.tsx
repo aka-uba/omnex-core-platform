@@ -216,9 +216,15 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
         <Tabs.Panel value="details" pt="md">
           <Paper shadow="xs" p="md">
             <Stack gap="md">
-              <Group align="flex-start" gap="xl" wrap="wrap" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
+              <Group align="stretch" gap="xl" wrap="wrap" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
                 {/* Cover Image */}
-                <Box style={{ maxWidth: isMobile ? '100%' : 300, maxHeight: 400, width: isMobile ? '100%' : 'auto' }}>
+                <Box style={{
+                  position: 'relative',
+                  width: isMobile ? '100%' : 300,
+                  minWidth: isMobile ? undefined : 300,
+                  minHeight: 300,
+                  flexShrink: 0,
+                }}>
                   <Image
                     src={
                       property.coverImage
@@ -233,10 +239,12 @@ export function PropertyDetailPageClient({ locale }: { locale: string }) {
                     style={{
                       border: '4px solid var(--mantine-color-gray-3)',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      maxWidth: isMobile ? '100%' : 300,
-                      maxHeight: 400,
-                      margin: isMobile ? '0 auto' : undefined,
-                      display: 'block',
+                      width: '100%',
+                      height: isMobile ? 300 : '100%',
+                      objectFit: 'cover',
+                      position: isMobile ? 'relative' : 'absolute',
+                      top: 0,
+                      left: 0,
                     }}
                     fallbackSrc="https://placehold.co/300x200?text=Property"
                   />

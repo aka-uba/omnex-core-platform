@@ -1186,7 +1186,9 @@
     "execute": "تنفيذ",
     "remove": "إزالة",
     "newContract": "عقد جديد",
-    "payments": "المدفوعات"
+    "payments": "المدفوعات",
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل"
   },
   "table": {
     "name": "الاسم",
@@ -1258,6 +1260,7 @@
     "noApartments": "لم يتم العثور على شقق",
     "noTenants": "لم يتم العثور على مستأجرين",
     "moveOutDate": "تاريخ الخروج",
+    "tenantStatus": "حالة المستأجر",
     "emptyApartments": "الشقق الشاغرة",
     "averageVacancyDays": "متوسط أيام الشغور",
     "customerSatisfaction": "رضا العملاء",
@@ -1635,7 +1638,8 @@
     "contract": "العقد",
     "role": "الدور",
     "apartment": "الشقة",
-    "agreementStatus": "حالة الاتفاقية"
+    "agreementStatus": "حالة الاتفاقية",
+    "tenantStatus": "حالة المستأجر"
   },
   "messages": {
     "noContracts": "لم يتم العثور على عقود",
@@ -1654,7 +1658,10 @@
     "renewSuccess": "تم تجديد العقد بنجاح",
     "renewError": "خطأ في تجديد العقد",
     "autoRenewSuccess": "تم تجديد العقود تلقائياً",
-    "autoRenewError": "خطأ في التجديد التلقائي"
+    "autoRenewError": "خطأ في التجديد التلقائي",
+    "activated": "تم التفعيل بنجاح",
+    "deactivated": "تم إلغاء التفعيل بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث"
   },
   "delete": {
     "confirm": "هل أنت متأكد من أنك تريد الحذف؟",
@@ -2086,5 +2093,10 @@
     "taxNumberPlaceholder": "أدخل الرقم الضريبي",
     "systemFields": "حقول النظام",
     "apartmentAssignment": "تعيين الشقة"
+  },
+  "tenantStatus": {
+    "active": "نشط",
+    "movingOut": "سيغادر",
+    "movedOut": "غادر"
   }
 }

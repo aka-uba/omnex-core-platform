@@ -12,16 +12,13 @@ import {
 } from '@mantine/core';
 import {
   IconEdit,
-  IconTrash,
   IconEye,
   IconBuilding,
 } from '@tabler/icons-react';
-import { useTenants, useDeleteTenant } from '@/hooks/useTenants';
+import { useTenants } from '@/hooks/useTenants';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
-import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { AlertModal } from '@/components/modals/AlertModal';
 
 interface TenantListProps {
   locale: string;
@@ -34,50 +31,33 @@ export function TenantList({ locale }: TenantListProps) {
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [search] = useState('');
-  const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
-  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [tenantStatusFilter, setTenantStatusFilter] = useState<string | undefined>();
 
   const { data, isLoading, error } = useTenants({
     page,
     pageSize,
     ...(search ? { search } : {}),
-    ...(isActiveFilter !== undefined ? { isActive: isActiveFilter } : {}),
   });
 
-  const deleteTenant = useDeleteTenant();
-
-  const handleDeleteClick = useCallback((id: string) => {
-    setDeleteId(id);
-    setDeleteModalOpened(true);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(async () => {
-    if (!deleteId) return;
-    try {
-      await deleteTenant.mutateAsync(deleteId);
-      showToast({
-        type: 'success',
-        title: t('messages.success'),
-        message: t('tenants.delete.success') || t('delete.success'),
-      });
-      setDeleteModalOpened(false);
-      setDeleteId(null);
-    } catch (error) {
-      showToast({
-        type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('tenants.delete.error') || t('delete.error'),
-      });
+  // Kiracı durumunu çıkış tarihine göre hesapla
+  const getTenantStatusBadge = useCallback((moveOutDate: string | null) => {
+    if (!moveOutDate) {
+      // Çıkış tarihi yoksa aktif kiracı
+      return <Badge color="green">{t('tenantStatus.active')}</Badge>;
     }
-  }, [deleteId, deleteTenant, t]);
 
-  const getActiveBadge = useCallback((isActive: boolean) => {
-    return isActive ? (
-      <Badge color="green">{t('status.active')}</Badge>
-    ) : (
-      <Badge color="gray">{t('status.inactive')}</Badge>
-    );
+    const moveOut = new Date(moveOutDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    moveOut.setHours(0, 0, 0, 0);
+
+    if (moveOut < today) {
+      // Çıkış tarihi geçmiş - artık kiracı değil
+      return <Badge color="gray">{t('tenantStatus.movedOut')}</Badge>;
+    } else {
+      // Çıkış tarihi gelecekte - aktif ama çıkış planlı
+      return <Badge color="yellow">{t('tenantStatus.movingOut')}</Badge>;
+    }
   }, [t]);
 
   // Prepare data for DataTable
@@ -112,6 +92,7 @@ export function TenantList({ locale }: TenantListProps) {
         address: address,
         tenantNumber: tenant.tenantNumber || '-',
         moveInDate: tenant.moveInDate,
+        moveOutDate: tenant.moveOutDate,
         coverImage: tenant.coverImage,
         images: tenant.images || [],
       };
@@ -142,7 +123,7 @@ export function TenantList({ locale }: TenantListProps) {
     );
   }, []);
 
-  const renderStatus = useCallback((value: boolean) => getActiveBadge(value), [getActiveBadge]);
+  const renderTenantStatus = useCallback((value: string | null, row: any) => getTenantStatusBadge(row.moveOutDate), [getTenantStatusBadge]);
 
   const renderTenantType = useCallback((value: string) => {
     const typeLabels: Record<string, string> = {
@@ -200,20 +181,8 @@ export function TenantList({ locale }: TenantListProps) {
           <IconEdit size={18} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('actions.delete')} withArrow>
-        <ActionIcon
-          variant="subtle"
-          color="red"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDeleteClick(row.id);
-          }}
-        >
-          <IconTrash size={18} />
-        </ActionIcon>
-      </Tooltip>
     </>
-  ), [router, locale, handleDeleteClick, t]);
+  ), [router, locale, t]);
 
   // Define columns with memoization - Customer table order
   // #(rowNumber) is handled by DataTable automatically
@@ -227,11 +196,11 @@ export function TenantList({ locale }: TenantListProps) {
       width: 50,
     },
     {
-      key: 'isActive',
-      label: t('table.active'),
+      key: 'tenantStatus',
+      label: t('table.tenantStatus'),
       sortable: true,
       searchable: false,
-      render: renderStatus,
+      render: renderTenantStatus,
     },
     {
       key: 'tenantType',
@@ -299,6 +268,20 @@ export function TenantList({ locale }: TenantListProps) {
       render: renderAddress,
     },
     {
+      key: 'moveInDate',
+      label: t('table.moveInDate'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+    },
+    {
+      key: 'moveOutDate',
+      label: t('table.moveOutDate'),
+      sortable: true,
+      searchable: false,
+      render: renderDate,
+    },
+    {
       key: 'actions',
       label: t('table.actions'),
       sortable: false,
@@ -306,28 +289,29 @@ export function TenantList({ locale }: TenantListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderAvatar, renderStatus, renderTenantType, renderSalutation, renderDate, renderAddress, renderActions]);
+  ], [t, renderAvatar, renderTenantStatus, renderTenantType, renderSalutation, renderDate, renderAddress, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [
     {
-      key: 'isActive',
-      label: t('filter.status'),
+      key: 'tenantStatus',
+      label: t('filter.tenantStatus'),
       type: 'select',
       options: [
-        { value: 'true', label: t('status.active') },
-        { value: 'false', label: t('status.inactive') },
+        { value: 'active', label: t('tenantStatus.active') },
+        { value: 'movingOut', label: t('tenantStatus.movingOut') },
+        { value: 'movedOut', label: t('tenantStatus.movedOut') },
       ],
     },
   ], [t]);
 
   const handleFilter = useCallback((filters: Record<string, any>) => {
-    if (filters.isActive) {
-      setIsActiveFilter(filters.isActive === 'true');
+    if (filters.tenantStatus) {
+      setTenantStatusFilter(filters.tenantStatus);
     } else {
-      setIsActiveFilter(undefined);
+      setTenantStatusFilter(undefined);
     }
-    
+
     setPage(1);
   }, []);
 
@@ -349,21 +333,7 @@ export function TenantList({ locale }: TenantListProps) {
   }
 
   return (
-    <>
-      <AlertModal
-        opened={deleteModalOpened}
-        onClose={() => {
-          setDeleteModalOpened(false);
-          setDeleteId(null);
-        }}
-        title={t('tenants.delete.title') || t('delete.title') || tGlobal('common.delete')}
-        message={t('tenants.delete.confirm') || t('delete.confirm')}
-        confirmLabel={t('actions.delete') || tGlobal('common.delete')}
-        cancelLabel={t('actions.cancel') || tGlobal('common.cancel')}
-        onConfirm={handleDeleteConfirm}
-        variant="danger"
-      />
-      <DataTable
+    <DataTable
         tableId="real-estate-tenants"
         columns={columns}
         data={tableData}
@@ -384,6 +354,5 @@ export function TenantList({ locale }: TenantListProps) {
         auditEntityName="Tenant"
         auditIdKey="id"
       />
-    </>
   );
 }

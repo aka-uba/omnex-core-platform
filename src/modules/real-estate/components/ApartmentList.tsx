@@ -15,20 +15,17 @@ import {
 } from '@mantine/core';
 import {
   IconEdit,
-  IconTrash,
   IconEye,
   IconHome,
   IconCheck,
   IconX,
   IconClock,
 } from '@tabler/icons-react';
-import { useApartments, useDeleteApartment } from '@/hooks/useApartments';
+import { useApartments } from '@/hooks/useApartments';
 import { useProperties } from '@/hooks/useProperties';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
-import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { AlertModal } from '@/components/modals/AlertModal';
 import type { ApartmentStatus } from '@/modules/real-estate/types/apartment';
 
 interface ApartmentListProps {
@@ -45,8 +42,6 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   const [propertyId, setPropertyId] = useState<string | undefined>();
   const [statusFilter, setStatusFilter] = useState<ApartmentStatus | undefined>();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
-  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const { data, isLoading, error } = useApartments({
     page,
@@ -60,38 +55,25 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   // Fetch properties for filter
   const { data: propertiesData } = useProperties({ page: 1, pageSize: 1000 });
 
-  const deleteApartment = useDeleteApartment();
-
-  const handleDeleteClick = useCallback((id: string) => {
-    setDeleteId(id);
-    setDeleteModalOpened(true);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(async () => {
-    if (!deleteId) return;
-    try {
-      await deleteApartment.mutateAsync(deleteId);
-      showToast({
-        type: 'success',
-        title: t('messages.success'),
-        message: t('apartments.delete.success') || t('delete.success'),
-      });
-      setDeleteModalOpened(false);
-      setDeleteId(null);
-    } catch (error) {
-      showToast({
-        type: 'error',
-        title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('apartments.delete.error') || t('delete.error'),
-      });
-    }
-  }, [deleteId, deleteApartment, t]);
-
   const getActiveBadge = useCallback((isActive: boolean) => {
     return isActive ? (
       <Badge color="green">{t('status.active')}</Badge>
     ) : (
       <Badge color="gray">{t('status.inactive')}</Badge>
+    );
+  }, [t]);
+
+  const getStatusBadge = useCallback((status: ApartmentStatus) => {
+    const statusColors: Record<ApartmentStatus, string> = {
+      empty: 'yellow',
+      rented: 'green',
+      sold: 'blue',
+      maintenance: 'orange',
+    };
+    return (
+      <Badge color={statusColors[status] || 'gray'}>
+        {t(`apartments.status.${status}`) || status}
+      </Badge>
     );
   }, [t]);
 
@@ -287,6 +269,8 @@ export function ApartmentList({ locale }: ApartmentListProps) {
     return <Text size="sm">{value}</Text>;
   }, []);
 
+  const renderStatus = useCallback((value: ApartmentStatus) => getStatusBadge(value), [getStatusBadge]);
+
   const renderActions = useCallback((value: any, row: any) => (
     <Group gap="xs" justify="flex-end">
       <Tooltip label={t('actions.view')} withArrow>
@@ -313,20 +297,8 @@ export function ApartmentList({ locale }: ApartmentListProps) {
           <IconEdit size={18} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('actions.delete')} withArrow>
-        <ActionIcon
-          variant="subtle"
-          color="red"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDeleteClick(row.id);
-          }}
-        >
-          <IconTrash size={18} />
-        </ActionIcon>
-      </Tooltip>
     </Group>
-  ), [router, locale, handleDeleteClick, t]);
+  ), [router, locale, t]);
 
   // Define columns with memoization - Customer table order
   // #(rowNumber) is handled by DataTable automatically
@@ -339,11 +311,11 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       render: renderPreview,
     },
     {
-      key: 'isActive',
-      label: t('table.active'),
+      key: 'status',
+      label: t('table.status'),
       sortable: true,
       searchable: false,
-      render: renderActive,
+      render: renderStatus,
     },
     {
       key: 'property',
@@ -476,7 +448,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderPreview, renderActive, renderProperty, renderArea, renderDate, renderCurrency, renderActions, renderPaymentStatus, renderTenant]);
+  ], [t, renderPreview, renderStatus, renderProperty, renderArea, renderDate, renderCurrency, renderActions, renderPaymentStatus, renderTenant, renderUnitNumber]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [
@@ -551,21 +523,7 @@ export function ApartmentList({ locale }: ApartmentListProps) {
   }
 
   return (
-    <>
-      <AlertModal
-        opened={deleteModalOpened}
-        onClose={() => {
-          setDeleteModalOpened(false);
-          setDeleteId(null);
-        }}
-        title={t('apartments.delete.title') || t('delete.title') || tGlobal('common.delete')}
-        message={t('apartments.delete.confirm') || t('delete.confirm')}
-        confirmLabel={t('actions.delete') || tGlobal('common.delete')}
-        cancelLabel={t('actions.cancel') || tGlobal('common.cancel')}
-        onConfirm={handleDeleteConfirm}
-        variant="danger"
-      />
-      <DataTable
+    <DataTable
         tableId="real-estate-apartments"
         columns={columns}
         data={tableData}
@@ -586,6 +544,5 @@ export function ApartmentList({ locale }: ApartmentListProps) {
         auditEntityName="Apartment"
         auditIdKey="id"
       />
-    </>
   );
 }

@@ -15,16 +15,16 @@ import {
 } from '@mantine/core';
 import {
   IconEdit,
-  IconTrash,
   IconEye,
   IconBuilding,
+  IconToggleLeft,
+  IconToggleRight,
 } from '@tabler/icons-react';
-import { useProperties, useDeleteProperty } from '@/hooks/useProperties';
+import { useProperties, useUpdateProperty } from '@/hooks/useProperties';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
-import { AlertModal } from '@/components/modals/AlertModal';
 import type { PropertyType } from '@/modules/real-estate/types/property';
 
 interface PropertyListProps {
@@ -40,8 +40,6 @@ export function PropertyList({ locale }: PropertyListProps) {
   const [search] = useState('');
   const [typeFilter, setTypeFilter] = useState<PropertyType | undefined>();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
-  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const { data, isLoading, error } = useProperties({
     page,
@@ -51,32 +49,27 @@ export function PropertyList({ locale }: PropertyListProps) {
     ...(isActiveFilter !== undefined ? { isActive: isActiveFilter } : {}),
   });
 
-  const deleteProperty = useDeleteProperty();
+  const updateProperty = useUpdateProperty();
 
-  const handleDeleteClick = useCallback((id: string) => {
-    setDeleteId(id);
-    setDeleteModalOpened(true);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(async () => {
-    if (!deleteId) return;
+  const handleToggleActive = useCallback(async (id: string, currentIsActive: boolean) => {
     try {
-      await deleteProperty.mutateAsync(deleteId);
+      await updateProperty.mutateAsync({
+        id,
+        input: { isActive: !currentIsActive },
+      });
       showToast({
         type: 'success',
         title: t('messages.success'),
-        message: t('delete.success'),
+        message: !currentIsActive ? t('messages.activated') : t('messages.deactivated'),
       });
-      setDeleteModalOpened(false);
-      setDeleteId(null);
     } catch (error) {
       showToast({
         type: 'error',
         title: t('messages.error'),
-        message: error instanceof Error ? error.message : t('delete.error'),
+        message: error instanceof Error ? error.message : t('messages.updateError'),
       });
     }
-  }, [deleteId, deleteProperty, t]);
+  }, [updateProperty, t]);
 
   const getTypeBadge = useCallback((type: PropertyType) => {
     const typeColors: Record<PropertyType, string> = {
@@ -273,20 +266,20 @@ export function PropertyList({ locale }: PropertyListProps) {
           <IconEdit size={18} />
         </ActionIcon>
       </Tooltip>
-      <Tooltip label={t('actions.delete')} withArrow>
+      <Tooltip label={row.isActive ? t('actions.deactivate') : t('actions.activate')} withArrow>
         <ActionIcon
           variant="subtle"
-          color="red"
+          color={row.isActive ? 'orange' : 'green'}
           onClick={(e) => {
             e.stopPropagation();
-            handleDeleteClick(row.id);
+            handleToggleActive(row.id, row.isActive);
           }}
         >
-          <IconTrash size={18} />
+          {row.isActive ? <IconToggleRight size={18} /> : <IconToggleLeft size={18} />}
         </ActionIcon>
       </Tooltip>
     </Group>
-  ), [router, locale, handleDeleteClick, t]);
+  ), [router, locale, handleToggleActive, t]);
 
   // Define columns with memoization - Customer table order
   // #(rowNumber) is handled by DataTable automatically
@@ -472,21 +465,7 @@ export function PropertyList({ locale }: PropertyListProps) {
   }
 
   return (
-    <>
-      <AlertModal
-        opened={deleteModalOpened}
-        onClose={() => {
-          setDeleteModalOpened(false);
-          setDeleteId(null);
-        }}
-        title={t('properties.delete.title') || t('delete.title') || tGlobal('common.delete')}
-        message={t('delete.confirm')}
-        confirmLabel={t('actions.delete') || tGlobal('common.delete')}
-        cancelLabel={t('actions.cancel') || tGlobal('common.cancel')}
-        onConfirm={handleDeleteConfirm}
-        variant="danger"
-      />
-      <DataTable
+    <DataTable
         tableId="real-estate-properties"
         columns={columns}
         data={tableData}
@@ -507,6 +486,5 @@ export function PropertyList({ locale }: PropertyListProps) {
         auditEntityName="Property"
         auditIdKey="id"
       />
-    </>
   );
 }

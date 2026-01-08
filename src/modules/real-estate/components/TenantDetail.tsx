@@ -173,13 +173,15 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
     <Stack gap="md">
       {/* Tenant Info - 2 Column Layout */}
       <Paper shadow="xs" p="md">
-        <Grid gutter="xl">
+        <Grid gutter="xl" align="stretch">
           {/* Left Column: Image */}
-          <Grid.Col span={{ base: 12, md: 4 }}>
+          <Grid.Col span={{ base: 12, md: 4 }} style={{ display: 'flex' }}>
             <Box
               style={{
-                position: 'sticky',
-                top: 20,
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                minHeight: 300,
               }}
             >
               <Image
@@ -196,9 +198,12 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                 style={{
                   border: '4px solid var(--mantine-color-gray-3)',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                  aspectRatio: '3/4',
                   width: '100%',
-                  maxHeight: 300,
+                  height: '100%',
+                  objectFit: 'cover',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
                 }}
                 fallbackSrc={`https://placehold.co/300x400?text=${(tenant as any).tenantType === 'company' ? 'Company' : 'Tenant'}`}
               />
@@ -210,7 +215,7 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                   size="lg"
                   variant="filled"
                   color="dark"
-                  style={{ opacity: 0.8 }}
+                  style={{ opacity: 0.8, zIndex: 1 }}
                 >
                   <Group gap={4}>
                     <IconPhoto size={14} />

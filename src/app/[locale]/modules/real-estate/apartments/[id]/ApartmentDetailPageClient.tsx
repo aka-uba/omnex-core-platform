@@ -287,13 +287,15 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
 
         <Tabs.Panel value="details" pt="md">
           <Paper shadow="xs" p="md">
-            <Grid gutter="xl">
+            <Grid gutter="xl" align="stretch">
               {/* Sol Kolon: Büyük Resim */}
-              <Grid.Col span={{ base: 12, md: 5 }}>
+              <Grid.Col span={{ base: 12, md: 5 }} style={{ display: 'flex' }}>
                 <Box
                   style={{
-                    position: 'sticky',
-                    top: 20,
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                    minHeight: 300,
                   }}
                 >
                   <Image
@@ -310,8 +312,12 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                     style={{
                       border: '4px solid var(--mantine-color-gray-3)',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      aspectRatio: '4/3',
                       width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
                     }}
                     fallbackSrc="https://placehold.co/600x450?text=Apartment"
                   />
@@ -324,7 +330,7 @@ export function ApartmentDetailPageClient({ locale }: { locale: string }) {
                       size="lg"
                       variant="filled"
                       color="dark"
-                      style={{ opacity: 0.8 }}
+                      style={{ opacity: 0.8, zIndex: 1 }}
                     >
                       <Group gap={4}>
                         <IconPhoto size={14} />

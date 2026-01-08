@@ -1225,7 +1225,9 @@
     "execute": "Ausführen",
     "remove": "Entfernen",
     "newContract": "Neuer Vertrag",
-    "payments": "Zahlungen"
+    "payments": "Zahlungen",
+    "activate": "Aktivieren",
+    "deactivate": "Deaktivieren"
   },
   "table": {
     "name": "Name",
@@ -1297,6 +1299,7 @@
     "noApartments": "Keine Wohnungen gefunden",
     "noTenants": "Keine Mieter gefunden",
     "moveOutDate": "Auszugsdatum",
+    "tenantStatus": "Mieterstatus",
     "emptyApartments": "Leere Wohnungen",
     "averageVacancyDays": "Durchschnittliche Leerstandstage",
     "customerSatisfaction": "Kundenzufriedenheit",
@@ -1691,7 +1694,8 @@
     "contract": "Vertrag",
     "role": "Rolle",
     "apartment": "Wohnung",
-    "agreementStatus": "Vereinbarungsstatus"
+    "agreementStatus": "Vereinbarungsstatus",
+    "tenantStatus": "Mieterstatus"
   },
   "messages": {
     "noContracts": "Keine Verträge gefunden",
@@ -1710,7 +1714,10 @@
     "renewSuccess": "Vertrag erfolgreich verlängert",
     "renewError": "Fehler bei Vertragsverlängerung",
     "autoRenewSuccess": "Verträge automatisch verlängert",
-    "autoRenewError": "Fehler bei automatischer Verlängerung"
+    "autoRenewError": "Fehler bei automatischer Verlängerung",
+    "activated": "Erfolgreich aktiviert",
+    "deactivated": "Erfolgreich deaktiviert",
+    "updateError": "Fehler beim Aktualisieren"
   },
   "delete": {
     "confirm": "Sind Sie sicher, dass Sie löschen möchten?",
@@ -2142,5 +2149,10 @@
     "taxNumberPlaceholder": "Steuernummer eingeben",
     "systemFields": "Systemfelder",
     "apartmentAssignment": "Wohnungszuordnung"
+  },
+  "tenantStatus": {
+    "active": "Aktiv",
+    "movingOut": "Auszug geplant",
+    "movedOut": "Ausgezogen"
   }
 }

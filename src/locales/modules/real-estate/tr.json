@@ -1217,6 +1217,8 @@
     "addSelected": "Seçilenleri Ekle",
     "addTenantsFromApartments": "Dairelerden Kiracı Ekle",
     "next": "İleri",
+    "activate": "Aktif Et",
+    "deactivate": "Pasif Et",
     "refresh": "Yenile",
     "retry": "Tekrar Dene",
     "previous": "Önceki",
@@ -1296,6 +1298,7 @@
     "noStaff": "Personel bulunamadı",
     "noApartments": "Daire bulunamadı",
     "noTenants": "Kiracı bulunamadı",
+    "tenantStatus": "Kiracı Durumu",
     "moveOutDate": "Çıkış Tarihi",
     "emptyApartments": "Boş Daireler",
     "averageVacancyDays": "Ortalama Boşluk Günleri",
@@ -1689,7 +1692,13 @@
     "contract": "Sözleşme",
     "role": "Rol",
     "apartment": "Daire",
-    "agreementStatus": "Anlaşma Durumu"
+    "agreementStatus": "Anlaşma Durumu",
+    "tenantStatus": "Kiracı Durumu"
+  },
+  "tenantStatus": {
+    "active": "Aktif Kiracı",
+    "movingOut": "Çıkış Planlı",
+    "movedOut": "Eski Kiracı"
   },
   "messages": {
     "noContracts": "Sözleşme bulunamadı",
@@ -1699,6 +1708,9 @@
     "createSuccess": "Başarıyla oluşturuldu",
     "updateSuccess": "Başarıyla güncellendi",
     "createError": "Oluşturulurken bir hata oluştu",
+    "activated": "Başarıyla aktif edildi",
+    "deactivated": "Başarıyla pasif edildi",
+    "updateError": "Güncellenirken bir hata oluştu",
     "fileDeleted": "Dosya başarıyla silindi",
     "fileDeleteError": "Dosya silinirken bir hata oluştu",
     "fileUploadError": "Dosya yüklenirken bir hata oluştu",
