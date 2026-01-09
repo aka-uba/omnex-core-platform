@@ -74,8 +74,8 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
       },
       preferences: {
         defaultLanguage: 'tr',
-        defaultTheme: 'auto' as const,
-        defaultLayout: 'sidebar' as const,
+        defaultTheme: 'auto' as 'auto' | 'light' | 'dark',
+        defaultLayout: 'sidebar' as 'sidebar' | 'top',
       },
     },
     // Validasyonu manuel yapacağız - nested yapıda zodResolver sorun çıkarıyor

@@ -69,7 +69,7 @@ export function CreateUserPageClient({ locale }: { locale: string }) {
       preferences: {
         defaultLanguage: 'tr',
         defaultTheme: 'auto' as const,
-        defaultLayout: 'comfortable' as const,
+        defaultLayout: 'sidebar' as const,
       },
     },
     // Validasyonu manuel yapacağız - nested yapıda zodResolver sorun çıkarıyor

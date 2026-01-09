@@ -65,7 +65,7 @@ export const cvSchema = z.object({
 export const preferencesSchema = z.object({
   defaultLanguage: z.string().default('tr'),
   defaultTheme: z.enum(['light', 'dark', 'auto']).default('auto'),
-  defaultLayout: z.enum(['compact', 'comfortable', 'spacious']).default('comfortable'),
+  defaultLayout: z.enum(['sidebar', 'top']).default('sidebar'),
 });
 
 // Complete User Schema (for create/edit)
