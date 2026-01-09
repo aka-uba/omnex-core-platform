@@ -75,7 +75,7 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
       preferences: {
         defaultLanguage: 'tr',
         defaultTheme: 'auto' as const,
-        defaultLayout: 'comfortable' as const,
+        defaultLayout: 'sidebar' as const,
       },
     },
     // Validasyonu manuel yapacağız - nested yapıda zodResolver sorun çıkarıyor
@@ -119,9 +119,9 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
           cv: undefined,
         },
         preferences: {
-          defaultLanguage: 'tr',
-          defaultTheme: 'auto' as const,
-          defaultLayout: 'comfortable' as const,
+          defaultLanguage: user.defaultLanguage || 'tr',
+          defaultTheme: (user.defaultTheme || 'auto') as 'auto' | 'light' | 'dark',
+          defaultLayout: (user.defaultLayout || 'sidebar') as 'sidebar' | 'top',
         },
       });
     }
@@ -184,7 +184,7 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
 
     try {
       const response = await updateUser.mutateAsync({ userId, data: form.values });
-      
+
       // Eğer güncellenen kullanıcı mevcut kullanıcıysa, localStorage'ı güncelle
       if (typeof window !== 'undefined') {
         const currentUser = localStorage.getItem('user');
@@ -198,13 +198,38 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
                 ...user,
                 name: response.user.name || user.name,
                 email: response.user.email || user.email,
-                profilePicture: response.user.profilePicture !== undefined 
-                  ? response.user.profilePicture 
+                profilePicture: response.user.profilePicture !== undefined
+                  ? response.user.profilePicture
                   : user.profilePicture,
               };
               localStorage.setItem('user', JSON.stringify(updatedUser));
               // Custom event dispatch et ki useAuth hook'u güncellensin
               window.dispatchEvent(new Event('user-updated'));
+
+              // Tercihler değiştiyse layout config'i de güncelle
+              const preferences = form.values.preferences;
+              if (preferences) {
+                const layoutConfig = localStorage.getItem('omnex-layout-config-v2');
+                const currentConfig = layoutConfig ? JSON.parse(layoutConfig) : {};
+
+                // Layout type mapping: 'sidebar' veya 'top'
+                const newLayoutType = preferences.defaultLayout === 'top' ? 'top' : 'sidebar';
+
+                // Theme mode mapping: 'auto', 'light', 'dark'
+                const newThemeMode = preferences.defaultTheme || 'auto';
+
+                const newConfig = {
+                  ...currentConfig,
+                  layoutType: newLayoutType,
+                  themeMode: newThemeMode,
+                };
+
+                localStorage.setItem('omnex-layout-config-v2', JSON.stringify(newConfig));
+                localStorage.setItem('omnex-layout-config-timestamp', Date.now().toString());
+
+                // Layout değişikliğini uygula - sayfa yenilenmeden (custom event)
+                window.dispatchEvent(new Event('layout-config-updated'));
+              }
             }
           } catch (e) {
             // Error updating localStorage - silently fail

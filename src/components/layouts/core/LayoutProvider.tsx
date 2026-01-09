@@ -122,11 +122,21 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
     setMounted(true);
   }, []);
 
-  // Company defaults değiştiğinde dinle (başka tab'dan veya admin'den)
+  // Company defaults veya user config değiştiğinde dinle (başka tab'dan veya kullanıcı tercihlerinden)
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const handleStorageChange = (e: StorageEvent) => {
+      // User layout config değiştiğinde güncelle (tercihler sayfasından)
+      if (e.key === STORAGE_KEYS.layoutConfig && e.newValue) {
+        try {
+          const newConfig = JSON.parse(e.newValue) as LayoutConfig;
+          setConfigState(newConfig);
+        } catch {
+          // Silently fail
+        }
+      }
+
       // Company defaults değiştiğinde ve kullanıcının kendi config'i yoksa güncelle
       if (e.key === STORAGE_KEYS.companyDefaults && e.newValue) {
         const hasUserConfig = !!localStorage.getItem(STORAGE_KEYS.layoutConfig);
@@ -141,8 +151,25 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
       }
     };
 
+    // Custom event dinle - aynı pencere içinde layout değişiklikleri için
+    const handleLayoutConfigUpdate = () => {
+      try {
+        const layoutConfig = localStorage.getItem(STORAGE_KEYS.layoutConfig);
+        if (layoutConfig) {
+          const newConfig = JSON.parse(layoutConfig) as LayoutConfig;
+          setConfigState(newConfig);
+        }
+      } catch {
+        // Silently fail
+      }
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('layout-config-updated', handleLayoutConfigUpdate);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('layout-config-updated', handleLayoutConfigUpdate);
+    };
   }, []);
 
   // localStorage'da company defaults yoksa DB'den çek (diğer tarayıcılar için)
