@@ -2235,6 +2235,9 @@
     "taxNumber": "Vergi Numarası",
     "taxNumberPlaceholder": "Vergi numarasını girin",
     "systemFields": "Sistem Alanları",
-    "apartmentAssignment": "Daire Ataması"
+    "apartmentAssignment": "Daire Ataması",
+    "occupiedBy": "Kiracı",
+    "apartmentOccupiedWarning": "Daire Zaten Dolu",
+    "apartmentOccupiedMessage": "Bu dairede şu anda {{tenantName}} adlı kiracı ile aktif bir sözleşme bulunmaktadır. Bu daireyi atamak çakışmalara neden olabilir."
   }
 }

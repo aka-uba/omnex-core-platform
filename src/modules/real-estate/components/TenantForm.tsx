@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useForm } from '@mantine/form';
 import {
   Paper,
@@ -14,9 +14,10 @@ import {
   Divider,
   Title,
   Checkbox,
+  Alert,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
-import { IconArrowLeft } from '@tabler/icons-react';
+import { IconArrowLeft, IconAlertTriangle } from '@tabler/icons-react';
 import { showToast } from '@/modules/notifications/components/ToastNotification';
 import { useRouter } from 'next/navigation';
 import { useCreateTenant, useUpdateTenant, useTenant } from '@/hooks/useTenants';
@@ -214,15 +215,47 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     { value: 'Frau', label: t('tenantForm.salutationMs') || 'Ms.' },
   ];
 
-  // Apartment options for select - simple array without grouping
+  // Apartment options for select - with occupied status
   const apartments = apartmentsData?.apartments;
-  const apartmentOptions: { value: string; label: string }[] = [];
+
+  // Build a map of occupied apartments (apartments with active contracts and different tenants)
+  const occupiedApartments = useMemo(() => {
+    const map = new Map<string, { tenantName: string; tenantId: string }>();
+    if (Array.isArray(apartments)) {
+      for (const apt of apartments) {
+        if (apt && apt.id && apt.contracts && apt.contracts.length > 0) {
+          const activeContract = apt.contracts[0];
+          const tenant = activeContract?.tenantRecord;
+          if (tenant && tenant.id !== tenantId) {
+            // This apartment has an active contract with a different tenant
+            const tenantName = `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.tenantNumber || 'Unknown';
+            map.set(apt.id, { tenantName, tenantId: tenant.id });
+          }
+        }
+      }
+    }
+    return map;
+  }, [apartments, tenantId]);
+
+  // Check if selected apartment is occupied by another tenant
+  const selectedApartmentOccupied = useMemo(() => {
+    const selectedId = form.values.apartmentId;
+    if (!selectedId) return null;
+    return occupiedApartments.get(selectedId) || null;
+  }, [form.values.apartmentId, occupiedApartments]);
+
+  const apartmentOptions: { value: string; label: string; disabled?: boolean }[] = [];
   if (Array.isArray(apartments)) {
     for (const apt of apartments) {
       if (apt && apt.id) {
+        const occupied = occupiedApartments.get(apt.id);
+        const baseLabel = `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber || ''}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`;
+        const label = occupied
+          ? `${baseLabel} ⚠️ ${t('tenantForm.occupiedBy') || 'Occupied by'}: ${occupied.tenantName}`
+          : baseLabel;
         apartmentOptions.push({
           value: apt.id,
-          label: `${apt.property?.name || t('form.unknownProperty')} - ${apt.unitNumber || ''}${apt.floor ? ` (${t('form.floor')} ${apt.floor})` : ''}`,
+          label,
         });
       }
     }
@@ -400,6 +433,18 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
                 nothingFoundMessage={t('form.noApartmentsFound')}
                 {...form.getInputProps('apartmentId')}
               />
+              {/* Warning if selected apartment is occupied by another tenant */}
+              {selectedApartmentOccupied && (
+                <Alert
+                  icon={<IconAlertTriangle size={16} />}
+                  title={t('tenantForm.apartmentOccupiedWarning') || 'Apartment Already Occupied'}
+                  color="orange"
+                  mt="xs"
+                >
+                  {t('tenantForm.apartmentOccupiedMessage', { tenantName: selectedApartmentOccupied.tenantName }) ||
+                    `This apartment currently has an active contract with ${selectedApartmentOccupied.tenantName}. Assigning this apartment may cause conflicts.`}
+                </Alert>
+              )}
             </Grid.Col>
           </Grid>
 

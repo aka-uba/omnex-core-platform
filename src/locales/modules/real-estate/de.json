@@ -2232,7 +2232,10 @@
     "taxNumber": "Steuernummer",
     "taxNumberPlaceholder": "Steuernummer eingeben",
     "systemFields": "Systemfelder",
-    "apartmentAssignment": "Wohnungszuordnung"
+    "apartmentAssignment": "Wohnungszuordnung",
+    "occupiedBy": "Belegt von",
+    "apartmentOccupiedWarning": "Wohnung bereits belegt",
+    "apartmentOccupiedMessage": "Diese Wohnung hat derzeit einen aktiven Vertrag mit {{tenantName}}. Die Zuweisung dieser Wohnung kann zu Konflikten führen."
   },
   "tenantStatus": {
     "active": "Aktiv",

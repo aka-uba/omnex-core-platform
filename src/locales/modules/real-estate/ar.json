@@ -2176,7 +2176,10 @@
     "taxNumber": "الرقم الضريبي",
     "taxNumberPlaceholder": "أدخل الرقم الضريبي",
     "systemFields": "حقول النظام",
-    "apartmentAssignment": "تعيين الشقة"
+    "apartmentAssignment": "تعيين الشقة",
+    "occupiedBy": "مشغول بواسطة",
+    "apartmentOccupiedWarning": "الشقة مشغولة بالفعل",
+    "apartmentOccupiedMessage": "هذه الشقة لديها حالياً عقد نشط مع {{tenantName}}. تعيين هذه الشقة قد يسبب تعارضات."
   },
   "tenantStatus": {
     "active": "نشط",

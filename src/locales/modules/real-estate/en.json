@@ -2237,6 +2237,9 @@
     "taxNumber": "Tax Number",
     "taxNumberPlaceholder": "Enter tax number",
     "systemFields": "System Fields",
-    "apartmentAssignment": "Apartment Assignment"
+    "apartmentAssignment": "Apartment Assignment",
+    "occupiedBy": "Occupied by",
+    "apartmentOccupiedWarning": "Apartment Already Occupied",
+    "apartmentOccupiedMessage": "This apartment currently has an active contract with {{tenantName}}. Assigning this apartment may cause conflicts."
   }
 }
