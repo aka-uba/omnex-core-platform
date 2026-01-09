@@ -33,8 +33,8 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-# Install curl for healthcheck
-RUN apk add --no-cache curl libc6-compat openssl
+# Install curl for healthcheck and postgresql-client for backup/restore
+RUN apk add --no-cache curl libc6-compat openssl postgresql-client
 
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs &&     adduser --system --uid 1001 nextjs
