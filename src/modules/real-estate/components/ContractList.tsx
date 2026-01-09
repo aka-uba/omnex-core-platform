@@ -19,6 +19,7 @@ import {
 import { useContracts, useDeleteContract } from '@/hooks/useContracts';
 import { useApartments } from '@/hooks/useApartments';
 import { useTenants } from '@/hooks/useTenants';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn, FilterOption } from '@/components/tables/DataTable';
 import { DataTableSkeleton } from '@/components/tables/DataTableSkeleton';
@@ -34,6 +35,7 @@ export function ContractList({ locale }: ContractListProps) {
   const router = useRouter();
   const { t } = useTranslation('modules/real-estate');
   const { t: tGlobal } = useTranslation('global');
+  const { formatCurrency } = useCurrency();
   const [page, setPage] = useState(1);
   const [pageSize] = useState<number>(25);
   const [search] = useState('');
@@ -131,7 +133,8 @@ export function ContractList({ locale }: ContractListProps) {
       type: contract.type,
       apartment: contract.apartment?.unitNumber || '-',
       tenant: contract.tenantRecord?.tenantNumber || contract.tenantRecord?.id || '-',
-      rentAmount: `${contract.rentAmount} ${contract.currency}`,
+      rentAmount: Number(contract.rentAmount),
+      currency: contract.currency || 'EUR',
       status: contract.status,
       isActive: contract.isActive,
     }));
@@ -146,6 +149,10 @@ export function ContractList({ locale }: ContractListProps) {
   ), []);
 
   const renderType = useCallback((value: ContractType) => getTypeBadge(value), [getTypeBadge]);
+
+  const renderRentAmount = useCallback((value: number, row: any) => {
+    return formatCurrency(value, row.currency);
+  }, [formatCurrency]);
 
   const renderStatus = useCallback((value: ContractStatus, row: any) => (
     <Group gap="xs">
@@ -229,6 +236,7 @@ export function ContractList({ locale }: ContractListProps) {
       sortable: true,
       searchable: false,
       align: 'right',
+      render: renderRentAmount,
     },
     {
       key: 'status',
@@ -245,7 +253,7 @@ export function ContractList({ locale }: ContractListProps) {
       align: 'right',
       render: renderActions,
     },
-  ], [t, renderContractNumber, renderType, renderStatus, renderActions]);
+  ], [t, renderContractNumber, renderType, renderRentAmount, renderStatus, renderActions]);
 
   // Filter options with memoization
   const filterOptions: FilterOption[] = useMemo(() => [

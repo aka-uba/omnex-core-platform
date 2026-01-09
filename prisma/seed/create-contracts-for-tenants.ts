@@ -80,6 +80,15 @@ async function main() {
   const tenantPrisma = getTenantPrisma();
 
   try {
+    // Get currency from GeneralSettings
+    const generalSettings = await tenantPrisma.generalSettings.findFirst({
+      where: { tenantId: tenantId },
+      select: { currency: true },
+    });
+    const currency = generalSettings?.currency || 'EUR';
+    console.log(`✓ Using currency: ${currency}`);
+    console.log('');
+
     // Find all tenants with apartments but without contracts
     const tenantsWithApartments = await tenantPrisma.tenant.findMany({
       where: {
@@ -156,7 +165,7 @@ async function main() {
       const startDate = tenantRecord.moveInDate || today;
 
       console.log(`  📄 ${tenantName} → ${propertyName} ${unitNumber}`);
-      console.log(`     Rent: €${coldRent.toFixed(2)} + €${additionalCosts.toFixed(2)} + €${heatingCosts.toFixed(2)} = €${totalRent.toFixed(2)}/month`);
+      console.log(`     Rent: ${currency} ${coldRent.toFixed(2)} + ${currency} ${additionalCosts.toFixed(2)} + ${currency} ${heatingCosts.toFixed(2)} = ${currency} ${totalRent.toFixed(2)}/month`);
       console.log(`     Start: ${startDate.toLocaleDateString('de-DE')} | Contract#: ${contractNumber}`);
 
       if (!dryRun) {
@@ -187,8 +196,7 @@ async function main() {
               endDate: oneYearLater,
               rentAmount: new Prisma.Decimal(totalRent),
               deposit: new Prisma.Decimal(deposit),
-              // currency field NOT specified - uses Prisma @default("TRY")
-              // Display currency from GeneralSettings.currency via useCurrency hook
+              currency: currency,
               paymentType: 'bank_transfer',
               paymentDay: paymentDay,
               autoRenewal: true,
@@ -196,7 +204,7 @@ async function main() {
               status: 'active',
               isActive: true,
               terms: `Kira sözleşmesi - ${propertyName} ${unitNumber}`,
-              notes: `Kiracı: ${tenantName}\nNet Kira: €${coldRent.toFixed(2)}\nYan Giderler: €${additionalCosts.toFixed(2)}\nIsıtma: €${heatingCosts.toFixed(2)}`,
+              notes: `Kiracı: ${tenantName}\nNet Kira: ${currency} ${coldRent.toFixed(2)}\nYan Giderler: ${currency} ${additionalCosts.toFixed(2)}\nIsıtma: ${currency} ${heatingCosts.toFixed(2)}`,
             },
           });
           console.log(`     ✅ Contract created`);

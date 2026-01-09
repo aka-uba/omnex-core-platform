@@ -230,8 +230,8 @@ export function PaymentList({ locale }: PaymentListProps) {
   // Render functions
   const renderType = useCallback((value: PaymentType) => getTypeBadge(value), [getTypeBadge]);
   
-  const renderAmount = useCallback((value: number) => {
-    return formatCurrency(value);
+  const renderAmount = useCallback((value: number, row: any) => {
+    return formatCurrency(value, row.currency);
   }, [formatCurrency]);
 
   const renderDueDate = useCallback((value: Date) => dayjs(value).format('DD.MM.YYYY'), []);
