@@ -72,6 +72,7 @@ export interface Apartment {
   updatedAt: Date;
   property?: Property;
   contracts?: any[];
+  tenants?: any[];
   appointments?: any[];
   payments?: any[];
   maintenance?: any[];

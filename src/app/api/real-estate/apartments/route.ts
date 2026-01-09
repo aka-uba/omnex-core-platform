@@ -93,6 +93,17 @@ export async function GET(request: NextRequest) {
               },
             },
           },
+          // Direct apartment assignments (via apartmentId)
+          tenants: {
+            take: 5,
+            orderBy: { createdAt: 'desc' },
+            select: {
+              id: true,
+              tenantNumber: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
           payments: {
             take: 1,
             orderBy: { dueDate: 'desc' },

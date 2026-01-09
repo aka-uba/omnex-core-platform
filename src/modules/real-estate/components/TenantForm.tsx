@@ -104,18 +104,31 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
   // Apartment options for select - with occupied status
   const apartments = apartmentsData?.apartments;
 
-  // Build a map of occupied apartments (apartments with active contracts and different tenants)
+  // Build a map of occupied apartments (apartments with active contracts OR direct assignments)
   const occupiedApartments = useMemo(() => {
     const map = new Map<string, { tenantName: string; tenantId: string }>();
     if (Array.isArray(apartments)) {
       for (const apt of apartments) {
-        if (apt && apt.id && apt.contracts && apt.contracts.length > 0) {
-          const activeContract = apt.contracts[0];
-          const tenant = activeContract?.tenantRecord;
-          if (tenant && tenant.id !== tenantId) {
-            // This apartment has an active contract with a different tenant
-            const tenantName = `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.tenantNumber || 'Unknown';
-            map.set(apt.id, { tenantName, tenantId: tenant.id });
+        if (apt && apt.id) {
+          // Check 1: Active contract with a different tenant
+          if (apt.contracts && apt.contracts.length > 0) {
+            const activeContract = apt.contracts[0];
+            const tenant = activeContract?.tenantRecord;
+            if (tenant && tenant.id !== tenantId) {
+              const tenantName = `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.tenantNumber || 'Unknown';
+              map.set(apt.id, { tenantName, tenantId: tenant.id });
+              continue; // Already marked, skip to next
+            }
+          }
+
+          // Check 2: Direct apartment assignment (via apartmentId) to a different tenant
+          if (apt.tenants && apt.tenants.length > 0) {
+            // Find the first tenant that is not the current one being edited
+            const assignedTenant = apt.tenants.find((t: any) => t.id !== tenantId);
+            if (assignedTenant) {
+              const tenantName = `${assignedTenant.firstName || ''} ${assignedTenant.lastName || ''}`.trim() || assignedTenant.tenantNumber || 'Unknown';
+              map.set(apt.id, { tenantName, tenantId: assignedTenant.id });
+            }
           }
         }
       }
