@@ -149,8 +149,11 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
       return;
     }
 
-    // Şifre kontrolü (eğer şifre girilmişse)
-    if (form.values.personal.password && form.values.personal.password.length < 8) {
+    // Şifre kontrolü (eğer şifre girilmişse - boş string değilse)
+    const passwordValue = form.values.personal.password?.trim() || '';
+    const confirmPasswordValue = form.values.personal.confirmPassword?.trim() || '';
+
+    if (passwordValue.length > 0 && passwordValue.length < 8) {
       showToast({
         type: 'error',
         title: tGlobal('notifications.validation.title'),
@@ -159,8 +162,8 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
       return;
     }
 
-    // Şifre eşleşme kontrolü
-    if (form.values.personal.password && form.values.personal.password !== form.values.personal.confirmPassword) {
+    // Şifre eşleşme kontrolü (sadece şifre girilmişse)
+    if (passwordValue.length > 0 && passwordValue !== confirmPasswordValue) {
       showToast({
         type: 'error',
         title: tGlobal('notifications.validation.title'),
