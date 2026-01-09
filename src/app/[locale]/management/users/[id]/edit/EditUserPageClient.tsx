@@ -149,27 +149,37 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
       return;
     }
 
-    // Şifre kontrolü (eğer şifre girilmişse - boş string değilse)
+    // Şifre kontrolü - sadece her iki alan da doluysa şifre değişikliği yapılır
     const passwordValue = form.values.personal.password?.trim() || '';
     const confirmPasswordValue = form.values.personal.confirmPassword?.trim() || '';
 
-    if (passwordValue.length > 0 && passwordValue.length < 8) {
-      showToast({
-        type: 'error',
-        title: tGlobal('notifications.validation.title'),
-        message: tGlobal('notifications.validation.passwordMinLength'),
-      });
-      return;
+    // Her iki alan da doluysa şifre değiştirme isteği var demektir
+    const wantsToChangePassword = passwordValue.length > 0 && confirmPasswordValue.length > 0;
+
+    if (wantsToChangePassword) {
+      if (passwordValue.length < 8) {
+        showToast({
+          type: 'error',
+          title: tGlobal('notifications.validation.title'),
+          message: tGlobal('notifications.validation.passwordMinLength'),
+        });
+        return;
+      }
+
+      if (passwordValue !== confirmPasswordValue) {
+        showToast({
+          type: 'error',
+          title: tGlobal('notifications.validation.title'),
+          message: tGlobal('notifications.validation.passwordMismatch'),
+        });
+        return;
+      }
     }
 
-    // Şifre eşleşme kontrolü (sadece şifre girilmişse)
-    if (passwordValue.length > 0 && passwordValue !== confirmPasswordValue) {
-      showToast({
-        type: 'error',
-        title: tGlobal('notifications.validation.title'),
-        message: tGlobal('notifications.validation.passwordMismatch'),
-      });
-      return;
+    // Şifre değiştirilmeyecekse password alanlarını temizle (API'ye gönderme)
+    if (!wantsToChangePassword) {
+      form.setFieldValue('personal.password', '');
+      form.setFieldValue('personal.confirmPassword', '');
     }
 
     try {

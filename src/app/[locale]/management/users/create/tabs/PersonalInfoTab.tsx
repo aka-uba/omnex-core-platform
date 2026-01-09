@@ -122,6 +122,7 @@ export function PersonalInfoTab({ form, currentProfilePicture, isEditMode = fals
               label={t('form.personal.password')}
               placeholder={isEditMode ? t('form.personal.passwordPlaceholderEdit') : undefined}
               required={!isEditMode}
+              autoComplete={isEditMode ? 'new-password' : undefined}
               {...form.getInputProps('personal.password')}
             />
           </Grid.Col>
@@ -130,6 +131,7 @@ export function PersonalInfoTab({ form, currentProfilePicture, isEditMode = fals
               label={t('form.personal.confirmPassword')}
               placeholder={isEditMode ? t('form.personal.confirmPasswordPlaceholderEdit') : undefined}
               required={!isEditMode}
+              autoComplete={isEditMode ? 'new-password' : undefined}
               {...form.getInputProps('personal.confirmPassword')}
             />
           </Grid.Col>
