@@ -4,6 +4,7 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from '@/lib/i18n/client';
 import { useFolders } from '../../hooks/useFiles';
 import { IconFolder } from '@tabler/icons-react';
+import { isValidFolderName } from '@/lib/validations/unicode';
 
 interface NewFolderModalProps {
     opened: boolean;
@@ -27,7 +28,8 @@ export function NewFolderModal({ opened, onClose, onSubmit, loading, currentFold
             name: (value) => {
                 if (!value) return t('form.folderNameRequired');
                 if (value.length < 1) return t('form.folderNameRequired');
-                if (!/^[a-zA-Z0-9\s\-_]+$/.test(value)) return t('form.invalidFolderName');
+                // Use Unicode-safe validation - supports Turkish, German, Arabic, etc.
+                if (!isValidFolderName(value)) return t('form.invalidFolderName');
                 return null;
             },
         },

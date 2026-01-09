@@ -238,33 +238,22 @@ export class CoreFileService {
   }
 
   /**
-   * Türkçe karakterleri ASCII eşdeğerlerine çevir
-   */
-  private convertTurkishChars(str: string): string {
-    const turkishChars: Record<string, string> = {
-      'ç': 'c', 'Ç': 'C',
-      'ğ': 'g', 'Ğ': 'G',
-      'ı': 'i', 'İ': 'I',
-      'ö': 'o', 'Ö': 'O',
-      'ş': 's', 'Ş': 'S',
-      'ü': 'u', 'Ü': 'U',
-      'ä': 'a', 'Ä': 'A',
-      'ß': 'ss',
-    };
-    return str.replace(/[çÇğĞıİöÖşŞüÜäÄß]/g, (char) => turkishChars[char] || char);
-  }
-
-  /**
-   * Dosya adını güvenli hale getir
+   * Dosya adını güvenli hale getir (Unicode karakterleri korur)
+   * Supports international characters: Turkish, German, Arabic, etc.
    */
   private sanitizeFilename(filename: string): string {
-    // Önce Türkçe karakterleri çevir
-    const converted = this.convertTurkishChars(filename);
-    // Tehlikeli karakterleri temizle
-    return converted
-      .replace(/[^a-zA-Z0-9._-]/g, '_')
-      .replace(/_{2,}/g, '_')
-      .slice(0, 100); // Maksimum uzunluk
+    if (!filename) return '';
+
+    // Normalize Unicode (NFC form)
+    const normalized = filename.normalize('NFC');
+
+    // Remove only truly dangerous characters for file systems
+    // Keep all Unicode letters, numbers, spaces, dots, hyphens, underscores
+    return normalized
+      .replace(/[<>:"|?*\x00-\x1f\\\/]/g, '') // Remove control chars and reserved
+      .replace(/\s+/g, ' ') // Normalize multiple spaces to single space
+      .trim()
+      .slice(0, 200); // Max length (increased for longer Unicode names)
   }
 
   /**
