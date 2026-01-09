@@ -966,21 +966,24 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += expenseResult.count;
 
-      // Appointments - delete via apartment -> property relation
+      // Appointments - delete ONLY demo appointments (by ID pattern)
+      // This preserves real appointments created by users
       const appointmentResult = await tenantPrisma.appointment.deleteMany({
-        where: { apartment: { propertyId: { in: propertyIds } } },
+        where: { id: { contains: '-demo-appointment-' } },
       });
       itemsDeleted += appointmentResult.count;
 
-      // Payments - delete via contract -> apartment -> property relation
+      // Payments - delete ONLY demo payments (by ID pattern)
+      // This preserves real payments created by users or scripts
       const paymentResult = await tenantPrisma.payment.deleteMany({
-        where: { contract: { apartment: { propertyId: { in: propertyIds } } } },
+        where: { id: { contains: '-demo-payment-' } },
       });
       itemsDeleted += paymentResult.count;
 
-      // Contracts - delete via apartment -> property relation
+      // Contracts - delete ONLY demo contracts (by ID pattern)
+      // This preserves real contracts created by users or scripts like create-contracts-for-tenants.ts
       const contractResult = await tenantPrisma.contract.deleteMany({
-        where: { apartment: { propertyId: { in: propertyIds } } },
+        where: { id: { contains: '-demo-contract-' } },
       });
       itemsDeleted += contractResult.count;
 
@@ -996,19 +999,31 @@ export class RealEstateSeeder implements ModuleSeeder {
       });
       itemsDeleted += staffResult.count;
 
-      // RE Tenants
+      // RE Tenants - delete ONLY demo tenants (by ID pattern)
+      // This preserves real tenants created by users
       const tenantResult = await tenantPrisma.tenant.deleteMany({
         where: { id: { contains: '-demo-re-tenant-' } },
       });
       itemsDeleted += tenantResult.count;
 
-      // Apartments - delete via property relation
+      // Before deleting apartments, clear apartmentId references from real tenants
+      // This prevents orphaned foreign keys when demo apartments are deleted
+      await tenantPrisma.tenant.updateMany({
+        where: {
+          id: { not: { contains: '-demo-' } }, // Only real tenants
+          apartment: { propertyId: { in: propertyIds } }, // With demo apartments
+        },
+        data: { apartmentId: null },
+      });
+
+      // Apartments - delete ONLY demo apartments (by ID pattern)
+      // This preserves any real apartments that might exist
       const apartmentResult = await tenantPrisma.apartment.deleteMany({
-        where: { propertyId: { in: propertyIds } },
+        where: { id: { contains: '-demo-apartment-' } },
       });
       itemsDeleted += apartmentResult.count;
 
-      // Properties
+      // Properties - only demo properties (already filtered by ID pattern above)
       const propertyResult = await tenantPrisma.property.deleteMany({
         where: { id: { in: propertyIds } },
       });
