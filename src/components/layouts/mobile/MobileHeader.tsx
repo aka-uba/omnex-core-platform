@@ -162,7 +162,7 @@ export function MobileHeader({ onMenuToggle, searchOpened, onSearchToggle }: Mob
                 leftSection={<IconUser size={16} />}
                 onClick={() => {
                   const locale = window.location.pathname.split('/')[1] || 'tr';
-                  router.push(`/${locale}/users/${user?.id}/edit`);
+                  router.push(`/${locale}/management/users/${user?.id}/edit`);
                 }}
               >
                 {t('layout.myProfile')}

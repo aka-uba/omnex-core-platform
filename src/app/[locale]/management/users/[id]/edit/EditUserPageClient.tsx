@@ -206,22 +206,50 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
               // Custom event dispatch et ki useAuth hook'u güncellensin
               window.dispatchEvent(new Event('user-updated'));
 
-              // Tercihler değiştiyse layout config'i de güncelle
+              // Kendi profilini düzenliyorsa, tercihler değiştiyse mevcut layout config'i güncelle
+              // Bu sayede sayfa yenilemeden yeni tercihler uygulanır
               const preferences = form.values.preferences;
               if (preferences) {
                 const layoutConfig = localStorage.getItem('omnex-layout-config-v2');
                 const currentConfig = layoutConfig ? JSON.parse(layoutConfig) : {};
 
-                // Layout type mapping: 'sidebar' veya 'top'
-                const newLayoutType = preferences.defaultLayout === 'top' ? 'top' : 'sidebar';
+                // Varsayılan sidebar ve top config'leri (ThemeConfigurator için gerekli)
+                const defaultSidebarConfig = {
+                  background: 'light',
+                  width: 260,
+                  minWidth: 200,
+                  maxWidth: 320,
+                  collapsed: false,
+                  menuColor: 'auto',
+                  customMenuColor: '#228be6',
+                  logoPosition: 'top',
+                  logoSize: 'medium',
+                  hoverEffects: true,
+                  border: { enabled: false, width: 1, color: '#dee2e6' },
+                  position: 'left',
+                };
+                const defaultTopConfig = {
+                  background: 'light',
+                  height: 64,
+                  scrollBehavior: 'fixed',
+                  sticky: true,
+                  menuColor: 'auto',
+                  customMenuColor: '#228be6',
+                  logoPosition: 'left',
+                  logoSize: 'medium',
+                  border: { enabled: false, width: 1, color: '#dee2e6' },
+                };
 
-                // Theme mode mapping: 'auto', 'light', 'dark'
+                // Sadece layoutType ve themeMode güncelle, diğer Tema Ayarları kişiselleştirmelerine dokunma
+                const newLayoutType = preferences.defaultLayout === 'top' ? 'top' : 'sidebar';
                 const newThemeMode = preferences.defaultTheme || 'auto';
 
                 const newConfig = {
                   ...currentConfig,
                   layoutType: newLayoutType,
                   themeMode: newThemeMode,
+                  sidebar: currentConfig.sidebar || defaultSidebarConfig,
+                  top: currentConfig.top || defaultTopConfig,
                 };
 
                 localStorage.setItem('omnex-layout-config-v2', JSON.stringify(newConfig));

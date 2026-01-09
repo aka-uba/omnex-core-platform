@@ -267,12 +267,20 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
       }}
     >
       <div {...(styles.topHeaderContent ? { className: styles.topHeaderContent } : {})}>
-        {/* Logo - Dark mode'da logo-dark.png, light mode'da logo-light.png - Dashboard'a link */}
+        {/* Logo - Arka plan rengine göre logo seçimi - Dashboard'a link */}
+        {/* Koyu arka plan (dark mode veya koyu background) -> logoDark (açık renkli logo) */}
+        {/* Açık arka plan (light mode ve açık background) -> logoLight (koyu renkli logo) */}
         <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {mounted && (
             <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none' }}>
               <Image
-                src={isDarkMode ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
+                src={(() => {
+                  // Dark mode'da her zaman logoDark (açık renkli)
+                  if (isDarkMode) return BRANDING_PATHS.logoDark;
+                  // Light mode'da arka plan rengine göre karar ver
+                  const bgIsDark = backgroundColor ? isDarkBackground(backgroundColor) : false;
+                  return bgIsDark ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight;
+                })()}
                 alt={company?.name || 'Logo'}
                 fit="contain"
                 h={36}
@@ -403,7 +411,7 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
                 leftSection={<IconUser size={16} />}
                 onClick={() => {
                   const locale = window.location.pathname.split('/')[1] || 'tr';
-                  router.push(`/${locale}/users/${user?.id}/edit`);
+                  router.push(`/${locale}/management/users/${user?.id}/edit`);
                 }}
               >
                 {t('layout.myProfile')}

@@ -249,6 +249,53 @@ export function SuperAdminLoginPageClient({ locale }: { locale: string }) {
 
           window.dispatchEvent(new Event('user-updated'));
 
+          // Kullanıcı tercihlerini localStorage'a yaz (sadece mevcut config yoksa)
+          // Mevcut config varsa kullanıcının Tema Ayarları'ndan yaptığı kişiselleştirmelere dokunma
+          const user = data.data.user;
+          const existingConfig = localStorage.getItem('omnex-layout-config-v2');
+          if (!existingConfig && (user.defaultLayout || user.defaultTheme)) {
+            // Firma varsayılanlarını al, üzerine kullanıcı tercihlerini uygula
+            const companyDefaults = localStorage.getItem('omnex-company-defaults');
+            const baseConfig = companyDefaults ? JSON.parse(companyDefaults) : {};
+
+            // Varsayılan sidebar ve top config'leri (ThemeConfigurator için gerekli)
+            const defaultSidebarConfig = {
+              background: 'light',
+              width: 260,
+              minWidth: 200,
+              maxWidth: 320,
+              collapsed: false,
+              menuColor: 'auto',
+              customMenuColor: '#228be6',
+              logoPosition: 'top',
+              logoSize: 'medium',
+              hoverEffects: true,
+              border: { enabled: false, width: 1, color: '#dee2e6' },
+              position: 'left',
+            };
+            const defaultTopConfig = {
+              background: 'light',
+              height: 64,
+              scrollBehavior: 'fixed',
+              sticky: true,
+              menuColor: 'auto',
+              customMenuColor: '#228be6',
+              logoPosition: 'left',
+              logoSize: 'medium',
+              border: { enabled: false, width: 1, color: '#dee2e6' },
+            };
+
+            const newConfig = {
+              ...baseConfig,
+              layoutType: user.defaultLayout === 'top' ? 'top' : 'sidebar',
+              themeMode: user.defaultTheme || baseConfig.themeMode || 'auto',
+              sidebar: baseConfig.sidebar || defaultSidebarConfig,
+              top: baseConfig.top || defaultTopConfig,
+            };
+            localStorage.setItem('omnex-layout-config-v2', JSON.stringify(newConfig));
+            localStorage.setItem('omnex-layout-config-timestamp', Date.now().toString());
+          }
+
           if (data.data.accessToken) {
             localStorage.setItem('accessToken', data.data.accessToken);
           }

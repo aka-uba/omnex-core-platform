@@ -157,7 +157,23 @@ export function LayoutProvider({ children, userId, userRole, companyId }: Layout
         const layoutConfig = localStorage.getItem(STORAGE_KEYS.layoutConfig);
         if (layoutConfig) {
           const newConfig = JSON.parse(layoutConfig) as LayoutConfig;
-          setConfigState(newConfig);
+          // State'i güncelle - bu themeMode effect'ini tetikleyecek
+          setConfigState((prevConfig) => {
+            // Eğer aynı config ise güncelleme yapma
+            if (JSON.stringify(prevConfig) === JSON.stringify(newConfig)) {
+              // Ama yine de theme'i zorla uygula (effect tetiklenmeyebilir)
+              if (newConfig.themeMode && newConfig.themeMode !== 'auto') {
+                document.documentElement.setAttribute('data-mantine-color-scheme', newConfig.themeMode);
+                if (newConfig.themeMode === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              }
+              return prevConfig;
+            }
+            return newConfig;
+          });
         }
       } catch {
         // Silently fail

@@ -62,6 +62,9 @@ export async function POST(request: NextRequest) {
             status: true,
             profilePicture: true,
             emailVerified: true,
+            defaultLayout: true,
+            defaultTheme: true,
+            defaultLanguage: true,
           },
         });
 
@@ -111,6 +114,9 @@ export async function POST(request: NextRequest) {
               status: true,
               profilePicture: true,
               emailVerified: true,
+              defaultLayout: true,
+              defaultTheme: true,
+              defaultLanguage: true,
             },
           });
 
@@ -256,6 +262,9 @@ export async function POST(request: NextRequest) {
         status: user.status,
         profilePicture: user.profilePicture || undefined,
         tenantSlug: tenantContext?.slug,
+        defaultLayout: user.defaultLayout || undefined,
+        defaultTheme: user.defaultTheme || undefined,
+        defaultLanguage: user.defaultLanguage || undefined,
       },
       accessToken,
       refreshToken,

@@ -16,8 +16,8 @@ export const BRANDING_PATHS = {
 
   // Sabit dosya isimleri
   logo: '/branding/logo.png',
-  logoLight: '/branding/logo-light.png',  // Açık arka plan için (dark mode header, auth sayfaları dark)
-  logoDark: '/branding/logo-dark.png',    // Koyu arka plan için (light mode header, auth sayfaları light)
+  logoLight: '/branding/logo-light.png',  // Light arka plan için KOYU renkli logo (açık zemin üzerinde görünsün)
+  logoDark: '/branding/logo-dark.png',    // Dark arka plan için AÇIK renkli logo (koyu zemin üzerinde görünsün)
   favicon: '/branding/favicon.ico',
   pwaIcon: '/branding/pwa-icon.png',
 

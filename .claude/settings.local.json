@@ -75,7 +75,12 @@
       "Bash(gh run list:*)",
       "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -c \"SELECT slug, \"\"dbName\"\" FROM \"\"Tenant\"\" WHERE status = ''active'' LIMIT 5;\" -d omnex_core)",
       "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d tenant_omnexcore_2025 -c \"SELECT id, name FROM \"\"Company\"\" LIMIT 1;\")",
-      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d tenant_omnexcore_2025 -c \"SELECT DISTINCT \"\"tenantId\"\" FROM \"\"Company\"\" LIMIT 1;\")"
+      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d tenant_omnexcore_2025 -c \"SELECT DISTINCT \"\"tenantId\"\" FROM \"\"Company\"\" LIMIT 1;\")",
+      "Bash(TENANT_DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/tenant_omnexcore_2025\" node -e:*)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d omnex_core -c \"SELECT id, name, slug, \"\"dbName\"\", status FROM \"\"Tenant\"\" LIMIT 10;\")",
+      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d omnex_core -c \"SELECT id, name, slug, \"\"dbName\"\", status FROM \"\"Tenant\"\" LIMIT 10;\")",
+      "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql\" -U postgres -h localhost -d omnex_core -c \"SELECT id, name, slug, \"\"dbName\"\", status FROM \"\"Tenant\"\" LIMIT 10;\")",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []
