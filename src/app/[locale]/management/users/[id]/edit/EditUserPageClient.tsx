@@ -298,7 +298,7 @@ export function EditUserPageClient({ locale, userId }: { locale: string; userId:
           </Paper>
 
           <Tabs.Panel value="personal" pt="md">
-            <PersonalInfoTab form={form as any} {...(user?.profilePicture ? { currentProfilePicture: user.profilePicture } : {})} />
+            <PersonalInfoTab form={form as any} isEditMode={true} {...(user?.profilePicture ? { currentProfilePicture: user.profilePicture } : {})} />
           </Tabs.Panel>
 
           <Tabs.Panel value="work" pt="md">

@@ -21,9 +21,10 @@ import classes from './PersonalInfoTab.module.css';
 interface PersonalInfoTabProps {
   form: UseFormReturnType<UserFormData>;
   currentProfilePicture?: string | null;
+  isEditMode?: boolean;
 }
 
-export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTabProps) {
+export function PersonalInfoTab({ form, currentProfilePicture, isEditMode = false }: PersonalInfoTabProps) {
   const { t } = useTranslation('modules/users');
   const { t: tGlobal } = useTranslation('global');
 
@@ -109,20 +110,26 @@ export function PersonalInfoTab({ form, currentProfilePicture }: PersonalInfoTab
       <div className={classes.section}>
         <div className={classes.sectionHeader}>
           <Text fw={600} size="lg">{t('form.personal.credentials')}</Text>
-          <Text size="sm" c="dimmed">{t('form.personal.credentialsDescription')}</Text>
+          <Text size="sm" c="dimmed">
+            {isEditMode
+              ? t('form.personal.credentialsDescriptionEdit')
+              : t('form.personal.credentialsDescription')}
+          </Text>
         </div>
         <Grid gutter="md">
           <Grid.Col span={{ base: 12, sm: 6 }}>
             <PasswordInput
               label={t('form.personal.password')}
-              required
+              placeholder={isEditMode ? t('form.personal.passwordPlaceholderEdit') : undefined}
+              required={!isEditMode}
               {...form.getInputProps('personal.password')}
             />
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6 }}>
             <PasswordInput
               label={t('form.personal.confirmPassword')}
-              required
+              placeholder={isEditMode ? t('form.personal.confirmPasswordPlaceholderEdit') : undefined}
+              required={!isEditMode}
               {...form.getInputProps('personal.confirmPassword')}
             />
           </Grid.Col>
