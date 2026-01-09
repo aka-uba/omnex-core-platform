@@ -101,6 +101,35 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     },
   });
 
+  // Apartment options for select - with occupied status
+  const apartments = apartmentsData?.apartments;
+
+  // Build a map of occupied apartments (apartments with active contracts and different tenants)
+  const occupiedApartments = useMemo(() => {
+    const map = new Map<string, { tenantName: string; tenantId: string }>();
+    if (Array.isArray(apartments)) {
+      for (const apt of apartments) {
+        if (apt && apt.id && apt.contracts && apt.contracts.length > 0) {
+          const activeContract = apt.contracts[0];
+          const tenant = activeContract?.tenantRecord;
+          if (tenant && tenant.id !== tenantId) {
+            // This apartment has an active contract with a different tenant
+            const tenantName = `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.tenantNumber || 'Unknown';
+            map.set(apt.id, { tenantName, tenantId: tenant.id });
+          }
+        }
+      }
+    }
+    return map;
+  }, [apartments, tenantId]);
+
+  // Check if selected apartment is occupied by another tenant
+  const selectedApartmentOccupied = useMemo(() => {
+    const selectedId = form.values.apartmentId;
+    if (!selectedId) return null;
+    return occupiedApartments.get(selectedId) || null;
+  }, [form.values.apartmentId, occupiedApartments]);
+
   // Load tenant data for edit
   useEffect(() => {
     if (isEdit && tenantData && !isLoadingTenant) {
@@ -215,35 +244,7 @@ export function TenantForm({ locale, tenantId }: TenantFormProps) {
     { value: 'Frau', label: t('tenantForm.salutationMs') || 'Ms.' },
   ];
 
-  // Apartment options for select - with occupied status
-  const apartments = apartmentsData?.apartments;
-
-  // Build a map of occupied apartments (apartments with active contracts and different tenants)
-  const occupiedApartments = useMemo(() => {
-    const map = new Map<string, { tenantName: string; tenantId: string }>();
-    if (Array.isArray(apartments)) {
-      for (const apt of apartments) {
-        if (apt && apt.id && apt.contracts && apt.contracts.length > 0) {
-          const activeContract = apt.contracts[0];
-          const tenant = activeContract?.tenantRecord;
-          if (tenant && tenant.id !== tenantId) {
-            // This apartment has an active contract with a different tenant
-            const tenantName = `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.tenantNumber || 'Unknown';
-            map.set(apt.id, { tenantName, tenantId: tenant.id });
-          }
-        }
-      }
-    }
-    return map;
-  }, [apartments, tenantId]);
-
-  // Check if selected apartment is occupied by another tenant
-  const selectedApartmentOccupied = useMemo(() => {
-    const selectedId = form.values.apartmentId;
-    if (!selectedId) return null;
-    return occupiedApartments.get(selectedId) || null;
-  }, [form.values.apartmentId, occupiedApartments]);
-
+  // Build apartment options with occupied status
   const apartmentOptions: { value: string; label: string; disabled?: boolean }[] = [];
   if (Array.isArray(apartments)) {
     for (const apt of apartments) {
