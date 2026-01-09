@@ -2718,6 +2718,128 @@ src/app/api/menu-resolver/
 
 ---
 
-**Son Güncelleme**: 2026-01-07
+## 29. UNICODE VALIDATION SİSTEMİ
+
+### 29.1 Genel Bakış
+Uluslararası karakter desteği için merkezi validation helpers. Türkçe, Almanca, Arapça ve tüm Unicode karakterleri destekler.
+
+**Dosya**: `src/lib/validations/unicode.ts`
+
+### 29.2 Desteklenen Karakterler
+| Dil | Karakterler |
+|-----|-------------|
+| Türkçe | ç, ğ, ı, ö, ş, ü, Ç, Ğ, İ, Ö, Ş, Ü |
+| Almanca | ä, ö, ü, ß, Ä, Ö, Ü |
+| Arapça | ء-ي (tüm Arap harfleri) |
+| Diğer | Tüm Unicode harfleri (`\p{L}`) |
+
+### 29.3 Regex Patterns
+
+```typescript
+// İsimler için - Unicode harfler, boşluk, tire, kesme işareti
+export const NAME_PATTERN = /^[\p{L}\p{M}\s\-'\.]+$/u;
+// Örnek: "Müller", "O'Brien", "Jean-Pierre", "Şükrü", "محمد"
+
+// Adresler için - Unicode harfler, sayılar, noktalama
+export const ADDRESS_PATTERN = /^[\p{L}\p{M}\p{N}\s\-'.,:/# ]+$/u;
+// Örnek: "Königstraße 123", "Şehit Caddesi No:45", "شارع الملك"
+
+// Klasör/dosya adları için - Unicode harfler, sayılar, boşluk, tire, alt çizgi
+export const FOLDER_NAME_PATTERN = /^[\p{L}\p{M}\p{N}\s\-_\.]+$/u;
+// Örnek: "Müşteri Dosyaları", "Şirket_Belgeleri", "Verträge 2025"
+```
+
+### 29.4 Helper Fonksiyonlar
+
+```typescript
+import {
+  isValidName,           // İsim geçerli mi?
+  isValidAddress,        // Adres geçerli mi?
+  isValidFolderName,     // Klasör adı geçerli mi?
+  sanitizeFilename,      // Dosya adını güvenli hale getir (Unicode korur)
+  convertToASCII,        // Unicode → ASCII dönüşümü (sadece gerektiğinde)
+  normalizeForComparison // Karşılaştırma için normalize et
+} from '@/lib/validations/unicode';
+
+// Kullanım örnekleri
+isValidName("Şükrü Özdemir");       // true
+isValidName("محمد أحمد");            // true
+isValidFolderName("Müşteri Dosyaları"); // true
+
+// Dosya adı sanitize (Unicode korunur)
+sanitizeFilename("Şirket<Rapor>.pdf"); // "ŞirketRapor.pdf"
+
+// ASCII'ye dönüştürme (sadece DB/URL için gerektiğinde)
+convertToASCII("Şükrü");  // "Sukru"
+```
+
+### 29.5 Zod Şemaları
+
+```typescript
+import {
+  unicodeNameSchema,          // İsim validasyonu (zorunlu)
+  optionalUnicodeNameSchema,  // İsim validasyonu (opsiyonel)
+  unicodeAddressSchema,       // Adres validasyonu
+  unicodeFolderNameSchema     // Klasör adı validasyonu
+} from '@/lib/validations/unicode';
+
+// Form şemasında kullanım
+const formSchema = z.object({
+  firstName: unicodeNameSchema,
+  lastName: unicodeNameSchema,
+  address: unicodeAddressSchema,
+});
+```
+
+### 29.6 Kullanım Alanları
+
+| Bileşen | Dosya | Açıklama |
+|---------|-------|----------|
+| NewFolderModal | `src/modules/file-manager/components/shared/NewFolderModal.tsx` | Klasör adı validasyonu |
+| CoreFileService | `src/lib/core-file-manager/CoreFileService.ts` | Dosya adı sanitize |
+
+### 29.7 Kurallar
+
+**✅ DOĞRU - Unicode destekli validation kullan:**
+```typescript
+import { isValidFolderName } from '@/lib/validations/unicode';
+
+// Form validasyonunda
+validate: {
+  name: (value) => {
+    if (!isValidFolderName(value)) return t('form.invalidFolderName');
+    return null;
+  },
+}
+```
+
+**❌ YANLIŞ - ASCII-only regex:**
+```typescript
+// YAPMA! Türkçe/Almanca karakterleri reddeder
+if (!/^[a-zA-Z0-9\s\-_]+$/.test(value)) {
+  return 'Invalid name';
+}
+```
+
+### 29.8 ASCII Kısıtlaması Gereken Alanlar
+
+Bazı alanlarda Unicode kullanılamaz, ASCII zorunludur:
+
+| Alan | Neden |
+|------|-------|
+| Kullanıcı adı | URL-safe olmalı |
+| Tenant slug | Subdomain olarak kullanılıyor |
+| Database adı | PostgreSQL kısıtlaması |
+| Permission key | Kod içinde kullanılıyor |
+
+Bu alanlar için `convertToASCII()` kullanılabilir:
+```typescript
+const slug = convertToASCII("Şirket Adı").toLowerCase().replace(/\s+/g, '-');
+// "sirket-adi"
+```
+
+---
+
+**Son Güncelleme**: 2026-01-09
 **Platform Versiyonu**: 1.1.2
 **Next.js Versiyonu**: 16.1.1
