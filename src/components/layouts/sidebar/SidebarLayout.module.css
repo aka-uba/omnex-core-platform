@@ -56,7 +56,22 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: margin-inline-start 0.3s ease;
+  transition: margin-inline-start 0.3s ease, margin-inline-end 0.3s ease;
+}
+
+/* ====================================================================
+   RTL (Arapça vb.) - Dil bazlı RTL
+   Sidebar sağa geçtiğinde içerik margin'i de otomatik ayarlanır
+   ==================================================================== */
+:global([dir="rtl"]) .mainContent {
+  margin-left: 0 !important;
+  /* margin-right inline style'dan geliyor */
+  direction: rtl;
+}
+
+/* RTL - Main scroll alanı */
+:global([dir="rtl"]) .main {
+  direction: rtl;
 }
 
 .main {

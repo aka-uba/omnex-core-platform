@@ -184,16 +184,7 @@ export function ContractForm({ locale, contractId }: ContractFormProps) {
     }
   };
 
-  if (isEdit && isLoadingContract) {
-    return <div>{tGlobal('common.loading')}</div>;
-  }
-
-  const apartmentOptions = apartmentsData?.apartments.map(a => ({
-    value: a.id,
-    label: `${a.unitNumber} - ${a.property?.name || ''}`,
-  })) || [];
-
-  // Seçili dairenin yan gider bilgileri
+  // Seçili dairenin yan gider bilgileri - hook'lar conditional return'den ÖNCE olmalı
   const selectedApartmentSideCosts = useMemo(() => {
     if (!form.values.apartmentId || !apartmentsData?.apartments) return null;
     const apt = apartmentsData.apartments.find((a: any) => a.id === form.values.apartmentId);
@@ -216,6 +207,15 @@ export function ContractForm({ locale, contractId }: ContractFormProps) {
       area: Number(apt.area) || 0,
     };
   }, [form.values.apartmentId, apartmentsData?.apartments]);
+
+  if (isEdit && isLoadingContract) {
+    return <div>{tGlobal('common.loading')}</div>;
+  }
+
+  const apartmentOptions = apartmentsData?.apartments.map(a => ({
+    value: a.id,
+    label: `${a.unitNumber} - ${a.property?.name || ''}`,
+  })) || [];
 
   const tenantOptions = tenantsData?.tenants.map(t => ({
     value: t.id,

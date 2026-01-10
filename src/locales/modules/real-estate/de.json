@@ -9,7 +9,8 @@
   },
   "notifications": {
     "expiringContracts": "Ablaufende Verträge",
-    "pendingPayments": "Ausstehende Zahlungen"
+    "pendingPayments": "Ausstehende Zahlungen",
+    "pendingPaymentsDetail": "{{count}} Zahlungen ausstehend, insgesamt {{amount}}"
   },
   "menu": {
     "label": "Immobilien",
@@ -1486,6 +1487,8 @@
     "moveInDatePlaceholder": "Einzugsdatum auswählen",
     "moveOutDate": "Auszugsdatum",
     "moveOutDatePlaceholder": "Auszugsdatum auswählen",
+    "originalMoveInDate": "Original Einzug",
+    "originalMoveOutDate": "Original Auszug",
     "notes": "Notizen",
     "notesPlaceholder": "Notizen eingeben",
     "sections": {

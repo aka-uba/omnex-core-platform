@@ -9,7 +9,8 @@
   },
   "notifications": {
     "expiringContracts": "العقود المنتهية",
-    "pendingPayments": "المدفوعات المعلقة"
+    "pendingPayments": "المدفوعات المعلقة",
+    "pendingPaymentsDetail": "{{count}} مدفوعات معلقة، المجموع {{amount}}"
   },
   "menu": {
     "label": "العقارات",
@@ -1447,6 +1448,8 @@
     "moveInDatePlaceholder": "اختر تاريخ الانتقال",
     "moveOutDate": "تاريخ الخروج",
     "moveOutDatePlaceholder": "اختر تاريخ الخروج",
+    "originalMoveInDate": "الانتقال الأصلي",
+    "originalMoveOutDate": "الخروج الأصلي",
     "notes": "ملاحظات",
     "notesPlaceholder": "أدخل الملاحظات",
     "sections": {

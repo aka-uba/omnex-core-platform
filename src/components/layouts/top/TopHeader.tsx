@@ -9,7 +9,6 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { ActionIcon, Avatar, Menu, Text, Image } from '@mantine/core';
 import { useMantineColorScheme } from '@mantine/core';
 import { IconSearch, IconSun, IconMoon, IconUser, IconLogout, IconLayoutSidebar, IconMaximize, IconMinimize } from '@tabler/icons-react';
-import { BRANDING_PATHS } from '@/lib/branding/config';
 import { useLayout } from '../core/LayoutProvider';
 import { useAuth } from '@/hooks/useAuth';
 import { useCompany } from '@/context/CompanyContext';
@@ -43,7 +42,7 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
   const { colorScheme } = useMantineColorScheme();
   const { config, applyChanges, isMobile, isTablet } = useLayout();
   const { user, logout } = useAuth();
-  const { company } = useCompany();
+  const { company, branding } = useCompany();
   const router = useRouter();
   const pathname = usePathname();
   const locale = pathname?.split('/')[1] || 'tr';
@@ -271,15 +270,17 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
         {/* Koyu arka plan (dark mode veya koyu background) -> logoDark (açık renkli logo) */}
         {/* Açık arka plan (light mode ve açık background) -> logoLight (koyu renkli logo) */}
         <div {...(styles.logoSection ? { className: styles.logoSection } : {})} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {mounted && (
+          {mounted && (branding.logoDark || branding.logoLight || branding.logo) && (
             <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none' }}>
               <Image
                 src={(() => {
                   // Dark mode'da her zaman logoDark (açık renkli)
-                  if (isDarkMode) return BRANDING_PATHS.logoDark;
+                  if (isDarkMode) return branding.logoDark || branding.logo || '';
                   // Light mode'da arka plan rengine göre karar ver
                   const bgIsDark = backgroundColor ? isDarkBackground(backgroundColor) : false;
-                  return bgIsDark ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight;
+                  return bgIsDark
+                    ? (branding.logoDark || branding.logo || '')
+                    : (branding.logoLight || branding.logo || '');
                 })()}
                 alt={company?.name || 'Logo'}
                 fit="contain"
@@ -289,8 +290,8 @@ export function TopHeader({ searchOpened, onSearchToggle }: TopHeaderProps = {})
                 onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                   // Fallback to default logo if variant not found
                   const target = e.currentTarget;
-                  if (!target.src.includes('logo.png') || target.src.includes('logo-')) {
-                    target.src = BRANDING_PATHS.logo;
+                  if (branding.logo && (!target.src.includes('logo.png') || target.src.includes('logo-'))) {
+                    target.src = branding.logo;
                   } else {
                     target.style.display = 'none';
                   }

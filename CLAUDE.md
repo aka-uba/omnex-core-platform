@@ -2840,6 +2840,330 @@ const slug = convertToASCII("Şirket Adı").toLowerCase().replace(/\s+/g, '-');
 
 ---
 
-**Son Güncelleme**: 2026-01-09
-**Platform Versiyonu**: 1.1.2
+## 30. MULTI-TENANT BRANDING SİSTEMİ
+
+### 30.1 Genel Bakış
+Her firma kendi branding dosyalarına (logo, favicon, PWA icon) sahip olabilir. Sistem firma bazlı dizinleri kontrol eder, yoksa varsayılan dizine fallback yapar.
+
+### 30.2 Dizin Yapısı
+```
+public/branding/
+├── default/              # Varsayılan (fallback) branding
+│   ├── logo.png          # Ana logo
+│   ├── logo-light.png    # Açık arka plan için logo (koyu renkli)
+│   ├── logo-dark.png     # Koyu arka plan için logo (açık renkli)
+│   ├── favicon.ico       # Favicon
+│   └── pwa-icon.png      # PWA ikonu (512x512)
+│
+├── {companyId}/          # Firma bazlı branding
+│   ├── logo.png
+│   ├── logo-light.png
+│   ├── logo-dark.png
+│   ├── favicon.ico
+│   └── pwa-icon.png
+│
+└── Originals/            # Orijinal dosyalar (yedek)
+```
+
+### 30.3 Branding Config
+**Dosya**: `src/lib/branding/config.ts`
+
+```typescript
+import {
+  BRANDING_FILENAMES,           // Sabit dosya isimleri
+  DEFAULT_BRANDING_DIR,         // '/branding/default'
+  getCompanyBrandingDir,        // Firma dizin yolu
+  getCompanyBrandingPaths,      // Tüm branding URL'leri
+  getBrandingUrl,               // Tek dosya URL'i
+  checkBrandingExists,          // Dosya varlık kontrolü (async)
+  checkAllBrandingWithFallback, // Tüm dosyaları kontrol et
+} from '@/lib/branding/config';
+
+// Sabit dosya isimleri
+BRANDING_FILENAMES = {
+  logo: 'logo.png',
+  logoLight: 'logo-light.png',
+  logoDark: 'logo-dark.png',
+  favicon: 'favicon.ico',
+  pwaIcon: 'pwa-icon.png',
+};
+```
+
+### 30.4 CompanyContext Branding
+**Dosya**: `src/context/CompanyContext.tsx`
+
+CompanyContext otomatik olarak branding URL'lerini yönetir:
+
+```typescript
+import { useCompany } from '@/context/CompanyContext';
+
+function MyComponent() {
+  const {
+    company,           // Firma bilgileri
+    branding,          // Branding URL'leri
+    brandingLoading,   // Branding yükleniyor mu
+    refetchBranding,   // Branding'i yeniden yükle
+  } = useCompany();
+
+  // Branding kullanımı
+  <Image src={branding.logo} alt="Logo" />
+  <Image src={branding.logoDark} alt="Dark Logo" />
+  <Image src={branding.logoLight} alt="Light Logo" />
+  <Image src={branding.favicon} alt="Favicon" />
+  <Image src={branding.pwaIcon} alt="PWA Icon" />
+
+  // Varsayılan mı kontrol et
+  if (branding.isDefault.logo) {
+    // Firma logosu yok, varsayılan kullanılıyor
+  }
+}
+```
+
+### 30.5 useBranding Hook
+**Dosya**: `src/hooks/useBranding.ts`
+
+Bağımsız branding kontrolü için (CompanyContext dışında):
+
+```typescript
+import { useBranding } from '@/hooks/useBranding';
+
+function MyComponent() {
+  const {
+    logo, logoLight, logoDark, favicon, pwaIcon,  // URL'ler
+    logoExists, faviconExists, pwaIconExists,      // Varlık durumu
+    loading, error, refetch,                        // State
+  } = useBranding({ companyId: 'abc123' });
+}
+```
+
+### 30.6 Branding Upload API
+**Dosya**: `src/app/api/branding/upload/route.ts`
+
+| Method | Açıklama |
+|--------|----------|
+| POST | Dosya yükle → `/branding/{companyId}/` |
+| GET | Dosya durumlarını kontrol et (fallback ile) |
+| DELETE | Firma dosyasını sil (varsayılan silinmez) |
+
+**POST Kullanımı:**
+```typescript
+const formData = new FormData();
+formData.append('file', file);
+formData.append('type', 'logo'); // logo, logoLight, logoDark, favicon, pwaIcon
+formData.append('companyId', companyId); // Opsiyonel, yoksa user context'ten alınır
+
+await fetch('/api/branding/upload', {
+  method: 'POST',
+  body: formData,
+});
+```
+
+**GET Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "logo": { "exists": true, "url": "/branding/abc123/logo.png", "isDefault": false },
+    "logoLight": { "exists": true, "url": "/branding/default/logo-light.png", "isDefault": true },
+    "favicon": { "exists": false, "url": null, "isDefault": false }
+  }
+}
+```
+
+### 30.7 Layout'larda Branding Kullanımı
+
+Layout bileşenleri (`Sidebar`, `SidebarLayout`, `TopHeader`) branding'i CompanyContext'ten alır:
+
+```typescript
+// Sidebar.tsx, SidebarLayout.tsx, TopHeader.tsx
+const { company, branding } = useCompany();
+
+// Dark/Light mode'a göre logo seçimi
+const logoSrc = colorScheme === 'dark'
+  ? (branding.logoDark || branding.logo)
+  : (branding.logoLight || branding.logo);
+```
+
+### 30.8 PWA Manifest
+**Dosya**: `src/app/api/manifest/route.ts`
+
+PWA manifest firma bazlı icon kullanır:
+
+```typescript
+// Firma ID'ye göre PWA icon path belirlenir
+const pwaIconPath = getPwaIconPath(companyId);
+// Önce /branding/{companyId}/pwa-icon.png kontrol edilir
+// Yoksa /branding/default/pwa-icon.png kullanılır
+```
+
+### 30.9 Kurallar
+
+**✅ DOĞRU - CompanyContext'ten branding kullan:**
+```typescript
+const { branding } = useCompany();
+<Image src={branding.logo} />
+```
+
+**❌ YANLIŞ - Statik BRANDING_PATHS kullanma (artık deprecated):**
+```typescript
+// YAPMA! Bu artık kullanılmıyor
+import { BRANDING_PATHS } from '@/lib/branding/config';
+<Image src={BRANDING_PATHS.logo} />
+```
+
+### 30.10 Dosya Konumları
+
+| Amaç | Dosya |
+|------|-------|
+| Branding Config | `src/lib/branding/config.ts` |
+| useBranding Hook | `src/hooks/useBranding.ts` |
+| CompanyContext | `src/context/CompanyContext.tsx` |
+| Upload API | `src/app/api/branding/upload/route.ts` |
+| PWA Manifest | `src/app/api/manifest/route.ts` |
+| Varsayılan Dosyalar | `public/branding/default/` |
+| Firma Dosyaları | `public/branding/{companyId}/` |
+
+---
+
+## 31. RTL (Right-to-Left) LAYOUT DESTEĞİ
+
+### 31.1 Genel Bakış
+Arapça gibi RTL diller için layout otomatik olarak ayna görüntüsü şeklinde düzenlenir.
+
+### 31.2 RTL Dil Listesi
+**Dosya**: `src/lib/i18n/config.ts`
+
+```typescript
+export const rtlLocales = ['ar']; // Arapça
+```
+
+### 31.3 HTML dir Attribute
+RTL durumu `layout.tsx`'de HTML'e uygulanır:
+
+```tsx
+// src/app/[locale]/layout.tsx
+const isRTL = rtlLocales.includes(locale);
+<html lang={locale} dir={isRTL ? 'rtl' : 'ltr'}>
+```
+
+### 31.4 Layout Skeleton RTL Desteği
+**Dosya**: `src/components/layouts/LayoutWrapper.tsx`
+
+Loading skeleton RTL durumuna göre pozisyonlanır:
+
+```typescript
+function LayoutSkeleton({ isRTL }: { isRTL: boolean }) {
+  return (
+    <Box style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Sidebar skeleton - RTL'de sağda */}
+      <Box
+        style={{
+          position: 'fixed',
+          ...(isRTL ? { right: 0, left: 'auto' } : { left: 0, right: 'auto' }),
+          borderRight: isRTL ? 'none' : '1px solid var(--border-color)',
+          borderLeft: isRTL ? '1px solid var(--border-color)' : 'none',
+        }}
+      />
+      {/* Main content - RTL'de margin sağdan */}
+      <Box
+        style={{
+          ...(isRTL
+            ? { marginRight: sidebarWidth, marginLeft: 0 }
+            : { marginLeft: sidebarWidth, marginRight: 0 }),
+        }}
+      />
+    </Box>
+  );
+}
+```
+
+### 31.5 Sidebar RTL Desteği
+**Dosya**: `src/components/layouts/sidebar/Sidebar.tsx`
+
+- RTL durumunda sidebar **her zaman sağda** konumlanır
+- Tema ayarlarındaki pozisyon sadece LTR dillerde geçerli
+- Collapse/expand ikonları RTL'de ters yönlü
+
+```typescript
+// Sidebar pozisyonu
+const isRightPosition = isRTL || sidebarConfig?.position === 'right';
+
+// Border ayarları
+if (isRightPosition) {
+  baseStyle.borderLeft = borderStyleValue;
+  baseStyle.borderRight = 'none';
+  baseStyle.left = 'auto';
+  baseStyle.right = 0;
+}
+
+// Collapse ikonu
+{isRTL
+  ? (collapsed ? <IconChevronRight /> : <IconChevronLeft />)
+  : (collapsed ? <IconChevronRight /> : <IconChevronLeft />)
+}
+```
+
+### 31.6 SidebarLayout RTL Desteği
+**Dosya**: `src/components/layouts/sidebar/SidebarLayout.tsx`
+
+Main content margin'i RTL durumuna göre ayarlanır:
+
+```typescript
+const isRTL = rtlLocales.includes(locale);
+
+<div
+  className={styles.mainContent}
+  style={
+    isRTL
+      ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 }
+      : sidebarConfig?.position === 'right'
+        ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 }
+        : { marginLeft: `${sidebarWidth}px`, marginRight: 0 }
+  }
+/>
+```
+
+### 31.7 CSS RTL Kuralları
+**Dosya**: `src/components/layouts/sidebar/Sidebar.module.css`
+
+```css
+/* RTL durumunda otomatik ayarlar */
+:global([dir="rtl"]) .sidebar {
+  left: auto;
+  right: 0;
+  border-left: 1px solid var(--border-color);
+  border-right: none;
+}
+
+:global([dir="rtl"]) .collapseButton {
+  left: 0.25rem;
+  right: auto;
+}
+```
+
+### 31.8 useIsomorphicLayoutEffect
+**Dosya**: `src/hooks/useIsomorphicLayoutEffect.ts`
+
+SSR-safe layout effect hook - RTL'de flash/çift render önleme için kullanılır:
+
+```typescript
+export const useIsomorphicLayoutEffect = typeof window !== 'undefined'
+  ? useLayoutEffect
+  : useEffect;
+```
+
+### 31.9 RTL Kontrol Listesi
+
+Yeni layout bileşeni oluştururken:
+- [ ] RTL prop'u parent'tan alınıyor mu?
+- [ ] Pozisyon (left/right) RTL durumuna göre değişiyor mu?
+- [ ] Border yönü RTL'de ters mi?
+- [ ] Margin/padding yönü RTL'de ters mi?
+- [ ] İkonlar (chevron) RTL'de ters yönlü mü?
+- [ ] CSS'te `:global([dir="rtl"])` kuralları var mı?
+
+---
+
+**Son Güncelleme**: 2026-01-10
+**Platform Versiyonu**: 1.1.3
 **Next.js Versiyonu**: 16.1.1

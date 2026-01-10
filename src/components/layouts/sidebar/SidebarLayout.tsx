@@ -8,7 +8,6 @@
 import { useState, useEffect } from 'react';
 import { useMantineColorScheme, Menu, Avatar, Text, Image } from '@mantine/core';
 import { IconSun, IconMoon, IconSearch, IconChevronLeft, IconChevronRight, IconUser, IconLogout, IconLayoutNavbar, IconMaximize, IconMinimize } from '@tabler/icons-react';
-import { BRANDING_PATHS } from '@/lib/branding/config';
 import { LanguageSelector } from '@/components/language/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
 import { useCompany } from '@/context/CompanyContext';
@@ -21,6 +20,7 @@ import { Footer } from '../shared/Footer';
 import { ContentArea } from '../shared/ContentArea';
 import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
 import { useTranslation } from '@/lib/i18n/client';
+import { rtlLocales } from '@/lib/i18n/config';
 import styles from './SidebarLayout.module.css';
 
 interface SidebarLayoutProps {
@@ -32,13 +32,18 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { config, applyChanges, isMobile } = useLayout();
   const { user, logout, refreshUser } = useAuth();
-  const { company } = useCompany();
+  const { company, branding } = useCompany();
   const router = useRouter();
   const pathname = usePathname();
   const locale = pathname?.split('/')[1] || 'tr';
   const [mounted, setMounted] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(config.sidebar?.collapsed || false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // RTL: locale'den hesapla
+  // HTML dir attribute server-side'da ayarlanıyor (layout.tsx)
+  // Bu değer de aynı locale'den hesaplandığı için tutarlı olmalı
+  const isRTL = rtlLocales.includes(locale);
 
   useEffect(() => {
     setMounted(true);
@@ -144,14 +149,20 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       <Sidebar
         collapsed={sidebarCollapsed}
         onCollapsedChange={setSidebarCollapsed}
+        isRTL={isRTL}
       />
 
       {/* Main Content */}
+      {/* RTL (Arapça) durumunda sidebar her zaman sağda, içerik sola margin alır */}
+      {/* Tema ayarlarındaki pozisyon sadece LTR dillerde geçerli */}
       <div
         className={styles.mainContent}
-        style={sidebarConfig?.position === 'right'
-          ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 }
-          : { marginLeft: `${sidebarWidth}px`, marginRight: 0 }
+        style={
+          isRTL
+            ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 } // RTL: sidebar sağda
+            : sidebarConfig?.position === 'right'
+              ? { marginRight: `${sidebarWidth}px`, marginLeft: 0 } // LTR + tema: sağ pozisyon
+              : { marginLeft: `${sidebarWidth}px`, marginRight: 0 } // LTR + tema: sol pozisyon (varsayılan)
         }
       >
         {/* Header */}
@@ -177,10 +188,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               </button>
             )}
             {/* Geniş logo göster - Dark mode'da logo-dark.png, light mode'da logo-light.png - Dashboard'a link */}
-            {mounted && (
+            {mounted && (branding.logoDark || branding.logoLight || branding.logo) && (
               <Link href={`/${locale}/dashboard`} style={{ textDecoration: 'none', marginLeft: '8px' }}>
                 <Image
-                  src={colorScheme === 'dark' ? BRANDING_PATHS.logoDark : BRANDING_PATHS.logoLight}
+                  src={colorScheme === 'dark'
+                    ? (branding.logoDark || branding.logo || '')
+                    : (branding.logoLight || branding.logo || '')}
                   alt={companyName || 'Logo'}
                   fit="contain"
                   h={36}
@@ -189,8 +202,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                   onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                     // Fallback to default logo if variant not found
                     const target = e.currentTarget;
-                    if (target.src.includes('logo-')) {
-                      target.src = BRANDING_PATHS.logo;
+                    if (branding.logo && target.src.includes('logo-')) {
+                      target.src = branding.logo;
                     } else {
                       target.style.display = 'none';
                     }

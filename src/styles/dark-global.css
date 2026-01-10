@@ -933,53 +933,32 @@
   background-color: var(--border-hover-dark);
 }
 
-/* Dark mode - Mantine Image */
-[data-mantine-color-scheme="dark"] .mantine-Image-root {
-  border-color: var(--border-color-dark);
+/* ====================================================================
+   RTL (Right-to-Left) Global Styles
+   Arapça gibi RTL dillerde scroll bar sol tarafa taşınır
+   ==================================================================== */
+
+/* RTL - Ana sayfa scroll bar'ı sol tarafa taşı */
+[dir="rtl"] {
+  direction: rtl;
 }
 
-/* Dark mode - Mantine BackgroundImage */
-[data-mantine-color-scheme="dark"] .mantine-BackgroundImage-root {
-  border-color: var(--border-color-dark);
+/* RTL - body scroll bar sol tarafa */
+[dir="rtl"] body {
+  direction: rtl;
 }
 
-/* Dark mode - Mantine ColorSwatch */
-[data-mantine-color-scheme="dark"] .mantine-ColorSwatch-root {
-  border-color: var(--border-color-dark);
+/* RTL - html scroll */
+[dir="rtl"] html {
+  direction: rtl;
 }
 
-/* Dark mode - Mantine Indicator */
-[data-mantine-color-scheme="dark"] .mantine-Indicator-root {
-  color: var(--text-primary-dark);
+/* RTL - Scroll container'lar için */
+[dir="rtl"] .mantine-ScrollArea-viewport {
+  direction: rtl;
 }
 
-[data-mantine-color-scheme="dark"] .mantine-Indicator-label {
-  background-color: var(--bg-tertiary-dark);
-  color: var(--text-primary-dark);
+/* RTL - Main content area scroll */
+[dir="rtl"] main {
+  direction: rtl;
 }
-
-/* Dark mode - Mantine Loader */
-[data-mantine-color-scheme="dark"] .mantine-Loader-root {
-  color: var(--border-hover-dark);
-}
-
-/* Dark mode - Mantine Overlay */
-[data-mantine-color-scheme="dark"] .mantine-Overlay-root {
-  background-color: var(--overlay-dark);
-}
-
-/* Dark mode - Mantine LoadingOverlay */
-[data-mantine-color-scheme="dark"] .mantine-LoadingOverlay-root {
-  background-color: var(--overlay-dark);
-}
-
-/* Dark mode - Mantine Transition */
-[data-mantine-color-scheme="dark"] .mantine-Transition-root {
-  color: var(--text-primary-dark);
-}
-
-/* Dark mode - Mantine Affix */
-[data-mantine-color-scheme="dark"] .mantine-Affix-root {
-  color: var(--text-primary-dark);
-}
-

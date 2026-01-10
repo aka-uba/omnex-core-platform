@@ -1,0 +1,39 @@
+Proje Genel Bilgileri
+Platform: OMNEX CORE PLATFORM
+Versiyon: 1.1.2
+Next.js: 16.1.1
+Mimari: Multi-Tenant (Per-Tenant Database)
+🏗️ Ana Bölümler (29 Bölüm)
+#	Bölüm	Açıklama
+1	Proje Mimarisi	Multi-tenant yapısı, klasör yapısı
+2	Kritik Kurallar	Core sistemler, i18n, veritabanı
+3	Stil Sistemi	Mantine UI, Tailwind, CSS Modules
+4	UI Standartları	Sayfa yapısı, spacing kuralları
+5	Merkezi Sistemler	DataTable, AlertModal, CentralPageHeader, Export, Toast, Session Timeout, Audit, Layout, Tema
+6	API Standartları	Route pattern, response formatları
+7	Modül Sistemi	Yapı, config, demo veri lokalizasyonu
+8	Hook Kullanımı	Veri çekme, useAuth, SSR/Hydration
+9	Yapılan Hatalar	i18n, UI, Skeleton, Export, Currency, Session
+10	Kontrol Listesi	Yeni sayfa checklist
+11-13	Dosya Referansları, Performans, İkon Sistemi	
+14	Güvenlik Kuralları	JWT, şifre politikası, RBAC, Rate limiting
+15	Type Hata Yönetimi	TypeScript komutları
+16-17	Modül Çeviri Yapısı, Mevcut Modüller	
+18	Next.js 16.1+ Değişiklikleri	Turbopack, Async APIs
+19	Email Sistemi	Aktivasyon, şifre sıfırlama
+20	Bildirim Şablonları	NotificationTemplate
+22	DataTable Kullanım	Tüm sayfaların detaylı listesi
+23	Para Birimi Sistemi	useCurrency hook
+25	PWA Sistemi	Service Worker, Install
+27	Firmalar Sayfası	Hiyerarşik yapı
+28	Menü Yönetimi	Drag & Drop, Settings filtresi
+29	Unicode Validation	Türkçe/Almanca/Arapça destek
+⚠️ Kritik Kurallar
+Core Sistemleri DEĞİŞTİRME (CORE OVERRIDE ALLOWED olmadan)
+i18n: Global vs Modül namespace ayrımına dikkat
+Tenant DB'de migrate dev KULLANMA - sadece deploy
+useCurrency hook kullan - hardcoded currency yazma
+Session marker'ları login'de temizle
+🛠️ Mevcut Modüller
+real-estate, accounting, hr, production, maintenance
+calendar, notifications, file-manager, ai, license, web-builder

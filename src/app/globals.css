@@ -116,6 +116,23 @@ body {
   overflow-x: hidden;
 }
 
+/* ====================================================================
+   RTL - Scroll bar sol tarafa taşınır (Arapça vb. diller için)
+   Tarayıcı viewport scroll'u her zaman sağda kalır, bu yüzden
+   HTML overflow'u gizleyip body'ye scroll ekliyoruz
+   ==================================================================== */
+html[dir="rtl"] {
+  direction: rtl;
+  overflow: hidden; /* HTML scroll'unu kapat */
+  height: 100%;
+}
+
+html[dir="rtl"] body {
+  direction: rtl;
+  overflow-y: auto; /* Body'ye scroll ekle - RTL'de sol tarafa geçer */
+  height: 100%;
+}
+
 /* Ensure Container component respects dark mode */
 [data-mantine-color-scheme="dark"] .mantine-Container-root {
   background-color: transparent;

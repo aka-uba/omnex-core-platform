@@ -3,7 +3,7 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  /* left/right inline style'dan geliyor (RTL ve tema ayarına göre) */
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,6 +14,45 @@
   transition: width 0.3s ease, border-color 0.3s ease;
   overflow: hidden;
   z-index: 100;
+}
+
+/* ====================================================================
+   RTL (Arapça vb.) - Dil bazlı RTL
+   Tema ayarlarındaki sidebar pozisyonundan BAĞIMSIZ çalışır!
+   Arapça seçildiğinde sidebar otomatik sağa geçer ve tam RTL uygulanır
+   ==================================================================== */
+:global([dir="rtl"]) .sidebar {
+  left: auto !important;
+  right: 0 !important;
+  border-left: 1px solid var(--border-color);
+  border-right: none !important;
+}
+
+/* RTL - Collapse button pozisyonu (geniş sidebar) */
+:global([dir="rtl"]) .collapseButton {
+  right: auto;
+  left: 0.25rem;
+}
+
+/* RTL - Collapse button pozisyonu (dar/collapsed sidebar) */
+:global([dir="rtl"]) .sidebar.collapsed .collapseButton {
+  right: auto;
+  left: 0.25rem;
+}
+
+/* RTL - Logo text animasyonu ters yöne */
+:global([dir="rtl"]) .logoText {
+  transform: translateX(0);
+}
+
+:global([dir="rtl"]) .sidebar.collapsed .logoText {
+  transform: translateX(10px); /* Sağa kayma */
+}
+
+/* RTL - Nested submenu padding */
+:global([dir="rtl"]) .navLink :global(.mantine-NavLink-children) {
+  padding-left: 0;
+  padding-right: 1rem;
 }
 
 /* Light mode - custom background için anlık arka plan değişimi */
@@ -121,7 +160,7 @@
 .collapseButton {
   position: absolute;
   top: 1rem;
-  right: 0.5rem;
+  right: 0.25rem; /* Geniş durumda kenar çizgisine daha yakın */
   z-index: 1000;
 }
 
@@ -129,25 +168,26 @@
   position: absolute;
   top: auto;
   bottom: 2rem;
-  /* Yarısı sidebar içinde, yarısı dışarıda - sağ kenara yapışık ve dışarı taşacak */
-  /* Position sağ olduğunda inline style ile left:-0.75rem uygulanır */
-  right: -0.75rem;
+  /* Dar durumda sidebar içinde, dış kenara yakın */
+  /* Position sağ olduğunda inline style ile left: 0.25rem uygulanır */
+  right: 0.25rem;
   left: auto;
 }
 
 .collapseIcon {
-  background-color: var(--bg-surface);
+  background-color: transparent;
   color: var(--text-primary);
   border-radius: 0.375rem;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  box-shadow: none;
   /* transition kaldırıldı - anlık renk değişimi için */
 }
 
 /* Light mode - custom background için dinamik renkler */
 .sidebar:not([data-mantine-color-scheme="dark"]) .collapseIcon {
-  background-color: var(--sidebar-action-button-bg, var(--bg-surface));
+  background-color: transparent;
   color: var(--sidebar-icon-color, var(--text-primary));
+  border: none;
 }
 
 /* Light mode - custom background için ActionIcon hover */
@@ -333,13 +373,13 @@
 
 /* Dark mode - collapseIcon */
 [data-mantine-color-scheme="dark"] .collapseIcon {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: transparent !important;
   color: var(--text-primary-dark) !important;
-  border-color: var(--border-color-dark) !important;
+  border: none !important;
 }
 
 [data-mantine-color-scheme="dark"] .collapseIcon:hover {
-  background-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 [data-mantine-color-scheme="dark"] .collapseIcon :global(.mantine-ActionIcon-icon),

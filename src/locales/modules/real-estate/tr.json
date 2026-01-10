@@ -9,7 +9,8 @@
   },
   "notifications": {
     "expiringContracts": "Süresi Dolan Sözleşmeler",
-    "pendingPayments": "Bekleyen Ödemeler"
+    "pendingPayments": "Bekleyen Ödemeler",
+    "pendingPaymentsDetail": "{{count}} adet ödeme bekliyor, toplam {{amount}}"
   },
   "menu": {
     "label": "Emlak",
@@ -1486,6 +1487,8 @@
     "moveInDatePlaceholder": "Taşınma tarihi seçin",
     "moveOutDate": "Çıkış Tarihi",
     "moveOutDatePlaceholder": "Çıkış tarihi seçin",
+    "originalMoveInDate": "Orijinal giriş",
+    "originalMoveOutDate": "Orijinal çıkış",
     "notes": "Notlar",
     "notesPlaceholder": "Notlar girin",
     "sections": {

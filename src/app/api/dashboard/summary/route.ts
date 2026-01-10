@@ -53,6 +53,10 @@ interface DashboardSummary {
     title: string;
     description: string;
     module: string;
+    meta?: {
+      count?: number;
+      amount?: number;
+    };
   }[];
 }
 
@@ -162,8 +166,13 @@ export async function GET(request: NextRequest) {
             id: 'pending-payments',
             type: pendingPayments.some((p: any) => p.status === 'overdue') ? 'error' : 'warning',
             title: 'notifications.pendingPayments',
-            description: JSON.stringify({ count: pendingPayments.length, amount: pendingAmount }),
+            description: `${pendingPayments.length}`,
             module: 'real-estate',
+            // Additional data for frontend formatting
+            meta: {
+              count: pendingPayments.length,
+              amount: pendingAmount,
+            },
           });
         }
       } catch (e) {

@@ -12,12 +12,12 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useMenuItems, type MenuItem as MenuItemType } from '../hooks/useMenuItems';
 import { useModules } from '@/context/ModuleContext';
 import { useCompany } from '@/context/CompanyContext';
-import { BRANDING_PATHS } from '@/lib/branding/config';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLayout } from '../core/LayoutProvider';
 import { ClientIcon } from '@/components/common/ClientIcon';
 import { useTranslation } from '@/lib/i18n/client';
+import { rtlLocales } from '@/lib/i18n/config';
 import {
   getBackgroundColor,
   getContrastTextColor,
@@ -32,6 +32,7 @@ import styles from './Sidebar.module.css';
 interface SidebarProps {
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  isRTL?: boolean; // Parent'tan gelen RTL durumu (SSR için)
 }
 
 // Memoized menu item component to prevent unnecessary re-renders
@@ -118,12 +119,12 @@ const MenuItem = memo(({
 
 MenuItem.displayName = 'MenuItem';
 
-export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: SidebarProps) {
+export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange, isRTL: externalIsRTL }: SidebarProps) {
   const { t } = useTranslation('global');
   const pathname = usePathname();
   const { config } = useLayout();
   const { colorScheme } = useMantineColorScheme();
-  const { company } = useCompany();
+  const { company, branding } = useCompany();
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openedMenu, setOpenedMenu] = useState<string | null>(null);
@@ -183,7 +184,13 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     };
   }, [mounted, isDarkMode, backgroundColor]);
 
+  const locale = useMemo(() => pathname?.split('/')[1] || 'tr', [pathname]);
+  // RTL: Parent'tan gelen prop kullan (SidebarLayout zaten mounted kontrolü yapıyor)
+  // Bu şekilde her iki bileşen de tutarlı olur
+  const isRTL = externalIsRTL ?? false;
+
   // Sidebar style - sadece client-side'da uygula (hydration hatasını önlemek için)
+  // isRTL'i önce hesaplamamız gerekiyor çünkü sidebarStyle'da kullanılıyor
   const sidebarStyle: React.CSSProperties = useMemo(() => {
     const baseStyle: React.CSSProperties = {
       width: collapsed ? '4rem' : `${sidebarConfig?.width || 260}px`,
@@ -191,7 +198,8 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
 
     // Border ayarlarını ekle (position'a göre: left = sağ kenar, right = sol kenar)
     const borderConfig = sidebarConfig?.border;
-    const isRightPosition = sidebarConfig?.position === 'right';
+    // RTL durumunda sidebar her zaman sağda, tema ayarı göz ardı edilir
+    const isRightPosition = isRTL || sidebarConfig?.position === 'right';
 
     if (borderConfig?.enabled) {
       const borderStyleValue = `${borderConfig.width}px solid ${borderConfig.color}`;
@@ -214,7 +222,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       }
     }
 
-    // Position ayarı (left veya right)
+    // Position ayarı (left veya right) - RTL durumunda her zaman sağ
     if (isRightPosition) {
       baseStyle.left = 'auto';
       baseStyle.right = 0;
@@ -240,9 +248,7 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
     }
 
     return baseStyle;
-  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, sidebarConfig?.border, sidebarConfig?.position, backgroundColor, autoColors]);
-
-  const locale = useMemo(() => pathname?.split('/')[1] || 'tr', [pathname]);
+  }, [mounted, isDarkMode, collapsed, sidebarConfig?.width, sidebarConfig?.border, sidebarConfig?.position, backgroundColor, autoColors, isRTL]);
 
   // Memoize getHref function
   const getHref = useCallback((href: string) => {
@@ -371,20 +377,20 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
               overflow: 'hidden',
             } : undefined}
           >
-            {mounted && (
+            {mounted && (branding.pwaIcon || branding.logo) && (
               <Image
-                src={BRANDING_PATHS.pwaIcon}
+                src={branding.pwaIcon || branding.logo || ''}
                 alt={company?.name || 'Logo'}
                 fit="contain"
                 w={collapsed ? 32 : 36}
                 h={collapsed ? 32 : 36}
                 style={{ borderRadius: 'var(--mantine-radius-sm)' }}
-                fallbackSrc={BRANDING_PATHS.logo}
+                fallbackSrc={branding.logo || undefined}
                 onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                   // Eğer pwaIcon yoksa logo'yu dene, o da yoksa boş bırak
                   const target = e.currentTarget;
-                  if (target.src.includes('pwa-icon')) {
-                    target.src = BRANDING_PATHS.logo;
+                  if (branding.logo && target.src.includes('pwa-icon')) {
+                    target.src = branding.logo;
                   } else {
                     target.style.display = 'none';
                   }
@@ -415,8 +421,16 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
       </Link>
 
       {/* Collapse Toggle */}
+      {/* RTL durumunda sidebar sağda olduğu için buton pozisyonu ve ikonlar ters */}
+      {/* Tema ayarlarındaki pozisyon sadece LTR dillerde geçerli */}
       <div {...(styles.collapseButton ? { className: styles.collapseButton } : {})}
-        style={sidebarConfig?.position === 'right' ? { right: 'auto', left: '-0.75rem' } : undefined}
+        style={
+          isRTL
+            ? undefined // RTL: CSS'teki :global([dir="rtl"]) kuralları devreye girer
+            : sidebarConfig?.position === 'right'
+              ? { right: 'auto', left: '0.25rem' } // LTR + tema: sağ pozisyon
+              : undefined // LTR + tema: sol pozisyon (varsayılan)
+        }
       >
         <ActionIcon
           variant="subtle"
@@ -425,9 +439,14 @@ export function Sidebar({ collapsed: externalCollapsed, onCollapsedChange }: Sid
           aria-label={collapsed ? t('layout.expandSidebar') : t('layout.collapseSidebar')}
         >
           {mounted && (
-            sidebarConfig?.position === 'right'
-              ? (collapsed ? <IconChevronLeft size={20} /> : <IconChevronRight size={20} />)
-              : (collapsed ? <IconChevronRight size={20} /> : <IconChevronLeft size={20} />)
+            isRTL
+              // RTL: sidebar sağda, collapsed ise sola aç (ChevronRight), açık ise sağa kapat (ChevronLeft)
+              ? (collapsed ? <IconChevronRight size={20} /> : <IconChevronLeft size={20} />)
+              : sidebarConfig?.position === 'right'
+                // LTR + tema sağ: collapsed ise sola aç, açık ise sağa kapat
+                ? (collapsed ? <IconChevronLeft size={20} /> : <IconChevronRight size={20} />)
+                // LTR + tema sol (varsayılan): collapsed ise sağa aç, açık ise sola kapat
+                : (collapsed ? <IconChevronRight size={20} /> : <IconChevronLeft size={20} />)
           )}
         </ActionIcon>
       </div>

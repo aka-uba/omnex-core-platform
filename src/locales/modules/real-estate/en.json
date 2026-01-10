@@ -9,7 +9,8 @@
   },
   "notifications": {
     "expiringContracts": "Expiring Contracts",
-    "pendingPayments": "Pending Payments"
+    "pendingPayments": "Pending Payments",
+    "pendingPaymentsDetail": "{{count}} payments pending, total {{amount}}"
   },
   "menu": {
     "label": "Real Estate",
@@ -1486,6 +1487,8 @@
     "moveInDatePlaceholder": "Select move-in date",
     "moveOutDate": "Move-out Date",
     "moveOutDatePlaceholder": "Select move-out date",
+    "originalMoveInDate": "Original move-in",
+    "originalMoveOutDate": "Original move-out",
     "notes": "Notes",
     "notesPlaceholder": "Enter notes",
     "sections": {

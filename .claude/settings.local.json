@@ -81,7 +81,8 @@
       "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql.exe\" -U postgres -h localhost -d omnex_core -c \"SELECT id, name, slug, \"\"dbName\"\", status FROM \"\"Tenant\"\" LIMIT 10;\")",
       "Bash(\"/c/Program Files/PostgreSQL/17/bin/psql\" -U postgres -h localhost -d omnex_core -c \"SELECT id, name, slug, \"\"dbName\"\", status FROM \"\"Tenant\"\" LIMIT 10;\")",
       "Bash(echo:*)",
-      "Bash(gh workflow run:*)"
+      "Bash(gh workflow run:*)",
+      "Bash(du -sh:*)"
     ],
     "deny": [],
     "ask": []

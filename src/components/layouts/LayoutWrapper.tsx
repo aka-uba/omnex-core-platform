@@ -9,6 +9,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { Skeleton, Box } from '@mantine/core';
 import { LayoutProvider, useLayout } from './core/LayoutProvider';
 import { MobileLayout } from './mobile/MobileLayout';
 import { SidebarLayout } from './sidebar/SidebarLayout';
@@ -16,6 +17,7 @@ import { TopLayout } from './top/TopLayout';
 import { useAuth } from '@/hooks/useAuth';
 import { useCompany } from '@/context/CompanyContext';
 import { SessionTimeoutWarning } from '@/components/auth/SessionTimeoutWarning';
+import { rtlLocales } from '@/lib/i18n/config';
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -40,6 +42,69 @@ const PUBLIC_PATHS = [
 // Path'in public olup olmadığını kontrol et
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some(path => pathname.includes(path));
+}
+
+// Layout loading skeleton - beyaz sayfa yerine gösterilir
+function LayoutSkeleton({ isRTL }: { isRTL: boolean }) {
+  const sidebarWidth = 260;
+  return (
+    <Box style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Sidebar skeleton */}
+      <Box
+        style={{
+          position: 'fixed',
+          top: 0,
+          width: sidebarWidth,
+          height: '100vh',
+          ...(isRTL ? { right: 0, left: 'auto' } : { left: 0, right: 'auto' }),
+          padding: '1rem',
+          borderRight: isRTL ? 'none' : '1px solid var(--border-color)',
+          borderLeft: isRTL ? '1px solid var(--border-color)' : 'none',
+          backgroundColor: 'var(--bg-secondary)',
+        }}
+      >
+        <Skeleton height={40} width={120} mb="xl" />
+        <Skeleton height={32} mb="sm" />
+        <Skeleton height={32} mb="sm" />
+        <Skeleton height={32} mb="sm" />
+        <Skeleton height={32} mb="sm" />
+      </Box>
+      {/* Main content skeleton */}
+      <Box
+        style={{
+          flex: 1,
+          ...(isRTL
+            ? { marginRight: sidebarWidth, marginLeft: 0 }
+            : { marginLeft: sidebarWidth, marginRight: 0 }),
+        }}
+      >
+        {/* Header skeleton */}
+        <Box
+          style={{
+            height: 60,
+            padding: '0.75rem 1.5rem',
+            borderBottom: '1px solid var(--border-color)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Skeleton height={36} width={180} />
+          <Box style={{ display: 'flex', gap: '1rem' }}>
+            <Skeleton height={40} width={200} radius="md" />
+            <Skeleton height={40} width={40} radius="xl" />
+            <Skeleton height={40} width={40} radius="xl" />
+          </Box>
+        </Box>
+        {/* Content skeleton */}
+        <Box style={{ padding: '2rem' }}>
+          <Skeleton height={40} width="40%" mb="xl" />
+          <Skeleton height={200} mb="md" />
+          <Skeleton height={100} />
+        </Box>
+      </Box>
+    </Box>
+  );
 }
 
 function LayoutContent({ children }: LayoutWrapperProps) {
@@ -79,15 +144,14 @@ function LayoutContent({ children }: LayoutWrapperProps) {
     return <>{children}</>;
   }
 
-  // Server-side: render nothing to prevent hydration mismatch
-  // Client-side: render correct layout from localStorage
-  if (!mounted) {
-    return null;
-  }
+  // RTL durumunu pathname'den hesapla (skeleton için)
+  const locale = pathname?.split('/')[1] || 'tr';
+  const isRTL = rtlLocales.includes(locale);
 
-  // Loading state - auth henüz kontrol ediliyor
-  if (loading) {
-    return null;
+  // Server-side veya loading: Skeleton göster (beyaz sayfa yerine)
+  // Bu, RTL'de çift render görünümünü önler
+  if (!mounted || loading) {
+    return <LayoutSkeleton isRTL={isRTL} />;
   }
 
   // Login olmamış ve public sayfa değilse -> hiçbir şey gösterme (redirect olacak)

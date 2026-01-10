@@ -1,8 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { corePrisma } from '@/lib/corePrisma';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { getCompanyBrandingPaths, DEFAULT_BRANDING_DIR, BRANDING_FILENAMES } from '@/lib/branding/config';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable caching
+
+/**
+ * Check if a branding file exists for company, fallback to default
+ */
+function getPwaIconPath(companyId: string | null): string {
+  const filename = BRANDING_FILENAMES.pwaIcon;
+
+  // Check company directory first
+  if (companyId) {
+    const companyPath = join(process.cwd(), 'public', 'branding', companyId, filename);
+    if (existsSync(companyPath)) {
+      return `/branding/${companyId}/${filename}`;
+    }
+  }
+
+  // Fallback to default directory
+  const defaultPath = join(process.cwd(), 'public', 'branding', 'default', filename);
+  if (existsSync(defaultPath)) {
+    return `${DEFAULT_BRANDING_DIR}/${filename}`;
+  }
+
+  // Final fallback to old location (for backwards compatibility)
+  return '/branding/pwa-icon.png';
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,6 +49,7 @@ export async function GET(request: NextRequest) {
 
     let companyName = 'Omnex Core Platform';
     let shortName = 'Omnex';
+    let companyId: string | null = null;
     const description = 'Enterprise Management Platform';
     const themeColor = '#228be6';
 
@@ -97,7 +125,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Fetch company name from tenant database
+    // Fetch company name and ID from tenant database
     if (tenant && tenant.dbName) {
       try {
         const { getTenantDbUrl } = await import('@/lib/services/tenantService');
@@ -109,14 +137,17 @@ export async function GET(request: NextRequest) {
         // Get the main company (first created)
         const company = await tenantPrisma.company.findFirst({
           orderBy: { createdAt: 'asc' },
-          select: { name: true }
+          select: { id: true, name: true }
         });
 
-        if (company?.name) {
-          companyName = company.name;
-          // short_name: Use first word if <= 12 chars, otherwise first 12 chars
-          const words = company.name.split(' ');
-          shortName = (words[0] && words[0].length <= 12) ? words[0] : company.name.substring(0, 12);
+        if (company) {
+          companyId = company.id;
+          if (company.name) {
+            companyName = company.name;
+            // short_name: Use first word if <= 12 chars, otherwise first 12 chars
+            const words = company.name.split(' ');
+            shortName = (words[0] && words[0].length <= 12) ? words[0] : company.name.substring(0, 12);
+          }
         } else if (tenant?.name) {
           companyName = tenant.name;
           shortName = tenant.name.split(' ')[0] || tenant.name.substring(0, 12);
@@ -129,6 +160,9 @@ export async function GET(request: NextRequest) {
         }
       }
     }
+
+    // Get company-specific PWA icon path (with fallback to default)
+    const pwaIconPath = getPwaIconPath(companyId);
 
     const manifest = {
       name: companyName,
@@ -144,55 +178,55 @@ export async function GET(request: NextRequest) {
       categories: ['business', 'productivity'],
       icons: [
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '512x512',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '512x512',
           type: 'image/png',
           purpose: 'maskable'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '384x384',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '256x256',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '192x192',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '144x144',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '96x96',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '72x72',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/branding/pwa-icon.png',
+          src: pwaIconPath,
           sizes: '48x48',
           type: 'image/png',
           purpose: 'any'
@@ -203,7 +237,7 @@ export async function GET(request: NextRequest) {
         {
           name: 'Dashboard',
           url: '/tr/dashboard',
-          icons: [{ src: '/branding/pwa-icon.png', sizes: '96x96' }]
+          icons: [{ src: pwaIconPath, sizes: '96x96' }]
         }
       ]
     };

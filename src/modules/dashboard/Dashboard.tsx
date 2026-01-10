@@ -106,6 +106,10 @@ interface DashboardSummary {
     title: string;
     description: string;
     module: string;
+    meta?: {
+      count?: number;
+      amount?: number;
+    };
   }[];
 }
 
@@ -367,10 +371,15 @@ export function Dashboard() {
               <div className="flex justify-between items-start">
                 <div>
                   <Text fw={700} size="sm" c={isDark ? 'red.2' : 'red.8'}>
-                    {pendingPaymentsNotification.title}
+                    {tRealEstate(pendingPaymentsNotification.title)}
                   </Text>
                   <Text size="sm" c={isDark ? 'red.3' : 'red.6'} mt={4}>
-                    {pendingPaymentsNotification.description}
+                    {pendingPaymentsNotification.meta
+                      ? tRealEstate('notifications.pendingPaymentsDetail', {
+                          count: pendingPaymentsNotification.meta.count || 0,
+                          amount: formatCurrency(pendingPaymentsNotification.meta.amount || 0),
+                        })
+                      : `${pendingPaymentsNotification.description} ${tRealEstate('notifications.pendingPayments')}`}
                   </Text>
                 </div>
                 <CloseButton

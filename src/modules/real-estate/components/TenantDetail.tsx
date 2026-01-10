@@ -340,10 +340,18 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                     <Text size="sm" fw={500} c="dimmed">{t('form.moveInDate')}</Text>
                   </Group>
                   <Text>
-                    {tenant.moveInDate
+                    {/* Önce aktif sözleşme başlangıç tarihi, yoksa kiracı giriş tarihi */}
+                    {activeContract?.startDate
+                      ? dayjs(activeContract.startDate).format('DD.MM.YYYY')
+                      : tenant.moveInDate
                       ? dayjs(tenant.moveInDate).format('DD.MM.YYYY')
                       : tGlobal('common.notApplicable')}
                   </Text>
+                  {activeContract?.startDate && tenant.moveInDate && activeContract.startDate !== tenant.moveInDate && (
+                    <Text size="xs" c="dimmed">
+                      ({t('form.originalMoveInDate')}: {dayjs(tenant.moveInDate).format('DD.MM.YYYY')})
+                    </Text>
+                  )}
                 </Stack>
 
                 <Stack gap="xs">
@@ -352,10 +360,18 @@ export function TenantDetail({ tenantId, locale }: TenantDetailProps) {
                     <Text size="sm" fw={500} c="dimmed">{t('form.moveOutDate')}</Text>
                   </Group>
                   <Text>
-                    {tenant.moveOutDate
+                    {/* Önce aktif sözleşme bitiş tarihi, yoksa kiracı çıkış tarihi */}
+                    {activeContract?.endDate
+                      ? dayjs(activeContract.endDate).format('DD.MM.YYYY')
+                      : tenant.moveOutDate
                       ? dayjs(tenant.moveOutDate).format('DD.MM.YYYY')
                       : tGlobal('common.notApplicable')}
                   </Text>
+                  {activeContract?.endDate && tenant.moveOutDate && activeContract.endDate !== tenant.moveOutDate && (
+                    <Text size="xs" c="dimmed">
+                      ({t('form.originalMoveOutDate')}: {dayjs(tenant.moveOutDate).format('DD.MM.YYYY')})
+                    </Text>
+                  )}
                 </Stack>
 
                 {(tenant as any).taxNumber && (
