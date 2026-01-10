@@ -14,10 +14,11 @@ import {
   Avatar,
   Divider,
   Tooltip,
+  Button,
 } from '@mantine/core';
 import { IconPlus, IconEdit, IconTrash, IconUsers, IconEye, IconToggleLeft, IconToggleRight, IconExternalLink } from '@tabler/icons-react';
 import { CentralPageHeader } from '@/components/headers/CentralPageHeader';
-import { useUsers, useToggleUserStatus } from '@/hooks/useUsers';
+import { useUsers, useToggleUserStatus, useDeleteUser } from '@/hooks/useUsers';
 import { useTranslation } from '@/lib/i18n/client';
 import { DataTable, DataTableColumn } from '@/components/tables/DataTable';
 import { FilterOption } from '@/components/tables/FilterModal';
@@ -41,7 +42,10 @@ export function UsersPageClient({ locale }: { locale: string }) {
   const [statusFilter, setStatusFilter] = useState<UserStatus | undefined>();
   const [quickViewUser, setQuickViewUser] = useState<any | null>(null);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<any | null>(null);
   const toggleStatus = useToggleUserStatus();
+  const deleteUser = useDeleteUser();
 
   const { data, isLoading, error, refetch } = useUsers({
     page,
@@ -240,6 +244,11 @@ export function UsersPageClient({ locale }: { locale: string }) {
             <ActionIcon
               variant="subtle"
               color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                setUserToDelete(row);
+                setDeleteModalOpen(true);
+              }}
             >
               <IconTrash size={16} />
             </ActionIcon>
@@ -402,6 +411,70 @@ export function UsersPageClient({ locale }: { locale: string }) {
               >
                 <IconEdit size={18} />
               </ActionIcon>
+            </Group>
+          </Stack>
+        )}
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        opened={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setUserToDelete(null);
+        }}
+        title={
+          <Group gap="sm">
+            <IconTrash size={20} color="red" />
+            <Text fw={600}>{t('delete.title')}</Text>
+          </Group>
+        }
+        size="sm"
+        centered
+      >
+        {userToDelete && (
+          <Stack gap="md">
+            <Text>
+              {t('delete.confirmMessage', { name: userToDelete.name })}
+            </Text>
+            <Text size="sm" c="dimmed">
+              {userToDelete.email}
+            </Text>
+            <Group justify="flex-end" gap="sm" mt="md">
+              <Button
+                variant="default"
+                onClick={() => {
+                  setDeleteModalOpen(false);
+                  setUserToDelete(null);
+                }}
+              >
+                {tGlobal('common.actions.cancel')}
+              </Button>
+              <Button
+                color="red"
+                loading={deleteUser.isPending}
+                onClick={async () => {
+                  try {
+                    await deleteUser.mutateAsync(userToDelete.id);
+                    setDeleteModalOpen(false);
+                    setUserToDelete(null);
+                    refetch();
+                    showToast({
+                      type: 'success',
+                      title: t('delete.success'),
+                      message: t('delete.successMessage', { name: userToDelete.name }),
+                    });
+                  } catch (error) {
+                    showToast({
+                      type: 'error',
+                      title: tGlobal('notifications.error.title'),
+                      message: error instanceof Error ? error.message : t('delete.error'),
+                    });
+                  }
+                }}
+              >
+                {t('delete.confirm')}
+              </Button>
             </Group>
           </Stack>
         )}

@@ -155,6 +155,14 @@
     "title": "Quick View",
     "createdAt": "Created Date"
   },
+  "delete": {
+    "title": "Delete User",
+    "confirmMessage": "Are you sure you want to delete {{name}}?",
+    "confirm": "Yes, Delete",
+    "success": "User Deleted",
+    "successMessage": "{{name}} has been deleted successfully",
+    "error": "Failed to delete user"
+  },
   "detail": {
     "title": "User Detail",
     "description": "View user profile information.",

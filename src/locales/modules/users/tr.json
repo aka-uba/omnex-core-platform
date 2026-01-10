@@ -155,6 +155,14 @@
     "title": "Hızlı Görüntüleme",
     "createdAt": "Oluşturulma Tarihi"
   },
+  "delete": {
+    "title": "Kullanıcıyı Sil",
+    "confirmMessage": "{{name}} adlı kullanıcıyı silmek istediğinize emin misiniz?",
+    "confirm": "Evet, Sil",
+    "success": "Kullanıcı Silindi",
+    "successMessage": "{{name}} başarıyla silindi",
+    "error": "Kullanıcı silinemedi"
+  },
   "detail": {
     "title": "Kullanıcı Detayı",
     "description": "Kullanıcı profil bilgilerini görüntüleyin.",
